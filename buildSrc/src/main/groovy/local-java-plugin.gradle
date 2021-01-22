@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.clean {
+    doFirst {
+        new File("${project.projectDir}/build").deleteDir()
+        new File("${project.projectDir}/bin").deleteDir()
+    }
+}

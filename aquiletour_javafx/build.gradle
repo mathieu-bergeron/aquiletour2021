@@ -1,0 +1,22 @@
+plugins {
+    id 'local-jsweet-plugin'
+}
+
+dependencies {
+    implementation project(':ntro_jdk')
+    implementation project(':aquiletour_core')
+}
+
+tasks.jsweet {
+    doFirst{
+        throw new GradleException("Task :jsweet NOT supported in ${project}")
+    }
+}
+
+task javafx (type:JavaExec) {
+    dependsOn 'classes'
+    main = 'ca.aquiletour.javafx.JavaMainFx'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs('-Dfile.encoding=UTF-8')
+}
+

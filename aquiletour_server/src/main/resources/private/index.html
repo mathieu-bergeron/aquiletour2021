@@ -1,0 +1,75 @@
+<!-- Copyright (C) (2020) (Mathieu Bergeron) (mathieu.bergeron@cmontmorency.qc.ca)
+
+This file is part of aquiletour
+
+aquiletour is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+aquiletour is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with aquiletour.  If not, see <https://www.gnu.org/licenses/> 
+
+-->
+
+
+<!doctype html>
+<html lang="fr">    <!-- TODO: change lang according to request -->
+	<head>
+		<meta charset="utf-8">
+		<title>aquiletour</title>
+
+		<!-- ntro -->
+		<script type="text/javascript" src="js/ntro_core/bundle.js"></script>
+		<script type="text/javascript" src="js/ntro_jsweet/bundle.js"></script>
+
+		<!-- aquiletour -->
+		<script type="text/javascript" src="js/aquiletour_core/bundle.js"></script>
+		<script type="text/javascript" src="js/aquiletour_web/bundle.js"></script>
+		<script type="text/javascript" src="js/aquiletour_jsweet/bundle.js"></script>
+
+        <!-- dev: read source map -->
+	    <script src="https://unpkg.com/source-map@0.7.3/dist/source-map.js"></script>
+
+	    <script>
+
+	        sourceMap.SourceMapConsumer.initialize({
+	                    "lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
+	                });
+
+	        window.onload = async function(){
+
+	                // FIXME: we have more than one source map to load!
+				    const response = await fetch('js/aquiletour_jsweet/bundle.js.map');
+
+                    if(response.ok){
+
+                        const rawSourceMap = await response.text();
+                        const parsedSourceMap = await new sourceMap.SourceMapConsumer(rawSourceMap);
+
+                        ca.ntro.jsweet.debug.installSourceMapAnalyzer(function(lineColumn){
+
+                            originalPosition = parsedSourceMap.originalPositionFor(lineColumn);
+
+                            return originalPosition;
+                    
+                        });
+
+                        ca.ntro.jsweet.onLoadTask.notifyTaskFinished();
+
+                    }else{
+
+                        ca.ntro.jsweet.onLoadTask.setError(new Error("cannot load source map"));
+
+                    }
+                };
+	    </script>
+	</head>
+	<body>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+plugins {
+    id 'local-java-plugin'
+    id 'org.jsweet.jsweet-gradle-plugin'
+    id 'maven'
+}
+
+project.gradle.projectsEvaluated {
+    jsweet {
+	    verbose = true
+	    encoding = 'UTF-8'
+	    sourceMap = true
+	    tsOut = new File("${project.projectDir}/jsweet/ts")
+	    dtsOut = new File("${project.projectDir}/jsweet/jsOut/src/typings/${project.name}/${project.version}")
+	    outDir = new File("${project.projectDir}/jsweet/jsOut/META-INF/resources/webjars/${project.name}/${project.version}")
+	    candiesJsOut = new File("${project.projectDir}/jsweet/jsIn")
+	    targetVersion = 'ES6'
+	    includes = ['**/*.java']
+	    bundle = true
+	    declaration = true
+	    //enableAssertions = true
+    }
+}
+
+jar{
+    from ("${project.projectDir}/jsweet/jsOut"){
+        include "**"
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+	maven { url "http://repository.jsweet.org/artifactory/libs-release-local" }
+	maven { url "http://repository.jsweet.org/artifactory/libs-snapshot-local" }
+	maven { url "http://repository.jsweet.org/artifactory/plugins-release-local" }
+	maven { url "http://repository.jsweet.org/artifactory/plugins-snapshot-local" }
+	maven { url "http://google-diff-match-patch.googlecode.com/svn/trunk/maven" }
+}
+
+dependencies {
+    // JSweet
+    implementation group: 'org.jsweet', name: 'jsweet-transpiler', version: "2.3.0-SNAPSHOT"
+    implementation group: 'org.jsweet', name: 'jsweet-core', version: "6"
+}
+
+tasks.clean {
+    doFirst {
+        new File("${project.projectDir}/jsweet").deleteDir()
+        new File("${project.projectDir}/.jsweet").deleteDir()
+    }
+}
+
+
+tasks.build {
+
+}
+
+tasks.jsweet {
+    inputs.dir("${project.projectDir}/src/main/java")
+    outputs.dir("${project.projectDir}/jsweet")
+
+    finalizedBy('jar')
+}
+
+tasks.jar {
+
+    doFirst{
+
+	    def candyMetadataFile = new File("${project.projectDir}/jsweet/jsOut/META-INF/candy-metadata.json")
+	    def candyMetadataContent ='''{
+    "transpilerVersion": "${jsweet.transpiler.version}"
+}'''
+
+        try{
+	        candyMetadataFile.write(candyMetadataContent)
+	    }catch(IOException e){}
+    }
+
+    finalizedBy('install')
+}
+
+tasks.install{
+
+}

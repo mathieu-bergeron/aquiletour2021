@@ -1,0 +1,22 @@
+# Gradle
+.gradle
+build
+bin
+*.jar
+!gradle-wrapper.jar
+
+# vim
+*.swp
+
+# emacs
+*~
+
+# Eclipse
+.settings
+.classpath
+.project
+
+# JSweet
+.jsweet
+/jsweet
+webapp/js

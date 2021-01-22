@@ -1,0 +1,13 @@
+plugins {
+    id 'local-java-plugin'
+}
+
+dependencies {
+    compile project(':ntro_core')
+
+    // https://github.com/google/gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    // Jetty
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.28.v20200408'
+}

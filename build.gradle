@@ -1,0 +1,5 @@
+task clean{
+    doLast{
+        new File("${project.projectDir}/.jsweet").deleteDir()
+    }
+}

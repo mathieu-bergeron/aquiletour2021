@@ -1,0 +1,16 @@
+plugins {
+    id 'local-jsweet-plugin'
+}
+
+project.group = 'ca.ntro'
+project.version = '0.1'
+
+dependencies {
+    // Ntro
+    compile project(':ntro_core')
+    compile group: 'ca.ntro', name: 'ntro_core', version: '0.1'
+}
+
+tasks.jsweet{
+    dependsOn ':ntro_core:jsweet'
+}

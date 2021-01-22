@@ -1,0 +1,28 @@
+rootProject.name = 'aquiletour20201'
+
+include 'ntro_core'
+include 'ntro_jdk'
+include 'ntro_jsweet'
+include 'aquiletour_core'
+include 'aquiletour_javafx'
+include 'aquiletour_web'
+include 'aquiletour_jsweet'
+include 'aquiletour_server'
+
+buildscript {
+	repositories {
+	    mavenCentral()
+		maven { url "http://repository.jsweet.org/artifactory/libs-release-local" }
+		maven { url "http://repository.jsweet.org/artifactory/libs-snapshot-local" }
+		maven { url "http://repository.jsweet.org/artifactory/plugins-release-local" }
+		maven { url "http://repository.jsweet.org/artifactory/plugins-snapshot-local" }
+		maven { url "http://google-diff-match-patch.googlecode.com/svn/trunk/maven" }
+	}
+
+	dependencies {
+		classpath('org.jsweet:jsweet-gradle-plugin:2.3.0-SNAPSHOT') { 
+		    transitive = true 
+	    }
+    }
+}
+
