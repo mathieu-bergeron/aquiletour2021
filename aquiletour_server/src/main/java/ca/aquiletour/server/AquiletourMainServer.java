@@ -23,6 +23,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
+import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.HttpConnector;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.ntro.core.Ntro;
@@ -63,13 +64,15 @@ public class AquiletourMainServer extends NtroTask {
 		
 		Server server = new Server(port);
 
+		// TODO: add HTTPS, WS and WSS connectors
         ServerConnector httpConnector = HttpConnector.createHttpConnector(server);
         server.addConnector(httpConnector);
 
         // XXX: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-        handlers.addHandler(ResourceHandler.createResourceHandler("/", "src/main/resources/public"));
+        handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "src/main/resources/public"));
+        handlers.addHandler(DynamicHandler.createDynamicHandler("/", "src/main/resources/private"));
 
         server.setHandler(handlers);
 
