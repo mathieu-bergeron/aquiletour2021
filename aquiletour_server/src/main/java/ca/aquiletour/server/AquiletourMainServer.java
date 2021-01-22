@@ -65,10 +65,9 @@ public class AquiletourMainServer extends NtroTask {
 		Server server = new Server(port);
 
 		// TODO: add HTTPS, WS and WSS connectors
-        ServerConnector httpConnector = HttpConnector.createHttpConnector(server);
-        server.addConnector(httpConnector);
+        server.addConnector(new ServerConnector(server));
 
-        // XXX: HandlerList stops after first successful answer
+        // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
         handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "src/main/resources/public"));
@@ -96,7 +95,4 @@ public class AquiletourMainServer extends NtroTask {
 
         server.join();
 	}
-
-	
-
 }
