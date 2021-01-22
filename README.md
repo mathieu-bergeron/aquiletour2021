@@ -8,14 +8,14 @@
 
     * les branches sont `marwane`,`joseph`,`benjamin`,`mroussel`, `nleduc`, `apilon`, `mbergeron`
 
-1. Je peux fusionner **à partir** de la branch `main`
+1. Je peux importer les modifications de la branche `main`:
 
         $ git checkout MA_BRANCHE
         $ git merge main
 
-1. Ne jamais faire:
+1. Je ne fais jamais:
 
-        $ git checkout main
+        $ git checkout AUTRE_BRANCHE
 
     * La branche `main` sera gérée **uniquement** par `mbergeron`
 
