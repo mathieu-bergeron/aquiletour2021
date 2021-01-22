@@ -57,4 +57,4 @@
 
 ## Documentation
 
-* Voir le [Wiki](/mathieu-bergeron/aquiletour2021/wiki/index)
+* Voir le [Wiki](https://github.com/mathieu-bergeron/aquiletour2021/wiki/index)
