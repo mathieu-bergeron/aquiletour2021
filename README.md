@@ -1,22 +1,5 @@
 # aquiletour.ca
 
-## Prérequis
-
-1. Installer le JDK **1.8**
-
-1. Configurer `~/.bash_profile`:
-
-        $ EDITEUR ~/.bash_profile
-
-            export JAVA_HOME="/c/Program Files/Java/jdk1.8.XXX"
-            export PATH=$JAVA_HOME/bin:$PATH
-
-        # OÙ jdk1.8.XXX est ma version de JDK
-
-1. Doit afficher `java version "1.8.XXX"`
-
-        $ java -version
-
 ## Git et branches
 
 1. Je bascule sur ma branche
@@ -35,6 +18,24 @@
         $ git checkout main
 
     * La branche `main` sera gérée **uniquement** par `mbergeron`
+
+## Configuration
+
+1. Installer le JDK **1.8**
+
+1. Configurer `~/.bash_profile`:
+
+        $ EDITEUR ~/.bash_profile
+
+            export JAVA_HOME="/c/Program Files/Java/jdk1.8.XXX"
+            export PATH=$JAVA_HOME/bin:$PATH
+
+        # OÙ jdk1.8.XXX est ma version de JDK
+
+1. Doit afficher `java version "1.8.XXX"`
+
+        $ java -version
+
 
 ## Commandes
 
