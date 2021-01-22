@@ -10,7 +10,7 @@
 
 1. Je peux fusionner **à partir** de la branch `main`
 
-        $ git checkout MA_BRANCH
+        $ git checkout MA_BRANCHE
         $ git merge main
 
 1. Ne jamais faire:
