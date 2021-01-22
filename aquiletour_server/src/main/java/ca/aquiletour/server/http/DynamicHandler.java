@@ -105,6 +105,8 @@ public class DynamicHandler extends AbstractHandler {
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		
+		// TODO: serve private/index.html
+		//       append rootpageView into <body>
 		out.write("Bonjour!".getBytes());
 		
 		out.close();
