@@ -8,12 +8,15 @@
 
     * les branches sont `marwane`,`joseph`,`benjamin`,`mroussel`, `nleduc`, `apilon`, `mbergeron`
 
+1. Je vérifie que je suis sur ma branche
+
+        $ git branch
+
 1. Je peux importer les modifications de la branche `main`:
 
-        $ git checkout MA_BRANCHE
         $ git merge main
 
-1. Je ne fais jamais:
+1. Mais je ne fais jamais:
 
         $ git checkout AUTRE_BRANCHE
 
