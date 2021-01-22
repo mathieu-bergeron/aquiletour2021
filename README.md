@@ -1,4 +1,4 @@
-# `aquiletour2021`
+# aquiletour.ca
 
 ## Prérequis
 
@@ -16,6 +16,25 @@
 1. Doit afficher `java version "1.8.XXX"`
 
         $ java -version
+
+## Git et branches
+
+1. Je bascule sur ma branche
+
+        $ git checkout MA_BRANCHE
+
+    * les branches sont `marwane`,`joseph`,`benjamin`,`mroussel`, `nleduc`, `apilon`, `mbergeron`
+
+1. Je peux fusionner **à partir** de la branch `main`
+
+        $ git checkout MA_BRANCH
+        $ git merge main
+
+1. Ne jamais faire:
+
+        $ git checkout main
+
+    * La branche `main` sera gérée **uniquement** par `mbergeron`
 
 ## Commandes
 
