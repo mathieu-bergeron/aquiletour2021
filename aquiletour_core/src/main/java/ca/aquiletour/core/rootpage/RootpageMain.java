@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.core.mainpage;
+package ca.aquiletour.core.rootpage;
 
 import ca.ntro.core.NtroView;
 import ca.ntro.core.mvc.ViewLoader;
@@ -28,7 +28,7 @@ public class RootpageMain extends NtroTask {
 	protected void runTask() {
 		T.call(this);
 		
-		NtroView homepageView = getPreviousTask(ViewLoader.class,"View").getView();
+		NtroView rootpageView = getPreviousTask(ViewLoader.class,"View").getView();
 		
 		// install view on the main window (e.g. Document or MainStage)
 

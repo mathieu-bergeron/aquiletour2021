@@ -17,7 +17,7 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.mainpage.RootpageMain;
+import ca.aquiletour.core.rootpage.RootpageMain;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
