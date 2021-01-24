@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,9 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
+import ca.aquiletour.server.AquiletourMainServer;
+import ca.aquiletour.web.AquiletourRequestHandler;
+import ca.aquiletour.web.HandlerTask;
 import ca.ntro.core.system.trace.T;
 
 public class DynamicHandler extends AbstractHandler {
@@ -105,13 +109,17 @@ public class DynamicHandler extends AbstractHandler {
 
 		response.setStatus(HttpServletResponse.SC_OK);
 		
-		// TODO: serve private/index.html
-		//       append rootpageView into <body>
-		out.write("Bonjour!".getBytes());
+		// TODO
+		String authToken = null;
+		AquiletourRequestHandler handler = new AquiletourRequestHandler();
+
+		HandlerTask task;
+		task = handler.initialRequest(baseRequest.getContextPath(), 
+							          baseRequest.getParameterMap(),
+							          authToken);
 		
-		out.close();
-		
-		baseRequest.setHandled(true);
+		task.addNextTask(new WriteResponseTask(baseRequest, out));
+		task.execute();
 	}
 
 	private void setContentType(HttpServletResponse response, String filePath) {
