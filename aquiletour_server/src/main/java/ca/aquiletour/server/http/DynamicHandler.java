@@ -35,6 +35,8 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.server.AquiletourMainServer;
+import ca.aquiletour.web.AquiletourRequestHandler;
+import ca.aquiletour.web.HandlerTask;
 import ca.ntro.core.system.trace.T;
 
 public class DynamicHandler extends AbstractHandler {
@@ -111,19 +113,13 @@ public class DynamicHandler extends AbstractHandler {
 		String authToken = null;
 		AquiletourRequestHandler handler = new AquiletourRequestHandler();
 
-		new AquiletourRequestHandler(baseRequest.getContextPath(), 
-									 baseRequest.getParameterMap(),
-									 authToken);
+		HandlerTask task;
+		task = handler.initialRequest(baseRequest.getContextPath(), 
+							          baseRequest.getParameterMap(),
+							          authToken);
 		
-		
-		
-		// TODO: serve private/index.html
-		//       append rootpageView into <body>
-		out.write("Bonjour!".getBytes());
-		
-		out.close();
-		
-		baseRequest.setHandled(true);
+		task.addNextTask(new WriteResponseTask(baseRequest, out));
+		task.execute();
 	}
 
 	private void setContentType(HttpServletResponse response, String filePath) {
