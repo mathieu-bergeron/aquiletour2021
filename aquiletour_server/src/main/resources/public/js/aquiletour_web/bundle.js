@@ -28,6 +28,28 @@ var ca;
     (function (aquiletour) {
         var web;
         (function (web) {
+            class RootpageMainWeb extends ca.aquiletour.core.pages.rootpage.RootpageMain {
+                constructor(lang) {
+                    super(lang);
+                }
+                loadView(lang) {
+                    return ca.ntro.core.Ntro.viewLoaderWeb().setHtmlUrl("views/rootpage/structure.html").setCssUrl("views/rootpage/style.css").setTranslationsUrl("i18/" + lang + "/strings.json");
+                }
+                writeHtml(out) {
+                    ca.ntro.core.system.trace.T.call(this);
+                    this.getWindow().writeHtml(out);
+                }
+            }
+            web.RootpageMainWeb = RootpageMainWeb;
+            RootpageMainWeb["__class"] = "ca.aquiletour.web.RootpageMainWeb";
+        })(web = aquiletour.web || (aquiletour.web = {}));
+    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var aquiletour;
+    (function (aquiletour) {
+        var web;
+        (function (web) {
             class HandlerTask extends ca.ntro.core.tasks.NtroTask {
                 writeHtml(out) {
                     ca.ntro.core.system.trace.T.call(this);
@@ -49,28 +71,6 @@ var ca;
             }
             web.HandlerTask = HandlerTask;
             HandlerTask["__class"] = "ca.aquiletour.web.HandlerTask";
-        })(web = aquiletour.web || (aquiletour.web = {}));
-    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var aquiletour;
-    (function (aquiletour) {
-        var web;
-        (function (web) {
-            class RootpageMainWeb extends ca.aquiletour.core.rootpage.RootpageMain {
-                constructor(lang) {
-                    super(lang);
-                }
-                loadView(lang) {
-                    return ca.ntro.core.Ntro.viewLoaderWeb().setHtmlUrl("views/rootpage/structure.html").setCssUrl("views/rootpage/style.css").setTranslationsUrl("i18/" + lang + "/strings.json");
-                }
-                writeHtml(out) {
-                    ca.ntro.core.system.trace.T.call(this);
-                    this.getWindow().writeHtml(out);
-                }
-            }
-            web.RootpageMainWeb = RootpageMainWeb;
-            RootpageMainWeb["__class"] = "ca.aquiletour.web.RootpageMainWeb";
         })(web = aquiletour.web || (aquiletour.web = {}));
     })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
 })(ca || (ca = {}));

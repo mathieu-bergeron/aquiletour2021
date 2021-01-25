@@ -17,7 +17,7 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageMain;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
@@ -34,6 +34,8 @@ public abstract class AquiletourMain extends NtroTask {
 		lang = "fr";
 		
 		rootpageMain(lang).execute();
+		
+		notifyTaskFinished();
 	}
 	
 	protected abstract RootpageMain rootpageMain(String lang);

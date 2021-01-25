@@ -25,5 +25,13 @@ public class HtmlElementJava implements HtmlElement {
 		T.call(this);
 		// XXX: event listeners ignored on server
 	}
+	
+	
+	@Override
+	public void appendHtml(String html) {
+		T.call(this);
+
+		element.append(html);
+	}
 
 }

@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import ca.ntro.core.services.ResourceLoaderTask;
+import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.trace.T;
 
 public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 	
@@ -37,7 +39,13 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 
 	@Override
 	protected void runTask() {
+		
+		T.values(getResourcePath());
+		
+		
 		InputStream resourceStream = ResourceLoaderTask.class.getResourceAsStream(getResourcePath());
+		
+		MustNot.beNull(resourceStream);
 		
 		Scanner scanner = new Scanner(resourceStream);
 		

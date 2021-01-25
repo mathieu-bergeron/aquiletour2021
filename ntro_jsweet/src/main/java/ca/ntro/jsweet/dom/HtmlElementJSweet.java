@@ -40,4 +40,12 @@ public class HtmlElementJSweet implements HtmlElement {
 			}
 		});
 	}
+
+	@Override
+	public void appendHtml(String html) {
+		T.call(this);
+		
+		// FIXME: parse HTML first
+		jQueryElement.html(html);
+	}
 }

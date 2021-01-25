@@ -15,36 +15,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.jdk.mvc;
+package ca.aquiletour.core.pages.rootpage;
 
+import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTask;
 
-public class ViewLoaderFx extends ViewLoader {
+public abstract class RootpageMain extends NtroTask {
+	
+	public RootpageMain(String lang) {
+		T.call(this);
+		
+		addSubTask(loadView(lang),"ViewLoader");
+	}
+
+	protected abstract ViewLoader loadView(String lang);
+	protected abstract NtroWindow getWindow();
 
 	@Override
 	protected void runTask() {
-		// TODO Auto-generated method stub
+		T.call(this);
 		
+		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
+		getWindow().installRootView(viewLoader);
+
+		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-	}
-
-	public ViewLoaderFx setFxmlUrl(String string) {
-		// TODO Auto-generated method stub
-		return this;
-	}
-
-	public ViewLoaderFx setCssUrl(String string) {
-		// TODO Auto-generated method stub
-		return this;
-	}
-
-	public ViewLoaderFx setTranslationsName(String string) {
-		// TODO Auto-generated method stub
-		return this;
+		
 	}
 
 }
