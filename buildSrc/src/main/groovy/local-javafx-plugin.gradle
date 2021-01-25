@@ -1,5 +1,4 @@
 plugins {
-    id 'local-java-plugin'
 }
 
 eclipse {

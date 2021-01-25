@@ -1,4 +1,6 @@
 plugins {
+    id 'local-java-plugin'
+    id 'local-jsweet-plugin'
     id 'local-javafx-plugin'
 }
 
