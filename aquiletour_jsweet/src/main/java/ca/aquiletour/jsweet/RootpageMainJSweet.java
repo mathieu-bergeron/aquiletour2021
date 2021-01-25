@@ -1,6 +1,7 @@
 package ca.aquiletour.jsweet;
 
 import ca.aquiletour.web.page.rootpage.RootpageMainWeb;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.web.NtroWindowWeb;
 
 public class RootpageMainJSweet extends RootpageMainWeb {
@@ -9,6 +10,7 @@ public class RootpageMainJSweet extends RootpageMainWeb {
 
 	public RootpageMainJSweet(String lang) {
 		super(lang);
+		T.call(this);
 	}
 
 	@Override
