@@ -248,9 +248,8 @@ public abstract class NtroTask {
 
 	public void addSubTask(NtroTask task, String taskId) {
 		if(state == State.INITIALIZING) {
-			String id = defaultId(task);
 			task.setParentTask(this);
-			subTasks.put(id, task);
+			subTasks.put(taskId, task);
 		}else {
 			throw new IllegalStateException("Task.addSubTask called on state " + state);
 		}

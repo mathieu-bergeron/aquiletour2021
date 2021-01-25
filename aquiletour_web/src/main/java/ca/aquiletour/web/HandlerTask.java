@@ -10,11 +10,12 @@ public class HandlerTask extends NtroTask {
 	public void writeHtml(StringBuilder out) {
 		T.call(this);
 
-		out.append("Bonjour!");
+		getSubTask(RootpageMainWeb.class, "RootPageMain").writeHtml(out);
 	}
 
 	@Override
 	protected void runTask() {
+		T.call(this);
 		
 		notifyTaskFinished();
 	}

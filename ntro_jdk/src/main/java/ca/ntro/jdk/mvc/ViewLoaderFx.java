@@ -17,7 +17,7 @@
 
 package ca.ntro.jdk.mvc;
 
-import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.mvc.view.ViewLoader;
 
 public class ViewLoaderFx extends ViewLoader {
 

@@ -17,21 +17,35 @@
 
 package ca.aquiletour.core.rootpage;
 
-import ca.ntro.core.NtroView;
-import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 
-public class RootpageMain extends NtroTask {
+public abstract class RootpageMain extends NtroTask {
+	
+	private NtroWindow window;
+	
+	public RootpageMain(String lang) {
+		T.call(this);
+		
+		this.window = getWindow();
+		
+		addSubTask(loadView(lang),"ViewLoader");
+	}
+
+	protected abstract ViewLoader loadView(String lang);
+	protected abstract NtroWindow getWindow();
 
 	@Override
 	protected void runTask() {
 		T.call(this);
 		
-		NtroView rootpageView = getPreviousTask(ViewLoader.class,"View").getView();
+		NtroView rootpageView = getSubTask(ViewLoader.class,"ViewLoader").getView();
+		window.installRootView(rootpageView);
 		
-		// install view on the main window (e.g. Document or MainStage)
-
+		notifyTaskFinished();
 	}
 
 	@Override

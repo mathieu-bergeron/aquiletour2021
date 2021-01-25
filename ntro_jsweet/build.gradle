@@ -7,8 +7,12 @@ project.version = '0.1'
 
 dependencies {
     // Ntro
-    compile project(':ntro_core')
-    compile group: 'ca.ntro', name: 'ntro_core', version: '0.1'
+    implementation project(':ntro_core')
+    implementation group: 'ca.ntro', name: 'ntro_core', version: '0.1'
+
+	// JQuery
+	// XXX: must be 'compile' and not 'implementation'
+    compile group: 'org.jsweet.candies.ext', name: 'jquery', version: "1.10.0-SNAPSHOT"
 }
 
 tasks.jsweet{

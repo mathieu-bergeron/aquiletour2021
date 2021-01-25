@@ -17,7 +17,6 @@
 
 package ca.aquiletour.jsweet;
 
-import ca.aquiletour.web.AquiletourMainWeb;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.NtroJSweet;
 
@@ -30,7 +29,7 @@ public class JavaMainJSweet {
 
 		NtroJSweet.defaultInitializationTask()
 				  .setOptions(options)
-				  .addNextTask(new AquiletourMainWeb())
+				  .addNextTask(new AquiletourMainJSweet())
 				  .execute();
 	}
 }

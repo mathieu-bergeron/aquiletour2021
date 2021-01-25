@@ -32,10 +32,11 @@ tasks.jsweet{
 
     // FIXME: same as above FIXME
     doLast{
+        def serverProject = project(':aquiletour_server')
         def projectPaths = [':ntro_core',':ntro_jsweet', ':aquiletour_core', ':aquiletour_web', ':aquiletour_jsweet']
         for (projectPath in projectPaths){
             def aProject = project(projectPath)
-            def outDir = new File("${project.projectDir}/webapp/js/${aProject.name}")
+            def outDir = new File("${serverProject.projectDir}/src/main/resources/public/js/${aProject.name}")
             outDir.mkdirs()
 
             def srcDir = new File("${aProject.projectDir}/jsweet/jsOut/META-INF/resources/webjars/${aProject.name}/${aProject.version}")

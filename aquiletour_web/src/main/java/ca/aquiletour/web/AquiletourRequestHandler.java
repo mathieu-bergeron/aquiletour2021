@@ -2,20 +2,33 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.rootpage.RootpageMain;
 import ca.ntro.core.system.trace.T;
 
-public class AquiletourRequestHandler {
+public abstract class AquiletourRequestHandler {
 	
-	
-	public HandlerTask initialRequest(String path, Map<String, String[]> parameters, String authToken) {
+	public HandlerTask initialRequest(String path, 
+			                          Map<String, String[]> parameters, 
+			                          String authToken) {
 		T.call(this);
+		
+		// FIXME: get this from request
+		String lang = "fr";
+		
+		HandlerTask handler = new HandlerTask();
 
-		// TODO: create MVC for RootPage
+		// create MVC for RootPage
+		//       it gets the NtroWindow as parameter
+		//       this calls insertRootView (hence we must have a MainWindow service)
 		//       send messages according to path
 		//       (this creates the document)
+
+		handler.addSubTask(rootpageMain(lang), "RootPageMain");
 		
-		return new HandlerTask();
+		return handler;
 	}
+	
+	protected abstract RootpageMain rootpageMain(String lang);
 
 	public HandlerTask newRequest(String oldPath, 
 			               String path, 

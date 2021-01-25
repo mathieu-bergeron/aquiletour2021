@@ -17,16 +17,33 @@
 
 package ca.aquiletour.web;
 
-import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.rootpage.RootpageMain;
 import ca.ntro.core.Ntro;
-import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.system.trace.T;
+import ca.ntro.core.web.NtroWindowWeb;
 
-public class AquiletourMainWeb extends AquiletourMain {
+public abstract class RootpageMainWeb extends RootpageMain {
+
+	public RootpageMainWeb(String lang) {
+		super(lang);
+	}
 
 	protected ViewLoader loadView(String lang) {
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("views/rootpage/structure.html")
 		           .setCssUrl("views/rootpage/style.css")
 		           .setTranslationsUrl("i18/"+lang+"/strings.json");
+	}
+
+	// FIXME: we specialize return type 
+	//        is this supported in JSweet???
+	@Override
+	protected abstract NtroWindowWeb getWindow();
+	
+	public void writeHtml(StringBuilder out) {
+		T.call(this);
+		
+		getWindow().writeHtml(out);
 	}
 }

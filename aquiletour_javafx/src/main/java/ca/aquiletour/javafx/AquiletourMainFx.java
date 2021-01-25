@@ -18,19 +18,14 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
-import ca.ntro.core.mvc.ViewLoader;
-import ca.ntro.core.system.trace.T;
-import ca.ntro.jdk.mvc.ViewLoaderFx;
+import ca.aquiletour.core.rootpage.RootpageMain;
 
 public class AquiletourMainFx extends AquiletourMain {
 
 	@Override
-	protected ViewLoader loadView(String lang) {
-		T.call(this);
-
-		return new ViewLoaderFx().setFxmlUrl("/views/rootpage/structure.xml")
-				                 .setCssUrl("/views/rootpage/style.css")
-				                 .setTranslationsName("i18.strings");
+	protected RootpageMain rootpageMain(String lang) {
+		return new RootpageMainFx(lang);
 	}
+
 
 }
