@@ -1,15 +1,21 @@
-package ca.aquiletour.javafx;
+package ca.aquiletour.javafx.pages.rootpage;
 
-import ca.aquiletour.core.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.aquiletour.javafx.NtroWindowFx;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.jdk.mvc.ViewLoaderFx;
+import ca.ntro.javafx.ViewLoaderFx;
+import javafx.stage.Stage;
 
 public class RootpageMainFx extends RootpageMain {
+	
+	private NtroWindowFx window;
 
-	public RootpageMainFx(String lang) {
+	public RootpageMainFx(String lang, Stage primaryStage) {
 		super(lang);
+		
+		window = new NtroWindowFx(primaryStage);
 	}
 
 	@Override
@@ -18,12 +24,11 @@ public class RootpageMainFx extends RootpageMain {
 
 		return new ViewLoaderFx().setFxmlUrl("/views/rootpage/structure.xml")
 				                 .setCssUrl("/views/rootpage/style.css")
-				                 .setTranslationsName("i18.strings");
+				                 .setTranslationsName("i18n.strings");
 	}
 
 	@Override
 	protected NtroWindow getWindow() {
-		return new NtroWindowFx();
+		return window;
 	}
-
 }

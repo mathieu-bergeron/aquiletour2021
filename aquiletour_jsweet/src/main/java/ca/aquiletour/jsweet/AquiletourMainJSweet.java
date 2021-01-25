@@ -1,7 +1,7 @@
 package ca.aquiletour.jsweet;
 
 import ca.aquiletour.core.AquiletourMain;
-import ca.aquiletour.core.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageMain;
 
 public class AquiletourMainJSweet extends AquiletourMain {
 	

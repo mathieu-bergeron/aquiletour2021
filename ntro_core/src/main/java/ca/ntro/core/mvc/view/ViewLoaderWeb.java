@@ -15,36 +15,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.core.rootpage;
+package ca.ntro.core.mvc.view;
 
-import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.mvc.view.NtroView;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.Ntro;
+
+import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
 
-public abstract class RootpageMain extends NtroTask {
+import ca.ntro.core.system.assertions.MustNot;
+
+public class ViewLoaderWeb extends ViewLoader {
 	
-	private NtroWindow window;
+	private String html;
 	
-	public RootpageMain(String lang) {
-		T.call(this);
+	public ViewLoaderWeb() {
+		super();
 		
-		this.window = getWindow();
 		
-		addSubTask(loadView(lang),"ViewLoader");
 	}
-
-	protected abstract ViewLoader loadView(String lang);
-	protected abstract NtroWindow getWindow();
-
+	
 	@Override
 	protected void runTask() {
 		T.call(this);
+
+		html = getSubTask(ResourceLoaderTask.class, "Html").getResourceAsString();
 		
-		NtroView rootpageView = getSubTask(ViewLoader.class,"ViewLoader").getView();
-		window.installRootView(rootpageView);
-		
+		T.values(html);
+
 		notifyTaskFinished();
 	}
 
@@ -52,5 +49,35 @@ public abstract class RootpageMain extends NtroTask {
 	protected void onFailure(Exception e) {
 		
 	}
+
+	public ViewLoaderWeb setHtmlUrl(String htmlPath) {
+		T.call(this);
+		
+		MustNot.beNull(Ntro.resourceLoader());
+		MustNot.beNull(Ntro.resourceLoader().loadResourceTask(htmlPath));
+
+		addSubTask(Ntro.resourceLoader().loadResourceTask(htmlPath), "Html");
+
+		return this;
+	}
+
+	public ViewLoaderWeb setCssUrl(String string) {
+		// TODO Auto-generated method stub
+
+		return this;
+	}
+
+	public ViewLoaderWeb setTranslationsUrl(String string) {
+		// TODO Auto-generated method stub
+
+		return this;
+	}
+	
+	public String getHtml() {
+		T.call(this);
+		
+		return html;
+	}
+	
 
 }

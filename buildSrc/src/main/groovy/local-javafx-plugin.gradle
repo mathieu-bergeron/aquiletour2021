@@ -1,0 +1,19 @@
+plugins {
+    id 'local-java-plugin'
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                classpath ->
+                    def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
+                    jre.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('0', 'javafx/**'))
+
+                    def ntro = entries.find { it.path.contains 'ntro' }
+                    entries.remove ntro
+                    entries += new org.gradle.plugins.ide.eclipse.model.Library(fileReference(file(ntro.publication.path)))
+            }
+        }
+    }
+}

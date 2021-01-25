@@ -86,7 +86,7 @@ public class InitializationTaskJdk extends InitializationTask {
 	protected ResourceLoader provideResourceLoader() {
 		__T.call(InitializationTaskJdk.class, "provideResourceLoader");
 
-		return null;
+		return new ResourceLoaderJdk();
 	}
 
 }

@@ -15,40 +15,35 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.mvc.view;
+package ca.aquiletour.web.page.rootpage;
 
+import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.ntro.core.Ntro;
+import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.web.NtroWindowWeb;
 
-public class ViewLoaderJWeb extends ViewLoader {
-	
+public abstract class RootpageMainWeb extends RootpageMain {
+
+	public RootpageMainWeb(String lang) {
+		super(lang);
+	}
+
+	protected ViewLoader loadView(String lang) {
+		return Ntro.viewLoaderWeb()
+		           .setHtmlUrl("/public/views/rootpage/structure.html")
+		           .setCssUrl("/public/views/rootpage/style.css")
+		           .setTranslationsUrl("/public/i18/"+lang+"/strings.json");
+	}
+
+	// FIXME: we specialize return type 
+	//        is this supported in JSweet???
 	@Override
-	protected void runTask() {
+	protected abstract NtroWindowWeb getWindow();
+	
+	public void writeHtml(StringBuilder out) {
 		T.call(this);
 		
-		notifyTaskFinished();
+		getWindow().writeHtml(out);
 	}
-
-	@Override
-	protected void onFailure(Exception e) {
-		
-	}
-
-	public ViewLoaderJWeb setHtmlUrl(String string) {
-		// TODO
-		return this;
-	}
-
-	public ViewLoaderJWeb setCssUrl(String string) {
-		// TODO Auto-generated method stub
-
-		return this;
-	}
-
-	public ViewLoaderJWeb setTranslationsUrl(String string) {
-		// TODO Auto-generated method stub
-
-		return this;
-	}
-	
-
 }
