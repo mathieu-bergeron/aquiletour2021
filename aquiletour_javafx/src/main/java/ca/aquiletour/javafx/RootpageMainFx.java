@@ -23,8 +23,7 @@ public class RootpageMainFx extends RootpageMain {
 
 	@Override
 	protected NtroWindow getWindow() {
-		// TODO Auto-generated method stub
-		return null;
+		return new NtroWindowFx();
 	}
 
 }
