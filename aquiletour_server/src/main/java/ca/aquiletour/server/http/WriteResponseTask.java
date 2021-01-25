@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import org.eclipse.jetty.server.Request;
 
 import ca.aquiletour.web.HandlerTask;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 
 public class WriteResponseTask extends NtroTask {
@@ -20,6 +21,7 @@ public class WriteResponseTask extends NtroTask {
 
 	@Override
 	protected void runTask() {
+		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
 		getPreviousTask(HandlerTask.class).writeHtml(builder);

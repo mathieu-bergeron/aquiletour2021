@@ -11,8 +11,7 @@ public class RootpageMainJSweet extends RootpageMainWeb {
 
 	@Override
 	protected NtroWindowWeb getWindow() {
-		// TODO Auto-generated method stub
-		return null;
+		return new NtroWindowJSweet();
 	}
 
 }

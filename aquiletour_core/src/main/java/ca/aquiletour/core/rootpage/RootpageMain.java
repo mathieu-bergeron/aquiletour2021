@@ -31,7 +31,8 @@ public abstract class RootpageMain extends NtroTask {
 		T.call(this);
 		
 		this.window = getWindow();
-		this.addSubTask(loadView(lang),"ViewLoader");
+		
+		addSubTask(loadView(lang),"ViewLoader");
 	}
 
 	protected abstract ViewLoader loadView(String lang);

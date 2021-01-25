@@ -25,13 +25,13 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 		<title>aquiletour</title>
 
 		<!-- ntro -->
-		<script type="text/javascript" src="js/ntro_core/bundle.js"></script>
-		<script type="text/javascript" src="js/ntro_jsweet/bundle.js"></script>
+		<script type="text/javascript" src="/_R/js/ntro_core/bundle.js"></script>
+		<script type="text/javascript" src="/_R/js/ntro_jsweet/bundle.js"></script>
 
 		<!-- aquiletour -->
-		<script type="text/javascript" src="js/aquiletour_core/bundle.js"></script>
-		<script type="text/javascript" src="js/aquiletour_web/bundle.js"></script>
-		<script type="text/javascript" src="js/aquiletour_jsweet/bundle.js"></script>
+		<script type="text/javascript" src="/_R/js/aquiletour_core/bundle.js"></script>
+		<script type="text/javascript" src="/_R/js/aquiletour_web/bundle.js"></script>
+		<script type="text/javascript" src="/_R/js/aquiletour_jsweet/bundle.js"></script>
 
         <!-- dev: read source map -->
 	    <script src="https://unpkg.com/source-map@0.7.3/dist/source-map.js"></script>
@@ -45,7 +45,7 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 	        window.onload = async function(){
 
 	                // FIXME: we have more than one source map to load!
-				    const response = await fetch('js/aquiletour_jsweet/bundle.js.map');
+				    const response = await fetch('/_R/js/aquiletour_jsweet/bundle.js.map');
 
                     if(response.ok){
 
@@ -71,5 +71,6 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 	    </script>
 	</head>
 	<body current-path="" current-parameters="">
+	    Bonjour!
 	</body>
 </html>
