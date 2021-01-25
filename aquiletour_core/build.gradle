@@ -7,5 +7,5 @@ project.group = 'ca.aquiletour'
 project.version = '0.1'
 
 dependencies {
-    implementation project(':ntro_core')
+    compile project(':ntro_core')
 }
