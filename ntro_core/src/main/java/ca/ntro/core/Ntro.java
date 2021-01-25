@@ -18,7 +18,7 @@
 package ca.ntro.core;
 
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.mvc.ViewLoaderJWeb;
+import ca.ntro.core.mvc.view.ViewLoaderJWeb;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;

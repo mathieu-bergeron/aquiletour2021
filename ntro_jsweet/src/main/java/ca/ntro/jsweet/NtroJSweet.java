@@ -18,7 +18,7 @@
 package ca.ntro.jsweet;
 
 import ca.ntro.core.initialization.NtroInitializationTask;
-import ca.ntro.core.mvc.ViewLoaderJWeb;
+import ca.ntro.core.mvc.view.ViewLoaderJWeb;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.initialization.InitializationTaskJSweet;
 import ca.ntro.jsweet.initialization.LoadSourceMapTask;

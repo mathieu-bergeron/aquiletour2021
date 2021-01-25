@@ -9,6 +9,8 @@ public class HandlerTask extends NtroTask {
 	// XXX: OutputStream not supported in JSweet
 	public void writeHtml(StringBuilder out) {
 		T.call(this);
+		
+		getSubTask(RootpageMainWeb.class, "RootPageMain").writeHtml(out);
 
 		out.append("Bonjour!");
 	}

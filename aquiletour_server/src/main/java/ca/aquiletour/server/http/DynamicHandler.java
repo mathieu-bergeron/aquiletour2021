@@ -35,6 +35,7 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.server.AquiletourMainServer;
+import ca.aquiletour.server.AquiletourRequestHandlerServer;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.aquiletour.web.HandlerTask;
 import ca.ntro.core.system.trace.T;
@@ -63,6 +64,8 @@ public class DynamicHandler extends AbstractHandler {
 	private String resourcesUrlPrefix;
 	private String privateFilesPrefix;
 	private FileLoader fileLoader;
+
+	private AquiletourRequestHandler aquiletourHandler = new AquiletourRequestHandlerServer();
 	
 	public DynamicHandler(String resourcesUrlPrefix, 
 			String publicFilesPrefix, 
@@ -100,15 +103,13 @@ public class DynamicHandler extends AbstractHandler {
 		
 		String authToken = null; // TODO
 
-		AquiletourRequestHandler handler = new AquiletourRequestHandler();
-
-		HandlerTask task;
-		task = handler.initialRequest(baseRequest.getContextPath(), 
+		HandlerTask handlerTask;
+		handlerTask = aquiletourHandler.initialRequest(baseRequest.getContextPath(), 
 							          baseRequest.getParameterMap(),
 							          authToken);
 		
-		task.addNextTask(new WriteResponseTask(baseRequest, out));
-		task.execute();
+		handlerTask.addNextTask(new WriteResponseTask(baseRequest, out));
+		handlerTask.execute();
 	}
 }
 

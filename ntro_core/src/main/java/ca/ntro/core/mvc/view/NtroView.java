@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core;
+package ca.ntro.core.mvc.view;
 
 public interface NtroView {
 
