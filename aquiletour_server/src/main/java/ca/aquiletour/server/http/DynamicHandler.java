@@ -87,17 +87,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 
 		OutputStream out = response.getOutputStream();
-		
-		String path = baseRequest.getOriginalURI();
-
 		serveView(baseRequest, response, out);
-	}
-
-	private void serveError404(Request baseRequest, HttpServletResponse response) {
-		T.call(this);
-
-		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		baseRequest.setHandled(true);
 	}
 
 	private void serveView(Request baseRequest, HttpServletResponse response, OutputStream out)
@@ -105,12 +95,11 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		setContentType(response, "html");
-
+		response.setContentType("text/html; charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
 		
-		// TODO
-		String authToken = null;
+		String authToken = null; // TODO
+
 		AquiletourRequestHandler handler = new AquiletourRequestHandler();
 
 		HandlerTask task;
@@ -121,33 +110,5 @@ public class DynamicHandler extends AbstractHandler {
 		task.addNextTask(new WriteResponseTask(baseRequest, out));
 		task.execute();
 	}
-
-	private void setContentType(HttpServletResponse response, String filePath) {
-		T.call(this);
-
-		if(filePath.endsWith("html")) {
-			response.setContentType("text/html; charset=utf-8");
-		}else if(filePath.endsWith("js")) {
-			response.setContentType("application/javascript; charset=utf-8");
-		}else if(filePath.endsWith("map")) {
-			response.setContentType("application/json; charset=utf-8");
-		}else if(filePath.endsWith("css")) {
-			response.setContentType("text/css; charset=utf-8");
-		}else {
-			response.setContentType("text/plain; charset=utf-8");
-		}
-	}
-
-
-	private void copyFileToOutStream(OutputStream out, InputStream fileStream) throws IOException {
-		T.call(this);
-
-		int c;
-		
-		while((c = fileStream.read()) > 0) {
-			out.write(c);
-		}
-	}
-
 }
 

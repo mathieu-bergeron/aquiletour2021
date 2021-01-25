@@ -6,11 +6,14 @@ import ca.ntro.core.system.trace.T;
 
 public class AquiletourRequestHandler {
 	
-	
-	public HandlerTask initialRequest(String path, Map<String, String[]> parameters, String authToken) {
+	public HandlerTask initialRequest(String path, 
+			                          Map<String, String[]> parameters, 
+			                          String authToken) {
 		T.call(this);
 
-		// TODO: create MVC for RootPage
+		// TODO: 
+		// load index.html (the Document)
+		// create MVC for RootPage
 		//       send messages according to path
 		//       (this creates the document)
 		
