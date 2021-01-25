@@ -42,8 +42,9 @@ public abstract class RootpageMain extends NtroTask {
 		T.call(this);
 		
 		NtroView rootpageView = getSubTask(ViewLoader.class,"ViewLoader").getView();
-
 		window.installRootView(rootpageView);
+		
+		notifyTaskFinished();
 	}
 
 	@Override

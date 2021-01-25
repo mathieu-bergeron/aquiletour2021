@@ -11,7 +11,8 @@ dependencies {
     implementation group: 'ca.ntro', name: 'ntro_core', version: '0.1'
 
 	// JQuery
-    implementation group: 'org.jsweet.candies.ext', name: 'jquery', version: "1.10.0-SNAPSHOT"
+	// XXX: must be 'compile' and not 'implementation'
+    compile group: 'org.jsweet.candies.ext', name: 'jquery', version: "1.10.0-SNAPSHOT"
 }
 
 tasks.jsweet{
