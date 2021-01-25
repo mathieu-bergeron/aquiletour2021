@@ -38,9 +38,9 @@ public class ViewLoaderWeb extends ViewLoader {
 	protected void runTask() {
 		T.call(this);
 
-		html = getSubTask(ResourceLoaderTask.class, "Html").getResourceAsString();
-		
-		T.values(html);
+		// FIXME: explicit casting as otherwise we get type errors in JSweet
+		//        can we fix this??
+		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
 
 		notifyTaskFinished();
 	}
