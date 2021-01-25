@@ -1,5 +1,5 @@
 plugins {
-    id 'local-java-plugin'
+    id 'eclipse'
 }
 
 eclipse {
@@ -10,9 +10,11 @@ eclipse {
                     def jre = entries.find { it.path.contains 'org.eclipse.jdt.launching.JRE_CONTAINER' }
                     jre.accessRules.add(new org.gradle.plugins.ide.eclipse.model.AccessRule('0', 'javafx/**'))
 
+                    /* XXX: only needed when ntro dependancies are fetched from a Git repo (Gradle's sourceControl)
                     def ntro = entries.find { it.path.contains 'ntro' }
                     entries.remove ntro
                     entries += new org.gradle.plugins.ide.eclipse.model.Library(fileReference(file(ntro.publication.path)))
+                    */
             }
         }
     }

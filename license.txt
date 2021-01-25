@@ -1,13 +1,13 @@
 // Copyright (C) (2020) (Mathieu Bergeron) (mathieu.bergeron@cmontmorency.qc.ca)
 //
-// This file is part of tutoriels4f5
+// This file is part of aquiletour
 //
-// tutoriels4f5 is free software: you can redistribute it and/or modify
+// aquiletour is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// tutoriels4f5 is distributed in the hope that it will be useful,
+// aquiletour is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Affero General Public License for more details.

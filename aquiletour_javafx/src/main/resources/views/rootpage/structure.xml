@@ -28,6 +28,7 @@
                 <menus>
                 <Menu styleClass="menu" text="%partieLocale">
                     <items>
+                    <MenuItem fx:id="menuMescours" styleClass="menu_item" text="%mescours"/>
                     <MenuItem fx:id="menuParametres" styleClass="menu_item" text="%parametres"/>
                     <SeparatorMenuItem/>
                     <MenuItem fx:id="menuQuitter" styleClass="menu_item" text="%quitter"/>

@@ -1,9 +1,10 @@
 plugins {
+    id 'local-java-plugin'
     id 'local-javafx-plugin'
 }
 
 dependencies {
-    compile project(':ntro_core')
+    implementation project(':ntro_core')
 
     // https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.5'
