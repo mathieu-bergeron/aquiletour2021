@@ -35,6 +35,7 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.server.AquiletourMainServer;
+import ca.aquiletour.server.AquiletourRequestHandlerServer;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.aquiletour.web.HandlerTask;
 import ca.ntro.core.system.trace.T;
@@ -63,6 +64,8 @@ public class DynamicHandler extends AbstractHandler {
 	private String resourcesUrlPrefix;
 	private String privateFilesPrefix;
 	private FileLoader fileLoader;
+
+	private AquiletourRequestHandler aquiletourHandler = new AquiletourRequestHandlerServer();
 	
 	public DynamicHandler(String resourcesUrlPrefix, 
 			String publicFilesPrefix, 
@@ -87,17 +90,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 
 		OutputStream out = response.getOutputStream();
-		
-		String path = baseRequest.getOriginalURI();
-
 		serveView(baseRequest, response, out);
-	}
-
-	private void serveError404(Request baseRequest, HttpServletResponse response) {
-		T.call(this);
-
-		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		baseRequest.setHandled(true);
 	}
 
 	private void serveView(Request baseRequest, HttpServletResponse response, OutputStream out)
@@ -105,49 +98,18 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		setContentType(response, "html");
-
+		response.setContentType("text/html; charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
 		
-		// TODO
-		String authToken = null;
-		AquiletourRequestHandler handler = new AquiletourRequestHandler();
+		String authToken = null; // TODO
 
-		HandlerTask task;
-		task = handler.initialRequest(baseRequest.getContextPath(), 
+		HandlerTask handlerTask;
+		handlerTask = aquiletourHandler.initialRequest(baseRequest.getRequestURI().toString(),
 							          baseRequest.getParameterMap(),
 							          authToken);
 		
-		task.addNextTask(new WriteResponseTask(baseRequest, out));
-		task.execute();
+		handlerTask.addNextTask(new WriteResponseTask(baseRequest, out));
+		handlerTask.execute();
 	}
-
-	private void setContentType(HttpServletResponse response, String filePath) {
-		T.call(this);
-
-		if(filePath.endsWith("html")) {
-			response.setContentType("text/html; charset=utf-8");
-		}else if(filePath.endsWith("js")) {
-			response.setContentType("application/javascript; charset=utf-8");
-		}else if(filePath.endsWith("map")) {
-			response.setContentType("application/json; charset=utf-8");
-		}else if(filePath.endsWith("css")) {
-			response.setContentType("text/css; charset=utf-8");
-		}else {
-			response.setContentType("text/plain; charset=utf-8");
-		}
-	}
-
-
-	private void copyFileToOutStream(OutputStream out, InputStream fileStream) throws IOException {
-		T.call(this);
-
-		int c;
-		
-		while((c = fileStream.read()) > 0) {
-			out.write(c);
-		}
-	}
-
 }
 
