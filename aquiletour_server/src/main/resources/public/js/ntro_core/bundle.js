@@ -5,6 +5,19 @@ var ca;
     (function (ntro) {
         var core;
         (function (core) {
+            class Constants {
+            }
+            Constants.RESOURCES_URL_PREFIX = "_R";
+            core.Constants = Constants;
+            Constants["__class"] = "ca.ntro.core.Constants";
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
             var introspection;
             (function (introspection) {
                 class ClassSignature {
@@ -63,8 +76,8 @@ var ca;
                     toString() {
                         ca.ntro.core.system.trace.T.call(this);
                         let builder = { str: "", toString: function () { return this.str; } };
-                        for (let index163 = 0; index163 < this.modifiers.length; index163++) {
-                            let modifier = this.modifiers[index163];
+                        for (let index121 = 0; index121 < this.modifiers.length; index121++) {
+                            let modifier = this.modifiers[index121];
                             {
                                 /* append */ (sb => { sb.str = sb.str.concat(modifier); return sb; })(builder);
                                 /* append */ (sb => { sb.str = sb.str.concat(" "); return sb; })(builder);
@@ -162,9 +175,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(Introspector);
                         let result = null;
                         {
-                            let array165 = this.userDefinedMethodsFromClass(currentClass);
-                            for (let index164 = 0; index164 < array165.length; index164++) {
-                                let candidate = array165[index164];
+                            let array123 = this.userDefinedMethodsFromClass(currentClass);
+                            for (let index122 = 0; index122 < array123.length; index122++) {
+                                let candidate = array123[index122];
                                 {
                                     let candidateSignature = this.methodSignature(candidate);
                                     if (candidateSignature.equals(methodSignature)) {
@@ -180,9 +193,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(Introspector);
                         let result = null;
                         {
-                            let array167 = this.userDefinedMethodsFromClass(_class);
-                            for (let index166 = 0; index166 < array167.length; index166++) {
-                                let method = array167[index166];
+                            let array125 = this.userDefinedMethodsFromClass(_class);
+                            for (let index124 = 0; index124 < array125.length; index124++) {
+                                let method = array125[index124];
                                 {
                                     if (((o1, o2) => { if (o1 && o1.equals) {
                                         return o1.equals(o2);
@@ -273,9 +286,9 @@ var ca;
                     userDefinedSetters(object) {
                         let allSetters = ([]);
                         {
-                            let array169 = this.userDefinedMethodsFromObject(object);
-                            for (let index168 = 0; index168 < array169.length; index168++) {
-                                let method = array169[index168];
+                            let array127 = this.userDefinedMethodsFromObject(object);
+                            for (let index126 = 0; index126 < array127.length; index126++) {
+                                let method = array127[index126];
                                 {
                                     console.info("method: " + method.name);
                                     if (this.isASetter(method)) {
@@ -291,9 +304,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(Introspector);
                         let allGetters = ([]);
                         {
-                            let array171 = this.userDefinedMethodsFromObject(object);
-                            for (let index170 = 0; index170 < array171.length; index170++) {
-                                let method = array171[index170];
+                            let array129 = this.userDefinedMethodsFromObject(object);
+                            for (let index128 = 0; index128 < array129.length; index128++) {
+                                let method = array129[index128];
                                 {
                                     if (this.isAGetter(method)) {
                                         /* add */ (allGetters.push(method) > 0);
@@ -363,8 +376,8 @@ var ca;
                     }
                     formatModifiers(builder) {
                         ca.ntro.core.system.trace.T.call(this);
-                        for (let index172 = 0; index172 < this.modifiers.length; index172++) {
-                            let modifier = this.modifiers[index172];
+                        for (let index130 = 0; index130 < this.modifiers.length; index130++) {
+                            let modifier = this.modifiers[index130];
                             {
                                 /* append */ (sb => { sb.str = sb.str.concat(modifier); return sb; })(builder);
                                 /* append */ (sb => { sb.str = sb.str.concat(" "); return sb; })(builder);
@@ -450,335 +463,6 @@ var ca;
     (function (ntro) {
         var core;
         (function (core) {
-            var regex;
-            (function (regex) {
-                class Matcher {
-                }
-                regex.Matcher = Matcher;
-                Matcher["__class"] = "ca.ntro.core.regex.Matcher";
-            })(regex = core.regex || (core.regex = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var regex;
-            (function (regex) {
-                class Pattern {
-                }
-                regex.Pattern = Pattern;
-                Pattern["__class"] = "ca.ntro.core.regex.Pattern";
-            })(regex = core.regex || (core.regex = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var regex;
-            (function (regex) {
-                class RegEx {
-                }
-                regex.RegEx = RegEx;
-                RegEx["__class"] = "ca.ntro.core.regex.RegEx";
-            })(regex = core.regex || (core.regex = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var tasks;
-            (function (tasks) {
-                var State;
-                (function (State) {
-                    State[State["INITIALIZING"] = 0] = "INITIALIZING";
-                    State[State["EXECUTE_PREVIOUS_TASKS"] = 1] = "EXECUTE_PREVIOUS_TASKS";
-                    State[State["EXECUTE_SUB_TASKS"] = 2] = "EXECUTE_SUB_TASKS";
-                    State[State["EXECUTE_CURRENT_TASK"] = 3] = "EXECUTE_CURRENT_TASK";
-                    State[State["EXECUTE_NEXT_TASKS"] = 4] = "EXECUTE_NEXT_TASKS";
-                    State[State["DONE"] = 5] = "DONE";
-                })(State = tasks.State || (tasks.State = {}));
-            })(tasks = core.tasks || (core.tasks = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var tasks;
-            (function (tasks) {
-                class NtroTask {
-                    constructor() {
-                        /*private*/ this.previousTasks = ({});
-                        /*private*/ this.finishedPreviousTasks = 0;
-                        /*private*/ this.subTasks = ({});
-                        /*private*/ this.finishedSubTasks = 0;
-                        /*private*/ this.nextTasks = ([]);
-                        /*private*/ this.state = ca.ntro.core.tasks.State.INITIALIZING;
-                        if (this.parentTask === undefined)
-                            this.parentTask = null;
-                    }
-                    execute() {
-                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
-                            this.startExecution();
-                        }
-                    }
-                    getState() {
-                        return this.state;
-                    }
-                    /*private*/ startExecution() {
-                        if (this.parentTask != null && this.parentTask.getState() === ca.ntro.core.tasks.State.INITIALIZING) {
-                            this.parentTask.execute();
-                        }
-                        else {
-                            this.state = ca.ntro.core.tasks.State.EXECUTE_PREVIOUS_TASKS;
-                            this.resumeExecution();
-                        }
-                    }
-                    setParentTask(parentTask) {
-                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
-                            this.parentTask = parentTask;
-                        }
-                        else {
-                            throw Object.defineProperty(new Error("Task.setParentTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
-                        }
-                    }
-                    /*private*/ resumeExecution() {
-                        switch ((this.state)) {
-                            case ca.ntro.core.tasks.State.EXECUTE_PREVIOUS_TASKS:
-                                if (this.ifShouldExecutePreviousTasks()) {
-                                    this.executePreviousTasks();
-                                }
-                                else {
-                                    this.state = ca.ntro.core.tasks.State.EXECUTE_SUB_TASKS;
-                                    this.resumeExecution();
-                                }
-                                break;
-                            case ca.ntro.core.tasks.State.EXECUTE_SUB_TASKS:
-                                if (this.ifShouldExecuteSubTasks()) {
-                                    this.executeSubTasks();
-                                }
-                                else {
-                                    this.state = ca.ntro.core.tasks.State.EXECUTE_CURRENT_TASK;
-                                    this.resumeExecution();
-                                }
-                                break;
-                            case ca.ntro.core.tasks.State.EXECUTE_CURRENT_TASK:
-                                this.runTask();
-                                break;
-                            case ca.ntro.core.tasks.State.EXECUTE_NEXT_TASKS:
-                                this.executeNextTasks();
-                                this.state = ca.ntro.core.tasks.State.DONE;
-                                break;
-                            case ca.ntro.core.tasks.State.DONE:
-                            default:
-                                break;
-                        }
-                    }
-                    /*private*/ executePreviousTasks() {
-                        {
-                            let array174 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
-                            for (let index173 = 0; index173 < array174.length; index173++) {
-                                let previousTask = array174[index173];
-                                {
-                                    previousTask.execute();
-                                }
-                            }
-                        }
-                    }
-                    /*private*/ ifShouldExecutePreviousTasks() {
-                        return this.finishedPreviousTasks < Object.keys(this.previousTasks).length;
-                    }
-                    notifySomePreviousTaskFinished() {
-                        this.finishedPreviousTasks++;
-                        if (this.state === ca.ntro.core.tasks.State.EXECUTE_PREVIOUS_TASKS) {
-                            this.resumeExecution();
-                        }
-                    }
-                    notifyTaskFinished() {
-                        if (this.parentTask != null) {
-                            this.parentTask.notifySomeSubTaskFinished();
-                        }
-                        this.state = ca.ntro.core.tasks.State.EXECUTE_NEXT_TASKS;
-                        this.resumeExecution();
-                    }
-                    notifySomeSubTaskFinished() {
-                        this.finishedSubTasks++;
-                        if (this.finishedSubTasks === Object.keys(this.subTasks).length) {
-                            this.state = ca.ntro.core.tasks.State.EXECUTE_CURRENT_TASK;
-                            this.resumeExecution();
-                        }
-                    }
-                    /*private*/ executeNextTasks() {
-                        for (let index175 = 0; index175 < this.nextTasks.length; index175++) {
-                            let nextTask = this.nextTasks[index175];
-                            {
-                                nextTask.notifySomePreviousTaskFinished();
-                                if (nextTask.getState() === ca.ntro.core.tasks.State.INITIALIZING) {
-                                    nextTask.execute();
-                                }
-                            }
-                        }
-                    }
-                    getPreviousTask$java_lang_Class(taskClass) {
-                        return (this.getPreviousTask$java_lang_Class$java_lang_String(taskClass, /* getSimpleName */ (c => c["__class"] ? c["__class"].substring(c["__class"].lastIndexOf('.') + 1) : c["name"].substring(c["name"].lastIndexOf('.') + 1))(taskClass)));
-                    }
-                    getPreviousTask$java_lang_Class$java_lang_String(taskClass, id) {
-                        return ((m, k) => m[k] === undefined ? null : m[k])(this.previousTasks, id);
-                    }
-                    getPreviousTask(taskClass, id) {
-                        if (((taskClass != null) || taskClass === null) && ((typeof id === 'string') || id === null)) {
-                            return this.getPreviousTask$java_lang_Class$java_lang_String(taskClass, id);
-                        }
-                        else if (((taskClass != null) || taskClass === null) && id === undefined) {
-                            return this.getPreviousTask$java_lang_Class(taskClass);
-                        }
-                        else
-                            throw new Error('invalid overload');
-                    }
-                    getSubTask$java_lang_Class(taskClass) {
-                        return (this.getSubTask$java_lang_Class$java_lang_String(taskClass, this.defaultIdFromClass(taskClass)));
-                    }
-                    getSubTask$java_lang_Class$java_lang_String(taskClass, id) {
-                        return ((m, k) => m[k] === undefined ? null : m[k])(this.subTasks, id);
-                    }
-                    getSubTask(taskClass, id) {
-                        if (((taskClass != null) || taskClass === null) && ((typeof id === 'string') || id === null)) {
-                            return this.getSubTask$java_lang_Class$java_lang_String(taskClass, id);
-                        }
-                        else if (((taskClass != null) || taskClass === null) && id === undefined) {
-                            return this.getSubTask$java_lang_Class(taskClass);
-                        }
-                        else
-                            throw new Error('invalid overload');
-                    }
-                    getFinishedTask$java_lang_Class(taskClass) {
-                        return (this.getFinishedTask$java_lang_Class$java_lang_String(taskClass, /* getSimpleName */ (c => c["__class"] ? c["__class"].substring(c["__class"].lastIndexOf('.') + 1) : c["name"].substring(c["name"].lastIndexOf('.') + 1))(taskClass)));
-                    }
-                    getFinishedTask$java_lang_Class$java_lang_String(taskClass, id) {
-                        let finishedTask = ((m, k) => m[k] === undefined ? null : m[k])(this.subTasks, id);
-                        if (finishedTask == null) {
-                            finishedTask = ((m, k) => m[k] === undefined ? null : m[k])(this.previousTasks, id);
-                        }
-                        return finishedTask;
-                    }
-                    getFinishedTask(taskClass, id) {
-                        if (((taskClass != null) || taskClass === null) && ((typeof id === 'string') || id === null)) {
-                            return this.getFinishedTask$java_lang_Class$java_lang_String(taskClass, id);
-                        }
-                        else if (((taskClass != null) || taskClass === null) && id === undefined) {
-                            return this.getFinishedTask$java_lang_Class(taskClass);
-                        }
-                        else
-                            throw new Error('invalid overload');
-                    }
-                    /*private*/ defaultId(task) {
-                        return this.defaultIdFromClass(task.constructor);
-                    }
-                    /*private*/ defaultIdFromClass(taskClass) {
-                        return (c => c["__class"] ? c["__class"].substring(c["__class"].lastIndexOf('.') + 1) : c["name"].substring(c["name"].lastIndexOf('.') + 1))(taskClass);
-                    }
-                    addPreviousTask$ca_ntro_core_tasks_NtroTask(task) {
-                        return this.addPreviousTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, this.defaultId(task));
-                    }
-                    addPreviousTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId) {
-                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
-                            if (!this.previousTasks.hasOwnProperty(taskId)) {
-                                /* put */ (this.previousTasks[taskId] = task);
-                                task.addNextTask(this);
-                            }
-                        }
-                        else {
-                            throw Object.defineProperty(new Error("Task.addPreviousTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
-                        }
-                        return this;
-                    }
-                    addPreviousTask(task, taskId) {
-                        if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && ((typeof taskId === 'string') || taskId === null)) {
-                            return this.addPreviousTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId);
-                        }
-                        else if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && taskId === undefined) {
-                            return this.addPreviousTask$ca_ntro_core_tasks_NtroTask(task);
-                        }
-                        else
-                            throw new Error('invalid overload');
-                    }
-                    addNextTask(task) {
-                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
-                            if (!(this.nextTasks.indexOf((task)) >= 0)) {
-                                /* add */ ((s, e) => { if (s.indexOf(e) == -1) {
-                                    s.push(e);
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                } })(this.nextTasks, task);
-                                task.addPreviousTask$ca_ntro_core_tasks_NtroTask(this);
-                            }
-                        }
-                        else {
-                            throw Object.defineProperty(new Error("Task.addPreviousTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
-                        }
-                        return this;
-                    }
-                    /*private*/ ifShouldExecuteSubTasks() {
-                        return this.finishedSubTasks < Object.keys(this.subTasks).length;
-                    }
-                    /*private*/ executeSubTasks() {
-                        {
-                            let array177 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
-                            for (let index176 = 0; index176 < array177.length; index176++) {
-                                let subTask = array177[index176];
-                                {
-                                    subTask.execute();
-                                }
-                            }
-                        }
-                    }
-                    addSubTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId) {
-                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
-                            task.setParentTask(this);
-                            /* put */ (this.subTasks[taskId] = task);
-                        }
-                        else {
-                            throw Object.defineProperty(new Error("Task.addSubTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
-                        }
-                    }
-                    addSubTask(task, taskId) {
-                        if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && ((typeof taskId === 'string') || taskId === null)) {
-                            return this.addSubTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId);
-                        }
-                        else if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && taskId === undefined) {
-                            return this.addSubTask$ca_ntro_core_tasks_NtroTask(task);
-                        }
-                        else
-                            throw new Error('invalid overload');
-                    }
-                    addSubTask$ca_ntro_core_tasks_NtroTask(task) {
-                        this.addSubTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, this.defaultId(task));
-                    }
-                }
-                tasks.NtroTask = NtroTask;
-                NtroTask["__class"] = "ca.ntro.core.tasks.NtroTask";
-            })(tasks = core.tasks || (core.tasks = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
             class Ntro {
                 static zzz_registerResourceLoader(resourceLoader) {
                     Ntro.__resourceLoader = resourceLoader;
@@ -852,19 +536,43 @@ var ca;
     (function (ntro) {
         var core;
         (function (core) {
-            class __Ntro {
-                static registerStackAnalyzer(stackAnalyzer) {
-                    ca.ntro.core.system.trace.__T.call(__Ntro, "registerStackAnalyzer");
-                    __Ntro.__stackAnalyzer = stackAnalyzer;
+            var regex;
+            (function (regex) {
+                class Matcher {
                 }
-                static stackAnalyzer() {
-                    ca.ntro.core.system.trace.__T.call(__Ntro, "stackAnalyzer");
-                    return __Ntro.__stackAnalyzer;
+                regex.Matcher = Matcher;
+                Matcher["__class"] = "ca.ntro.core.regex.Matcher";
+            })(regex = core.regex || (core.regex = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var regex;
+            (function (regex) {
+                class Pattern {
                 }
-            }
-            __Ntro.__stackAnalyzer = null;
-            core.__Ntro = __Ntro;
-            __Ntro["__class"] = "ca.ntro.core.__Ntro";
+                regex.Pattern = Pattern;
+                Pattern["__class"] = "ca.ntro.core.regex.Pattern";
+            })(regex = core.regex || (core.regex = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var regex;
+            (function (regex) {
+                class RegEx {
+                }
+                regex.RegEx = RegEx;
+                RegEx["__class"] = "ca.ntro.core.regex.RegEx";
+            })(regex = core.regex || (core.regex = {}));
         })(core = ntro.core || (ntro.core = {}));
     })(ntro = ca.ntro || (ca.ntro = {}));
 })(ca || (ca = {}));
@@ -952,6 +660,21 @@ var ca;
         (function (core) {
             var services;
             (function (services) {
+                class ResourceLoader {
+                }
+                services.ResourceLoader = ResourceLoader;
+                ResourceLoader["__class"] = "ca.ntro.core.services.ResourceLoader";
+            })(services = core.services || (core.services = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var services;
+            (function (services) {
                 class ValueFormatter {
                     static initialize(instance) {
                         ca.ntro.core.system.trace.T.call(ValueFormatter);
@@ -977,132 +700,6 @@ var ca;
                 services.ValueFormatter = ValueFormatter;
                 ValueFormatter["__class"] = "ca.ntro.core.services.ValueFormatter";
             })(services = core.services || (core.services = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var services;
-            (function (services) {
-                class ResourceLoader {
-                }
-                services.ResourceLoader = ResourceLoader;
-                ResourceLoader["__class"] = "ca.ntro.core.services.ResourceLoader";
-            })(services = core.services || (core.services = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var wrappers;
-            (function (wrappers) {
-                var options;
-                (function (options) {
-                    class EmptyOptionException extends Error {
-                        constructor() {
-                            super();
-                            Object.setPrototypeOf(this, EmptyOptionException.prototype);
-                        }
-                    }
-                    EmptyOptionException.serialVersionUID = -5086580751854707928;
-                    options.EmptyOptionException = EmptyOptionException;
-                    EmptyOptionException["__class"] = "ca.ntro.core.wrappers.options.EmptyOptionException";
-                    EmptyOptionException["__interfaces"] = ["java.io.Serializable"];
-                })(options = wrappers.options || (wrappers.options = {}));
-            })(wrappers = core.wrappers || (core.wrappers = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var wrappers;
-            (function (wrappers) {
-                var options;
-                (function (options) {
-                    class None {
-                    }
-                    options.None = None;
-                    None["__class"] = "ca.ntro.core.wrappers.options.None";
-                })(options = wrappers.options || (wrappers.options = {}));
-            })(wrappers = core.wrappers || (core.wrappers = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var wrappers;
-            (function (wrappers) {
-                var options;
-                (function (options) {
-                    class Optionnal {
-                        constructor(value) {
-                            /*private*/ this.state = ca.ntro.core.wrappers.options.State.NONE;
-                            if (this.value === undefined)
-                                this.value = null;
-                            this.set(value);
-                        }
-                        isEmpty() {
-                            return this.state === ca.ntro.core.wrappers.options.State.NONE;
-                        }
-                        get() {
-                            if (this.state === ca.ntro.core.wrappers.options.State.NONE) {
-                                throw new ca.ntro.core.wrappers.options.EmptyOptionException();
-                            }
-                            return this.value;
-                        }
-                        set(value) {
-                            this.value = value;
-                            this.state = ca.ntro.core.wrappers.options.State.SOME;
-                        }
-                    }
-                    options.Optionnal = Optionnal;
-                    Optionnal["__class"] = "ca.ntro.core.wrappers.options.Optionnal";
-                })(options = wrappers.options || (wrappers.options = {}));
-            })(wrappers = core.wrappers || (core.wrappers = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var wrappers;
-            (function (wrappers) {
-                var options;
-                (function (options) {
-                    var State;
-                    (function (State) {
-                        State[State["SOME"] = 0] = "SOME";
-                        State[State["NONE"] = 1] = "NONE";
-                    })(State = options.State || (options.State = {}));
-                })(options = wrappers.options || (wrappers.options = {}));
-            })(wrappers = core.wrappers || (core.wrappers = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            class Constants {
-            }
-            Constants.RESOURCES_URL_PREFIX = "_R";
-            core.Constants = Constants;
-            Constants["__class"] = "ca.ntro.core.Constants";
         })(core = ntro.core || (ntro.core = {}));
     })(ntro = ca.ntro || (ca.ntro = {}));
 })(ca || (ca = {}));
@@ -1164,53 +761,6 @@ var ca;
                     assertions.MustNot = MustNot;
                     MustNot["__class"] = "ca.ntro.core.system.assertions.MustNot";
                 })(assertions = system.assertions || (system.assertions = {}));
-            })(system = core.system || (core.system = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var system;
-            (function (system) {
-                var trace;
-                (function (trace) {
-                    class LabelFormater {
-                        static format(builder, className, methodName, message, location) {
-                            /* append */ (sb => { sb.str = sb.str.concat("#"); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(className); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat("."); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(methodName); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(" | "); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(message); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(" ("); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(location.toString()); return sb; })(builder);
-                            /* append */ (sb => { sb.str = sb.str.concat(")"); return sb; })(builder);
-                        }
-                    }
-                    trace.LabelFormater = LabelFormater;
-                    LabelFormater["__class"] = "ca.ntro.core.system.trace.LabelFormater";
-                })(trace = system.trace || (system.trace = {}));
-            })(system = core.system || (core.system = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var system;
-            (function (system) {
-                var trace;
-                (function (trace) {
-                    class TraceFilter {
-                    }
-                    trace.TraceFilter = TraceFilter;
-                    TraceFilter["__class"] = "ca.ntro.core.system.trace.TraceFilter";
-                })(trace = system.trace || (system.trace = {}));
             })(system = core.system || (core.system = {}));
         })(core = ntro.core || (ntro.core = {}));
     })(ntro = ca.ntro || (ca.ntro = {}));
@@ -1372,6 +922,456 @@ var ca;
     (function (ntro) {
         var core;
         (function (core) {
+            var system;
+            (function (system) {
+                var trace;
+                (function (trace) {
+                    class LabelFormater {
+                        static format(builder, className, methodName, message, location) {
+                            /* append */ (sb => { sb.str = sb.str.concat("#"); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(className); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat("."); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(methodName); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(" | "); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(message); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(" ("); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(location.toString()); return sb; })(builder);
+                            /* append */ (sb => { sb.str = sb.str.concat(")"); return sb; })(builder);
+                        }
+                    }
+                    trace.LabelFormater = LabelFormater;
+                    LabelFormater["__class"] = "ca.ntro.core.system.trace.LabelFormater";
+                })(trace = system.trace || (system.trace = {}));
+            })(system = core.system || (core.system = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var system;
+            (function (system) {
+                var trace;
+                (function (trace) {
+                    class TraceFilter {
+                    }
+                    trace.TraceFilter = TraceFilter;
+                    TraceFilter["__class"] = "ca.ntro.core.system.trace.TraceFilter";
+                })(trace = system.trace || (system.trace = {}));
+            })(system = core.system || (core.system = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var tasks;
+            (function (tasks) {
+                class NtroTask {
+                    constructor() {
+                        /*private*/ this.previousTasks = ({});
+                        /*private*/ this.finishedPreviousTasks = 0;
+                        /*private*/ this.subTasks = ({});
+                        /*private*/ this.finishedSubTasks = 0;
+                        /*private*/ this.nextTasks = ([]);
+                        /*private*/ this.state = ca.ntro.core.tasks.State.INITIALIZING;
+                        if (this.parentTask === undefined)
+                            this.parentTask = null;
+                    }
+                    execute() {
+                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
+                            this.startExecution();
+                        }
+                    }
+                    getState() {
+                        return this.state;
+                    }
+                    /*private*/ startExecution() {
+                        if (this.parentTask != null && this.parentTask.getState() === ca.ntro.core.tasks.State.INITIALIZING) {
+                            this.parentTask.execute();
+                        }
+                        else {
+                            this.state = ca.ntro.core.tasks.State.EXECUTE_PREVIOUS_TASKS;
+                            this.resumeExecution();
+                        }
+                    }
+                    setParentTask(parentTask) {
+                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
+                            this.parentTask = parentTask;
+                        }
+                        else {
+                            throw Object.defineProperty(new Error("Task.setParentTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+                        }
+                    }
+                    /*private*/ resumeExecution() {
+                        switch ((this.state)) {
+                            case ca.ntro.core.tasks.State.EXECUTE_PREVIOUS_TASKS:
+                                if (this.ifShouldExecutePreviousTasks()) {
+                                    this.executePreviousTasks();
+                                }
+                                else {
+                                    this.state = ca.ntro.core.tasks.State.EXECUTE_SUB_TASKS;
+                                    this.resumeExecution();
+                                }
+                                break;
+                            case ca.ntro.core.tasks.State.EXECUTE_SUB_TASKS:
+                                if (this.ifShouldExecuteSubTasks()) {
+                                    this.executeSubTasks();
+                                }
+                                else {
+                                    this.state = ca.ntro.core.tasks.State.EXECUTE_CURRENT_TASK;
+                                    this.resumeExecution();
+                                }
+                                break;
+                            case ca.ntro.core.tasks.State.EXECUTE_CURRENT_TASK:
+                                this.runTask();
+                                break;
+                            case ca.ntro.core.tasks.State.EXECUTE_NEXT_TASKS:
+                                this.executeNextTasks();
+                                this.state = ca.ntro.core.tasks.State.DONE;
+                                break;
+                            case ca.ntro.core.tasks.State.DONE:
+                            default:
+                                break;
+                        }
+                    }
+                    /*private*/ executePreviousTasks() {
+                        {
+                            let array132 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
+                            for (let index131 = 0; index131 < array132.length; index131++) {
+                                let previousTask = array132[index131];
+                                {
+                                    previousTask.execute();
+                                }
+                            }
+                        }
+                    }
+                    /*private*/ ifShouldExecutePreviousTasks() {
+                        return this.finishedPreviousTasks < Object.keys(this.previousTasks).length;
+                    }
+                    notifySomePreviousTaskFinished() {
+                        this.finishedPreviousTasks++;
+                        if (this.state === ca.ntro.core.tasks.State.EXECUTE_PREVIOUS_TASKS) {
+                            this.resumeExecution();
+                        }
+                    }
+                    notifyTaskFinished() {
+                        if (this.parentTask != null) {
+                            this.parentTask.notifySomeSubTaskFinished();
+                        }
+                        this.state = ca.ntro.core.tasks.State.EXECUTE_NEXT_TASKS;
+                        this.resumeExecution();
+                    }
+                    notifySomeSubTaskFinished() {
+                        this.finishedSubTasks++;
+                        if (this.finishedSubTasks === Object.keys(this.subTasks).length) {
+                            this.state = ca.ntro.core.tasks.State.EXECUTE_CURRENT_TASK;
+                            this.resumeExecution();
+                        }
+                    }
+                    /*private*/ executeNextTasks() {
+                        for (let index133 = 0; index133 < this.nextTasks.length; index133++) {
+                            let nextTask = this.nextTasks[index133];
+                            {
+                                nextTask.notifySomePreviousTaskFinished();
+                                if (nextTask.getState() === ca.ntro.core.tasks.State.INITIALIZING) {
+                                    nextTask.execute();
+                                }
+                            }
+                        }
+                    }
+                    getPreviousTask$java_lang_Class(taskClass) {
+                        return (this.getPreviousTask$java_lang_Class$java_lang_String(taskClass, /* getSimpleName */ (c => c["__class"] ? c["__class"].substring(c["__class"].lastIndexOf('.') + 1) : c["name"].substring(c["name"].lastIndexOf('.') + 1))(taskClass)));
+                    }
+                    getPreviousTask$java_lang_Class$java_lang_String(taskClass, id) {
+                        return ((m, k) => m[k] === undefined ? null : m[k])(this.previousTasks, id);
+                    }
+                    getPreviousTask(taskClass, id) {
+                        if (((taskClass != null) || taskClass === null) && ((typeof id === 'string') || id === null)) {
+                            return this.getPreviousTask$java_lang_Class$java_lang_String(taskClass, id);
+                        }
+                        else if (((taskClass != null) || taskClass === null) && id === undefined) {
+                            return this.getPreviousTask$java_lang_Class(taskClass);
+                        }
+                        else
+                            throw new Error('invalid overload');
+                    }
+                    getSubTask$java_lang_Class(taskClass) {
+                        return (this.getSubTask$java_lang_Class$java_lang_String(taskClass, this.defaultIdFromClass(taskClass)));
+                    }
+                    getSubTask$java_lang_Class$java_lang_String(taskClass, id) {
+                        return ((m, k) => m[k] === undefined ? null : m[k])(this.subTasks, id);
+                    }
+                    getSubTask(taskClass, id) {
+                        if (((taskClass != null) || taskClass === null) && ((typeof id === 'string') || id === null)) {
+                            return this.getSubTask$java_lang_Class$java_lang_String(taskClass, id);
+                        }
+                        else if (((taskClass != null) || taskClass === null) && id === undefined) {
+                            return this.getSubTask$java_lang_Class(taskClass);
+                        }
+                        else
+                            throw new Error('invalid overload');
+                    }
+                    getFinishedTask$java_lang_Class(taskClass) {
+                        return (this.getFinishedTask$java_lang_Class$java_lang_String(taskClass, /* getSimpleName */ (c => c["__class"] ? c["__class"].substring(c["__class"].lastIndexOf('.') + 1) : c["name"].substring(c["name"].lastIndexOf('.') + 1))(taskClass)));
+                    }
+                    getFinishedTask$java_lang_Class$java_lang_String(taskClass, id) {
+                        let finishedTask = ((m, k) => m[k] === undefined ? null : m[k])(this.subTasks, id);
+                        if (finishedTask == null) {
+                            finishedTask = ((m, k) => m[k] === undefined ? null : m[k])(this.previousTasks, id);
+                        }
+                        return finishedTask;
+                    }
+                    getFinishedTask(taskClass, id) {
+                        if (((taskClass != null) || taskClass === null) && ((typeof id === 'string') || id === null)) {
+                            return this.getFinishedTask$java_lang_Class$java_lang_String(taskClass, id);
+                        }
+                        else if (((taskClass != null) || taskClass === null) && id === undefined) {
+                            return this.getFinishedTask$java_lang_Class(taskClass);
+                        }
+                        else
+                            throw new Error('invalid overload');
+                    }
+                    /*private*/ defaultId(task) {
+                        return this.defaultIdFromClass(task.constructor);
+                    }
+                    /*private*/ defaultIdFromClass(taskClass) {
+                        return (c => c["__class"] ? c["__class"].substring(c["__class"].lastIndexOf('.') + 1) : c["name"].substring(c["name"].lastIndexOf('.') + 1))(taskClass);
+                    }
+                    addPreviousTask$ca_ntro_core_tasks_NtroTask(task) {
+                        return this.addPreviousTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, this.defaultId(task));
+                    }
+                    addPreviousTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId) {
+                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
+                            if (!this.previousTasks.hasOwnProperty(taskId)) {
+                                /* put */ (this.previousTasks[taskId] = task);
+                                task.addNextTask(this);
+                            }
+                        }
+                        else {
+                            throw Object.defineProperty(new Error("Task.addPreviousTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+                        }
+                        return this;
+                    }
+                    addPreviousTask(task, taskId) {
+                        if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && ((typeof taskId === 'string') || taskId === null)) {
+                            return this.addPreviousTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId);
+                        }
+                        else if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && taskId === undefined) {
+                            return this.addPreviousTask$ca_ntro_core_tasks_NtroTask(task);
+                        }
+                        else
+                            throw new Error('invalid overload');
+                    }
+                    addNextTask(task) {
+                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
+                            if (!(this.nextTasks.indexOf((task)) >= 0)) {
+                                /* add */ ((s, e) => { if (s.indexOf(e) == -1) {
+                                    s.push(e);
+                                    return true;
+                                }
+                                else {
+                                    return false;
+                                } })(this.nextTasks, task);
+                                task.addPreviousTask$ca_ntro_core_tasks_NtroTask(this);
+                            }
+                        }
+                        else {
+                            throw Object.defineProperty(new Error("Task.addPreviousTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+                        }
+                        return this;
+                    }
+                    /*private*/ ifShouldExecuteSubTasks() {
+                        return this.finishedSubTasks < Object.keys(this.subTasks).length;
+                    }
+                    /*private*/ executeSubTasks() {
+                        {
+                            let array135 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
+                            for (let index134 = 0; index134 < array135.length; index134++) {
+                                let subTask = array135[index134];
+                                {
+                                    subTask.execute();
+                                }
+                            }
+                        }
+                    }
+                    addSubTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId) {
+                        if (this.state === ca.ntro.core.tasks.State.INITIALIZING) {
+                            task.setParentTask(this);
+                            /* put */ (this.subTasks[taskId] = task);
+                        }
+                        else {
+                            throw Object.defineProperty(new Error("Task.addSubTask called on state " + this.state), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.IllegalStateException', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+                        }
+                    }
+                    addSubTask(task, taskId) {
+                        if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && ((typeof taskId === 'string') || taskId === null)) {
+                            return this.addSubTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, taskId);
+                        }
+                        else if (((task != null && task instanceof ca.ntro.core.tasks.NtroTask) || task === null) && taskId === undefined) {
+                            return this.addSubTask$ca_ntro_core_tasks_NtroTask(task);
+                        }
+                        else
+                            throw new Error('invalid overload');
+                    }
+                    addSubTask$ca_ntro_core_tasks_NtroTask(task) {
+                        this.addSubTask$ca_ntro_core_tasks_NtroTask$java_lang_String(task, this.defaultId(task));
+                    }
+                }
+                tasks.NtroTask = NtroTask;
+                NtroTask["__class"] = "ca.ntro.core.tasks.NtroTask";
+            })(tasks = core.tasks || (core.tasks = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var tasks;
+            (function (tasks) {
+                var State;
+                (function (State) {
+                    State[State["INITIALIZING"] = 0] = "INITIALIZING";
+                    State[State["EXECUTE_PREVIOUS_TASKS"] = 1] = "EXECUTE_PREVIOUS_TASKS";
+                    State[State["EXECUTE_SUB_TASKS"] = 2] = "EXECUTE_SUB_TASKS";
+                    State[State["EXECUTE_CURRENT_TASK"] = 3] = "EXECUTE_CURRENT_TASK";
+                    State[State["EXECUTE_NEXT_TASKS"] = 4] = "EXECUTE_NEXT_TASKS";
+                    State[State["DONE"] = 5] = "DONE";
+                })(State = tasks.State || (tasks.State = {}));
+            })(tasks = core.tasks || (core.tasks = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var wrappers;
+            (function (wrappers) {
+                var options;
+                (function (options) {
+                    class EmptyOptionException extends Error {
+                        constructor() {
+                            super();
+                            Object.setPrototypeOf(this, EmptyOptionException.prototype);
+                        }
+                    }
+                    EmptyOptionException.serialVersionUID = -5086580751854707928;
+                    options.EmptyOptionException = EmptyOptionException;
+                    EmptyOptionException["__class"] = "ca.ntro.core.wrappers.options.EmptyOptionException";
+                    EmptyOptionException["__interfaces"] = ["java.io.Serializable"];
+                })(options = wrappers.options || (wrappers.options = {}));
+            })(wrappers = core.wrappers || (core.wrappers = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var wrappers;
+            (function (wrappers) {
+                var options;
+                (function (options) {
+                    class None {
+                    }
+                    options.None = None;
+                    None["__class"] = "ca.ntro.core.wrappers.options.None";
+                })(options = wrappers.options || (wrappers.options = {}));
+            })(wrappers = core.wrappers || (core.wrappers = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var wrappers;
+            (function (wrappers) {
+                var options;
+                (function (options) {
+                    class Optionnal {
+                        constructor(value) {
+                            /*private*/ this.state = ca.ntro.core.wrappers.options.State.NONE;
+                            if (this.value === undefined)
+                                this.value = null;
+                            this.set(value);
+                        }
+                        isEmpty() {
+                            return this.state === ca.ntro.core.wrappers.options.State.NONE;
+                        }
+                        get() {
+                            if (this.state === ca.ntro.core.wrappers.options.State.NONE) {
+                                throw new ca.ntro.core.wrappers.options.EmptyOptionException();
+                            }
+                            return this.value;
+                        }
+                        set(value) {
+                            this.value = value;
+                            this.state = ca.ntro.core.wrappers.options.State.SOME;
+                        }
+                    }
+                    options.Optionnal = Optionnal;
+                    Optionnal["__class"] = "ca.ntro.core.wrappers.options.Optionnal";
+                })(options = wrappers.options || (wrappers.options = {}));
+            })(wrappers = core.wrappers || (core.wrappers = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var wrappers;
+            (function (wrappers) {
+                var options;
+                (function (options) {
+                    var State;
+                    (function (State) {
+                        State[State["SOME"] = 0] = "SOME";
+                        State[State["NONE"] = 1] = "NONE";
+                    })(State = options.State || (options.State = {}));
+                })(options = wrappers.options || (wrappers.options = {}));
+            })(wrappers = core.wrappers || (core.wrappers = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            class __Ntro {
+                static registerStackAnalyzer(stackAnalyzer) {
+                    ca.ntro.core.system.trace.__T.call(__Ntro, "registerStackAnalyzer");
+                    __Ntro.__stackAnalyzer = stackAnalyzer;
+                }
+                static stackAnalyzer() {
+                    ca.ntro.core.system.trace.__T.call(__Ntro, "stackAnalyzer");
+                    return __Ntro.__stackAnalyzer;
+                }
+            }
+            __Ntro.__stackAnalyzer = null;
+            core.__Ntro = __Ntro;
+            __Ntro["__class"] = "ca.ntro.core.__Ntro";
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
             var introspection;
             (function (introspection) {
                 class ConstructorSignature extends ca.ntro.core.introspection.ProcedureSignature {
@@ -1396,8 +1396,8 @@ var ca;
                         args = args.split(")").join("");
                         let argTypes = args.split(", ");
                         let argumentTypes = ([]);
-                        for (let index178 = 0; index178 < argTypes.length; index178++) {
-                            let argType = argTypes[index178];
+                        for (let index136 = 0; index136 < argTypes.length; index136++) {
+                            let argType = argTypes[index136];
                             {
                                 /* add */ (argumentTypes.push(/* replace */ argType.split(" ").join("")) > 0);
                             }
@@ -1458,8 +1458,8 @@ var ca;
                         args = args.split(")").join("");
                         let argTypes = args.split(", ");
                         let argumentTypes = ([]);
-                        for (let index179 = 0; index179 < argTypes.length; index179++) {
-                            let argType = argTypes[index179];
+                        for (let index137 = 0; index137 < argTypes.length; index137++) {
+                            let argType = argTypes[index137];
                             {
                                 /* add */ (argumentTypes.push(/* replace */ argType.split(" ").join("")) > 0);
                             }
@@ -1510,113 +1510,6 @@ var ca;
                 web.NtroWindowWeb = NtroWindowWeb;
                 NtroWindowWeb["__class"] = "ca.ntro.core.web.NtroWindowWeb";
             })(web = core.web || (core.web = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var mvc;
-            (function (mvc) {
-                var view;
-                (function (view) {
-                    class ViewLoader extends ca.ntro.core.tasks.NtroTask {
-                        constructor() {
-                            super();
-                            if (this.view === undefined)
-                                this.view = null;
-                        }
-                        getView() {
-                            return this.view;
-                        }
-                    }
-                    view.ViewLoader = ViewLoader;
-                    ViewLoader["__class"] = "ca.ntro.core.mvc.view.ViewLoader";
-                })(view = mvc.view || (mvc.view = {}));
-            })(mvc = core.mvc || (core.mvc = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var tasks;
-            (function (tasks) {
-                class ContainerTask extends ca.ntro.core.tasks.NtroTask {
-                    /**
-                     *
-                     */
-                    runTask() {
-                        this.notifyTaskFinished();
-                    }
-                    /**
-                     *
-                     * @param {Error} e
-                     */
-                    onFailure(e) {
-                    }
-                }
-                tasks.ContainerTask = ContainerTask;
-                ContainerTask["__class"] = "ca.ntro.core.tasks.ContainerTask";
-            })(tasks = core.tasks || (core.tasks = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var tasks;
-            (function (tasks) {
-                class SyncTask extends ca.ntro.core.tasks.NtroTask {
-                    constructor() {
-                        super();
-                        if (this.returnValue === undefined)
-                            this.returnValue = null;
-                    }
-                    getReturnValue() {
-                        return this.returnValue;
-                    }
-                    /**
-                     *
-                     */
-                    runTask() {
-                        this.returnValue = this.runSyncTask();
-                        this.notifyTaskFinished();
-                    }
-                }
-                tasks.SyncTask = SyncTask;
-                SyncTask["__class"] = "ca.ntro.core.tasks.SyncTask";
-            })(tasks = core.tasks || (core.tasks = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var services;
-            (function (services) {
-                class ResourceLoaderTask extends ca.ntro.core.tasks.NtroTask {
-                    constructor(resourcePath) {
-                        super();
-                        if (this.resourcePath === undefined)
-                            this.resourcePath = null;
-                        this.resourcePath = resourcePath;
-                    }
-                    getResourcePath() {
-                        return this.resourcePath;
-                    }
-                }
-                services.ResourceLoaderTask = ResourceLoaderTask;
-                ResourceLoaderTask["__class"] = "ca.ntro.core.services.ResourceLoaderTask";
-            })(services = core.services || (core.services = {}));
         })(core = ntro.core || (ntro.core = {}));
     })(ntro = ca.ntro || (ca.ntro = {}));
 })(ca || (ca = {}));
@@ -1794,6 +1687,146 @@ var ca;
             (function (mvc) {
                 var view;
                 (function (view) {
+                    class ViewLoader extends ca.ntro.core.tasks.NtroTask {
+                        constructor() {
+                            super();
+                            if (this.view === undefined)
+                                this.view = null;
+                        }
+                        getView() {
+                            return this.view;
+                        }
+                    }
+                    view.ViewLoader = ViewLoader;
+                    ViewLoader["__class"] = "ca.ntro.core.mvc.view.ViewLoader";
+                })(view = mvc.view || (mvc.view = {}));
+            })(mvc = core.mvc || (core.mvc = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var services;
+            (function (services) {
+                class ResourceLoaderTask extends ca.ntro.core.tasks.NtroTask {
+                    constructor(resourcePath) {
+                        super();
+                        if (this.resourcePath === undefined)
+                            this.resourcePath = null;
+                        this.resourcePath = resourcePath;
+                    }
+                    getResourcePath() {
+                        return this.resourcePath;
+                    }
+                }
+                services.ResourceLoaderTask = ResourceLoaderTask;
+                ResourceLoaderTask["__class"] = "ca.ntro.core.services.ResourceLoaderTask";
+            })(services = core.services || (core.services = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var tasks;
+            (function (tasks) {
+                class ContainerTask extends ca.ntro.core.tasks.NtroTask {
+                    /**
+                     *
+                     */
+                    runTask() {
+                        this.notifyTaskFinished();
+                    }
+                    /**
+                     *
+                     * @param {Error} e
+                     */
+                    onFailure(e) {
+                    }
+                }
+                tasks.ContainerTask = ContainerTask;
+                ContainerTask["__class"] = "ca.ntro.core.tasks.ContainerTask";
+            })(tasks = core.tasks || (core.tasks = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var tasks;
+            (function (tasks) {
+                class SyncTask extends ca.ntro.core.tasks.NtroTask {
+                    constructor() {
+                        super();
+                        if (this.returnValue === undefined)
+                            this.returnValue = null;
+                    }
+                    getReturnValue() {
+                        return this.returnValue;
+                    }
+                    /**
+                     *
+                     */
+                    runTask() {
+                        this.returnValue = this.runSyncTask();
+                        this.notifyTaskFinished();
+                    }
+                }
+                tasks.SyncTask = SyncTask;
+                SyncTask["__class"] = "ca.ntro.core.tasks.SyncTask";
+            })(tasks = core.tasks || (core.tasks = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var system;
+            (function (system) {
+                var trace;
+                (function (trace) {
+                    class TraceLevel {
+                        static NONE_$LI$() { if (TraceLevel.NONE == null)
+                            TraceLevel.NONE = new ca.ntro.core.system.trace.TraceFilterStrings("", null); return TraceLevel.NONE; }
+                        ;
+                        static APP_$LI$() { if (TraceLevel.APP == null)
+                            TraceLevel.APP = new ca.ntro.core.system.trace.TraceFilterStrings("ca.ntro", ""); return TraceLevel.APP; }
+                        ;
+                        static NTRO_$LI$() { if (TraceLevel.NTRO == null)
+                            TraceLevel.NTRO = new ca.ntro.core.system.trace.TraceFilterStrings("ca.ntro.core.trace", "ca.ntro"); return TraceLevel.NTRO; }
+                        ;
+                        static NTRO_ALL_$LI$() { if (TraceLevel.NTRO_ALL == null)
+                            TraceLevel.NTRO_ALL = new ca.ntro.core.system.trace.TraceFilterStrings(null, "ca.ntro"); return TraceLevel.NTRO_ALL; }
+                        ;
+                        static ALL_$LI$() { if (TraceLevel.ALL == null)
+                            TraceLevel.ALL = new ca.ntro.core.system.trace.TraceFilterStrings(null, ""); return TraceLevel.ALL; }
+                        ;
+                    }
+                    trace.TraceLevel = TraceLevel;
+                    TraceLevel["__class"] = "ca.ntro.core.system.trace.TraceLevel";
+                })(trace = system.trace || (system.trace = {}));
+            })(system = core.system || (core.system = {}));
+        })(core = ntro.core || (ntro.core = {}));
+    })(ntro = ca.ntro || (ca.ntro = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var ntro;
+    (function (ntro) {
+        var core;
+        (function (core) {
+            var mvc;
+            (function (mvc) {
+                var view;
+                (function (view) {
                     class ViewLoaderJWeb extends ca.ntro.core.mvc.view.ViewLoader {
                         /**
                          *
@@ -1893,39 +1926,6 @@ var ca;
                 initialization.InitializationTask = InitializationTask;
                 InitializationTask["__class"] = "ca.ntro.core.initialization.InitializationTask";
             })(initialization = core.initialization || (core.initialization = {}));
-        })(core = ntro.core || (ntro.core = {}));
-    })(ntro = ca.ntro || (ca.ntro = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var ntro;
-    (function (ntro) {
-        var core;
-        (function (core) {
-            var system;
-            (function (system) {
-                var trace;
-                (function (trace) {
-                    class TraceLevel {
-                        static NONE_$LI$() { if (TraceLevel.NONE == null)
-                            TraceLevel.NONE = new ca.ntro.core.system.trace.TraceFilterStrings("", null); return TraceLevel.NONE; }
-                        ;
-                        static APP_$LI$() { if (TraceLevel.APP == null)
-                            TraceLevel.APP = new ca.ntro.core.system.trace.TraceFilterStrings("ca.ntro", ""); return TraceLevel.APP; }
-                        ;
-                        static NTRO_$LI$() { if (TraceLevel.NTRO == null)
-                            TraceLevel.NTRO = new ca.ntro.core.system.trace.TraceFilterStrings("ca.ntro.core.trace", "ca.ntro"); return TraceLevel.NTRO; }
-                        ;
-                        static NTRO_ALL_$LI$() { if (TraceLevel.NTRO_ALL == null)
-                            TraceLevel.NTRO_ALL = new ca.ntro.core.system.trace.TraceFilterStrings(null, "ca.ntro"); return TraceLevel.NTRO_ALL; }
-                        ;
-                        static ALL_$LI$() { if (TraceLevel.ALL == null)
-                            TraceLevel.ALL = new ca.ntro.core.system.trace.TraceFilterStrings(null, ""); return TraceLevel.ALL; }
-                        ;
-                    }
-                    trace.TraceLevel = TraceLevel;
-                    TraceLevel["__class"] = "ca.ntro.core.system.trace.TraceLevel";
-                })(trace = system.trace || (system.trace = {}));
-            })(system = core.system || (core.system = {}));
         })(core = ntro.core || (ntro.core = {}));
     })(ntro = ca.ntro || (ca.ntro = {}));
 })(ca || (ca = {}));

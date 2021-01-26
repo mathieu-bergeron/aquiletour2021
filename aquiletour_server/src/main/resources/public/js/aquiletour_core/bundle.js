@@ -5,6 +5,35 @@ var ca;
     (function (aquiletour) {
         var core;
         (function (core) {
+            class AquiletourMain extends ca.ntro.core.tasks.NtroTask {
+                /**
+                 *
+                 */
+                runTask() {
+                    ca.ntro.core.system.trace.T.call(this);
+                    let lang = this.getPreviousTask(ca.ntro.core.initialization.NtroInitializationTask).getOption("lang");
+                    lang = "fr";
+                    this.rootpageMain(lang).execute();
+                }
+                /**
+                 *
+                 * @param {Error} e
+                 */
+                onFailure(e) {
+                    console.error("[FATAL] Initialization error");
+                    console.error(e.message, e);
+                }
+            }
+            core.AquiletourMain = AquiletourMain;
+            AquiletourMain["__class"] = "ca.aquiletour.core.AquiletourMain";
+        })(core = aquiletour.core || (aquiletour.core = {}));
+    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var aquiletour;
+    (function (aquiletour) {
+        var core;
+        (function (core) {
             var rootpage;
             (function (rootpage) {
                 class RootpageMain extends ca.ntro.core.tasks.NtroTask {
@@ -35,35 +64,6 @@ var ca;
                 rootpage.RootpageMain = RootpageMain;
                 RootpageMain["__class"] = "ca.aquiletour.core.rootpage.RootpageMain";
             })(rootpage = core.rootpage || (core.rootpage = {}));
-        })(core = aquiletour.core || (aquiletour.core = {}));
-    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var aquiletour;
-    (function (aquiletour) {
-        var core;
-        (function (core) {
-            class AquiletourMain extends ca.ntro.core.tasks.NtroTask {
-                /**
-                 *
-                 */
-                runTask() {
-                    ca.ntro.core.system.trace.T.call(this);
-                    let lang = this.getPreviousTask(ca.ntro.core.initialization.NtroInitializationTask).getOption("lang");
-                    lang = "fr";
-                    this.rootpageMain(lang).execute();
-                }
-                /**
-                 *
-                 * @param {Error} e
-                 */
-                onFailure(e) {
-                    console.error("[FATAL] Initialization error");
-                    console.error(e.message, e);
-                }
-            }
-            core.AquiletourMain = AquiletourMain;
-            AquiletourMain["__class"] = "ca.aquiletour.core.AquiletourMain";
         })(core = aquiletour.core || (aquiletour.core = {}));
     })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
 })(ca || (ca = {}));

@@ -5,45 +5,6 @@ var ca;
     (function (aquiletour) {
         var jsweet;
         (function (jsweet) {
-            class JavaMainJSweet {
-                static main(args) {
-                    ca.ntro.core.system.trace.__T.call(JavaMainJSweet, "main");
-                    let options = ["--traceLevel", "APP"];
-                    ca.ntro.jsweet.NtroJSweet.defaultInitializationTask().setOptions(options).addNextTask(new ca.aquiletour.jsweet.AquiletourMainJSweet()).execute();
-                }
-            }
-            jsweet.JavaMainJSweet = JavaMainJSweet;
-            JavaMainJSweet["__class"] = "ca.aquiletour.jsweet.JavaMainJSweet";
-        })(jsweet = aquiletour.jsweet || (aquiletour.jsweet = {}));
-    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var aquiletour;
-    (function (aquiletour) {
-        var jsweet;
-        (function (jsweet) {
-            class RootpageMainJSweet extends ca.aquiletour.web.RootpageMainWeb {
-                constructor(lang) {
-                    super(lang);
-                }
-                /**
-                 *
-                 * @return {ca.ntro.core.web.NtroWindowWeb}
-                 */
-                getWindow() {
-                    return new ca.aquiletour.jsweet.NtroWindowJSweet();
-                }
-            }
-            jsweet.RootpageMainJSweet = RootpageMainJSweet;
-            RootpageMainJSweet["__class"] = "ca.aquiletour.jsweet.RootpageMainJSweet";
-        })(jsweet = aquiletour.jsweet || (aquiletour.jsweet = {}));
-    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
-})(ca || (ca = {}));
-(function (ca) {
-    var aquiletour;
-    (function (aquiletour) {
-        var jsweet;
-        (function (jsweet) {
             class AquiletourMainJSweet extends ca.aquiletour.core.AquiletourMain {
                 /**
                  *
@@ -56,6 +17,23 @@ var ca;
             }
             jsweet.AquiletourMainJSweet = AquiletourMainJSweet;
             AquiletourMainJSweet["__class"] = "ca.aquiletour.jsweet.AquiletourMainJSweet";
+        })(jsweet = aquiletour.jsweet || (aquiletour.jsweet = {}));
+    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var aquiletour;
+    (function (aquiletour) {
+        var jsweet;
+        (function (jsweet) {
+            class JavaMainJSweet {
+                static main(args) {
+                    ca.ntro.core.system.trace.__T.call(JavaMainJSweet, "main");
+                    let options = ["--traceLevel", "APP"];
+                    ca.ntro.jsweet.NtroJSweet.defaultInitializationTask().setOptions(options).addNextTask(new ca.aquiletour.jsweet.AquiletourMainJSweet()).execute();
+                }
+            }
+            jsweet.JavaMainJSweet = JavaMainJSweet;
+            JavaMainJSweet["__class"] = "ca.aquiletour.jsweet.JavaMainJSweet";
         })(jsweet = aquiletour.jsweet || (aquiletour.jsweet = {}));
     })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
 })(ca || (ca = {}));
@@ -79,6 +57,28 @@ var ca;
             }
             jsweet.NtroWindowJSweet = NtroWindowJSweet;
             NtroWindowJSweet["__class"] = "ca.aquiletour.jsweet.NtroWindowJSweet";
+        })(jsweet = aquiletour.jsweet || (aquiletour.jsweet = {}));
+    })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
+})(ca || (ca = {}));
+(function (ca) {
+    var aquiletour;
+    (function (aquiletour) {
+        var jsweet;
+        (function (jsweet) {
+            class RootpageMainJSweet extends ca.aquiletour.web.RootpageMainWeb {
+                constructor(lang) {
+                    super(lang);
+                }
+                /**
+                 *
+                 * @return {ca.ntro.core.web.NtroWindowWeb}
+                 */
+                getWindow() {
+                    return new ca.aquiletour.jsweet.NtroWindowJSweet();
+                }
+            }
+            jsweet.RootpageMainJSweet = RootpageMainJSweet;
+            RootpageMainJSweet["__class"] = "ca.aquiletour.jsweet.RootpageMainJSweet";
         })(jsweet = aquiletour.jsweet || (aquiletour.jsweet = {}));
     })(aquiletour = ca.aquiletour || (ca.aquiletour = {}));
 })(ca || (ca = {}));

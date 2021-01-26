@@ -1,4 +1,19 @@
-task clean{
+plugins{
+
+	id 'java-library'
+}
+
+repositories{
+
+	jcenter()
+}
+
+dependencies {
+	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+	
+}
+
+clean{
     doLast{
         new File("${project.projectDir}/.jsweet").deleteDir()
     }
