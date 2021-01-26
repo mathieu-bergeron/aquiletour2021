@@ -23,11 +23,15 @@ public abstract class AquiletourRequestHandler {
 		
 		if(path.contains("settings")) {
 			
-			rootpageMain.addNextTask(new SendSettingsMessage());
+			SendSettingsMessage sendSettingsMessage = new SendSettingsMessage();
+
+			rootpageMain.addNextTask(sendSettingsMessage);
 			
 		}else if(path.contains("dashboard")) {
+			
+			SendDashboardMessage sendDashboardMessage = new SendDashboardMessage();
 
-			rootpageMain.addNextTask(new SendDashboardMessage());
+			rootpageMain.addNextTask(sendDashboardMessage);
 		}
 		
 		return handler;
