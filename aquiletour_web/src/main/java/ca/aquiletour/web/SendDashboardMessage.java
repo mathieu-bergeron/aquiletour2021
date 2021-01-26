@@ -8,7 +8,8 @@ public class SendDashboardMessage extends NtroTask {
 	@Override
 	protected void runTask() {
 		T.call(this);
-
+		
+		notifySomeSubTaskFinished();
 	}
 
 	@Override

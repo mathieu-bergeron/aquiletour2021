@@ -9,6 +9,7 @@ public class SendSettingsMessage extends NtroTask {
 	protected void runTask() {
 		T.call(this);
 		
+		notifySomeSubTaskFinished();
 	}
 
 	@Override
