@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.web.page.rootpage;
+package ca.aquiletour.web.pages.rootpage;
 
 import ca.aquiletour.core.pages.rootpage.RootpageController;
 import ca.ntro.core.Ntro;
@@ -23,9 +23,9 @@ import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 
-public abstract class RootpageMainWeb extends RootpageController {
+public abstract class RootpageControllerWeb extends RootpageController {
 
-	public RootpageMainWeb(String lang) {
+	public RootpageControllerWeb(String lang) {
 		super(lang);
 	}
 

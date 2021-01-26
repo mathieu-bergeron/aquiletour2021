@@ -17,8 +17,10 @@
 
 package ca.aquiletour.core.pages.rootpage;
 
+import ca.aquiletour.core.messages.OpenDashboardMessage;
 import ca.aquiletour.core.messages.OpenSettingsMessage;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
@@ -26,10 +28,15 @@ import ca.ntro.messages.MessageFactory;
 
 public abstract class RootpageController extends NtroTask {
 	
+	private RootpageView rootpageView;
+	
 	public RootpageController(String lang) {
 		T.call(this);
 		
 		addSubTask(loadView(lang),"ViewLoader");
+
+		MessageFactory.addMessageReceptor(OpenSettingsMessage.class, new OpenSettingsReceptor(this));
+		MessageFactory.addMessageReceptor(OpenDashboardMessage.class, new OpenDashboardReceptor(this));
 	}
 
 	protected abstract ViewLoader loadView(String lang);
@@ -41,14 +48,28 @@ public abstract class RootpageController extends NtroTask {
 		
 		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
 		getWindow().installRootView(viewLoader);
-
-		MessageFactory.addMessageReceptor(OpenSettingsMessage.class, new OpenSettingsReceptor());
+		
+		rootpageView = (RootpageView) viewLoader.getView();
 
 		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
+		
+	}
+
+	public void openSettings() {
+		T.call(this);
+		
+		// FIXME: this must finish before
+		//        the WriteResponse task
+		//rootpageView.installSubPage(page);
+		
+	}
+
+	public void openDashboard() {
+		T.call(this);
 		
 	}
 

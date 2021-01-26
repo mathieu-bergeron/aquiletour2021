@@ -7,11 +7,11 @@ import ca.ntro.messages.MessageFactory;
 
 public class SendSettingsMessage extends NtroTask {
 
+	private OpenSettingsMessage openSettings = MessageFactory.getOutgoingMessage(OpenSettingsMessage.class);
+
 	@Override
 	protected void runTask() {
 		T.call(this);
-		
-		OpenSettingsMessage openSettings = MessageFactory.getOutgoingMessage(OpenSettingsMessage.class);
 
 		openSettings.sendMessage();
 		

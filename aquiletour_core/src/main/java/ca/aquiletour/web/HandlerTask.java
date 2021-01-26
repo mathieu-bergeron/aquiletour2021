@@ -1,6 +1,6 @@
 package ca.aquiletour.web;
 
-import ca.aquiletour.web.page.rootpage.RootpageMainWeb;
+import ca.aquiletour.web.pages.rootpage.RootpageControllerWeb;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 
@@ -11,7 +11,7 @@ public class HandlerTask extends NtroTask {
 	public void writeHtml(StringBuilder out) {
 		T.call(this);
 
-		getSubTask(RootpageMainWeb.class, "RootPageMain").writeHtml(out);
+		getSubTask(RootpageControllerWeb.class, "RootPageMain").writeHtml(out);
 	}
 
 	@Override

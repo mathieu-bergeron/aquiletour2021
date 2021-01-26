@@ -25,15 +25,17 @@ public abstract class AquiletourRequestHandler {
 			
 			SendSettingsMessage sendSettingsMessage = new SendSettingsMessage();
 
-			// TODO: NtroTask must support sugraph
+			// TODO: NtroTask must support subgraph
 			//       the nextTask of a subTask should also be a subTask
 			rootpageMain.addNextTask(sendSettingsMessage);
+			handler.addSubTask(sendSettingsMessage);
 			
 		}else if(path.contains("dashboard")) {
 			
 			SendDashboardMessage sendDashboardMessage = new SendDashboardMessage();
 
 			rootpageMain.addNextTask(sendDashboardMessage);
+			handler.addSubTask(sendDashboardMessage);
 		}
 		
 		return handler;

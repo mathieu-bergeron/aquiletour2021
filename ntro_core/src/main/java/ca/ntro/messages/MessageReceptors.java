@@ -21,6 +21,8 @@ public class MessageReceptors {
 		}
 		
 		receptorSet.add(messageReceptionTask);
+		
+		messageReceptors.put(messageClass, receptorSet);
 	}
 
 	public void sendMessage(Message message) {
