@@ -25,7 +25,7 @@ save_dir
 
 cd "$root_dir"
 
-sh "$scripts_dir"/run_commands_foreach_branch.sh "git merge -Xtheirs main" "git push"
+sh "$scripts_dir"/run_commands_foreach_branch.sh "git pull; git merge -Xtheirs main" "git push"
 
 git checkout mbergeron
 

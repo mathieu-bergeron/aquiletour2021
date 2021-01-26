@@ -1,19 +1,8 @@
-plugins{
-
-	id 'java-library'
+plugins {
+    id 'eclipse'
 }
 
-repositories{
-
-	jcenter()
-}
-
-dependencies {
-	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
-	
-}
-
-clean{
+task clean {
     doLast{
         new File("${project.projectDir}/.jsweet").deleteDir()
     }

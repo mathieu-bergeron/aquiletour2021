@@ -3,8 +3,8 @@ package ca.ntro.jdk.dom;
 import org.jsoup.nodes.Element;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.dom.HtmlElement;
-import ca.ntro.core.web.dom.HtmlEventListener;
+import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEventListener;
 
 
 public class HtmlElementJava implements HtmlElement {
@@ -24,6 +24,14 @@ public class HtmlElementJava implements HtmlElement {
 	public void addEventListener(String event, HtmlEventListener listener) {
 		T.call(this);
 		// XXX: event listeners ignored on server
+	}
+	
+	
+	@Override
+	public void appendHtml(String html) {
+		T.call(this);
+
+		element.append(html);
 	}
 
 }

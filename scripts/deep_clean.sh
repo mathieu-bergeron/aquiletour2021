@@ -27,6 +27,8 @@ cd "$root_dir"
 
 sh gradlew clean
 
+sh gradlew cleanEclipse
+
 sh gradlew --stop
 
 sh "$scripts_dir"/clear_caches.sh

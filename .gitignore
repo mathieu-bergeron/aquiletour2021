@@ -24,3 +24,5 @@ bin
 # JSweet
 .jsweet
 /jsweet
+
+aquiletour_server/src/main/resources/public/js

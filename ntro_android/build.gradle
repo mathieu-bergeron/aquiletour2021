@@ -1,0 +1,7 @@
+plugins {
+    id 'local-java-plugin'
+}
+
+dependencies {
+    implementation project(':ntro_core')
+}
