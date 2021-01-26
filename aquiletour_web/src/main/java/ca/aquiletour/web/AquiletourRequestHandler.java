@@ -15,8 +15,20 @@ public abstract class AquiletourRequestHandler {
 		// FIXME: get this from request
 		String lang = "fr";
 		
+		RootpageMain rootpageMain = rootpageMain(lang);
+		
 		HandlerTask handler = new HandlerTask();
-		handler.addSubTask(rootpageMain(lang), "RootPageMain");
+
+		handler.addSubTask(rootpageMain, "RootPageMain");
+		
+		if(path.contains("settings")) {
+			
+			rootpageMain.addNextTask(new SendSettingsMessage());
+			
+		}else if(path.contains("dashboard")) {
+
+			rootpageMain.addNextTask(new SendDashboardMessage());
+		}
 		
 		return handler;
 	}

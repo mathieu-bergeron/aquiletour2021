@@ -104,7 +104,7 @@ public class DynamicHandler extends AbstractHandler {
 		String authToken = null; // TODO
 
 		HandlerTask handlerTask;
-		handlerTask = aquiletourHandler.initialRequest(baseRequest.getContextPath(), 
+		handlerTask = aquiletourHandler.initialRequest(baseRequest.getRequestURI().toString(),
 							          baseRequest.getParameterMap(),
 							          authToken);
 		

@@ -15,8 +15,7 @@ public class NtroWindowJSweet extends NtroWindowWeb {
 		T.call(this);
 		
 		// FIXME: why is it when called??
-		MustNot.beNull(document);
-		//return document;
+		// MustNot.beNull(document);
 		
 		return new HtmlDocumentJSweet();
 	}
