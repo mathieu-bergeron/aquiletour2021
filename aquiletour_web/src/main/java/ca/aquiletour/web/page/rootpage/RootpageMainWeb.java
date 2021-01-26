@@ -31,9 +31,9 @@ public abstract class RootpageMainWeb extends RootpageMain {
 
 	protected ViewLoader loadView(String lang) {
 		return Ntro.viewLoaderWeb()
-		           .setHtmlUrl("/public/views/rootpage/structure.html")
-		           .setCssUrl("/public/views/rootpage/style.css")
-		           .setTranslationsUrl("/public/i18/"+lang+"/strings.json");
+		           .setHtmlUrl("/views/rootpage/structure.html")
+		           .setCssUrl("/views/rootpage/style.css")
+		           .setTranslationsUrl("/i18/"+lang+"/strings.json");
 	}
 
 	// FIXME: we specialize return type 

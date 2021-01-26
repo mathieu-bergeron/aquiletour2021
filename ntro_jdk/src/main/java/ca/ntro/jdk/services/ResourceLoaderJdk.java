@@ -24,7 +24,7 @@ public class ResourceLoaderJdk extends ResourceLoader {
 
 	@Override
 	public ResourceLoaderTask loadResourceTask(String resourcePath) {
-		return new ResourceLoaderTaskJdk(resourcePath);
+		return new ResourceLoaderTaskJdk("/public/" + resourcePath);
 	}
 
 }
