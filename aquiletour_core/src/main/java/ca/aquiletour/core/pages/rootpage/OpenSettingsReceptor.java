@@ -1,15 +1,14 @@
-package ca.aquiletour.web;
+package ca.aquiletour.core.pages.rootpage;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.messages.MessageReceptionTask;
 
-public class SendDashboardMessage extends NtroTask {
+public class OpenSettingsReceptor extends MessageReceptionTask {
 
 	@Override
 	protected void runTask() {
 		T.call(this);
-		
-		notifyTaskFinished();
+
 	}
 
 	@Override

@@ -17,10 +17,12 @@
 
 package ca.aquiletour.core.pages.rootpage;
 
+import ca.aquiletour.core.messages.OpenSettingsMessage;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.messages.MessageFactory;
 
 public abstract class RootpageMain extends NtroTask {
 	
@@ -39,6 +41,8 @@ public abstract class RootpageMain extends NtroTask {
 		
 		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
 		getWindow().installRootView(viewLoader);
+
+		MessageFactory.addMessageReceptor(OpenSettingsMessage.class, new OpenSettingsReceptor());
 
 		notifyTaskFinished();
 	}

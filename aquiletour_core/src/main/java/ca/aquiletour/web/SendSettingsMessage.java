@@ -1,7 +1,9 @@
 package ca.aquiletour.web;
 
+import ca.aquiletour.core.messages.OpenSettingsMessage;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.messages.MessageFactory;
 
 public class SendSettingsMessage extends NtroTask {
 
@@ -9,7 +11,11 @@ public class SendSettingsMessage extends NtroTask {
 	protected void runTask() {
 		T.call(this);
 		
-		notifySomeSubTaskFinished();
+		OpenSettingsMessage openSettings = MessageFactory.getOutgoingMessage(OpenSettingsMessage.class);
+
+		openSettings.sendMessage();
+		
+		notifyTaskFinished();
 	}
 
 	@Override

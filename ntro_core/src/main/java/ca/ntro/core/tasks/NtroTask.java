@@ -41,6 +41,10 @@ public abstract class NtroTask {
 	protected abstract void runTask();
 	protected abstract void onFailure(Exception e);
 
+	public void reset() {
+		// TODO
+	}
+
 	public void execute() {
 		//__T.call(this, "execute");
 
