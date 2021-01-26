@@ -17,13 +17,13 @@
 
 package ca.aquiletour.web.page.rootpage;
 
-import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageController;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 
-public abstract class RootpageMainWeb extends RootpageMain {
+public abstract class RootpageMainWeb extends RootpageController {
 
 	public RootpageMainWeb(String lang) {
 		super(lang);

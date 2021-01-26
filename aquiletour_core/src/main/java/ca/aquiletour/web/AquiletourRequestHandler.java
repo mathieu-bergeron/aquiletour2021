@@ -2,7 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageController;
 import ca.ntro.core.system.trace.T;
 
 public abstract class AquiletourRequestHandler {
@@ -15,7 +15,7 @@ public abstract class AquiletourRequestHandler {
 		// FIXME: get this from request
 		String lang = "fr";
 		
-		RootpageMain rootpageMain = rootpageMain(lang);
+		RootpageController rootpageMain = rootpageMain(lang);
 		
 		HandlerTask handler = new HandlerTask();
 
@@ -39,7 +39,7 @@ public abstract class AquiletourRequestHandler {
 		return handler;
 	}
 	
-	protected abstract RootpageMain rootpageMain(String lang);
+	protected abstract RootpageController rootpageMain(String lang);
 
 	public HandlerTask newRequest(String oldPath, 
 			               String path, 

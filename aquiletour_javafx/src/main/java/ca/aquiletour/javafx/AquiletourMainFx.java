@@ -18,7 +18,7 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
-import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageController;
 import ca.aquiletour.javafx.pages.rootpage.RootpageMainFx;
 import javafx.stage.Stage;
 
@@ -33,7 +33,7 @@ public class AquiletourMainFx extends AquiletourMain {
 	}
 
 	@Override
-	protected RootpageMain rootpageMain(String lang) {
+	protected RootpageController rootpageMain(String lang) {
 		return new RootpageMainFx(lang, primaryStage);
 	}
 

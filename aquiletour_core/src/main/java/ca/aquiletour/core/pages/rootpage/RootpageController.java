@@ -24,9 +24,9 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.messages.MessageFactory;
 
-public abstract class RootpageMain extends NtroTask {
+public abstract class RootpageController extends NtroTask {
 	
-	public RootpageMain(String lang) {
+	public RootpageController(String lang) {
 		T.call(this);
 		
 		addSubTask(loadView(lang),"ViewLoader");

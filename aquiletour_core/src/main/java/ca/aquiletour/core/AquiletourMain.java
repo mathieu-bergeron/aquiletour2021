@@ -17,7 +17,7 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.rootpage.RootpageController;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
@@ -38,7 +38,7 @@ public abstract class AquiletourMain extends NtroTask {
 		notifyTaskFinished();
 	}
 	
-	protected abstract RootpageMain rootpageMain(String lang);
+	protected abstract RootpageController rootpageMain(String lang);
 
 	@Override
 	protected void onFailure(Exception e) {
