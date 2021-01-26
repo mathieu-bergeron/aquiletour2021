@@ -9,8 +9,8 @@ import org.jsoup.nodes.Document;
 
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.NtroWindowWeb;
-import ca.ntro.core.web.dom.HtmlDocument;
+import ca.ntro.web.NtroWindowWeb;
+import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.jdk.dom.HtmlDocumentJava;
 
 public class NtroWindowServer extends NtroWindowWeb {

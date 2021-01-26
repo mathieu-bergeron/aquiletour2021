@@ -4,8 +4,8 @@ import def.jquery.JQuery;
 
 import static def.jquery.Globals.$;
 
-import ca.ntro.core.web.dom.HtmlElement;
-import ca.ntro.core.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 
 public class HtmlElementsJSweet implements HtmlElements {
 	

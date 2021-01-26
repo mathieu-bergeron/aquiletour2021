@@ -2,7 +2,7 @@ package ca.aquiletour.jsweet;
 
 import ca.aquiletour.web.page.rootpage.RootpageMainWeb;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.NtroWindowWeb;
+import ca.ntro.web.NtroWindowWeb;
 
 public class RootpageMainJSweet extends RootpageMainWeb {
 	

@@ -2,17 +2,6 @@ plugins {
     id 'eclipse'
 }
 
-tasks.eclipse {
-    dependsOn ':ntro_core:build'
-    dependsOn ':ntro_jdk:build'
-    dependsOn ':ntro_jsweet:build'
-    dependsOn ':aquiletour_core:build'
-    dependsOn ':aquiletour_javafx:build'
-    dependsOn ':aquiletour_web:build'
-    dependsOn ':aquiletour_jsweet:build'
-    dependsOn ':aquiletour_server:build'
-}
-
 task clean {
     doLast{
         new File("${project.projectDir}/.jsweet").deleteDir()

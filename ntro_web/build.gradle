@@ -1,0 +1,7 @@
+plugins {
+    id 'local-java-plugin'
+    id 'local-jsweet-plugin'
+}
+
+project.group = 'ca.ntro'
+project.version = '0.1'

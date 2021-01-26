@@ -4,8 +4,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlDocument;
+import ca.ntro.core.web.dom.HtmlDocument;
+import ca.ntro.core.web.dom.HtmlElements;
 
 
 public class HtmlDocumentJava implements HtmlDocument {

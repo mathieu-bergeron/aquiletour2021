@@ -3,8 +3,8 @@ package ca.ntro.jsweet.dom;
 import static def.jquery.Globals.$;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.dom.HtmlDocument;
-import ca.ntro.core.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlDocument;
+import ca.ntro.web.dom.HtmlElements;
 
 import static def.dom.Globals.document;
 
