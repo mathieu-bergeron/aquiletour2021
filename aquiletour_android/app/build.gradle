@@ -37,11 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation('ca.ntro:ntro_core:0.1'){
-           exclude group:'org.jsweet', module: 'jsweet-transpiler'
-           exclude group:'org.jsweet', module: 'jsweet-core'
-    }
-
+    implementation group: 'ca.ntro', name:'ntro_core', version: '0.1'
     implementation group: 'ca.ntro', name:'ntro_jdk', version: '0.1'
     implementation project(':ntro_android')
 }

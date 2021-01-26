@@ -83,9 +83,9 @@ tasks.install{
 
 }
 
-uploadArchives {
+install {
     repositories {
-        mavenDeployer {
+        mavenInstaller {
             pom.whenConfigured {
                 p -> p.dependencies = p.dependencies.findAll { 
                         dep -> dep.groupId != "org.jsweet" 
