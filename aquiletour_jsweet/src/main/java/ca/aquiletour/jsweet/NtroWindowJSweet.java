@@ -1,5 +1,6 @@
 package ca.aquiletour.jsweet;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.web.NtroWindowWeb;
 import ca.ntro.core.web.dom.HtmlDocument;
@@ -12,8 +13,12 @@ public class NtroWindowJSweet extends NtroWindowWeb {
 	@Override
 	protected HtmlDocument getDocument() {
 		T.call(this);
-
-		return document;
+		
+		// FIXME: why is it when called??
+		MustNot.beNull(document);
+		//return document;
+		
+		return new HtmlDocumentJSweet();
 	}
 
 }
