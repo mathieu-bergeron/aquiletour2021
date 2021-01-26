@@ -2,8 +2,8 @@ package ca.ntro.jdk.dom;
 
 import org.jsoup.select.Elements;
 
-import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.core.web.dom.HtmlElement;
+import ca.ntro.core.web.dom.HtmlElements;
 
 public class HtmlElementsJava implements HtmlElements {
 	

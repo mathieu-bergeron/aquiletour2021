@@ -7,34 +7,33 @@ project.group = "ca.aquiletour"
 project.version = "0.1"
 
 dependencies {
-    // Ntro
+    // Direct build (for eclipse plugin)
     compile project(':ntro_core')
     compile project(':ntro_jsweet')
     compile project(':aquiletour_core')
-    compile project(':aquiletour_web')
+
+    // Candies (for jsweet build)
     compile group: 'ca.ntro', name:'ntro_core', version: '0.1'
     compile group: 'ca.ntro', name:'ntro_jsweet', version: '0.1'
     compile group: 'ca.aquiletour', name:'aquiletour_core', version: '0.1'
-    compile group: 'ca.aquiletour', name:'aquiletour_web', version: '0.1'
 }
 
 tasks.jsweet{
 
+    dependsOn ':ntro_core:jsweet'
     dependsOn ':ntro_jsweet:jsweet'
     dependsOn ':aquiletour_core:jsweet'
-    dependsOn ':aquiletour_web:jsweet'
 
     // FIXME: move this to the local-jsweet-plugin
     //        i.e. by declaring a local-jsweet-plugin.includedProjects to iterate over
     inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_core") 
     inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_jsweet") 
     inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/aquiletour/aquiletour_core") 
-    inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/aquiletour/aquiletour_web") 
 
     // FIXME: same as above FIXME
     doLast{
         def serverProject = project(':aquiletour_server')
-        def projectPaths = [':ntro_core',':ntro_jsweet', ':aquiletour_core', ':aquiletour_web', ':aquiletour_jsweet']
+        def projectPaths = [':ntro_core',':ntro_jsweet',':aquiletour_core',':aquiletour_jsweet']
         for (projectPath in projectPaths){
             def aProject = project(projectPath)
             def outDir = new File("${serverProject.projectDir}/src/main/resources/public/js/${aProject.name}")

@@ -3,8 +3,8 @@ package ca.ntro.jsweet.dom;
 import java.util.function.BiFunction;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.dom.HtmlElement;
-import ca.ntro.core.web.dom.HtmlEventListener;
+import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 

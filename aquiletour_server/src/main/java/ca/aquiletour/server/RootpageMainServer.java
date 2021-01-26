@@ -1,7 +1,7 @@
 package ca.aquiletour.server;
 
 import ca.aquiletour.web.page.rootpage.RootpageMainWeb;
-import ca.ntro.core.web.NtroWindowWeb;
+import ca.ntro.web.NtroWindowWeb;
 
 public class RootpageMainServer extends RootpageMainWeb {
 	
