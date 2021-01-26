@@ -32,9 +32,14 @@ public class SourceFileLocation {
 	}
 	
 	private String extractFilename(String rawFilePath) {
-		String[] pathSplits = rawFilePath.split(PATH_DELEMITOR);
+		String fileName = "";
+
+		if(rawFilePath != null) {
+			String[] pathSplits = rawFilePath.split(PATH_DELEMITOR);
+			fileName = pathSplits[pathSplits.length-1];
+		}
 		
-		return pathSplits[pathSplits.length-1];
+		return fileName;
 	}
 	
 	public String toString() {
