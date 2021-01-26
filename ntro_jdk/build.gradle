@@ -1,6 +1,10 @@
 plugins {
     id 'local-java-plugin'
+    id 'maven'
 }
+
+project.group = 'ca.ntro'
+project.version = '0.1'
 
 dependencies {
     implementation project(':ntro_core')
@@ -14,3 +18,8 @@ dependencies {
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
 }
+
+tasks.build {
+    finalizedBy 'install'
+}
+
