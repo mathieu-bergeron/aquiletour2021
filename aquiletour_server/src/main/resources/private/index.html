@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with aquiletour.  If not, see <https://www.gnu.org/licenses/> 
+along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
 -->
 
@@ -34,37 +34,43 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
         <!-- dev only: read source map -->
 	    <script src="https://unpkg.com/source-map@0.7.3/dist/source-map.js"></script>
 	    <script>
+			sourceMap.SourceMapConsumer.initialize({
+				"lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
+			});
 
-	        sourceMap.SourceMapConsumer.initialize({
-	                    "lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
-	                });
+			const sourceMapsToLoad = [
+				"/_R/js/ntro_core/bundle.js.map",
+				"/_R/js/ntro_jsweet/bundle.js.map",
+				"/_R/js/aquiletour_core/bundle.js.map",
+				"/_R/js/aquiletour_jsweet/bundle.js.map",
+			];
 
-	        window.onload = async function(){
+			const loadedSourceMaps = [];
 
-	                // FIXME: we have more than one source map to load!
-				    const response = await fetch('/_R/js/aquiletour_jsweet/bundle.js.map');
+	        window.onload = async function() {
+				for (const sourceMapUrl of sourceMapsToLoad) {
+					const response = await fetch(sourceMapUrl);
 
-                    if(response.ok){
+					if (response.ok) {
+						const rawSourceMap = await response.text();
+						const parsedSourceMap = await new sourceMap.SourceMapConsumer(rawSourceMap);
 
-                        const rawSourceMap = await response.text();
-                        const parsedSourceMap = await new sourceMap.SourceMapConsumer(rawSourceMap);
+						loadedSourceMaps.push(parsedSourceMap);
 
-                        ca.ntro.jsweet.debug.installSourceMapAnalyzer(function(lineColumn){
+						console.info(`loaded sourceMap at url ${sourceMapUrl}`);
+					} else {
+						ca.ntro.jsweet.onLoadTask.setError(new Error("cannot load source map"));
+					}
+				}
 
-                            originalPosition = parsedSourceMap.originalPositionFor(lineColumn);
+				ca.ntro.jsweet.debug.installSourceMapAnalyzer(function (lineColumn) {
+					originalPosition = parsedSourceMap.originalPositionFor(lineColumn);
 
-                            return originalPosition;
-                    
-                        });
+					return originalPosition;
+				});
 
-                        ca.ntro.jsweet.onLoadTask.notifyTaskFinished();
-
-                    }else{
-
-                        ca.ntro.jsweet.onLoadTask.setError(new Error("cannot load source map"));
-
-                    }
-                };
+				ca.ntro.jsweet.onLoadTask.notifyTaskFinished();
+			}
 	    </script>
 	</head>
 	<body current-path="" current-parameters="">
