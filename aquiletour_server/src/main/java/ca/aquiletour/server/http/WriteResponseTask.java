@@ -5,12 +5,13 @@ import java.io.OutputStream;
 
 import org.eclipse.jetty.server.Request;
 
-import ca.aquiletour.web.HandlerTask;
+import ca.aquiletour.web.HtmlWriterTask;
+import ca.aquiletour.web.RequestHandlerTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public class WriteResponseTask extends NtroTask {
-	
+public class WriteResponseTask extends NtroTaskImpl {
+
 	private OutputStream out;
 	private Request baseRequest;
 	
@@ -18,14 +19,20 @@ public class WriteResponseTask extends NtroTask {
 		this.baseRequest = baseRequest;
 		this.out = out;
 	}
+	
+	@Override
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	protected void runTask() {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
-		getPreviousTask(HandlerTask.class).writeHtml(builder);
-		
+		getSubTask(HtmlWriterTask.class, "RootController").writeHtml(builder);
+
 		try {
 
 			out.write(builder.toString().getBytes());

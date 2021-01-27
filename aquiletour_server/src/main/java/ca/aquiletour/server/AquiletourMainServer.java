@@ -29,9 +29,13 @@ import ca.aquiletour.server.http.ResourceHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public class AquiletourMainServer extends NtroTask {
+public class AquiletourMainServer extends NtroTaskImpl {
+
+	@Override
+	protected void initializeTask() {
+	}
 
 	@Override
 	protected void runTask() {
@@ -95,4 +99,5 @@ public class AquiletourMainServer extends NtroTask {
 
         server.join();
 	}
+
 }

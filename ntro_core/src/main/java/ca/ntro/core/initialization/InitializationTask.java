@@ -35,6 +35,11 @@ import ca.ntro.core.wrappers.options.None;
 public abstract class InitializationTask extends SyncTask<None> {
 
 	@Override
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
 	protected None runSyncTask() {
 		__T.call(InitializationTask.class, "runSyncTask");
 		performInitialization();

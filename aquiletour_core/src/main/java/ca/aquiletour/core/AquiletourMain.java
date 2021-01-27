@@ -17,28 +17,33 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.pages.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class AquiletourMain extends NtroTask {
+public abstract class AquiletourMain extends NtroTaskImpl {
+
+	@Override
+	protected void initializeTask() {
+
+	}
 
 	@Override
 	protected void runTask() {
 		T.call(this);
 		
-		String lang = getPreviousTask(NtroInitializationTask.class).getOption("lang");
+		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");
 
 		// FIXME
-		lang = "fr";
+		Constants.LANG = "fr";
 		
-		rootpageMain(lang).execute();
+		rootController().execute();
 		
 		notifyTaskFinished();
 	}
 	
-	protected abstract RootpageMain rootpageMain(String lang);
+	protected abstract RootController rootController();
 
 	@Override
 	protected void onFailure(Exception e) {

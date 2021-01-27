@@ -18,7 +18,6 @@
 package ca.ntro.core.mvc.view;
 
 import ca.ntro.core.Ntro;
-
 import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
 
@@ -32,6 +31,11 @@ public class ViewLoaderWeb extends ViewLoader {
 		super();
 		
 		
+	}
+
+	@Override
+	protected void initializeTask() {
+
 	}
 	
 	@Override
@@ -55,8 +59,11 @@ public class ViewLoaderWeb extends ViewLoader {
 		
 		MustNot.beNull(Ntro.resourceLoader());
 		MustNot.beNull(Ntro.resourceLoader().loadResourceTask(htmlPath));
+		
+		ResourceLoaderTask htmlLoader = Ntro.resourceLoader().loadResourceTask(htmlPath);
+		htmlLoader.setTaskId("Html");
 
-		addSubTask(Ntro.resourceLoader().loadResourceTask(htmlPath), "Html");
+		addSubTask(htmlLoader);
 
 		return this;
 	}

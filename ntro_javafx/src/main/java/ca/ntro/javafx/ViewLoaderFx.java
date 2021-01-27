@@ -34,6 +34,10 @@ public class ViewLoaderFx extends ViewLoader {
 	private ResourceBundle strings;
 	private Parent parent;
 
+	
+	@Override
+	protected void initializeTask() {
+	}
 
 	@Override
 	protected void runTask() {

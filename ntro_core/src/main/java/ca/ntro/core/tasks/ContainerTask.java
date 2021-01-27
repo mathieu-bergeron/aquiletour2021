@@ -17,7 +17,11 @@
 
 package ca.ntro.core.tasks;
 
-public class ContainerTask extends NtroTask {
+public class ContainerTask extends NtroTaskImpl {
+
+	@Override
+	protected void initializeTask() {
+	}
 
 	@Override
 	protected void runTask() {

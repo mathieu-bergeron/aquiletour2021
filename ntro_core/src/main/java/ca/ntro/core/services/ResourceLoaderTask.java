@@ -17,11 +17,16 @@
 
 package ca.ntro.core.services;
 
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class ResourceLoaderTask extends NtroTask {
+public abstract class ResourceLoaderTask extends NtroTaskImpl {
 	
 	private String resourcePath;
+
+
+	@Override
+	protected void initializeTask() {
+	}
 
 	public ResourceLoaderTask(String resourcePath) {
 		this.resourcePath = resourcePath;
