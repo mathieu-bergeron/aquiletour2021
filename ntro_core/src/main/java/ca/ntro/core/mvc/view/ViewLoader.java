@@ -17,9 +17,9 @@
 
 package ca.ntro.core.mvc.view;
 
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class ViewLoader extends NtroTask {
+public abstract class ViewLoader extends NtroTaskImpl {
 
 	private NtroView view;
 

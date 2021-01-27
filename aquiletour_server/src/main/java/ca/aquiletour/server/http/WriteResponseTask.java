@@ -5,12 +5,12 @@ import java.io.OutputStream;
 
 import org.eclipse.jetty.server.Request;
 
-import ca.aquiletour.web.HandlerTask;
+import ca.aquiletour.web.RequestHandlerTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public class WriteResponseTask extends NtroTask {
-	
+public class WriteResponseTask extends NtroTaskImpl {
+
 	private OutputStream out;
 	private Request baseRequest;
 	
@@ -30,8 +30,8 @@ public class WriteResponseTask extends NtroTask {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
-		getPreviousTask(HandlerTask.class).writeHtml(builder);
-		
+		getPreviousTask(RequestHandlerTask.class, "RootController").writeHtml(builder);
+
 		try {
 
 			out.write(builder.toString().getBytes());

@@ -1,11 +1,13 @@
-package ca.aquiletour.core.pages.rootpage;
+package ca.aquiletour.core.pages.dashboard;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class OpenDashboardTask extends NtroTask {
+public abstract class DashboardController extends NtroController {
 
 	@Override
 	protected void initializeTask() {
@@ -15,8 +17,6 @@ public abstract class OpenDashboardTask extends NtroTask {
 		addSubTask(viewLoader);
 	}
 	
-	protected abstract ViewLoader loadView(String lang);
-
 	@Override
 	protected void runTask() {
 		T.call(this);
@@ -24,12 +24,12 @@ public abstract class OpenDashboardTask extends NtroTask {
 		// FIXME: this only makes sense on the Server
 		//        in JavaFx, RootpageController will not be a previousTask!
 		//        (unless???)
-		RootpageController controller = getPreviousTask(RootpageController.class, "RootpageController");
+		RootController controller = getPreviousTask(RootController.class, "RootpageController");
 		
 		notifyTaskFinished();
 	}
 	
-	protected abstract RootpageController getRootpageController();
+	protected abstract RootController getRootController();
 
 	@Override
 	protected void onFailure(Exception e) {

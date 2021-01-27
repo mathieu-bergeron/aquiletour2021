@@ -17,12 +17,12 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.pages.rootpage.RootpageController;
+import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class AquiletourMain extends NtroTask {
+public abstract class AquiletourMain extends NtroTaskImpl {
 
 	@Override
 	protected void initializeTask() {
@@ -38,12 +38,12 @@ public abstract class AquiletourMain extends NtroTask {
 		// FIXME
 		Constants.LANG = "fr";
 		
-		rootpageMain().execute();
+		rootController().execute();
 		
 		notifyTaskFinished();
 	}
 	
-	protected abstract RootpageController rootpageMain();
+	protected abstract RootController rootController();
 
 	@Override
 	protected void onFailure(Exception e) {

@@ -1,6 +1,8 @@
 package ca.aquiletour.javafx.pages.rootpage;
 
-import ca.aquiletour.core.pages.rootpage.RootpageController;
+import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.aquiletour.javafx.NtroWindowFx;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.ViewLoader;
@@ -8,11 +10,11 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.ViewLoaderFx;
 import javafx.stage.Stage;
 
-public class RootpageMainFx extends RootpageController {
+public class RootControllerFx extends RootController {
 	
 	private NtroWindowFx window;
 
-	public RootpageMainFx(Stage primaryStage) {
+	public RootControllerFx(Stage primaryStage) {
 		T.call(this);
 
 		window = new NtroWindowFx(primaryStage);
@@ -30,5 +32,17 @@ public class RootpageMainFx extends RootpageController {
 	@Override
 	protected NtroWindow getWindow() {
 		return window;
+	}
+
+	@Override
+	public SettingsController createSettingsController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DashboardController createDashboardController() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

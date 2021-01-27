@@ -17,9 +17,9 @@
 
 package ca.ntro.jsweet.initialization;
 
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public class OnLoadTask extends NtroTask {
+public class OnLoadTask extends NtroTaskImpl {
 
 	@Override
 	protected void initializeTask() {

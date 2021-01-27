@@ -17,7 +17,7 @@
 
 package ca.ntro.core.tasks;
 
-public abstract class SyncTask<V extends Object> extends NtroTask {
+public abstract class SyncTask<V extends Object> extends NtroTaskImpl {
 	
 	private V returnValue;
 	

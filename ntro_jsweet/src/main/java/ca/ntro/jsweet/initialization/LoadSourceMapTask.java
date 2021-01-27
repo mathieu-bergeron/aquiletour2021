@@ -17,11 +17,11 @@
 
 package ca.ntro.jsweet.initialization;
 
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 import ca.ntro.jsweet.services.ResourceLoaderTaskJsweet;
 import def.es6.Globals;
 
-public class LoadSourceMapTask extends NtroTask {
+public class LoadSourceMapTask extends NtroTaskImpl {
 
 	@Override
 	protected void initializeTask() {

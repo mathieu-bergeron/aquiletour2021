@@ -1,9 +1,9 @@
 package ca.ntro.messages;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class MessageReceptionTask extends NtroTask {
+public abstract class MessageReceptionTask extends NtroTaskImpl {
 	
 	private Message message;
 	

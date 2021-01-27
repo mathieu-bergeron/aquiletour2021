@@ -17,13 +17,18 @@
 
 package ca.aquiletour.web.pages.rootpage;
 
-import ca.aquiletour.core.pages.rootpage.RootpageController;
+import java.util.Map;
+
+import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.settings.SettingsController;
+import ca.aquiletour.web.RequestHandlerTask;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 
-public abstract class RootpageControllerWeb extends RootpageController {
+public abstract class RootControllerWeb extends RootController implements RequestHandlerTask {
 
 	protected ViewLoader loadView(String lang) {
 		return Ntro.viewLoaderWeb()
@@ -36,10 +41,38 @@ public abstract class RootpageControllerWeb extends RootpageController {
 	//        is this supported in JSweet???
 	@Override
 	protected abstract NtroWindowWeb getWindow();
-	
+
+	@Override
 	public void writeHtml(StringBuilder out) {
 		T.call(this);
 		
 		getWindow().writeHtml(out);
+	}
+
+	public void initialRequest(String path, 
+		                       Map<String, String[]> parameters, 
+		                       String authToken) {
+		T.call(this);
+		
+		if(path.contains("settings")) {
+			
+			SettingsController settingsController = createSettingsController();
+			addNextTask(settingsController);
+
+		}else if(path.contains("dashboard")){
+			
+			DashboardController dashboardController = createDashboardController();
+			addNextTask(dashboardController);
+		}
+	}
+
+	@Override
+	public void newRequest(String oldPath, 
+			               String path, 
+			               Map<String, String[]> oldParameters, 
+			               Map<String, String[]> parameters, 
+			               String authToken) {
+		T.call(this);
+		
 	}
 }

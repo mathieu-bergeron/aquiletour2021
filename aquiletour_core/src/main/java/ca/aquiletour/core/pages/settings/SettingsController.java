@@ -1,9 +1,10 @@
-package ca.aquiletour.core.pages.rootpage;
+package ca.aquiletour.core.pages.settings;
 
+import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
 
-public class OpenSettingsTask extends NtroTask {
+public abstract class SettingsController extends NtroController {
 	
 	@Override
 	protected void initializeTask() {
@@ -18,7 +19,7 @@ public class OpenSettingsTask extends NtroTask {
 	protected void runTask() {
 		T.call(this);
 
-		RootpageController controller = getPreviousTask(RootpageController.class, "RootpageController");
+		RootController controller = getPreviousTask(RootController.class, "RootpageController");
 		
 		notifyTaskFinished();
 	}

@@ -20,11 +20,7 @@ package ca.aquiletour.server.http;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.nio.file.Path;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +30,8 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
-import ca.aquiletour.server.AquiletourMainServer;
-import ca.aquiletour.server.AquiletourRequestHandlerServer;
-import ca.aquiletour.web.AquiletourRequestHandler;
-import ca.aquiletour.web.HandlerTask;
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.server.pages.root.RootControllerServer;
 import ca.ntro.core.system.trace.T;
 
 public class DynamicHandler extends AbstractHandler {
@@ -65,8 +59,6 @@ public class DynamicHandler extends AbstractHandler {
 	private String privateFilesPrefix;
 	private FileLoader fileLoader;
 
-	private AquiletourRequestHandler aquiletourHandler = new AquiletourRequestHandlerServer();
-	
 	public DynamicHandler(String resourcesUrlPrefix, 
 			String publicFilesPrefix, 
 			FileLoader fileLoader) {
@@ -102,14 +94,17 @@ public class DynamicHandler extends AbstractHandler {
 		response.setStatus(HttpServletResponse.SC_OK);
 		
 		String authToken = null; // TODO
-
-		HandlerTask handlerTask;
-		handlerTask = aquiletourHandler.initialRequest(baseRequest.getRequestURI().toString(),
-							          baseRequest.getParameterMap(),
-							          authToken);
+		Constants.LANG = "fr";   // TODO
 		
-		handlerTask.addNextTask(new WriteResponseTask(baseRequest, out));
-		handlerTask.execute();
+		RootControllerServer rootpageController = new RootControllerServer();
+		rootpageController.setTaskId("RootController");
+
+		rootpageController.initialRequest(baseRequest.getRequestURI().toString(),
+				                          baseRequest.getParameterMap(),
+				                          authToken);
+
+		rootpageController.addNextTask(new WriteResponseTask(baseRequest, out));
+		rootpageController.execute();
 	}
 }
 

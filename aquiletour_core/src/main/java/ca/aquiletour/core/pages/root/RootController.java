@@ -15,17 +15,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.core.pages.rootpage;
+package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.settings.SettingsController;
+import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
 
-public abstract class RootpageController extends NtroTask {
+public abstract class RootController extends NtroController {
 	
-	private RootpageView rootpageView;
+	private RootView rootpageView;
 
 	@Override
 	protected void initializeTask() {
@@ -47,7 +49,7 @@ public abstract class RootpageController extends NtroTask {
 		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
 		getWindow().installRootView(viewLoader);
 		
-		rootpageView = (RootpageView) viewLoader.getView();
+		rootpageView = (RootView) viewLoader.getView();
 		
 		notifyTaskFinished();
 	}
@@ -57,7 +59,7 @@ public abstract class RootpageController extends NtroTask {
 		
 	}
 
-	public abstract OpenSettingsTask openSettingsTask();
-	public abstract OpenDashboardTask openDashboardTask();
+	public abstract SettingsController createSettingsController();
+	public abstract DashboardController createDashboardController();
 
 }
