@@ -30,7 +30,7 @@ public class WriteResponseTask extends NtroTaskImpl {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
-		getPreviousTask(RequestHandlerTask.class, "RootController").writeHtml(builder);
+		getSubTask(RequestHandlerTask.class, "RootController").writeHtml(builder);
 
 		try {
 

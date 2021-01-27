@@ -96,15 +96,19 @@ public class DynamicHandler extends AbstractHandler {
 		String authToken = null; // TODO
 		Constants.LANG = "fr";   // TODO
 		
-		RootControllerServer rootpageController = new RootControllerServer();
-		rootpageController.setTaskId("RootController");
+		RootControllerServer rootController = new RootControllerServer();
+		rootController.setTaskId("RootController");
+		
+		WriteResponseTask writeResponseTask = new WriteResponseTask(baseRequest, out);
+		writeResponseTask.addSubTask(rootController);
+		
+		// XXX: must be called after writeResponseTask.addSubTask
+		//      otherwise any nextTask added in rootController cannot be a subTask
+		rootController.initialRequest(baseRequest.getRequestURI().toString(),
+				                      baseRequest.getParameterMap(),
+				                      authToken);
 
-		rootpageController.initialRequest(baseRequest.getRequestURI().toString(),
-				                          baseRequest.getParameterMap(),
-				                          authToken);
-
-		rootpageController.addNextTask(new WriteResponseTask(baseRequest, out));
-		rootpageController.execute();
+		writeResponseTask.execute();
 	}
 }
 

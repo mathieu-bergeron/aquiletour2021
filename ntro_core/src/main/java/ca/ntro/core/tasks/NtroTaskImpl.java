@@ -224,7 +224,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends NtroTaskImpl> T getSubTask(Class<T> taskClass, String id) {
+	protected <T extends NtroTask> T getSubTask(Class<T> taskClass, String id) {
 		return (T) getSubTask(id);
 	}
 
