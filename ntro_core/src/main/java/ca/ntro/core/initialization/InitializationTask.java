@@ -30,7 +30,6 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.core.wrappers.options.None;
 
 public abstract class InitializationTask extends NtroTaskSync {
 
