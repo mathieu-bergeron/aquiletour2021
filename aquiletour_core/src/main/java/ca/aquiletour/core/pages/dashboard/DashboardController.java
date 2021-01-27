@@ -26,6 +26,10 @@ public abstract class DashboardController extends NtroController {
 		//        (unless???)
 		RootController controller = getPreviousTask(RootController.class, "RootpageController");
 		
+		DashboardView view = getSubTask(ViewLoader.class, "ViewLoader").getView();
+		
+		
+		
 		notifyTaskFinished();
 	}
 	
