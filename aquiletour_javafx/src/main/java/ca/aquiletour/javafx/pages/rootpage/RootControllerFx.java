@@ -23,7 +23,7 @@ public class RootControllerFx extends RootController {
 	}
 
 	@Override
-	protected ViewLoader loadView(String lang) {
+	protected ViewLoader createViewLoader(String lang) {
 		T.call(this);
 
 		return new ViewLoaderFx().setFxmlUrl("/views/rootpage/structure.xml")

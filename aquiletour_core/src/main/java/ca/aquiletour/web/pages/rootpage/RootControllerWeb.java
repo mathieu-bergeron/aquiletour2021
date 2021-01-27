@@ -20,6 +20,7 @@ package ca.aquiletour.web.pages.rootpage;
 import java.util.Map;
 
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.ShowSettingsTask;
 import ca.aquiletour.web.HtmlWriterTask;
 import ca.aquiletour.web.Path;
 import ca.aquiletour.web.RequestHandlerTask;
@@ -28,6 +29,7 @@ import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.web.NtroWindowWeb;
 
 public abstract class   RootControllerWeb 
@@ -35,7 +37,7 @@ public abstract class   RootControllerWeb
                 implements RequestHandlerTask,
                            HtmlWriterTask {
 
-	protected ViewLoader loadView(String lang) {
+	protected ViewLoader createViewLoader(String lang) {
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/rootpage/structure.html")
 		           .setCssUrl("/views/rootpage/style.css")
@@ -54,24 +56,20 @@ public abstract class   RootControllerWeb
 		T.call(this);
 		
 		if(path.startsWith("settings")) {
-			
-			SettingsControllerWeb settingsController = createSettingsController();
-			addNextTask(settingsController);
+
+			SettingsControllerWeb settingsController = (SettingsControllerWeb) getSettingsController();
 			
 			settingsController.initialRequest(path.subPath(1), parameters, authToken);
 			
-			// FIXME: does not work??
-			// XXX: in JavaFx, showSettings() is a task that answers to a message
-			settingsController.addNextTask(createShowSettingsTask());
+			addNextTask(createShowSettingsTask());
 
 		}else if(path.startsWith("dashboard")){
 			
-			DashboardControllerWeb dashboardController = createDashboardController();
-			addNextTask(dashboardController);
+			DashboardControllerWeb dashboardController = (DashboardControllerWeb) getDashboardController();
 			
 			dashboardController.initialRequest(path.subPath(1), parameters, authToken);
 			
-			dashboardController.addNextTask(createShowDashboardTask());
+			addNextTask(createShowDashboardTask());
 		}
 		
 		// TODO: comment envoyer un message? P.ex. formulaire via POST?

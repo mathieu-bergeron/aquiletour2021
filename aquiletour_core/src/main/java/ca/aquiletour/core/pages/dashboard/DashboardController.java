@@ -10,7 +10,7 @@ public abstract class DashboardController extends NtroController {
 
 	@Override
 	protected void initializeTask() {
-		ViewLoader viewLoader = loadView(Constants.LANG);
+		ViewLoader viewLoader = createViewLoader(Constants.LANG);
 		viewLoader.setTaskId("ViewLoader");
 		
 		addSubTask(viewLoader);

@@ -1,5 +1,6 @@
 package ca.aquiletour.core.pages.root;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
 public class ShowSettingsTask extends NtroTaskImpl {
@@ -18,6 +19,7 @@ public class ShowSettingsTask extends NtroTaskImpl {
 
 	@Override
 	protected void runTaskAsync() {
+		T.call(this);
 		
 		rootController.showSettings();
 		

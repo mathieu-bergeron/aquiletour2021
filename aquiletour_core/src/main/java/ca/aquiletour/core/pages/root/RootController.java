@@ -27,28 +27,34 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class RootController extends NtroController {
 	
+	private ViewLoader viewLoader;
+	private DashboardController dashboardController;
+	private SettingsController settingsController;
+	
 	private RootView rootpageView;
 
 	@Override
 	protected void initializeTask() {
 		T.call(this);
 
-		ViewLoader viewLoader = loadView(Constants.LANG);
-		viewLoader.setTaskId("ViewLoader");
-		
+		viewLoader = createViewLoader(Constants.LANG);
+		dashboardController = createDashboardController();
+		settingsController = createSettingsController();
+
 		addSubTask(viewLoader);
+		addSubTask(dashboardController);
+		addSubTask(settingsController);
 	}
 
-	protected abstract ViewLoader loadView(String lang);
+	protected abstract ViewLoader createViewLoader(String lang);
 	protected abstract NtroWindow getWindow();
 
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
 		getWindow().installRootView(viewLoader);
-		
+
 		rootpageView = (RootView) viewLoader.getView();
 		
 		notifyTaskFinished();
@@ -77,11 +83,25 @@ public abstract class RootController extends NtroController {
 	public void showSettings() {
 		T.call(this);
 		
+		settingsController.installView(rootpageView);
 	}
 
 	public void showDashboard() {
 		T.call(this);
-		
+
+		dashboardController.installView(rootpageView);
+	}
+	
+	protected SettingsController getSettingsController() {
+		T.call(this);
+
+		return settingsController;
+	}
+
+	protected DashboardController getDashboardController() {
+		T.call(this);
+
+		return dashboardController;
 	}
 
 }

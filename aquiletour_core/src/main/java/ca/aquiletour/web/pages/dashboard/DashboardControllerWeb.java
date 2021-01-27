@@ -12,7 +12,7 @@ import ca.ntro.core.system.trace.T;
 public abstract class DashboardControllerWeb extends DashboardController implements RequestHandlerTask {
 
 	@Override
-	protected ViewLoader loadView(String lang) {
+	protected ViewLoader createViewLoader(String lang) {
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/dashboard/structure.html")
 		           .setCssUrl("/views/dashboard/style.css")

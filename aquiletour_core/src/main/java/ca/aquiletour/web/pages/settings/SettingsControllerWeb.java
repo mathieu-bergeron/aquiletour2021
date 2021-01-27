@@ -12,7 +12,7 @@ import ca.ntro.core.system.trace.T;
 public abstract class SettingsControllerWeb extends SettingsController implements RequestHandlerTask {
 
 	@Override
-	protected ViewLoader loadView(String lang) {
+	protected ViewLoader createViewLoader(String lang) {
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/settings/structure.html")
 		           .setCssUrl("/views/settings/style.css")
