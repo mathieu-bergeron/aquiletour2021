@@ -61,6 +61,7 @@ public abstract class   RootControllerWeb
 			settingsController.initialRequest(path.subPath(1), parameters, authToken);
 			
 			// FIXME: does not work??
+			// XXX: in JavaFx, showSettings() is a task that answers to a message
 			settingsController.addNextTask(showSettings());
 
 		}else if(path.startsWith("dashboard")){
