@@ -2,6 +2,8 @@ package ca.aquiletour.javafx.pages.rootpage;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.ShowDashboardTask;
+import ca.aquiletour.core.pages.root.ShowSettingsTask;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.aquiletour.javafx.NtroWindowFx;
 import ca.ntro.core.mvc.NtroWindow;
@@ -42,6 +44,18 @@ public class RootControllerFx extends RootController {
 
 	@Override
 	public DashboardController createDashboardController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ShowSettingsTask showSettings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ShowDashboardTask showDashboard() {
 		// TODO Auto-generated method stub
 		return null;
 	}

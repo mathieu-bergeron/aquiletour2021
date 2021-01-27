@@ -5,6 +5,7 @@ import java.io.OutputStream;
 
 import org.eclipse.jetty.server.Request;
 
+import ca.aquiletour.web.HtmlWriterTask;
 import ca.aquiletour.web.RequestHandlerTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
@@ -30,7 +31,7 @@ public class WriteResponseTask extends NtroTaskImpl {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
-		getSubTask(RequestHandlerTask.class, "RootController").writeHtml(builder);
+		getSubTask(HtmlWriterTask.class, "RootController").writeHtml(builder);
 
 		try {
 

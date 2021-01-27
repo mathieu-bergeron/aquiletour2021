@@ -32,6 +32,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.server.pages.root.RootControllerServer;
+import ca.aquiletour.web.Path;
 import ca.ntro.core.system.trace.T;
 
 public class DynamicHandler extends AbstractHandler {
@@ -104,7 +105,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		// XXX: must be called after writeResponseTask.addSubTask
 		//      otherwise any nextTask added in rootController cannot be a subTask
-		rootController.initialRequest(baseRequest.getRequestURI().toString(),
+		rootController.initialRequest(new Path(baseRequest.getRequestURI().toString()),
 				                      baseRequest.getParameterMap(),
 				                      authToken);
 

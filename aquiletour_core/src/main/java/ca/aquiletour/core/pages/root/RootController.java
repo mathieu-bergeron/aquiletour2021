@@ -62,4 +62,16 @@ public abstract class RootController extends NtroController {
 	public abstract SettingsController createSettingsController();
 	public abstract DashboardController createDashboardController();
 
+	public ShowSettingsTask showSettings() {
+		T.call(this);
+		
+		return new ShowSettingsTask();
+	}
+
+	public ShowDashboardTask showDashboard() {
+		T.call(this);
+
+		return new ShowDashboardTask();
+	}
+
 }
