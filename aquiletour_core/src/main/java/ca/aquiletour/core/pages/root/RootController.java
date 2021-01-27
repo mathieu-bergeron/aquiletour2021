@@ -43,7 +43,7 @@ public abstract class RootController extends NtroController {
 	protected abstract NtroWindow getWindow();
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 		
 		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
@@ -62,16 +62,26 @@ public abstract class RootController extends NtroController {
 	public abstract SettingsController createSettingsController();
 	public abstract DashboardController createDashboardController();
 
-	public ShowSettingsTask showSettings() {
+	public ShowSettingsTask createShowSettingsTask() {
 		T.call(this);
 		
-		return new ShowSettingsTask();
+		return new ShowSettingsTask(this);
 	}
 
-	public ShowDashboardTask showDashboard() {
+	public ShowDashboardTask createShowDashboardTask() {
 		T.call(this);
 
-		return new ShowDashboardTask();
+		return new ShowDashboardTask(this);
+	}
+
+	public void showSettings() {
+		T.call(this);
+		
+	}
+
+	public void showDashboard() {
+		T.call(this);
+		
 	}
 
 }

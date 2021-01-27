@@ -39,7 +39,7 @@ public class ViewLoaderWeb extends ViewLoader {
 	}
 	
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 
 		// FIXME: explicit casting as otherwise we get type errors in JSweet

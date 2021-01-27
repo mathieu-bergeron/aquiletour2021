@@ -38,7 +38,7 @@ public class AquiletourMainServer extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 		
 		// TODO: fetching option (parsed by InitializationTask)

@@ -34,7 +34,7 @@ public class LoadSourceMapTask extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		
 		String sourceMap = getSubTask(ResourceLoaderTaskJsweet.class).getResourceAsString();
 		

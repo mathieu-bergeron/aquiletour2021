@@ -24,7 +24,7 @@ public class ContainerTask extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		notifyTaskFinished();
 	}
 

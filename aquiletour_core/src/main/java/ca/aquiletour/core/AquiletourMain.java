@@ -30,7 +30,7 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 		
 		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");

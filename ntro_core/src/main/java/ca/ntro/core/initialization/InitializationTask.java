@@ -29,10 +29,10 @@ import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.core.tasks.SyncTask;
+import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.core.wrappers.options.None;
 
-public abstract class InitializationTask extends SyncTask<None> {
+public abstract class InitializationTask extends NtroTaskSync {
 
 	@Override
 	protected void initializeTask() {
@@ -40,10 +40,9 @@ public abstract class InitializationTask extends SyncTask<None> {
 	}
 
 	@Override
-	protected None runSyncTask() {
+	protected void runTask() {
 		__T.call(InitializationTask.class, "runSyncTask");
 		performInitialization();
-		return null;
 	}
 
 	@Override

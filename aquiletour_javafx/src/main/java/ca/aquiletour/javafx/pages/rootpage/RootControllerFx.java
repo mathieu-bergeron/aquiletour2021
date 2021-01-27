@@ -49,13 +49,13 @@ public class RootControllerFx extends RootController {
 	}
 
 	@Override
-	public ShowSettingsTask showSettings() {
+	public ShowSettingsTask createShowSettingsTask() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ShowDashboardTask showDashboard() {
+	public ShowDashboardTask createShowDashboardTask() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -26,7 +26,7 @@ public class OnLoadTask extends NtroTaskImpl {
 	}
 
 	@Override
-	public void runTask() {
+	public void runTaskAsync() {
 		// XXX: here we want setReturnValue(null) to 
 		//      be called from Javascript (for now)
 	}

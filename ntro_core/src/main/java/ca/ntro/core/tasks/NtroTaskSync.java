@@ -17,19 +17,13 @@
 
 package ca.ntro.core.tasks;
 
-public abstract class SyncTask<V extends Object> extends NtroTaskImpl {
+public abstract class NtroTaskSync extends NtroTaskImpl {
 	
-	private V returnValue;
-	
-	public V getReturnValue() {
-		return returnValue;
-	}
-
 	@Override
-	protected void runTask() {
-		returnValue = runSyncTask();
+	protected void runTaskAsync() {
+		runTask();
 		notifyTaskFinished();
 	}
 
-	protected abstract V runSyncTask();
+	protected abstract void runTask();
 }

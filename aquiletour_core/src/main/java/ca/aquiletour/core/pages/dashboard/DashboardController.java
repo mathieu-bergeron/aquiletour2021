@@ -5,7 +5,6 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
 
 public abstract class DashboardController extends NtroController {
 
@@ -18,7 +17,7 @@ public abstract class DashboardController extends NtroController {
 	}
 	
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 		
 		// FIXME: this only makes sense on the Server
@@ -26,9 +25,7 @@ public abstract class DashboardController extends NtroController {
 		//        (unless???)
 		RootController controller = getPreviousTask(RootController.class, "RootpageController");
 		
-		DashboardView view = getSubTask(ViewLoader.class, "ViewLoader").getView();
-		
-		
+		DashboardView view = (DashboardView) getSubTask(ViewLoader.class, "ViewLoader").getView();
 		
 		notifyTaskFinished();
 	}

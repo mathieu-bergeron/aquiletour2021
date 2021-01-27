@@ -38,7 +38,7 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 		
 		InputStream resourceStream = ResourceLoaderTask.class.getResourceAsStream(getResourcePath());

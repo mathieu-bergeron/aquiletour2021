@@ -39,7 +39,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 	private String taskId;
 	
 	protected abstract void initializeTask();
-	protected abstract void runTask();
+	protected abstract void runTaskAsync();
 	protected abstract void onFailure(Exception e);
 	
 	public NtroTaskImpl() {
@@ -126,7 +126,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 				break;
 
 			case EXECUTE_CURRENT_TASK:
-				runTask();
+				runTaskAsync();
 				break;
 
 			case EXECUTE_NEXT_TASKS:

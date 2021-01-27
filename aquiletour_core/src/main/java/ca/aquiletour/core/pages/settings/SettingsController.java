@@ -16,7 +16,7 @@ public abstract class SettingsController extends NtroController {
 
 	
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 
 		RootController controller = getPreviousTask(RootController.class, "RootpageController");

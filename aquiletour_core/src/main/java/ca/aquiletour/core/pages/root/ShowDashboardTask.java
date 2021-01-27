@@ -4,6 +4,12 @@ import ca.ntro.core.tasks.NtroTaskImpl;
 
 public class ShowDashboardTask extends NtroTaskImpl {
 
+	private RootController rootController;
+
+	public ShowDashboardTask(RootController rootController) {
+		this.rootController = rootController;
+	}
+
 	@Override
 	protected void initializeTask() {
 		// TODO Auto-generated method stub
@@ -11,7 +17,9 @@ public class ShowDashboardTask extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
+		
+		rootController.showDashboard();
 		
 		notifyTaskFinished();
 	}

@@ -62,7 +62,7 @@ public abstract class   RootControllerWeb
 			
 			// FIXME: does not work??
 			// XXX: in JavaFx, showSettings() is a task that answers to a message
-			settingsController.addNextTask(showSettings());
+			settingsController.addNextTask(createShowSettingsTask());
 
 		}else if(path.startsWith("dashboard")){
 			
@@ -71,7 +71,7 @@ public abstract class   RootControllerWeb
 			
 			dashboardController.initialRequest(path.subPath(1), parameters, authToken);
 			
-			dashboardController.addNextTask(showDashboard());
+			dashboardController.addNextTask(createShowDashboardTask());
 		}
 		
 		// TODO: comment envoyer un message? P.ex. formulaire via POST?

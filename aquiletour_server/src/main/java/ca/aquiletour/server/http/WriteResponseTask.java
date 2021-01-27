@@ -27,7 +27,7 @@ public class WriteResponseTask extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
