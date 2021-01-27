@@ -57,11 +57,7 @@ public abstract class RootpageController extends NtroTask {
 		
 	}
 
-	public static OpenSettingsTask openSettingsTask() {
-		return new OpenSettingsTask();
-	}
+	public abstract OpenSettingsTask openSettingsTask();
+	public abstract OpenDashboardTask openDashboardTask();
 
-	public static OpenDashboardTask openDashboardTask() {
-		return new OpenDashboardTask();
-	}
 }

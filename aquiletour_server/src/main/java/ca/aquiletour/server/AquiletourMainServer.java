@@ -35,8 +35,6 @@ public class AquiletourMainServer extends NtroTask {
 
 	@Override
 	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

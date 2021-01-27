@@ -27,7 +27,7 @@ public abstract class AquiletourRequestHandler {
 		
 		if(path.contains("settings")) {
 			
-			OpenSettingsTask openSettingsTask = RootpageController.openSettingsTask();
+			OpenSettingsTask openSettingsTask = rootpageController.openSettingsTask();
 			
 			// TODO: NtroTask must support subgraph
 			//       the nextTask of a subTask should also be a subTask
@@ -36,7 +36,7 @@ public abstract class AquiletourRequestHandler {
 			
 		}else if(path.contains("dashboard")) {
 			
-			OpenDashboardTask openDashboardTask = RootpageController.openDashboardTask();
+			OpenDashboardTask openDashboardTask = rootpageController.openDashboardTask();
 
 			rootpageController.addNextTask(openDashboardTask);
 			handler.addSubTask(openDashboardTask);
