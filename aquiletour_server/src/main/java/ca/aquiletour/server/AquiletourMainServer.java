@@ -34,6 +34,12 @@ import ca.ntro.core.tasks.NtroTask;
 public class AquiletourMainServer extends NtroTask {
 
 	@Override
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	protected void runTask() {
 		T.call(this);
 		
@@ -95,4 +101,5 @@ public class AquiletourMainServer extends NtroTask {
 
         server.join();
 	}
+
 }

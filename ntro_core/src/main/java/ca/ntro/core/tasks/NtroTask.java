@@ -17,9 +17,7 @@
 
 package ca.ntro.core.tasks;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.system.trace.__T;
@@ -28,18 +26,39 @@ public abstract class NtroTask {
 
 	private NtroTask parentTask;
 
-	private Map<String, NtroTask> previousTasks = new HashMap<>();
+	private Set<NtroTask> previousTasks = new HashSet<>();
 	private int finishedPreviousTasks = 0;
 
-	private Map<String, NtroTask> subTasks = new HashMap<>();
+	private Set<NtroTask> subTasks = new HashSet<>();
 	private int finishedSubTasks = 0;
 
 	private Set<NtroTask> nextTasks = new HashSet<>();
 
 	private State state = State.INITIALIZING;
 	
+	private String taskId;
+	
+	protected abstract void initializeTask();
 	protected abstract void runTask();
 	protected abstract void onFailure(Exception e);
+	
+	public NtroTask() {
+		initializeTask();
+	}
+	
+	public void setTaskId(String taskId) {
+		// __T.call(this, "setTaskId");
+
+		this.taskId = taskId;
+	}
+
+	private String getTaskId() {
+		if(taskId == null) {
+			taskId = defaultId(this);
+		}
+		
+		return taskId;
+	}
 
 	public void reset() {
 		// TODO
@@ -119,7 +138,7 @@ public abstract class NtroTask {
 	}
 
 	private void executePreviousTasks() {
-		for(NtroTask previousTask : previousTasks.values()) {
+		for(NtroTask previousTask : previousTasks) {
 			previousTask.execute();
 		}
 	}
@@ -172,21 +191,52 @@ public abstract class NtroTask {
 	}
 	
 	protected <T extends NtroTask> T getPreviousTask(Class<T> taskClass) {
-		return getPreviousTask(taskClass, taskClass.getSimpleName());
+		return getPreviousTask(taskClass, defaultIdFromClass(taskClass));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <T extends NtroTask> T getPreviousTask(Class<T> taskClass, String id) {
-		return (T) previousTasks.get(id);
+		return (T) getPreviousTask(id);
+	}
+	
+	private NtroTask getPreviousTask(String id) {
+		NtroTask task = null;
+
+		for(NtroTask previousTask : previousTasks) {
+			if(previousTask.hasId(id)) {
+				task = previousTask;
+				break;
+			}
+		}
+
+		return task;
 	}
 
+	private boolean hasId(String id) {
+		return id.equals(taskId);
+	}
+	
 	protected <T extends NtroTask> T getSubTask(Class<T> taskClass) {
 		return getSubTask(taskClass, defaultIdFromClass(taskClass));
 	}
 
 	@SuppressWarnings("unchecked")
 	protected <T extends NtroTask> T getSubTask(Class<T> taskClass, String id) {
-		return (T) subTasks.get(id);
+		return (T) getSubTask(id);
+	}
+
+	private NtroTask getSubTask(String id) {
+		NtroTask task = null;
+
+		for(NtroTask subTask : subTasks) {
+			if(subTask.hasId(id)) {
+				task = subTask;
+				break;
+			}
+		}
+		
+		return task;
+		
 	}
 
 	protected <T extends NtroTask> T getFinishedTask(Class<T> taskClass) {
@@ -195,9 +245,9 @@ public abstract class NtroTask {
 
 	@SuppressWarnings("unchecked")
 	protected <T extends NtroTask> T getFinishedTask(Class<T> taskClass, String id) {
-		T finishedTask = (T) subTasks.get(id);
+		T finishedTask = getSubTask(taskClass, id);
 		if(finishedTask == null) {
-			finishedTask = (T) previousTasks.get(id);
+			finishedTask = getPreviousTask(taskClass, id);
 		}
 		return finishedTask;
 	}
@@ -210,15 +260,23 @@ public abstract class NtroTask {
 		return taskClass.getSimpleName();
 	}
 
-	public NtroTask addPreviousTask(NtroTask task) {
-		return addPreviousTask(task, defaultId(task));
+	private boolean hasPreviousTask(String taskId) {
+		return getPreviousTask(taskId) != null;
 	}
 
-	public NtroTask addPreviousTask(NtroTask task, String taskId) {
+	private boolean hasSubTask(String taskId) {
+		return getSubTask(taskId) != null;
+	}
+
+	public NtroTask addPreviousTask(NtroTask task) {
+		String taskId = task.getTaskId();
+
 		if(state == State.INITIALIZING) {
-			if(!previousTasks.containsKey(taskId)) {
-				previousTasks.put(taskId, task);
+			if(!hasPreviousTask(taskId)) {
+				previousTasks.add(task);
 				task.addNextTask(this);
+			}else {
+				System.err.println("[WARNING] a previousTask already exists with id " + taskId);
 			}
 		}else {
 			throw new IllegalStateException("Task.addPreviousTask called on state " + state);
@@ -232,6 +290,8 @@ public abstract class NtroTask {
 			if(!nextTasks.contains(task)) {
 				nextTasks.add(task);
 				task.addPreviousTask(this);
+			}else {
+				System.err.println("[WARNING] a nextTask already exists with class " + task.getClass().getSimpleName());
 			}
 		}else {
 			throw new IllegalStateException("Task.addPreviousTask called on state " + state);
@@ -245,22 +305,23 @@ public abstract class NtroTask {
 	}
 
 	private void executeSubTasks() {
-		for(NtroTask subTask : subTasks.values()) {
+		for(NtroTask subTask : subTasks) {
 			subTask.execute();
 		}
 	}
 
-	public void addSubTask(NtroTask task, String taskId) {
+	public void addSubTask(NtroTask task) {
+		String taskId = task.getTaskId();
+
 		if(state == State.INITIALIZING) {
-			task.setParentTask(this);
-			subTasks.put(taskId, task);
+			if(!hasSubTask(taskId)) {
+				task.setParentTask(this);
+				subTasks.add(task);
+			}else {
+				System.err.println("[WARNING] a task already exists with id " + taskId);
+			}
 		}else {
 			throw new IllegalStateException("Task.addSubTask called on state " + state);
 		}
 	}
-
-	public void addSubTask(NtroTask task) {
-		addSubTask(task, defaultId(task));
-	}
-	
 }

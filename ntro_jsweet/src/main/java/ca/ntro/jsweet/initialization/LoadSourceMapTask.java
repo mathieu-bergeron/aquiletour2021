@@ -22,6 +22,10 @@ import ca.ntro.jsweet.services.ResourceLoaderTaskJsweet;
 import def.es6.Globals;
 
 public class LoadSourceMapTask extends NtroTask {
+
+	@Override
+	protected void initializeTask() {
+	}
 	
 	public LoadSourceMapTask(String path) {
 		

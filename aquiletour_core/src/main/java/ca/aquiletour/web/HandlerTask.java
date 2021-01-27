@@ -6,12 +6,9 @@ import ca.ntro.core.tasks.NtroTask;
 
 public class HandlerTask extends NtroTask {
 
-
-	// XXX: OutputStream not supported in JSweet
-	public void writeHtml(StringBuilder out) {
+	@Override
+	protected void initializeTask() {
 		T.call(this);
-
-		getSubTask(RootpageControllerWeb.class, "RootPageMain").writeHtml(out);
 	}
 
 	@Override
@@ -27,5 +24,10 @@ public class HandlerTask extends NtroTask {
 		
 	}
 
+	// XXX: OutputStream not supported in JSweet
+	public void writeHtml(StringBuilder out) {
+		T.call(this);
 
+		getSubTask(RootpageControllerWeb.class, "RootpageController").writeHtml(out);
+	}
 }

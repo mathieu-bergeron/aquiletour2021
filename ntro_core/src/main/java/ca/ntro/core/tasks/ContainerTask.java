@@ -20,6 +20,10 @@ package ca.ntro.core.tasks;
 public class ContainerTask extends NtroTask {
 
 	@Override
+	protected void initializeTask() {
+	}
+
+	@Override
 	protected void runTask() {
 		notifyTaskFinished();
 	}

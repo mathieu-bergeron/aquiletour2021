@@ -6,8 +6,8 @@ import ca.aquiletour.web.AquiletourRequestHandler;
 public class AquiletourRequestHandlerServer extends AquiletourRequestHandler {
 
 	@Override
-	protected RootpageController rootpageMain(String lang) {
-		return new RootpageMainServer(lang);
+	protected RootpageController rootpageController() {
+		return new RootpageMainServer();
 	}
 
 }

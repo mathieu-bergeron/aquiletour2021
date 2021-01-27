@@ -23,6 +23,11 @@ public abstract class ResourceLoaderTask extends NtroTask {
 	
 	private String resourcePath;
 
+
+	@Override
+	protected void initializeTask() {
+	}
+
 	public ResourceLoaderTask(String resourcePath) {
 		this.resourcePath = resourcePath;
 	}

@@ -25,10 +25,6 @@ import ca.ntro.web.NtroWindowWeb;
 
 public abstract class RootpageControllerWeb extends RootpageController {
 
-	public RootpageControllerWeb(String lang) {
-		super(lang);
-	}
-
 	protected ViewLoader loadView(String lang) {
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/rootpage/structure.html")

@@ -25,20 +25,25 @@ import ca.ntro.core.tasks.NtroTask;
 public abstract class AquiletourMain extends NtroTask {
 
 	@Override
+	protected void initializeTask() {
+
+	}
+
+	@Override
 	protected void runTask() {
 		T.call(this);
 		
-		String lang = getPreviousTask(NtroInitializationTask.class).getOption("lang");
+		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");
 
 		// FIXME
-		lang = "fr";
+		Constants.LANG = "fr";
 		
-		rootpageMain(lang).execute();
+		rootpageMain().execute();
 		
 		notifyTaskFinished();
 	}
 	
-	protected abstract RootpageController rootpageMain(String lang);
+	protected abstract RootpageController rootpageMain();
 
 	@Override
 	protected void onFailure(Exception e) {

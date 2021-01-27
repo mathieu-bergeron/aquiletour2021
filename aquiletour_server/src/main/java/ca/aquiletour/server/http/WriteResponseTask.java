@@ -18,6 +18,12 @@ public class WriteResponseTask extends NtroTask {
 		this.baseRequest = baseRequest;
 		this.out = out;
 	}
+	
+	@Override
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	protected void runTask() {

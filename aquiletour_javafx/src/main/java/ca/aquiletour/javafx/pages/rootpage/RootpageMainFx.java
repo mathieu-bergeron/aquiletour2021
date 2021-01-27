@@ -12,9 +12,9 @@ public class RootpageMainFx extends RootpageController {
 	
 	private NtroWindowFx window;
 
-	public RootpageMainFx(String lang, Stage primaryStage) {
-		super(lang);
-		
+	public RootpageMainFx(Stage primaryStage) {
+		T.call(this);
+
 		window = new NtroWindowFx(primaryStage);
 	}
 

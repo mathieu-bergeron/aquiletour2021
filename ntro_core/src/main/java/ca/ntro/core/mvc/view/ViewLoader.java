@@ -22,7 +22,7 @@ import ca.ntro.core.tasks.NtroTask;
 public abstract class ViewLoader extends NtroTask {
 
 	private NtroView view;
-	
+
 	public NtroView getView() {
 		return view;
 	}

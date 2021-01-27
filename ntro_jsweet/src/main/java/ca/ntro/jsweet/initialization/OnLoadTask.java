@@ -22,6 +22,10 @@ import ca.ntro.core.tasks.NtroTask;
 public class OnLoadTask extends NtroTask {
 
 	@Override
+	protected void initializeTask() {
+	}
+
+	@Override
 	public void runTask() {
 		// XXX: here we want setReturnValue(null) to 
 		//      be called from Javascript (for now)

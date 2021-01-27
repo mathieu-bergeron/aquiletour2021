@@ -33,9 +33,7 @@ public class AquiletourMainFx extends AquiletourMain {
 	}
 
 	@Override
-	protected RootpageController rootpageMain(String lang) {
-		return new RootpageMainFx(lang, primaryStage);
+	protected RootpageController rootpageMain() {
+		return new RootpageMainFx(primaryStage);
 	}
-
-
 }

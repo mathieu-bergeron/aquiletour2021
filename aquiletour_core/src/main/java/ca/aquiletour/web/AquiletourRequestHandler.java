@@ -2,6 +2,9 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.rootpage.OpenDashboardTask;
+import ca.aquiletour.core.pages.rootpage.OpenSettingsTask;
 import ca.aquiletour.core.pages.rootpage.RootpageController;
 import ca.ntro.core.system.trace.T;
 
@@ -12,36 +15,37 @@ public abstract class AquiletourRequestHandler {
 			                          String authToken) {
 		T.call(this);
 		
-		// FIXME: get this from request
-		String lang = "fr";
-		
-		RootpageController rootpageMain = rootpageMain(lang);
+		// TODO: get this from request
+		Constants.LANG = "fr";
+
+		RootpageController rootpageController = rootpageController();
+		rootpageController.setTaskId("RootpageController");
 		
 		HandlerTask handler = new HandlerTask();
 
-		handler.addSubTask(rootpageMain, "RootPageMain");
+		handler.addSubTask(rootpageController);
 		
 		if(path.contains("settings")) {
 			
-			SendSettingsMessage sendSettingsMessage = new SendSettingsMessage();
-
+			OpenSettingsTask openSettingsTask = RootpageController.openSettingsTask();
+			
 			// TODO: NtroTask must support subgraph
 			//       the nextTask of a subTask should also be a subTask
-			rootpageMain.addNextTask(sendSettingsMessage);
-			handler.addSubTask(sendSettingsMessage);
+			rootpageController.addNextTask(openSettingsTask);
+			handler.addSubTask(openSettingsTask);
 			
 		}else if(path.contains("dashboard")) {
 			
-			SendDashboardMessage sendDashboardMessage = new SendDashboardMessage();
+			OpenDashboardTask openDashboardTask = RootpageController.openDashboardTask();
 
-			rootpageMain.addNextTask(sendDashboardMessage);
-			handler.addSubTask(sendDashboardMessage);
+			rootpageController.addNextTask(openDashboardTask);
+			handler.addSubTask(openDashboardTask);
 		}
 		
 		return handler;
 	}
 	
-	protected abstract RootpageController rootpageMain(String lang);
+	protected abstract RootpageController rootpageController();
 
 	public HandlerTask newRequest(String oldPath, 
 			               String path, 

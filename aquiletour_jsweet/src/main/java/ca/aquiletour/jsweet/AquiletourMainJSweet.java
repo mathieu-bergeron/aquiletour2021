@@ -7,9 +7,9 @@ import ca.ntro.core.system.trace.T;
 public class AquiletourMainJSweet extends AquiletourMain {
 	
 	@Override
-	protected RootpageController rootpageMain(String lang) {
+	protected RootpageController rootpageMain() {
 		T.call(this);
 
-		return new RootpageMainJSweet(lang);
+		return new RootpageMainJSweet();
 	}
 }
