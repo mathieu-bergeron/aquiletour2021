@@ -30,6 +30,7 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public abstract class InitializationTask extends NtroTaskSync {
 
@@ -66,6 +67,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		Ntro.zzz_registerResourceLoader(provideResourceLoader());
 		
+		Ntro.__registerViewLoaderWeb(provideViewLoaderWeb());
+		
 		
 		ValueFormatter.initialize(provideValueFormatter());
 		NtroCollections.initialize(provideNtroCollections());
@@ -79,5 +82,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract ValueFormatter provideValueFormatter();
 	protected abstract NtroCollections provideNtroCollections();
 	protected abstract ResourceLoader provideResourceLoader();
+	protected abstract ViewLoaderWeb provideViewLoaderWeb();
 
 }

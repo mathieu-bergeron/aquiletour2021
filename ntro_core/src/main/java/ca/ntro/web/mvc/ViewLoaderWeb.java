@@ -23,10 +23,10 @@ import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
-
+import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.core.system.assertions.MustNot;
 
-public class ViewLoaderWeb extends ViewLoader {
+public abstract class ViewLoaderWeb extends ViewLoader {
 	
 	private String html;
 	private Class<? extends NtroViewWeb> viewClass;
@@ -102,9 +102,13 @@ public class ViewLoaderWeb extends ViewLoader {
 
 		NtroViewWeb view = Factory.newInstance(viewClass);
 		
-		// TODO
-		view.setRootElement(null);
-
+		HtmlElement rootElement = parseHtml(html);
+		
+		view.setRootElement(rootElement);
+		
 		return view;
 	}
+
+	protected abstract HtmlElement parseHtml(String html);
+
 }

@@ -32,6 +32,7 @@ public class Ntro {
 	private static AppCloser appCloser;
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
+	private static ViewLoaderWeb viewLoaderWeb;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -43,6 +44,12 @@ public class Ntro {
 		//System.out.println("#T.call (Ntro.java) >> Ntro.__registerIntrospector");
 
 		Ntro.introspector = introspector;
+	}
+
+	public static void __registerViewLoaderWeb(ViewLoaderWeb viewLoaderWeb) {
+		//System.out.println("#T.call (Ntro.java) >> Ntro.__registerIntrospector");
+
+		Ntro.viewLoaderWeb = viewLoaderWeb;
 	}
 
 	public static void __registerLogger(Logger logger) {
@@ -114,7 +121,7 @@ public class Ntro {
 	}
 
 	public static ViewLoaderWeb viewLoaderWeb() {
-		return new ViewLoaderWeb();
+		return viewLoaderWeb;
 	}
 
 }

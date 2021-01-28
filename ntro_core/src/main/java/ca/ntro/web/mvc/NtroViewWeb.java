@@ -8,10 +8,15 @@ public class NtroViewWeb implements NtroView {
 	
 	private HtmlElement rootElement;
 	
-	public void setRootElement(HtmlElement rootElement) {
+	protected void setRootElement(HtmlElement rootElement) {
 		T.call(this);
 		
 		this.rootElement = rootElement;
 	}
-
+	
+	protected HtmlElement getRootElement() {
+		T.call(this);
+		
+		return rootElement;
+	}
 }
