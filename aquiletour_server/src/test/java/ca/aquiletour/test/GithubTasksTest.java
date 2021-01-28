@@ -1,6 +1,7 @@
 package ca.aquiletour.test;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.junit.Test;
 import static org.junit.Assert.assertNotEquals;
@@ -14,7 +15,8 @@ public class GithubTasksTest {
 	
 	@Before
 	public void setUp() {
-		driver = new FirefoxDriver();
+		//driver = new FirefoxDriver();
+		driver = new ChromeDriver();
 	}
 
 	@Test

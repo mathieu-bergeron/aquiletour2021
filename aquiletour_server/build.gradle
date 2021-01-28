@@ -18,8 +18,9 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.13.1'
 
     testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
-    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '2.43.1'
-    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '2.43.1'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.141.59'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '3.141.49'
 
     testImplementation 'junit:junit:4.13'
 }
