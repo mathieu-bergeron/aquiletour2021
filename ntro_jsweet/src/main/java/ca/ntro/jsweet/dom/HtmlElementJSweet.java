@@ -15,6 +15,10 @@ public class HtmlElementJSweet implements HtmlElement {
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
 	}
+	
+	protected JQuery getJQueryElement() {
+		return jQueryElement;
+	}
 
 	@Override
 	public void text(String newText) {
@@ -47,5 +51,12 @@ public class HtmlElementJSweet implements HtmlElement {
 		
 		// FIXME: parse HTML first
 		jQueryElement.html(html);
+	}
+
+	@Override
+	public void appendElement(HtmlElement element) {
+		T.call(this);
+
+		jQueryElement.append(((HtmlElementJSweet) element).jQueryElement);
 	}
 }

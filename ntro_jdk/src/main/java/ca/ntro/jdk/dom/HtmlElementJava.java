@@ -9,15 +9,15 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class HtmlElementJava implements HtmlElement {
 	
-	private Element element;
+	private Element jsoupElement;
 
-	public HtmlElementJava(Element element) {
-		this.element = element;
+	public HtmlElementJava(Element jsoupElement) {
+		this.jsoupElement = jsoupElement;
 	}
 
 	@Override
 	public void text(String newText) {
-		element.text(newText);
+		jsoupElement.text(newText);
 	}
 
 	@Override
@@ -31,7 +31,13 @@ public class HtmlElementJava implements HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		element.append(html);
+		jsoupElement.append(html);
 	}
 
+	@Override
+	public void appendElement(HtmlElement element) {
+		T.call(this);
+		
+		jsoupElement.appendChild(((HtmlElementJava) element).jsoupElement);
+	}
 }

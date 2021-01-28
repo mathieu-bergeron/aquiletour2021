@@ -14,7 +14,7 @@ public class NtroViewWeb implements NtroView {
 		this.rootElement = rootElement;
 	}
 	
-	protected HtmlElement getRootElement() {
+	public HtmlElement getRootElement() {
 		T.call(this);
 		
 		return rootElement;
