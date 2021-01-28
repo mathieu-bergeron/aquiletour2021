@@ -63,4 +63,11 @@ public class HtmlElementJSweet implements HtmlElement {
 
 		return new HtmlElementsJSweet(jQueryElement.children(cssQuery));
 	}
+
+	@Override
+	public void setAttribute(String name, String value) {
+		T.call(this);
+		
+		jQueryElement.attr(name, value);
+	}
 }

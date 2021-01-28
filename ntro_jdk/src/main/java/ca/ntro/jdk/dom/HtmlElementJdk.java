@@ -70,4 +70,11 @@ public class HtmlElementJdk implements HtmlElement {
 	public String toString() {
 		return jsoupElement.html();
 	}
+
+	@Override
+	public void setAttribute(String name, String value) {
+		T.call(this);
+		
+		jsoupElement.attr(name, value);
+	}
 }

@@ -4,11 +4,11 @@ import java.util.Map;
 
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.SettingsController;
-import ca.aquiletour.web.Path;
-import ca.aquiletour.web.RequestHandlerTask;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.Path;
+import ca.ntro.web.RequestHandlerTask;
 
 public abstract class SettingsControllerWeb extends SettingsController implements RequestHandlerTask {
 

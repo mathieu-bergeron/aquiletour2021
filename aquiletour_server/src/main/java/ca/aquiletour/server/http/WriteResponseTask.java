@@ -5,10 +5,10 @@ import java.io.OutputStream;
 
 import org.eclipse.jetty.server.Request;
 
-import ca.aquiletour.web.HtmlWriterTask;
-import ca.aquiletour.web.RequestHandlerTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.web.HtmlWriterTask;
+import ca.ntro.web.RequestHandlerTask;
 
 public class WriteResponseTask extends NtroTaskImpl {
 

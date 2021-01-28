@@ -1,4 +1,4 @@
-package ca.aquiletour.web;
+package ca.ntro.web;
 
 import java.util.Map;
 

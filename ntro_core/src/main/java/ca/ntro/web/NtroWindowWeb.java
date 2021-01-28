@@ -36,5 +36,13 @@ public abstract class NtroWindowWeb extends NtroWindow {
 		body.appendElement(rootViewWeb.getRootElement());
 	}
 
+	public void setCurrentPath(Path path) {
+		T.call(this);
+
+		HtmlElement body = document.select("body").get(0);
+		
+		body.setAttribute("current-path", path.toString());
+	}
+
 	
 }

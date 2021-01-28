@@ -20,15 +20,15 @@ package ca.aquiletour.web.pages.root;
 import java.util.Map;
 
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.web.HtmlWriterTask;
-import ca.aquiletour.web.Path;
-import ca.aquiletour.web.RequestHandlerTask;
 import ca.aquiletour.web.pages.dashboard.DashboardControllerWeb;
 import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.HtmlWriterTask;
 import ca.ntro.web.NtroWindowWeb;
+import ca.ntro.web.Path;
+import ca.ntro.web.RequestHandlerTask;
 
 public abstract class   RootControllerWeb 
                 extends RootController 
@@ -53,6 +53,8 @@ public abstract class   RootControllerWeb
 		                       Map<String, String[]> parameters, 
 		                       String authToken) {
 		T.call(this);
+		
+		getWindow().setCurrentPath(path);
 		
 		if(path.startsWith("settings")) {
 
