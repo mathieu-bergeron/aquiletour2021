@@ -107,9 +107,9 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 
 	@Override
-	protected ViewLoaderWeb provideViewLoaderWeb() {
+	protected Class<? extends ViewLoaderWeb> provideViewLoaderWebClass() {
 		__T.call(this, "provideViewLoaderWeb");
 
-		return new ViewLoaderWebJSweet();
+		return ViewLoaderWebJSweet.class;
 	}
 }

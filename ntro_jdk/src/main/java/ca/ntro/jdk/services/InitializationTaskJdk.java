@@ -92,10 +92,10 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected ViewLoaderWeb provideViewLoaderWeb() {
+	protected Class<? extends ViewLoaderWeb> provideViewLoaderWebClass() {
 		__T.call(InitializationTaskJdk.class, "provideViewLoaderWeb");
 
-		return new ViewLoaderWebJdk();
+		return ViewLoaderWebJdk.class;
 	}
 
 }

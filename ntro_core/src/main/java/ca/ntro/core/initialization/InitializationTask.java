@@ -67,7 +67,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		Ntro.zzz_registerResourceLoader(provideResourceLoader());
 		
-		Ntro.__registerViewLoaderWeb(provideViewLoaderWeb());
+		Ntro.__registerViewLoaderWeb(provideViewLoaderWebClass());
 		
 		
 		ValueFormatter.initialize(provideValueFormatter());
@@ -82,6 +82,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract ValueFormatter provideValueFormatter();
 	protected abstract NtroCollections provideNtroCollections();
 	protected abstract ResourceLoader provideResourceLoader();
-	protected abstract ViewLoaderWeb provideViewLoaderWeb();
+	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 
 }
