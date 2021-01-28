@@ -17,13 +17,14 @@
 
 package ca.ntro.core;
 
+import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.mvc.view.ViewLoaderWeb;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
 	
@@ -32,6 +33,7 @@ public class Ntro {
 	private static AppCloser appCloser;
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
+	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -43,6 +45,12 @@ public class Ntro {
 		//System.out.println("#T.call (Ntro.java) >> Ntro.__registerIntrospector");
 
 		Ntro.introspector = introspector;
+	}
+
+	public static void __registerViewLoaderWeb(Class<? extends ViewLoaderWeb> viewLoaderWeb) {
+		//System.out.println("#T.call (Ntro.java) >> Ntro.__registerIntrospector");
+
+		Ntro.viewLoaderWebClass = viewLoaderWeb;
 	}
 
 	public static void __registerLogger(Logger logger) {
@@ -114,7 +122,7 @@ public class Ntro {
 	}
 
 	public static ViewLoaderWeb viewLoaderWeb() {
-		return new ViewLoaderWeb();
+		return Factory.newInstance(viewLoaderWebClass);
 	}
 
 }
