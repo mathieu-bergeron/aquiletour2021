@@ -49,8 +49,9 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 		
 		StringBuilder builder = new StringBuilder();
 
-		while(scanner.hasNext()) {
-			builder.append(scanner.next());
+		while(scanner.hasNextLine()) {
+			builder.append(scanner.nextLine());
+			builder.append(System.lineSeparator());
 		}
 		
 		resourceAsString = builder.toString();

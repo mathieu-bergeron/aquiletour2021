@@ -6,9 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.jdk.dom.HtmlElementJava;
+import ca.ntro.jdk.dom.HtmlElementJdk;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
@@ -22,11 +21,10 @@ public class ViewLoaderWebJdk extends ViewLoaderWeb {
 
 		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
 		
-		Element jsoupElement = jsoupDocument.root();
+		// FIXME: better to have multiple elements?
+		Element jsoupElement = jsoupDocument.body().child(0);
 		
-		MustNot.beNull(jsoupElement);
-		
-		rootElement = new HtmlElementJava(jsoupElement);
+		rootElement = new HtmlElementJdk(jsoupElement);
         
         return rootElement;
 	}

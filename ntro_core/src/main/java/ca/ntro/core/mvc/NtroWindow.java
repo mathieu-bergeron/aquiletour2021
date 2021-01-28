@@ -1,9 +1,9 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.view.NtroView;
 
-public abstract class NtroWindow<VL extends ViewLoader> {
+public abstract class NtroWindow {
 
-	public abstract void installRootView(VL viewLoader);
+	public abstract void installRootView(NtroView rootView);
 	
 }

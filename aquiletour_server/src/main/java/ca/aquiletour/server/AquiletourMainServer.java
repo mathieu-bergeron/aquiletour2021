@@ -43,8 +43,7 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
-		T.values(mainDirectory);
-		
+
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)
 		// always include javascript content (it can be ignored by nojs clients)

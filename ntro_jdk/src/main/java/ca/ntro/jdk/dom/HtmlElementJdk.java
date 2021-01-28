@@ -3,17 +3,18 @@ package ca.ntro.jdk.dom;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 
 
-public class HtmlElementJava implements HtmlElement {
+public class HtmlElementJdk implements HtmlElement {
 	
 	private Element jsoupElement;
 
-	public HtmlElementJava(Element jsoupElement) {
+	public HtmlElementJdk(Element jsoupElement) {
 		this.jsoupElement = jsoupElement;
 	}
 
@@ -41,7 +42,19 @@ public class HtmlElementJava implements HtmlElement {
 	public void appendElement(HtmlElement element) {
 		T.call(this);
 		
-		jsoupElement.appendChild(((HtmlElementJava) element).jsoupElement);
+		MustNot.beNull(jsoupElement);
+		
+		HtmlElementJdk otherElement = (HtmlElementJdk) element;
+		
+		MustNot.beNull(otherElement);
+		MustNot.beNull(otherElement.jsoupElement);
+		
+		T.values(jsoupElement.toString(), otherElement.jsoupElement.toString());
+		
+		jsoupElement.appendChild(otherElement.jsoupElement);
+
+		T.values(jsoupElement.toString());
+		
 	}
 
 	@Override
@@ -50,6 +63,11 @@ public class HtmlElementJava implements HtmlElement {
 		
 		Elements elements = jsoupElement.select(cssQuery);
 
-		return new HtmlElementsJava(elements);
+		return new HtmlElementsJdk(elements);
+	}
+	
+	@Override
+	public String toString() {
+		return jsoupElement.html();
 	}
 }

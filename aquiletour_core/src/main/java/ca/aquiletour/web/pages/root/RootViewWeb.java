@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
@@ -16,18 +17,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		HtmlElement container = this.getRootElement().children("#page-container").get(0);
 		
-		if(container != null) {
-			
-			HtmlElement subViewElement = viewWeb.getRootElement();
-			container.appendElement(subViewElement);
+		MustNot.beNull(container);
 
-		}else {
-			
-			System.err.println("[WARNING] container not found: #page-container");
-			
-			
-		}
-		
+		HtmlElement subViewElement = viewWeb.getRootElement();
+		container.appendElement(subViewElement);
 	}
 
 }
