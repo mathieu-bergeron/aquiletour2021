@@ -18,12 +18,12 @@
 package ca.ntro.core;
 
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.mvc.view.ViewLoaderWeb;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
 	

@@ -1,11 +1,12 @@
 package ca.aquiletour.jsweet.pages.root;
 
-import ca.aquiletour.core.pages.root.ShowDashboardTask;
-import ca.aquiletour.core.pages.root.ShowSettingsTask;
 import ca.aquiletour.jsweet.NtroWindowJSweet;
+import ca.aquiletour.jsweet.pages.dashboard.DashboardControllerJSweet;
+import ca.aquiletour.jsweet.pages.settings.SettingsControllerJSweet;
 import ca.aquiletour.web.pages.dashboard.DashboardControllerWeb;
-import ca.aquiletour.web.pages.rootpage.RootControllerWeb;
+import ca.aquiletour.web.pages.root.RootControllerWeb;
 import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 
 public class RootControllerJSweet extends RootControllerWeb {
@@ -19,13 +20,13 @@ public class RootControllerJSweet extends RootControllerWeb {
 
 	@Override
 	public SettingsControllerWeb createSettingsController() {
-		// TODO Auto-generated method stub
-		return null;
+		T.call(this);
+		
+		return new SettingsControllerJSweet(this);
 	}
 
 	@Override
 	public DashboardControllerWeb createDashboardController() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DashboardControllerJSweet(this);
 	}
 }

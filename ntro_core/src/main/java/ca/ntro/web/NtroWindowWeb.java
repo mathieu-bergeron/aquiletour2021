@@ -1,10 +1,10 @@
 package ca.ntro.web;
 
 import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.mvc.view.ViewLoaderWeb;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public abstract class NtroWindowWeb extends NtroWindow<ViewLoaderWeb> {
 	

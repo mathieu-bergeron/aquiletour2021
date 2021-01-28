@@ -1,4 +1,4 @@
-package ca.aquiletour.javafx.pages.rootpage;
+package ca.aquiletour.javafx.pages.root;
 
 import java.net.URL;
 import java.util.ResourceBundle;

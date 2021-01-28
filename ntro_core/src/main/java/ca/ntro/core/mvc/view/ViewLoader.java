@@ -20,12 +20,9 @@ package ca.ntro.core.mvc.view;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
 public abstract class ViewLoader extends NtroTaskImpl {
+	
+	public abstract NtroView getView();
 
-	private NtroView view;
-
-	public NtroView getView() {
-		return view;
-	}
 
 
 }

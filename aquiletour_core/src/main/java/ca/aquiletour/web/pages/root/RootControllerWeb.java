@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.web.pages.rootpage;
+package ca.aquiletour.web.pages.root;
 
 import java.util.Map;
 
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.root.ShowSettingsTask;
 import ca.aquiletour.web.HtmlWriterTask;
 import ca.aquiletour.web.Path;
 import ca.aquiletour.web.RequestHandlerTask;
@@ -29,7 +28,6 @@ import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.web.NtroWindowWeb;
 
 public abstract class   RootControllerWeb 
@@ -41,7 +39,8 @@ public abstract class   RootControllerWeb
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/rootpage/structure.html")
 		           .setCssUrl("/views/rootpage/style.css")
-		           .setTranslationsUrl("/i18/"+lang+"/strings.json");
+		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
+		           .setTargetClass(RootViewWeb.class);
 	}
 
 	// FIXME: we specialize return type 
@@ -61,7 +60,7 @@ public abstract class   RootControllerWeb
 			
 			settingsController.initialRequest(path.subPath(1), parameters, authToken);
 			
-			addNextTask(createShowSettingsTask());
+			addNextTask(settingsController.createShowSettingsTask());
 
 		}else if(path.startsWith("dashboard")){
 			
@@ -69,7 +68,7 @@ public abstract class   RootControllerWeb
 			
 			dashboardController.initialRequest(path.subPath(1), parameters, authToken);
 			
-			addNextTask(createShowDashboardTask());
+			addNextTask(dashboardController.createShowDashboardTask());
 		}
 		
 		// TODO: comment envoyer un message? P.ex. formulaire via POST?

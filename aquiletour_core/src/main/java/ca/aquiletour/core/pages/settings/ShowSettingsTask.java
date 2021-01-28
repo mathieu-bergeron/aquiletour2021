@@ -1,14 +1,14 @@
-package ca.aquiletour.core.pages.root;
+package ca.aquiletour.core.pages.settings;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
 public class ShowSettingsTask extends NtroTaskImpl {
 	
-	private RootController rootController;
+	private SettingsController settingsController;
 
-	public ShowSettingsTask(RootController rootController) {
-		this.rootController = rootController;
+	public ShowSettingsTask(SettingsController settingsController) {
+		this.settingsController = settingsController;
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class ShowSettingsTask extends NtroTaskImpl {
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		rootController.showSettings();
+		settingsController.showSettings();
 		
 		notifyTaskFinished();
 	}

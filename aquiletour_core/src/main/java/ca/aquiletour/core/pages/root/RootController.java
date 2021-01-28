@@ -22,6 +22,7 @@ import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
@@ -31,7 +32,7 @@ public abstract class RootController extends NtroController {
 	private DashboardController dashboardController;
 	private SettingsController settingsController;
 	
-	private RootView rootpageView;
+	private RootView rootView;
 
 	@Override
 	protected void initializeTask() {
@@ -55,7 +56,7 @@ public abstract class RootController extends NtroController {
 		
 		getWindow().installRootView(viewLoader);
 
-		rootpageView = (RootView) viewLoader.getView();
+		rootView = (RootView) viewLoader.getView();
 		
 		notifyTaskFinished();
 	}
@@ -67,29 +68,11 @@ public abstract class RootController extends NtroController {
 
 	public abstract SettingsController createSettingsController();
 	public abstract DashboardController createDashboardController();
-
-	public ShowSettingsTask createShowSettingsTask() {
+	
+	public void installSubView(NtroView view) {
 		T.call(this);
 		
-		return new ShowSettingsTask(this);
-	}
-
-	public ShowDashboardTask createShowDashboardTask() {
-		T.call(this);
-
-		return new ShowDashboardTask(this);
-	}
-
-	public void showSettings() {
-		T.call(this);
-		
-		settingsController.installView(rootpageView);
-	}
-
-	public void showDashboard() {
-		T.call(this);
-
-		dashboardController.installView(rootpageView);
+		rootView.installSubView(view);
 	}
 	
 	protected SettingsController getSettingsController() {

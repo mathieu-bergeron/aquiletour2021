@@ -1,11 +1,13 @@
-package ca.aquiletour.javafx.pages.rootpage;
+package ca.aquiletour.javafx.pages.root;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.dashboard.ShowDashboardTask;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.root.ShowDashboardTask;
-import ca.aquiletour.core.pages.root.ShowSettingsTask;
 import ca.aquiletour.core.pages.settings.SettingsController;
+import ca.aquiletour.core.pages.settings.ShowSettingsTask;
 import ca.aquiletour.javafx.NtroWindowFx;
+import ca.aquiletour.javafx.pages.dashboard.DashboardControllerFx;
+import ca.aquiletour.javafx.pages.settings.SettingsControllerFx;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -26,8 +28,8 @@ public class RootControllerFx extends RootController {
 	protected ViewLoader createViewLoader(String lang) {
 		T.call(this);
 
-		return new ViewLoaderFx().setFxmlUrl("/views/rootpage/structure.xml")
-				                 .setCssUrl("/views/rootpage/style.css")
+		return new ViewLoaderFx().setFxmlUrl("/views/root/structure.xml")
+				                 .setCssUrl("/views/root/style.css")
 				                 .setTranslationsName("i18n.strings");
 	}
 
@@ -38,25 +40,15 @@ public class RootControllerFx extends RootController {
 
 	@Override
 	public SettingsController createSettingsController() {
-		// TODO Auto-generated method stub
-		return null;
+		T.call(this);
+
+		return new SettingsControllerFx(this);
 	}
 
 	@Override
 	public DashboardController createDashboardController() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ShowSettingsTask createShowSettingsTask() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ShowDashboardTask createShowDashboardTask() {
-		// TODO Auto-generated method stub
-		return null;
+		T.call(this);
+		
+		return new DashboardControllerFx(this);
 	}
 }
