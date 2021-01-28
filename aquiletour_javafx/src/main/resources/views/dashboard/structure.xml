@@ -24,7 +24,7 @@
 <?import javafx.scene.control.ComboBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="center" styleClass="conteneurPrincipal" 
-    fx:controller="tut10.pages.parametres.VueParametres">
+    fx:controller="ca.aquiletour.javafx.pages.dashboard.DashboardViewFx">
 
 	<VBox styleClass="conteneurVertical" VBox.vgrow="ALWAYS">
 		<HBox alignment="center">
