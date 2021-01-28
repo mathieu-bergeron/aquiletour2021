@@ -22,34 +22,41 @@ import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
 public abstract class RootController extends NtroController {
 	
-	private RootView rootpageView;
+	private ViewLoader viewLoader;
+	private DashboardController dashboardController;
+	private SettingsController settingsController;
+	
+	private RootView rootView;
 
 	@Override
 	protected void initializeTask() {
 		T.call(this);
 
-		ViewLoader viewLoader = loadView(Constants.LANG);
-		viewLoader.setTaskId("ViewLoader");
-		
+		viewLoader = createViewLoader(Constants.LANG);
+		dashboardController = createDashboardController();
+		settingsController = createSettingsController();
+
 		addSubTask(viewLoader);
+		addSubTask(dashboardController);
+		addSubTask(settingsController);
 	}
 
-	protected abstract ViewLoader loadView(String lang);
+	protected abstract ViewLoader createViewLoader(String lang);
 	protected abstract NtroWindow getWindow();
 
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		ViewLoader viewLoader = getSubTask(ViewLoader.class,"ViewLoader");
-		getWindow().installRootView(viewLoader);
+		rootView = (RootView) viewLoader.getView();
 		
-		rootpageView = (RootView) viewLoader.getView();
+		getWindow().installRootView(rootView);
 		
 		notifyTaskFinished();
 	}
@@ -61,27 +68,23 @@ public abstract class RootController extends NtroController {
 
 	public abstract SettingsController createSettingsController();
 	public abstract DashboardController createDashboardController();
-
-	public ShowSettingsTask createShowSettingsTask() {
+	
+	public void installSubView(NtroView view) {
 		T.call(this);
 		
-		return new ShowSettingsTask(this);
+		rootView.installSubView(view);
 	}
-
-	public ShowDashboardTask createShowDashboardTask() {
+	
+	protected SettingsController getSettingsController() {
 		T.call(this);
 
-		return new ShowDashboardTask(this);
+		return settingsController;
 	}
 
-	public void showSettings() {
+	protected DashboardController getDashboardController() {
 		T.call(this);
-		
-	}
 
-	public void showDashboard() {
-		T.call(this);
-		
+		return dashboardController;
 	}
 
 }

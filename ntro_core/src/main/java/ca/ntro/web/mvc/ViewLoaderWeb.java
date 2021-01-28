@@ -15,22 +15,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.mvc.view;
+package ca.ntro.web.mvc;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.introspection.Factory;
+import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
-
+import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.core.system.assertions.MustNot;
 
-public class ViewLoaderWeb extends ViewLoader {
+public abstract class ViewLoaderWeb extends ViewLoader {
 	
 	private String html;
+	private Class<? extends NtroViewWeb> viewClass;
 	
 	public ViewLoaderWeb() {
 		super();
-		
-		
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class ViewLoaderWeb extends ViewLoader {
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
 		//        can we fix this??
 		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
-
+		
 		notifyTaskFinished();
 	}
 
@@ -85,6 +87,28 @@ public class ViewLoaderWeb extends ViewLoader {
 		
 		return html;
 	}
-	
+
+	public ViewLoader setTargetClass(Class<? extends NtroViewWeb> viewClass) {
+		T.call(this);
+		
+		this.viewClass = viewClass;
+		
+		return this;
+	}
+
+	@Override
+	public NtroView getView() {
+		T.call(this);
+
+		NtroViewWeb view = Factory.newInstance(viewClass);
+		
+		HtmlElement rootElement = parseHtml(html);
+		
+		view.setRootElement(rootElement);
+		
+		return view;
+	}
+
+	protected abstract HtmlElement parseHtml(String html);
 
 }

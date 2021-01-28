@@ -4,6 +4,6 @@ import ca.ntro.core.mvc.view.NtroView;
 
 public interface RootView extends NtroView {
 	
-	void installSubView(NtroView page);
+	void installSubView(NtroView view);
 
 }

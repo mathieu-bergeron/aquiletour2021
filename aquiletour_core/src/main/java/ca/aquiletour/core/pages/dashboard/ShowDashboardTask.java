@@ -1,26 +1,27 @@
-package ca.aquiletour.core.pages.root;
+package ca.aquiletour.core.pages.dashboard;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
 public class ShowDashboardTask extends NtroTaskImpl {
 
-	private RootController rootController;
+	private DashboardController dashboardController;
 
-	public ShowDashboardTask(RootController rootController) {
-		this.rootController = rootController;
+	public ShowDashboardTask(DashboardController dashboardController) {
+		this.dashboardController = dashboardController;
 	}
 
 	@Override
 	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
 	}
 
 	@Override
 	protected void runTaskAsync() {
-		
-		rootController.showDashboard();
-		
+		T.call(this);
+
+		dashboardController.showDashboard();
+
 		notifyTaskFinished();
 	}
 

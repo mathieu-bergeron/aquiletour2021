@@ -37,6 +37,8 @@ import ca.ntro.jsweet.services.LoggerJSweet;
 import ca.ntro.jsweet.services.NtroCollectionsJSweet;
 import ca.ntro.jsweet.services.ResourceLoaderJSweet;
 import ca.ntro.jsweet.services.ValueFormatterJSweet;
+import ca.ntro.jsweet.services.ViewLoaderWebJSweet;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJSweet extends InitializationTask {
 
@@ -101,5 +103,13 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideResourceLoader");
 
 		return new ResourceLoaderJSweet();
+	}
+
+
+	@Override
+	protected Class<? extends ViewLoaderWeb> provideViewLoaderWebClass() {
+		__T.call(this, "provideViewLoaderWeb");
+
+		return ViewLoaderWebJSweet.class;
 	}
 }

@@ -5,6 +5,6 @@ import ca.ntro.core.tasks.NtroTaskImpl;
 
 public abstract class NtroController extends NtroTaskImpl {
 
-	protected abstract ViewLoader loadView(String lang);
+	protected abstract ViewLoader createViewLoader(String lang);
 
 }

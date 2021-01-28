@@ -5,17 +5,23 @@ import org.jsoup.select.Elements;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 
-public class HtmlElementsJava implements HtmlElements {
+public class HtmlElementsJdk implements HtmlElements {
 	
 	private Elements elements;
 	
-	public HtmlElementsJava(Elements elements) {
+	public HtmlElementsJdk(Elements elements) {
 		this.elements = elements;
 	}
 	
 	@Override
 	public HtmlElement get(int index) {
-		return new HtmlElementJava(elements.get(index)); 
+		HtmlElement element = null;
+
+		if(index < elements.size()) {
+			element = new HtmlElementJdk(elements.get(0));
+		}
+
+		return element;
 	}
 
 }

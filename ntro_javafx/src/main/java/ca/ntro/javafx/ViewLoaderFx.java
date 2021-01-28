@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +35,6 @@ public class ViewLoaderFx extends ViewLoader {
 	private ResourceBundle strings;
 	private Parent parent;
 
-	
 	@Override
 	protected void initializeTask() {
 	}
@@ -112,5 +112,10 @@ public class ViewLoaderFx extends ViewLoader {
 		parent.getStylesheets().add(cssUrl.toExternalForm());
 	}
 
-
+	@Override
+	public NtroView getView() {
+		T.call(this);
+		
+		return null;
+	}
 }

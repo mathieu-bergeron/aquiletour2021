@@ -1,4 +1,4 @@
-package ca.aquiletour.web;
+package ca.ntro.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,5 +64,17 @@ public class Path {
 		return endIndex < names.size() 
 				&& endIndex >= beginIndex
 				&& beginIndex >= 0;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		for(String name : names) {
+			builder.append("/");
+			builder.append(name);
+		}
+		
+		return builder.toString();
 	}
 }

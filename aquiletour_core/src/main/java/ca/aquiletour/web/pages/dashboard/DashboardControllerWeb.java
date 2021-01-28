@@ -3,20 +3,26 @@ package ca.aquiletour.web.pages.dashboard;
 import java.util.Map;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
-import ca.aquiletour.web.Path;
-import ca.aquiletour.web.RequestHandlerTask;
+import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.Path;
+import ca.ntro.web.RequestHandlerTask;
 
 public abstract class DashboardControllerWeb extends DashboardController implements RequestHandlerTask {
 
+	public DashboardControllerWeb(RootController parentController) {
+		super(parentController);
+	}
+
 	@Override
-	protected ViewLoader loadView(String lang) {
+	protected ViewLoader createViewLoader(String lang) {
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/dashboard/structure.html")
 		           .setCssUrl("/views/dashboard/style.css")
-		           .setTranslationsUrl("/i18/"+lang+"/strings.json");
+		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
+		           .setTargetClass(DashboardViewWeb.class);
 	}
 
 	@Override

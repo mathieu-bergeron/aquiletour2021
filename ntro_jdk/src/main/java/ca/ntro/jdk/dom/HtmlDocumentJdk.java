@@ -8,11 +8,11 @@ import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlDocument;
 
 
-public class HtmlDocumentJava implements HtmlDocument {
+public class HtmlDocumentJdk implements HtmlDocument {
 	
 	private Document document;
 	
-	public HtmlDocumentJava(Document document) {
+	public HtmlDocumentJdk(Document document) {
 		this.document = document;
 	}
 
@@ -22,7 +22,7 @@ public class HtmlDocumentJava implements HtmlDocument {
 
 		Elements elements = document.select(cssQuery);
 		
-		return new HtmlElementsJava(elements);
+		return new HtmlElementsJdk(elements);
 	}
 
 	@Override

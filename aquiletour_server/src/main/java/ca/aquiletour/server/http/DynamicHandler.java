@@ -32,8 +32,8 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.server.pages.root.RootControllerServer;
-import ca.aquiletour.web.Path;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.Path;
 
 public class DynamicHandler extends AbstractHandler {
 
