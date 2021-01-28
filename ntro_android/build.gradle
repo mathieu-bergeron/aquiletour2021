@@ -1,7 +1,7 @@
 plugins {
-    id 'local-java-plugin'
+    id 'java'
 }
 
 dependencies {
-    implementation project(':ntro_core')
+    implementation group: 'ca.ntro', name:'ntro_core', version: '0.1'
 }

@@ -29,16 +29,20 @@ import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.core.tasks.SyncTask;
-import ca.ntro.core.wrappers.options.None;
+import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
-public abstract class InitializationTask extends SyncTask<None> {
+public abstract class InitializationTask extends NtroTaskSync {
 
 	@Override
-	protected None runSyncTask() {
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void runTask() {
 		__T.call(InitializationTask.class, "runSyncTask");
 		performInitialization();
-		return null;
 	}
 
 	@Override
@@ -63,6 +67,8 @@ public abstract class InitializationTask extends SyncTask<None> {
 
 		Ntro.zzz_registerResourceLoader(provideResourceLoader());
 		
+		Ntro.__registerViewLoaderWeb(provideViewLoaderWebClass());
+		
 		
 		ValueFormatter.initialize(provideValueFormatter());
 		NtroCollections.initialize(provideNtroCollections());
@@ -76,5 +82,6 @@ public abstract class InitializationTask extends SyncTask<None> {
 	protected abstract ValueFormatter provideValueFormatter();
 	protected abstract NtroCollections provideNtroCollections();
 	protected abstract ResourceLoader provideResourceLoader();
+	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 
 }
