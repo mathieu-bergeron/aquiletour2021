@@ -45,7 +45,7 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 				"/_R/js/aquiletour_jsweet/bundle.js.map",
 			];
 
-			const loadedSourceMaps = [];
+			const loadedSourceMaps = {};
 
 	        window.onload = async function() {
 				for (const sourceMapUrl of sourceMapsToLoad) {
@@ -53,9 +53,8 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
 					if (response.ok) {
 						const rawSourceMap = await response.text();
-						const parsedSourceMap = await new sourceMap.SourceMapConsumer(rawSourceMap);
 
-						loadedSourceMaps.push(parsedSourceMap);
+						loadedSourceMaps[sourceMapUrl] = await new sourceMap.SourceMapConsumer(rawSourceMap);
 
 						console.info(`loaded sourceMap at url ${sourceMapUrl}`);
 					} else {
@@ -64,7 +63,13 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 				}
 
 				ca.ntro.jsweet.debug.installSourceMapAnalyzer(function (lineColumn) {
-					originalPosition = parsedSourceMap.originalPositionFor(lineColumn);
+					const sourceMapFile = loadedSourceMaps[`${lineColumn.fileName}.map`];
+
+					if (!sourceMapFile) {
+						console.warn('could not associate fileName with a loaded source map');
+					}
+
+					originalPosition = sourceMapFile.originalPositionFor(lineColumn);
 
 					return originalPosition;
 				});

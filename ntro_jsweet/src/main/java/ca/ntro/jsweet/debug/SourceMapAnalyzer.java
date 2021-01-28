@@ -28,11 +28,12 @@ public class SourceMapAnalyzer {
 		SourceMapAnalyzer.analyzerFunction = sourceMapAnalyzer;
 	}
 
-	public static SourceFileLocation getOriginalLocation(String filePath, int line, int column) {
+	public static SourceFileLocation getOriginalLocation(String fileName, int line, int column) {
 
 		//System.out.println("line, column " + line + " " + column);
 
 		def.js.Object lineColumn = new def.js.Object();
+		lineColumn.$set("fileName", fileName);
 		lineColumn.$set("line", line);
 		lineColumn.$set("column", column);
 
@@ -44,10 +45,10 @@ public class SourceMapAnalyzer {
 		int resultColumn = Integer.valueOf(result.$get("column").toString());
 		*/
 
-		String fileName = result.$get("source");
+		String resultingFileName = result.$get("source");
 		int resultLine = result.$get("line");
 
-		return new SourceFileLocation(fileName, resultLine);
+		return new SourceFileLocation(resultingFileName, resultLine);
 	}
 
 

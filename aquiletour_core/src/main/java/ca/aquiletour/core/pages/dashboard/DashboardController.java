@@ -11,7 +11,7 @@ public abstract class DashboardController extends NtroController {
 	private RootController parentController;
 	private ViewLoader viewLoader;
 	private DashboardView view;
-	
+
 	public DashboardController(RootController parentController) {
 		super();
 		T.call(this);
@@ -26,20 +26,20 @@ public abstract class DashboardController extends NtroController {
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
 	}
-	
+
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
-		
+
 		view = (DashboardView) viewLoader.getView();
-		
+
 		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void showDashboard() {
