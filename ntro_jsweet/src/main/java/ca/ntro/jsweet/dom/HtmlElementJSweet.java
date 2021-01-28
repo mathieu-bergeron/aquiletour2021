@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
@@ -14,10 +15,6 @@ public class HtmlElementJSweet implements HtmlElement {
 	
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
-	}
-	
-	protected JQuery getJQueryElement() {
-		return jQueryElement;
 	}
 
 	@Override
@@ -58,5 +55,12 @@ public class HtmlElementJSweet implements HtmlElement {
 		T.call(this);
 
 		jQueryElement.append(((HtmlElementJSweet) element).jQueryElement);
+	}
+
+	@Override
+	public HtmlElements children(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJSweet(jQueryElement.children(cssQuery));
 	}
 }

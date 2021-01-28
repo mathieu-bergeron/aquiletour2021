@@ -7,5 +7,6 @@ public interface HtmlElement {
 	void appendElement(HtmlElement element);
 	void text(String newText);
 	void addEventListener(String event, HtmlEventListener listener);
+	HtmlElements children(String cssQuery);
 
 }

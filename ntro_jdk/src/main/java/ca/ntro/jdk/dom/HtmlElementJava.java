@@ -1,9 +1,11 @@
 package ca.ntro.jdk.dom;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 
 
@@ -23,6 +25,7 @@ public class HtmlElementJava implements HtmlElement {
 	@Override
 	public void addEventListener(String event, HtmlEventListener listener) {
 		T.call(this);
+
 		// XXX: event listeners ignored on server
 	}
 	
@@ -39,5 +42,14 @@ public class HtmlElementJava implements HtmlElement {
 		T.call(this);
 		
 		jsoupElement.appendChild(((HtmlElementJava) element).jsoupElement);
+	}
+
+	@Override
+	public HtmlElements children(String cssQuery) {
+		T.call(this);
+		
+		Elements elements = jsoupElement.select(cssQuery);
+
+		return new HtmlElementsJava(elements);
 	}
 }

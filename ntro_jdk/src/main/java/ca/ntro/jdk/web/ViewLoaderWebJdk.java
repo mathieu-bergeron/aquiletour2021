@@ -4,7 +4,9 @@ import java.nio.charset.StandardCharsets;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.dom.HtmlElementJava;
 import ca.ntro.web.dom.HtmlElement;
@@ -19,7 +21,12 @@ public class ViewLoaderWebJdk extends ViewLoaderWeb {
 		HtmlElement rootElement = null;
 
 		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
-		rootElement = new HtmlElementJava(jsoupDocument.root());
+		
+		Element jsoupElement = jsoupDocument.root();
+		
+		MustNot.beNull(jsoupElement);
+		
+		rootElement = new HtmlElementJava(jsoupElement);
         
         return rootElement;
 	}
