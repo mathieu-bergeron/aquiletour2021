@@ -1,8 +1,22 @@
 plugins {
     id 'eclipse'
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
 }
 
-task clean {
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+}
+
+task Clean {
     doLast{
         new File("${project.projectDir}/.jsweet").deleteDir()
     }
