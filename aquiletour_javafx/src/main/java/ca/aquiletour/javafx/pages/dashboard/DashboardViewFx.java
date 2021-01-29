@@ -14,14 +14,19 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	
 	@FXML
-	Button newCourseButton;
+	private Button newCourseButton;
 	
 	@FXML 
-	TextField newCourseText;
+	private TextField newCourseText;
+	
+	@FXML
+	private VBox courseContainer;
 
 	private AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
 
@@ -31,6 +36,7 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 		
 		MustNot.beNull(newCourseButton);
 		MustNot.beNull(newCourseText);
+		MustNot.beNull(courseContainer);
 		
 		newCourseButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -49,6 +55,7 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	public void appendCourse(String title) {
 		T.call(this);
 		
+		courseContainer.getChildren().add(new Text(title));
 	}
 
 }
