@@ -26,20 +26,8 @@
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="center" styleClass="conteneurPrincipal" 
     fx:controller="ca.aquiletour.javafx.pages.dashboard.DashboardViewFx">
 
-	<VBox styleClass="conteneurVertical" VBox.vgrow="ALWAYS">
-		<HBox alignment="center">
-			<Text styleClass="texteQuiCommence" textAlignment="CENTER" text="%quelleTaille"/>
-		</HBox>
-		<VBox styleClass="petitEspace" VBox.vgrow="ALWAYS"/>
-		<HBox alignment="center">
-	        <ComboBox fx:id="choixTaille"/>
-		</HBox>
-	</VBox>
-
-	<HBox styleClass="grosEspace" VBox.vgrow="always"/>
-
-	<HBox styleClass="conteneurBouton" alignment="center">
-		<Button styleClass="bouton" text="%ok" fx:id="boutonOk"/>
-	</HBox>
+    <HBox alignment="center">
+        <Text text="%dashboardText"/>
+    </HBox>
 
 </VBox>

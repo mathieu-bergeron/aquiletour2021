@@ -2,12 +2,13 @@ package ca.aquiletour.core.pages.dashboard;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.messages.MessageReceptor;
 
-public class ShowDashboardTask extends NtroTaskImpl {
+public class ShowDashboardReceptor extends MessageReceptor {
 
 	private DashboardController dashboardController;
 
-	public ShowDashboardTask(DashboardController dashboardController) {
+	public ShowDashboardReceptor(DashboardController dashboardController) {
 		this.dashboardController = dashboardController;
 	}
 

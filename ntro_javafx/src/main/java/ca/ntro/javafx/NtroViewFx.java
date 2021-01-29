@@ -22,4 +22,8 @@ public abstract class NtroViewFx implements NtroView, Initializable {
 		return new Scene(parent, width, height);
 	}
 
+	public Parent getParent() {
+		return parent;
+	}
+
 }

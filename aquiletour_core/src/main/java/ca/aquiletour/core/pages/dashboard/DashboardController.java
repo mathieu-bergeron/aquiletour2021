@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageFactory;
 
 public abstract class DashboardController extends NtroController {
 
@@ -25,6 +26,8 @@ public abstract class DashboardController extends NtroController {
 
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
+
+		MessageFactory.addMessageReceptor(ShowDashboardMessage.class, new ShowDashboardReceptor(this));
 	}
 	
 	@Override
@@ -48,10 +51,10 @@ public abstract class DashboardController extends NtroController {
 		parentController.installSubView(view);
 	}
 
-	public ShowDashboardTask createShowDashboardTask() {
+	public ShowDashboardReceptor createShowDashboardTask() {
 		T.call(this);
 
-		return new ShowDashboardTask(this);
+		return new ShowDashboardReceptor(this);
 	}
 
 

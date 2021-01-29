@@ -63,7 +63,18 @@ public abstract class NtroTaskImpl implements NtroTask {
 
 	@Override
 	public void reset() {
-		// TODO
+		// FIXME: this requires more thought
+
+		state = State.INITIALIZING;
+
+		for(NtroTask subTask : subTasks) {
+			subTask.reset();
+		}
+		finishedSubTasks = 0;
+		
+		for(NtroTask nextTask : nextTasks) {
+			nextTask.reset();
+		}
 	}
 
 	@Override
