@@ -25,6 +25,7 @@ import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageFactory;
 
 public abstract class RootController extends NtroController {
 	
@@ -45,6 +46,8 @@ public abstract class RootController extends NtroController {
 		addSubTask(viewLoader);
 		addSubTask(dashboardController);
 		addSubTask(settingsController);
+
+		MessageFactory.addMessageReceptor(QuitMessage.class, new QuitReceptor());
 	}
 
 	protected abstract ViewLoader createViewLoader(String lang);

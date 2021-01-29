@@ -28,10 +28,10 @@
                 <menus>
                 <Menu styleClass="menu" text="%menu">
                     <items>
-                    <MenuItem fx:id="menuMescours" styleClass="menu_item" text="%mescours"/>
-                    <MenuItem fx:id="menuParametres" styleClass="menu_item" text="%parametres"/>
+                    <MenuItem fx:id="dashboard" styleClass="menu_item" text="%mescours"/>
+                    <MenuItem fx:id="settings" styleClass="menu_item" text="%parametres"/>
                     <SeparatorMenuItem/>
-                    <MenuItem fx:id="menuQuitter" styleClass="menu_item" text="%quitter"/>
+                    <MenuItem fx:id="quit" styleClass="menu_item" text="%quitter"/>
                     </items>
                 </Menu>
             </menus>
@@ -39,7 +39,7 @@
         </top>
         <center>
         <HBox alignment="center">
-			<VBox fx:id="conteneurPartie" alignment="center" HBox.hgrow="ALWAYS"/>
+			<VBox fx:id="pageContainer" alignment="center" HBox.hgrow="ALWAYS"/>
 		</HBox>
         </center>
     </BorderPane>
