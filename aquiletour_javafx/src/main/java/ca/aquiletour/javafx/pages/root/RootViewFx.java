@@ -3,7 +3,7 @@ package ca.aquiletour.javafx.pages.root;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import ca.aquiletour.core.pages.dashboard.ShowDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.root.QuitMessage;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;

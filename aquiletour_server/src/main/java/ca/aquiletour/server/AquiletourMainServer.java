@@ -28,6 +28,7 @@ import ca.aquiletour.server.http.HttpConnector;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.models.stores.MemoryStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
@@ -43,6 +44,9 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
+		
+		// XXX: initialize MemoryStore outside of server thread
+		MemoryStore.reInitialize();
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)

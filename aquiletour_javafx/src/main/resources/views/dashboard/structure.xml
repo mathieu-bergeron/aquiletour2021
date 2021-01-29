@@ -19,15 +19,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" alignment="center" styleClass="conteneurPrincipal" 
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="top_center" styleClass="conteneurPrincipal" 
     fx:controller="ca.aquiletour.javafx.pages.dashboard.DashboardViewFx">
 
-    <HBox alignment="center">
-        <Text text="%dashboardText"/>
+    <HBox alignment="center" VBox.vgrow="ALWAYS">
+        <VBox fx:id="courseContainer" alignment="top_center" HBox.hgrow="ALWAYS">
+            <HBox id="conteneurNouvelleListe">
+                <TextField id="texteNouvelItem" fx:id="newCourseText" HBox.hgrow="ALWAYS"/>
+                <HBox styleClass="petitEspace" HBox.hgrow="ALWAYS"/>
+                <Button id="boutonNouvelItem" fx:id="newCourseButton" text="%newCourse"/>
+            </HBox>
+        </VBox>
     </HBox>
 
 </VBox>

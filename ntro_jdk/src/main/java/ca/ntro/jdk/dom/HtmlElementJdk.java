@@ -49,12 +49,7 @@ public class HtmlElementJdk implements HtmlElement {
 		MustNot.beNull(otherElement);
 		MustNot.beNull(otherElement.jsoupElement);
 		
-		T.values(jsoupElement.toString(), otherElement.jsoupElement.toString());
-		
 		jsoupElement.appendChild(otherElement.jsoupElement);
-
-		T.values(jsoupElement.toString());
-		
 	}
 
 	@Override

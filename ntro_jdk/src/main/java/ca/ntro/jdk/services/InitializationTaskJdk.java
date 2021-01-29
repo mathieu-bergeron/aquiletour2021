@@ -19,6 +19,7 @@ package ca.ntro.jdk.services;
 
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -96,6 +97,13 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideViewLoaderWeb");
 
 		return ViewLoaderWebJdk.class;
+	}
+
+	@Override
+	protected JsonParser provideJsonParser() {
+		__T.call(InitializationTaskJdk.class, "provideJsonParser");
+
+		return new JsonParserJdk();
 	}
 
 }
