@@ -37,7 +37,7 @@
 
   <div class="card border mb-3" style="max-width: 15rem;">
     <div class="card-header bg-transparent border">3D4
-      <span class="color" id="teacherAvailable"  style="background-color: #ffffff;"></span>
+      <a id="availableLink" href="#"><span class="color" id="teacherAvailable" ></span></a>
     </div>
     <div class="card-body text">
       <h5 class="card-title">TP1</h5>
@@ -54,21 +54,35 @@ $('#nav').load('../nav-global.html');
 
 var buttonAvailable = document.getElementById("buttonAvailable");
 var available = document.getElementById("teacherAvailable");
+var availableLink = document.getElementById("availableLink");
 
 buttonAvailable.onclick = function() {
   
   if (available.style.background == "green") {
     available.style.background = "red";
+    disableLink();
+    
   } else {
     available.style.background = "green";
+    showLink();    
   }
   
 }
-//Doesn't work for now, working on it
-$('#navbarMenu').click(function(){
-  $(".navbar-collapse").collapse('hide');
-});
 
+function disableLink() {
 
+  availableLink.disabled=true;
+  availableLink.removeAttribute('href');    
+  availableLink.style.textDecoration = 'none';
+  availableLink.style.cursor = 'default';
+}
+
+function showLink() {
+  availableLink.disabled=false;
+  //assign href dynamically
+  availableLink.href = "somepage.html";
+  availableLink.style.textDecoration = "underline";
+  availableLink.style.cursor = "hand";
+}
 
 </script>
