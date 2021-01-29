@@ -19,7 +19,7 @@ public class DashboardModel extends NtroModel {
 	public void addCourse(String title) {
 		T.call(this);
 		
-		courses.addItem(new Course(title));
+		courses.addItem(title);
 	}
 
 	public ObservableCourseList getCourses() {

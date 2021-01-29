@@ -1,14 +1,20 @@
 package ca.aquiletour.core.pages.dashboard.values;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.ntro.core.models.properties.observable.list.ObservableList;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableCourseList extends ObservableList<Course>{
+public class ObservableCourseList extends ObservableList<String>{
 	private static final long serialVersionUID = -6055373964369299983L;
 
-	public ObservableCourseList(List<Course> value) {
+	public ObservableCourseList() {
+		super(new ArrayList<String>());
+		T.call(this);
+	}
+
+	public ObservableCourseList(List<String> value) {
 		super(value);
 		T.call(this);
 	}
@@ -17,7 +23,7 @@ public class ObservableCourseList extends ObservableList<Course>{
 	protected Class<?> getValueType() {
 		T.call(this);
 
-		return Course.class;
+		return List.class;
 	}
 
 }

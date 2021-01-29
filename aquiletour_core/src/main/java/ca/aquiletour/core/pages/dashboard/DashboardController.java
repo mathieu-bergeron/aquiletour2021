@@ -7,7 +7,6 @@ import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.stores.LocalStore;
 import ca.ntro.core.models.stores.MemoryStore;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;

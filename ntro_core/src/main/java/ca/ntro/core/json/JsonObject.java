@@ -48,8 +48,8 @@ public class JsonObject implements Serializable {
 		for(String key : map.keySet()) {
 			
 			Object value = map.get(key);
-			
-			System.out.println(key + " " + value + ", ");
+
+			builder.append(key + " " + value + ", ");
 		}
 		
 		

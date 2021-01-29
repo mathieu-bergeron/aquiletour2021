@@ -18,8 +18,15 @@ public class MemoryStore extends ModelStoreAsync {
 	
 	// XXX: we need ConcurrentHashMap as MemoryStore is accessed from different threads
 	private Map<DocumentPath, JsonObject> values = NtroCollections.concurrentHashMap(new HashMap<DocumentPath, JsonObject>());
+	private Map<String, JsonObject> valuesById = NtroCollections.concurrentHashMap(new HashMap<String, JsonObject>());
 	
 	private static MemoryStore instance = new MemoryStore();
+	
+	public static void reInitialize() {
+		T.call(MemoryStore.class);
+
+		instance = new MemoryStore();
+	}
 
 	// XXX: must synchronize here as get can be called from multiple threads
 	public synchronized static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String modelId) {
@@ -40,17 +47,20 @@ public class MemoryStore extends ModelStoreAsync {
 	protected JsonLoader getJsonObject(DocumentPath documentPath) {
 		T.call(this);
 		
-		JsonObject result = values.get(documentPath);
+		//JsonObject result = values.get(documentPath);
+		JsonObject result = valuesById.get(documentPath.getId());
 		
 		// XXX: creates a new JsonObject when null
 		if(result == null) {
+			
+			T.here();
 			
 			result = JsonParser.jsonObject();
 
 			values.put(documentPath, result);
 		}
 		
-		return new JsonLoaderMemory(result);
+		return new JsonLoaderMemory(documentPath, result);
 	}
 
 	@Override
@@ -68,16 +78,22 @@ public class MemoryStore extends ModelStoreAsync {
 		valuePath.updateObject(document, value);
 	}
 
+	//FIXME: there should not be two versions of this!!
 	@Override
 	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
+		values.put(documentPath, jsonObject);
+		valuesById.put(documentPath.getId(), jsonObject);
+		T.values(jsonObject.toString());
 	}
 
+	//FIXME: there should not be two versions of this!!
 	@Override
 	protected void saveJsonObject(JsonObject jsonObject, DocumentPath documentPath) {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
+		values.put(documentPath, jsonObject);
+		valuesById.put(documentPath.getId(), jsonObject);
+		T.values(jsonObject.toString());
 	}
 
 	@Override

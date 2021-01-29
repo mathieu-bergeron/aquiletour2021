@@ -18,46 +18,45 @@ public class DashboardViewModel implements ViewModel {
 		DashboardModel dashboardModel = (DashboardModel) model;
 		DashboardView dashboardView = (DashboardView) view;
 		
-		dashboardModel.getCourses().observe(new ListObserver<Course>() {
+		dashboardModel.getCourses().observe(new ListObserver<String>() {
 
 			@Override
-			public void onItemRemoved(int index, Course item) {
+			public void onValueChanged(List<String> oldValue, List<String> value) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onItemUpdated(int index, Course item) {
+			public void onValue(List<String> value) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onItemAdded(int index, Course item) {
+			public void onDeleted(List<String> lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemAdded(int index, String item) {
 				T.call(this);
 				
-				dashboardView.appendCourse(item.getTitle());
+				dashboardView.appendCourse(item);
 			}
-			
+
 			@Override
-			public void onDeleted(List<Course> lastValue) {
+			public void onItemUpdated(int index, String item) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onValue(List<Course> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValueChanged(List<Course> oldValue, List<Course> value) {
+			public void onItemRemoved(int index, String item) {
 				// TODO Auto-generated method stub
 				
 			}
 		});
-		
 	}
 
 }

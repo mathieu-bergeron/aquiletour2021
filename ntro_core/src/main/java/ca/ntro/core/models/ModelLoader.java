@@ -3,6 +3,7 @@ package ca.ntro.core.models;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonObject;
+import ca.ntro.core.models.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
@@ -34,12 +35,15 @@ public class ModelLoader extends NtroTaskImpl {
 		JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
 		
 		JsonObject jsonObject = jsonLoader.getJsonObject();
+		DocumentPath documentPath = jsonLoader.getDocumentPath();
 		
 		model = Factory.newInstance(modelClass);
 
 		model.setOrigin(modelStore);
 		
 		model.loadFromJsonObject(jsonObject);
+		
+		model.setId(documentPath.getId());
 		
 		notifyTaskFinished();
 	}
