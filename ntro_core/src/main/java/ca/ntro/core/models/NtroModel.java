@@ -24,7 +24,6 @@ import ca.ntro.core.system.trace.T;
  */
 public abstract class NtroModel extends JsonObjectIO {
 	
-	
 	private String id;
 	private ModelStore modelStore;
 	

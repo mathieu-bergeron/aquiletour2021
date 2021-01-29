@@ -23,6 +23,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -33,6 +34,7 @@ import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.jsweet.introspection.IntrospectorJSweet;
 import ca.ntro.jsweet.regex.RegExJSweet;
 import ca.ntro.jsweet.services.AppCloserJSweet;
+import ca.ntro.jsweet.services.JsonParserJSweet;
 import ca.ntro.jsweet.services.LoggerJSweet;
 import ca.ntro.jsweet.services.NtroCollectionsJSweet;
 import ca.ntro.jsweet.services.ResourceLoaderJSweet;
@@ -111,5 +113,13 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideViewLoaderWeb");
 
 		return ViewLoaderWebJSweet.class;
+	}
+
+
+	@Override
+	protected JsonParser provideJsonParser() {
+		__T.call(this, "provideJsonParser");
+		
+		return new JsonParserJSweet();
 	}
 }

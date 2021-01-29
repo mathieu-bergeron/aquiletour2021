@@ -20,6 +20,7 @@ package ca.ntro.core.initialization;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.__Ntro;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -72,6 +73,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		ValueFormatter.initialize(provideValueFormatter());
 		NtroCollections.initialize(provideNtroCollections());
+		
+		JsonParser.initialize(provideJsonParser());
 	}
 
 	protected abstract Logger provideLogger();
@@ -83,5 +86,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract NtroCollections provideNtroCollections();
 	protected abstract ResourceLoader provideResourceLoader();
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
+	protected abstract JsonParser provideJsonParser();
 
 }

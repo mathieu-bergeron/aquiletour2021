@@ -14,13 +14,13 @@ public abstract class LocalStore {
 		LocalStore.instance = instance;
 	}
 
-	public static <M extends NtroModel> ModelLoader get(Class<M> modelClass, String modelId) {
+	public static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String modelId) {
 		
 		ModelLoader modelLoader = null;
 		
 		try {
 			
-			modelLoader = instance.getModel(modelClass, modelId);
+			modelLoader = instance.getLoaderImpl(modelClass, modelId);
 			
 		}catch(NullPointerException e) {
 			
@@ -36,8 +36,7 @@ public abstract class LocalStore {
 
 		try {
 			
-			throw new RuntimeException("FIXME");
-			//instance.close();
+			instance.close();
 			
 		}catch(NullPointerException e) {
 			

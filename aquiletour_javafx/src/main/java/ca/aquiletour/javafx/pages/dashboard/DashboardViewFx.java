@@ -45,4 +45,10 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 		});
 	}
 
+	@Override
+	public void appendCourse(String title) {
+		T.call(this);
+		
+	}
+
 }

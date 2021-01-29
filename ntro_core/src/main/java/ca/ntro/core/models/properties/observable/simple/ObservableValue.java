@@ -1,9 +1,9 @@
 package ca.ntro.core.models.properties.observable.simple;
 
-import ca.ntro.core.models.properties.ModelValue;
+import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableValue<M extends ModelValue> extends ObservableProperty<M> {
+public class ObservableValue<M extends NtroModelValue> extends ObservableProperty<M> {
 	
 	public ObservableValue() {
 		super();
@@ -18,6 +18,6 @@ public class ObservableValue<M extends ModelValue> extends ObservableProperty<M>
 	@Override
 	protected Class<?> getValueType() {
 		T.call(this);
-		return ModelValue.class;
+		return NtroModelValue.class;
 	}
 }

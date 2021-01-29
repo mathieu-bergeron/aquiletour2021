@@ -8,23 +8,28 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class ModelStoreAsync extends ModelStore {
 
-	public <M extends NtroModel> ModelLoader getModel(Class<M> modelClass, String modelId){
+	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String modelId){
 		T.call(this);
 		
-		ModelLoader modelPromise = null;
+		ModelLoader modelLoader = new ModelLoader(this);
 		
 		DocumentPath documentPath = new DocumentPath(modelClass.getSimpleName(), modelId);
 		
-		JsonLoader promiseJsonObject = getJsonObject(documentPath);
+		JsonLoader jsonLoader = getJsonObject(documentPath);
+		jsonLoader.setTaskId("JsonLoader");
+
+		modelLoader.setTargetClass(modelClass);
 		
-		modelPromise = null;
+		modelLoader.addPreviousTask(jsonLoader);
 		
-		return modelPromise;
+		return modelLoader;
 	}
 
 	protected abstract JsonLoader getJsonObject(DocumentPath documentPath);
 
 	protected abstract void saveJsonObject(JsonObject jsonObject, DocumentPath documentPath);
+	
+	public abstract void close();
 	
 
 

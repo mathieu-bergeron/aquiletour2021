@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.json.JsonLoader;
+import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStoreAsync;
@@ -22,10 +22,10 @@ public class MemoryStore extends ModelStoreAsync {
 	private static MemoryStore instance = new MemoryStore();
 
 	// XXX: must synchronize here as get can be called from multiple threads
-	public synchronized static <M extends NtroModel> ModelLoader get(Class<M> modelClass, String modelId) {
+	public synchronized static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String modelId) {
 		T.call(MemoryStore.class);
 
-		ModelLoader result = instance.getModel(modelClass, modelId);
+		ModelLoader result = instance.getLoaderImpl(modelClass, modelId);
 		
 		return result;
 	}
@@ -49,9 +49,8 @@ public class MemoryStore extends ModelStoreAsync {
 
 			values.put(documentPath, result);
 		}
-
-		// FIXME
-		return null;
+		
+		return new JsonLoaderMemory(result);
 	}
 
 	@Override
@@ -78,6 +77,12 @@ public class MemoryStore extends ModelStoreAsync {
 	@Override
 	protected void saveJsonObject(JsonObject jsonObject, DocumentPath documentPath) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void close() {
+		T.call(this);
 		
 	}
 

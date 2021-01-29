@@ -19,7 +19,7 @@ import ca.ntro.core.system.trace.T;
  * @author mbergeron
  *
  */
-public abstract class ModelValue extends JsonObjectIO implements StoreConnectable {
+public abstract class NtroModelValue extends JsonObjectIO implements StoreConnectable {
 
 	@Override
 	public void connectToStore(ValuePath valuePath, ModelStore modelStore) {

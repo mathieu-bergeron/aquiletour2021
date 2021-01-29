@@ -7,7 +7,7 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.properties.ModelValue;
+import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
 public abstract class ObservableProperty<V extends Object> extends JsonObjectIO {
@@ -45,8 +45,8 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 		
 		Object jsonValue = value;
 		
-		if(getValueType().equals(ModelValue.class)) {
-			jsonValue = ((ModelValue) value).toJsonObject().toMap();
+		if(getValueType().equals(NtroModelValue.class)) {
+			jsonValue = ((NtroModelValue) value).toJsonObject().toMap();
 		}
 		
 		result.put("value", jsonValue);

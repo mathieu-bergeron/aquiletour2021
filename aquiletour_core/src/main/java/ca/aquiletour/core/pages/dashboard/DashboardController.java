@@ -6,6 +6,9 @@ import ca.aquiletour.core.pages.dashboard.messages.AddCourseReceptor;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.stores.LocalStore;
+import ca.ntro.core.models.stores.MemoryStore;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -17,6 +20,11 @@ public abstract class DashboardController extends NtroController {
 	private ViewLoader viewLoader;
 	private DashboardView view;
 
+	private ModelLoader modelLoader;
+	private DashboardModel model;
+	
+	private DashboardViewModel viewModel;
+
 	public DashboardController(RootController parentController) {
 		super();
 		T.call(this);
@@ -27,9 +35,14 @@ public abstract class DashboardController extends NtroController {
 	@Override
 	protected void initializeTask() {
 		T.call(this);
+		
+		viewModel = new DashboardViewModel();
 
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
+		
+		modelLoader = MemoryStore.getLoader(DashboardModel.class, "TEST");
+		addSubTask(modelLoader);
 
 		MessageFactory.addMessageReceptor(ShowDashboardMessage.class, new ShowDashboardReceptor(this));
 		MessageFactory.addMessageReceptor(AddCourseMessage.class, new AddCourseReceptor(this));
@@ -40,6 +53,10 @@ public abstract class DashboardController extends NtroController {
 		T.call(this);
 
 		view = (DashboardView) viewLoader.getView();
+
+		model  = (DashboardModel) modelLoader.getModel();
+		
+		viewModel.observeAndDisplay(model, view);
 
 		notifyTaskFinished();
 	}
@@ -65,7 +82,8 @@ public abstract class DashboardController extends NtroController {
 	public void addCourse(String text) {
 		T.call(this);
 		
-		T.values(text);
+		model.addCourse(text);
+		model.save();
 	}
 
 
