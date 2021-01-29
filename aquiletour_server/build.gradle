@@ -22,10 +22,6 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
-configurations{
-    testRuntime.exclude group: 'org.jsweet' // conflicts with selenium
-}
-
 task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
