@@ -1,4 +1,74 @@
-<div class="dashboard-container">
-    Tableau de bord!
-</div>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
+        <link href="style.css" rel="stylesheet">
+        <title>Tableau de bord</title>
+
+</head>
+<!--Takes 'views/nav-global.html' and loads it in a jquerry script below-->
+<nav id="nav"></nav>
+
+<div class="flex-container">
+  <div class="card border mb-3" style="max-width: 15rem;">
+    <div class="card-header bg-transparent border">3C6</div>
+    <div class="card-body text">
+      <h5 class="card-title">Atelier 2</h5>
+      <div class="card-footer bg-transparent border">7 Février 2021</div>
+    </div>
+
+    <!--For now only the third button is available
+      id names were changed to not overwrite the third button's id-->
+    <button type="button" id="buttonAvailableX" class="btn btn-primary">Test</button>
     
+</div>
+
+  <div class="card border mb-3" style="max-width: 15rem;">
+    <div class="card-header bg-transparent border">ZH5</div>
+    <div class="card-body text">
+      <h5 class="card-title">Tutoriel 8</h5>
+      <div class="card-footer bg-transparent border">2 Février 2021</div>
+    </div>
+
+    <button type="button" id="buttonAvailableX" class="btn btn-primary">Test</button>
+    
+  </div>
+
+  <div class="card border mb-3" style="max-width: 15rem;">
+    <div class="card-header bg-transparent border">3D4
+      <span class="color" id="teacherAvailable"  style="background-color: #ffffff;"></span>
+    </div>
+    <div class="card-body text">
+      <h5 class="card-title">TP1</h5>
+      <div class="card-footer bg-transparent border">15 Février 2021</div>
+    </div>
+
+    <button type="button" id="buttonAvailable" class="btn btn-primary">Disponible</button>
+    
+  </div>
+</div>
+
+<script>
+$('#nav').load('../nav-global.html');
+
+var buttonAvailable = document.getElementById("buttonAvailable");
+var available = document.getElementById("teacherAvailable");
+
+buttonAvailable.onclick = function() {
+  
+  if (available.style.background == "green") {
+    available.style.background = "red";
+  } else {
+    available.style.background = "green";
+  }
+  
+}
+//Doesn't work for now, working on it
+$('#navbarMenu').click(function(){
+  $(".navbar-collapse").collapse('hide');
+});
+
+
+
+</script>
