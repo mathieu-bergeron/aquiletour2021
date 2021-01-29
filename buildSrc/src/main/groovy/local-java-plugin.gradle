@@ -12,10 +12,6 @@ repositories {
     mavenCentral()
 }
 
-configurations{
-    runtime.exclude group: 'org.jsweet' // conflicts with gson 2.8.6
-}
-
 tasks.clean {
     doFirst {
         new File("${project.projectDir}/build").deleteDir()
