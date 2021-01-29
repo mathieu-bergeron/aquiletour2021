@@ -24,11 +24,11 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" alignment="center" styleClass="conteneurPrincipal" 
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="top_center" styleClass="conteneurPrincipal" 
     fx:controller="ca.aquiletour.javafx.pages.dashboard.DashboardViewFx">
 
     <HBox alignment="center" VBox.vgrow="ALWAYS">
-        <VBox fx:id="courseContainer" alignment="center" HBox.hgrow="ALWAYS">
+        <VBox fx:id="courseContainer" alignment="top_center" HBox.hgrow="ALWAYS">
             <HBox id="conteneurNouvelleListe">
                 <TextField id="texteNouvelItem" fx:id="newCourseText" HBox.hgrow="ALWAYS"/>
                 <HBox styleClass="petitEspace" HBox.hgrow="ALWAYS"/>

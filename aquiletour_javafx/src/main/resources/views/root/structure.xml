@@ -21,7 +21,7 @@
 <?import javafx.scene.text.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-    fx:controller="ca.aquiletour.javafx.pages.root.RootViewFx" styleClass="fenetrePrincipale">
+    fx:controller="ca.aquiletour.javafx.pages.root.RootViewFx" alignment="top_center" styleClass="fenetrePrincipale">
     <BorderPane VBox.vgrow="ALWAYS">
         <top>
             <MenuBar>
@@ -38,9 +38,8 @@
             </MenuBar>
         </top>
         <center>
-        <HBox alignment="center">
-			<VBox fx:id="pageContainer" alignment="center" HBox.hgrow="ALWAYS"/>
-		</HBox>
+        <VBox alignment="top_center" fx:id="pageContainer">
+		</VBox>
         </center>
     </BorderPane>
 </VBox>
