@@ -17,8 +17,8 @@ public class DashboardControllerFx extends DashboardController {
 	protected ViewLoader createViewLoader(String lang) {
 		T.call(this);
 
-		return new ViewLoaderFx().setFxmlUrl("/views/settings/structure.xml")
-				                 .setCssUrl("/views/settings/style.css")
+		return new ViewLoaderFx().setFxmlUrl("/views/dashboard/structure.xml")
+				                 .setCssUrl("/views/dashboard/style.css")
 				                 .setTranslationsName("i18n.strings");
 	}
 

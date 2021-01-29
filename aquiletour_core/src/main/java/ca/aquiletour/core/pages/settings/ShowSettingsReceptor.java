@@ -2,12 +2,13 @@ package ca.aquiletour.core.pages.settings;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.messages.MessageReceptor;
 
-public class ShowSettingsTask extends NtroTaskImpl {
+public class ShowSettingsReceptor extends MessageReceptor {
 	
 	private SettingsController settingsController;
 
-	public ShowSettingsTask(SettingsController settingsController) {
+	public ShowSettingsReceptor(SettingsController settingsController) {
 		this.settingsController = settingsController;
 	}
 

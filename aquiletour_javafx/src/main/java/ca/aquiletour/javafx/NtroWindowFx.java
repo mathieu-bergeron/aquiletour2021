@@ -4,6 +4,7 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.javafx.NtroViewFx;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -46,8 +47,9 @@ public class NtroWindowFx extends NtroWindow {
 	public void installRootView(NtroView rootView) {
 		T.call(this);
 		
-		// TODO
-		//primaryStage.setScene(viewLoader.createScene(800,600));
+		NtroViewFx view = (NtroViewFx) rootView;
+
+		primaryStage.setScene(view.createScene(800,600));
 	}
 
 }

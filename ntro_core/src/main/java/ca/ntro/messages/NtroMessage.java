@@ -2,7 +2,7 @@ package ca.ntro.messages;
 
 import ca.ntro.core.system.trace.T;
 
-public abstract class Message {
+public abstract class NtroMessage {
 	
 	
 	public void sendMessage() {
