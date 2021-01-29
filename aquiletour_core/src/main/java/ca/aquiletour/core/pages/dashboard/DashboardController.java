@@ -1,6 +1,10 @@
 package ca.aquiletour.core.pages.dashboard;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboard.messages.AddCourseReceptor;
+import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
@@ -28,6 +32,7 @@ public abstract class DashboardController extends NtroController {
 		addSubTask(viewLoader);
 
 		MessageFactory.addMessageReceptor(ShowDashboardMessage.class, new ShowDashboardReceptor(this));
+		MessageFactory.addMessageReceptor(AddCourseMessage.class, new AddCourseReceptor(this));
 	}
 
 	@Override
@@ -55,6 +60,12 @@ public abstract class DashboardController extends NtroController {
 		T.call(this);
 
 		return new ShowDashboardReceptor(this);
+	}
+
+	public void addCourse(String text) {
+		T.call(this);
+		
+		T.values(text);
 	}
 
 

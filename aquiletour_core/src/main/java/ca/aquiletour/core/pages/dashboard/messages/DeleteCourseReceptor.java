@@ -1,14 +1,15 @@
-package ca.aquiletour.core.pages.dashboard;
+package ca.aquiletour.core.pages.dashboard.messages;
 
+import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 import ca.ntro.messages.MessageReceptor;
 
-public class ShowDashboardReceptor extends MessageReceptor {
+public class DeleteCourseReceptor extends MessageReceptor {
 
 	private DashboardController dashboardController;
 
-	public ShowDashboardReceptor(DashboardController dashboardController) {
+	public DeleteCourseReceptor(DashboardController dashboardController) {
 		this.dashboardController = dashboardController;
 	}
 
@@ -20,8 +21,6 @@ public class ShowDashboardReceptor extends MessageReceptor {
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
-
-		dashboardController.showDashboard();
 
 		notifyTaskFinished();
 	}
