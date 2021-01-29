@@ -1,7 +1,5 @@
 package ca.ntro.core.models.stores;
 
-import javax.naming.OperationNotSupportedException;
-
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStoreAsync;
 import ca.ntro.core.models.NtroModel;
@@ -33,12 +31,12 @@ public abstract class LocalStore {
 		return modelLoader;
 	}
 
-	public static void close() throws OperationNotSupportedException {
+	public static void close() {
 		T.call(LocalStore.class);
 
 		try {
 			
-			throw new OperationNotSupportedException();
+			throw new RuntimeException("FIXME");
 			//instance.close();
 			
 		}catch(NullPointerException e) {
