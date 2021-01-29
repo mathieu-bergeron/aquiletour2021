@@ -20,6 +20,9 @@ public class MessageReceptors {
 			receptorSet = new HashSet<>();
 		}
 		
+		// FIXME: limiting to a single receptor for now
+		receptorSet.clear();
+
 		receptorSet.add(messageReceptionTask);
 		
 		messageReceptors.put(messageClass, receptorSet);
