@@ -16,6 +16,7 @@ import ca.ntro.messages.MessageFactory;
 public abstract class DashboardController extends NtroController {
 
 	private RootController parentController;
+
 	private ViewLoader viewLoader;
 	private DashboardView view;
 

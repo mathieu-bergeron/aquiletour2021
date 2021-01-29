@@ -54,6 +54,9 @@ public abstract class RootController extends NtroController {
 	protected abstract NtroWindow getWindow();
 
 	@Override
+	//             afterPreviousTaskAndSubTaskFinished    eq. runTask
+	//             afterPreviousTaskFinished              optionnel!!
+	//             afterPreviousSubTaskFinished           optionnel!!
 	protected void runTaskAsync() {
 		T.call(this);
 		
