@@ -9,16 +9,24 @@ import ca.ntro.jsweet.dom.HtmlDocumentJSweet;
 
 public class NtroWindowJSweet extends NtroWindowWeb {
 	
-	private HtmlDocumentJSweet document = new HtmlDocumentJSweet();
+	private HtmlDocumentJSweet document;
+	
+	public NtroWindowJSweet() {
+		super();
+		T.call(this);
+		
+		document = new HtmlDocumentJSweet();
+	}
 
 	@Override
 	protected HtmlDocument getDocument() {
 		T.call(this);
 		
-		// FIXME: why is it when called??
-		// MustNot.beNull(document);
+		// FIXME: why is this null???
+		MustNot.beNull(document);
+		document = new HtmlDocumentJSweet();
 		
-		return new HtmlDocumentJSweet();
+		return document;
 	}
 
 }
