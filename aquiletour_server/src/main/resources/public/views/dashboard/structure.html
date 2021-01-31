@@ -6,3 +6,77 @@
     <div id="courses-container">
     </div>
 <div>
+
+<div class="flex-container">
+  <div class="card border mb-3" style="max-width: 15rem;">
+    <div class="card-header bg-transparent border">3C6</div>
+    <div class="card-body text">
+      <h5 class="card-title">Atelier 2</h5>
+      <div class="card-footer bg-transparent border">7 Février 2021</div>
+    </div>
+
+    <!--For now only the third button is available
+      id names were changed to not overwrite the third button's id-->
+    <button type="button" id="buttonAvailableX" class="btn btn-primary">Test</button>
+    
+</div>
+
+  <div class="card border mb-3" style="max-width: 15rem;">
+    <div class="card-header bg-transparent border">ZH5</div>
+    <div class="card-body text">
+      <h5 class="card-title">Tutoriel 8</h5>
+      <div class="card-footer bg-transparent border">2 Février 2021</div>
+    </div>
+
+    <button type="button" id="buttonAvailableX" class="btn btn-primary">Test</button>
+    
+  </div>
+
+  <div class="card border mb-3" style="max-width: 15rem;">
+    <div class="card-header bg-transparent border">3D4
+      <a id="availableLink" href="#"><span class="color" id="teacherAvailable" ></span></a>
+    </div>
+    <div class="card-body text">
+      <h5 class="card-title">TP1</h5>
+      <div class="card-footer bg-transparent border">15 Février 2021</div>
+    </div>
+
+    <button type="button" id="buttonAvailable" class="btn btn-primary">Disponible</button>
+    
+  </div>
+</div>
+
+<script>
+var buttonAvailable = document.getElementById("buttonAvailable");
+var available = document.getElementById("teacherAvailable");
+var availableLink = document.getElementById("availableLink");
+
+buttonAvailable.onclick = function() {
+  
+  if (available.style.background == "green") {
+    available.style.background = "red";
+    disableLink();
+    
+  } else {
+    available.style.background = "green";
+    showLink();    
+  }
+  
+}
+
+function disableLink() {
+
+  availableLink.disabled=true;
+  availableLink.removeAttribute('href');    
+  availableLink.style.textDecoration = 'none';
+  availableLink.style.cursor = 'default';
+}
+
+function showLink() {
+  availableLink.disabled=false;
+  //assign href dynamically
+  availableLink.href = "somepage.html";
+  availableLink.style.textDecoration = "underline";
+  availableLink.style.cursor = "hand";
+}
+</script>
