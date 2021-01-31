@@ -14,7 +14,7 @@ public class AddCourseMessage extends NtroMessage {
 		this.course = course;
 	}
 	
-	public Course getText() {
+	public Course getCourse() {
 		T.call(this);
 		
 		return course;
