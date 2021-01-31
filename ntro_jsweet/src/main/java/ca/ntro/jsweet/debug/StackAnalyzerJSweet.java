@@ -21,6 +21,7 @@ import ca.ntro.core.system.source.SourceFileLocation;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.stack.StackFrame;
 import def.js.Error;
+import static def.dom.Globals.window;
 
 public class StackAnalyzerJSweet extends StackAnalyzer {
 
@@ -31,37 +32,39 @@ public class StackAnalyzerJSweet extends StackAnalyzer {
 
 		// XXX: def.js.Error
 		Error error = new Error();
-		
+
 		String[] stackLines = error.stack.split("\n");
-		
+
 		if(stackLines[0].equals("Error")) {
-			
+
 			result = parseChromiumStackLines(className, finalStackOffset, stackLines);
-			
+
 		}else {
 
 			result = parseFirefoxStackLines(className, finalStackOffset, stackLines);
-			
+
 		}
-		
+
 		return result;
 	}
 
 	private StackFrame parseFirefoxStackLines(String className, int finalStackOffset, String[] stackLines) {
-
 		String stackLine = stackLines[finalStackOffset];
-		
+
+		String filePrefix = window.location.origin;
+		String fileName = stackLine.split("@")[1].replace(filePrefix, "").split(":")[0];
+
 		String methodName = stackLine.split("@")[0];
-		
+
 		String[] colonSplits = stackLine.split(":");
-		
+
 		String rawLineNumber = colonSplits[colonSplits.length-2];
 		String rawColumnNumber = colonSplits[colonSplits.length-1];
-		
+
 		int line = Integer.valueOf(rawLineNumber);
 		int column = Integer.valueOf(rawColumnNumber);
-		
-		SourceFileLocation location = SourceMapAnalyzer.getOriginalLocation(line, column);
+
+		SourceFileLocation location = SourceMapAnalyzer.getOriginalLocation(fileName, line, column);
 
 		// FIXME
 		return new StackFrame(className, methodName, location);
@@ -71,35 +74,35 @@ public class StackAnalyzerJSweet extends StackAnalyzer {
 
 		// XXX: first line is "Error", not a call
 		String stackLine = stackLines[finalStackOffset+1];
-		
-		// XXX: strip starting ' '  
+
+		// XXX: strip starting ' '
 		// TODO: refactor in a JSweet String utils
 		while(stackLine.startsWith(" ")) {
 			stackLine = stackLine.substring(1);
 		}
-		
+
 		String methodName = stackLine.split("at ")[1];
-		
+
 		if(methodName.startsWith("new")) {
 
 			methodName = methodName.split("new ")[1];
 
 		}else {
-			
+
 			// XXX: JSweet split is NOT regexp
 			methodName = methodName.split(".")[1];
 			methodName = methodName.split(" ")[0];
-			
+
 		}
-		
+
 		String[] colonSplits = stackLine.split(":");
 		String rawLineNumber = colonSplits[colonSplits.length-2];
 		String rawColumnNumber = colonSplits[colonSplits.length-1].replace(")","");
-		
+
 		int lineNumber = Integer.valueOf(rawLineNumber);
 		int columnNumber = Integer.valueOf(rawColumnNumber);
 
-		SourceFileLocation location = SourceMapAnalyzer.getOriginalLocation(lineNumber,columnNumber);
+		SourceFileLocation location = SourceMapAnalyzer.getOriginalLocation("something", lineNumber, columnNumber);
 
 		// FIXME
 		return new StackFrame(className, methodName, location);
@@ -109,6 +112,6 @@ public class StackAnalyzerJSweet extends StackAnalyzer {
 	protected int getInitialStackOffset() {
 		return 1;
 	}
-	
+
 
 }

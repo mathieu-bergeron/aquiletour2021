@@ -32,10 +32,13 @@ sh "$scripts_dir"/run_commands_foreach_project.sh "rm -rf .gradle"
 echo "rm -rf .gradle"
 rm -rf .gradle
 
-echo "rm -rf ~/.m2/repository/ca/ntro"
-echo "rm -rf ~/.m2/repository/ca/aquiletour"
+echo "rm ~/.m2/repository/ca/ntro"
+echo "rm ~/.m2/repository/ca/aquiletour"
+echo "rm ~/.m2/repository/aquiletour2021"
+
 rm -rf ~/.m2/repository/ca/ntro
 rm -rf ~/.m2/repository/ca/aquiletour
+rm -rf ~/.m2/repository/aquiletour2021
 
 restore_dir
 

@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with aquiletour.  If not, see <https://www.gnu.org/licenses/> 
+along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
 -->
 
@@ -21,8 +21,15 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 <!doctype html>
 <html lang="fr">    <!-- TODO: change lang according to request -->
 	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
 		<meta charset="utf-8">
 		<title>aquiletour</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/navbars/">
+
+        <link href="/_R/css/aquiletour.css" rel="stylesheet">
 
 		<script type="text/javascript" src="/_R/js/ntro_core/bundle.js"></script>
 		<script type="text/javascript" src="/_R/js/ntro_jsweet/bundle.js"></script>
@@ -34,37 +41,48 @@ along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
         <!-- dev only: read source map -->
 	    <script src="https://unpkg.com/source-map@0.7.3/dist/source-map.js"></script>
 	    <script>
+			sourceMap.SourceMapConsumer.initialize({
+				"lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
+			});
 
-	        sourceMap.SourceMapConsumer.initialize({
-	                    "lib/mappings.wasm": "https://unpkg.com/source-map@0.7.3/lib/mappings.wasm"
-	                });
+			const sourceMapsToLoad = [
+				"/_R/js/ntro_core/bundle.js.map",
+				"/_R/js/ntro_jsweet/bundle.js.map",
+				"/_R/js/aquiletour_core/bundle.js.map",
+				"/_R/js/aquiletour_jsweet/bundle.js.map",
+			];
 
-	        window.onload = async function(){
+			const loadedSourceMaps = {};
 
-	                // FIXME: we have more than one source map to load!
-				    const response = await fetch('/_R/js/aquiletour_jsweet/bundle.js.map');
+	        window.onload = async function() {
+				for (const sourceMapUrl of sourceMapsToLoad) {
+					const response = await fetch(sourceMapUrl);
 
-                    if(response.ok){
+					if (response.ok) {
+						const rawSourceMap = await response.text();
 
-                        const rawSourceMap = await response.text();
-                        const parsedSourceMap = await new sourceMap.SourceMapConsumer(rawSourceMap);
+						loadedSourceMaps[sourceMapUrl] = await new sourceMap.SourceMapConsumer(rawSourceMap);
 
-                        ca.ntro.jsweet.debug.installSourceMapAnalyzer(function(lineColumn){
+						console.info(`loaded sourceMap at url ${sourceMapUrl}`);
+					} else {
+						ca.ntro.jsweet.onLoadTask.setError(new Error("cannot load source map"));
+					}
+				}
 
-                            originalPosition = parsedSourceMap.originalPositionFor(lineColumn);
+				ca.ntro.jsweet.debug.installSourceMapAnalyzer(function (lineColumn) {
+					const sourceMapFile = loadedSourceMaps[`${lineColumn.fileName}.map`];
 
-                            return originalPosition;
-                    
-                        });
+					if (!sourceMapFile) {
+						console.warn('could not associate fileName with a loaded source map');
+					}
 
-                        ca.ntro.jsweet.onLoadTask.notifyTaskFinished();
+					originalPosition = sourceMapFile.originalPositionFor(lineColumn);
 
-                    }else{
+					return originalPosition;
+				});
 
-                        ca.ntro.jsweet.onLoadTask.setError(new Error("cannot load source map"));
-
-                    }
-                };
+				ca.ntro.jsweet.onLoadTask.notifyTaskFinished();
+			}
 	    </script>
 	</head>
 	<body current-path="" current-parameters="">

@@ -18,10 +18,9 @@
 package ca.ntro.jsweet;
 
 import ca.ntro.core.initialization.NtroInitializationTask;
-import ca.ntro.core.mvc.view.ViewLoaderWeb;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.initialization.InitializationTaskJSweet;
-import ca.ntro.jsweet.initialization.LoadSourceMapTask;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class NtroJSweet {
 
@@ -40,10 +39,4 @@ public class NtroJSweet {
 
 		return initializationTask;
 	}
-
-	public static ViewLoaderWeb viewLoader() {
-		return new ViewLoaderWeb();
-	}
-
-
 }

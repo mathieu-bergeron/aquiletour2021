@@ -82,3 +82,16 @@ tasks.jar {
 tasks.install{
 
 }
+
+install {
+    repositories {
+        mavenInstaller {
+            pom.whenConfigured {
+                p -> p.dependencies = p.dependencies.findAll { 
+                        dep -> dep.groupId != "org.jsweet" 
+                }
+            }
+        }
+    }
+}
+
