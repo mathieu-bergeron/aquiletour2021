@@ -26,3 +26,6 @@ bin
 /jsweet
 
 aquiletour_server/src/main/resources/public/js
+
+# MAC_OS
+.DS_Store

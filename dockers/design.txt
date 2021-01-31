@@ -1,0 +1,51 @@
+Structure sur disque:
+- exterieur du docker git
+- repertoires git: session/cours-gr/DAetudiant/depot/...
+	- ex: H2021/420ZF5-02/202033395/testZF5/...
+
+		TP/AT	Exer	DEPOT		Repertoire
+GitLab/GitHub	TP04	-	420ZF5		TP04		TP sans exercices separes
+		TP04	-	420ZF5		TP04		Virtuel? (aucun fichier a l'interieur)
+		TP04	Ex02	420ZF5		TP04/Ex02
+		At05	Ex03	420ZF5		At05		Tous les exercices dans 1 repertoire?
+		At05	Ex04	420ZF5		At05		
+		At06	Ex01	420ZF5		-		
+AzureDepOp	TP01	-	420ZE5-01	-		Forcer des depots differents?
+		TP02	-	420ZE5-02	-
+
+- Possibilite de changer le depot, mais avertir l'enseignant sauf si changement force
+
+Algo GIT:
+Recoit webhook.
+Determine session/cours-gr/etudiant avec url du depot et DB cours
+	Log erreur si pas trouve
+clone ou pull le depot
+	depot recree? (delete/create avec meme nom)
+extrait les infos des commits master depuis le dernier commit dans DB
+	timestamp, dossiers/fichiers
+	determine tp/exercice avec DB cours vs dossier et description du commit
+ajoute les commit dans DB
+
+
+Docker GIT:
+retourne une archive des fichiers selon requete:
+	message dictionnaire json
+	session?	cours?		groupe?		etudiant?	travail?	exercice?
+	permettre d'exclure certains fichiers (optionnel) : 		exclude?
+	Si une information est absente (ou *) on ramasse tout, par exemple, on recupere
+	tous les groupes de 420ZF5 en mettant groupe: '*'
+	Structure de l'archive: DA/... 		(le repertoire du depot n'apparait pas)
+		conserve la structure des repertoires dans le depot (src/TP2/Ex02/test.java)
+
+Pour un test:
+Soumettre une requete avec session/cours-gr/etudiant/tp/exercice (DB cours) au docker GIT
+	docker git retourne les fichiers pertinents
+Soumettre fichiers et session/cours-gr/etudiant/tp/exercice/ID Tests au docker test
+OU STOCKER LE RESULTAT?
+
+Pour JPLAG:
+Soumettre une requete avec session/cours-gr/etudiant/tp/exercice (DB cours) au docker GIT
+	docker git retourne les fichiers pertinents
+Soumettre fichiers et session/cours-gr/etudiant/tp/exercice au docker JPLAG
+OU STOCKER LE RESULTAT?
+
