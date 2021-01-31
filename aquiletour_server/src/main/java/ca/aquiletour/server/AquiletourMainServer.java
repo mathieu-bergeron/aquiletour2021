@@ -77,8 +77,8 @@ public class AquiletourMainServer extends NtroTaskImpl {
         // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-        handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "src/main/resources/public"));
-        handlers.addHandler(DynamicHandler.createDynamicHandler("/", "src/main/resources/private"));
+        handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "/public"));
+        handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 
         server.setHandler(handlers);
 
