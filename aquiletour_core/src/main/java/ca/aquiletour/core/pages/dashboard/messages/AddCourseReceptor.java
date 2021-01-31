@@ -23,7 +23,7 @@ public class AddCourseReceptor extends MessageReceptor {
 		
 		AddCourseMessage message = (AddCourseMessage) getMessage();
 		
-		dashboardController.addCourse(message.getText());
+		dashboardController.addCourse(message.getCourse());
 
 		notifyTaskFinished();
 	}

@@ -15,15 +15,41 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.server.http;
+package ca.ntro.jdk;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 
-public abstract class FileLoader {
+import ca.ntro.core.system.log.Log;
 
-	protected abstract InputStream loadFile(String filePath) throws FileNotFoundException;
+public class FileLoaderDev extends FileLoader {
+
+	// XXX: in dev, load from ./src/main/resources
+	private final String DEV_PATH_PREFIX = "./src/main/resources";
+	//private final String DEV_PATH_PREFIX = "";
 	
+	// TODO: in prod:
+	//   * load via getResourceAsStream so we can load from a .jar
+	//   * check if file is in memory cache
+
+	@Override
+	public InputStream loadFile(String filePath) {
+		
+		String resourcePath = Paths.get(DEV_PATH_PREFIX, filePath).toString();
+		
+		FileInputStream result = null;
+		
+		try {
+			result = new FileInputStream(new File(resourcePath));
+		} catch (FileNotFoundException e) {
+			Log.fatalError("loadFile: file not found" + resourcePath ,e);
+		}
+		
+		return result;
+	}
 
 }

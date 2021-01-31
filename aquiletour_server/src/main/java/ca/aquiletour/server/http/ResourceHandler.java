@@ -32,6 +32,8 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.FileLoader;
+import ca.ntro.jdk.FileLoaderDev;
 
 public class ResourceHandler extends AbstractHandler {
 
@@ -49,7 +51,7 @@ public class ResourceHandler extends AbstractHandler {
         staticFilesContext.setHandler(new ResourceHandler(resourcesUrlPrefix, publicFilesPrefix, new FileLoaderDev()));
         
         // TODO: dev-only: load resources from ./src/main/ressources NOT ./build/resources/...
-        //staticFilesContext.setResourceBase("./src/main/resources");
+        // staticFilesContext.setResourceBase("./src/main/resources");
         
         return staticFilesContext;
 	}
