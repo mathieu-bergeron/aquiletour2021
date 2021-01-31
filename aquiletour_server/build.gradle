@@ -22,6 +22,14 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["${project.projectDir}/src/main/resources"]
+        }
+    }
+}
+
 task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
