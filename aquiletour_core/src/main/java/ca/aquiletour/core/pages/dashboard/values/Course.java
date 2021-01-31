@@ -4,13 +4,18 @@ import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
 public class Course extends NtroModelValue {
-	
-	private String title;
 
-	public Course(String title) {
+	private String title;
+	private String summary;
+	private String date;
+
+	public Course(String title, String summary, String date) {
+		super();
 		T.call(this);
 		
 		this.title = title;
+		this.summary = summary;
+		this.date = date;
 	}
 
 	public String getTitle() {
@@ -21,4 +26,19 @@ public class Course extends NtroModelValue {
 		this.title = title;
 	}
 
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 }

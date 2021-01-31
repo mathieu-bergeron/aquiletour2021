@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboard.values.Course;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
@@ -35,11 +36,15 @@ public abstract class DashboardControllerWeb extends DashboardController impleme
 			                   String authToken) {
 		T.call(this);
 		
-		if(parameters.containsKey("title")) {
+		if(parameters.containsKey("title") 
+				&& parameters.containsKey("summary")
+				&& parameters.containsKey("date")) {
 			
 			String title = parameters.get("title")[0];
+			String summary = parameters.get("summary")[0];
+			String date = parameters.get("date")[0];
 			
-			addCourseMessage.setText(title);
+			addCourseMessage.setCourse(new Course(title, summary, date));
 			
 			addNextTask(addCourseMessage);
 		}

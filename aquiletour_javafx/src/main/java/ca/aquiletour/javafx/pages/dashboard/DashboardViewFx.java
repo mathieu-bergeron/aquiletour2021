@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboard.values.Course;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.NtroViewFx;
@@ -52,10 +53,10 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	}
 
 	@Override
-	public void appendCourse(String title) {
+	public void appendCourse(Course course) {
 		T.call(this);
 		
-		courseContainer.getChildren().add(new Text(title));
+		courseContainer.getChildren().add(new Text(course));
 	}
 
 }

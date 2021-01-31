@@ -1,22 +1,23 @@
 package ca.aquiletour.core.pages.dashboard.messages;
 
+import ca.aquiletour.core.pages.dashboard.values.Course;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 
 public class AddCourseMessage extends NtroMessage {
-	
-	private String text;
 
-	public void setText(String text) {
+	private Course course;
+
+	public void setCourse(Course course) {
 		T.call(this);
 		
-		this.text = text;
+		this.course = course;
 	}
 	
-	public String getText() {
+	public Course getText() {
 		T.call(this);
 		
-		return text;
+		return course;
 	}
 
 }
