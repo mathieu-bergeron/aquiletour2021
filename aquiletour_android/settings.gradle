@@ -1,0 +1,6 @@
+rootProject.name = "aquiletour_android"
+
+include ':app'
+
+include ':ntro_android'
+project(':ntro_android').projectDir = file('../ntro_android')

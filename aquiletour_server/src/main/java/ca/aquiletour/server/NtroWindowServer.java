@@ -7,11 +7,12 @@ import java.nio.charset.StandardCharsets;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.NtroWindowWeb;
-import ca.ntro.core.web.dom.HtmlDocument;
-import ca.ntro.jdk.dom.HtmlDocumentJava;
+import ca.ntro.web.NtroWindowWeb;
+import ca.ntro.web.dom.HtmlDocument;
+import ca.ntro.jdk.dom.HtmlDocumentJdk;
 
 public class NtroWindowServer extends NtroWindowWeb {
 
@@ -30,7 +31,7 @@ public class NtroWindowServer extends NtroWindowWeb {
         try {
 
             Document jsoupDocument = Jsoup.parse(stream, StandardCharsets.UTF_8.name(), htmlPath);
-            htmlDocument = new HtmlDocumentJava(jsoupDocument);
+            htmlDocument = new HtmlDocumentJdk(jsoupDocument);
 
         } catch (IOException e) {
 
@@ -42,6 +43,5 @@ public class NtroWindowServer extends NtroWindowWeb {
 
         return htmlDocument;
 	}
-	
 
 }

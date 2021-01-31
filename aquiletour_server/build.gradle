@@ -1,4 +1,5 @@
 plugins{
+    id 'local-java-plugin'
     id 'local-jsweet-plugin'
 }
 
@@ -9,13 +10,16 @@ dependencies {
 
     // aquiletour
     implementation project(':aquiletour_core')
-    implementation project(':aquiletour_web')
 
     // Jetty web server
     implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.28.v20200408'
 
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+    testImplementation 'junit:junit:4.13'
 }
 
 task server (type:JavaExec) {

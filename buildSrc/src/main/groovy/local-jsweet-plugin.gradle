@@ -1,8 +1,8 @@
 plugins {
-    id 'local-java-plugin'
     id 'org.jsweet.jsweet-gradle-plugin'
     id 'maven'
 }
+
 
 project.gradle.projectsEvaluated {
     jsweet {
@@ -39,9 +39,15 @@ repositories {
 }
 
 dependencies {
-    // JSweet
     implementation group: 'org.jsweet', name: 'jsweet-transpiler', version: "2.3.0-SNAPSHOT"
     implementation group: 'org.jsweet', name: 'jsweet-core', version: "6"
+}
+
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
 }
 
 tasks.clean {
@@ -83,3 +89,16 @@ tasks.jar {
 tasks.install{
 
 }
+
+install {
+    repositories {
+        mavenInstaller {
+            pom.whenConfigured {
+                p -> p.dependencies = p.dependencies.findAll { 
+                        dep -> dep.groupId != "org.jsweet" 
+                }
+            }
+        }
+    }
+}
+

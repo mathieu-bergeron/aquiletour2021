@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) (2020) (Mathieu Bergeron) (mathieu.bergeron@cmontmorency.qc.ca)
+//
+// This file is part of tutoriels4f5
+//
+// tutoriels4f5 is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// tutoriels4f5 is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with aquiletour.  If not, see <https://www.gnu.org/licenses/> -->
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+    fx:controller="ca.aquiletour.javafx.pages.root.RootViewFx" alignment="top_center" styleClass="fenetrePrincipale">
+    <BorderPane VBox.vgrow="ALWAYS">
+        <top>
+            <MenuBar>
+                <menus>
+                <Menu styleClass="menu" text="%menu">
+                    <items>
+                    <MenuItem fx:id="dashboard" styleClass="menu_item" text="%mescours"/>
+                    <MenuItem fx:id="settings" styleClass="menu_item" text="%parametres"/>
+                    <SeparatorMenuItem/>
+                    <MenuItem fx:id="quit" styleClass="menu_item" text="%quitter"/>
+                    </items>
+                </Menu>
+            </menus>
+            </MenuBar>
+        </top>
+        <center>
+        <VBox alignment="top_center" fx:id="pageContainer">
+		</VBox>
+        </center>
+    </BorderPane>
+</VBox>

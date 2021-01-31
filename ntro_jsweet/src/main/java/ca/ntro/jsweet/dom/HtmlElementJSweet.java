@@ -3,8 +3,9 @@ package ca.ntro.jsweet.dom;
 import java.util.function.BiFunction;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.web.dom.HtmlElement;
-import ca.ntro.core.web.dom.HtmlEventListener;
+import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
@@ -39,5 +40,34 @@ public class HtmlElementJSweet implements HtmlElement {
 				return null;
 			}
 		});
+	}
+
+	@Override
+	public void appendHtml(String html) {
+		T.call(this);
+		
+		// FIXME: parse HTML first
+		jQueryElement.html(html);
+	}
+
+	@Override
+	public void appendElement(HtmlElement element) {
+		T.call(this);
+
+		jQueryElement.append(((HtmlElementJSweet) element).jQueryElement);
+	}
+
+	@Override
+	public HtmlElements children(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJSweet(jQueryElement.children(cssQuery));
+	}
+
+	@Override
+	public void setAttribute(String name, String value) {
+		T.call(this);
+		
+		jQueryElement.attr(name, value);
 	}
 }

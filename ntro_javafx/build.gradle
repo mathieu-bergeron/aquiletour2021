@@ -1,0 +1,8 @@
+plugins {
+    id 'local-java-plugin'
+    id 'local-javafx-plugin'
+}
+
+dependencies {
+    implementation project(':ntro_core')
+}

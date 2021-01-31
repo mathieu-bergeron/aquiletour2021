@@ -19,13 +19,12 @@ package ca.ntro.jdk.services;
 
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.services.ResourceLoaderTask;
-import ca.ntro.core.tasks.NtroTask;
 
 public class ResourceLoaderJdk extends ResourceLoader {
 
 	@Override
 	public ResourceLoaderTask loadResourceTask(String resourcePath) {
-		return null;
+		return new ResourceLoaderTaskJdk("/public/" + resourcePath);
 	}
 
 }

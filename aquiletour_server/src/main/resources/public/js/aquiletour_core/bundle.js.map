@@ -1,9 +1,0 @@
-{
-"version":3,
-"file":"bundle.js",
-"lineCount":65,
-"sourceRoot":"../../../../../../../src/main/java/",
-"mappings":"AAyBA,kE;AAAA,M;AAAA,e;AAAA,kB;AAAA,2B;AAAA,gB;AAAA,yB;AAAA,wB;AAAA,iC;AAAA,uE;AAIA,sC;AAAA,+B;AAAA,qD;AAAA,8C;AACA,8D;AAEA,sD;AAEA,0E;AACA,oB;AAMA,sB;AAAA,qB;AAAA,sB;AAAA,8B;AACA,8D;AAEA,oH;AACA,iE;AAEA,iD;AACA,oB;AAGA,sB;AAAA,qB;AAAA,sC;AAAA,sB;AAAA,iC;AAEA,oB;AAAA,gB;AA5BA,oD;;ACDA,gE;AAAA,4D;AAAA,0D;AAAA,mB;AAAA,e;AAAA,kB;AAAA,2B;AAAA,gB;AAAA,yB;AAAA,qE;AAGA,kB;AAAA,iB;AAAA,kB;AAAA,0B;AACA,0D;AAEA,yH;AAGA,+B;AAEA,qD;AACA,gB;AAKA,kB;AAAA,iB;AAAA,kC;AAAA,kB;AAAA,6B;AACA,iE;AACA,+C;AACA,gB;AAAA,Y;AApBA;",
-"sources":["ca/aquiletour/core/rootpage/RootpageMain.java","ca/aquiletour/core/AquiletourMain.java"],
-"names":[]
-}

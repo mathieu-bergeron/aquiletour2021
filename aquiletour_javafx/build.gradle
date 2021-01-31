@@ -1,17 +1,20 @@
 plugins {
+    id 'local-java-plugin'
     id 'local-jsweet-plugin'
+    id 'local-javafx-plugin'
 }
 
+
 dependencies {
+    // Ntro
+    implementation project(':ntro_core')
     implementation project(':ntro_jdk')
+    implementation project(':ntro_javafx')
+
+    // aquiletour
     implementation project(':aquiletour_core')
 }
 
-tasks.jsweet {
-    doFirst{
-        throw new GradleException("Task :jsweet NOT supported in ${project}")
-    }
-}
 
 task javafx (type:JavaExec) {
     dependsOn 'classes'

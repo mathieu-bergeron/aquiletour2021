@@ -21,34 +21,35 @@ import ca.ntro.core.system.source.SourceFileLocation;
 import def.js.Function;
 
 public class SourceMapAnalyzer {
-	
+
 	private static Function analyzerFunction;
-	
+
 	public static void initialize(Function sourceMapAnalyzer) {
 		SourceMapAnalyzer.analyzerFunction = sourceMapAnalyzer;
 	}
-	
-	public static SourceFileLocation getOriginalLocation(int line, int column) {
+
+	public static SourceFileLocation getOriginalLocation(String fileName, int line, int column) {
 
 		//System.out.println("line, column " + line + " " + column);
-		
+
 		def.js.Object lineColumn = new def.js.Object();
+		lineColumn.$set("fileName", fileName);
 		lineColumn.$set("line", line);
 		lineColumn.$set("column", column);
 
 		def.js.Object result = SourceMapAnalyzer.analyzerFunction.$apply(lineColumn);
-		
+
 		/*
 		String fileName = result.$get("source").toString();
 		int resultLine = Integer.valueOf(result.$get("line").toString());
 		int resultColumn = Integer.valueOf(result.$get("column").toString());
 		*/
-		
-		String fileName = result.$get("source");
+
+		String resultingFileName = result.$get("source");
 		int resultLine = result.$get("line");
-		
-		return new SourceFileLocation(fileName, resultLine);
+
+		return new SourceFileLocation(resultingFileName, resultLine);
 	}
-	
+
 
 }

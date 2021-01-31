@@ -18,14 +18,22 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
-import ca.aquiletour.core.rootpage.RootpageMain;
+import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.javafx.pages.root.RootControllerFx;
+import javafx.stage.Stage;
 
 public class AquiletourMainFx extends AquiletourMain {
+	
+	private Stage primaryStage;
 
-	@Override
-	protected RootpageMain rootpageMain(String lang) {
-		return new RootpageMainFx(lang);
+	public AquiletourMainFx(Stage primaryStage) {
+		super();
+		
+		this.primaryStage = primaryStage;
 	}
 
-
+	@Override
+	protected RootController rootController() {
+		return new RootControllerFx(primaryStage);
+	}
 }

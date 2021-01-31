@@ -37,7 +37,7 @@ public class ResourceLoaderTaskJsweet extends ResourceLoaderTask {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		Globals.fetch(getResourcePath()).then(new Consumer<FetchResponse>() {
 			@Override
 			public void accept(FetchResponse response) {

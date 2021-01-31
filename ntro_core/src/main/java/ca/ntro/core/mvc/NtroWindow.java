@@ -4,6 +4,6 @@ import ca.ntro.core.mvc.view.NtroView;
 
 public abstract class NtroWindow {
 
-	public abstract void installRootView(NtroView view);
+	public abstract void installRootView(NtroView rootView);
 	
 }
