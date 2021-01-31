@@ -15,6 +15,7 @@ dependencies {
     implementation project(':aquiletour_core')
 }
 
+
 task javafx (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.javafx.JavaMainFx'

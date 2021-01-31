@@ -16,10 +16,10 @@ public class DashboardModel extends NtroModel {
 	public void initializeStoredValues() {
 	}
 
-	public void addCourse(String title) {
+	public void addCourse(Course course) {
 		T.call(this);
 		
-		courses.addItem(title);
+		courses.addItem(course);
 	}
 
 	public ObservableCourseList getCourses() {

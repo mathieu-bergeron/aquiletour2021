@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseReceptor;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
+import ca.aquiletour.core.pages.dashboard.values.Course;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.stores.MemoryStore;
@@ -79,10 +80,10 @@ public abstract class DashboardController extends NtroController {
 		return new ShowDashboardReceptor(this);
 	}
 
-	public void addCourse(String text) {
+	public void addCourse(Course course) {
 		T.call(this);
 		
-		model.addCourse(text);
+		model.addCourse(course);
 		model.save();
 	}
 
