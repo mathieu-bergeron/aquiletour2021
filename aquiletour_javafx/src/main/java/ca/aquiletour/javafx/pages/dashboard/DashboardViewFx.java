@@ -3,6 +3,8 @@ package ca.aquiletour.javafx.pages.dashboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.google.javascript.jscomp.ConformanceRules.BanUnknownDirectThisPropsReferences;
+
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
@@ -10,6 +12,7 @@ import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.NtroViewFx;
+import ca.ntro.javafx.ViewLoaderFx;
 import ca.ntro.messages.MessageFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +34,8 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	private VBox courseContainer;
 
 	private AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
+	
+	private ViewLoaderFx courseSummaryViewLoader;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -57,13 +62,18 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	public void appendCourse(CourseSummary course) {
 		T.call(this);
 		
-		courseContainer.getChildren().add(new Text(course.getTitle()));
+		CourseSummaryViewFx courseView = (CourseSummaryViewFx) courseSummaryViewLoader.createView();
+		
+		courseView.displaySummary(course);
+		
+		courseContainer.getChildren().add(courseView.getParent());
 	}
 
 	@Override
 	public void setCourseSummaryViewLoader(ViewLoader courseSummaryViewLoader) {
 		T.call(this);
 		
+		this.courseSummaryViewLoader = (ViewLoaderFx) courseSummaryViewLoader;
 	}
 
 }
