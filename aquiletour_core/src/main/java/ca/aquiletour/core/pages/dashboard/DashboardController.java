@@ -48,7 +48,8 @@ public abstract class DashboardController extends NtroController {
 		addSubTask(modelLoader);
 
 		courseSummaryViewLoader = createCourseSummaryViewLoader(Constants.LANG);
-		viewLoader.addSubTask(courseSummaryViewLoader); // FIXME: this.addSubTask should work but fails
+		courseSummaryViewLoader.setTaskId("courseSummaryViewLoader");             // XXX: must have taskId as there
+		addSubTask(courseSummaryViewLoader);                                      //      is 2 ViewLoader subTask
 
 		MessageFactory.addMessageReceptor(ShowDashboardMessage.class, new ShowDashboardReceptor(this));
 		MessageFactory.addMessageReceptor(AddCourseMessage.class, new AddCourseReceptor(this));
