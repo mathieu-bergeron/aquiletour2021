@@ -79,3 +79,26 @@
   -fx-min-width: 5em;
   -fx-min-height: 5em;
 }
+
+.big-text {
+    -fx-font-size:16px;
+}
+
+.medium-text {
+    -fx-font-size:14px;
+}
+
+.summary-container {
+  -fx-alignment: center;
+  -fx-padding: 1em;
+  -fx-border-style: solid;
+  -fx-border-width: 0.2em;
+  -fx-border-color: #161620;
+  -fx-border-radius: 20px;
+  -fx-background-radius: 20px;
+  -fx-min-width: 6em;
+  -fx-max-width: 40em;
+  -fx-max-height: 16em;
+  -fx-background-color: #95c5db;
+}
+

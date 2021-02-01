@@ -27,9 +27,19 @@
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="top_center" styleClass="conteneurPrincipal" 
     fx:controller="ca.aquiletour.javafx.pages.dashboard.CourseSummaryViewFx">
     <HBox>
-        <Text fx:id="courseTitle"/>
-        <Text fx:id="summaryText"/>
-        <Text fx:id="summaryDate"/>
-        <Button fx:id="" text="Rendez-vous"/>
+        <HBox HBox.hgrow="ALWAYS" alignment="center" styleClass="summary-container">
+            <HBox HBox.hgrow="ALWAYS" alignment="center" >
+                <Text styleClass="big-text" fx:id="courseTitle"/>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="center">
+                <Text styleClass="medium-text" fx:id="summaryText"/>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="center">
+                <Text styleClass="medium-text" fx:id="summaryDate"/>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="center" >
+                <Button fx:id="" styleClass="bouton" text="Rendez-vous"/>
+            </HBox>
+        </HBox>
     </HBox>
 </VBox>
