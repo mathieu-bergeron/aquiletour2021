@@ -8,9 +8,10 @@ import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.stores.MemoryStore;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.core.services.stores.MemoryStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 
@@ -44,7 +45,7 @@ public abstract class DashboardController extends NtroController {
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
 		
-		modelLoader = MemoryStore.getLoader(DashboardModel.class, "TEST");
+		modelLoader = LocalStore.getLoader(DashboardModel.class, "testId");
 		addSubTask(modelLoader);
 
 		courseSummaryViewLoader = createCourseSummaryViewLoader(Constants.LANG);

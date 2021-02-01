@@ -3,7 +3,7 @@ package ca.ntro.core.models;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.models.stores.DocumentPath;
+import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 

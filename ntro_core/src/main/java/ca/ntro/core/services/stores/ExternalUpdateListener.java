@@ -1,4 +1,4 @@
-package ca.ntro.core.models.stores;
+package ca.ntro.core.services.stores;
 
 public interface ExternalUpdateListener {
 	

@@ -20,6 +20,7 @@ package ca.ntro.jdk.services;
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -104,6 +105,13 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideJsonParser");
 
 		return new JsonParserJdk();
+	}
+
+	@Override
+	protected ModelStore provideLocalStore() {
+		__T.call(InitializationTaskJdk.class, "provideLocalStore");
+		
+		return new LocalStoreNitrite();
 	}
 
 }
