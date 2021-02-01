@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.dashboard;
 
 import java.util.List;
 
-import ca.aquiletour.core.pages.dashboard.values.Course;
+import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.ViewModel;
 import ca.ntro.core.models.properties.observable.list.ListObserver;
@@ -24,41 +24,41 @@ public class DashboardViewModel implements ViewModel {
 				dashboardView.appendCourse(item);
 				*/
 		
-		dashboardModel.getCourses().observe(new ListObserver<Course>() {
+		dashboardModel.getCourses().observe(new ListObserver<CourseSummary>() {
 
 			@Override
-			public void onValueChanged(List<Course> oldValue, List<Course> value) {
+			public void onValueChanged(List<CourseSummary> oldValue, List<CourseSummary> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValue(List<Course> value) {
+			public void onValue(List<CourseSummary> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onDeleted(List<Course> lastValue) {
+			public void onDeleted(List<CourseSummary> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemAdded(int index, Course item) {
+			public void onItemAdded(int index, CourseSummary item) {
 				T.call(this);
 				
 				dashboardView.appendCourse(item);
 			}
 
 			@Override
-			public void onItemUpdated(int index, Course item) {
+			public void onItemUpdated(int index, CourseSummary item) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemRemoved(int index, Course item) {
+			public void onItemRemoved(int index, CourseSummary item) {
 				// TODO Auto-generated method stub
 				
 			}

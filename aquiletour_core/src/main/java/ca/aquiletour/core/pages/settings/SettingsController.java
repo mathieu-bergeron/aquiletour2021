@@ -34,7 +34,7 @@ public abstract class SettingsController extends NtroController {
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		view = (SettingsView) viewLoader.getView();
+		view = (SettingsView) viewLoader.createView();
 		
 		notifyTaskFinished();
 	}

@@ -3,13 +3,13 @@ package ca.aquiletour.core.pages.dashboard.values;
 import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class Course extends NtroModelValue {
+public class CourseSummary extends NtroModelValue {
 
 	private String title;
 	private String summary;
 	private String date;
 
-	public Course(String title, String summary, String date) {
+	public CourseSummary(String title, String summary, String date) {
 		super();
 		T.call(this);
 		
