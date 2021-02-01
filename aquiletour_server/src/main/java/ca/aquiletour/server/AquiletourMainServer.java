@@ -28,7 +28,7 @@ import ca.aquiletour.server.http.HttpConnector;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
-import ca.ntro.core.models.stores.MemoryStore;
+import ca.ntro.core.services.stores.MemoryStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 

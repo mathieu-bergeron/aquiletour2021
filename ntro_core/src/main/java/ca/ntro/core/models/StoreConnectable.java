@@ -1,6 +1,6 @@
 package ca.ntro.core.models;
 
-import ca.ntro.core.models.stores.ValuePath;
+import ca.ntro.core.services.stores.ValuePath;
 
 public interface StoreConnectable {
 	

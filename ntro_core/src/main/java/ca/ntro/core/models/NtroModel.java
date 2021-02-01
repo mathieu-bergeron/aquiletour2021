@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.models.properties.stored.simple.StoredProperty;
-import ca.ntro.core.models.stores.DocumentPath;
-import ca.ntro.core.models.stores.ValuePath;
+import ca.ntro.core.services.stores.DocumentPath;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -33,7 +33,7 @@ public abstract class NtroModel extends JsonObjectIO {
 		modelStore.saveJsonObject(documentPath(), toJsonObject());
 	}
 
-	public void updateOnceFrom(ModelStoreAsync store, String modelId, UpdateListener listener) {
+	public void updateOnceFrom(ModelStore store, String modelId, UpdateListener listener) {
 		
 		
 	}

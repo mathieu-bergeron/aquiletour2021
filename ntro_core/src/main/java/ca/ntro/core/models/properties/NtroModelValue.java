@@ -7,7 +7,7 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.StoreConnectable;
-import ca.ntro.core.models.stores.ValuePath;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 

@@ -1,4 +1,4 @@
-package ca.ntro.core.models.stores;
+package ca.ntro.core.services.stores;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,13 +8,13 @@ import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.ModelStoreAsync;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.T;
 
-public class MemoryStore extends ModelStoreAsync {
+public class MemoryStore extends ModelStore {
 	
 	// XXX: we need ConcurrentHashMap as MemoryStore is accessed from different threads
 	private Map<DocumentPath, JsonObject> values = NtroCollections.concurrentHashMap(new HashMap<DocumentPath, JsonObject>());
@@ -78,18 +78,8 @@ public class MemoryStore extends ModelStoreAsync {
 		valuePath.updateObject(document, value);
 	}
 
-	//FIXME: there should not be two versions of this!!
 	@Override
 	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
-		T.call(this);
-		values.put(documentPath, jsonObject);
-		valuesById.put(documentPath.getId(), jsonObject);
-		T.values(jsonObject.toString());
-	}
-
-	//FIXME: there should not be two versions of this!!
-	@Override
-	protected void saveJsonObject(JsonObject jsonObject, DocumentPath documentPath) {
 		T.call(this);
 		values.put(documentPath, jsonObject);
 		valuesById.put(documentPath.getId(), jsonObject);
@@ -102,4 +92,12 @@ public class MemoryStore extends ModelStoreAsync {
 		
 	}
 
+	@Override
+	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
+		T.call(this);
+		
+		// XXX: nothing to do here.
+		// XXX: this is when some other program can modify the store
+		// XXX: for now, probably only for HTML5 LocalStorage
+	}
 }
