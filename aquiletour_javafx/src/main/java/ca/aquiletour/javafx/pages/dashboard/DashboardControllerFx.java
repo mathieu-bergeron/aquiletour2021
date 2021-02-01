@@ -24,8 +24,11 @@ public class DashboardControllerFx extends DashboardController {
 
 	@Override
 	protected ViewLoader createCourseSummaryViewLoader(String lang) {
-		// TODO Auto-generated method stub
-		return null;
+		T.call(this);
+
+		return new ViewLoaderFx().setFxmlUrl("/views/course_summary/structure.xml")
+				                 .setCssUrl("/views/course_summary/style.css")
+				                 .setTranslationsName("i18n.strings");
 	}
 
 }
