@@ -3,8 +3,6 @@ package ca.aquiletour.javafx.pages.dashboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.google.javascript.jscomp.ConformanceRules.BanUnknownDirectThisPropsReferences;
-
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
@@ -20,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	

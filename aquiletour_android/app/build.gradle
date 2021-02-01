@@ -40,4 +40,6 @@ dependencies {
     implementation group: 'ca.ntro', name:'ntro_core', version: '0.1'
     implementation group: 'ca.ntro', name:'ntro_jdk', version: '0.1'
     implementation project(':ntro_android')
+
+    implementation group: 'ca.aquiletour', name:'aquiletour_core', version: '0.1'
 }
