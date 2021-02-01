@@ -25,18 +25,21 @@
 <?import javafx.scene.control.ComboBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="top_center" styleClass="conteneurPrincipal" 
-    fx:controller="ca.aquiletour.javafx.pages.dashboard.DashboardViewFx">
-
-    <HBox alignment="center" VBox.vgrow="ALWAYS">
-        <VBox fx:id="courseContainer" alignment="top_center" HBox.hgrow="ALWAYS">
-            <HBox id="conteneurNouvelleListe">
-                <TextField id="texteNouvelItem" fx:id="newCourseText" HBox.hgrow="ALWAYS"/>
-                <TextField id="texteNouvelItem" fx:id="newSummaryText" HBox.hgrow="ALWAYS"/>
-                <TextField id="texteNouvelItem" fx:id="newSummaryDate" HBox.hgrow="ALWAYS"/>
-                <HBox styleClass="petitEspace" HBox.hgrow="ALWAYS"/>
-                <Button id="boutonNouvelItem" fx:id="newCourseButton" text="%newCourse"/>
+    fx:controller="ca.aquiletour.javafx.pages.dashboard.CourseSummaryViewFx">
+    <HBox>
+        <HBox HBox.hgrow="ALWAYS" alignment="center" styleClass="summary-container">
+            <HBox HBox.hgrow="ALWAYS" alignment="center" >
+                <Text styleClass="big-text" fx:id="courseTitle"/>
             </HBox>
-        </VBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="center">
+                <Text styleClass="medium-text" fx:id="summaryText"/>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="center">
+                <Text styleClass="medium-text" fx:id="summaryDate"/>
+            </HBox>
+            <HBox HBox.hgrow="ALWAYS" alignment="center" >
+                <Button fx:id="" styleClass="bouton" text="Rendez-vous"/>
+            </HBox>
+        </HBox>
     </HBox>
-
 </VBox>

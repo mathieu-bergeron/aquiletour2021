@@ -10,6 +10,7 @@ import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.NtroViewFx;
+import ca.ntro.javafx.ViewLoaderFx;
 import ca.ntro.messages.MessageFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	
@@ -26,11 +26,19 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	
 	@FXML 
 	private TextField newCourseText;
+
+	@FXML 
+	private TextField newSummaryText;
+
+	@FXML 
+	private TextField newSummaryDate;
 	
 	@FXML
 	private VBox courseContainer;
 
 	private AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
+	
+	private ViewLoaderFx courseSummaryViewLoader;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -45,10 +53,12 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 			public void handle(ActionEvent event) {
 				T.call(this);
 				
-				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText(), "TODO","TODO"));
+				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText(), newSummaryText.getText(), newSummaryDate.getText()));
 				addCourseMessage.sendMessage();
 				
 				newCourseText.clear();
+				newSummaryText.clear();
+				newSummaryDate.clear();
 			}
 		});
 	}
@@ -57,13 +67,18 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	public void appendCourse(CourseSummary course) {
 		T.call(this);
 		
-		courseContainer.getChildren().add(new Text(course.getTitle()));
+		CourseSummaryViewFx courseView = (CourseSummaryViewFx) courseSummaryViewLoader.createView();
+		
+		courseView.displaySummary(course);
+		
+		courseContainer.getChildren().add(courseView.getParent());
 	}
 
 	@Override
 	public void setCourseSummaryViewLoader(ViewLoader courseSummaryViewLoader) {
 		T.call(this);
 		
+		this.courseSummaryViewLoader = (ViewLoaderFx) courseSummaryViewLoader;
 	}
 
 }

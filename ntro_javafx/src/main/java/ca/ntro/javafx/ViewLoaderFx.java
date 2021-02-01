@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -82,6 +83,8 @@ public class ViewLoaderFx extends ViewLoader {
 			loader.setResources(strings);
 		}
 		
+		MustNot.beNull(loader);
+
 		try {
 
 			parent = loader.load();
@@ -105,9 +108,7 @@ public class ViewLoaderFx extends ViewLoader {
 	public NtroViewFx createView() {
 		T.call(this);
 
-		if(parent == null) {
-			loadFxml();
-		}
+		loadFxml();
 		
 		NtroViewFx view = loader.getController();
 		
