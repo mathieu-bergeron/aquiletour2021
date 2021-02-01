@@ -4,7 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboard.values.Course;
+import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
@@ -23,11 +23,24 @@ public abstract class DashboardControllerWeb extends DashboardController impleme
 
 	@Override
 	protected ViewLoader createViewLoader(String lang) {
+		T.call(this);
+
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/dashboard/structure.html")
 		           .setCssUrl("/views/dashboard/style.css")
 		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
 		           .setTargetClass(DashboardViewWeb.class);
+	}
+
+	@Override
+	protected  ViewLoader createCourseSummaryViewLoader(String lang) {
+		T.call(this);
+
+		return Ntro.viewLoaderWeb()
+		           .setHtmlUrl("/views/course_summary/structure.html")
+		           .setCssUrl("/views/course_summary/style.css")
+		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
+		           .setTargetClass(CourseSummaryViewWeb.class);
 	}
 
 	@Override
@@ -44,7 +57,7 @@ public abstract class DashboardControllerWeb extends DashboardController impleme
 			String summary = parameters.get("summary")[0];
 			String date = parameters.get("date")[0];
 			
-			addCourseMessage.setCourse(new Course(title, summary, date));
+			addCourseMessage.setCourse(new CourseSummary(title, summary, date));
 			
 			addNextTask(addCourseMessage);
 		}

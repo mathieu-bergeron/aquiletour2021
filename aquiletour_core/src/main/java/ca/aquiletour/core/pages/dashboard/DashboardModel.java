@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.dashboard;
 
 import java.util.ArrayList;
 
-import ca.aquiletour.core.pages.dashboard.values.Course;
+import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboard.values.ObservableCourseList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
@@ -16,7 +16,7 @@ public class DashboardModel extends NtroModel {
 	public void initializeStoredValues() {
 	}
 
-	public void addCourse(Course course) {
+	public void addCourse(CourseSummary course) {
 		T.call(this);
 		
 		courses.addItem(course);

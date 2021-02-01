@@ -60,7 +60,7 @@ public abstract class RootController extends NtroController {
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		rootView = (RootView) viewLoader.getView();
+		rootView = (RootView) viewLoader.createView();
 		
 		getWindow().installRootView(rootView);
 		

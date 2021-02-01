@@ -5,7 +5,7 @@ import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseReceptor;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
-import ca.aquiletour.core.pages.dashboard.values.Course;
+import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.stores.MemoryStore;
@@ -26,6 +26,8 @@ public abstract class DashboardController extends NtroController {
 	
 	private DashboardViewModel viewModel;
 
+	private ViewLoader courseSummaryViewLoader;
+
 	public DashboardController(RootController parentController) {
 		super();
 		T.call(this);
@@ -45,15 +47,20 @@ public abstract class DashboardController extends NtroController {
 		modelLoader = MemoryStore.getLoader(DashboardModel.class, "TEST");
 		addSubTask(modelLoader);
 
+		courseSummaryViewLoader = createCourseSummaryViewLoader(Constants.LANG);
+		viewLoader.addSubTask(courseSummaryViewLoader); // FIXME: this.addSubTask should work but fails
+
 		MessageFactory.addMessageReceptor(ShowDashboardMessage.class, new ShowDashboardReceptor(this));
 		MessageFactory.addMessageReceptor(AddCourseMessage.class, new AddCourseReceptor(this));
 	}
+
 
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 
-		view = (DashboardView) viewLoader.getView();
+		view = (DashboardView) viewLoader.createView();
+		view.setCourseSummaryViewLoader(courseSummaryViewLoader);
 
 		model  = (DashboardModel) modelLoader.getModel();
 		
@@ -80,12 +87,13 @@ public abstract class DashboardController extends NtroController {
 		return new ShowDashboardReceptor(this);
 	}
 
-	public void addCourse(Course course) {
+	public void addCourse(CourseSummary course) {
 		T.call(this);
 		
 		model.addCourse(course);
 		model.save();
 	}
 
+	protected abstract ViewLoader createCourseSummaryViewLoader(String lang);
 
 }

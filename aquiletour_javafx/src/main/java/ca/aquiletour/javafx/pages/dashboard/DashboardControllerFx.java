@@ -22,4 +22,10 @@ public class DashboardControllerFx extends DashboardController {
 				                 .setTranslationsName("i18n.strings");
 	}
 
+	@Override
+	protected ViewLoader createCourseSummaryViewLoader(String lang) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
