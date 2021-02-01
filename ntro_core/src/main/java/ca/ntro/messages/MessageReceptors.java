@@ -9,26 +9,29 @@ import ca.ntro.core.system.trace.T;
 
 public class MessageReceptors {
 
-	private static Map<Class<? extends Message>, Set<MessageReceptionTask>> messageReceptors = new HashMap<>();
+	private static Map<Class<? extends NtroMessage>, Set<MessageReceptor>> messageReceptors = new HashMap<>();
 
-	public void addReceptor(Class<? extends Message> messageClass, MessageReceptionTask messageReceptionTask) {
+	public void addReceptor(Class<? extends NtroMessage> messageClass, MessageReceptor messageReceptionTask) {
 		T.call(this);
 		
-		Set<MessageReceptionTask> receptorSet = messageReceptors.get(messageClass);
+		Set<MessageReceptor> receptorSet = messageReceptors.get(messageClass);
 		
 		if(receptorSet == null) {
 			receptorSet = new HashSet<>();
 		}
 		
+		// FIXME: limiting to a single receptor for now
+		receptorSet.clear();
+
 		receptorSet.add(messageReceptionTask);
 		
 		messageReceptors.put(messageClass, receptorSet);
 	}
 
-	public void sendMessage(Message message) {
+	public void sendMessage(NtroMessage message) {
 		T.call(this);
 
-		Set<MessageReceptionTask> receptorSet = messageReceptors.get(message.getClass());
+		Set<MessageReceptor> receptorSet = messageReceptors.get(message.getClass());
 		
 		if(receptorSet != null) {
 			
@@ -39,10 +42,10 @@ public class MessageReceptors {
 		}
 	}
 
-	private void sendMessage(Message message, Set<MessageReceptionTask> receptorSet) {
+	private void sendMessage(NtroMessage message, Set<MessageReceptor> receptorSet) {
 		T.call(this);
 		
-		for(MessageReceptionTask receptor : receptorSet) {
+		for(MessageReceptor receptor : receptorSet) {
 			receptor.reset();
 			receptor.setMessage(message);
 			receptor.execute();

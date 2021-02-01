@@ -10,13 +10,17 @@ dependencies {
     implementation project(':ntro_core')
 
     // https://github.com/google/gson
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation ('com.google.code.gson:gson:2.8.6')
 
     // Jetty
     implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.28.v20200408'
 
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    // FIXME: DEV ONLY
+    implementation group: 'org.dizitart', name: 'nitrite', version: '3.4.1'
+
 }
 
 tasks.build {

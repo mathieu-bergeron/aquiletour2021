@@ -6,6 +6,7 @@ import ca.aquiletour.jsweet.pages.settings.SettingsControllerJSweet;
 import ca.aquiletour.web.pages.dashboard.DashboardControllerWeb;
 import ca.aquiletour.web.pages.root.RootControllerWeb;
 import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 
@@ -15,6 +16,10 @@ public class RootControllerJSweet extends RootControllerWeb {
 
 	@Override
 	protected NtroWindowWeb getWindow() {
+		T.call(this);
+		
+		MustNot.beNull(window);
+
 		return window;
 	}
 

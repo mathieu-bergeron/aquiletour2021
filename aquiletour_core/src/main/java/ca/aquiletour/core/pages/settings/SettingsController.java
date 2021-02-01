@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageFactory;
 
 public abstract class SettingsController extends NtroController {
 
@@ -25,13 +26,15 @@ public abstract class SettingsController extends NtroController {
 
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
+
+		MessageFactory.addMessageReceptor(ShowSettingsMessage.class, new ShowSettingsReceptor(this));
 	}
 	
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		view = (SettingsView) viewLoader.getView();
+		view = (SettingsView) viewLoader.createView();
 		
 		notifyTaskFinished();
 	}
@@ -41,10 +44,10 @@ public abstract class SettingsController extends NtroController {
 		
 	}
 
-	public ShowSettingsTask createShowSettingsTask() {
+	public ShowSettingsReceptor createShowSettingsTask() {
 		T.call(this);
 		
-		return new ShowSettingsTask(this);
+		return new ShowSettingsReceptor(this);
 	}
 
 	public void showSettings() {

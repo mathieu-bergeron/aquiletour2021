@@ -21,12 +21,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 
 public class ViewLoaderFx extends ViewLoader {
 	
@@ -34,6 +33,7 @@ public class ViewLoaderFx extends ViewLoader {
 	private URL cssUrl;
 	private ResourceBundle strings;
 	private Parent parent;
+	private FXMLLoader loader;
 
 	@Override
 	protected void initializeTask() {
@@ -73,26 +73,18 @@ public class ViewLoaderFx extends ViewLoader {
 
 		return this;
 	}
-	
-	public Scene createScene(int width, int height) {
-		T.call(this);
-		
-		if(parent == null) {
-			loadFxml();
-		}
-
-		return new Scene(parent, width, height);
-	}
 
 	private void loadFxml() {
 		T.call(this);
 		
-		FXMLLoader loader = new FXMLLoader(fxmlUrl);
+		loader = new FXMLLoader(fxmlUrl);
 
 		if(strings != null) {
 			loader.setResources(strings);
 		}
 		
+		MustNot.beNull(loader);
+
 		try {
 
 			parent = loader.load();
@@ -113,9 +105,15 @@ public class ViewLoaderFx extends ViewLoader {
 	}
 
 	@Override
-	public NtroView getView() {
+	public NtroViewFx createView() {
 		T.call(this);
+
+		loadFxml();
 		
-		return null;
+		NtroViewFx view = loader.getController();
+		
+		view.setParent(parent);
+		
+		return view;
 	}
 }

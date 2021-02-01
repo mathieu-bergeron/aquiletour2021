@@ -47,6 +47,8 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
 		//        can we fix this??
 		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
+
+		MustNot.beNull(html);
 		
 		notifyTaskFinished();
 	}
@@ -59,8 +61,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	public ViewLoaderWeb setHtmlUrl(String htmlPath) {
 		T.call(this);
 		
-		MustNot.beNull(Ntro.resourceLoader());
-		MustNot.beNull(Ntro.resourceLoader().loadResourceTask(htmlPath));
+		System.out.println("htmlPath: " + htmlPath);
 		
 		ResourceLoaderTask htmlLoader = Ntro.resourceLoader().loadResourceTask(htmlPath);
 		htmlLoader.setTaskId("Html");
@@ -97,8 +98,10 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	}
 
 	@Override
-	public NtroView getView() {
+	public NtroView createView() {
 		T.call(this);
+
+		MustNot.beNull(html);
 
 		NtroViewWeb view = Factory.newInstance(viewClass);
 		

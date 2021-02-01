@@ -37,8 +37,8 @@ public abstract class   RootControllerWeb
 
 	protected ViewLoader createViewLoader(String lang) {
 		return Ntro.viewLoaderWeb()
-		           .setHtmlUrl("/views/rootpage/structure.html")
-		           .setCssUrl("/views/rootpage/style.css")
+		           .setHtmlUrl("/views/root/structure.html")
+		           .setCssUrl("/views/root/style.css")
 		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
 		           .setTargetClass(RootViewWeb.class);
 	}

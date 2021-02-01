@@ -21,6 +21,7 @@ import ca.ntro.core.system.source.SourceFileLocation;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.stack.StackFrame;
 import def.js.Error;
+import static def.dom.Globals.window;
 
 public class StackAnalyzerJSweet extends StackAnalyzer {
 
@@ -48,8 +49,10 @@ public class StackAnalyzerJSweet extends StackAnalyzer {
 	}
 
 	private StackFrame parseFirefoxStackLines(String className, int finalStackOffset, String[] stackLines) {
-
 		String stackLine = stackLines[finalStackOffset];
+
+		String filePrefix = window.location.origin;
+		String fileName = stackLine.split("@")[1].replace(filePrefix, "").split(":")[0];
 
 		String methodName = stackLine.split("@")[0];
 
@@ -61,7 +64,7 @@ public class StackAnalyzerJSweet extends StackAnalyzer {
 		int line = Integer.valueOf(rawLineNumber);
 		int column = Integer.valueOf(rawColumnNumber);
 
-		SourceFileLocation location = SourceMapAnalyzer.getOriginalLocation("something", line, column);
+		SourceFileLocation location = SourceMapAnalyzer.getOriginalLocation(fileName, line, column);
 
 		// FIXME
 		return new StackFrame(className, methodName, location);

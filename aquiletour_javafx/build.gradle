@@ -13,8 +13,8 @@ dependencies {
 
     // aquiletour
     implementation project(':aquiletour_core')
-
 }
+
 
 task javafx (type:JavaExec) {
     dependsOn 'classes'
