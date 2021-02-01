@@ -2,7 +2,7 @@ package ca.ntro.core.models;
 
 import ca.ntro.core.mvc.view.NtroView;
 
-public interface ViewModel {
+public interface NtroViewModel {
 
 	void observeAndDisplay(NtroModel model, NtroView view);
 	
