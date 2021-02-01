@@ -25,7 +25,8 @@ public class AppCloserJSweet extends AppCloser {
 
 	@Override
 	public void close() {
-		alert("[Ntro] AppCloser.close()");
+		System.err.println("[Ntro] AppCloser.close()");
+		//alert("[Ntro] AppCloser.close()");
 	}
 
 }
