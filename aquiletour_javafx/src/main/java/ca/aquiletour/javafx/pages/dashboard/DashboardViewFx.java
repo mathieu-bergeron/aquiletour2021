@@ -29,6 +29,12 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	
 	@FXML 
 	private TextField newCourseText;
+
+	@FXML 
+	private TextField newSummaryText;
+
+	@FXML 
+	private TextField newSummaryDate;
 	
 	@FXML
 	private VBox courseContainer;
@@ -50,10 +56,12 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 			public void handle(ActionEvent event) {
 				T.call(this);
 				
-				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText(), "TODO","TODO"));
+				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText(), newSummaryText.getText(), newSummaryDate.getText()));
 				addCourseMessage.sendMessage();
 				
 				newCourseText.clear();
+				newSummaryText.clear();
+				newSummaryDate.clear();
 			}
 		});
 	}

@@ -26,4 +26,10 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="top_center" styleClass="conteneurPrincipal" 
     fx:controller="ca.aquiletour.javafx.pages.dashboard.CourseSummaryViewFx">
+    <HBox>
+        <Text fx:id="courseTitle"/>
+        <Text fx:id="summaryText"/>
+        <Text fx:id="summaryDate"/>
+        <Button fx:id="" text="Rendez-vous"/>
+    </HBox>
 </VBox>
