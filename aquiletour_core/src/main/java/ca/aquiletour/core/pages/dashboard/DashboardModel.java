@@ -29,5 +29,4 @@ public class DashboardModel extends NtroModel {
 	public void setCourses(ObservableCourseList courses) {
 		this.courses = courses;
 	}
-
 }
