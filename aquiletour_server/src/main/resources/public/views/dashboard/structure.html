@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
         
@@ -48,6 +49,21 @@
     <button type="button" id="buttonAvailable" class="btn btn-primary">Disponible</button>
     
   </div>
+=======
+<div class="dashboard-container">
+    <form action="" method="post" class="add-course-form">
+        <label for="title">Titre</label>
+        <input name="title"></input>
+        <label for="summary">Remise</label>
+        <input name="summary" label="Remise"></input>
+        <label for="date">Date</label>
+        <input name="date"></input>
+        <button>Ajouter</button>
+    </form>
+<div>
+
+<div class="flex-container" id="courses-container">
+>>>>>>> main
 </div>
 
 
@@ -78,8 +94,6 @@
 </div>
 
 <script>
-$('#nav').load('../nav-global.html');
-
 var buttonAvailable = document.getElementById("buttonAvailable");
 var available = document.getElementById("teacherAvailable");
 var availableLink = document.getElementById("availableLink");
@@ -112,5 +126,4 @@ function showLink() {
   availableLink.style.textDecoration = "underline";
   availableLink.style.cursor = "hand";
 }
-
 </script>

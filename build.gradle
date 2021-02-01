@@ -1,8 +1,9 @@
 plugins {
     id 'eclipse'
+    id 'java'
 }
 
-task clean {
+tasks.clean {
     doLast{
         new File("${project.projectDir}/.jsweet").deleteDir()
     }

@@ -34,6 +34,7 @@ import ca.ntro.core.introspection.ConstructorSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.introspection.MethodSignature;
+import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -55,18 +56,26 @@ public class IntrospectorJdk extends Introspector {
 	protected Object buildValue(Type type, Object rawValue) {
 		T.call(this);
 		
+		T.values(type.getTypeName());
+		
 		Object result = null;
 		
-		/*
 		if(JsonParser.isUserDefined(rawValue)) {
+			
+			T.here();
 			
 			result = JsonParser.buildUserDefined(rawValue);
 			
-		}else*/if(isAList(type)) {
+		}else if(isAList(type)) {
+
+			T.here();
+			
 			
 			result = buildList(type, rawValue);
 			
 		}else if(isAMap(type)) {
+
+			T.here();
 			
 			result = buildMap(type, rawValue);
 

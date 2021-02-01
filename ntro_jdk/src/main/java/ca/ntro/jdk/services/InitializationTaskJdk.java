@@ -19,6 +19,8 @@ package ca.ntro.jdk.services;
 
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -29,6 +31,8 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.regex.RegExJdk;
+import ca.ntro.jdk.web.ViewLoaderWebJdk;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJdk extends InitializationTask {
 
@@ -87,6 +91,27 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideResourceLoader");
 
 		return new ResourceLoaderJdk();
+	}
+
+	@Override
+	protected Class<? extends ViewLoaderWeb> provideViewLoaderWebClass() {
+		__T.call(InitializationTaskJdk.class, "provideViewLoaderWeb");
+
+		return ViewLoaderWebJdk.class;
+	}
+
+	@Override
+	protected JsonParser provideJsonParser() {
+		__T.call(InitializationTaskJdk.class, "provideJsonParser");
+
+		return new JsonParserJdk();
+	}
+
+	@Override
+	protected ModelStore provideLocalStore() {
+		__T.call(InitializationTaskJdk.class, "provideLocalStore");
+		
+		return new LocalStoreNitrite();
 	}
 
 }

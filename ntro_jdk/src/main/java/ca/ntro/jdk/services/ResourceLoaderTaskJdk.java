@@ -17,16 +17,23 @@
 
 package ca.ntro.jdk.services;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
 import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.FileLoader;
+import ca.ntro.jdk.FileLoaderDev;
 
 public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 	
 	private String resourceAsString;
+
+	private FileLoader fileLoader = new FileLoaderDev(); // FIXME: dev-only. We need a cleaner way to choose Dev Vs Prod
 
 	public ResourceLoaderTaskJdk(String resourcePath) {
 		super(resourcePath);
@@ -38,10 +45,10 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
-		
-		InputStream resourceStream = ResourceLoaderTask.class.getResourceAsStream(getResourcePath());
+
+		InputStream resourceStream = fileLoader.loadFile(getResourcePath());
 		
 		MustNot.beNull(resourceStream);
 		
@@ -49,8 +56,9 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 		
 		StringBuilder builder = new StringBuilder();
 
-		while(scanner.hasNext()) {
-			builder.append(scanner.next());
+		while(scanner.hasNextLine()) {
+			builder.append(scanner.nextLine());
+			builder.append(System.lineSeparator());
 		}
 		
 		resourceAsString = builder.toString();

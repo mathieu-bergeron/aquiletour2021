@@ -25,7 +25,6 @@ import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 
 public class ViewLoaderFx extends ViewLoader {
 	
@@ -33,10 +32,14 @@ public class ViewLoaderFx extends ViewLoader {
 	private URL cssUrl;
 	private ResourceBundle strings;
 	private Parent parent;
-
+	private FXMLLoader loader;
 
 	@Override
-	protected void runTask() {
+	protected void initializeTask() {
+	}
+
+	@Override
+	protected void runTaskAsync() {
 		T.call(this);
 		notifyTaskFinished();
 	}
@@ -69,21 +72,11 @@ public class ViewLoaderFx extends ViewLoader {
 
 		return this;
 	}
-	
-	public Scene createScene(int width, int height) {
-		T.call(this);
-		
-		if(parent == null) {
-			loadFxml();
-		}
-
-		return new Scene(parent, width, height);
-	}
 
 	private void loadFxml() {
 		T.call(this);
 		
-		FXMLLoader loader = new FXMLLoader(fxmlUrl);
+		loader = new FXMLLoader(fxmlUrl);
 
 		if(strings != null) {
 			loader.setResources(strings);
@@ -108,5 +101,18 @@ public class ViewLoaderFx extends ViewLoader {
 		parent.getStylesheets().add(cssUrl.toExternalForm());
 	}
 
+	@Override
+	public NtroViewFx createView() {
+		T.call(this);
 
+		if(parent == null) {
+			loadFxml();
+		}
+		
+		NtroViewFx view = loader.getController();
+		
+		view.setParent(parent);
+		
+		return view;
+	}
 }

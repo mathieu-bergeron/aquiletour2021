@@ -2,13 +2,14 @@ package ca.aquiletour.javafx;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.javafx.ViewLoaderFx;
+import ca.ntro.javafx.NtroViewFx;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class NtroWindowFx extends NtroWindow<ViewLoaderFx> {
+public class NtroWindowFx extends NtroWindow {
 	
 	private Stage primaryStage;
 	
@@ -43,10 +44,12 @@ public class NtroWindowFx extends NtroWindow<ViewLoaderFx> {
 	}
 
 	@Override
-	public void installRootView(ViewLoaderFx viewLoader) {
+	public void installRootView(NtroView rootView) {
 		T.call(this);
 		
-		primaryStage.setScene(viewLoader.createScene(800,600));
+		NtroViewFx view = (NtroViewFx) rootView;
+
+		primaryStage.setScene(view.createScene(800,600));
 	}
 
 }

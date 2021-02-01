@@ -16,6 +16,10 @@ dependencies {
 
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+    testImplementation 'junit:junit:4.13'
 }
 
 task server (type:JavaExec) {

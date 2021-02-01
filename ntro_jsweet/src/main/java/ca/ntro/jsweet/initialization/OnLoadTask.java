@@ -17,12 +17,16 @@
 
 package ca.ntro.jsweet.initialization;
 
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public class OnLoadTask extends NtroTask {
+public class OnLoadTask extends NtroTaskImpl {
 
 	@Override
-	public void runTask() {
+	protected void initializeTask() {
+	}
+
+	@Override
+	public void runTaskAsync() {
 		// XXX: here we want setReturnValue(null) to 
 		//      be called from Javascript (for now)
 	}

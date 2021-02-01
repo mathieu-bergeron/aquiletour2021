@@ -20,25 +20,32 @@ package ca.ntro.core.initialization;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.__Ntro;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.services.ValueFormatter;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.core.tasks.SyncTask;
-import ca.ntro.core.wrappers.options.None;
+import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
-public abstract class InitializationTask extends SyncTask<None> {
+public abstract class InitializationTask extends NtroTaskSync {
 
 	@Override
-	protected None runSyncTask() {
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void runTask() {
 		__T.call(InitializationTask.class, "runSyncTask");
 		performInitialization();
-		return null;
 	}
 
 	@Override
@@ -63,10 +70,17 @@ public abstract class InitializationTask extends SyncTask<None> {
 
 		Ntro.zzz_registerResourceLoader(provideResourceLoader());
 		
+		Ntro.__registerViewLoaderWeb(provideViewLoaderWebClass());
+		
 		
 		ValueFormatter.initialize(provideValueFormatter());
 		NtroCollections.initialize(provideNtroCollections());
+		
+		JsonParser.initialize(provideJsonParser());
+		
+		LocalStore.initialize(provideLocalStore());
 	}
+
 
 	protected abstract Logger provideLogger();
 	protected abstract AppCloser provideAppCloser();
@@ -76,5 +90,8 @@ public abstract class InitializationTask extends SyncTask<None> {
 	protected abstract ValueFormatter provideValueFormatter();
 	protected abstract NtroCollections provideNtroCollections();
 	protected abstract ResourceLoader provideResourceLoader();
+	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
+	protected abstract JsonParser provideJsonParser();
+	protected abstract ModelStore provideLocalStore();
 
 }

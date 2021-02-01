@@ -17,15 +17,12 @@
 
 package ca.ntro.core.mvc.view;
 
-import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class ViewLoader extends NtroTask {
-
-	private NtroView view;
+public abstract class ViewLoader extends NtroTaskImpl {
 	
-	public NtroView getView() {
-		return view;
-	}
+	public abstract NtroView createView();
+
 
 
 }
