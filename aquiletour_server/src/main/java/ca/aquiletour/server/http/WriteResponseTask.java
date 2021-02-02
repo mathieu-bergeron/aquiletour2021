@@ -5,17 +5,21 @@ import java.io.OutputStream;
 
 import org.eclipse.jetty.server.Request;
 
+import ca.aquiletour.server.pages.root.RootControllerServer;
+import ca.aquiletour.web.pages.root.RootControllerWeb;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
-import ca.ntro.web.HtmlWriterTask;
-import ca.ntro.web.RequestHandlerTask;
+import ca.ntro.web.HtmlWriter;
+import ca.ntro.web.RequestHandler;
 
 public class WriteResponseTask extends NtroTaskImpl {
 
+	private RootControllerServer rootController;
 	private OutputStream out;
 	private Request baseRequest;
 	
-	public WriteResponseTask(Request baseRequest, OutputStream out) {
+	public WriteResponseTask(RootControllerServer rootController, Request baseRequest, OutputStream out) {
+		this.rootController = rootController;
 		this.baseRequest = baseRequest;
 		this.out = out;
 	}
@@ -31,7 +35,7 @@ public class WriteResponseTask extends NtroTaskImpl {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
-		getSubTask(HtmlWriterTask.class, "RootController").writeHtml(builder);
+		rootController.writeHtml(builder);
 
 		try {
 

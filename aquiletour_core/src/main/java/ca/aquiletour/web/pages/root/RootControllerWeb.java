@@ -26,12 +26,34 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.web.HtmlWriterTask;
+import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.State;
+import ca.ntro.web.HtmlWriter;
 import ca.ntro.web.NtroWindowWeb;
-import ca.ntro.web.RequestHandlerTask;
+import ca.ntro.web.RequestHandler;
 
-public abstract class   RootControllerWeb 
-                extends RootController 
-                implements RequestHandlerTask,
-                           HtmlWriterTask {
+public class      RootControllerWeb 
+       extends    RootController 
+       implements RequestHandler,
+                  HtmlWriter {
+	
+	@Override
+	public void writeHtml(StringBuilder out) {
+		T.call(this);
+
+		((NtroWindowWeb) Ntro.window()).writeHtml(out);
+	}
+
+	@Override
+	public void initialRequest(Path path, Map<String, String[]> parameters, String authToken) {
+		T.call(this);
+		
+	}
+
+	@Override
+	public void newRequest(Path oldPath, Path path, Map<String, String[]> oldParameters,
+			Map<String, String[]> parameters, String authToken) {
+		T.call(this);
+
+	}
 }

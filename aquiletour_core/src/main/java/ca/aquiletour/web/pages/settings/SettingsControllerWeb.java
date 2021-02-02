@@ -8,7 +8,22 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.web.RequestHandlerTask;
+import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.State;
+import ca.ntro.web.RequestHandler;
 
-public abstract class SettingsControllerWeb extends SettingsController implements RequestHandlerTask {
+public class SettingsControllerWeb extends SettingsController implements RequestHandler {
+
+	@Override
+	public void initialRequest(Path path, Map<String, String[]> parameters, String authToken) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void newRequest(Path oldPath, Path path, Map<String, String[]> oldParameters,
+			Map<String, String[]> parameters, String authToken) {
+		// TODO Auto-generated method stub
+		
+	}
 }

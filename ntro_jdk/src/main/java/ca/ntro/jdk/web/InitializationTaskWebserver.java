@@ -19,8 +19,9 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 
 	@Override
 	protected NtroWindow provideWindow() {
-		// TODO Auto-generated method stub
-		return null;
+		T.call(this);
+		
+		return window;
 	}
 
 }

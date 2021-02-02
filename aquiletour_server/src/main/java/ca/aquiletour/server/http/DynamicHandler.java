@@ -31,8 +31,10 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.server.pages.root.RootControllerServer;
 import ca.ntro.core.Path;
+import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
@@ -99,15 +101,16 @@ public class DynamicHandler extends AbstractHandler {
 		String authToken = null; // TODO
 		Constants.LANG = "fr";   // TODO
 		
-		RootControllerServer rootController = new RootControllerServer();
-		rootController.setTaskId("RootController");
+		Path path = new Path(baseRequest.getRequestURI().toString());
 		
-		WriteResponseTask writeResponseTask = new WriteResponseTask(baseRequest, out);
-		writeResponseTask.addSubTask(rootController);
+		RootControllerServer rootController = (RootControllerServer) ControllerFactory.createController(RootController.class, path);
+		
+		WriteResponseTask writeResponseTask = new WriteResponseTask(rootController, baseRequest, out);
+		writeResponseTask.addSubTask(rootController.getTask());
 		
 		// XXX: must be called after writeResponseTask.addSubTask
 		//      otherwise any nextTask added in rootController cannot be a subTask
-		rootController.initialRequest(new Path(baseRequest.getRequestURI().toString()),
+		rootController.initialRequest(path,
 				                      baseRequest.getParameterMap(),
 				                      authToken);
 
