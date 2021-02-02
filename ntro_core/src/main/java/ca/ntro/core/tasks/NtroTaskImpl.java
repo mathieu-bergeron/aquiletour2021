@@ -24,15 +24,15 @@ import ca.ntro.core.system.trace.__T;
 
 public abstract class NtroTaskImpl implements NtroTask {
 
-	private NtroTaskImpl parentTask;
+	private NtroTask parentTask;
 
-	private Set<NtroTaskImpl> previousTasks = new HashSet<>();
+	private Set<NtroTask> previousTasks = new HashSet<>();
 	private int finishedPreviousTasks = 0;
 
-	private Set<NtroTaskImpl> subTasks = new HashSet<>();
+	private Set<NtroTask> subTasks = new HashSet<>();
 	private int finishedSubTasks = 0;
 
-	private Set<NtroTaskImpl> nextTasks = new HashSet<>();
+	private Set<NtroTask> nextTasks = new HashSet<>();
 
 	private State state = State.INITIALIZING;
 	
@@ -53,7 +53,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 		this.taskId = taskId;
 	}
 
-	private String getTaskId() {
+	@Override
+	public String getTaskId() {
 		if(taskId == null) {
 			taskId = defaultId(this);
 		}
@@ -86,7 +87,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 		}
 	}
 	
-	protected State getState() {
+	@Override
+	public State getState() {
 		return state;
 	}
 	
@@ -105,7 +107,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 		}
 	}
 	
-	protected void setParentTask(NtroTaskImpl parentTask) {
+	@Override
+	public void setParentTask(NtroTask parentTask) {
 		if(state == State.INITIALIZING) {
 			this.parentTask = parentTask;
 		}else {
@@ -152,7 +155,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 	}
 
 	private void executePreviousTasks() {
-		for(NtroTaskImpl previousTask : previousTasks) {
+		for(NtroTask previousTask : previousTasks) {
 			previousTask.execute();
 		}
 	}
@@ -161,7 +164,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return finishedPreviousTasks < previousTasks.size();
 	}
 
-	void notifySomePreviousTaskFinished() {
+	@Override
+	public void notifySomePreviousTaskFinished() {
 		//__T.call(this, "notifySomePreviousTaskFinished");
 
 		finishedPreviousTasks++;
@@ -182,7 +186,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 		resumeExecution();
 	}
 
-	void notifySomeSubTaskFinished() {
+	@Override
+	public void notifySomeSubTaskFinished() {
 		//__T.call(this, "notifySomeSubTaskFinished");
 
 		finishedSubTasks++;
@@ -196,7 +201,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 	private void executeNextTasks() {
 		//__T.call(this, "executeNextTasks");
 
-		for(NtroTaskImpl nextTask : nextTasks) {
+		for(NtroTask nextTask : nextTasks) {
 			nextTask.notifySomePreviousTaskFinished();
 			if(nextTask.getState() == State.INITIALIZING) {
 				nextTask.execute();
@@ -213,10 +218,10 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return (T) getPreviousTask(id);
 	}
 	
-	private NtroTaskImpl getPreviousTask(String id) {
-		NtroTaskImpl task = null;
+	private NtroTask getPreviousTask(String id) {
+		NtroTask task = null;
 
-		for(NtroTaskImpl previousTask : previousTasks) {
+		for(NtroTask previousTask : previousTasks) {
 			if(previousTask.hasId(id)) {
 				task = previousTask;
 				break;
@@ -226,11 +231,12 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return task;
 	}
 
-	private boolean hasId(String id) {
+	@Override
+	public boolean hasId(String id) {
 		return id.equals(taskId);
 	}
 	
-	protected <T extends NtroTaskImpl> T getSubTask(Class<T> taskClass) {
+	protected <T extends NtroTask> T getSubTask(Class<T> taskClass) {
 		return getSubTask(taskClass, defaultIdFromClass(taskClass));
 	}
 
@@ -239,10 +245,10 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return (T) getSubTask(id);
 	}
 
-	private NtroTaskImpl getSubTask(String id) {
-		NtroTaskImpl task = null;
+	private NtroTask getSubTask(String id) {
+		NtroTask task = null;
 
-		for(NtroTaskImpl subTask : subTasks) {
+		for(NtroTask subTask : subTasks) {
 			if(subTask.hasId(id)) {
 				task = subTask;
 				break;
@@ -253,12 +259,12 @@ public abstract class NtroTaskImpl implements NtroTask {
 		
 	}
 
-	protected <T extends NtroTaskImpl> T getFinishedTask(Class<T> taskClass) {
+	protected <T extends NtroTask> T getFinishedTask(Class<T> taskClass) {
 		return getFinishedTask(taskClass, taskClass.getSimpleName());
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends NtroTaskImpl> T getFinishedTask(Class<T> taskClass, String id) {
+	protected <T extends NtroTask> T getFinishedTask(Class<T> taskClass, String id) {
 		T finishedTask = getSubTask(taskClass, id);
 		if(finishedTask == null) {
 			finishedTask = getPreviousTask(taskClass, id);
@@ -266,7 +272,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return finishedTask;
 	}
 	
-	private String defaultId(NtroTaskImpl task) {
+	private String defaultId(NtroTask task) {
 		return defaultIdFromClass(task.getClass());
 	}
 
@@ -283,7 +289,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 	}
 
 	@Override
-	public NtroTask addPreviousTask(NtroTaskImpl task) {
+	public NtroTask addPreviousTask(NtroTask task) {
 		String taskId = task.getTaskId();
 
 		if(state == State.INITIALIZING) {
@@ -304,7 +310,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return this;
 	}
 
-	public NtroTaskImpl addNextTask(NtroTaskImpl task) {
+	public NtroTask addNextTask(NtroTask task) {
 		if(state == State.INITIALIZING) {
 			if(!nextTasks.contains(task)) {
 				nextTasks.add(task);
@@ -328,12 +334,12 @@ public abstract class NtroTaskImpl implements NtroTask {
 	}
 
 	private void executeSubTasks() {
-		for(NtroTaskImpl subTask : subTasks) {
+		for(NtroTask subTask : subTasks) {
 			subTask.execute();
 		}
 	}
 
-	public void addSubTask(NtroTaskImpl task) {
+	public void addSubTask(NtroTask task) {
 		String taskId = task.getTaskId();
 
 		if(state == State.INITIALIZING) {
