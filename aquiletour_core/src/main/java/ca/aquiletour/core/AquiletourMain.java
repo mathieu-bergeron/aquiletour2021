@@ -17,6 +17,7 @@
 
 package ca.aquiletour.core;
 
+import ca.aquiletour.core.pages.activity.ActivityController;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.root.RootController;
@@ -46,8 +47,9 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 		ControllerFactory.registerController("/settings", SettingsController.class);
 		ControllerFactory.registerController("/dashboard", DashboardController.class);
 		ControllerFactory.registerController("/dashboard/*", CourseController.class);
-		
-		RootController rootController = ControllerFactory.createController(RootController.class, "**/**");  // create all controllers
+		ControllerFactory.registerController("/dashboard/*/*", ActivityController.class);
+
+		RootController rootController = ControllerFactory.createController(RootController.class, "/**");  // create all controllers
 
 		rootController.execute();
 
