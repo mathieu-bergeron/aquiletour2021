@@ -18,16 +18,16 @@
 package ca.aquiletour.server;
 
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.NtroJdk;
+import ca.ntro.jdk.web.NtroWebserver;
 
 public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		NtroJdk.defaultInitializationTask()
-		       .setOptions(args)
-		       .addNextTask(new AquiletourMainServer())
-		       .execute();
+		NtroWebserver.defaultInitializationTask("/private/index.html")
+		             .setOptions(args)
+		             .addNextTask(new AquiletourMainServer())
+		             .execute();
 	}
 }

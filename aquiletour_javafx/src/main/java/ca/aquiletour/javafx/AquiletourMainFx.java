@@ -18,15 +18,6 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
-import javafx.stage.Stage;
 
 public class AquiletourMainFx extends AquiletourMain {
-	
-	private Stage primaryStage;
-
-	public AquiletourMainFx(Stage primaryStage) {
-		super();
-		
-		this.primaryStage = primaryStage;
-	}
 }
