@@ -35,6 +35,9 @@ public class RootController extends NtroController {
 
 		setViewReceptor(rootViewReceptor);
 		
+		addSubController(SettingsController.class, "settings");
+		addSubController(DashboardController.class, "dashboard");
+		
 		addMessageReceptor(QuitMessage.class, new QuitReceptor());
 	}
 	
