@@ -17,6 +17,8 @@
 
 package ca.ntro.core.tasks;
 
+import ca.ntro.core.mvc.view.ViewLoader;
+
 public class ContainerTask extends NtroTaskImpl {
 
 	@Override
@@ -32,6 +34,7 @@ public class ContainerTask extends NtroTaskImpl {
 	protected void onFailure(Exception e) {
 
 	}
+
 
 
 }

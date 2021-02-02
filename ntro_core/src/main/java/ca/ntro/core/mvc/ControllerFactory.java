@@ -5,15 +5,21 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.web.Path;
 
 public class ControllerFactory {
-	
-	public static <C extends NtroController> C createController(Class<C> controllerClass, String path) {
+
+	public static <C extends NtroController> C createController(Class<C> controllerClass, Path path) {
 		T.call(ControllerFactory.class);
 		
 		C controller = Factory.newInstance(controllerClass);
 		
-		controller.initialize(new Path(path));
+		controller.initialize(path);
 		
 		return controller;
+	}
+	
+	public static <C extends NtroController> C createController(Class<C> controllerClass, String path) {
+		T.call(ControllerFactory.class);
+
+		return createController(controllerClass, new Path(path));
 	}
 
 }

@@ -236,13 +236,14 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return id.equals(taskId);
 	}
 	
-	protected <T extends NtroTask> T getSubTask(Class<T> taskClass) {
+	@Override
+	public <NT extends NtroTask> NT getSubTask(Class<NT> taskClass) {
 		return getSubTask(taskClass, defaultIdFromClass(taskClass));
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T extends NtroTask> T getSubTask(Class<T> taskClass, String id) {
-		return (T) getSubTask(id);
+	public <NT extends NtroTask> NT getSubTask(Class<NT> taskClass, String id) {
+		return (NT) getSubTask(id);
 	}
 
 	private NtroTask getSubTask(String id) {
@@ -310,6 +311,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return this;
 	}
 
+	@Override
 	public NtroTask addNextTask(NtroTask task) {
 		if(state == State.INITIALIZING) {
 			if(!nextTasks.contains(task)) {
@@ -338,7 +340,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 			subTask.execute();
 		}
 	}
-
+	
+	@Override
 	public void addSubTask(NtroTask task) {
 		String taskId = task.getTaskId();
 

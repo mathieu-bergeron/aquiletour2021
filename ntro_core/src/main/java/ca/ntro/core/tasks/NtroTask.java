@@ -14,5 +14,7 @@ public interface NtroTask {
 	void addSubTask(NtroTask task);
 	void notifySomeSubTaskFinished();
 	void setParentTask(NtroTask ntroTaskImpl);
+	<NT extends NtroTask> NT getSubTask(Class<NT> taskClass);
+	<NT extends NtroTask> NT getSubTask(Class<NT> taskClass, String taskId);
 
 }
