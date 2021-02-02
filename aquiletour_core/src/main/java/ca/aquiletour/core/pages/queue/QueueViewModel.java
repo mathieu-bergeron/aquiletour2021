@@ -4,7 +4,7 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.NtroViewModel;
 import ca.ntro.core.mvc.view.NtroView;
 
-public class QueueViewModel implements NtroViewModel {
+public class QueueViewModel extends NtroViewModel {
 
 	@Override
 	public void observeAndDisplay(NtroModel model, NtroView view) {

@@ -9,7 +9,7 @@ import ca.ntro.core.models.properties.observable.list.ListObserver;
 import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardViewModel implements NtroViewModel {
+public class DashboardViewModel extends NtroViewModel {
 
 	@Override
 	public void observeAndDisplay(NtroModel model, NtroView view) {

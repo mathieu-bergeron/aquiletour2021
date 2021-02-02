@@ -18,6 +18,8 @@
 package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.view.ViewLoaders;
@@ -40,7 +42,7 @@ public class RootController extends NtroController {
 		
 		addMessageReceptor(QuitMessage.class, new QuitReceptor());
 	}
-	
+
 	public void displaySettings(SettingsView settingsView) {
 		T.call(this);
 		

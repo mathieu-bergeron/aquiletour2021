@@ -6,27 +6,8 @@ import ca.ntro.core.mvc.view.ViewLoader;
 public class QueueController extends NtroController {
 
 	@Override
-	protected ViewLoader createViewLoader(String lang) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void initializeTask() {
+	protected void initialize() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	protected void runTaskAsync() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

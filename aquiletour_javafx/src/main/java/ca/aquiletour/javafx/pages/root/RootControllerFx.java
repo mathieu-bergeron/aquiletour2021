@@ -12,41 +12,5 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.ViewLoaderFx;
 import javafx.stage.Stage;
 
-public class RootControllerFx extends RootController {
-	
-	private NtroWindowFx window;
-
-	public RootControllerFx(Stage primaryStage) {
-		T.call(this);
-
-		window = new NtroWindowFx(primaryStage);
-	}
-
-	@Override
-	protected ViewLoader createViewLoader(String lang) {
-		T.call(this);
-
-		return new ViewLoaderFx().setFxmlUrl("/views/root/structure.xml")
-				                 .setCssUrl("/views/root/style.css")
-				                 .setTranslationsName("i18n.strings");
-	}
-
-	@Override
-	protected NtroWindow getWindow() {
-		return window;
-	}
-
-	@Override
-	public SettingsController createSettingsController() {
-		T.call(this);
-
-		return new SettingsControllerFx(this);
-	}
-
-	@Override
-	public DashboardController createDashboardController() {
-		T.call(this);
-		
-		return new DashboardControllerFx(this);
-	}
+public abstract class RootControllerFx extends RootController {
 }

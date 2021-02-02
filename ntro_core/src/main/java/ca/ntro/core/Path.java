@@ -1,4 +1,4 @@
-package ca.ntro.web;
+package ca.ntro.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,5 +76,21 @@ public class Path {
 		}
 		
 		return builder.toString();
+	}
+
+	public Path removePrefix(String prefix) {
+		T.call(this);
+		
+		Path remainder = null;
+		
+		if(startsWith(prefix)) {
+			remainder = subPath(1);
+			
+		}else {
+
+			remainder = subPath(0);
+		}
+
+		return remainder;
 	}
 }

@@ -2,6 +2,7 @@ package ca.ntro.web;
 
 import java.util.Map;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.tasks.NtroTask;
 
 public interface RequestHandlerTask extends NtroTask {

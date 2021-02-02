@@ -43,13 +43,10 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 		// FIXME
 		Constants.LANG = "fr";
 		
-		ControllerFactory.registerController("/", RootController.class);
-		ControllerFactory.registerController("/settings", SettingsController.class);
-		ControllerFactory.registerController("/dashboard", DashboardController.class);
-		ControllerFactory.registerController("/dashboard/*", CourseController.class);
-		ControllerFactory.registerController("/dashboard/*/*", ActivityController.class);
-
-		RootController rootController = ControllerFactory.createController(RootController.class, "/**");  // create all controllers
+		// XXX: "/**" means: execute every subController
+		// XXX: "/*/*/*" would be: execute every subController down 3 levels
+		// XXX: "/settings/*" would be: execute only settings, then every child of settings
+		RootController rootController = ControllerFactory.createController(RootController.class, "/**");  
 
 		rootController.execute();
 

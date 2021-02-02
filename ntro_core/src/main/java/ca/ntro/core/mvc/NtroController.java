@@ -1,5 +1,6 @@
 package ca.ntro.core.mvc;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroViewModel;
 import ca.ntro.core.mvc.view.NtroView;
@@ -20,6 +21,7 @@ public abstract class NtroController implements TaskWrapper {
 	private static final String VIEW_MODEL_TASK_ID="viewModel";
 	private static final String VIEW_RECEPTOR_TASK_ID="viewReceptor";
 	
+	private Path path;
 	private NtroTask mainTask = new ContainerTask();
 
 	protected abstract void initialize();
@@ -37,13 +39,23 @@ public abstract class NtroController implements TaskWrapper {
 		
 		mainTask.execute();
 	}
-	
-	protected void addSubController(NtroController subController) {
+
+	protected void setPath(Path path) {
 		T.call(this);
+
+		this.path = path;
+	}
+
+	
+	protected <C extends NtroController> void addSubController(Class<C> controllerClass, String controllerId) {
+		T.call(this);
+		
+		Path pathRemainder = path.removePrefix(controllerId);
+		
+		C subController = ControllerFactory.createController(controllerClass, pathRemainder);
 		
 		mainTask.addNextTask(subController.getTask());
 	}
-
 	
 	protected void addSubViewLoader(ViewLoader viewLoader) {
 		T.call(this);
@@ -114,4 +126,5 @@ public abstract class NtroController implements TaskWrapper {
 		mainTask.addSubTask(viewReceptor.getTask());
 		addPreviousTaskTo(viewReceptor.getTask(), ViewLoader.class, VIEW_TASK_ID);
 	}
+
 }

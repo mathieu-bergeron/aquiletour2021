@@ -6,11 +6,4 @@ import ca.aquiletour.jsweet.pages.root.RootControllerJSweet;
 import ca.ntro.core.system.trace.T;
 
 public class AquiletourMainJSweet extends AquiletourMain {
-	
-	@Override
-	protected RootController rootController() {
-		T.call(this);
-
-		return new RootControllerJSweet();
-	}
 }

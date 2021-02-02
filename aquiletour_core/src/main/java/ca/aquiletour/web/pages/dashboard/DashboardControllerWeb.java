@@ -7,71 +7,11 @@ import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
-import ca.ntro.web.Path;
 import ca.ntro.web.RequestHandlerTask;
 
 public abstract class DashboardControllerWeb extends DashboardController implements RequestHandlerTask {
-
-	private AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-
-	public DashboardControllerWeb(RootController parentController) {
-		super(parentController);
-	}
-
-	@Override
-	protected ViewLoader createViewLoader(String lang) {
-		T.call(this);
-
-		return Ntro.viewLoaderWeb()
-		           .setHtmlUrl("/views/dashboard/structure.html")
-		           .setCssUrl("/views/dashboard/style.css")
-		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
-		           .setTargetClass(DashboardViewWeb.class);
-	}
-
-	@Override
-	protected  ViewLoader createCourseSummaryViewLoader(String lang) {
-		T.call(this);
-
-		return Ntro.viewLoaderWeb()
-		           .setHtmlUrl("/views/course_summary/structure.html")
-		           .setCssUrl("/views/course_summary/style.css")
-		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
-		           .setTargetClass(CourseSummaryViewWeb.class);
-	}
-
-	@Override
-	public void initialRequest(Path path, 
-			                   Map<String, String[]> parameters, 
-			                   String authToken) {
-		T.call(this);
-		
-		if(parameters.containsKey("title") 
-				&& parameters.containsKey("summary")
-				&& parameters.containsKey("date")) {
-			
-			String title = parameters.get("title")[0];
-			String summary = parameters.get("summary")[0];
-			String date = parameters.get("date")[0];
-			
-			addCourseMessage.setCourse(new CourseSummary(title, summary, date));
-			
-			addNextTask(addCourseMessage);
-		}
-		
-	}
-
-	@Override
-	public void newRequest(Path oldPath, 
-			               Path path, 
-			               Map<String, String[]> oldParameters,
-			               Map<String, String[]> parameters, 
-			               String authToken) {
-		T.call(this);
-		
-	}
-
 }
