@@ -5,7 +5,8 @@
 #nav-link:hover {
   font-size: 50px;
 }
-/*# sourceMappingURL=style.css.map */.flex-container {
+/*# sourceMappingURL=style.css.map */
+.flex-container {
   /* We first create a flex layout context */
   display: -webkit-box;
   display: -ms-flexbox;
@@ -47,6 +48,20 @@
     margin-bottom:40px;
 }
 
+.queue{
+  margin-left: 15%;
+  margin-right: 15%;
+  margin-top: 10px;
+}
+
+.wrap-close-btn{
+  
+  flex-wrap: wrap;
+}
+
+.btn-close{
+  float: right;
+}
 
 
 /*# sourceMappingURL=style.css.map */
