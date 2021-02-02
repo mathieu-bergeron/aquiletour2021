@@ -19,6 +19,7 @@ package ca.ntro.core;
 
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -123,6 +124,12 @@ public class Ntro {
 
 	public static ViewLoaderWeb viewLoaderWeb() {
 		return Factory.newInstance(viewLoaderWebClass);
+	}
+
+	public static NtroWindow window() {
+		__T.call(Ntro.class, "window");
+
+		return null;
 	}
 
 }
