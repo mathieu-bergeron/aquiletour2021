@@ -17,12 +17,10 @@
 
 package ca.ntro.core.mvc.view;
 
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskSync;
 
-public abstract class ViewLoader extends NtroTaskImpl {
-	
+public abstract class ViewLoader extends NtroTaskSync {
+
 	public abstract NtroView createView();
-
-
 
 }

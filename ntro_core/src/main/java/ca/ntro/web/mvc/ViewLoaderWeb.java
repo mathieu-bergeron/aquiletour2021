@@ -27,10 +27,10 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.core.system.assertions.MustNot;
 
 public abstract class ViewLoaderWeb extends ViewLoader {
-	
+
 	private String html;
 	private Class<? extends NtroViewWeb> viewClass;
-	
+
 	public ViewLoaderWeb() {
 		super();
 	}
@@ -39,9 +39,9 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	protected void initializeTask() {
 
 	}
-	
+
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
 
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
@@ -49,20 +49,18 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
 
 		MustNot.beNull(html);
-		
-		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		
+
 	}
 
 	public ViewLoaderWeb setHtmlUrl(String htmlPath) {
 		T.call(this);
-		
+
 		System.out.println("htmlPath: " + htmlPath);
-		
+
 		ResourceLoaderTask htmlLoader = Ntro.resourceLoader().loadResourceTask(htmlPath);
 		htmlLoader.setTaskId("Html");
 
@@ -82,18 +80,18 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		return this;
 	}
-	
+
 	public String getHtml() {
 		T.call(this);
-		
+
 		return html;
 	}
 
 	public ViewLoader setTargetClass(Class<? extends NtroViewWeb> viewClass) {
 		T.call(this);
-		
+
 		this.viewClass = viewClass;
-		
+
 		return this;
 	}
 
@@ -104,11 +102,11 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		MustNot.beNull(html);
 
 		NtroViewWeb view = Factory.newInstance(viewClass);
-		
+
 		HtmlElement rootElement = parseHtml(html);
-		
+
 		view.setRootElement(rootElement);
-		
+
 		return view;
 	}
 

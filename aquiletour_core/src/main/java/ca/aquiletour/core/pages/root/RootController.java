@@ -28,11 +28,11 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 
 public abstract class RootController extends NtroController {
-	
+
 	private ViewLoader viewLoader;
 	private DashboardController dashboardController;
 	private SettingsController settingsController;
-	
+
 	private RootView rootView;
 
 	@Override
@@ -57,30 +57,28 @@ public abstract class RootController extends NtroController {
 	//             afterPreviousTaskAndSubTaskFinished    eq. runTask
 	//             afterPreviousTaskFinished              optionnel!!
 	//             afterPreviousSubTaskFinished           optionnel!!
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
-		
+
 		rootView = (RootView) viewLoader.createView();
-		
+
 		getWindow().installRootView(rootView);
-		
-		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		
+
 	}
 
 	public abstract SettingsController createSettingsController();
 	public abstract DashboardController createDashboardController();
-	
+
 	public void installSubView(NtroView view) {
 		T.call(this);
-		
+
 		rootView.installSubView(view);
 	}
-	
+
 	protected SettingsController getSettingsController() {
 		T.call(this);
 

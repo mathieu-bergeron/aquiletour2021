@@ -24,7 +24,7 @@ public abstract class DashboardController extends NtroController {
 
 	private ModelLoader modelLoader;
 	private DashboardModel model;
-	
+
 	private DashboardViewModel viewModel;
 
 	private ViewLoader courseSummaryViewLoader;
@@ -39,12 +39,12 @@ public abstract class DashboardController extends NtroController {
 	@Override
 	protected void initializeTask() {
 		T.call(this);
-		
+
 		viewModel = new DashboardViewModel();
 
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
-		
+
 		modelLoader = LocalStore.getLoader(DashboardModel.class, "testId");
 		addSubTask(modelLoader);
 
@@ -58,17 +58,15 @@ public abstract class DashboardController extends NtroController {
 
 
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
 
 		view = (DashboardView) viewLoader.createView();
 		view.setCourseSummaryViewLoader(courseSummaryViewLoader);
 
 		model  = (DashboardModel) modelLoader.getModel();
-		
-		viewModel.observeAndDisplay(model, view);
 
-		notifyTaskFinished();
+		viewModel.observeAndDisplay(model, view);
 	}
 
 	@Override
@@ -91,7 +89,7 @@ public abstract class DashboardController extends NtroController {
 
 	public void addCourse(CourseSummary course) {
 		T.call(this);
-		
+
 		model.addCourse(course);
 		model.save();
 	}

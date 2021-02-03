@@ -20,9 +20,9 @@ package ca.aquiletour.core;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskSync;
 
-public abstract class AquiletourMain extends NtroTaskImpl {
+public abstract class AquiletourMain extends NtroTaskSync {
 
 	@Override
 	protected void initializeTask() {
@@ -30,19 +30,17 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
-		
+
 		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");
 
 		// FIXME
 		Constants.LANG = "fr";
-		
+
 		rootController().execute();
-		
-		notifyTaskFinished();
 	}
-	
+
 	protected abstract RootController rootController();
 
 	@Override
