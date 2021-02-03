@@ -20,6 +20,7 @@ package ca.ntro.core.tasks;
 import java.util.HashSet;
 import java.util.Set;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 
 public abstract class NtroTaskImpl implements NtroTask {
@@ -299,6 +300,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 				task.addNextTask(this);
 
 				if(parentTask != null) {
+					task.setParentTask(parentTask);
 					parentTask.addSubTask(task);
 				}
 			}else {
@@ -319,6 +321,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 				task.addPreviousTask(this);
 
 				if(parentTask != null) {
+					task.setParentTask(parentTask);
 					parentTask.addSubTask(task);
 				}
 			}else {
@@ -357,15 +360,52 @@ public abstract class NtroTaskImpl implements NtroTask {
 		}
 	}
 	
-	
 	@Override
-	public void debugPrintPreviousTasks(){
-		System.out.print("PREVIOUS: ");
-		for(NtroTask previousTask : previousTasks) {
-			System.out.print(" ");
-			System.out.print(previousTask.getClass().getSimpleName());
-		}
+	public String toString() {
+		StringBuilder out = new StringBuilder();
 		
-		System.out.println("");
+		write(out, 0);
+		
+		return out.toString();
 	}
+
+	@Override
+	public void write(StringBuilder out, int indentLevel) {
+		T.call(this);
+		
+		indent(out, indentLevel);
+		out.append(getTaskId());
+		out.append(" {\n");
+
+		if(indentLevel == 0) {
+			writeTaskSet(out, indentLevel+1, "previousTasks", previousTasks);
+		}
+		writeTaskSet(out, indentLevel+1, "subTasks", subTasks);
+		writeTaskSet(out, indentLevel+1, "nextTasks", nextTasks);
+
+		indent(out, indentLevel);
+		out.append("}\n");
+		
+		
+	}
+	private void writeTaskSet(StringBuilder out, int indentLevel, String taskSetName, Set<NtroTask> taskSet) {
+
+		indent(out, indentLevel);
+		out.append(taskSetName);
+		out.append(" {\n");
+		for(NtroTask task: taskSet) {
+			task.write(out, indentLevel+1);
+		}
+		indent(out, indentLevel);
+		out.append("}\n");
+	}
+	
+	private void indent(StringBuilder out, int indentLevel) {
+		T.call(this);
+		for(int i = 0; i < indentLevel*4; i++) {
+			out.append(" ");
+		}
+	}
+	
+	
 }

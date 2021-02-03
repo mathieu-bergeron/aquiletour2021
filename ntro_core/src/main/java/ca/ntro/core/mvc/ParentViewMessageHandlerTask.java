@@ -33,8 +33,7 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 		T.call(this);
 		
 		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
-		//MSG message = (MSG) getPreviousTask(NtroMessage.class, "FIXME");
-		MSG message = null;
+		MSG message = (MSG) getPreviousTask(NtroMessage.class, Constants.MESSAGE_TASK_ID);
 
 		MustNot.beNull(viewLoader);
 

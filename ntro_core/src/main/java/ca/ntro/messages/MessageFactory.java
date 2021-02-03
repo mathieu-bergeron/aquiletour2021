@@ -1,37 +1,42 @@
 package ca.ntro.messages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
 
 public class MessageFactory {
 	
-	private static MessageReceptors messageReceptors = new MessageReceptors();
+	private static Map<Class<? extends NtroMessage>, NtroMessage> messages = new HashMap<>();
+	
 	
 	public static <M extends NtroMessage> M getOutgoingMessage(Class<M> messageClass) {
 		T.call(MessageFactory.class);
+
+		return getMessage(messageClass);
+	}
+
+	private static <M extends NtroMessage> M getMessage(Class<M> messageClass) {
+		T.call(MessageFactory.class);
+
+		M message = (M) messages.get(messageClass);
 		
-		M message = Factory.newInstance(messageClass);
+		if(message == null) {
+			message = Factory.newInstance(messageClass);
+			messages.put(messageClass, message);
+		}
 
 		return message;
 	}
-	
-	public static void addMessageReceptor(Class<? extends NtroMessage> messageClass, 
-			                              MessageReceptor messageReceptionTask) {
-		T.call(MessageFactory.class);
-		
-		messageReceptors.addReceptor(messageClass, messageReceptionTask);
-	}
 
-	static void sendMessage(NtroMessage message) {
+	public static <M extends NtroMessage> M getIncomingMessage(Class<M> messageClass) {
 		T.call(MessageFactory.class);
-		
-		messageReceptors.sendMessage(message);
-	}
-	
-	
-	
-	
-	
-	
 
+		M message = getMessage(messageClass);
+		
+		message.reset();
+		
+		return message;
+	}
 }

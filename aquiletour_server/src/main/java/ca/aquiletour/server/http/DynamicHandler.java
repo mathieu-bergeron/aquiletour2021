@@ -31,14 +31,19 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.ContainerTask;
+import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.web.NtroWindowServer;
+import ca.ntro.messages.MessageFactory;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -106,20 +111,32 @@ public class DynamicHandler extends AbstractHandler {
 		
 		NtroWindowServer newWindow = ((NtroWindowServer) Ntro.window()).clone();
 		
+		NtroTask webApp = new ContainerTask();
+		
 		RootController rootController = ControllerFactory.createRootController(RootController.class, path, newWindow);
 		
 		WriteResponseTask writeResponseTask = new WriteResponseTask(newWindow, baseRequest, out);
-		writeResponseTask.addSubTask(rootController.getTask());
 		
-		// TODO: add messages subTasks according to 
-		//       path and parameters
-		/*
-		rootController.initialRequest(path,
-				                      baseRequest.getParameterMap(),
-				                      authToken);
-				                      */
+		webApp.addSubTask(rootController.getTask());
+		webApp.addNextTask(writeResponseTask);
+		
+		// TODO: also check parametres
+		// TODO: refactor
+		if(path.startsWith("settings")) {
+			
+			ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
+			showSettingsMessage.sendMessage();
+			
+		}else if(path.startsWith("dashboard")) {
 
-		writeResponseTask.execute();
+			ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
+			showDashboardMessage.sendMessage();
+			
+		}
+		
+		System.out.println(webApp.toString());
+		
+		webApp.execute();
 	}
 }
 
