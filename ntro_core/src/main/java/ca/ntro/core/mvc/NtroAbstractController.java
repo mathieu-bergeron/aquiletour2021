@@ -2,13 +2,11 @@ package ca.ntro.core.mvc;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.NtroViewModel;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
-import ca.ntro.core.tasks.TaskWrapperImpl;
 import ca.ntro.messages.MessageReceptor;
 import ca.ntro.messages.NtroMessage;
 
@@ -82,9 +80,9 @@ abstract class NtroAbstractController implements TaskWrapper {
 
 	}
 
-	protected void addMessageModel(Class<? extends NtroMessage> messageClass, ModelMessageHandler messageModel) {
+	protected void addModelMessageHandler(Class<? extends NtroMessage> messageClass, ModelMessageHandler<?,?> messageModel) {
 		T.call(this);
-
+		
 	}
 	
 	protected void setViewLoader(ViewLoader viewLoader) {
@@ -93,7 +91,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		MustNot.beNull(viewLoader);
 		
 		// FIXME: it should be ok to reuse a viewLoader at DONE
-		//        it simply means the view is already loaded
+		//        it simply means the files are already loaded
 		viewLoader.reset();
 
 		viewLoader.setTaskId(VIEW_LOADER_TASK_ID);
@@ -106,7 +104,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		
 		viewCreator.addPreviousTask(viewLoader);
 		
-		addPreviousTaskTo(NtroViewModel.class, VIEW_MODEL_TASK_ID, viewCreator);
+		addPreviousTaskTo(ViewModelHandlerTask.class, VIEW_MODEL_TASK_ID, viewCreator);
 		addPreviousTaskTo(ViewHandlerTask.class, VIEW_HANDLER_TASK_ID, viewCreator);
 	}
 
@@ -126,16 +124,18 @@ abstract class NtroAbstractController implements TaskWrapper {
 		modelLoader.setTaskId(MODEL_LOADER_TASK_ID);
 		getTask().addSubTask(modelLoader);
 		
-		addPreviousTaskTo(NtroViewModel.class, VIEW_MODEL_TASK_ID, modelLoader);
+		addPreviousTaskTo(ViewModelHandlerTask.class, VIEW_MODEL_TASK_ID, modelLoader);
 	}
 
-	protected void setViewModel(NtroViewModel viewModel) {
+	protected void setViewModelHandler(ViewModelHandler<?,?> handler) {
 		T.call(this);
 		
-		getTask().addSubTask(viewModel);
+		NtroTask task = handler.getTask();
 		
-		addPreviousTaskTo(viewModel, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
-		addPreviousTaskTo(viewModel, ModelLoader.class, MODEL_LOADER_TASK_ID);
+		getTask().addSubTask(task);
+		
+		addPreviousTaskTo(task, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
+		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
 
 	protected <NT extends NtroTask> void addPreviousTaskTo(NtroTask nextTask, Class<NT> taskClass, String taskId) {
