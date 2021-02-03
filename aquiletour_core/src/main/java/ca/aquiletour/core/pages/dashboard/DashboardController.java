@@ -1,10 +1,11 @@
 package ca.aquiletour.core.pages.dashboard;
 
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardController extends NtroController {
+public class DashboardController extends NtroController<RootController> {
 
 	@Override
 	protected void initialize() {

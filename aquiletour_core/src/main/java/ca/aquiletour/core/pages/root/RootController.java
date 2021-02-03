@@ -19,7 +19,6 @@ package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.settings.SettingsController;
-import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;

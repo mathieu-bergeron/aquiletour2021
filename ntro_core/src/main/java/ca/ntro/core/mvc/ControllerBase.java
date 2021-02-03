@@ -46,10 +46,10 @@ abstract class ControllerBase extends TaskWrapperImpl {
 	
 	protected <C extends NtroController> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
-		
+
 		Path pathRemainder = path.removePrefix(controllerId);
-		
-		C subController = ControllerFactory.createController(controllerClass, pathRemainder);
+
+		C subController = ControllerFactory.createController(controllerClass, pathRemainder, this);
 		
 		getTask().addNextTask(subController.getTask());
 	}
@@ -123,12 +123,29 @@ abstract class ControllerBase extends TaskWrapperImpl {
 		}
 	}
 
-	protected void setViewHandler(ViewHandler<? extends ControllerBase, ? extends NtroView> viewReceptor) {
+	protected void setViewHandler(ViewHandler<?,?> handler) {
 		T.call(this);
 		
-		viewReceptor.setController(this);
+		handler.setController(this);
 
-		getTask().addSubTask(viewReceptor.getTask());
-		addPreviousTaskTo(viewReceptor.getTask(), ViewLoader.class, VIEW_LOADER_TASK_ID);
+		getTask().addSubTask(handler.getTask());
+		addPreviousTaskTo(handler.getTask(), ViewLoader.class, VIEW_LOADER_TASK_ID);
+	}
+
+	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?,?> handler) {
+		T.call(this);
+		
+		handler.setController(this);
+
+		getTask().addSubTask(handler.getTask());
+		addPreviousTaskTo(handler.getTask(), ViewLoader.class, VIEW_LOADER_TASK_ID);
+	}
+
+	public ParentController asParentController() {
+		T.call(this);
+		
+		NtroView view = getTask().getSubTask(ViewLoader.class, Constants.VIEW_LOADER_TASK_ID).createView();
+		
+		return new ParentController(view);
 	}
 }

@@ -4,16 +4,9 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 
-public abstract class ViewHandler<CB extends ControllerBase, V extends NtroView> implements TaskWrapper {
+public abstract class ViewHandler<CB extends ControllerBase, V extends NtroView> extends Handler implements TaskWrapper {
 	
-	private ControllerBase controller;
 	private NtroTask mainTask = new ViewHandlerTask<CB, V>(this);
-	
-	public void setController(ControllerBase controller) {
-		T.call(this);
-		
-		this.controller = controller;
-	}
 
 	@Override
 	public NtroTask getTask() {
@@ -33,7 +26,7 @@ public abstract class ViewHandler<CB extends ControllerBase, V extends NtroView>
 	void handle(V view) {
 		T.call(this);
 		
-		handle((CB) controller, view);
+		handle((CB) getController(), view);
 	}
 
 	public abstract void handle(CB controller, V view);
