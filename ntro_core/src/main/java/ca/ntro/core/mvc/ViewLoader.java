@@ -21,7 +21,7 @@ import ca.ntro.core.tasks.NtroTaskImpl;
 
 public abstract class ViewLoader extends NtroTaskImpl {
 	
-	public abstract NtroView createView();
+	public abstract NtroView getView();
 
 
 

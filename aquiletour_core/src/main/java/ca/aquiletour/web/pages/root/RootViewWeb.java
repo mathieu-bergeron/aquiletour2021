@@ -10,7 +10,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
-	public void installSubView(NtroView view) {
+	public void showSettings(NtroView view) {
 		T.call(this);
 		
 		NtroViewWeb viewWeb = (NtroViewWeb) view;

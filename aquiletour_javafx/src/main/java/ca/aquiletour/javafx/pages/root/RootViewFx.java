@@ -75,7 +75,7 @@ public class RootViewFx extends NtroViewFx implements RootView {
 	}
 
 	@Override
-	public void installSubView(NtroView view) {
+	public void showSettings(NtroView view) {
 		T.call(this);
 		
 		NtroViewFx viewFx = (NtroViewFx) view;

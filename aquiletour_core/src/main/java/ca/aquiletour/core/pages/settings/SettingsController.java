@@ -10,7 +10,7 @@ public class SettingsController extends NtroController<RootController> {
 	protected void initialize() {
 		T.call(this);
 
-		addViewMessageHandler(ShowSettingsMessage.class, new ShowSettingsHandler());
+		addParentViewMessageHandler(ShowSettingsMessage.class, new ShowSettingsHandler());
 	}
 
 

@@ -8,7 +8,7 @@ import ca.ntro.core.tasks.NtroTaskImpl;
 
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
 
-public class ViewHandlerTask<CB extends ControllerBase, V extends NtroView> extends NtroTaskImpl {
+public class ViewHandlerTask<CB extends NtroAbstractController, V extends NtroView> extends NtroTaskImpl {
 	
 	private ViewHandler<CB, V> viewReceptor;
 	
@@ -33,7 +33,7 @@ public class ViewHandlerTask<CB extends ControllerBase, V extends NtroView> exte
 		MustNot.beNull(viewLoader);
 
 		@SuppressWarnings("unchecked")
-		V view = (V) viewLoader.createView();
+		V view = (V) viewLoader.getView();
 		
 		MustNot.beNull(view);
 

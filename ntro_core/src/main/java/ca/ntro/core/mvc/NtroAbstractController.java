@@ -17,7 +17,7 @@ import static ca.ntro.core.mvc.Constants.VIEW_MODEL_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_RECEPTOR_TASK_ID;
 
 
-abstract class ControllerBase extends TaskWrapperImpl {
+abstract class NtroAbstractController extends TaskWrapperImpl {
 	
 
 	
@@ -25,7 +25,7 @@ abstract class ControllerBase extends TaskWrapperImpl {
 
 	protected abstract void initialize();
 
-	public ControllerBase() {
+	public NtroAbstractController() {
 		super(new ContainerTask());
 		T.call(this);
 	}
@@ -44,7 +44,7 @@ abstract class ControllerBase extends TaskWrapperImpl {
 	}
 
 	
-	protected <C extends NtroController> void addSubController(Class<C> controllerClass, String controllerId) {
+	protected <C extends NtroController<?>> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
 
 		Path pathRemainder = path.removePrefix(controllerId);
@@ -113,7 +113,7 @@ abstract class ControllerBase extends TaskWrapperImpl {
 		addPreviousTaskTo(viewModel, ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
 
-	private <NT extends NtroTask> void addPreviousTaskTo(NtroTask nextTask, Class<NT> taskClass, String taskId) {
+	protected <NT extends NtroTask> void addPreviousTaskTo(NtroTask nextTask, Class<NT> taskClass, String taskId) {
 		T.call(this);
 		
 		NT previousTask = getTask().getSubTask(taskClass, taskId);
@@ -132,20 +132,20 @@ abstract class ControllerBase extends TaskWrapperImpl {
 		addPreviousTaskTo(handler.getTask(), ViewLoader.class, VIEW_LOADER_TASK_ID);
 	}
 
-	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?,?> handler) {
+
+	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?> handler) {
 		T.call(this);
-		
-		handler.setController(this);
 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewLoader.class, VIEW_LOADER_TASK_ID);
 	}
 
-	public ParentController asParentController() {
+	NtroView getView() {
 		T.call(this);
 		
-		NtroView view = getTask().getSubTask(ViewLoader.class, Constants.VIEW_LOADER_TASK_ID).createView();
 		
-		return new ParentController(view);
+		NtroView view = getTask().getSubTask(ViewLoader.class, VIEW_LOADER_TASK_ID).getView();
+		
+		return view;
 	}
 }

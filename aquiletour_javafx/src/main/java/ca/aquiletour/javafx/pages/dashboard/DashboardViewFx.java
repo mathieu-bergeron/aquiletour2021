@@ -67,7 +67,7 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	public void appendCourse(CourseSummary course) {
 		T.call(this);
 		
-		CourseSummaryViewFx courseView = (CourseSummaryViewFx) courseSummaryViewLoader.createView();
+		CourseSummaryViewFx courseView = (CourseSummaryViewFx) courseSummaryViewLoader.getView();
 		
 		courseView.displaySummary(course);
 		

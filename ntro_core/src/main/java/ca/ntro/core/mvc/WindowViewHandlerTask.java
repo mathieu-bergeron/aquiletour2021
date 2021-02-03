@@ -9,17 +9,14 @@ import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
 
-public class ViewMessageHandlerTask<V extends NtroView, 
-                                    MSG extends NtroMessage> extends NtroTaskImpl {
+public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskImpl{
 	
-	private ViewMessageHandler<V, MSG> handler;
-	private String messageId;
+	private WindowViewHandler<V> handler;
 	
-	public ViewMessageHandlerTask(ViewMessageHandler<V, MSG> handler, String messageId) {
+	public WindowViewHandlerTask(WindowViewHandler handler) {
 		T.call(this);
 
 		this.handler = handler;
-		this.messageId = messageId;
 	}
 
 	@Override
@@ -33,17 +30,14 @@ public class ViewMessageHandlerTask<V extends NtroView,
 		T.call(this);
 		
 		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
-		MSG message = (MSG) getPreviousTask(NtroMessage.class, messageId);
 
 		MustNot.beNull(viewLoader);
-		MustNot.beNull(message);
 
 		@SuppressWarnings("unchecked")
 		V view = (V) viewLoader.getView();
 		
-		MustNot.beNull(view);
 
-		handler.handleImpl(view, message);
+		handler.handleImpl(view);
 		
 		notifyTaskFinished();
 	}

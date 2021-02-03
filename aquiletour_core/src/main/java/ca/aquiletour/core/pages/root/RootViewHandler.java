@@ -1,14 +1,17 @@
 package ca.aquiletour.core.pages.root;
 
-import ca.ntro.core.mvc.ViewHandler;
+import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.mvc.WindowViewHandler;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTask;
 
-public class RootViewHandler extends ViewHandler<RootController, RootView> {
+public class RootViewHandler extends WindowViewHandler<RootView> {
+	
 	
 	@Override
-	public void handle(RootController controller, RootView view) {
+	public void handle(NtroWindow window, RootView view) {
 		T.call(this);
 		
-		controller.getWindow().installRootView(view);
+		window.installRootView(view);
 	}
 }

@@ -98,7 +98,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	}
 
 	@Override
-	public NtroView createView() {
+	public NtroView getView() {
 		T.call(this);
 
 		MustNot.beNull(html);

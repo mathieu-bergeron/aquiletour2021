@@ -30,7 +30,7 @@ public class ControllerFactory {
 		
 	}
 
-	static <C extends NtroController> C createController(Class<C> controllerClass, Path path, ControllerBase parentController) {
+	static <C extends NtroController> C createController(Class<C> controllerClass, Path path, NtroAbstractController parentController) {
 		T.call(ControllerFactory.class);
 		
 		C controller = Factory.newInstance(controllerClass);

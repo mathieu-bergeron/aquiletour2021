@@ -4,15 +4,15 @@ import ca.ntro.core.system.trace.T;
 
 public class Handler {
 
-	private ControllerBase controller;
+	private NtroAbstractController controller;
 
-	public void setController(ControllerBase controller) {
+	public void setController(NtroAbstractController controller) {
 		T.call(this);
 		
 		this.controller = controller;
 	}
 	
-	protected ControllerBase getController() {
+	protected NtroAbstractController getController() {
 		T.call(this);
 
 		return controller;
