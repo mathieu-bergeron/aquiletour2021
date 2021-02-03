@@ -15,26 +15,26 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 
 
 
-	@Override
-	public void appendAppointement(Appointment appointment) {
-		T.call(this);
-		
-		HtmlElement container = this.getRootElement().children("#appointment-container"/*TODO*/).get(0);
-		
-		MustNot.beNull(container);
-		
-		AppointmentViewWeb appointmentView = (AppointmentViewWeb) appointmentViewLoader.createView();
-		
-		appointmentView.displayAppointement(appointment);
-		
-		container.appendElement(appointmentView.getRootElement());
-	}
-
-	@Override
-	public void deleteAppointment(String appointmentId) {
-		T.call(this);
-		
-	}
+//	@Override
+//	public void appendAppointement(Appointment appointment) {
+//		T.call(this);
+//		
+//		HtmlElement container = this.getRootElement().children("#appointment-container"/*TODO*/).get(0);
+//		
+//		MustNot.beNull(container);
+//		
+//		AppointmentViewWeb appointmentView = (AppointmentViewWeb) appointmentViewLoader.createView();
+//		
+//		appointmentView.displayAppointement(appointment);
+//		
+//		container.appendElement(appointmentView.getRootElement());
+//	}
+//
+//	@Override
+//	public void deleteAppointment(String appointmentId) {
+//		T.call(this);
+//		
+//	}
 
 
 }

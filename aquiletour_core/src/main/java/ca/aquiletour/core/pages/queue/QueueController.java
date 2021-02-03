@@ -9,6 +9,8 @@ import ca.aquiletour.core.pages.dashboard.messages.AddCourseReceptor;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueReceptor;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.ModelLoader;
@@ -26,12 +28,12 @@ public abstract class QueueController extends NtroController {
 	private ViewLoader viewLoader;
 	private QueueView view;
 
-	private ModelLoader modelLoader;
-	private QueueModel model;
-	
-	private QueueViewModel viewModel;
-
-	private ViewLoader appointmentViewLoader;
+//	private ModelLoader modelLoader;
+//	private QueueModel model;
+//	
+//	private QueueViewModel viewModel;
+//
+//	private ViewLoader appointmentViewLoader;
 
 	public QueueController(RootController parentController) {
 		super();
@@ -40,11 +42,11 @@ public abstract class QueueController extends NtroController {
 		this.parentController = parentController;
 	}
 	
-	@Override
-	protected ViewLoader createViewLoader(String lang) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	protected ViewLoader createViewLoader(String lang) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	protected void initializeTask() {
@@ -52,31 +54,32 @@ public abstract class QueueController extends NtroController {
 		
 		T.call(this);
 		
-		viewModel = new QueueViewModel();
+//		viewModel = new QueueViewModel();
 
 		viewLoader = createViewLoader(Constants.LANG);
 		addSubTask(viewLoader);
 		
-		modelLoader = LocalStore.getLoader(QueueModel.class, "testId");
-		addSubTask(modelLoader);
+//		modelLoader = LocalStore.getLoader(QueueModel.class, "testId");
+//		addSubTask(modelLoader);
+//
+//		appointmentViewLoader = createAppointmentViewLoader(Constants.LANG);
+//		appointmentViewLoader.setTaskId("appointmentViewLoader");             // XXX: must have taskId as there
+//		addSubTask(appointmentViewLoader);                                      //      is 2 ViewLoader subTask
 
-		appointmentViewLoader = createAppointmentViewLoader(Constants.LANG);
-		appointmentViewLoader.setTaskId("appointmentViewLoader");             // XXX: must have taskId as there
-		addSubTask(appointmentViewLoader);                                      //      is 2 ViewLoader subTask
-
-		//MessageFactory.addMessageReceptor(ShowQueueMessage.class, new ShowQueuedReceptor(this)); 
+		MessageFactory.addMessageReceptor(ShowQueueMessage.class, new ShowQueueReceptor(this)); 
 		//MessageFactory.addMessageReceptor(AddAppointmentMessage.class, new AddAppointmentReceptor(this));
 	}
 
 	@Override
 	protected void runTaskAsync() {
+		T.call(this);
 		// TODO Auto-generated method stub
 		view = (QueueView) viewLoader.createView();
 		//view.setAppointmentViewLoader(appointmentViewLoader);
 
-		model  = (QueueModel) modelLoader.getModel();
-		
-		viewModel.observeAndDisplay(model, view);
+//		model  = (QueueModel) modelLoader.getModel();
+//		
+//		viewModel.observeAndDisplay(model, view);
 
 		notifyTaskFinished();
 	}
@@ -93,11 +96,11 @@ public abstract class QueueController extends NtroController {
 		parentController.installSubView(view);
 	}
 
-	/*public ShowQueueReceptor createShowQueueTask() {
+	public ShowQueueReceptor createShowQueueTask() {
 		T.call(this);
 
 		return new ShowQueueReceptor(this);
-	}*/
+	}
 
 	/*public void addAppointement(Appointment appointment) {
 		T.call(this);

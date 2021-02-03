@@ -21,6 +21,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.web.pages.dashboard.DashboardControllerWeb;
+import ca.aquiletour.web.pages.queue.QueueControllerWeb;
 import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.view.ViewLoader;
@@ -56,7 +57,7 @@ public abstract class   RootControllerWeb
 		
 		getWindow().setCurrentPath(path);
 		
-		if(path.startsWith("settings")) {
+		if(path.startsWith("settings")) { //TODO 
 
 			SettingsControllerWeb settingsController = (SettingsControllerWeb) getSettingsController();
 			
@@ -71,6 +72,13 @@ public abstract class   RootControllerWeb
 			dashboardController.initialRequest(path.subPath(1), parameters, authToken);
 			
 			addNextTask(dashboardController.createShowDashboardTask());
+		}else if(path.startsWith("queue")) {
+			
+			QueueControllerWeb queueController = (QueueControllerWeb) getQueueController();
+			
+			queueController.initialRequest(path.subPath(1), parameters, authToken);
+			
+			addNextTask(queueController.createShowQueueTask());
 		}
 		
 		// TODO: comment envoyer un message? P.ex. formulaire via POST?
@@ -81,6 +89,9 @@ public abstract class   RootControllerWeb
 
 	@Override
 	public abstract DashboardControllerWeb createDashboardController();
+	
+	@Override
+	public abstract QueueControllerWeb createQueueController();
 
 	@Override
 	public void newRequest(Path oldPath, 

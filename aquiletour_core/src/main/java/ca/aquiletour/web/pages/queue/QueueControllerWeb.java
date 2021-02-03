@@ -25,22 +25,22 @@ public abstract class QueueControllerWeb extends QueueController implements Requ
 		T.call(this);
 
 		return Ntro.viewLoaderWeb()
-		           .setHtmlUrl("/views/dashboard/structure.html")
-		           .setCssUrl("/views/dashboard/style.css")
+		           .setHtmlUrl("/views/queue/structure.html")
+		           .setCssUrl("/views/queue/style.css")
 		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
 		           .setTargetClass(QueueViewWeb.class);
 	}
 
-	@Override
-	protected  ViewLoader createAppointmentViewLoader(String lang) {
-		T.call(this);
-
-		return Ntro.viewLoaderWeb()
-		           .setHtmlUrl("/views/course_summary/structure.html")
-		           .setCssUrl("/views/course_summary/style.css")
-		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
-		           .setTargetClass(AppointmentViewWeb.class);
-	}
+//	@Override
+//	protected  ViewLoader createAppointmentViewLoader(String lang) {
+//		T.call(this);
+//
+//		return Ntro.viewLoaderWeb()
+//		           .setHtmlUrl("/views/course_summary/structure.html")
+//		           .setCssUrl("/views/course_summary/style.css")
+//		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
+//		           .setTargetClass(AppointmentViewWeb.class);
+//	}
 
 	@Override
 	public void initialRequest(Path path, 
@@ -48,15 +48,15 @@ public abstract class QueueControllerWeb extends QueueController implements Requ
 			                   String authToken) {
 		T.call(this);
 		
-		if(parameters.containsKey("date")) {
-			
-
-			String date = parameters.get("date")[0];
-			
+//		if(parameters.containsKey("date")) {
+//			
+//
+//			String date = parameters.get("date")[0];
+//			
 //			addCourseMessage.setCourse(new CourseSummary(title, summary, date));
 //			
 //			addNextTask(addCourseMessage);
-		}
+//		}
 		
 	}
 

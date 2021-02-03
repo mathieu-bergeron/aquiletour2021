@@ -1,6 +1,7 @@
 package ca.aquiletour.javafx.pages.root;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.aquiletour.javafx.NtroWindowFx;
@@ -48,5 +49,11 @@ public class RootControllerFx extends RootController {
 		T.call(this);
 		
 		return new DashboardControllerFx(this);
+	}
+
+	@Override
+	public QueueController createQueueController() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

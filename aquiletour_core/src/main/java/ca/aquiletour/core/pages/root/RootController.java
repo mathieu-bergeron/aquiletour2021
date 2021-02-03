@@ -19,6 +19,7 @@ package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.mvc.NtroWindow;
@@ -32,6 +33,7 @@ public abstract class RootController extends NtroController {
 	private ViewLoader viewLoader;
 	private DashboardController dashboardController;
 	private SettingsController settingsController;
+	private QueueController queueController;
 	
 	private RootView rootView;
 
@@ -42,10 +44,12 @@ public abstract class RootController extends NtroController {
 		viewLoader = createViewLoader(Constants.LANG);
 		dashboardController = createDashboardController();
 		settingsController = createSettingsController();
+		queueController = createQueueController(); // TODO 
 
 		addSubTask(viewLoader);
 		addSubTask(dashboardController);
 		addSubTask(settingsController);
+		addSubTask(queueController);
 
 		MessageFactory.addMessageReceptor(QuitMessage.class, new QuitReceptor());
 	}
@@ -74,6 +78,7 @@ public abstract class RootController extends NtroController {
 
 	public abstract SettingsController createSettingsController();
 	public abstract DashboardController createDashboardController();
+	public abstract QueueController createQueueController();
 	
 	public void installSubView(NtroView view) {
 		T.call(this);
@@ -89,8 +94,14 @@ public abstract class RootController extends NtroController {
 
 	protected DashboardController getDashboardController() {
 		T.call(this);
-
+		
 		return dashboardController;
+	}
+	
+	protected QueueController getQueueController() {
+		T.call(this);
+
+		return queueController;
 	}
 
 }

@@ -36,7 +36,7 @@ public class QueueViewModel implements NtroViewModel {
 			public void onItemAdded(int index, Appointment item) {
 				// TODO Auto-generated method stub
 				
-				queueView.appendAppointement(item);
+//				queueView.appendAppointement(item);
 			}
 			
 			@Override
