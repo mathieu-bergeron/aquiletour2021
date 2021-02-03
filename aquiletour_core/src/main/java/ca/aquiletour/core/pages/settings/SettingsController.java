@@ -9,6 +9,7 @@ public class SettingsController extends NtroController {
 	protected void initialize() {
 		T.call(this);
 
+		addMessageHandler(ShowSettingsMessage.class, new ShowSettingsReceptor(this));
 	}
 
 	public void showSettings() {

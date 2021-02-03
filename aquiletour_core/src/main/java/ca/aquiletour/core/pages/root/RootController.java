@@ -32,17 +32,11 @@ public class RootController extends NtroRootController {
 		
 		setViewLoader(ViewLoaders.getViewLoader(RootView.class, "fr"));
 
-		setViewReceptor(new RootViewReceptor());
+		setViewHandler(new RootViewHandler());
 		
 		addSubController(SettingsController.class, "settings");
 		addSubController(DashboardController.class, "dashboard");
 		
-		addMessageReceptor(QuitMessage.class, new QuitReceptor());
-	}
-
-	public void installRootView(RootView view) {
-		T.call(this);
-
-		getWindow().installRootView(view);
+		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 }

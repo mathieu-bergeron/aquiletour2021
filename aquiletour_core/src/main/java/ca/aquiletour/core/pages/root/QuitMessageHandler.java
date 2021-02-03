@@ -1,10 +1,10 @@
 package ca.aquiletour.core.pages.root;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.mvc.MessageReceptor;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageReceptor;
 
-public class QuitReceptor extends MessageReceptor {
+public class QuitMessageHandler extends MessageReceptor {
 
 	@Override
 	protected void initializeTask() {

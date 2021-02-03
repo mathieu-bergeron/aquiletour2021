@@ -8,6 +8,8 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapperImpl;
+import ca.ntro.messages.MessageReceptor;
+import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
@@ -57,12 +59,12 @@ abstract class ControllerBase extends TaskWrapperImpl {
 
 	}
 
-	protected void addMessageReceptor(Class<? extends NtroMessage> messageClass, MessageReceptor messageReceptor) {
+	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageReceptor messageReceptor) {
 		T.call(this);
 
 	}
 
-	protected void addMessageModel(Class<? extends NtroMessage> messageClass, MessageModel messageModel) {
+	protected void addMessageModel(Class<? extends NtroMessage> messageClass, ModelMessageHandler messageModel) {
 		T.call(this);
 
 	}
@@ -80,7 +82,7 @@ abstract class ControllerBase extends TaskWrapperImpl {
 		getTask().addSubTask(viewLoader);
 		
 		addPreviousTaskTo(NtroViewModel.class, VIEW_MODEL_TASK_ID, viewLoader);
-		addPreviousTaskTo(ViewReceptorTask.class, VIEW_RECEPTOR_TASK_ID, viewLoader);
+		addPreviousTaskTo(ViewHandlerTask.class, VIEW_RECEPTOR_TASK_ID, viewLoader);
 	}
 
 	private <NT extends NtroTask> void addPreviousTaskTo(Class<NT> taskClass, String taskId, NtroTask previousTask) {
@@ -121,7 +123,7 @@ abstract class ControllerBase extends TaskWrapperImpl {
 		}
 	}
 
-	protected void setViewReceptor(ViewReceptor<? extends ControllerBase, ? extends NtroView> viewReceptor) {
+	protected void setViewHandler(ViewHandler<? extends ControllerBase, ? extends NtroView> viewReceptor) {
 		T.call(this);
 		
 		viewReceptor.setController(this);

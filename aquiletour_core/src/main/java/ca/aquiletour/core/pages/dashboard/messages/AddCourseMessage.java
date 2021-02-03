@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.dashboard.messages;
 
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.ntro.core.mvc.NtroMessage;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
 
 public class AddCourseMessage extends NtroMessage {
 

@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.settings;
 
-import ca.ntro.core.mvc.NtroMessage;
+import ca.ntro.messages.NtroMessage;
 
 public class ShowSettingsMessage extends NtroMessage {
 

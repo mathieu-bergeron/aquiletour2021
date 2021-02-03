@@ -8,11 +8,11 @@ import ca.ntro.core.tasks.NtroTaskImpl;
 
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
 
-public class ViewReceptorTask<CB extends ControllerBase, V extends NtroView> extends NtroTaskImpl {
+public class ViewHandlerTask<CB extends ControllerBase, V extends NtroView> extends NtroTaskImpl {
 	
-	private ViewReceptor<CB, V> viewReceptor;
+	private ViewHandler<CB, V> viewReceptor;
 	
-	public ViewReceptorTask(ViewReceptor<CB, V> viewReceptor) {
+	public ViewHandlerTask(ViewHandler<CB, V> viewReceptor) {
 		T.call(this);
 
 		this.viewReceptor = viewReceptor;
@@ -37,7 +37,7 @@ public class ViewReceptorTask<CB extends ControllerBase, V extends NtroView> ext
 		
 		MustNot.beNull(view);
 
-		viewReceptor.onViewLoaded(view);
+		viewReceptor.handle(view);
 		
 		notifyTaskFinished();
 	}

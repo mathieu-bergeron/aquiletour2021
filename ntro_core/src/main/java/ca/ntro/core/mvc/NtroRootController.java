@@ -12,7 +12,7 @@ public abstract class NtroRootController extends ControllerBase {
 		this.window = window;
 	}
 	
-	protected NtroWindow getWindow() {
+	public NtroWindow getWindow() {
 		T.call(this);
 
 		return window;

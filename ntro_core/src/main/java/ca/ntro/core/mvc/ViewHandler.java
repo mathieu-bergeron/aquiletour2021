@@ -4,10 +4,10 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 
-public abstract class ViewReceptor<CB extends ControllerBase, V extends NtroView> implements TaskWrapper {
+public abstract class ViewHandler<CB extends ControllerBase, V extends NtroView> implements TaskWrapper {
 	
 	private ControllerBase controller;
-	private NtroTask mainTask = new ViewReceptorTask<CB, V>(this);
+	private NtroTask mainTask = new ViewHandlerTask<CB, V>(this);
 	
 	public void setController(ControllerBase controller) {
 		T.call(this);
@@ -30,11 +30,11 @@ public abstract class ViewReceptor<CB extends ControllerBase, V extends NtroView
 	}
 	
 	@SuppressWarnings("unchecked")
-	void onViewLoaded(V view) {
+	void handle(V view) {
 		T.call(this);
 		
-		onViewLoaded((CB) controller, view);
+		handle((CB) controller, view);
 	}
 
-	public abstract void onViewLoaded(CB controller, V view);
+	public abstract void handle(CB controller, V view);
 }
