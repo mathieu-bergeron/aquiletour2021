@@ -7,7 +7,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 import ca.ntro.messages.NtroMessage;
 
-import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
+import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 
 public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskImpl{
 	
@@ -29,12 +29,12 @@ public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskImpl{
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
+		ViewCreatorTask viewCreatorTask = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 
-		MustNot.beNull(viewLoader);
+		MustNot.beNull(viewCreatorTask);
 
 		@SuppressWarnings("unchecked")
-		V view = (V) viewLoader.createView();
+		V view = (V) viewCreatorTask.getView();
 		
 
 		handler.handleImpl(view);

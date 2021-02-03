@@ -24,6 +24,6 @@ public abstract class NtroRootController extends NtroAbstractController {
 		handler.setWindow(window);
 
 		getTask().addSubTask(handler.getTask());
-		addPreviousTaskTo(handler.getTask(), ViewLoader.class, Constants.VIEW_LOADER_TASK_ID);
+		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 	}
 }
