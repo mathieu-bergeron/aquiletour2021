@@ -24,6 +24,7 @@ abstract class NtroAbstractController extends TaskWrapperImpl {
 	private Path path;
 
 	protected abstract void initialize();
+	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
 		super(new ContainerTask());

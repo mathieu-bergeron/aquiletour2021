@@ -12,4 +12,10 @@ public class CourseController extends NtroController<DashboardController> {
 
 	}
 
+	@Override
+	protected void onFailure(Exception e) {
+		T.call(this);
+		
+	}
+
 }

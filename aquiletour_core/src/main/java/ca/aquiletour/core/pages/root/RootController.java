@@ -38,4 +38,10 @@ public class RootController extends NtroRootController {
 		
 		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
 	}
+
+	@Override
+	protected void onFailure(Exception e) {
+		T.call(this);
+		
+	}
 }

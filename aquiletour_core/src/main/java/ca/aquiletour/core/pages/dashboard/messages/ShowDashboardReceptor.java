@@ -22,7 +22,7 @@ public class ShowDashboardReceptor extends MessageReceptor {
 	protected void runTaskAsync() {
 		T.call(this);
 
-		dashboardController.showDashboard();
+		//dashboardController.showDashboard();
 
 		notifyTaskFinished();
 	}

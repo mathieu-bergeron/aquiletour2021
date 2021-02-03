@@ -16,4 +16,10 @@ public class SettingsController extends NtroController<RootController> {
 		addParentViewMessageHandler(ShowSettingsMessage.class, new ShowSettingsHandler());
 	}
 
+	@Override
+	protected void onFailure(Exception e) {
+		T.call(this);
+		
+	}
+
 }
