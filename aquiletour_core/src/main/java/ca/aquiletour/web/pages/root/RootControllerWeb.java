@@ -24,7 +24,7 @@ import ca.aquiletour.web.pages.dashboard.DashboardControllerWeb;
 import ca.aquiletour.web.pages.settings.SettingsControllerWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.State;

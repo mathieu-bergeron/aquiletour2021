@@ -1,4 +1,4 @@
-package ca.ntro.core.mvc.view;
+package ca.ntro.core.mvc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +18,25 @@ public class ViewLoaders {
 			this.viewClass = viewClass;
 			this.lang = lang;
 		}
+		
+		@Override
+		public int hashCode() {
+			return viewClass.hashCode() + lang.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object other) {
+			if(other instanceof ViewLoaderId) {
+				
+				ViewLoaderId otherId = (ViewLoaderId) other;
+				
+				return viewClass.equals(otherId.viewClass) 
+						&& lang.equals(otherId.lang);
+			}else {
+				return false;
+			}
+		}
+		
 	}
 	
 	private static final Map<ViewLoaderId, ViewLoader> viewLoaders = new HashMap<>();

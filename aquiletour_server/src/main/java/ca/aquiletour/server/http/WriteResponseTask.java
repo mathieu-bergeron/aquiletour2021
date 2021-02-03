@@ -10,16 +10,17 @@ import ca.aquiletour.web.pages.root.RootControllerWeb;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 import ca.ntro.web.HtmlWriter;
+import ca.ntro.web.NtroWindowWeb;
 import ca.ntro.web.RequestHandler;
 
 public class WriteResponseTask extends NtroTaskImpl {
 
-	private RootControllerServer rootController;
+	private NtroWindowWeb window;
 	private OutputStream out;
 	private Request baseRequest;
 	
-	public WriteResponseTask(RootControllerServer rootController, Request baseRequest, OutputStream out) {
-		this.rootController = rootController;
+	public WriteResponseTask(NtroWindowWeb window, Request baseRequest, OutputStream out) {
+		this.window = window;
 		this.baseRequest = baseRequest;
 		this.out = out;
 	}
@@ -35,7 +36,7 @@ public class WriteResponseTask extends NtroTaskImpl {
 		T.call(this);
 		
 		StringBuilder builder = new StringBuilder();
-		rootController.writeHtml(builder);
+		window.writeHtml(builder);
 
 		try {
 

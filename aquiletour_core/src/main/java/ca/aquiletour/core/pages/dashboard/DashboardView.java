@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.dashboard;
 
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.ntro.core.mvc.view.NtroView;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.NtroView;
+import ca.ntro.core.mvc.ViewLoader;
 
 public interface DashboardView extends NtroView  {
 	

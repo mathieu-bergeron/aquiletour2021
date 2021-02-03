@@ -8,20 +8,34 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.jdk.dom.HtmlDocumentJdk;
 
-public class NtroWindowServer extends NtroWindowWeb {
+public class NtroWindowServer extends NtroWindowWeb implements Cloneable {
 	
 	private HtmlDocumentJdk document;
+
+	public NtroWindowServer(HtmlDocumentJdk document) {
+		super();
+		T.call(this);
+		
+		this.document = document;
+	}
 	
 	public NtroWindowServer(String indexHtmlPath) {
 		super();
 		T.call(this);
 		
-        InputStream stream = NtroWindowServer.class.getResourceAsStream(indexHtmlPath);
+        loadDocument(indexHtmlPath);
+	}
+
+	private void loadDocument(String indexHtmlPath) {
+		T.call(this);
+
+		InputStream stream = NtroWindowServer.class.getResourceAsStream(indexHtmlPath);
 
         MustNot.beNull(stream);
 
@@ -32,7 +46,7 @@ public class NtroWindowServer extends NtroWindowWeb {
 
         } catch (IOException e) {
 
-            System.out.println("FATAL: cannot load " + indexHtmlPath);
+        	Log.fatalError("FATAL: cannot load " + indexHtmlPath, e);
 
         }
 
@@ -46,4 +60,8 @@ public class NtroWindowServer extends NtroWindowWeb {
         return document;
 	}
 
+	@Override
+	public NtroWindowServer clone() {
+		return new NtroWindowServer(document.clone());
+	}
 }

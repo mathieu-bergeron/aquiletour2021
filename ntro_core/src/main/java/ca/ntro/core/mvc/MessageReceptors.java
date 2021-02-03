@@ -1,4 +1,4 @@
-package ca.ntro.messages;
+package ca.ntro.core.mvc;
 
 import java.util.HashMap;
 import java.util.HashSet;

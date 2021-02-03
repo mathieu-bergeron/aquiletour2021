@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.queue;
 
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.NtroViewModel;
-import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.NtroView;
 
 public class QueueViewModel extends NtroViewModel {
 

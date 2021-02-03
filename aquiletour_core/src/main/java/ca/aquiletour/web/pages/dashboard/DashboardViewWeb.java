@@ -2,7 +2,7 @@ package ca.aquiletour.web.pages.dashboard;
 
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

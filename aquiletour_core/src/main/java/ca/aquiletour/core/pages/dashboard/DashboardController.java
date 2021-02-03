@@ -4,7 +4,13 @@ import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public abstract class DashboardController extends NtroController {
+public class DashboardController extends NtroController {
+
+	@Override
+	protected void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public void addCourse(CourseSummary course) {
 		T.call(this);
@@ -15,4 +21,5 @@ public abstract class DashboardController extends NtroController {
 		T.call(this);
 		
 	}
+
 }

@@ -1,4 +1,4 @@
-package ca.ntro.messages;
+package ca.ntro.core.mvc;
 
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;

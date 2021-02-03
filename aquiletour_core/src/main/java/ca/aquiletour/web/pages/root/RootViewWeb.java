@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.pages.root.RootView;
-import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

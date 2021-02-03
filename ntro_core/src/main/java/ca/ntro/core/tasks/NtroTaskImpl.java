@@ -356,4 +356,15 @@ public abstract class NtroTaskImpl implements NtroTask {
 			throw new IllegalStateException("Task.addSubTask called on state " + state);
 		}
 	}
+	
+	
+	public void debugPrintPreviousTasks(){
+		System.out.print("PREVIOUS: ");
+		for(NtroTask previousTask : previousTasks) {
+			System.out.print(" ");
+			System.out.print(previousTask.getClass().getSimpleName());
+		}
+		
+		System.out.println("");
+	}
 }

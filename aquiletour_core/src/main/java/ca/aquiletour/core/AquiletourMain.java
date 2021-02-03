@@ -17,11 +17,8 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.pages.activity.ActivityController;
-import ca.aquiletour.core.pages.course.CourseController;
-import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.settings.SettingsController;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
@@ -44,9 +41,9 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 		Constants.LANG = "fr";
 		
 		// XXX: "/**" means: execute every subController
-		// XXX: "/*/*/*" would be: execute every subController down 3 levels
-		// XXX: "/settings/*" would be: execute only settings, then every child of settings
-		RootController rootController = ControllerFactory.createController(RootController.class, "/**");  
+		// XXX: "/*/*/*" means: execute every subController down 3 levels
+		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
+		RootController rootController = ControllerFactory.createRootController(RootController.class, "/**", Ntro.window());  
 
 		rootController.execute();
 

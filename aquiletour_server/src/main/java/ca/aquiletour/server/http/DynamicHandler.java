@@ -32,12 +32,13 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.server.pages.root.RootControllerServer;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
+import ca.ntro.jdk.web.NtroWindowServer;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -103,16 +104,20 @@ public class DynamicHandler extends AbstractHandler {
 		
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		
-		RootControllerServer rootController = (RootControllerServer) ControllerFactory.createController(RootController.class, path);
+		NtroWindowServer newWindow = ((NtroWindowServer) Ntro.window()).clone();
 		
-		WriteResponseTask writeResponseTask = new WriteResponseTask(rootController, baseRequest, out);
+		RootController rootController = ControllerFactory.createRootController(RootController.class, path, newWindow);
+		
+		WriteResponseTask writeResponseTask = new WriteResponseTask(newWindow, baseRequest, out);
 		writeResponseTask.addSubTask(rootController.getTask());
 		
-		// XXX: must be called after writeResponseTask.addSubTask
-		//      otherwise any nextTask added in rootController cannot be a subTask
+		// TODO: add messages subTasks according to 
+		//       path and parameters
+		/*
 		rootController.initialRequest(path,
 				                      baseRequest.getParameterMap(),
 				                      authToken);
+				                      */
 
 		writeResponseTask.execute();
 	}

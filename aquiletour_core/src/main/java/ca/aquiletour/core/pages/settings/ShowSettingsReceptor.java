@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.settings;
 
+import ca.ntro.core.mvc.MessageReceptor;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
-import ca.ntro.messages.MessageReceptor;
 
 public class ShowSettingsReceptor extends MessageReceptor {
 	

@@ -1,10 +1,10 @@
 package ca.ntro.jdk.web;
 
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.InitializationTaskJdk;
 import ca.ntro.web.NtroWindowWeb;
-import ca.ntro.web.dom.HtmlDocument;
 
 public class InitializationTaskWebserver extends InitializationTaskJdk {
 	
@@ -20,6 +20,8 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 	@Override
 	protected NtroWindow provideWindow() {
 		T.call(this);
+		
+		MustNot.beNull(window);
 		
 		return window;
 	}

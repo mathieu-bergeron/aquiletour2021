@@ -1,4 +1,4 @@
-package ca.ntro.messages;
+package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;

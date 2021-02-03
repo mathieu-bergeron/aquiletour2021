@@ -6,7 +6,7 @@ import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.aquiletour.javafx.pages.dashboard.DashboardControllerFx;
 import ca.aquiletour.javafx.pages.settings.SettingsControllerFx;
 import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.NtroWindowFx;
 import ca.ntro.javafx.ViewLoaderFx;

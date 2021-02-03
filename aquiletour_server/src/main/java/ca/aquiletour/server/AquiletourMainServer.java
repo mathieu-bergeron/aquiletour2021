@@ -23,11 +23,14 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
+import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.HttpConnector;
 import ca.aquiletour.server.http.ResourceHandler;
+import ca.aquiletour.web.pages.root.RootViewWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.services.stores.MemoryStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
@@ -45,8 +48,13 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
 		
-		// XXX: initialize MemoryStore outside of server thread
-		MemoryStore.reInitialize();
+		ViewLoaders.registerViewLoader(RootView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/root/structure.html")
+			     	.setCssUrl("/views/root/style.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(RootViewWeb.class));
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)
@@ -58,6 +66,8 @@ public class AquiletourMainServer extends NtroTaskImpl {
 			e.printStackTrace(System.err);
 			Ntro.appCloser().close();
 		}
+		
+		notifyTaskFinished();
 	}
 
 	@Override

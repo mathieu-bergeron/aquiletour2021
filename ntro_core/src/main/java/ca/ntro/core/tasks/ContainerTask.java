@@ -17,7 +17,7 @@
 
 package ca.ntro.core.tasks;
 
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.ViewLoader;
 
 public class ContainerTask extends NtroTaskImpl {
 

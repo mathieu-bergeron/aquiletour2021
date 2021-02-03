@@ -17,25 +17,22 @@
 
 package ca.aquiletour.core.pages.root;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.aquiletour.core.pages.settings.SettingsView;
-import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.mvc.view.ViewLoaders;
+import ca.ntro.core.mvc.NtroRootController;
+import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 
-public class RootController extends NtroController {
+public class RootController extends NtroRootController {
 	
-	private RootViewReceptor rootViewReceptor = new RootViewReceptor();
-
 	@Override
 	protected void initialize() {
 		T.call(this);
 		
-		setViewLoader(ViewLoaders.getViewLoader(RootView.class, Constants.LANG));
+		setViewLoader(ViewLoaders.getViewLoader(RootView.class, "fr"));
 
-		setViewReceptor(rootViewReceptor);
+		setViewReceptor(new RootViewReceptor());
 		
 		addSubController(SettingsController.class, "settings");
 		addSubController(DashboardController.class, "dashboard");
@@ -43,9 +40,9 @@ public class RootController extends NtroController {
 		addMessageReceptor(QuitMessage.class, new QuitReceptor());
 	}
 
-	public void displaySettings(SettingsView settingsView) {
+	public void installRootView(RootView view) {
 		T.call(this);
-		
-		rootViewReceptor.displaySettings(settingsView);
+
+		getWindow().installRootView(view);
 	}
 }
