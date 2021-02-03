@@ -6,16 +6,17 @@ import java.util.Map;
 import ca.ntro.core.Path;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTask;
 
 public class ControllerFactory {
 
-	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, String path, NtroWindow window) {
+	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, String path, NtroWindow window, NtroTask parentTask) {
 		T.call(ControllerFactory.class);
 		
-		return createRootController(controllerClass, new Path(path), window);
+		return createRootController(controllerClass, new Path(path), window, parentTask);
 	}
 
-	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, Path path, NtroWindow window) {
+	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, Path path, NtroWindow window, NtroTask parentTask) {
 		T.call(ControllerFactory.class);
 		
 		RC rootController = Factory.newInstance(controllerClass);
@@ -23,6 +24,8 @@ public class ControllerFactory {
 		rootController.setWindow(window);
 
 		rootController.setPath(path);
+		
+		parentTask.addSubTask(rootController.getTask());
 		
 		rootController.initialize();
 		
@@ -38,7 +41,7 @@ public class ControllerFactory {
 		controller.setPath(path);
 		
 		controller.setParentController(parentController);
-
+		
 		controller.initialize();
 		
 		return controller;

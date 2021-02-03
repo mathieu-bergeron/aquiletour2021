@@ -22,6 +22,8 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.ContainerTask;
+import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
 public abstract class AquiletourMain extends NtroTaskImpl {
@@ -40,10 +42,12 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 		// FIXME
 		Constants.LANG = "fr";
 		
+		NtroTask fixme = new ContainerTask();
+		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "/**", Ntro.window());  
+		RootController rootController = ControllerFactory.createRootController(RootController.class, "/**", Ntro.window(), fixme);  
 
 		rootController.execute();
 

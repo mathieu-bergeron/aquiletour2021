@@ -7,6 +7,7 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.core.tasks.TaskWrapperImpl;
 import ca.ntro.messages.MessageReceptor;
 import ca.ntro.messages.NtroMessage;
@@ -17,18 +18,25 @@ import static ca.ntro.core.mvc.Constants.VIEW_MODEL_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_RECEPTOR_TASK_ID;
 
 
-abstract class NtroAbstractController extends TaskWrapperImpl {
+abstract class NtroAbstractController implements TaskWrapper {
 	
-
-	
+	private NtroTask mainTask = new ContainerTask();
 	private Path path;
 
 	protected abstract void initialize();
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
-		super(new ContainerTask());
 		T.call(this);
+		
+		mainTask.setTaskId(this.getClass().getSimpleName());
+	}
+
+	@Override
+	public NtroTask getTask() {
+		T.call(this);
+
+		return mainTask;
 	}
 	
 	@Override
@@ -143,7 +151,6 @@ abstract class NtroAbstractController extends TaskWrapperImpl {
 
 	NtroView getView() {
 		T.call(this);
-		
 		
 		NtroView view = getTask().getSubTask(ViewLoader.class, VIEW_LOADER_TASK_ID).getView();
 		

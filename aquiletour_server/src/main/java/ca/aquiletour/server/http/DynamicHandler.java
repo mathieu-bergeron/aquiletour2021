@@ -113,11 +113,9 @@ public class DynamicHandler extends AbstractHandler {
 		
 		NtroTask webApp = new ContainerTask();
 		
-		RootController rootController = ControllerFactory.createRootController(RootController.class, path, newWindow);
+		RootController rootController = ControllerFactory.createRootController(RootController.class, path, newWindow, webApp);
 		
 		WriteResponseTask writeResponseTask = new WriteResponseTask(newWindow, baseRequest, out);
-		
-		webApp.addSubTask(rootController.getTask());
 		webApp.addNextTask(writeResponseTask);
 		
 		// TODO: also check parametres
