@@ -39,7 +39,7 @@ public class ViewMessageHandlerTask<V extends NtroView,
 		MustNot.beNull(message);
 
 		@SuppressWarnings("unchecked")
-		V view = (V) viewLoader.getView();
+		V view = (V) viewLoader.createView();
 		
 		MustNot.beNull(view);
 

@@ -28,7 +28,7 @@ public class DashboardViewWeb extends NtroViewWeb implements DashboardView {
 		
 		MustNot.beNull(container);
 		
-		CourseSummaryViewWeb courseSummaryView = (CourseSummaryViewWeb) courseSummaryViewLoader.getView();
+		CourseSummaryViewWeb courseSummaryView = (CourseSummaryViewWeb) courseSummaryViewLoader.createView();
 		
 		courseSummaryView.displaySummary(courseSummary);
 		

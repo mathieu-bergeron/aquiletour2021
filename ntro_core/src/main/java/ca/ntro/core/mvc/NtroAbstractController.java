@@ -160,7 +160,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 	NtroView getView() {
 		T.call(this);
 		
-		NtroView view = getTask().getSubTask(ViewLoader.class, VIEW_LOADER_TASK_ID).getView();
+		NtroView view = getTask().getSubTask(ViewLoader.class, VIEW_LOADER_TASK_ID).createView();
 		
 		return view;
 	}

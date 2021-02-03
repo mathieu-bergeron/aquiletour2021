@@ -36,5 +36,10 @@ public class HtmlDocumentJdk implements HtmlDocument, Cloneable {
 	public HtmlDocumentJdk clone() {
 		return new HtmlDocumentJdk(document.clone());
 	}
+	
+	@Override 
+	public String toString() {
+		return "document@" + System.identityHashCode(document);
+	}
 
 }

@@ -111,6 +111,8 @@ public class DynamicHandler extends AbstractHandler {
 		
 		NtroWindowServer newWindow = ((NtroWindowServer) Ntro.window()).clone();
 		
+		newWindow.setCurrentPath(path);
+		
 		NtroTask webApp = new ContainerTask();
 		
 		ControllerFactory.createRootController(RootController.class, path, newWindow, webApp);

@@ -10,7 +10,7 @@ public class RootViewHandler extends WindowViewHandler<RootView> {
 	@Override
 	public void handle(NtroWindow window, RootView view) {
 		T.call(this);
-		
+
 		window.installRootView(view);
 	}
 }

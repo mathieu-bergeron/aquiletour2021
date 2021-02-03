@@ -14,6 +14,9 @@ public class ShowSettingsHandler extends ParentViewMessageHandler<RootView,
 			              ShowSettingsMessage message) {
 		T.call(this);
 		
+		// FIXME: parentView needs to be the one installed in
+		//        the parent controller. We cannot do viewLoader.createView()
+
 		parentView.showSettings(currentView);
 	}
 }

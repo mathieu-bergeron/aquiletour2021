@@ -33,7 +33,7 @@ public class ViewHandlerTask<CB extends NtroAbstractController, V extends NtroVi
 		MustNot.beNull(viewLoader);
 
 		@SuppressWarnings("unchecked")
-		V view = (V) viewLoader.getView();
+		V view = (V) viewLoader.createView();
 		
 		MustNot.beNull(view);
 

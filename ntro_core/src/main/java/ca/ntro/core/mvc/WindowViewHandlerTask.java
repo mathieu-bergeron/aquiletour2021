@@ -34,7 +34,7 @@ public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskImpl{
 		MustNot.beNull(viewLoader);
 
 		@SuppressWarnings("unchecked")
-		V view = (V) viewLoader.getView();
+		V view = (V) viewLoader.createView();
 		
 
 		handler.handleImpl(view);

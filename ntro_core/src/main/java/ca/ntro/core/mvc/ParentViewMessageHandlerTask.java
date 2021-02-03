@@ -38,7 +38,7 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 		MustNot.beNull(viewLoader);
 
 		@SuppressWarnings("unchecked")
-		CV currentView	 = (CV) viewLoader.getView();
+		CV currentView	 = (CV) viewLoader.createView();
 		
 		handler.handleImpl(currentView, message);
 		
