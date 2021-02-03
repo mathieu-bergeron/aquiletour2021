@@ -1,6 +1,8 @@
 package ca.aquiletour.web.pages.root;
 
+import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -10,9 +12,20 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
-	public void showSettings(NtroView view) {
+	public void showSettings(SettingsView settingsView) {
 		T.call(this);
 		
+		showSubView(settingsView);
+	}
+
+	@Override
+	public void showDashboard(DashboardView dashboardView) {
+		T.call(this);
+		
+		showSubView(dashboardView);
+	}
+
+	private void showSubView(NtroView view) {
 		NtroViewWeb viewWeb = (NtroViewWeb) view;
 
 		HtmlElement container = this.getRootElement().children("#page-container").get(0);
@@ -22,5 +35,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		HtmlElement subViewElement = viewWeb.getRootElement();
 		container.appendElement(subViewElement);
 	}
+
 
 }

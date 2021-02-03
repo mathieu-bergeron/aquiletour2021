@@ -23,11 +23,15 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
+import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.HttpConnector;
 import ca.aquiletour.server.http.ResourceHandler;
+import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
+import ca.aquiletour.web.pages.settings.SettingsViewWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ViewLoaders;
@@ -48,13 +52,7 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
 		
-		ViewLoaders.registerViewLoader(RootView.class,
-				"fr"
-				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/root/structure.html")
-			     	.setCssUrl("/views/root/style.css")
-			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(RootViewWeb.class));
+		registerViews();
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)
@@ -68,6 +66,34 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		}
 		
 		notifyTaskFinished();
+	}
+
+	private void registerViews() {
+		T.call(this);
+
+		ViewLoaders.registerViewLoader(RootView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/root/structure.html")
+			     	.setCssUrl("/views/root/style.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(RootViewWeb.class));
+
+		ViewLoaders.registerViewLoader(SettingsView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/settings/structure.html")
+			     	.setCssUrl("/views/settings/style.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(SettingsViewWeb.class));
+
+		ViewLoaders.registerViewLoader(DashboardView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/dashboard/structure.html")
+			     	.setCssUrl("/views/dashboard/style.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(DashboardViewWeb.class));
 	}
 
 	@Override

@@ -12,13 +12,12 @@ public abstract class ParentViewMessageHandler<PV extends NtroView,
 	
 	private ParentViewMessageHandlerTask<PV,CV,MSG> task = new ParentViewMessageHandlerTask<PV,CV,MSG>(this);
 	
-	private PV parentView;
+	private NtroAbstractController parentController;
 	
-	@SuppressWarnings("unchecked")
-	void setParentView(NtroView parentView) {
+	void setParentController(NtroAbstractController parentController) {
 		T.call(this);
-
-		this.parentView = (PV) parentView;
+		
+		this.parentController = parentController;
 	}
 
 	@Override
@@ -35,10 +34,11 @@ public abstract class ParentViewMessageHandler<PV extends NtroView,
 		task.execute();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void handleImpl(CV currentView, MSG message) {
 		T.call(this);
 		
-		handle(parentView, currentView, message);
+		handle((PV)parentController.getView(), currentView, message);
 	}
 	
 	protected abstract void handle(PV parentView, CV currentView, MSG message);

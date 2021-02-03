@@ -13,16 +13,10 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		this.parentController = parentController;
 	}
 
-	AC getParentController() {
-		T.call(this);
-		
-		return parentController;
-	}
-
 	protected void addParentViewMessageHandler(Class<? extends NtroMessage> messageClass, ParentViewMessageHandler<?,?,?> handler) {
 		T.call(this);
 		
-		handler.setParentView(parentController.getView());
+		handler.setParentController(parentController);
 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewLoader.class, Constants.VIEW_LOADER_TASK_ID);
