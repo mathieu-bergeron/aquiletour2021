@@ -53,12 +53,7 @@ public class GithubTasksTest {
 		WebElement div, p;
 		
 		driver.get(githubRepoProjectMarwaneUrl);
-        try {
-			Thread.sleep(500); // wait 5 seconds for page to load
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        waitForPageToLoad(500);
 
         ArrayList<String> tasksTextString = new ArrayList<String>();
         
@@ -72,6 +67,15 @@ public class GithubTasksTest {
 			
 		}
 		return tasksTextString;
+	}
+	
+	private void waitForPageToLoad(int time) {
+		try {
+			Thread.sleep(time); // wait 5 seconds for page to load
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
