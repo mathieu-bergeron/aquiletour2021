@@ -356,7 +356,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 				System.err.println("[WARNING] a task already exists with id " + taskId);
 			}
 		}else {
-			throw new IllegalStateException("Task.addSubTask called on state " + state);
+			throw new IllegalStateException("Task.addSubTask called on state " + state + " for task " + getTaskId());
 		}
 	}
 	

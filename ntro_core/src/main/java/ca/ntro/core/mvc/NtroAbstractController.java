@@ -55,12 +55,20 @@ abstract class NtroAbstractController implements TaskWrapper {
 	
 	protected <C extends NtroController<?>> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
-
-		Path pathRemainder = path.removePrefix(controllerId);
-
-		C subController = ControllerFactory.createController(controllerClass, pathRemainder, this);
 		
-		getTask().addNextTask(subController.getTask());
+		if(path.startsWith(controllerId) || path.startsWith("*")) {
+			Path pathRemainder = path.removePrefix(controllerId);
+
+			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this);
+			
+			getTask().addNextTask(subController.getTask());
+
+		}else {
+			
+			System.err.println("[WARNING]: subController not added: " + controllerId);
+
+		}
+
 	}
 	
 	protected void addSubViewLoader(ViewLoader viewLoader) {

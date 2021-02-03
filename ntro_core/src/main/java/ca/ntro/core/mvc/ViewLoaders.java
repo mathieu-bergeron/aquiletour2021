@@ -50,6 +50,8 @@ public class ViewLoaders {
 	public static ViewLoader getViewLoader(Class<? extends NtroView> viewClass, String lang) {
 		T.call(ViewLoaders.class);
 		
-		return viewLoaders.get(new ViewLoaderId(viewClass, lang));
+		ViewLoader viewLoader = viewLoaders.get(new ViewLoaderId(viewClass, lang));
+		
+		return viewLoader;
 	}
 }

@@ -26,8 +26,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	private void showSubView(NtroView view) {
-		NtroViewWeb viewWeb = (NtroViewWeb) view;
+		T.call(this);
 
+		NtroViewWeb viewWeb = (NtroViewWeb) view;
+		
 		HtmlElement container = this.getRootElement().children("#page-container").get(0);
 		
 		MustNot.beNull(container);

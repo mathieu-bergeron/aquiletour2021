@@ -113,11 +113,15 @@ public class DynamicHandler extends AbstractHandler {
 		
 		NtroTask webApp = new ContainerTask();
 		
-		RootController rootController = ControllerFactory.createRootController(RootController.class, path, newWindow, webApp);
-		
+		ControllerFactory.createRootController(RootController.class, path, newWindow, webApp);
+
 		WriteResponseTask writeResponseTask = new WriteResponseTask(newWindow, baseRequest, out);
 		webApp.addNextTask(writeResponseTask);
+
+		//System.out.println(webApp.toString());
 		
+		webApp.execute();
+
 		// TODO: also check parametres
 		// TODO: refactor
 		if(path.startsWith("settings")) {
@@ -129,12 +133,8 @@ public class DynamicHandler extends AbstractHandler {
 
 			ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
 			showDashboardMessage.sendMessage();
-			
+
 		}
-		
-		System.out.println(webApp.toString());
-		
-		webApp.execute();
 	}
 }
 

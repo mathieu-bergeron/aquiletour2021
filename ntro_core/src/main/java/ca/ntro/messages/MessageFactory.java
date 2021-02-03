@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.introspection.Factory;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 
 public class MessageFactory {
@@ -14,29 +15,22 @@ public class MessageFactory {
 	public static <M extends NtroMessage> M getOutgoingMessage(Class<M> messageClass) {
 		T.call(MessageFactory.class);
 
-		return getMessage(messageClass);
-	}
-
-	private static <M extends NtroMessage> M getMessage(Class<M> messageClass) {
-		T.call(MessageFactory.class);
-
+		// FIXME: this assumes that getIncomingMessage is called before
 		M message = (M) messages.get(messageClass);
 		
-		if(message == null) {
-			message = Factory.newInstance(messageClass);
-			messages.put(messageClass, message);
-		}
-
+		MustNot.beNull(message);
+		
 		return message;
 	}
 
+
 	public static <M extends NtroMessage> M getIncomingMessage(Class<M> messageClass) {
 		T.call(MessageFactory.class);
+		
+		M message = Factory.newInstance(messageClass);
+		
+		messages.put(messageClass, message);
 
-		M message = getMessage(messageClass);
-		
-		message.reset();
-		
 		return message;
 	}
 }
