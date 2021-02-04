@@ -90,10 +90,10 @@ abstract class NtroAbstractController implements TaskWrapper {
 	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageHandler handler) {
 		T.call(this);
 		
-		/*
 		NtroTask message = MessageFactory.getIncomingMessage(messageClass);
 		message.setTaskId(messageClass.getSimpleName());
 		
+		/*
 		getTask().addSubTask(message);
 		message.addNextTask(handler);
 		*/
