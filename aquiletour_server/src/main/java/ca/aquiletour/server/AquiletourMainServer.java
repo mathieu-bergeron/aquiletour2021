@@ -25,7 +25,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.ResourceHandler;
-import ca.aquiletour.web.ViewRegistrationWeb;
+import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
@@ -46,7 +46,7 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
 
-		ViewRegistrationWeb.registerViewLoaders();
+		ViewLoaderRegistrationWeb.registerViewLoaders();
 		
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)

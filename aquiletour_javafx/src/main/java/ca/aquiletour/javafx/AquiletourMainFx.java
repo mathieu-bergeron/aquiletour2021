@@ -18,13 +18,23 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.pages.root.RootView;
+import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.javafx.ViewLoaderFx;
 
 public class AquiletourMainFx extends AquiletourMain {
 
 	@Override
 	protected void registerViewLoaders() {
 		T.call(this);
+
+		ViewLoaders.registerViewLoader(RootView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/root/structure.xml")
+			     	.setCssUrl("/views/root/style.css")
+			     	.setTranslationsName("i18n.strings"));
 		
 	}
 }

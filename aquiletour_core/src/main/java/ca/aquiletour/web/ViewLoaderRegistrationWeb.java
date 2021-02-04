@@ -12,10 +12,10 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 
-public class ViewRegistrationWeb {
+public class ViewLoaderRegistrationWeb {
 	
 	public static void registerViewLoaders() {
-		T.call(ViewRegistrationWeb.class);
+		T.call(ViewLoaderRegistrationWeb.class);
 		
 		ViewLoaders.registerViewLoader(RootView.class,
 				"fr"
