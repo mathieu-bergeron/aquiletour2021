@@ -187,6 +187,16 @@ public abstract class NtroTaskImpl implements NtroTask {
 		resumeExecution();
 	}
 
+	protected void notifyTaskFailed(Exception e) {
+		//__T.call(this, "notifyTaskFailed");
+		
+		// TODO: propagate failure to
+		//       parentTask
+		//       nextTasks
+		
+		throw new RuntimeException("TODO");
+	}
+
 	@Override
 	public void notifySomeSubTaskFinished() {
 		//__T.call(this, "notifySomeSubTaskFinished");

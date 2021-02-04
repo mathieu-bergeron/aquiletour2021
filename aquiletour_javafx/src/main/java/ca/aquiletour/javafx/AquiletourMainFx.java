@@ -18,6 +18,7 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.SettingsView;
@@ -50,6 +51,13 @@ public class AquiletourMainFx extends AquiletourMain {
 				, new ViewLoaderFx()
 			     	.setFxmlUrl("/views/dashboard/structure.xml")
 			     	.setCssUrl("/views/dashboard/style.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(CourseSummaryView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/course_summary/structure.xml")
+			     	.setCssUrl("/views/course_summary/style.css")
 			     	.setTranslationsName("i18n.strings"));
 	}
 }
