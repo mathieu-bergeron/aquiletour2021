@@ -11,10 +11,4 @@ public class QueueControllerServer extends QueueControllerWeb {
 	public QueueControllerServer(RootController parentController) {
 		super(parentController);
 	}
-
-	@Override
-	protected ViewLoader createAppointmentViewLoader(String lang) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

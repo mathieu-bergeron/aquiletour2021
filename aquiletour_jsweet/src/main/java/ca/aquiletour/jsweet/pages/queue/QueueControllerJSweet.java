@@ -12,9 +12,4 @@ public class QueueControllerJSweet extends QueueControllerWeb {
 		super(parentController);
 	}
 
-	@Override
-	protected ViewLoader createAppointmentViewLoader(String lang) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

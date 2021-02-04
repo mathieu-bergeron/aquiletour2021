@@ -1,5 +1,6 @@
 package ca.aquiletour.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -35,8 +36,7 @@ public class DashboardViewTest {
 	
 	private void addClass(WebDriver driver, String titleInput, String summaryInput, String dateInput ){
 		
-		WebElement div, p;
-		
+		Boolean created = false;
 		driver.get(aquiletourSite);
 		waitForPageToLoad(500);
 
@@ -56,10 +56,10 @@ public class DashboardViewTest {
         ArrayList<WebElement> titles = (ArrayList<WebElement>) driver.findElements(By.id("course-title"));
         for (WebElement webElement : titles) {
         	if (webElement.getAttribute("innerHTML").equals(titleInput)) {
-				assertTrue(true); //true if title given as parameter exists as a course title
+				created = true; 
 			}
 		}
-        
+        assertTrue(created); //true if title given as parameter exists as a course title
         
 	}
 	

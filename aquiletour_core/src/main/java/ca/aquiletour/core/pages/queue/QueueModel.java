@@ -1,7 +1,9 @@
 package ca.aquiletour.core.pages.queue;
 
+import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.system.trace.T;
 
 public class QueueModel extends NtroModel {
 	
@@ -11,6 +13,13 @@ public class QueueModel extends NtroModel {
 	public void initializeStoredValues() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void addAppointment(Appointment appointment) {
+		T.call(this);
+		int id = appointments.size();
+		appointment.setAppointmentId(Integer.toString(id));
+		appointments.addItem(appointment);
 	}
 
 	public ObservableAppointmentList getAppointments() {

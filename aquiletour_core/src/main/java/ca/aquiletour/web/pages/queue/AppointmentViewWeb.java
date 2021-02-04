@@ -15,12 +15,16 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void displayAppointement(Appointment appointment) {
 		// TODO Auto-generated method stub
 		T.call(this);
+		T.here();
 
-		HtmlElement time = this.getRootElement().children("#"/*TODO*/).get(0);
-		
+		HtmlElement time = this.getRootElement().children("#time").get(0);
+		HtmlElement appointmentId = this.getRootElement().children("#appointmentId").get(0);
+		//HtmlElement close = this.getRootElement().children("#close").get(0);
 		MustNot.beNull(time);
+		MustNot.beNull(appointmentId);
 
 		
 		time.appendHtml(appointment.getTime());
+		appointmentId.appendHtml(appointment.getAppointmentId());
 	}
 }

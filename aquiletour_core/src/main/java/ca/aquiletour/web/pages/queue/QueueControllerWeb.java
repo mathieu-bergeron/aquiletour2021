@@ -1,8 +1,10 @@
 package ca.aquiletour.web.pages.queue;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import ca.aquiletour.core.pages.queue.QueueController;
+import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.Ntro;
@@ -14,7 +16,7 @@ import ca.ntro.web.RequestHandlerTask;
 
 public abstract class QueueControllerWeb extends QueueController implements RequestHandlerTask {
 
-	//private AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
+	private AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
 
 	public QueueControllerWeb(RootController parentController) {
 		super(parentController);
@@ -23,6 +25,7 @@ public abstract class QueueControllerWeb extends QueueController implements Requ
 	@Override
 	protected ViewLoader createViewLoader(String lang) {
 		T.call(this);
+		T.here();
 
 		return Ntro.viewLoaderWeb()
 		           .setHtmlUrl("/views/queue/structure.html")
@@ -31,32 +34,36 @@ public abstract class QueueControllerWeb extends QueueController implements Requ
 		           .setTargetClass(QueueViewWeb.class);
 	}
 
-//	@Override
-//	protected  ViewLoader createAppointmentViewLoader(String lang) {
-//		T.call(this);
-//
-//		return Ntro.viewLoaderWeb()
-//		           .setHtmlUrl("/views/course_summary/structure.html")
-//		           .setCssUrl("/views/course_summary/style.css")
-//		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
-//		           .setTargetClass(AppointmentViewWeb.class);
-//	}
+	@Override
+	protected  ViewLoader createAppointmentViewLoader(String lang) { 
+		T.call(this);
+		T.here();
+		return Ntro.viewLoaderWeb()
+		           .setHtmlUrl("/views/appointment/structure.html")
+		           .setCssUrl("/views/appointment/style.css")
+		           .setTranslationsUrl("/i18/"+lang+"/strings.json")
+		           .setTargetClass(AppointmentViewWeb.class);
+	}
 
 	@Override
 	public void initialRequest(Path path, 
 			                   Map<String, String[]> parameters, 
 			                   String authToken) {
 		T.call(this);
+		T.here();
 		
-//		if(parameters.containsKey("date")) {
-//			
-//
-//			String date = parameters.get("date")[0];
-//			
-//			addCourseMessage.setCourse(new CourseSummary(title, summary, date));
-//			
-//			addNextTask(addCourseMessage);
-//		}
+		if(parameters.containsKey("makeAppointment")) { //regarde si parametre makeAppointment/ regarde si delete appointment
+			
+			T.here();
+			Calendar rightNow = Calendar.getInstance();
+			int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+			int minute = rightNow.get(Calendar.MINUTE);
+			String time = hour + ":" + minute;
+			
+			addAppointmentMessage.setAppointment(new Appointment(time));
+			
+			addNextTask(addAppointmentMessage);
+		}
 		
 	}
 
