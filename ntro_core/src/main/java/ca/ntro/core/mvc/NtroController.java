@@ -17,13 +17,17 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 	protected void addParentViewMessageHandler(Class<? extends NtroMessage> messageClass, ParentViewMessageHandler<?,?,?> handler) {
 		T.call(this);
 		
+		String messageId = messageClass.getSimpleName();
+		
 		handler.setParentController(parentController);
+		handler.setMessageId(messageId);
 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewLoader.class, Constants.VIEW_LOADER_TASK_ID);
 
 		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
-		message.setTaskId(Constants.MESSAGE_TASK_ID);
+		message.setTaskId(messageId);
+
 		handler.getTask().addPreviousTask(message);
 	}
 }

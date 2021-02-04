@@ -10,7 +10,13 @@ public abstract class ParentViewMessageHandler<PV extends NtroView,
                                                MSG extends NtroMessage> 
                 implements TaskWrapper {
 	
-	private ParentViewMessageHandlerTask<PV,CV,MSG> task = new ParentViewMessageHandlerTask<PV,CV,MSG>(this);
+	private ParentViewMessageHandlerTask<PV,CV,MSG> task;
+	
+	void setMessageId(String messageId) {
+		T.call(this);
+
+		task = new ParentViewMessageHandlerTask<PV,CV,MSG>(this, messageId);
+	}
 	
 	private NtroAbstractController parentController;
 	

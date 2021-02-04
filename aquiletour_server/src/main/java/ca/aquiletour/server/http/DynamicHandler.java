@@ -31,7 +31,9 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.ntro.core.Ntro;
@@ -135,7 +137,17 @@ public class DynamicHandler extends AbstractHandler {
 
 			ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
 			showDashboardMessage.sendMessage();
+			
+			String courseTitle = baseRequest.getParameter("title");
+			String summaryText = baseRequest.getParameter("summary");
+			String summaryDate = baseRequest.getParameter("date");
+			
+			if(courseTitle != null && summaryText != null && summaryDate != null) {
 
+				AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
+				addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate));
+				addCourseMessage.sendMessage();
+			}
 		}
 	}
 }

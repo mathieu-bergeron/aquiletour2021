@@ -3,6 +3,7 @@ package ca.aquiletour.javafx.pages.dashboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
@@ -64,21 +65,13 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 	}
 
 	@Override
-	public void appendCourse(CourseSummary course) {
+	public void appendCourse(CourseSummaryView courseView) {
 		T.call(this);
 		
-		CourseSummaryViewFx courseView = (CourseSummaryViewFx) courseSummaryViewLoader.createView();
+		CourseSummaryViewFx courseViewFx = (CourseSummaryViewFx) courseView;
 		
-		courseView.displaySummary(course);
 		
-		courseContainer.getChildren().add(courseView.getParent());
-	}
-
-	@Override
-	public void setCourseSummaryViewLoader(ViewLoader courseSummaryViewLoader) {
-		T.call(this);
-		
-		this.courseSummaryViewLoader = (ViewLoaderFx) courseSummaryViewLoader;
+		courseContainer.getChildren().add(courseViewFx.getParent());
 	}
 
 }

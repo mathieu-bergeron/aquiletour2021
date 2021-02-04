@@ -5,11 +5,18 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 
-public abstract class      ViewModelHandler<V extends NtroView, M extends NtroModel>
+public abstract class      ModelViewSubViewHandler<M extends NtroModel, V extends NtroView>
                 extends    Handler 
                 implements TaskWrapper {
 	
-	private ViewModelHandlerTask<V,M> task = new ViewModelHandlerTask<V,M>(this);
+	private ViewLoader subViewLoader;
+	private ModelViewSubViewHandlerTask<M,V> task = new ModelViewSubViewHandlerTask<M,V>(this);
+	
+	void setSubViewLoader(ViewLoader subViewLoader){
+		T.call(this);
+		
+		this.subViewLoader = subViewLoader;
+	}
 
 	@Override
 	public NtroTask getTask() {
@@ -28,9 +35,9 @@ public abstract class      ViewModelHandler<V extends NtroView, M extends NtroMo
 	public void handleImpl(V view, M model) {
 		T.call(this);
 		
-		handle(view, model);
+		handle(model, view, subViewLoader);
 	}
 	
-	protected abstract void handle(V view, M model);
+	protected abstract void handle(M model, V view, ViewLoader subViewLoader);
 
 }

@@ -20,7 +20,6 @@ package ca.aquiletour.core.pages.root;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.settings.SettingsController;
 import ca.ntro.core.mvc.NtroRootController;
-import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 
 public class RootController extends NtroRootController {
@@ -29,7 +28,7 @@ public class RootController extends NtroRootController {
 	protected void initialize() {
 		T.call(this);
 		
-		setViewLoader(ViewLoaders.getViewLoader(RootView.class, "fr"));
+		setViewLoader(RootView.class, "fr");
 		
 		addWindowViewHandler(new RootViewHandler());
 		

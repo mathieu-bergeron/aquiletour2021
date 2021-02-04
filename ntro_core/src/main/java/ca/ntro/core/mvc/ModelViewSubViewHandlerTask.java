@@ -5,7 +5,6 @@ import ca.ntro.core.system.assertions.MustNot;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
-import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
@@ -13,12 +12,11 @@ import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
 
-public class ViewModelHandlerTask<V extends NtroView, 
-                                  M extends NtroModel> extends NtroTaskImpl {
+public class ModelViewSubViewHandlerTask<M extends NtroModel, V extends NtroView> extends NtroTaskImpl {
 	
-	private ViewModelHandler<V, M> handler;
+	private ModelViewSubViewHandler<M,V> handler;
 	
-	public ViewModelHandlerTask(ViewModelHandler<V, M> handler) {
+	public ModelViewSubViewHandlerTask(ModelViewSubViewHandler<M,V> handler) {
 		T.call(this);
 
 		this.handler = handler;

@@ -10,7 +10,14 @@ public abstract class   ModelMessageHandler<M extends NtroModel, MSG extends Ntr
                 extends Handler 
                 implements TaskWrapper  {
 	
-	private ModelMessageHandlerTask<M,MSG> task = new ModelMessageHandlerTask<M,MSG>(this);
+	private ModelMessageHandlerTask<M,MSG> task;
+	
+	void setMessageId(String messageId) {
+		T.call(this);
+		
+		task = new ModelMessageHandlerTask<M,MSG>(this, messageId);
+	}
+	
 
 	@Override
 	public NtroTask getTask() {

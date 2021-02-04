@@ -15,11 +15,13 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 	
 	
 	private ParentViewMessageHandler<PV,CV,MSG> handler;
+	private String messageId;
 	
-	public ParentViewMessageHandlerTask(ParentViewMessageHandler<PV,CV,MSG> handler) {
+	public ParentViewMessageHandlerTask(ParentViewMessageHandler<PV,CV,MSG> handler, String messageId) {
 		T.call(this);
 
 		this.handler = handler;
+		this.messageId = messageId;
 	}
 
 	@Override
@@ -33,7 +35,9 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 		T.call(this);
 		
 		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
-		MSG message = (MSG) getPreviousTask(NtroMessage.class, Constants.MESSAGE_TASK_ID);
+
+		@SuppressWarnings("unchecked")
+		MSG message = (MSG) getPreviousTask(NtroMessage.class, messageId);
 
 		MustNot.beNull(viewLoader);
 
