@@ -142,8 +142,7 @@ public class DynamicHandler extends AbstractHandler {
 			}
 		}
 		
-		System.out.println(rootController.getTask().toString());
-
+		//System.out.println(rootController.getTask().toString());
 		
 		// XXX the entire taskGraph is not really async
 		//     writeResponse will execute AFTER 

@@ -3,7 +3,7 @@ package ca.ntro.messages;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
-public abstract class MessageReceptor extends NtroTaskImpl {
+public abstract class MessageHandler extends NtroTaskImpl {
 	
 	private NtroMessage message;
 	

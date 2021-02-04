@@ -8,7 +8,7 @@ import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageFactory;
-import ca.ntro.messages.MessageReceptor;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
@@ -87,9 +87,14 @@ abstract class NtroAbstractController implements TaskWrapper {
 		getTask().addSubTask(viewLoader);
 	}
 
-	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageReceptor messageReceptor) {
+	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageHandler handler) {
 		T.call(this);
-
+		
+		NtroTask message = MessageFactory.getIncomingMessage(messageClass);
+		message.setTaskId(messageClass.getSimpleName());
+		
+		getTask().addSubTask(message);
+		message.addNextTask(handler);
 	}
 
 	protected void addModelMessageHandler(Class<? extends NtroMessage> messageClass, ModelMessageHandler<?,?> handler) {

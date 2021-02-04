@@ -3,9 +3,9 @@ package ca.aquiletour.core.pages.dashboard.messages;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
-import ca.ntro.messages.MessageReceptor;
+import ca.ntro.messages.MessageHandler;
 
-public class DeleteCourseHandler extends MessageReceptor {
+public class DeleteCourseHandler extends MessageHandler {
 
 	private DashboardController dashboardController;
 

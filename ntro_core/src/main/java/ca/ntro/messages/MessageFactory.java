@@ -18,7 +18,11 @@ public class MessageFactory {
 		// FIXME: this assumes that getIncomingMessage is called before
 		M message = (M) messages.get(messageClass);
 		
-		MustNot.beNull(message);
+		if(message == null) {
+			System.out.println(messageClass.getSimpleName());
+			MustNot.beNull(message);
+		}
+		
 		
 		return message;
 	}
