@@ -36,7 +36,7 @@ extends NtroTaskImpl {
 		T.call(this);
 
 		@SuppressWarnings("unchecked")
-		M model = (M) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID).getModel();
+		M model = (M) ((ModelLoader) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID)).getModel();
 
 		MustNot.beNull(model);
 		

@@ -35,7 +35,7 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 		T.call(this);
 		
 		@SuppressWarnings("unchecked")
-		CV currentView = (CV) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
+		CV currentView = (CV) ((ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID)).getView();
 		MustNot.beNull(currentView);
 
 		@SuppressWarnings("unchecked")

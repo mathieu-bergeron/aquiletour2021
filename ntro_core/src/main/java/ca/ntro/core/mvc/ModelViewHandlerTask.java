@@ -35,7 +35,7 @@ public class ModelViewHandlerTask<M extends NtroModel, V extends NtroView> exten
 		ViewCreatorTask viewCreator = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 
 		@SuppressWarnings("unchecked")
-		M model = (M) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID).getModel();
+		M model = (M) ((ModelLoader) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID)).getModel();
 
 		MustNot.beNull(viewCreator);
 		MustNot.beNull(model);

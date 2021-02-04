@@ -18,7 +18,7 @@ public class ViewCreatorTask extends NtroTaskImpl {
 
 	@Override
 	protected void runTaskAsync() {
-		view = getPreviousTask(ViewLoader.class, Constants.VIEW_LOADER_TASK_ID).createView();
+		view = ((ViewLoader) getPreviousTask(ViewLoader.class, Constants.VIEW_LOADER_TASK_ID)).createView();
 		notifyTaskFinished();
 	}
 
