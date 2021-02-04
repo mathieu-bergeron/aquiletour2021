@@ -18,7 +18,9 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.ViewLoaderFx;
@@ -35,6 +37,19 @@ public class AquiletourMainFx extends AquiletourMain {
 			     	.setFxmlUrl("/views/root/structure.xml")
 			     	.setCssUrl("/views/root/style.css")
 			     	.setTranslationsName("i18n.strings"));
-		
+
+		ViewLoaders.registerViewLoader(SettingsView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/settings/structure.xml")
+			     	.setCssUrl("/views/settings/style.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(DashboardView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/dashboard/structure.xml")
+			     	.setCssUrl("/views/dashboard/style.css")
+			     	.setTranslationsName("i18n.strings"));
 	}
 }

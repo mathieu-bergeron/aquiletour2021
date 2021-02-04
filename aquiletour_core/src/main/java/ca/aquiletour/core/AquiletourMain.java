@@ -42,10 +42,13 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 		// FIXME
 		Constants.LANG = "fr";
 		
+		registerViewLoaders();
+		
+		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "/**", Ntro.window());  
+		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", Ntro.window());  
 
 		rootController.execute();
 
