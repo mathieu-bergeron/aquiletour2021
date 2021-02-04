@@ -18,6 +18,13 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.ntro.core.system.trace.T;
 
 public class AquiletourMainFx extends AquiletourMain {
+
+	@Override
+	protected void registerViewLoaders() {
+		T.call(this);
+		
+	}
 }

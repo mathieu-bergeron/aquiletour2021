@@ -30,6 +30,8 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 	protected void initializeTask() {
 
 	}
+	
+	protected abstract void registerViewLoaders();
 
 	@Override
 	protected void runTaskAsync() {
