@@ -46,7 +46,9 @@ public class FileLoaderDev extends FileLoader {
 		try {
 			result = new FileInputStream(new File(resourcePath));
 		} catch (FileNotFoundException e) {
-			Log.fatalError("loadFile: file not found" + resourcePath ,e);
+
+			System.err.println("[WARNING] loadFile: file not found" + resourcePath);
+
 		}
 		
 		return result;

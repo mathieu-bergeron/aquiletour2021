@@ -31,7 +31,7 @@ public class DashboardController extends NtroController<RootController> {
 	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
-		
+
 	}
 
 }

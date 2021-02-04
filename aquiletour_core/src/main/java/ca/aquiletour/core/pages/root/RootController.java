@@ -23,7 +23,7 @@ import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 
 public class RootController extends NtroRootController {
-	
+
 	@Override
 	protected void initialize() {
 		T.call(this);
@@ -41,6 +41,5 @@ public class RootController extends NtroRootController {
 	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
-		
 	}
 }

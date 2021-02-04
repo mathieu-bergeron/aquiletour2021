@@ -22,9 +22,9 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskSync;
 
-public abstract class AquiletourMain extends NtroTaskImpl {
+public abstract class AquiletourMain extends NtroTaskSync {
 
 	@Override
 	protected void initializeTask() {
@@ -34,16 +34,15 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 	protected abstract void registerViewLoaders();
 
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
-		
+
 		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");
 
 		// FIXME
 		Constants.LANG = "fr";
 		
 		registerViewLoaders();
-		
 		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
@@ -52,7 +51,6 @@ public abstract class AquiletourMain extends NtroTaskImpl {
 
 		rootController.execute();
 
-		notifyTaskFinished();
 	}
 
 	@Override
