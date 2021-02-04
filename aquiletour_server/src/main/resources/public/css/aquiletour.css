@@ -4,19 +4,19 @@
   display: -ms-flexbox;
   display: flex;
   /* Then we define the flow direction 
-     and if we allow the items to wrap 
-   * Remember this is the same as:
-   * flex-direction: row;
-   * flex-wrap: wrap;
-   */
+       and if we allow the items to wrap 
+     * Remember this is the same as:
+     * flex-direction: row;
+     * flex-wrap: wrap;
+     */
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-flow: row wrap;
-          flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
   /* Then we define how is distributed the remaining space */
   -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -33,32 +33,38 @@
 }
 
 .available-icon {
-    margin-left:10px;
+  margin-left: 10px;
 }
 
-.add-course-form{
-    margin-bottom:40px;
+.add-course-form {
+  margin-bottom: 40px;
 }
 
-.queue{
+.queue {
   margin-left: 15%;
   margin-right: 15%;
   margin-top: 10px;
 }
 
-.wrap-close-btn{
+.wrap-close-btn {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.queue-settings {
+  float: right;
   
-  flex-wrap: wrap;
 }
 
-.queue-settings{
-  float: right; 
-}
-
-.list-group-item{
+.list-group-item {
   word-break: break-all;
   text-align: left;
-  
-
 }
 
+.navbar-brand{
+  margin-left: 1%;
+}
+
+.navbar-collapse{
+  margin-left: 1%;
+}

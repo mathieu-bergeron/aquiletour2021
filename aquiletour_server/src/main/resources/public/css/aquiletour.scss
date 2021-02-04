@@ -1,0 +1,63 @@
+.flex-container {
+    /* We first create a flex layout context */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    /* Then we define the flow direction 
+       and if we allow the items to wrap 
+     * Remember this is the same as:
+     * flex-direction: row;
+     * flex-wrap: wrap;
+     */
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    /* Then we define how is distributed the remaining space */
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .color {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid black;
+    position: absolute;
+    right: 10;
+  }
+  
+  .available-icon {
+      margin-left:10px;
+  }
+  
+  .add-course-form{
+      margin-bottom:40px;
+  }
+  
+  .queue{
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 10px;
+  }
+  
+  .wrap-close-btn{
+    
+    flex-wrap: wrap;
+  }
+  
+  .queue-settings{
+    float: right; 
+  }
+  
+  .list-group-item{
+    word-break: break-all;
+    text-align: left;
+    
+  
+  }
