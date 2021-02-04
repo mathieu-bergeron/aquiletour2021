@@ -29,11 +29,11 @@ public class RootController extends NtroRootController {
 		T.call(this);
 		
 		setViewLoader(RootView.class, "fr");
-		
-		addWindowViewHandler(new RootViewHandler());
-		
+
 		addSubController(SettingsController.class, "settings");
 		addSubController(DashboardController.class, "dashboard");
+
+		addWindowViewHandler(new RootViewHandler());
 		
 		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
 	}

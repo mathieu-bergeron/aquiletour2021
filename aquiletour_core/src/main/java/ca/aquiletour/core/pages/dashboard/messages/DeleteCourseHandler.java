@@ -5,11 +5,11 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 import ca.ntro.messages.MessageReceptor;
 
-public class DeleteCourseReceptor extends MessageReceptor {
+public class DeleteCourseHandler extends MessageReceptor {
 
 	private DashboardController dashboardController;
 
-	public DeleteCourseReceptor(DashboardController dashboardController) {
+	public DeleteCourseHandler(DashboardController dashboardController) {
 		this.dashboardController = dashboardController;
 	}
 
