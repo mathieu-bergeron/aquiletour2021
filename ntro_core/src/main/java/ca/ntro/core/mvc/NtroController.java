@@ -23,7 +23,7 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		handler.setMessageId(messageId);
 
 		getTask().addSubTask(handler.getTask());
-		addPreviousTaskTo(handler.getTask(), ViewLoader.class, Constants.VIEW_LOADER_TASK_ID);
+		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
 		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
 		message.setTaskId(messageId);

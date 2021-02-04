@@ -114,20 +114,14 @@ public class DynamicHandler extends AbstractHandler {
 		NtroWindowServer newWindow = ((NtroWindowServer) Ntro.window()).clone();
 		
 		newWindow.setCurrentPath(path);
-		
+
 		NtroTask webApp = new ContainerTask();
 		
 		ControllerFactory.createRootController(RootController.class, path, newWindow, webApp);
 
-		WriteResponseTask writeResponseTask = new WriteResponseTask(newWindow, baseRequest, out);
-		webApp.addNextTask(writeResponseTask);
-
-		//System.out.println(webApp.toString());
-		
 		webApp.execute();
 
-		// TODO: also check parametres
-		// TODO: refactor
+		// XXX: sending a message unblocks a task
 		if(path.startsWith("settings")) {
 			
 			ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
@@ -149,6 +143,32 @@ public class DynamicHandler extends AbstractHandler {
 				addCourseMessage.sendMessage();
 			}
 		}
+
+		
+		// XXX the entire taskGraph is not really async
+		//     writeResponse will execute AFTER 
+		//     every non-blocked task in webApp
+		writeResponse(newWindow, baseRequest, out);
 	}
+
+	private void writeResponse(NtroWindowServer window, Request baseRequest, OutputStream out) {
+		T.call(this);
+
+		StringBuilder builder = new StringBuilder();
+		window.writeHtml(builder);
+
+		try {
+
+			out.write(builder.toString().getBytes());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		baseRequest.setHandled(true);
+	}
+	
+	
+	
 }
 

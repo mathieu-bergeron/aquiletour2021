@@ -7,7 +7,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskImpl;
 import ca.ntro.messages.NtroMessage;
 
-import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
+import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 
 class ParentViewMessageHandlerTask<PV extends NtroView, 
                                    CV extends NtroView, 
@@ -34,16 +34,13 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
+		@SuppressWarnings("unchecked")
+		CV currentView = (CV) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
+		MustNot.beNull(currentView);
 
 		@SuppressWarnings("unchecked")
 		MSG message = (MSG) getPreviousTask(NtroMessage.class, messageId);
 
-		MustNot.beNull(viewLoader);
-
-		@SuppressWarnings("unchecked")
-		CV currentView	 = (CV) viewLoader.createView();
-		
 		handler.handleImpl(currentView, message);
 		
 		notifyTaskFinished();

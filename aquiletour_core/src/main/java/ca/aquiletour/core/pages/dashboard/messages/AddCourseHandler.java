@@ -11,5 +11,6 @@ public class AddCourseHandler extends ModelMessageHandler<DashboardModel, AddCou
 		T.call(this);
 		
 		model.addCourse(message.getCourse());
+		model.save();
 	}
 }
