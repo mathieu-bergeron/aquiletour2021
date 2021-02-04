@@ -9,6 +9,8 @@ public abstract class NtroMessage extends NtroTaskImpl {
 		T.call(this);
 		
 		notifyTaskFinished();
+		reset();
+		execute();
 	}
 
 	@Override
