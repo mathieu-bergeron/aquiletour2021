@@ -14,19 +14,19 @@ public class QueueController extends NtroController {
 	@Override
 	protected void initializeTask() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

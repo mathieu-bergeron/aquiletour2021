@@ -19,7 +19,7 @@ public abstract class SettingsController extends NtroController {
 
 		this.parentController = parentController;
 	}
-	
+
 	@Override
 	protected void initializeTask() {
 		T.call(this);
@@ -29,30 +29,28 @@ public abstract class SettingsController extends NtroController {
 
 		MessageFactory.addMessageReceptor(ShowSettingsMessage.class, new ShowSettingsReceptor(this));
 	}
-	
+
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
-		
+
 		view = (SettingsView) viewLoader.createView();
-		
-		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		
+
 	}
 
 	public ShowSettingsReceptor createShowSettingsTask() {
 		T.call(this);
-		
+
 		return new ShowSettingsReceptor(this);
 	}
 
 	public void showSettings() {
 		T.call(this);
-		
+
 		parentController.installSubView(view);
 	}
 }

@@ -12,5 +12,4 @@ public class SettingsControllerServer extends SettingsControllerWeb {
 		T.call(this);
 	}
 
-
 }
