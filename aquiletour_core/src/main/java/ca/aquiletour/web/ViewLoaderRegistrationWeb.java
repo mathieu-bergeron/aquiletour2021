@@ -2,10 +2,14 @@ package ca.aquiletour.web;
 
 import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboard.DashboardView;
+import ca.aquiletour.core.pages.queue.AppointmentView;
+import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
+import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
+import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
 import ca.aquiletour.web.pages.settings.SettingsViewWeb;
 import ca.ntro.core.Ntro;
@@ -48,7 +52,22 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/course_summary/style.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CourseSummaryViewWeb.class));
-	}
-	
 
+		ViewLoaders.registerViewLoader(QueueView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/queue/structure.html")
+			     	.setCssUrl("/views/queue/style.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(QueueViewWeb.class));
+
+		ViewLoaders.registerViewLoader(AppointmentView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/appointment/structure.html")
+			     	.setCssUrl("/views/appointment/style.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(AppointmentViewWeb.class));
+
+	}
 }

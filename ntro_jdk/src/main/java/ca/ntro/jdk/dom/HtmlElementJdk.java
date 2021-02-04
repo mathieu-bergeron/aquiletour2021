@@ -72,4 +72,11 @@ public class HtmlElementJdk implements HtmlElement {
 		
 		jsoupElement.attr(name, value);
 	}
+
+	@Override
+	public void remove() {
+		T.call(this);
+		
+		jsoupElement.remove();
+	}
 }

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.QuitMessage;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.SettingsView;
@@ -97,5 +98,12 @@ public class RootViewFx extends NtroViewFx implements RootView {
 		
 		pageContainer.getChildren().clear();
 		pageContainer.getChildren().add(viewFx.getParent());
+	}
+
+	@Override
+	public void showQueue(QueueView queueView) {
+		T.call(this);
+		
+		showSubView(queueView);
 	}
 }

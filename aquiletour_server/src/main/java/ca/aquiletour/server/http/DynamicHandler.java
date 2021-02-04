@@ -21,6 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +36,13 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
+import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerFactory;
@@ -119,28 +126,10 @@ public class DynamicHandler extends AbstractHandler {
 
 		rootController.execute();
 
+		Map<String, String[]> parameters = baseRequest.getParameterMap();
+
 		// XXX: sending a message unblocks a task
-		if(path.startsWith("settings")) {
-			
-			ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
-			showSettingsMessage.sendMessage();
-			
-		}else if(path.startsWith("dashboard")) {
-
-			ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
-			showDashboardMessage.sendMessage();
-			
-			String courseTitle = baseRequest.getParameter("title");
-			String summaryText = baseRequest.getParameter("summary");
-			String summaryDate = baseRequest.getParameter("date");
-			
-			if(courseTitle != null && summaryText != null && summaryDate != null) {
-
-				AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate));
-				addCourseMessage.sendMessage();
-			}
-		}
+		AquiletourRequestHandler.sendMessages(path, parameters);
 		
 		//System.out.println(rootController.getTask().toString());
 		
@@ -149,6 +138,7 @@ public class DynamicHandler extends AbstractHandler {
 		//     every non-blocked task in webApp
 		writeResponse(newWindow, baseRequest, out);
 	}
+
 
 	private void writeResponse(NtroWindowServer window, Request baseRequest, OutputStream out) {
 		T.call(this);

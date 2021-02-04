@@ -9,5 +9,6 @@ public interface HtmlElement {
 	void addEventListener(String event, HtmlEventListener listener);
 	HtmlElements children(String cssQuery);
 	void setAttribute(String name, String value);
+	void remove();
 
 }

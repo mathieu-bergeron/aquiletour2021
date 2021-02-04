@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.pages.dashboard.DashboardView;
+import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.ntro.core.mvc.NtroView;
@@ -36,6 +37,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		HtmlElement subViewElement = viewWeb.getRootElement();
 		container.appendElement(subViewElement);
+	}
+
+	@Override
+	public void showQueue(QueueView queueView) {
+		T.call(this);
+		
+		showSubView(queueView);
 	}
 
 
