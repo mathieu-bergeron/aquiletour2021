@@ -115,11 +115,9 @@ public class DynamicHandler extends AbstractHandler {
 		
 		newWindow.setCurrentPath(path);
 
-		NtroTask webApp = new ContainerTask();
-		
-		ControllerFactory.createRootController(RootController.class, path, newWindow, webApp);
+		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
 
-		webApp.execute();
+		rootController.execute();
 
 		// XXX: sending a message unblocks a task
 		if(path.startsWith("settings")) {

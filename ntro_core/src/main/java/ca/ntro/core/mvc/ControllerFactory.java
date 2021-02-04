@@ -1,22 +1,18 @@
 package ca.ntro.core.mvc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ca.ntro.core.Path;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
 
 public class ControllerFactory {
 
-	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, String path, NtroWindow window, NtroTask parentTask) {
+	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, String path, NtroWindow window) {
 		T.call(ControllerFactory.class);
 		
-		return createRootController(controllerClass, new Path(path), window, parentTask);
+		return createRootController(controllerClass, new Path(path), window);
 	}
 
-	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, Path path, NtroWindow window, NtroTask parentTask) {
+	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, Path path, NtroWindow window) {
 		T.call(ControllerFactory.class);
 		
 		RC rootController = Factory.newInstance(controllerClass);
@@ -24,8 +20,6 @@ public class ControllerFactory {
 		rootController.setWindow(window);
 
 		rootController.setPath(path);
-		
-		parentTask.addSubTask(rootController.getTask());
 		
 		rootController.initialize();
 		
