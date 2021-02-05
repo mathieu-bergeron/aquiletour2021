@@ -25,6 +25,7 @@ import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
+import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -39,12 +40,17 @@ import ca.ntro.jsweet.services.JsonParserJSweet;
 import ca.ntro.jsweet.services.LocalStoreJSweet;
 import ca.ntro.jsweet.services.LoggerJSweet;
 import ca.ntro.jsweet.services.NtroCollectionsJSweet;
+import ca.ntro.jsweet.services.NtroWindowJSweet;
 import ca.ntro.jsweet.services.ResourceLoaderJSweet;
 import ca.ntro.jsweet.services.ValueFormatterJSweet;
 import ca.ntro.jsweet.services.ViewLoaderWebJSweet;
+import ca.ntro.web.NtroWindowWeb;
+import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJSweet extends InitializationTask {
+	
+	private NtroWindowJSweet window = new NtroWindowJSweet();
 
 	@Override
 	protected StackAnalyzer provideStackAnalyzer() {
@@ -131,5 +137,13 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideLocalStore");
 
 		return new LocalStoreJSweet();
+	}
+
+	
+	@Override
+	protected NtroWindow provideWindow() {
+		__T.call(this, "provideWindow");
+
+		return window;
 	}
 }

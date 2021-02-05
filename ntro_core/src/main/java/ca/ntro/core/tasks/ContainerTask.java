@@ -31,6 +31,4 @@ public class ContainerTask extends NtroTaskSync {
 	protected void onFailure(Exception e) {
 
 	}
-
-
 }

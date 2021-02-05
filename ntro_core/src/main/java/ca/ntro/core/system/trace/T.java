@@ -24,11 +24,11 @@ import ca.ntro.core.system.stack.StackFrame;
 
 public class T {
 	
-	private static TraceFilter previousFilter = TraceLevel.APP;
-	private static TraceFilter traceFilter = TraceLevel.APP;
+	//private static TraceFilter previousFilter = TraceLevel.APP;
+	//private static TraceFilter traceFilter = TraceLevel.APP;
 
-	//private static TraceFilter previousFilter = TraceLevel.ALL;
-	//private static TraceFilter traceFilter = TraceLevel.ALL;
+	private static TraceFilter previousFilter = TraceLevel.ALL;
+	private static TraceFilter traceFilter = TraceLevel.ALL;
 	
 	private static Introspector introspector = null;
 	private static StackAnalyzer stackAnalyzer = null;
