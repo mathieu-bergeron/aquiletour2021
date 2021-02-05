@@ -41,4 +41,10 @@ public class CourseSummaryViewFx extends NtroViewFx implements CourseSummaryView
 		summaryDate.setText(course.getDate());
 	}
 
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

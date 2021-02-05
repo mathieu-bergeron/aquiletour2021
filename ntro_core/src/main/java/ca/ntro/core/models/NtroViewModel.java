@@ -1,37 +1,31 @@
 package ca.ntro.core.models;
 
-import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.NtroView;
+import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public interface NtroViewModel {
+public abstract class NtroViewModel extends NtroTaskAsync {
 
-	void observeAndDisplay(NtroModel model, NtroView view);
-	
+	public abstract void observeAndDisplay(NtroModel model, NtroView view);
 
-	/*
-	public void installViewPromise(Promise<NtroView> viewPromise) {
-		T.call(this);
+	@Override
+	protected void initializeTask() {
+		// TODO Auto-generated method stub
 		
-		viewPromise.onValueOrError(new ValueListener<NtroView>() {
-
-			@Override
-			public void onValue(NtroView view) {
-				T.call(this);
-				
-				observeAndDisplay(view);
-			}
-
-		}, new ErrorListener() {
-			
-			@Override
-			public void onError() {
-				T.call(this);
-				
-			}
-		});
 	}
-	*/
-	
 
+	@Override
+	protected void runTaskAsync() {
+		T.call(this);
+
+		observeAndDisplay(null, null);
+	}
+
+	@Override
+	protected void onFailure(Exception e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

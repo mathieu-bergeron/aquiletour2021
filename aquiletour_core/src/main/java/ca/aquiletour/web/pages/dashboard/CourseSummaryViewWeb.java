@@ -10,6 +10,12 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
 
 	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
 		T.here();
@@ -26,4 +32,5 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		summaryText.appendHtml(course.getSummary());
 		summaryDate.appendHtml(course.getDate());
 	}
+
 }

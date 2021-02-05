@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
 public class ViewLoaderFx extends ViewLoader {
-	
+
 	private URL fxmlUrl;
 	private URL cssUrl;
 	private ResourceBundle strings;
@@ -40,11 +40,10 @@ public class ViewLoaderFx extends ViewLoader {
 	}
 
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
-		notifyTaskFinished();
 	}
-	
+
 	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
@@ -52,9 +51,9 @@ public class ViewLoaderFx extends ViewLoader {
 
 	public ViewLoaderFx setFxmlUrl(String fxmlPath) {
 		T.call(this);
-		
+
 		fxmlUrl = ViewLoaderFx.class.getResource(fxmlPath);
-		
+
 		return this;
 	}
 
@@ -68,7 +67,7 @@ public class ViewLoaderFx extends ViewLoader {
 
 	public ViewLoaderFx setTranslationsName(String translationsName) {
 		T.call(this);
-		
+
 		strings = ResourceBundle.getBundle(translationsName);
 
 		return this;
@@ -76,13 +75,13 @@ public class ViewLoaderFx extends ViewLoader {
 
 	private void loadFxml() {
 		T.call(this);
-		
+
 		loader = new FXMLLoader(fxmlUrl);
 
 		if(strings != null) {
 			loader.setResources(strings);
 		}
-		
+
 		MustNot.beNull(loader);
 
 		try {
@@ -92,7 +91,7 @@ public class ViewLoaderFx extends ViewLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if(cssUrl !=  null) {
 			addCss();
 		}
@@ -100,12 +99,12 @@ public class ViewLoaderFx extends ViewLoader {
 
 	private void addCss() {
 		T.call(this);
-		
+
 		parent.getStylesheets().add(cssUrl.toExternalForm());
 	}
 
 	@Override
-	public NtroViewFx createView() {
+	protected NtroViewFx createViewImpl() {
 		T.call(this);
 
 		loadFxml();

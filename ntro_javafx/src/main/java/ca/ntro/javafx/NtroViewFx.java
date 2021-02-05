@@ -1,6 +1,6 @@
 package ca.ntro.javafx;
 
-import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.trace.T;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;

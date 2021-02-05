@@ -22,6 +22,7 @@ import ca.ntro.core.__Ntro;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
+import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.Logger;
@@ -79,7 +80,10 @@ public abstract class InitializationTask extends NtroTaskSync {
 		JsonParser.initialize(provideJsonParser());
 		
 		LocalStore.initialize(provideLocalStore());
+		
+		Ntro.__registerWindow(provideWindow());
 	}
+
 
 
 	protected abstract Logger provideLogger();
@@ -93,5 +97,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 	protected abstract JsonParser provideJsonParser();
 	protected abstract ModelStore provideLocalStore();
+	protected abstract NtroWindow provideWindow();
 
 }
