@@ -31,6 +31,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	@Override
 	public void removeAppointment(Appointment appointment) {
 		// TODO Auto-generated method stub
+		T.call(this);
 		
 	}
 
