@@ -26,6 +26,8 @@ import ca.ntro.core.mvc.view.NtroView;
 import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.MessageReceptor;
+import ca.ntro.web.mvc.NtroViewWeb;
 
 public abstract class RootController extends NtroController {
 
@@ -47,6 +49,25 @@ public abstract class RootController extends NtroController {
 		addSubTask(dashboardController);
 		addSubTask(settingsController);
 
+		MessageFactory.addMessageReceptor(OpenSettingsMessage.class, new MessageReceptor() {
+			@Override
+			protected void initializeTask() {
+				T.call(this);
+			}
+
+			@Override
+			protected void runTaskAsync() {
+				T.call(this);
+
+				settingsController.createShowSettingsTask().execute();
+			}
+
+			@Override
+			protected void onFailure(Exception e) {
+				T.call(this);
+			}
+		});
+
 		MessageFactory.addMessageReceptor(QuitMessage.class, new QuitReceptor());
 	}
 
@@ -59,6 +80,7 @@ public abstract class RootController extends NtroController {
 	//             afterPreviousSubTaskFinished           optionnel!!
 	protected void runTask() {
 		T.call(this);
+		System.out.println("test");
 
 		rootView = (RootView) viewLoader.createView();
 
@@ -76,6 +98,7 @@ public abstract class RootController extends NtroController {
 	public void installSubView(NtroView view) {
 		T.call(this);
 
+		System.out.println(((NtroViewWeb) this.rootView).getRootElement());
 		rootView.installSubView(view);
 	}
 
