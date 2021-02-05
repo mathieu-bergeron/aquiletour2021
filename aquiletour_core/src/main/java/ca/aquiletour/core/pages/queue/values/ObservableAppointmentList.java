@@ -22,5 +22,7 @@ public class ObservableAppointmentList extends ObservableList<Appointment> {
 
 		return List.class;
 	}
-
+	
+	
+	
 }

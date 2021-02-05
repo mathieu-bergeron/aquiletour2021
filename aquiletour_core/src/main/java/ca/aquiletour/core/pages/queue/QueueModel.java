@@ -21,6 +21,14 @@ public class QueueModel extends NtroModel {
 		appointment.setAppointmentId(Integer.toString(id));
 		appointments.addItem(appointment);
 	}
+	
+	public void deleteAppointment(int appointmentId) {
+		T.call(this);
+		
+		Appointment appointment = appointments.getItem(appointmentId);
+
+		appointments.removeItem(appointment);;
+	}
 
 	public ObservableAppointmentList getAppointments() {
 		return appointments;

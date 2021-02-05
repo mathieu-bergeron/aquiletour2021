@@ -2,9 +2,11 @@ package ca.aquiletour.web.pages.queue;
 
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.Ntro;
@@ -17,6 +19,7 @@ import ca.ntro.web.RequestHandlerTask;
 public abstract class QueueControllerWeb extends QueueController implements RequestHandlerTask {
 
 	private AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
+	private DeleteAppointmentMessage deleteAppointmentMessage = MessageFactory.getOutgoingMessage(DeleteAppointmentMessage.class);
 
 	public QueueControllerWeb(RootController parentController) {
 		super(parentController);
@@ -63,6 +66,11 @@ public abstract class QueueControllerWeb extends QueueController implements Requ
 			addAppointmentMessage.setAppointment(new Appointment(time));
 			
 			addNextTask(addAppointmentMessage);
+		} else if(parameters.containsKey("deleteAppointment")){
+			T.here();
+			//deleteAppointmentMessage.deleteAppointment(appointment);
+			deleteAppointmentMessage.deleteAppointment(1);
+			addNextTask(deleteAppointmentMessage);
 		}
 		
 	}

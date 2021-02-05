@@ -24,6 +24,7 @@ public class QueueViewModel implements NtroViewModel {
 			public void onItemRemoved(int index, Appointment item) {
 				// TODO Auto-generated method stub
 				
+				queueView.deleteAppointment(item);
 			}
 			
 			@Override

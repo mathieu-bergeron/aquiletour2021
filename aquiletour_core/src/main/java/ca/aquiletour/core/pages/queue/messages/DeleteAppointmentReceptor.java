@@ -22,6 +22,10 @@ public class DeleteAppointmentReceptor extends MessageReceptor {
 	protected void runTaskAsync() {
 		T.call(this);
 
+		DeleteAppointmentMessage message = (DeleteAppointmentMessage) getMessage();
+		
+		queueController.deleteAppointement((message.getAppointmentId()));
+
 		notifyTaskFinished();
 	}
 

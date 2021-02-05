@@ -104,6 +104,12 @@ public abstract class QueueController extends NtroController {
 		model.addAppointment(appointment);
 		model.save();
 	}
+	public void deleteAppointement(int appointmentId) {
+		T.call(this);
+		
+		model.deleteAppointment(appointmentId);
+		model.save();
+	}
 	
 	protected abstract ViewLoader createAppointmentViewLoader(String lang);
 
