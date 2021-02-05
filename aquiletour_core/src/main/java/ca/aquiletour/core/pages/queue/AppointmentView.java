@@ -12,4 +12,6 @@ public interface AppointmentView extends NtroView {
 
 	void displayAppointement(Appointment appointment);
 
+	void displayAppointement(Appointment appointment);
+
 }
