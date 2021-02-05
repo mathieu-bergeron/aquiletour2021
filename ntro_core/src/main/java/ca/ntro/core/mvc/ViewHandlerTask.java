@@ -4,11 +4,11 @@ import ca.ntro.core.system.assertions.MustNot;
 
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
 import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;;
 
-public class ViewHandlerTask<CB extends NtroAbstractController, V extends NtroView> extends NtroTaskImpl {
+public class ViewHandlerTask<CB extends NtroAbstractController, V extends NtroView> extends NtroTaskAsync {
 	
 	private ViewHandler<CB, V> viewReceptor;
 	

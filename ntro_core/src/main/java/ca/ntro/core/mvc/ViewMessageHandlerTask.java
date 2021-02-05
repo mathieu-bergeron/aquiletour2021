@@ -4,13 +4,13 @@ import ca.ntro.core.system.assertions.MustNot;
 
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
 
 public class ViewMessageHandlerTask<V extends NtroView, 
-                                    MSG extends NtroMessage> extends NtroTaskImpl {
+                                    MSG extends NtroMessage> extends NtroTaskAsync {
 	
 	private ViewMessageHandler<V, MSG> handler;
 	private String messageId;

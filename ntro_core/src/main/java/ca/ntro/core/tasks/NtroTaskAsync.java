@@ -23,7 +23,7 @@ import java.util.Set;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 
-public abstract class NtroTaskImpl implements NtroTask {
+public abstract class NtroTaskAsync implements NtroTask {
 
 	private NtroTask parentTask;
 
@@ -43,7 +43,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 	protected abstract void runTaskAsync();
 	protected abstract void onFailure(Exception e);
 	
-	public NtroTaskImpl() {
+	public NtroTaskAsync() {
 		initializeTask();
 	}
 	

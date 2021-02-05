@@ -4,7 +4,7 @@ import ca.ntro.core.system.assertions.MustNot;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
@@ -13,7 +13,7 @@ import ca.ntro.core.models.NtroModel;
 
 class   ModelMessageHandlerTask<M   extends NtroModel, 
                                 MSG extends NtroMessage>
-extends NtroTaskImpl {
+extends NtroTaskAsync {
 	
 	private ModelMessageHandler<M,MSG> handler;
 	private String messageId;

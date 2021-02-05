@@ -4,12 +4,12 @@ import ca.ntro.core.system.assertions.MustNot;
 
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 
-public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskImpl{
+public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskAsync{
 	
 	private WindowViewHandler<V> handler;
 	

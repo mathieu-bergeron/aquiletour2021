@@ -9,6 +9,12 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class QueueViewWeb extends NtroViewWeb implements QueueView {
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	@Override
 	public void appendAppointement(Appointment appointment, AppointmentView appointmentView) {
@@ -37,4 +43,5 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 		appointmentElement.remove();
 
 	}
+
 }

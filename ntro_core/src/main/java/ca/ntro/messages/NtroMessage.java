@@ -1,9 +1,9 @@
 package ca.ntro.messages;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class NtroMessage extends NtroTaskImpl {
+public abstract class NtroMessage extends NtroTaskAsync {
 	
 	public void sendMessage() {
 		T.call(this);

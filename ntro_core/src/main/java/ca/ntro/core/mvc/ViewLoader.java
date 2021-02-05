@@ -17,10 +17,21 @@
 
 package ca.ntro.core.mvc;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 
 public abstract class ViewLoader extends NtroTaskSync {
 
-	public abstract NtroView createView();
+	public NtroView createView(){
+		T.call(this);
+		
+		NtroView view = createViewImpl();
+		
+		view.initialize();
+		
+		return view;
+	}
+
+	protected abstract NtroView createViewImpl();
 
 }

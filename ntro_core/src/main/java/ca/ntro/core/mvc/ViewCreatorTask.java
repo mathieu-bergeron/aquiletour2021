@@ -1,9 +1,9 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public class ViewCreatorTask extends NtroTaskImpl {
+public class ViewCreatorTask extends NtroTaskAsync {
 	
 	private NtroView view;
 	

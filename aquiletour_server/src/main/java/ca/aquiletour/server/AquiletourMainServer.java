@@ -29,9 +29,9 @@ import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public class AquiletourMainServer extends NtroTaskImpl {
+public class AquiletourMainServer extends NtroTaskAsync {
 
 	@Override
 	protected void initializeTask() {

@@ -2,9 +2,9 @@ package ca.ntro.core.models;
 
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class NtroViewModel extends NtroTaskImpl {
+public abstract class NtroViewModel extends NtroTaskAsync {
 
 	public abstract void observeAndDisplay(NtroModel model, NtroView view);
 

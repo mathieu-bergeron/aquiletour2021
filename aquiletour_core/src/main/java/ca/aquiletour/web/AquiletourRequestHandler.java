@@ -1,6 +1,5 @@
 package ca.aquiletour.web;
 
-import java.util.Calendar;
 import java.util.Map;
 
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
@@ -70,14 +69,17 @@ public class AquiletourRequestHandler {
 
 		if(parameters.containsKey("makeAppointment")) { //regarde si parametre makeAppointment/ regarde si delete appointment
 
+			// FIXME: we need a Ntro service for dates
+			/*
 			Calendar rightNow = Calendar.getInstance();
 			int hour = rightNow.get(Calendar.HOUR_OF_DAY);
 			int minute = rightNow.get(Calendar.MINUTE);
 			String time = hour + ":" + minute;
+			*/
 			
 			AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
 			Appointment newAppointment = new Appointment();
-			newAppointment.setTime(time);
+			newAppointment.setTime("11:59");
 			addAppointmentMessage.setAppointment(newAppointment);
 
 			addAppointmentMessage.sendMessage();

@@ -5,9 +5,9 @@ import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public class ModelLoader extends NtroTaskImpl {
+public class ModelLoader extends NtroTaskAsync {
 	
 	private Class<? extends NtroModel> modelClass;
 	

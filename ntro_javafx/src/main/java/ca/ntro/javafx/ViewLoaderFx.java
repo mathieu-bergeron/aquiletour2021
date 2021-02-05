@@ -104,7 +104,7 @@ public class ViewLoaderFx extends ViewLoader {
 	}
 
 	@Override
-	public NtroViewFx createView() {
+	protected NtroViewFx createViewImpl() {
 		T.call(this);
 
 		loadFxml();

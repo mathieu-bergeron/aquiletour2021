@@ -13,6 +13,12 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void showSettings(SettingsView settingsView) {
 		T.call(this);
 		
@@ -45,6 +51,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		showSubView(queueView);
 	}
+
 
 
 }

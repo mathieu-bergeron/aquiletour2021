@@ -74,4 +74,10 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 		courseContainer.getChildren().add(courseViewFx.getParent());
 	}
 
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

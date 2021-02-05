@@ -4,7 +4,7 @@ import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 
-public class NtroViewWeb implements NtroView {
+public abstract class NtroViewWeb implements NtroView {
 	
 	private HtmlElement rootElement;
 	

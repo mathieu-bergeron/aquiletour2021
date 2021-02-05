@@ -10,6 +10,12 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class DashboardViewWeb extends NtroViewWeb implements DashboardView {
 	
 	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void appendCourse(CourseSummaryView courseView) {
 		T.call(this);
 
@@ -21,6 +27,7 @@ public class DashboardViewWeb extends NtroViewWeb implements DashboardView {
 		
 		container.appendElement(courseViewWeb.getRootElement());
 	}
+
 
 
 }

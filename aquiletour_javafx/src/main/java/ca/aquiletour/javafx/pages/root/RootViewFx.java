@@ -106,4 +106,10 @@ public class RootViewFx extends NtroViewFx implements RootView {
 		
 		showSubView(queueView);
 	}
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 }
