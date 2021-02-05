@@ -27,21 +27,6 @@ public class QueueModel extends NtroModel {
 		
 		appointments.removeEntry(appointmentId);
 	}
-	
-	public void addAppointment(Appointment appointment) {
-		T.call(this);
-		int id = appointments.size();
-		appointment.setAppointmentId(Integer.toString(id));
-		appointments.addItem(appointment);
-	}
-	
-	public void deleteAppointment(int appointmentId) {
-		T.call(this);
-		
-		Appointment appointment = appointments.getItem(appointmentId);
-
-		appointments.removeItem(appointment);;
-	}
 
 	public ObservableAppointmentMap getAppointments() {
 		T.call(this);

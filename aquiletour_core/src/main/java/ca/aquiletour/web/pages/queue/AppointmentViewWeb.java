@@ -31,6 +31,12 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		getRootElement().setAttribute("id", "appointment-" + appointment.getAppointmentId());
 	}
 
+	@Override
+	public void removeAppointment(Appointment appointment) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }
