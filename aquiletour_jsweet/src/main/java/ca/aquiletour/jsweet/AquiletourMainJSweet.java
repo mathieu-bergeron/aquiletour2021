@@ -1,16 +1,15 @@
 package ca.aquiletour.jsweet;
 
 import ca.aquiletour.core.AquiletourMain;
-import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.jsweet.pages.root.RootControllerJSweet;
+import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.system.trace.T;
 
 public class AquiletourMainJSweet extends AquiletourMain {
-	
+
 	@Override
-	protected RootController rootController() {
+	protected void registerViewLoaders() {
 		T.call(this);
 
-		return new RootControllerJSweet();
+		ViewLoaderRegistrationWeb.registerViewLoaders();
 	}
 }

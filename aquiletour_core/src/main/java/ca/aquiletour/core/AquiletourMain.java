@@ -18,32 +18,40 @@
 package ca.aquiletour.core;
 
 import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskSync;
 
-public abstract class AquiletourMain extends NtroTaskImpl {
+public abstract class AquiletourMain extends NtroTaskSync {
 
 	@Override
 	protected void initializeTask() {
 
 	}
+	
+	protected abstract void registerViewLoaders();
 
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
-		
+
 		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");
 
 		// FIXME
 		Constants.LANG = "fr";
 		
-		rootController().execute();
+		registerViewLoaders();
 		
-		notifyTaskFinished();
+		// XXX: "/**" means: execute every subController
+		// XXX: "/*/*/*" means: execute every subController down 3 levels
+		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
+		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", Ntro.window());  
+
+		rootController.execute();
+
 	}
-	
-	protected abstract RootController rootController();
 
 	@Override
 	protected void onFailure(Exception e) {

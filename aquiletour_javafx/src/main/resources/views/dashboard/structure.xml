@@ -31,6 +31,8 @@
         <VBox fx:id="courseContainer" alignment="top_center" HBox.hgrow="ALWAYS">
             <HBox id="conteneurNouvelleListe">
                 <TextField id="texteNouvelItem" fx:id="newCourseText" HBox.hgrow="ALWAYS"/>
+                <TextField id="texteNouvelItem" fx:id="newSummaryText" HBox.hgrow="ALWAYS"/>
+                <TextField id="texteNouvelItem" fx:id="newSummaryDate" HBox.hgrow="ALWAYS"/>
                 <HBox styleClass="petitEspace" HBox.hgrow="ALWAYS"/>
                 <Button id="boutonNouvelItem" fx:id="newCourseButton" text="%newCourse"/>
             </HBox>

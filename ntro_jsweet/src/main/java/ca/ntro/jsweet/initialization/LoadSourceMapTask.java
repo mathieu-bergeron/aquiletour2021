@@ -17,36 +17,33 @@
 
 package ca.ntro.jsweet.initialization;
 
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jsweet.services.ResourceLoaderTaskJsweet;
 import def.es6.Globals;
 
-public class LoadSourceMapTask extends NtroTaskImpl {
+public class LoadSourceMapTask extends NtroTaskSync {
 
 	@Override
 	protected void initializeTask() {
 	}
-	
+
 	public LoadSourceMapTask(String path) {
-		
+
 		addSubTask(new ResourceLoaderTaskJsweet(path));
-		
+
 	}
 
 	@Override
-	protected void runTaskAsync() {
-		
+	protected void runTask() {
 		String sourceMap = getSubTask(ResourceLoaderTaskJsweet.class).getResourceAsString();
-		
-		Globals.installSourceMap(sourceMap);
 
-		notifyTaskFinished();
+		Globals.installSourceMap(sourceMap);
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

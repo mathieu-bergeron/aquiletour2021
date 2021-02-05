@@ -1,26 +1,33 @@
 package ca.aquiletour.core.pages.queue;
 
+import ca.aquiletour.core.pages.queue.messages.AddAppointmentHandler;
+import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentHandler;
+import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueHandler;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
+import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.services.stores.LocalStore;
 
-public class QueueController extends NtroController {
-
-	@Override
-	protected ViewLoader createViewLoader(String lang) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public class QueueController extends NtroController<RootController> {
 
 	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
+	protected void initialize() {
+
+		setViewLoader(QueueView.class, "fr");
 		
-	}
-
-	@Override
-	protected void runTaskAsync() {
-		// TODO Auto-generated method stub
+		setModelLoader(LocalStore.getLoader(QueueModel.class, "TODO"));
 		
+		addParentViewMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
+		
+		addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
+
+		addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
+
+		addSubViewLoader(AppointmentView.class, "fr");
+		
+		addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
 	}
 
 	@Override
