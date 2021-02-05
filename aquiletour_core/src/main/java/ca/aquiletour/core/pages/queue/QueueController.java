@@ -35,32 +35,5 @@ public class QueueController extends NtroController<RootController> {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void showQueue() {
-		T.call(this);
-
-		parentController.installSubView(view);
-	}
-
-	public ShowQueueReceptor createShowQueueTask() {
-		T.call(this);
-
-		return new ShowQueueReceptor(this);
-	}
-
-	public void addAppointement(Appointment appointment) {
-		T.call(this);
-		
-		model.addAppointment(appointment);
-		model.save();
-	}
-	public void deleteAppointement(int appointmentId) {
-		T.call(this);
-		
-		model.deleteAppointment(appointmentId);
-		model.save();
-	}
-	
-	protected abstract ViewLoader createAppointmentViewLoader(String lang);
 
 }
