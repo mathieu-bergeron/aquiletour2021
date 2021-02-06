@@ -25,7 +25,11 @@ bin
 .jsweet
 /jsweet
 
-aquiletour_server/src/main/resources/public/js
+aquiletour_server/src/main/resources/public/js/aquiletour_core  
+aquiletour_server/src/main/resources/public/js/aquiletour_jsweet  
+aquiletour_server/src/main/resources/public/js/ntro_core  
+aquiletour_server/src/main/resources/public/js/ntro_jsweet
+
 
 # Dev databases
 *.db
