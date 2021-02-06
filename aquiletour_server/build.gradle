@@ -26,7 +26,7 @@ task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs('-Dfile.encoding=UTF-8')
+    jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
     standardInput = System.in
     args = ["${project(':aquiletour_jsweet').projectDir}/webapp"]
 }
