@@ -111,7 +111,8 @@ public abstract class InitializationTaskJdk extends InitializationTask {
 	protected ModelStore provideLocalStore() {
 		__T.call(InitializationTaskJdk.class, "provideLocalStore");
 		
-		return new LocalStoreNitrite();
+		//return new LocalStoreNitrite();
+		return new LocalStoreFiles();
 	}
 
 }

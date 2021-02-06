@@ -9,6 +9,10 @@ public class CourseSummary extends NtroModelValue {
 	private String summary;
 	private String date;
 
+	public CourseSummary() {
+		super();
+	}
+
 	public CourseSummary(String title, String summary, String date) {
 		super();
 		T.call(this);

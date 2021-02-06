@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.queue.values;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.models.properties.observable.map.ObservableMap;
 import ca.ntro.core.system.trace.T;
 
@@ -20,7 +21,7 @@ public class ObservableAppointmentMap extends ObservableMap<Appointment> {
 	protected Class<?> getValueType() {
 		T.call(this);
 
-		return Map.class;
+		return NtroModelValue.class;
 	}
 
 }

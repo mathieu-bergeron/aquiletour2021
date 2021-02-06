@@ -6,11 +6,11 @@ import javafx.stage.Stage;
 
 public class NtroJavaFx {
 
-	public static NtroInitializationTask defaultInitializationTask(Stage primaryStage) {
+	public static NtroInitializationTask defaultInitializationTask() {
 		__T.call(NtroJavaFx.class, "defaultInitializationTask");
 		
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
-		initializationTask.addSubTask(new InitializationTaskJavaFx(primaryStage));
+		initializationTask.addSubTask(new InitializationTaskJavaFx());
 
 		return initializationTask;
 	}
