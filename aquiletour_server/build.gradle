@@ -25,6 +25,9 @@ dependencies {
 
 tasks.test{
     dependsOn 'testServer'
+    afterTest { desc, result -> 
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
 }
 
 task server (type:JavaExec) {

@@ -1,8 +1,8 @@
 package ca.aquiletour.test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -18,7 +18,10 @@ public class DashboardViewTest {
 	private String aquiletourSite = "http://localhost:8080";
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
+
+		TestUtils.installTestData();
+
 		//driver = new FirefoxDriver();
 		driver = new ChromeDriver();
 	}
