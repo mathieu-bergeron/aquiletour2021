@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 
-public class GsonLimitations {
+public class JsonLimitations {
 
 	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
@@ -53,9 +53,9 @@ public class GsonLimitations {
 		assertTrue(list.get(0) instanceof ListItemA);
 		assertTrue(list.get(1) instanceof ListItemB);
 		
-		new FileOutputStream(new File("gsonLimitations.json")).write(gson.toJson(list).getBytes());
+		new FileOutputStream(new File("jsonLimitations.json")).write(gson.toJson(list).getBytes());
 		
-		List<ListItem> parsedList = gson.fromJson(new FileReader(new File("gsonLimitations.json")), List.class);
+		List<ListItem> parsedList = gson.fromJson(new FileReader(new File("jsonLimitations.json")), List.class);
 		
 		// XXX: in JSON, there is not type information 
 		//      for objects in the list

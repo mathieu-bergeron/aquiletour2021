@@ -32,6 +32,10 @@ tasks.test{
     afterTest { desc, result -> 
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
+    doLast{
+        def dumpFilePaths = new FileNameFinder().getFileNames(rootProject.projectDir.toString(), 'build_*')
+        dumpFilePaths.each{ dumpFilePath -> new File(dumpFilePath).delete()}
+    }
 }
 
 task server (type:JavaExec) {

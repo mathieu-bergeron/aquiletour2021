@@ -37,6 +37,7 @@ aquiletour_server/src/main/resources/public/js/ntro_jsweet
 # Dev databases
 *.db
 __data__
+jsonLimitations.json
 
 # ??
 build_*
