@@ -21,6 +21,10 @@ dependencies {
     testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
 
     testImplementation 'junit:junit:4.13'
+
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-client
+    testImplementation group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.36.v20210114'
+
 }
 
 tasks.test{
@@ -38,12 +42,21 @@ task server (type:JavaExec) {
     standardInput = System.in
 }
 
+def dummyOutputStream = new OutputStream() {
+    @Override
+    public void write(int b) {}
+}
+
 task testServer(type: com.github.psxpaul.task.JavaExecFork) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs('-Dfile.encoding=UTF-8') 
-    classpath = sourceSets.main.runtimeClasspath
+    standardOutput = dummyOutputStream
+    errorOutput = dummyOutputStream
     stopAfter = tasks.test
     killDescendants=false
 }
+
+
+
