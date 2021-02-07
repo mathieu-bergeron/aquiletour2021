@@ -1,6 +1,7 @@
 plugins{
     id 'local-java-plugin'
     id 'local-jsweet-plugin'
+    id 'com.github.hesch.execfork' version '0.1.15'
 }
 
 dependencies {
@@ -22,11 +23,24 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
+tasks.test{
+    dependsOn 'testServer'
+}
+
 task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
     standardInput = System.in
-    args = ["${project(':aquiletour_jsweet').projectDir}/webapp"]
+}
+
+task testServer(type: com.github.psxpaul.task.JavaExecFork) {
+    dependsOn 'classes'
+    main = 'ca.aquiletour.server.JavaMainServer'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs('-Dfile.encoding=UTF-8') 
+    classpath = sourceSets.main.runtimeClasspath
+    stopAfter = tasks.test
+    killDescendants=false
 }

@@ -121,22 +121,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		NtroWindowServer newWindow;
 		
-		if(baseRequest.getParameter("nojs") != null) {
-			
-			response.addCookie(new Cookie("nojs", "true"));
-			newWindow = new NtroWindowServer("/private/nojs.html");
-			
-		}else if(hasCookie(baseRequest, "nojs")) {
-
-			newWindow = new NtroWindowServer("/private/nojs.html");
-
-		} else {
-
-			newWindow = new NtroWindowServer("/private/index.html");
-
-		}
-
-		newWindow.setCurrentPath(path);
+		newWindow = newWindowAndCookies(baseRequest, path, response);
 
 		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
 
@@ -154,20 +139,44 @@ public class DynamicHandler extends AbstractHandler {
 		//     every non-blocked task in webApp
 		writeResponse(newWindow, baseRequest, out);
 	}
+
+	private NtroWindowServer newWindowAndCookies(Request baseRequest, Path path, HttpServletResponse response) {
+		T.call(this);
+
+		NtroWindowServer newWindow;
+
+		if(baseRequest.getParameter("nojs") != null) {
+			
+			response.addCookie(new Cookie("nojs", "true"));
+			newWindow = new NtroWindowServer("/private/nojs.html");
+			
+		}else if(hasCookie(baseRequest, "nojs")) {
+
+			newWindow = new NtroWindowServer("/private/nojs.html");
+
+		} else {
+
+			newWindow = new NtroWindowServer("/private/index.html");
+
+		}
+
+		newWindow.setCurrentPath(path);
+
+		return newWindow;
+	}
 	
 	private boolean hasCookie(Request baseRequest, String name) {
 		T.call(this);
-
-		boolean hasCookie = false;
+		
+		if(baseRequest.getCookies() == null) return false;
 		
 		for(Cookie cookie : baseRequest.getCookies()) {
 			if(cookie.getName().equals(name)) {
-				hasCookie = true;
-				break;
+				return true;
 			}
 		}
 		
-		return hasCookie;
+		return false;
 	}
 
 
