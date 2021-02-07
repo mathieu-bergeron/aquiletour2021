@@ -157,17 +157,16 @@ public class DynamicHandler extends AbstractHandler {
 	
 	private boolean hasCookie(Request baseRequest, String name) {
 		T.call(this);
-
-		boolean hasCookie = false;
+		
+		if(baseRequest.getCookies() == null) return false;
 		
 		for(Cookie cookie : baseRequest.getCookies()) {
 			if(cookie.getName().equals(name)) {
-				hasCookie = true;
-				break;
+				return true;
 			}
 		}
 		
-		return hasCookie;
+		return false;
 	}
 
 
