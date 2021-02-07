@@ -17,9 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.services.stores.LocalStore;
@@ -28,6 +25,7 @@ import ca.ntro.jdk.web.NtroWebserver;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.util.HttpCookieStore;
+import org.hamcrest.MatcherAssert;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -37,7 +35,6 @@ import static ca.aquiletour.test.Constants.*;
 public class BackendTests {
 	
 	private static HttpClient client;
-	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 	
 	@BeforeClass
 	public static void initializeNtro(){
