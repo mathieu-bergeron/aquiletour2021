@@ -121,6 +121,30 @@ public class DynamicHandler extends AbstractHandler {
 
 		NtroWindowServer newWindow;
 		
+		newWindow = newWindowAndCookies(baseRequest, path, response);
+
+		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
+
+		rootController.execute();
+
+		Map<String, String[]> parameters = baseRequest.getParameterMap();
+
+		// XXX: sending a message unblocks a task
+		AquiletourRequestHandler.sendMessages(path, parameters);
+		
+		//System.out.println(rootController.getTask().toString());
+		
+		// XXX the entire taskGraph is not really async
+		//     writeResponse will execute AFTER 
+		//     every non-blocked task in webApp
+		writeResponse(newWindow, baseRequest, out);
+	}
+
+	private NtroWindowServer newWindowAndCookies(Request baseRequest, Path path, HttpServletResponse response) {
+		T.call(this);
+
+		NtroWindowServer newWindow;
+
 		if(baseRequest.getParameter("nojs") != null) {
 			
 			response.addCookie(new Cookie("nojs", "true"));
@@ -138,21 +162,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		newWindow.setCurrentPath(path);
 
-		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
-
-		rootController.execute();
-
-		Map<String, String[]> parameters = baseRequest.getParameterMap();
-
-		// XXX: sending a message unblocks a task
-		AquiletourRequestHandler.sendMessages(path, parameters);
-		
-		//System.out.println(rootController.getTask().toString());
-		
-		// XXX the entire taskGraph is not really async
-		//     writeResponse will execute AFTER 
-		//     every non-blocked task in webApp
-		writeResponse(newWindow, baseRequest, out);
+		return newWindow;
 	}
 	
 	private boolean hasCookie(Request baseRequest, String name) {
