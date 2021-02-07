@@ -1,11 +1,12 @@
 package ca.aquiletour.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Map;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -26,6 +27,9 @@ import ca.ntro.jdk.web.NtroWebserver;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.util.HttpCookieStore;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import static ca.aquiletour.test.Constants.*;
 
@@ -50,11 +54,11 @@ public class BackendTests {
 	}
 
 	@Test
-	public void makeAppointmentTest() throws InterruptedException, ExecutionException, TimeoutException, FileNotFoundException {
+	public void shouldAddAppointment() throws InterruptedException, ExecutionException, TimeoutException, FileNotFoundException {
 		
 		int startingSize = numberOfAppointments();
 		
-        ContentResponse res = client.GET(HOST + "/queue?makeAppointment");
+        client.GET(HOST + "/queue?makeAppointment");
         
         int newSize = numberOfAppointments();
         
@@ -75,8 +79,37 @@ public class BackendTests {
 
 
 	@Test
-	public void loginTest() {
+	public void loginShouldSucceed() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+		
+		HttpCookieStore cookies = new HttpCookieStore();
+		
+		cookies.add(new URI(HOST), new HttpCookie("userId","bob"));
+		cookies.add(new URI(HOST), new HttpCookie("authToken","bobToken"));
+		
+		client.setCookieStore(cookies);
 
+        ContentResponse res = client.GET(HOST + "/dashboard");
+        
+        Document document = Jsoup.parse(res.getContentAsString());
+        
+        assertTrue(document.select(".dashboard-container").size() > 0);
+	}
+
+	@Test
+	public void loginShouldFail() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+		
+		HttpCookieStore cookies = new HttpCookieStore();
+		
+		cookies.add(new URI(HOST), new HttpCookie("userId","bob"));
+		cookies.add(new URI(HOST), new HttpCookie("authToken","wrongToken"));
+		
+		client.setCookieStore(cookies);
+
+        ContentResponse res = client.GET(HOST + "/dashboard");
+        
+        Document document = Jsoup.parse(res.getContentAsString());
+        
+        assertFalse(document.select(".dashboard-container").size() > 0);
 	}
 
 	@After
