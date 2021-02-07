@@ -11,20 +11,35 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.jdk.web.NtroWebserver;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 
 import static ca.aquiletour.test.Constants.*;
 
+@RunWith(JUnit4.class)
 public class BackendTests {
 	
-	private HttpClient client;
+	private static HttpClient client;
 	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
+	
+	@BeforeClass
+	public static void initializeNtro(){
+		NtroWebserver.defaultInitializationTask()
+		             .execute();
+	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -47,19 +62,15 @@ public class BackendTests {
 	}
 
 	private int numberOfAppointments() throws FileNotFoundException {
-		FileReader reader = new FileReader(new File("__data__/QueueModel/TODO.json"));
+		
+		// XXX: assuming that modelLoader is actually Sync
+		//      will not work in JSweet
+		ModelLoader modelLoader = LocalStore.getLoader(QueueModel.class, "TODO");
+		modelLoader.execute();
+		
+		QueueModel queue = (QueueModel) modelLoader.getModel();
 
-		Map<String, Object> queue = gson.fromJson(reader, Map.class);
-		Map<String, Object> appointments = (Map<String,Object>) queue.get("appointments");
-		Map<String, Object> value = (Map<String,Object>) appointments.get("value");
-		int startingSize = value.size();
-
-		/*
-		QueueModel queue = gson.fromJson(reader,QueueModel.class);
-		int startingSize = queue.getAppointments().getValue().size();
-		*/
-
-		return startingSize;
+		return queue.getAppointments().getValue().size();
 	}
 
 
