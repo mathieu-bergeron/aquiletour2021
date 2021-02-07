@@ -1,4 +1,4 @@
-package ca.aquiletour.test;
+package ca.ntro.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,8 +23,7 @@ public class JsonLimitations {
 	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
 	@Before
-	public void setUp() throws Exception {
-		TestUtils.installTestData();
+	public void setUp() {
 	}
 
 	private interface ListItem {
