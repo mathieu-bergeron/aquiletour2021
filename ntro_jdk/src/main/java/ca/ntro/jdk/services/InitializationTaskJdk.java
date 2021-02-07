@@ -112,6 +112,9 @@ public abstract class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideLocalStore");
 		
 		//return new LocalStoreNitrite();
+		
+		// FIXME: for tests we cannot use Nitrite as it does not support multiple connexions
+		//        (we need one for the server and one for tests)
 		return new LocalStoreFiles();
 	}
 
