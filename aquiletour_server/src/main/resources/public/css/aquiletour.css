@@ -55,7 +55,6 @@
   margin-top: 10px;
 }
 
-<<<<<<< HEAD
 .wrap-close-btn {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
@@ -79,6 +78,13 @@
   margin-left: 1%;
 }
 
+.dropdown{
+  position: absolute;
+  right: 0;
+}
+
+.dropdown-menu{
+  left: auto;
+  right: 0;
+}
 /* For message feature*/
-=======
->>>>>>> main
