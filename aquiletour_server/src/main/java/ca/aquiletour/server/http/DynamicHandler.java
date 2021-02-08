@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -117,10 +118,10 @@ public class DynamicHandler extends AbstractHandler {
 		Constants.LANG = "fr";   // TODO
 		
 		Path path = new Path(baseRequest.getRequestURI().toString());
+
+		NtroWindowServer newWindow;
 		
-		NtroWindowServer newWindow = ((NtroWindowServer) Ntro.window()).clone();
-		
-		newWindow.setCurrentPath(path);
+		newWindow = newWindowAndCookies(baseRequest, path, response);
 
 		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
 
@@ -137,6 +138,45 @@ public class DynamicHandler extends AbstractHandler {
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
 		writeResponse(newWindow, baseRequest, out);
+	}
+
+	private NtroWindowServer newWindowAndCookies(Request baseRequest, Path path, HttpServletResponse response) {
+		T.call(this);
+
+		NtroWindowServer newWindow;
+
+		if(baseRequest.getParameter("nojs") != null) {
+			
+			response.addCookie(new Cookie("nojs", "true"));
+			newWindow = new NtroWindowServer("/private/nojs.html");
+			
+		}else if(hasCookie(baseRequest, "nojs")) {
+
+			newWindow = new NtroWindowServer("/private/nojs.html");
+
+		} else {
+
+			newWindow = new NtroWindowServer("/private/index.html");
+
+		}
+
+		newWindow.setCurrentPath(path);
+
+		return newWindow;
+	}
+	
+	private boolean hasCookie(Request baseRequest, String name) {
+		T.call(this);
+		
+		if(baseRequest.getCookies() == null) return false;
+		
+		for(Cookie cookie : baseRequest.getCookies()) {
+			if(cookie.getName().equals(name)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 

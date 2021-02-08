@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.dashboard.values;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.models.properties.observable.list.ObservableList;
 import ca.ntro.core.system.trace.T;
 
@@ -23,7 +24,11 @@ public class ObservableCourseList extends ObservableList<CourseSummary>{
 	protected Class<?> getValueType() {
 		T.call(this);
 
-		return List.class;
+		//return CourseSummary.class;
+		
+		// FIXME: this should be CourseSummary.class
+		//        but ObservableList.toJsonObject needs fixing first
+		return NtroModelValue.class;
 	}
 
 }

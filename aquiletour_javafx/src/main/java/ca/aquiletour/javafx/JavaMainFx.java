@@ -38,9 +38,9 @@ public class JavaMainFx extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		__T.call(JavaMainFx.class, "start");
 
-		NtroJavaFx.defaultInitializationTask(primaryStage)
+		NtroJavaFx.defaultInitializationTask()
 		          .setOptions(args)
-		          .addNextTask(new AquiletourMainFx())
+		          .addNextTask(new AquiletourMainFx(primaryStage))
 		          .execute();
 	}
 }

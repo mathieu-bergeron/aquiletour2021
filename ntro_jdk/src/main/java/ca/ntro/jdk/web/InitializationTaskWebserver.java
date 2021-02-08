@@ -7,23 +7,4 @@ import ca.ntro.jdk.services.InitializationTaskJdk;
 import ca.ntro.web.NtroWindowWeb;
 
 public class InitializationTaskWebserver extends InitializationTaskJdk {
-	
-	NtroWindowWeb window;
-	
-	public InitializationTaskWebserver(String indexHtmlPath) {
-		super();
-		T.call(this);
-		
-		window = new NtroWindowServer(indexHtmlPath);
-	}
-
-	@Override
-	protected NtroWindow provideWindow() {
-		T.call(this);
-		
-		MustNot.beNull(window);
-		
-		return window;
-	}
-
 }

@@ -1,6 +1,7 @@
 plugins{
     id 'local-java-plugin'
     id 'local-jsweet-plugin'
+    id 'com.github.hesch.execfork' version '0.1.15'
 }
 
 dependencies {
@@ -20,13 +21,46 @@ dependencies {
     testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
 
     testImplementation 'junit:junit:4.13'
+
+    // https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-client
+    testImplementation group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.36.v20210114'
+
+}
+
+tasks.test{
+    dependsOn 'testServer'
+    afterTest { desc, result -> 
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+    doLast{
+        def dumpFilePaths = new FileNameFinder().getFileNames(rootProject.projectDir.toString(), 'build_*')
+        dumpFilePaths.each{ dumpFilePath -> new File(dumpFilePath).delete()}
+    }
 }
 
 task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs('-Dfile.encoding=UTF-8')
+    jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
     standardInput = System.in
-    args = ["${project(':aquiletour_jsweet').projectDir}/webapp"]
 }
+
+def dummyOutputStream = new OutputStream() {
+    @Override
+    public void write(int b) {}
+}
+
+task testServer(type: com.github.psxpaul.task.JavaExecFork) {
+    dependsOn 'classes'
+    main = 'ca.aquiletour.server.JavaMainServer'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs('-Dfile.encoding=UTF-8') 
+    standardOutput = dummyOutputStream
+    errorOutput = dummyOutputStream
+    stopAfter = tasks.test
+    killDescendants=false
+}
+
+
+
