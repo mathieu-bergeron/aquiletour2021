@@ -21,9 +21,10 @@ import static ca.ntro.core.mvc.Constants.VIEW_HANDLER_TASK_ID;
 abstract class NtroAbstractController implements TaskWrapper {
 	
 	private NtroTask mainTask = new ContainerTask();
+	private NtroContext context;
 	private Path path;
 
-	protected abstract void initialize();
+	protected abstract void initialize(NtroContext context);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -45,8 +46,12 @@ abstract class NtroAbstractController implements TaskWrapper {
 		
 		getTask().execute();
 	}
+	
+	void setContext(NtroContext context) {
+		this.context = context;
+	}
 
-	protected void setPath(Path path) {
+	void setPath(Path path) {
 		T.call(this);
 
 		this.path = path;
@@ -59,7 +64,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		if(path.startsWith(controllerId) || path.startsWith("*")) {
 			Path pathRemainder = path.removePrefix(controllerId);
 
-			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this);
+			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
 			
 			getTask().addNextTask(subController.getTask());
 

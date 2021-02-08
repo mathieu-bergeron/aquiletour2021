@@ -1,16 +1,17 @@
 package ca.aquiletour.core.pages.settings;
 
 import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
 public class SettingsController extends NtroController<RootController> {
 
 	@Override
-	protected void initialize() {
+	protected void initialize(NtroContext context) {
 		T.call(this);
 
-		setViewLoader(SettingsView.class, "fr");
+		setViewLoader(SettingsView.class, context.getLang());
 
 		addParentViewMessageHandler(ShowSettingsMessage.class, new ShowSettingsHandler());
 	}

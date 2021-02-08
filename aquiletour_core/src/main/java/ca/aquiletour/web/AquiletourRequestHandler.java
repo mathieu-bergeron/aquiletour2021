@@ -11,14 +11,16 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.ntro.core.Path;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 
 public class AquiletourRequestHandler {
 	
 	
-	public static void sendMessages(Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
+		
 
 		if(path.startsWith("settings")) {
 			
@@ -32,6 +34,19 @@ public class AquiletourRequestHandler {
 
 			sendQueueMessages(path.subPath(1), parameters);
 		}
+	}
+	
+	private boolean shouldTryToLogin(Map<String, String[]> parameters) {
+		T.call(this);
+
+		boolean shouldTryToLogin = false;
+		
+		if(parameters.containsKey("userId") && parameters.containsKey("authToken")) {
+			
+		}
+		
+		
+		return shouldTryToLogin;
 	}
 
 	private static void sendSettingsMessages(Path path, Map<String, String[]> parameters) {

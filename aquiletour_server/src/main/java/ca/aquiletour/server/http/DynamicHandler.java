@@ -47,6 +47,7 @@ import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerFactory;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
@@ -114,23 +115,35 @@ public class DynamicHandler extends AbstractHandler {
 		response.setContentType("text/html; charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
 		
+		// TODO: get authToken and userId from cookies
+		//       adjust path consequently
+		//       (if not logged in, path should be set to / regardless of actual path)
+		
+		// If we have valid /?userId&authToken, add new cookies and proceeed to the actual path
+		
 		String authToken = null; // TODO
 		Constants.LANG = "fr";   // TODO
 		
 		Path path = new Path(baseRequest.getRequestURI().toString());
+		
+		// TODO: if not logged in, path is reset to "/"
+		
+		NtroContext context = new NtroContext();
+		context.setLang(Constants.LANG);
+
 
 		NtroWindowServer newWindow;
 		
 		newWindow = newWindowAndCookies(baseRequest, path, response);
 
-		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
+		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
 
 		rootController.execute();
 
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 		// XXX: sending a message unblocks a task
-		AquiletourRequestHandler.sendMessages(path, parameters);
+		AquiletourRequestHandler.sendMessages(context, path, parameters);
 		
 		//System.out.println(rootController.getTask().toString());
 		

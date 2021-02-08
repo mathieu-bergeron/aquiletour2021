@@ -20,16 +20,17 @@ package ca.aquiletour.core.pages.root;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.settings.SettingsController;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 
 public class RootController extends NtroRootController {
 
 	@Override
-	protected void initialize() {
+	protected void initialize(NtroContext context) {
 		T.call(this);
 		
-		setViewLoader(RootView.class, "fr");
+		setViewLoader(RootView.class, context.getLang());
 
 		addSubController(SettingsController.class, "settings");
 		addSubController(DashboardController.class, "dashboard");
