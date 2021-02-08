@@ -29,6 +29,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -43,11 +44,14 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
@@ -112,25 +116,22 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		response.setContentType("text/html; charset=utf-8");
-		response.setStatus(HttpServletResponse.SC_OK);
-		
-		// TODO: get authToken and userId from cookies
-		//       adjust path consequently
-		//       (if not logged in, path should be set to / regardless of actual path)
-		
-		// If we have valid /?userId&authToken, add new cookies and proceeed to the actual path
-		
-		String authToken = null; // TODO
-		Constants.LANG = "fr";   // TODO
-		
-		Path path = new Path(baseRequest.getRequestURI().toString());
-		
-		// TODO: if not logged in, path is reset to "/"
-		
 		NtroContext context = new NtroContext();
-		context.setLang(Constants.LANG);
+		context.setLang(Constants.LANG); // TODO
 
+		boolean userIsLoggedIn = authenticateUsersAddCookiesSetContext(context, baseRequest, response);
+
+		Path path;
+		
+		if(userIsLoggedIn) {
+			
+			path = new Path(baseRequest.getRequestURI().toString());
+			
+		}else {
+			
+			path = new Path("/");
+			
+		}
 
 		NtroWindowServer newWindow;
 		
@@ -150,11 +151,62 @@ public class DynamicHandler extends AbstractHandler {
 		// XXX the entire taskGraph is not really async
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
+		response.setContentType("text/html; charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
 		writeResponse(newWindow, baseRequest, out);
+	}
+
+	private boolean authenticateUsersAddCookiesSetContext(NtroContext context, Request baseRequest, HttpServletResponse response) {
+		T.call(this);
+		
+		boolean isUserLoggedIn = false;
+
+		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
+		usersLoader.execute();
+		UsersModel usersModel = (UsersModel) usersLoader.getModel();
+		
+		if(hasCookie(baseRequest, "userId") 
+				&& hasCookie(baseRequest, "authToken")) {
+			
+			String userId = getCookie(baseRequest, "userId");
+			String authToken = getCookie(baseRequest, "authToken");
+			
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(!isUserLoggedIn) {
+				eraseCookie(response, "userId");
+				eraseCookie(response, "authToken");
+
+			}else {
+
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+			
+		}else if(baseRequest.getParameter("userId") != null 
+				&& baseRequest.getParameter("authToken") != null) {
+			
+			String userId = baseRequest.getParameter("userId");
+			String authToken  = baseRequest.getParameter("authToken");
+
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(isUserLoggedIn) {
+				setCookie(response, "userId", userId);
+				setCookie(response, "authToken", authToken);
+				
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+		}
+
+		return isUserLoggedIn;
 	}
 
 	private NtroWindowServer newWindowAndCookies(Request baseRequest, Path path, HttpServletResponse response) {
 		T.call(this);
+		
+		// TODO: inject desired language in <html> tag
 
 		NtroWindowServer newWindow;
 
@@ -191,6 +243,38 @@ public class DynamicHandler extends AbstractHandler {
 		
 		return false;
 	}
+
+	private String getCookie(Request baseRequest, String name) {
+		T.call(this);
+		
+		if(baseRequest.getCookies() == null) return null;
+		
+		for(Cookie cookie : baseRequest.getCookies()) {
+			if(cookie.getName().equals(name)) {
+				return cookie.getValue();
+			}
+		}
+		
+		return null;
+	}
+
+	private void eraseCookie(HttpServletResponse response, String name) {
+		T.call(this);
+		
+		Cookie cookie = new Cookie(name, "");
+		cookie.setMaxAge(0);
+
+		response.addCookie(cookie);
+	}
+
+	private void setCookie(HttpServletResponse response, String name, String value) {
+		T.call(this);
+		
+		Cookie cookie = new Cookie(name, value);
+
+		response.addCookie(cookie);
+	}
+
 
 
 	private void writeResponse(NtroWindowServer window, Request baseRequest, OutputStream out) {

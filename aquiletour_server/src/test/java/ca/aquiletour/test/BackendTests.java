@@ -51,9 +51,16 @@ public class BackendTests {
 	}
 
 	@Test
-	public void shouldAddAppointment() throws InterruptedException, ExecutionException, TimeoutException, FileNotFoundException {
-		
+	public void shouldAddAppointment() throws InterruptedException, ExecutionException, TimeoutException, FileNotFoundException, URISyntaxException {
+
 		int startingSize = numberOfAppointments();
+
+		HttpCookieStore cookies = new HttpCookieStore();
+		
+		cookies.add(new URI(HOST), new HttpCookie("userId","bob"));
+		cookies.add(new URI(HOST), new HttpCookie("authToken","bobToken"));
+		
+		client.setCookieStore(cookies);
 		
         client.GET(HOST + "/queue?makeAppointment");
         
@@ -66,7 +73,7 @@ public class BackendTests {
 		
 		// XXX: assuming that modelLoader is actually Sync
 		//      will not work in JSweet
-		ModelLoader modelLoader = LocalStore.getLoader(QueueModel.class, "TODO");
+		ModelLoader modelLoader = LocalStore.getLoader(QueueModel.class, "bobToken", "bob");
 		modelLoader.execute();
 		
 		QueueModel queue = (QueueModel) modelLoader.getModel();

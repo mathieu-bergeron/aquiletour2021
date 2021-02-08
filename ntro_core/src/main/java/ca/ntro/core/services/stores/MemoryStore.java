@@ -29,10 +29,10 @@ public class MemoryStore extends ModelStore {
 	}
 
 	// XXX: must synchronize here as get can be called from multiple threads
-	public synchronized static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String modelId) {
+	public synchronized static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String firstPathName, String... pathRemainder) {
 		T.call(MemoryStore.class);
 
-		ModelLoader result = instance.getLoaderImpl(modelClass, modelId);
+		ModelLoader result = instance.getLoaderImpl(modelClass, "NO_TOKEN", firstPathName, pathRemainder);
 		
 		return result;
 	}

@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -40,7 +41,13 @@ public class DashboardViewTest {
 	private void addClass(WebDriver driver, String titleInput, String summaryInput, String dateInput ){
 		
 		Boolean created = false;
+		
+
 		driver.get(aquiletourSite);
+
+		driver.manage().addCookie(new Cookie("userId", "bob"));
+		driver.manage().addCookie(new Cookie("authToken", "bobToken"));
+		
 		waitForPageToLoad(500);
 
         //search for tasks

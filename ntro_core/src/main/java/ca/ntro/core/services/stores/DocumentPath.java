@@ -5,14 +5,13 @@ public class DocumentPath {
 	private String collection;
 	private String documentId;
 
-	public DocumentPath(String collection, String... modelPath) {
+	public DocumentPath(String collection, String firstPathName, String... pathRemainder) {
 		this.collection = collection;
 
-		if(modelPath.length > 0) {
-			this.documentId = modelPath[0];
-		}
-		for(int i = 1; i < modelPath.length; i++) {
-			this.documentId += "__" + modelPath[i];
+		this.documentId = firstPathName;
+
+		for(int i = 0; i < pathRemainder.length; i++) {
+			this.documentId += "__" + pathRemainder[i];
 		}
 	}
 	

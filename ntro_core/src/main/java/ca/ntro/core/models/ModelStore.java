@@ -14,12 +14,12 @@ public abstract class ModelStore {
 	public static final String MODEL_DATA_KEY="modelData";
 
 
-	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String authToken, String... modelPath){
+	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
 		
 		ModelLoader modelLoader = new ModelLoader(this);
 		
-		DocumentPath documentPath = new DocumentPath(modelClass.getSimpleName(), modelPath);
+		DocumentPath documentPath = new DocumentPath(modelClass.getSimpleName(), firstPathName, pathRemainder);
 		
 		JsonLoader jsonLoader = getJsonObject(documentPath);
 		jsonLoader.setTaskId("JsonLoader");
