@@ -1,10 +1,13 @@
 package ca.ntro.core.mvc;
 
+import ca.ntro.core.Path;
+
 public class NtroContext {
 	
 	private String lang;
 	private String userId;
 	private String authToken;
+	private Path path;
 	
 	public String getUserId() {
 		return userId;
@@ -30,4 +33,11 @@ public class NtroContext {
 		this.lang = lang;
 	}
 
+	public Path getPath() {
+		return path;
+	}
+
+	public void setPath(Path path) {
+		this.path = path;
+	}
 }

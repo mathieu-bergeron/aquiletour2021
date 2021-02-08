@@ -18,7 +18,9 @@ public class QueueController extends NtroController<RootController> {
 
 		setViewLoader(QueueView.class, context.getLang());
 		
-		setModelLoader(LocalStore.getLoader(QueueModel.class, context.getAuthToken(), context.getUserId()));
+		String courseId = context.getPath().getName(0);
+		String groupId = context.getPath().getName(1);
+		setModelLoader(LocalStore.getLoader(QueueModel.class, context.getAuthToken(), courseId, groupId));
 		
 		addParentViewMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
 		

@@ -133,6 +133,8 @@ public class DynamicHandler extends AbstractHandler {
 			
 		}
 
+		context.setPath(path);
+
 		NtroWindowServer newWindow;
 		
 		newWindow = newWindowAndCookies(baseRequest, path, response);

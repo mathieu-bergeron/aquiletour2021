@@ -63,6 +63,8 @@ abstract class NtroAbstractController implements TaskWrapper {
 		
 		if(path.startsWith(controllerId) || path.startsWith("*")) {
 			Path pathRemainder = path.removePrefix(controllerId);
+			
+			context.setPath(pathRemainder);
 
 			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
 			
