@@ -28,6 +28,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		
 		time.appendHtml(appointment.getTime());
 		appointmentId.appendHtml(appointment.getAppointmentId());
+		close.setAttribute("href", "queue?deleteAppointment=" + appointment.getAppointmentId());
 		
 		getRootElement().setAttribute("id", "appointment-" + appointment.getAppointmentId());
 	}
