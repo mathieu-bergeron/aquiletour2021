@@ -137,7 +137,7 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public List<Method> userDefinedMethodsFromClass(Class<?> javaClass) {
+	public List<Method> appointmentDefinedMethodsFromClass(Class<?> javaClass) {
 		T.call(this);
 		
 		List<Method> result = new ArrayList<>();
@@ -240,8 +240,8 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public List<FieldSignature> userDefinedFieldsFromClass(Class<?> javaClass) {
-		throw new RuntimeException("TODO: IntrospectorJSweet.userDefinedFieldsFromClass");
+	public List<FieldSignature> appointmentDefinedFieldsFromClass(Class<?> javaClass) {
+		throw new RuntimeException("TODO: IntrospectorJSweet.appointmentDefinedFieldsFromClass");
 	}
 
 	@Override

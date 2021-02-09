@@ -125,11 +125,11 @@ public class ValueFormatterJdk extends ValueFormatter {
 		
 		boolean result = false;
 		
-		List<Method> userDefinedMethods = Ntro.introspector().userDefinedMethodsFromObject(value);
+		List<Method> appointmentDefinedMethods = Ntro.introspector().appointmentDefinedMethodsFromObject(value);
 		
-		for(Method userDefinedMethod : userDefinedMethods) {
+		for(Method appointmentDefinedMethod : appointmentDefinedMethods) {
 			
-			if(userDefinedMethod.getName().equals("toString")) {
+			if(appointmentDefinedMethod.getName().equals("toString")) {
 				
 				result = true;
 				break;

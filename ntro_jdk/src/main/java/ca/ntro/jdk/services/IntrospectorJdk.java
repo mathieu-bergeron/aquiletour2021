@@ -385,7 +385,7 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public List<Method> userDefinedMethodsFromClass(Class<?> _class) {
+	public List<Method> appointmentDefinedMethodsFromClass(Class<?> _class) {
 		T.call(this);
 
 		List<Method> result = new ArrayList<>();
@@ -411,7 +411,7 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public List<FieldSignature> userDefinedFieldsFromClass(Class<?> _class) {
+	public List<FieldSignature> appointmentDefinedFieldsFromClass(Class<?> _class) {
 		T.call(this);
 
 		List<FieldSignature> result = new ArrayList<>();

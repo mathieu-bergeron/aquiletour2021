@@ -38,7 +38,7 @@ public abstract class Introspector {
 		
 		Method result = null;
 		
-		for(Method candidate : userDefinedMethodsFromClass(currentClass)) {
+		for(Method candidate : appointmentDefinedMethodsFromClass(currentClass)) {
 			
 			MethodSignature candidateSignature = methodSignature(candidate);
 			
@@ -64,7 +64,7 @@ public abstract class Introspector {
 		
 		Method result = null;
 		
-		for(Method method : userDefinedMethodsFromClass(_class)) {
+		for(Method method : appointmentDefinedMethodsFromClass(_class)) {
 			
 			if(method.getName().equals(methodName)) {
 				
@@ -174,28 +174,28 @@ public abstract class Introspector {
 
 
 
-	public List<Method> userDefinedMethodsFromObject(Object object) {
+	public List<Method> appointmentDefinedMethodsFromObject(Object object) {
 		T.call(Introspector.class);
 		
 		// FIXME: does not work in JSweet
 		//MustNot.beTrue(object instanceof Class);
 		
-		return userDefinedMethodsFromClass(object.getClass());
+		return appointmentDefinedMethodsFromClass(object.getClass());
 	}
 
-	public abstract List<Method> userDefinedMethodsFromClass(Class<?> _class);
+	public abstract List<Method> appointmentDefinedMethodsFromClass(Class<?> _class);
 
 
-	public abstract List<FieldSignature> userDefinedFieldsFromClass(Class<?> _class);
+	public abstract List<FieldSignature> appointmentDefinedFieldsFromClass(Class<?> _class);
 	
 
-	public List<Method> userDefinedSetters(Object object) {
+	public List<Method> appointmentDefinedSetters(Object object) {
 
 		//MustNot.beTrue(object instanceof Class);
 		
 		List<Method> allSetters = new ArrayList<>();
 		
-		for(Method method : userDefinedMethodsFromObject(object)) {
+		for(Method method : appointmentDefinedMethodsFromObject(object)) {
 			
 			System.out.println("method: " + method.getName());
 
@@ -210,7 +210,7 @@ public abstract class Introspector {
 		return allSetters;
 	}
 
-	public List<Method> userDefinedGetters(Object object) {
+	public List<Method> appointmentDefinedGetters(Object object) {
 		T.call(Introspector.class);
 
 		// FIXME: does not work in JSweet
@@ -218,7 +218,7 @@ public abstract class Introspector {
 		
 		List<Method> allGetters = new ArrayList<>();
 		
-		for(Method method : userDefinedMethodsFromObject(object)) {
+		for(Method method : appointmentDefinedMethodsFromObject(object)) {
 
 			if(isAGetter(method)) {
 

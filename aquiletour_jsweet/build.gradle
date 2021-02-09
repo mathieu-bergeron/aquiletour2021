@@ -26,9 +26,9 @@ tasks.jsweet{
 
     // FIXME: move this to the local-jsweet-plugin
     //        i.e. by declaring a local-jsweet-plugin.includedProjects to iterate over
-    inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_core") 
-    inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_jsweet") 
-    inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/aquiletour/aquiletour_core") 
+    inputs.dir("${System.getProperty('appointment.home')}/.m2/repository/ca/ntro/ntro_core") 
+    inputs.dir("${System.getProperty('appointment.home')}/.m2/repository/ca/ntro/ntro_jsweet") 
+    inputs.dir("${System.getProperty('appointment.home')}/.m2/repository/ca/aquiletour/aquiletour_core") 
 
     // FIXME: same as above FIXME
     doLast{

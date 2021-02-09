@@ -13,7 +13,7 @@ import ca.ntro.core.system.trace.T;
 
 
 /**
- * Every user-defined value inside a model
+ * Every appointment-defined value inside a model
  * must be a subclass of ModelValue
  * 
  * @author mbergeron
@@ -31,7 +31,7 @@ public abstract class NtroModelValue extends JsonObjectIO implements StoreConnec
 	private void connectSubValues(ValuePath valuePath, ModelStore modelStore) {
 		T.call(this);
 		
-		for(Method getter : Ntro.introspector().userDefinedGetters(this)) {
+		for(Method getter : Ntro.introspector().appointmentDefinedGetters(this)) {
 			
 			String fieldName = Ntro.introspector().fieldNameForGetter(getter);
 			

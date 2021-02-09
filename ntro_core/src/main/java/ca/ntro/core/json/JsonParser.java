@@ -102,11 +102,11 @@ public abstract class JsonParser {
 	public static boolean isUserDefined(Object jsonValue) {
 		T.call(JsonParser.class);
 		
-		return userDefinedTypeName(jsonValue) != null;
+		return appointmentDefinedTypeName(jsonValue) != null;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static String userDefinedTypeName(Object jsonValue) {
+	private static String appointmentDefinedTypeName(Object jsonValue) {
 		T.call(JsonParser.class);
 		
 		String result = null;
@@ -129,20 +129,20 @@ public abstract class JsonParser {
 	public static Object buildUserDefined(Object jsonValue) {
 		T.call(JsonParser.class);
 		
-		String typeName = userDefinedTypeName(jsonValue);
+		String typeName = appointmentDefinedTypeName(jsonValue);
 		
 		
 		Class<?> typeClass = Ntro.introspector().getClassFromName(typeName);
 
-		Object userDefinedObject = Factory.newInstance(typeClass);
+		Object appointmentDefinedObject = Factory.newInstance(typeClass);
 		
 		try {
 			
-			((JsonObjectIO) userDefinedObject).loadFromJsonObject(new JsonObject((Map<String, Object>) jsonValue));
+			((JsonObjectIO) appointmentDefinedObject).loadFromJsonObject(new JsonObject((Map<String, Object>) jsonValue));
 			
 		}catch(ClassCastException e) {}
 
-		return userDefinedObject;
+		return appointmentDefinedObject;
 	}
 
 
