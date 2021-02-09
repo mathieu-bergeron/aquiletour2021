@@ -1,13 +1,13 @@
 package ca.aquiletour.core.pages.queue;
 
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentHandler;
+import ca.aquiletour.core.pages.queue.handlers.AddAppointmentHandler;
+import ca.aquiletour.core.pages.queue.handlers.DeleteAppointmentHandler;
+import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
+import ca.aquiletour.core.pages.queue.handlers.ShowQueueHandler;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
-import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentHandler;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
-import ca.aquiletour.core.pages.queue.messages.ShowQueueHandler;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.ntro.core.models.LoadModelLater;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
@@ -18,11 +18,9 @@ public class QueueController extends NtroController<RootController> {
 	protected void onCreate() {
 		T.call(this);
 
-		setViewLoader(QueueView.class, getContext().getLang());
+		setViewLoader(QueueView.class, currentContext().getLang());
 
-		addSubViewLoader(AppointmentView.class, getContext().getLang());
-		
-		setModelLoader(new LoadModelLater()); // TODO: should be added by default
+		addSubViewLoader(AppointmentView.class, currentContext().getLang());
 
 		addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 
@@ -37,7 +35,12 @@ public class QueueController extends NtroController<RootController> {
 	@Override
 	protected void onChangeContext(NtroContext previousContext) {
 		T.call(this);
-
+		
+		// TODO: we can automatize this!
+		if(previousContext.hasDifferentLang(currentContext())) {
+			setViewLoader(QueueView.class, currentContext().getLang());
+			addSubViewLoader(AppointmentView.class, currentContext().getLang());
+		}
 	}
 
 	@Override

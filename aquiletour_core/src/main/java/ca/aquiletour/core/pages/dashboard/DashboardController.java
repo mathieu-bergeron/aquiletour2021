@@ -16,15 +16,15 @@ public class DashboardController extends NtroController<RootController> {
 	protected void onCreate() {
 		T.call(this);
 
-		setViewLoader(DashboardView.class, getContext().getLang());
+		setViewLoader(DashboardView.class, currentContext().getLang());
 		
-		setModelLoader(LocalStore.getLoader(DashboardModel.class, getContext().getAuthToken(), getContext().getUserId()));
+		setModelLoader(LocalStore.getLoader(DashboardModel.class, currentContext().getAuthToken(), currentContext().getUserId()));
 		
 		addParentViewMessageHandler(ShowDashboardMessage.class, new ShowDashboardHandler());
 		
 		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 
-		addSubViewLoader(CourseSummaryView.class, getContext().getLang());
+		addSubViewLoader(CourseSummaryView.class, currentContext().getLang());
 		
 		addModelViewSubViewHandler(CourseSummaryView.class, new DashboardViewModel());
 		

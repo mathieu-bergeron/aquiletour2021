@@ -2,9 +2,9 @@ package ca.ntro.core.models;
 
 import ca.ntro.core.system.trace.T;
 
-public class LoadModelLater extends ModelLoader {
+public class EmptyModelLoader extends ModelLoader {
 
-	public LoadModelLater() {
+	public EmptyModelLoader() {
 		super(null);
 	}
 

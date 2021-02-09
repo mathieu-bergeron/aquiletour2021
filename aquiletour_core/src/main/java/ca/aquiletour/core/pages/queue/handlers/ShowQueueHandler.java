@@ -1,8 +1,9 @@
-package ca.aquiletour.core.pages.queue.messages;
+package ca.aquiletour.core.pages.queue.handlers;
 
 import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.services.stores.LocalStore;
@@ -17,7 +18,7 @@ public class ShowQueueHandler extends ControllerMessageHandler<QueueController, 
 		String courseId = message.getCourseId();
 		String groupId = message.getGroupId();
 
-		String authToken = currentController.getContext().getAuthToken();
+		String authToken = currentController.currentContext().getAuthToken();
 		
 		currentController.setModelLoader(LocalStore.getLoader(QueueModel.class, authToken, courseId, groupId));
 		

@@ -1,6 +1,7 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.Path;
+import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -32,8 +33,15 @@ abstract class NtroAbstractController implements TaskWrapper {
 		T.call(this);
 		
 		mainTask.setTaskId(this.getClass().getSimpleName());
+		
+		addDefaultTasks();
 	}
 
+	private void addDefaultTasks() {
+		T.call(this);
+		
+		setModelLoader(new EmptyModelLoader());
+	}
 	@Override
 	public NtroTask getTask() {
 		T.call(this);
@@ -58,7 +66,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		this.path = path;
 	}
 	
-	public NtroContext getContext() {
+	public NtroContext currentContext() {
 		T.call(this);
 		
 		return context;

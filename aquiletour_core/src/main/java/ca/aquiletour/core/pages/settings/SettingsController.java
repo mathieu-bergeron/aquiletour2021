@@ -11,7 +11,7 @@ public class SettingsController extends NtroController<RootController> {
 	protected void onCreate() {
 		T.call(this);
 
-		setViewLoader(SettingsView.class, getContext().getLang());
+		setViewLoader(SettingsView.class, currentContext().getLang());
 
 		addParentViewMessageHandler(ShowSettingsMessage.class, new ShowSettingsHandler());
 	}

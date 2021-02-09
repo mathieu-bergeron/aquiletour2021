@@ -30,7 +30,7 @@ public class RootController extends NtroRootController {
 	protected void onCreate() {
 		T.call(this);
 		
-		setViewLoader(RootView.class, getContext().getLang());
+		setViewLoader(RootView.class, currentContext().getLang());
 
 		addSubController(SettingsController.class, "settings");
 		addSubController(DashboardController.class, "dashboard");

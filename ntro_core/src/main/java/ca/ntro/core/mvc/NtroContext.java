@@ -32,4 +32,8 @@ public class NtroContext {
 	public void setLang(String lang) {
 		this.lang = lang;
 	}
+
+	public boolean hasDifferentLang(NtroContext otherContext) {
+		return !this.lang.equals(otherContext.getLang());
+	}
 }
