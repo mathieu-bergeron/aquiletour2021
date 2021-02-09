@@ -11,6 +11,9 @@ public class ShowQueueHandler extends ParentViewMessageHandler<RootView, QueueVi
 	protected void handle(RootView parentView, QueueView currentView, ShowQueueMessage message) {
 		T.call(this);
 		
+		String courseId = message.getCourseId();
+		String groupId = message.getGroupId();
+		
 		parentView.showQueue(currentView);
 		
 	}

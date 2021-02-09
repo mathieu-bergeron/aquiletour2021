@@ -13,24 +13,27 @@ import ca.ntro.core.system.trace.T;
 public class DashboardController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext context) {
+	protected void onCreate(NtroContext currentContext) {
 		T.call(this);
 
-		setViewLoader(DashboardView.class, context.getLang());
+		setViewLoader(DashboardView.class, currentContext.getLang());
 		
-		setModelLoader(LocalStore.getLoader(DashboardModel.class, context.getAuthToken(), context.getUserId()));
+		setModelLoader(LocalStore.getLoader(DashboardModel.class, currentContext.getAuthToken(), currentContext.getUserId()));
 		
 		addParentViewMessageHandler(ShowDashboardMessage.class, new ShowDashboardHandler());
 		
 		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 
-		addSubViewLoader(CourseSummaryView.class, context.getLang());
+		addSubViewLoader(CourseSummaryView.class, currentContext.getLang());
 		
 		addModelViewSubViewHandler(CourseSummaryView.class, new DashboardViewModel());
+		
+		// TODO: add model handler to pre-load models of each courses
+
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext, NtroContext context) {
+	protected void onChangeContext(NtroContext previousContext, NtroContext currentContext) {
 		T.call(this);
 		
 	}

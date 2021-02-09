@@ -24,8 +24,8 @@ abstract class NtroAbstractController implements TaskWrapper {
 	private NtroContext context;
 	private Path path;
 
-	protected abstract void onCreate(NtroContext context);
-	protected abstract void onChangeContext(NtroContext previousContext, NtroContext context);
+	protected abstract void onCreate(NtroContext currentContext);
+	protected abstract void onChangeContext(NtroContext previousContext, NtroContext currentContext);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -65,8 +65,6 @@ abstract class NtroAbstractController implements TaskWrapper {
 		if(path.startsWith(controllerId) || path.startsWith("*")) {
 			Path pathRemainder = path.removePrefix(controllerId);
 			
-			context.setPath(pathRemainder);
-
 			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
 			
 			getTask().addNextTask(subController.getTask());

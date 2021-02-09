@@ -8,7 +8,6 @@ public class NtroContext {
 	private String lang;
 	private String userId;
 	private String authToken;
-	private Path path;
 	
 	public String getUserId() {
 		return userId;
@@ -32,19 +31,5 @@ public class NtroContext {
 
 	public void setLang(String lang) {
 		this.lang = lang;
-	}
-
-	public Path getPath() {
-		return path;
-	}
-
-	public void setPath(Path path) {
-		this.path = path;
-	}
-
-	public boolean hasSamePath(NtroContext previousContext) {
-		T.call(this);
-
-		return this.path.equals(previousContext.getPath());
 	}
 }

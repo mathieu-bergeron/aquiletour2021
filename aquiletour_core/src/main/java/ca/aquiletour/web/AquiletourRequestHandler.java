@@ -35,19 +35,6 @@ public class AquiletourRequestHandler {
 			sendQueueMessages(path.subPath(1), parameters);
 		}
 	}
-	
-	private boolean shouldTryToLogin(Map<String, String[]> parameters) {
-		T.call(this);
-
-		boolean shouldTryToLogin = false;
-		
-		if(parameters.containsKey("userId") && parameters.containsKey("authToken")) {
-			
-		}
-		
-		
-		return shouldTryToLogin;
-	}
 
 	private static void sendSettingsMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
@@ -78,9 +65,19 @@ public class AquiletourRequestHandler {
 
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
-
-		ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
-		showQueueMessage.sendMessage();
+		
+		if(path.size() >= 2) {
+			
+			String courseId = path.getName(0);
+			String groupId = path.getName(1);
+			
+			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
+			
+			showQueueMessage.setCourseId(courseId);
+			showQueueMessage.setGroupId(groupId);
+			
+			showQueueMessage.sendMessage();
+		}
 
 		if(parameters.containsKey("makeAppointment")) { //regarde si parametre makeAppointment/ regarde si delete appointment
 
