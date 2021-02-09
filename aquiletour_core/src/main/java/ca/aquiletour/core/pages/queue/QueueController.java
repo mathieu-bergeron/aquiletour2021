@@ -10,11 +10,13 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.core.system.trace.T;
 
 public class QueueController extends NtroController<RootController> {
 
 	@Override
 	protected void initialize(NtroContext context) {
+		T.call(this);
 
 		setViewLoader(QueueView.class, context.getLang());
 		
@@ -31,6 +33,18 @@ public class QueueController extends NtroController<RootController> {
 		addSubViewLoader(AppointmentView.class, context.getLang());
 		
 		addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
+		
+	@Override
+	protected void changeContext(NtroContext oldContext, NtroContext newContext) {
+		T.call(this);
+		
+		if(!oldContext.getPath().equals(newContext.getPath())) {
+			String courseId = newContext.getPath().getName(0);
+			String groupId = newContext.getPath().getName(1);
+			resetModelLoader(LocalStore.getLoader(QueueModel.class, newContext.getAuthToken(), courseId, groupId));
+		}
+		
+
 	}
 
 	@Override
