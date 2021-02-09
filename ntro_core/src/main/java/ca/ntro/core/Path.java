@@ -112,4 +112,10 @@ public class Path {
 
 		return index >= 0 && index < names.size();
 	}
+
+	public int size() {
+		T.call(this);
+		
+		return names.size();
+	}
 }

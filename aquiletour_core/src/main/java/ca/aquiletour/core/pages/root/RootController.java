@@ -27,7 +27,7 @@ import ca.ntro.core.system.trace.T;
 public class RootController extends NtroRootController {
 
 	@Override
-	protected void initialize(NtroContext context) {
+	protected void onCreate(NtroContext context) {
 		T.call(this);
 		
 		setViewLoader(RootView.class, context.getLang());
@@ -42,7 +42,14 @@ public class RootController extends NtroRootController {
 	}
 
 	@Override
+	protected void onChangeContext(NtroContext previousContext, NtroContext context) {
+		T.call(this);
+		
+	}
+
+	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
 	}
+
 }

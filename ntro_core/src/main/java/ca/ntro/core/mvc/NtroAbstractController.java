@@ -24,7 +24,8 @@ abstract class NtroAbstractController implements TaskWrapper {
 	private NtroContext context;
 	private Path path;
 
-	protected abstract void initialize(NtroContext context);
+	protected abstract void onCreate(NtroContext context);
+	protected abstract void onChangeContext(NtroContext previousContext, NtroContext context);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -225,4 +226,5 @@ abstract class NtroAbstractController implements TaskWrapper {
 		
 		return view;
 	}
+
 }

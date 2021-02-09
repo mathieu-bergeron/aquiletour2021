@@ -1,6 +1,7 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.Path;
+import ca.ntro.core.system.trace.T;
 
 public class NtroContext {
 	
@@ -39,5 +40,11 @@ public class NtroContext {
 
 	public void setPath(Path path) {
 		this.path = path;
+	}
+
+	public boolean hasSamePath(NtroContext previousContext) {
+		T.call(this);
+
+		return this.path.equals(previousContext.getPath());
 	}
 }

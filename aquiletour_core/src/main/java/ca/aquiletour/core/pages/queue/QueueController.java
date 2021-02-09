@@ -15,35 +15,42 @@ import ca.ntro.core.system.trace.T;
 public class QueueController extends NtroController<RootController> {
 
 	@Override
-	protected void initialize(NtroContext context) {
+	protected void onCreate(NtroContext context) {
 		T.call(this);
 
 		setViewLoader(QueueView.class, context.getLang());
-		
-		String courseId = context.getPath().getName(0);
-		String groupId = context.getPath().getName(1);
-		setModelLoader(LocalStore.getLoader(QueueModel.class, context.getAuthToken(), courseId, groupId));
-		
-		addParentViewMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
-		
-		addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 
-		addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
+		addParentViewMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
 
 		addSubViewLoader(AppointmentView.class, context.getLang());
 		
-		addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
+		setModelHandlers(context);
 		
+	}
+
+	private void setModelHandlers(NtroContext context) {
+		T.call(this);
+
+		if(context.getPath().size() >= 2) {
+			String courseId = context.getPath().getName(0);
+			String groupId = context.getPath().getName(1);
+			setModelLoader(LocalStore.getLoader(QueueModel.class, context.getAuthToken(), courseId, groupId));
+
+			addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
+
+			addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
+
+			addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
+		}
+	}
+
 	@Override
-	protected void changeContext(NtroContext oldContext, NtroContext newContext) {
+	protected void onChangeContext(NtroContext previousContext, NtroContext context) {
 		T.call(this);
 		
-		if(!oldContext.getPath().equals(newContext.getPath())) {
-			String courseId = newContext.getPath().getName(0);
-			String groupId = newContext.getPath().getName(1);
-			resetModelLoader(LocalStore.getLoader(QueueModel.class, newContext.getAuthToken(), courseId, groupId));
+		if(!context.hasSamePath(previousContext)) {
+			setModelHandlers(context);
 		}
-		
 
 	}
 

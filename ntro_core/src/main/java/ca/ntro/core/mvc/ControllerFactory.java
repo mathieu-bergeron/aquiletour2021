@@ -23,7 +23,7 @@ public class ControllerFactory {
 		
 		rootController.setContext(context);
 		
-		rootController.initialize(context);
+		rootController.onCreate(context);
 		
 		return rootController;
 		
@@ -40,7 +40,7 @@ public class ControllerFactory {
 		
 		controller.setContext(context);
 		
-		controller.initialize(context);
+		controller.onCreate(context);
 		
 		return controller;
 	}
