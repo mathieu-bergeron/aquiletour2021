@@ -1,8 +1,6 @@
 <div class="dashboard-container">
-  <a type="button" data-toggle="modal" data-target="#modalDashboard">Launch modal</a>
   
-  
-
+  <button type="button" data-toggle="modal" data-target="#modalDashboard">Launch modal</button>
   <div class="flex-container" id="courses-container">
   </div>
 
@@ -13,6 +11,7 @@
           <h5 class="modal-title" id="exampleModalLongTitle">Ajout d'un travail</h5>
           <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
           <form action="" method="post" class="add-course-form">
             <label for="title">Titre</label>
@@ -21,18 +20,17 @@
             <input name="summary" label="Remise"></input>
             <label for="date">Date</label>
             <input name="date"></input>
-            <button>Ajouter</button>
+            <div class="modal-footer border-0">         
+              <button class="btn btn-primary">Ajouter</button>  
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>          
+            </div>  
           </form>
-            
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+        </div>       
       </div>
     </div>
   </div>
 
+  
 </div>
 
 
