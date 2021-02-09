@@ -58,7 +58,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		this.path = path;
 	}
 	
-	protected NtroContext getContext() {
+	public NtroContext getContext() {
 		T.call(this);
 		
 		return context;
@@ -158,7 +158,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		}
 	}
 	
-	protected void setModelLoader(ModelLoader modelLoader) {
+	public void setModelLoader(ModelLoader modelLoader) {
 		T.call(this);
 		
 		modelLoader.setTaskId(MODEL_LOADER_TASK_ID);
@@ -223,7 +223,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 	}
 
-	NtroView getView() {
+	public NtroView getView() {
 		T.call(this);
 		
 		NtroView view = getTask().getSubTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();

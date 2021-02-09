@@ -9,16 +9,13 @@ import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 
-class ControllerParentViewMessageHandlerTask<C extends NtroController<?>, 
-										     PV extends NtroView, 
-                                             CV extends NtroView, 
-                                             MSG extends NtroMessage> extends NtroTaskAsync {
+class ControllerMessageHandlerTask<C extends NtroAbstractController, CV extends NtroView, MSG extends NtroMessage> extends NtroTaskAsync {
 	
 	
-	private ControllerParentViewMessageHandler<C,PV,CV,MSG> handler;
+	private ControllerMessageHandler<C,CV,MSG> handler;
 	private String messageId;
 	
-	public ControllerParentViewMessageHandlerTask(ControllerParentViewMessageHandler<C, PV,CV,MSG> handler, String messageId) {
+	public ControllerMessageHandlerTask(ControllerMessageHandler<C,CV,MSG> handler, String messageId) {
 		T.call(this);
 
 		this.handler = handler;

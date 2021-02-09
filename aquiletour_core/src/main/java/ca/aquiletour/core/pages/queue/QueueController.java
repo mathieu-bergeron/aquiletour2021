@@ -10,7 +10,6 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.LoadModelLater;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 
 public class QueueController extends NtroController<RootController> {
@@ -31,16 +30,8 @@ public class QueueController extends NtroController<RootController> {
 
 		addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
 
-		addControllerParentViewMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
+		addControllerMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
 
-	}
-
-	public void loadModel(String courseId, String groupId) {
-		T.call(this);
-		
-		String authToken = getContext().getAuthToken();
-
-		setModelLoader(LocalStore.getLoader(QueueModel.class, authToken, courseId, groupId));
 	}
 
 	@Override
