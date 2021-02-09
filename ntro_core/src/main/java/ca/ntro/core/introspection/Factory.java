@@ -17,28 +17,29 @@
 
 package ca.ntro.core.introspection;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.system.log.Log;
 
 public class Factory {
-	
+
 	public static <O extends Object> O newInstance(Class<O> instanceType) {
-		
+
 		O instance = null;
-		
+
 		try {
 
 			instance = instanceType.newInstance();
 
 		} catch (InstantiationException | IllegalAccessException e) {
-			
-			Log.fatalError("FATAL cannot instantiate " + instanceType.getSimpleName(), e);
+
+			Log.fatalError("FATAL cannot instantiate " + Ntro.introspector().getSimpleNameForClass(instanceType), e);
 
 		}
-		
+
 		return instance;
 	}
-	
-	
-	
+
+
+
 
 }

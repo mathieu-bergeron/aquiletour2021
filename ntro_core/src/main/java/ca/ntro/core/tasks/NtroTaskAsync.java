@@ -20,6 +20,7 @@ package ca.ntro.core.tasks;
 import java.util.HashSet;
 import java.util.Set;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 
@@ -36,17 +37,17 @@ public abstract class NtroTaskAsync implements NtroTask {
 	private Set<NtroTask> nextTasks = new HashSet<>();
 
 	private State state = State.INITIALIZING;
-	
+
 	private String taskId;
-	
+
 	protected abstract void initializeTask();
 	protected abstract void runTaskAsync();
 	protected abstract void onFailure(Exception e);
-	
+
 	public NtroTaskAsync() {
 		initializeTask();
 	}
-	
+
 	@Override
 	public void setTaskId(String taskId) {
 		// __T.call(this, "setTaskId");
@@ -59,7 +60,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 		if(taskId == null) {
 			taskId = defaultId(this);
 		}
-		
+
 		return taskId;
 	}
 
@@ -73,7 +74,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			subTask.reset();
 		}
 		finishedSubTasks = 0;
-		
+
 		for(NtroTask nextTask : nextTasks) {
 			nextTask.reset();
 		}
@@ -87,16 +88,16 @@ public abstract class NtroTaskAsync implements NtroTask {
 			startExecution();
 		}
 	}
-	
+
 	@Override
 	public State getState() {
 		return state;
 	}
-	
+
 	private void startExecution() {
 		//__T.call(this, "startExecution");
 
-		if(parentTask != null 
+		if(parentTask != null
 				&& parentTask.getState() == State.INITIALIZING) {
 
 			parentTask.execute();
@@ -107,7 +108,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			resumeExecution();
 		}
 	}
-	
+
 	@Override
 	public void setParentTask(NtroTask parentTask) {
 		if(state == State.INITIALIZING) {
@@ -148,7 +149,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				executeNextTasks();
 				state = State.DONE;
 				break;
-				
+
 			case DONE:
 			default:
 				break;
@@ -175,25 +176,25 @@ public abstract class NtroTaskAsync implements NtroTask {
 			resumeExecution();
 		}
 	}
-	
+
 	protected void notifyTaskFinished() {
 		//__T.call(this, "notifyTaskFinished");
-		
+
 		if(parentTask != null) {
 			parentTask.notifySomeSubTaskFinished();
 		}
-		
+
 		state = State.EXECUTE_NEXT_TASKS;
 		resumeExecution();
 	}
 
 	protected void notifyTaskFailed(Exception e) {
 		//__T.call(this, "notifyTaskFailed");
-		
+
 		// TODO: propagate failure to
 		//       parentTask
 		//       nextTasks
-		
+
 		throw new RuntimeException("TODO");
 	}
 
@@ -219,7 +220,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			}
 		}
 	}
-	
+
 	protected <T extends NtroTask> T getPreviousTask(Class<T> taskClass) {
 		return getPreviousTask(taskClass, defaultIdFromClass(taskClass));
 	}
@@ -228,7 +229,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	protected <T extends NtroTask> T getPreviousTask(Class<T> taskClass, String id) {
 		return (T) getPreviousTask(id);
 	}
-	
+
 	private NtroTask getPreviousTask(String id) {
 		NtroTask task = null;
 
@@ -246,7 +247,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public boolean hasId(String id) {
 		return id.equals(taskId);
 	}
-	
+
 	@Override
 	public <NT extends NtroTask> NT getSubTask(Class<NT> taskClass) {
 		return getSubTask(taskClass, defaultIdFromClass(taskClass));
@@ -266,13 +267,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 				break;
 			}
 		}
-		
+
 		return task;
-		
+
 	}
 
 	protected <T extends NtroTask> T getFinishedTask(Class<T> taskClass) {
-		return getFinishedTask(taskClass, taskClass.getSimpleName());
+		return getFinishedTask(taskClass, Ntro.introspector().getSimpleNameForClass(taskClass));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -283,12 +284,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 		}
 		return finishedTask;
 	}
-	
+
 	private String defaultId(NtroTask task) {
 		return defaultIdFromClass(task.getClass());
 	}
 
 	private String defaultIdFromClass(Class<? extends NtroTask> taskClass) {
+		// Introspector is not registered here
 		return taskClass.getSimpleName();
 	}
 
@@ -319,7 +321,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 		}else {
 			throw new IllegalStateException("Task.addPreviousTask called on state " + state);
 		}
-		
+
 		return this;
 	}
 
@@ -335,12 +337,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 					parentTask.addSubTask(task);
 				}
 			}else {
+				// Introspector might not be registered here
 				System.err.println("[WARNING] a nextTask already exists with class " + task.getClass().getSimpleName());
 			}
 		}else {
 			throw new IllegalStateException("Task.addPreviousTask called on state " + state);
 		}
-		
+
 		return this;
 	}
 
@@ -353,7 +356,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			subTask.execute();
 		}
 	}
-	
+
 	@Override
 	public void addSubTask(NtroTask task) {
 		String taskId = task.getTaskId();
@@ -369,20 +372,20 @@ public abstract class NtroTaskAsync implements NtroTask {
 			throw new IllegalStateException("Task.addSubTask called on state " + state + " for task " + getTaskId());
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		
+
 		write(out, 0);
-		
+
 		return out.toString();
 	}
 
 	@Override
 	public void write(StringBuilder out, int indentLevel) {
 		T.call(this);
-		
+
 		indent(out, indentLevel);
 		out.append(getTaskId());
 		out.append(" {\n");
@@ -395,8 +398,8 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 		indent(out, indentLevel);
 		out.append("}\n");
-		
-		
+
+
 	}
 	private void writeTaskSet(StringBuilder out, int indentLevel, String taskSetName, Set<NtroTask> taskSet) {
 
@@ -409,13 +412,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 		indent(out, indentLevel);
 		out.append("}\n");
 	}
-	
+
 	private void indent(StringBuilder out, int indentLevel) {
 		T.call(this);
 		for(int i = 0; i < indentLevel*4; i++) {
 			out.append(" ");
 		}
 	}
-	
-	
+
+
 }

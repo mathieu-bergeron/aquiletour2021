@@ -1,24 +1,25 @@
 package ca.ntro.core.mvc;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.NtroMessage;
 
 public abstract class NtroController<AC extends NtroAbstractController> extends NtroAbstractController {
-	
+
 	private AC parentController;
-	
+
 	void setParentController(AC parentController) {
 		T.call(this);
-		
+
 		this.parentController = parentController;
 	}
 
 	protected void addParentViewMessageHandler(Class<? extends NtroMessage> messageClass, ParentViewMessageHandler<?,?,?> handler) {
 		T.call(this);
-		
-		String messageId = messageClass.getSimpleName();
-		
+
+		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
+
 		handler.setParentController(parentController);
 		handler.setMessageId(messageId);
 
