@@ -2,6 +2,7 @@ plugins{
     id 'local-java-plugin'
     id 'local-jsweet-plugin'
     id 'com.github.hesch.execfork' version '0.1.15'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 dependencies {
