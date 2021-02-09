@@ -27,10 +27,10 @@ import ca.ntro.core.system.trace.T;
 public class RootController extends NtroRootController {
 
 	@Override
-	protected void onCreate(NtroContext context) {
+	protected void onCreate() {
 		T.call(this);
 		
-		setViewLoader(RootView.class, context.getLang());
+		setViewLoader(RootView.class, getContext().getLang());
 
 		addSubController(SettingsController.class, "settings");
 		addSubController(DashboardController.class, "dashboard");
@@ -42,7 +42,7 @@ public class RootController extends NtroRootController {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext, NtroContext context) {
+	protected void onChangeContext(NtroContext previousContext) {
 		T.call(this);
 		
 	}

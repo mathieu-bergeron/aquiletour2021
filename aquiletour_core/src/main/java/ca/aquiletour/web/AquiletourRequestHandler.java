@@ -21,7 +21,6 @@ public class AquiletourRequestHandler {
 	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-
 		if(path.startsWith("settings")) {
 			
 			sendSettingsMessages(path.subPath(1), parameters);
@@ -75,6 +74,8 @@ public class AquiletourRequestHandler {
 			
 			showQueueMessage.setCourseId(courseId);
 			showQueueMessage.setGroupId(groupId);
+			
+			T.here();
 			
 			showQueueMessage.sendMessage();
 		}

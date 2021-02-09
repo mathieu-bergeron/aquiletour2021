@@ -8,13 +8,13 @@ import ca.ntro.core.system.trace.T;
 public class CourseController extends NtroController<DashboardController> {
 
 	@Override
-	protected void onCreate(NtroContext context) {
+	protected void onCreate() {
 		T.call(this);
 
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext, NtroContext context) {
+	protected void onChangeContext(NtroContext previousContext) {
 		T.call(this);
 		
 	}

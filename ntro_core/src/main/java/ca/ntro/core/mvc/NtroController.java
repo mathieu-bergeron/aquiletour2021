@@ -30,4 +30,22 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 
 		handler.getTask().addPreviousTask(message);
 	}
+
+	protected void addControllerParentViewMessageHandler(Class<? extends NtroMessage> messageClass, ControllerParentViewMessageHandler<?,?,?,?> handler) {
+		T.call(this);
+		
+		String messageId = messageClass.getSimpleName();
+		
+		handler.setController(this);
+		handler.setParentController(parentController);
+		handler.setMessageId(messageId);
+
+		getTask().addSubTask(handler.getTask());
+		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
+
+		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
+		message.setTaskId(messageId);
+
+		handler.getTask().addPreviousTask(message);
+	}
 }
