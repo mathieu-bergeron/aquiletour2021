@@ -41,3 +41,7 @@ __data__
 # Tests
 jsonLimitations.json
 build_*
+
+
+# task graphs
+__tasks__

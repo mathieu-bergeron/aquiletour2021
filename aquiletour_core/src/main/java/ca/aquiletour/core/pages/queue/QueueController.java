@@ -22,12 +22,15 @@ public class QueueController extends NtroController<RootController> {
 
 		addSubViewLoader(AppointmentView.class, currentContext().getLang());
 
+		// (1) installing a ModelMessageHandler even if there is no modelLoader
+		//      this means it will block until the model is loaded
 		addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 
 		addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
 
 		addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
 
+		// (2) the modelLoader is installed after a ShowQueueMessage!
 		addControllerMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
 
 	}
