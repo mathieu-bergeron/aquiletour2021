@@ -8,6 +8,7 @@ import org.junit.Test;
 import ca.ntro.core.task2.NtroTask;
 import ca.ntro.core.task2.NtroTaskImpl;
 import ca.ntro.jdk.NtroJdk;
+import ca.ntro.jdk.tasks.GraphWriterJdk;
 
 import static org.junit.Assert.assertTrue;
 
@@ -53,19 +54,20 @@ public class NtroTaskTests {
 	public void setUp() {
 	}
 	
-	private GraphWriterTestJdk createGraphWriter(String testName) {
-		return new GraphWriterTestJdk(testName);
+	private GraphWriterTest createGraphWriter(String testName) {
+		return new GraphWriterTest(testName);
 	}
 
-	private void toFile(String testName, GraphWriterTestJdk writer) throws IOException {
+	private void toFile(String testName, GraphWriterTest writer) throws IOException {
 		File outFile = new File(taskDir, testName + ".png");
-		writer.toFile(outFile);
+		GraphWriterJdk writerJdk = writer.toGraphWriterJdk();
+		writerJdk.toFile(outFile);
 	}
 
 	@Test
 	public void simpleTask() throws IOException {
 		String testName = "simpleTask";
-		GraphWriterTestJdk testWriter = createGraphWriter(testName);
+		GraphWriterTest testWriter = createGraphWriter(testName);
 		
 		NtroTask taskA = new NtroTaskImpl("A");
 		
@@ -79,7 +81,7 @@ public class NtroTaskTests {
 	@Test
 	public void subTask() throws IOException {
 		String testName = "subTask";
-		GraphWriterTestJdk testWriter = createGraphWriter(testName);
+		GraphWriterTest testWriter = createGraphWriter(testName);
 		
 		NtroTask parentTask = new NtroTaskImpl("parent");
 		NtroTask childTask = new NtroTaskImpl("child");
@@ -90,7 +92,7 @@ public class NtroTaskTests {
 		
 		assertTrue(testWriter.hasCluster("parent"));
 		assertTrue(testWriter.hasNode("child"));
-		assertTrue(testWriter.clusterContains("parent", "child"));
+		assertTrue(testWriter.ifClusterContains("parent", "child"));
 
 		toFile(testName, testWriter);
 	}
@@ -98,7 +100,7 @@ public class NtroTaskTests {
 	@Test
 	public void nextTask() throws IOException {
 		String testName = "nextTask";
-		GraphWriterTestJdk testWriter = createGraphWriter(testName);
+		GraphWriterTest testWriter = createGraphWriter(testName);
 		
 		NtroTask taskA = new NtroTaskImpl("A");
 		NtroTask taskB = new NtroTaskImpl("B");
@@ -115,7 +117,7 @@ public class NtroTaskTests {
 	@Test
 	public void previousTask() throws IOException {
 		String testName = "previousTask";
-		GraphWriterTestJdk testWriter = createGraphWriter(testName);
+		GraphWriterTest testWriter = createGraphWriter(testName);
 		
 		NtroTask taskA = new NtroTaskImpl("A");
 		NtroTask taskB = new NtroTaskImpl("B");
@@ -128,8 +130,6 @@ public class NtroTaskTests {
 
 		toFile(testName, testWriter);
 	}
-	
-	
 
 	@After
 	public void tearDown() {

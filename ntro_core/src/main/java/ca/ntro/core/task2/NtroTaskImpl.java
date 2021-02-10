@@ -83,20 +83,26 @@ public class NtroTaskImpl implements NtroTask {
 	}
 
 	private void forEachSubTask(TaskLambda lambda) {
-		for(NtroTask subTask : subTasks.values()) {
-			lambda.execute(subTask);
+		synchronized (subTasks) {
+			for(NtroTask subTask : subTasks.values()) {
+				lambda.execute(subTask);
+			}
 		}
 	}
 
 	private void forEachPreviousTask(TaskLambda lambda) {
-		for(NtroTask previousTask : previousTasks.values()) {
-			lambda.execute(previousTask);
+		synchronized(previousTasks) {
+			for(NtroTask previousTask : previousTasks.values()) {
+				lambda.execute(previousTask);
+			}
 		}
 	}
 
 	private void forEachNextTask(TaskLambda lambda) {
-		for(NtroTask nextTask : nextTasks.values()) {
-			lambda.execute(nextTask);
+		synchronized(nextTasks) {
+			for(NtroTask nextTask : nextTasks.values()) {
+				lambda.execute(nextTask);
+			}
 		}
 	}
 
@@ -106,8 +112,14 @@ public class NtroTaskImpl implements NtroTask {
 
 	@Override
 	public void addNextTask(NtroTask task) {
-		task.addPreviousTask(this);
-		nextTasks.put(task.getId(), task);
+		if(!haveNextTask(task)) {
+			task.addPreviousTask(this);
+			nextTasks.put(task.getId(), task);
+		}
+	}
+
+	private boolean haveNextTask(NtroTask task) {
+		return nextTasks.values().contains(task);
 	}
 
 	@Override
@@ -118,8 +130,14 @@ public class NtroTaskImpl implements NtroTask {
 
 	@Override
 	public void addPreviousTask(NtroTask task) {
-		task.addNextTask(this);
-		previousTasks.put(task.getId(), task);
+		if(!havePreviousTask(task)) {
+			task.addNextTask(this);
+			previousTasks.put(task.getId(), task);
+		}
+	}
+
+	private boolean havePreviousTask(NtroTask task) {
+		return previousTasks.values().contains(task);
 	}
 
 	@Override
