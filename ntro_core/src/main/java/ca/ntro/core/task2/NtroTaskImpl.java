@@ -119,7 +119,7 @@ public class NtroTaskImpl implements NtroTask {
 	}
 
 	private boolean haveNextTask(NtroTask task) {
-		return nextTasks.values().contains(task);
+		return nextTasks.containsKey(task.getId());
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class NtroTaskImpl implements NtroTask {
 	}
 
 	private boolean havePreviousTask(NtroTask task) {
-		return previousTasks.values().contains(task);
+		return previousTasks.containsKey(task.getId());
 	}
 
 	@Override
