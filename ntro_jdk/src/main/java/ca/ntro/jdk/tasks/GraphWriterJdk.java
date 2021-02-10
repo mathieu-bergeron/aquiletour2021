@@ -11,6 +11,8 @@ import guru.nidi.graphviz.attribute.Rank;
 import guru.nidi.graphviz.attribute.Rank.RankDir;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.LinkSource;
+import guru.nidi.graphviz.model.LinkTarget;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.MutableNode;
 
@@ -57,8 +59,34 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addEdge(Identifiable from, Identifiable to) {
-		// TODO Auto-generated method stub
+	public void addEdge(Identifiable fromSpec, Identifiable toSpec) {
+		MutableGraph fromCluster = clusters.get(fromSpec.getId());
+		MutableNode fromNode = nodes.get(fromSpec.getId());
+		LinkTarget to = getLinkTarget(toSpec.getId());
 		
+		if(fromCluster != null) {
+			fromCluster.addLink(to);
+
+		}else if(fromNode != null){
+			fromNode.addLink(to);
+		}
 	}
+
+	private LinkTarget getLinkTarget(String id) {
+		return (LinkTarget) getNodeOrCluster(id);
+	}
+
+	private LinkSource getLinkSource(String id) {
+		return (LinkSource) getNodeOrCluster(id);
+	}
+	
+	private Object getNodeOrCluster(String id) {
+		Object nodeOrCluster = clusters.get(id);
+		if(nodeOrCluster == null) {
+			nodeOrCluster = nodes.get(id);
+		}
+		
+		return nodeOrCluster;
+	}
+	
 }
