@@ -29,6 +29,11 @@ public class T {
 
 	//private static TraceFilter previousFilter = TraceLevel.ALL;
 	//private static TraceFilter traceFilter = TraceLevel.ALL;
+
+	// XXX:  T.call() has a BIG impact on performance
+	//       it HAS to be disabled in prod
+	//private static TraceFilter previousFilter = TraceLevel.NONE;
+	//private static TraceFilter traceFilter = TraceLevel.NONE;
 	
 	private static Introspector introspector = null;
 	private static StackAnalyzer stackAnalyzer = null;

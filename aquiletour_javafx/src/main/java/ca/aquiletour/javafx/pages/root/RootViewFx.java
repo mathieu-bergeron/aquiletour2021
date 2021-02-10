@@ -3,11 +3,14 @@ package ca.aquiletour.javafx.pages.root;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.QuitMessage;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
-import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.javafx.NtroViewFx;
@@ -75,16 +78,38 @@ public class RootViewFx extends NtroViewFx implements RootView {
 	}
 
 	@Override
-	public void installSubView(NtroView view) {
+	public void showSettings(SettingsView settingsView) {
 		T.call(this);
 		
+		showSubView(settingsView);
+	}
+
+	@Override
+	public void showDashboard(DashboardView dashboardView) {
+		T.call(this);
+		
+		showSubView(dashboardView);
+	}
+
+	private void showSubView(NtroView view) {
+		T.call(this);
+
 		NtroViewFx viewFx = (NtroViewFx) view;
 		
 		pageContainer.getChildren().clear();
 		pageContainer.getChildren().add(viewFx.getParent());
-		
-		
-		
 	}
 
+	@Override
+	public void showQueue(QueueView queueView) {
+		T.call(this);
+		
+		showSubView(queueView);
+	}
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 }

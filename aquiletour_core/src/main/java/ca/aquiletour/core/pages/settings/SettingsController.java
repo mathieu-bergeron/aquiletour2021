@@ -1,58 +1,24 @@
 package ca.aquiletour.core.pages.settings;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.mvc.view.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 
-public abstract class SettingsController extends NtroController {
+public class SettingsController extends NtroController<RootController> {
 
-	private RootController parentController;
-	private ViewLoader viewLoader;
-	private SettingsView view;
-
-	public SettingsController(RootController parentController) {
-		super();
-		T.call(this);
-
-		this.parentController = parentController;
-	}
-	
 	@Override
-	protected void initializeTask() {
+	protected void initialize() {
 		T.call(this);
 
-		viewLoader = createViewLoader(Constants.LANG);
-		addSubTask(viewLoader);
+		setViewLoader(SettingsView.class, "fr");
 
-		MessageFactory.addMessageReceptor(ShowSettingsMessage.class, new ShowSettingsReceptor(this));
-	}
-	
-	@Override
-	protected void runTaskAsync() {
-		T.call(this);
-		
-		view = (SettingsView) viewLoader.getView();
-		
-		notifyTaskFinished();
+		addParentViewMessageHandler(ShowSettingsMessage.class, new ShowSettingsHandler());
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
+		T.call(this);
 		
 	}
 
-	public ShowSettingsReceptor createShowSettingsTask() {
-		T.call(this);
-		
-		return new ShowSettingsReceptor(this);
-	}
-
-	public void showSettings() {
-		T.call(this);
-		
-		parentController.installSubView(view);
-	}
 }

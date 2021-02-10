@@ -19,18 +19,18 @@ package ca.ntro.web.mvc;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.Factory;
-import ca.ntro.core.mvc.view.NtroView;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.NtroView;
+import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.core.system.assertions.MustNot;
 
 public abstract class ViewLoaderWeb extends ViewLoader {
-	
+
 	private String html;
 	private Class<? extends NtroViewWeb> viewClass;
-	
+
 	public ViewLoaderWeb() {
 		super();
 	}
@@ -39,29 +39,28 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	protected void initializeTask() {
 
 	}
-	
+
 	@Override
-	protected void runTaskAsync() {
+	protected void runTask() {
 		T.call(this);
 
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
 		//        can we fix this??
 		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
-		
-		notifyTaskFinished();
+
+		MustNot.beNull(html);
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		
+
 	}
 
 	public ViewLoaderWeb setHtmlUrl(String htmlPath) {
 		T.call(this);
-		
-		MustNot.beNull(Ntro.resourceLoader());
-		MustNot.beNull(Ntro.resourceLoader().loadResourceTask(htmlPath));
-		
+
+		System.out.println("htmlPath: " + htmlPath);
+
 		ResourceLoaderTask htmlLoader = Ntro.resourceLoader().loadResourceTask(htmlPath);
 		htmlLoader.setTaskId("Html");
 
@@ -81,31 +80,33 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		return this;
 	}
-	
+
 	public String getHtml() {
 		T.call(this);
-		
+
 		return html;
 	}
 
 	public ViewLoader setTargetClass(Class<? extends NtroViewWeb> viewClass) {
 		T.call(this);
-		
+
 		this.viewClass = viewClass;
-		
+
 		return this;
 	}
 
 	@Override
-	public NtroView getView() {
+	protected NtroView createViewImpl() {
 		T.call(this);
 
+		MustNot.beNull(html);
+
 		NtroViewWeb view = Factory.newInstance(viewClass);
-		
+
 		HtmlElement rootElement = parseHtml(html);
-		
+
 		view.setRootElement(rootElement);
-		
+
 		return view;
 	}
 

@@ -6,7 +6,7 @@ import ca.ntro.core.models.properties.observable.simple.DeletionListener;
 import ca.ntro.core.models.properties.observable.simple.ObservableProperty;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.models.properties.observable.simple.ValueObserver;
-import ca.ntro.core.models.stores.ValuePath;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.trace.T;
 
 public abstract class StoredProperty<V extends Object> extends ObservableProperty<V> implements StoreConnectable {

@@ -1,91 +1,37 @@
 package ca.aquiletour.core.pages.dashboard;
 
-import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.dashboard.messages.AddCourseHandler;
 import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseReceptor;
+import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardHandler;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardReceptor;
-import ca.aquiletour.core.pages.dashboard.values.Course;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.stores.MemoryStore;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 
-public abstract class DashboardController extends NtroController {
-
-	private RootController parentController;
-
-	private ViewLoader viewLoader;
-	private DashboardView view;
-
-	private ModelLoader modelLoader;
-	private DashboardModel model;
-	
-	private DashboardViewModel viewModel;
-
-	public DashboardController(RootController parentController) {
-		super();
-		T.call(this);
-
-		this.parentController = parentController;
-	}
+public class DashboardController extends NtroController<RootController> {
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-		viewModel = new DashboardViewModel();
-
-		viewLoader = createViewLoader(Constants.LANG);
-		addSubTask(viewLoader);
-		
-		modelLoader = MemoryStore.getLoader(DashboardModel.class, "TEST");
-		addSubTask(modelLoader);
-
-		MessageFactory.addMessageReceptor(ShowDashboardMessage.class, new ShowDashboardReceptor(this));
-		MessageFactory.addMessageReceptor(AddCourseMessage.class, new AddCourseReceptor(this));
-	}
-
-	@Override
-	protected void runTaskAsync() {
+	protected void initialize() {
 		T.call(this);
 
-		view = (DashboardView) viewLoader.getView();
-
-		model  = (DashboardModel) modelLoader.getModel();
+		setViewLoader(DashboardView.class, "fr");
 		
-		viewModel.observeAndDisplay(model, view);
+		setModelLoader(LocalStore.getLoader(DashboardModel.class, "TODO"));
+		
+		addParentViewMessageHandler(ShowDashboardMessage.class, new ShowDashboardHandler());
+		
+		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 
-		notifyTaskFinished();
+		addSubViewLoader(CourseSummaryView.class, "fr");
+		
+		addModelViewSubViewHandler(CourseSummaryView.class, new DashboardViewModel());
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void showDashboard() {
 		T.call(this);
 
-		parentController.installSubView(view);
 	}
-
-	public ShowDashboardReceptor createShowDashboardTask() {
-		T.call(this);
-
-		return new ShowDashboardReceptor(this);
-	}
-
-	public void addCourse(Course course) {
-		T.call(this);
-		
-		model.addCourse(course);
-		model.save();
-	}
-
 
 }

@@ -5,4 +5,5 @@ plugins {
 
 dependencies {
     implementation project(':ntro_core')
+    implementation project(':ntro_jdk')
 }

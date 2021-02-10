@@ -17,21 +17,18 @@
 
 package ca.ntro.core.tasks;
 
-public class ContainerTask extends NtroTaskImpl {
+public class ContainerTask extends NtroTaskSync {
 
 	@Override
 	protected void initializeTask() {
 	}
 
 	@Override
-	protected void runTaskAsync() {
-		notifyTaskFinished();
+	protected void runTask() {
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
 
 	}
-
-
 }

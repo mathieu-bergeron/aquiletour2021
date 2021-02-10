@@ -70,4 +70,11 @@ public class HtmlElementJSweet implements HtmlElement {
 		
 		jQueryElement.attr(name, value);
 	}
+
+	@Override
+	public void remove() {
+		T.call(this);
+		
+		jQueryElement.remove();
+	}
 }

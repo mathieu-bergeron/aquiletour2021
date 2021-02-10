@@ -17,6 +17,10 @@ dependencies {
 
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    // FIXME: DEV ONLY
+    implementation group: 'org.dizitart', name: 'nitrite', version: '3.4.1'
+
 }
 
 tasks.build {

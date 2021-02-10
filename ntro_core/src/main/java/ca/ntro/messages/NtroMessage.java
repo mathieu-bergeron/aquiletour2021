@@ -1,36 +1,31 @@
 package ca.ntro.messages;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class NtroMessage extends NtroTaskImpl {
-	
+public abstract class NtroMessage extends NtroTaskAsync {
 	
 	public void sendMessage() {
 		T.call(this);
 		
-		MessageFactory.sendMessage(this);
+		notifyTaskFinished();
+		reset();
+		execute();
 	}
 
 	@Override
 	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
 	}
 
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
-
-		MessageFactory.sendMessage(this);
-		
-		notifyTaskFinished();
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
 	}
 
 }

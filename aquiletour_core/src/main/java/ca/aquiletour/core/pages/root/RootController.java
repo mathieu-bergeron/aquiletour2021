@@ -17,80 +17,31 @@
 
 package ca.aquiletour.core.pages.root;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.settings.SettingsController;
-import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.mvc.view.NtroView;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 
-public abstract class RootController extends NtroController {
-	
-	private ViewLoader viewLoader;
-	private DashboardController dashboardController;
-	private SettingsController settingsController;
-	
-	private RootView rootView;
+public class RootController extends NtroRootController {
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-
-		viewLoader = createViewLoader(Constants.LANG);
-		dashboardController = createDashboardController();
-		settingsController = createSettingsController();
-
-		addSubTask(viewLoader);
-		addSubTask(dashboardController);
-		addSubTask(settingsController);
-
-		MessageFactory.addMessageReceptor(QuitMessage.class, new QuitReceptor());
-	}
-
-	protected abstract ViewLoader createViewLoader(String lang);
-	protected abstract NtroWindow getWindow();
-
-	@Override
-	//             afterPreviousTaskAndSubTaskFinished    eq. runTask
-	//             afterPreviousTaskFinished              optionnel!!
-	//             afterPreviousSubTaskFinished           optionnel!!
-	protected void runTaskAsync() {
+	protected void initialize() {
 		T.call(this);
 		
-		rootView = (RootView) viewLoader.getView();
+		setViewLoader(RootView.class, "fr");
+
+		addSubController(SettingsController.class, "settings");
+		addSubController(DashboardController.class, "dashboard");
+		addSubController(QueueController.class, "queue");
+
+		addWindowViewHandler(new RootViewHandler());
 		
-		getWindow().installRootView(rootView);
-		
-		notifyTaskFinished();
+		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		
-	}
-
-	public abstract SettingsController createSettingsController();
-	public abstract DashboardController createDashboardController();
-	
-	public void installSubView(NtroView view) {
 		T.call(this);
-		
-		rootView.installSubView(view);
 	}
-	
-	protected SettingsController getSettingsController() {
-		T.call(this);
-
-		return settingsController;
-	}
-
-	protected DashboardController getDashboardController() {
-		T.call(this);
-
-		return dashboardController;
-	}
-
 }

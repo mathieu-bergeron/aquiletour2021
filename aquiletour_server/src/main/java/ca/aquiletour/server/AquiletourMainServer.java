@@ -24,18 +24,19 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.server.http.DynamicHandler;
-import ca.aquiletour.server.http.HttpConnector;
 import ca.aquiletour.server.http.ResourceHandler;
+import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
-import ca.ntro.core.models.stores.MemoryStore;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public class AquiletourMainServer extends NtroTaskImpl {
+public class AquiletourMainServer extends NtroTaskAsync {
 
 	@Override
 	protected void initializeTask() {
+		T.call(this);
+		
 	}
 
 	@Override
@@ -44,10 +45,9 @@ public class AquiletourMainServer extends NtroTaskImpl {
 		
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
-		
-		// XXX: initialize MemoryStore outside of server thread
-		MemoryStore.reInitialize();
 
+		ViewLoaderRegistrationWeb.registerViewLoaders();
+		
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)
 		// always include javascript content (it can be ignored by nojs clients)
@@ -58,6 +58,8 @@ public class AquiletourMainServer extends NtroTaskImpl {
 			e.printStackTrace(System.err);
 			Ntro.appCloser().close();
 		}
+		
+		notifyTaskFinished();
 	}
 
 	@Override

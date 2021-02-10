@@ -38,4 +38,12 @@
   position: absolute;
   right: 10;
 }
-/*# sourceMappingURL=style.css.map */
+
+.available-icon {
+    margin-left:10px;
+}
+
+.add-course-form{
+    margin-bottom:40px;
+}
+

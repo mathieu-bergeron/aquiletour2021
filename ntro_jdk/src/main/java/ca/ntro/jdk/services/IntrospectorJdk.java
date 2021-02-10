@@ -56,8 +56,6 @@ public class IntrospectorJdk extends Introspector {
 	protected Object buildValue(Type type, Object rawValue) {
 		T.call(this);
 		
-		T.values(type.getTypeName());
-		
 		Object result = null;
 		
 		if(JsonParser.isUserDefined(rawValue)) {
@@ -68,9 +66,6 @@ public class IntrospectorJdk extends Introspector {
 			
 		}else if(isAList(type)) {
 
-			T.here();
-			
-			
 			result = buildList(type, rawValue);
 			
 		}else if(isAMap(type)) {
@@ -86,7 +81,7 @@ public class IntrospectorJdk extends Introspector {
 		
 		return result;
 	}
-	
+
 	private Object buildSimpleValue(Type type, Object rawValue) {
 		T.call(this);
 		
@@ -228,23 +223,34 @@ public class IntrospectorJdk extends Introspector {
 		
 		boolean result = false;
 		
-		if(type instanceof ParameterizedType) {
+		if(type == null) {
+
+			result = false;
+
+		}else if(type instanceof ParameterizedType) {
 			
 			Type rawType = ((ParameterizedType) type).getRawType();
 
 			result = rawType.equals(List.class);
+
+		}else if(type.equals(List.class)) {
+			
+			result = true;
 			
 		}else if(type instanceof Class<?>) {
 			
-			result = doesImplement((Class<?>) type, List.class);
+			result = ifImplementsInterface((Class<?>) type, List.class);
 			
 		}
+
+		T.values(type, result);
 
 		return result;
 	}
 
 	private boolean isAMap(Type type) {
 		T.call(this);
+		
 
 		boolean result = false;
 		
@@ -256,14 +262,14 @@ public class IntrospectorJdk extends Introspector {
 			
 		}else if(type instanceof Class<?>) {
 			
-			result = doesImplement((Class<?>) type, Map.class);
+			result = ifImplementsInterface((Class<?>) type, Map.class);
 			
 		}
 
 		return result;
 	}
 	
-	private boolean doesImplement(Class<?> typeClass, Class<?> targetInterface) {
+	private boolean ifImplementsInterface(Class<?> typeClass, Class<?> targetInterface) {
 		T.call(this);
 		
 		boolean doesImplement = false;
