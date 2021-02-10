@@ -8,7 +8,7 @@ import java.util.Set;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.log.Log;
 
-public class NtroTaskImpl implements NtroTask {
+public abstract class NtroTaskImpl implements NtroTask {
 
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
@@ -74,13 +74,13 @@ public class NtroTaskImpl implements NtroTask {
 
 
 	@Override
-	public void writeGraph(GraphWriter writer) {
+	public synchronized void writeGraph(GraphWriter writer) {
 		Set<NtroTask> visitedTasks = new HashSet<>();
 		writeGraph(writer, visitedTasks);
 	}
 
 	@Override
-	public void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks) {
+	public synchronized void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks) {
 		if(visitedTasks.contains(this)) return;
 		visitedTasks.add(this);
 		
@@ -91,26 +91,24 @@ public class NtroTaskImpl implements NtroTask {
 			writer.addRootCluster(this);
 
 		}else if(parentTask != null && !hasSubTasks()) {
-
 			parentTask.writeGraph(writer, visitedTasks);
 			writer.addSubNode(parentTask, this);
 
 		}else if(parentTask != null && hasSubTasks()){
-
 			parentTask.writeGraph(writer, visitedTasks);
 			writer.addSubCluster(parentTask, this);
 
 		}else {
 			Log.warning("Should not occur");
 		}
+
+		forEachPreviousTask(previousTask -> previousTask.writeGraph(writer, visitedTasks));
+		forEachPreviousTask(previousTask -> writer.addEdge(previousTask,this));
 		
 		forEachSubTask(subTask -> subTask.writeGraph(writer, visitedTasks));
 
 		forEachNextTask(nextTask -> nextTask.writeGraph(writer, visitedTasks));
-		forEachPreviousTask(previousTask -> previousTask.writeGraph(writer, visitedTasks));
-		
 		forEachNextTask(nextTask -> writer.addEdge(this, nextTask));
-		forEachPreviousTask(previousTask -> writer.addEdge(previousTask,this));
 	}
 
 	private void forEachSubTask(TaskLambda lambda) {
@@ -187,6 +185,4 @@ public class NtroTaskImpl implements NtroTask {
 	public void execute(GraphTraceWriter writer) {
 		
 	}
-
-
 }

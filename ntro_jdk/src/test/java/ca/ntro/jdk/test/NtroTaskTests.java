@@ -6,7 +6,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.ntro.core.task2.NtroTask;
-import ca.ntro.core.task2.NtroTaskImpl;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
 
@@ -69,7 +68,7 @@ public class NtroTaskTests {
 		String testName = "simpleTask";
 		GraphWriterTest testWriter = createGraphWriter(testName);
 		
-		NtroTask taskA = new NtroTaskImpl("A");
+		NtroTask taskA = new NtroTaskImplTest("A");
 		
 		taskA.writeGraph(testWriter);
 
@@ -83,8 +82,8 @@ public class NtroTaskTests {
 		String testName = "subTask";
 		GraphWriterTest testWriter = createGraphWriter(testName);
 		
-		NtroTask parentTask = new NtroTaskImpl("parent");
-		NtroTask childTask = new NtroTaskImpl("child");
+		NtroTask parentTask = new NtroTaskImplTest("parent");
+		NtroTask childTask = new NtroTaskImplTest("child");
 		
 		parentTask.addSubTask(childTask);
 		
@@ -102,8 +101,8 @@ public class NtroTaskTests {
 		String testName = "nextTask";
 		GraphWriterTest testWriter = createGraphWriter(testName);
 		
-		NtroTask taskA = new NtroTaskImpl("A");
-		NtroTask taskB = new NtroTaskImpl("B");
+		NtroTask taskA = new NtroTaskImplTest("A");
+		NtroTask taskB = new NtroTaskImplTest("B");
 		
 		taskA.addNextTask(taskB);
 
@@ -120,8 +119,8 @@ public class NtroTaskTests {
 		String testName = "previousTask";
 		GraphWriterTest testWriter = createGraphWriter(testName);
 		
-		NtroTask taskA = new NtroTaskImpl("A");
-		NtroTask taskB = new NtroTaskImpl("B");
+		NtroTask taskA = new NtroTaskImplTest("A");
+		NtroTask taskB = new NtroTaskImplTest("B");
 		
 		taskB.addPreviousTask(taskA);
 
@@ -138,10 +137,10 @@ public class NtroTaskTests {
 		String testName = "levels";
 		GraphWriterTest testWriter = createGraphWriter(testName);
 		
-		NtroTask taskA = new NtroTaskImpl("A");
-		NtroTask taskB = new NtroTaskImpl("B");
-		NtroTask taskC = new NtroTaskImpl("C");
-		NtroTask taskD = new NtroTaskImpl("D");
+		NtroTask taskA = new NtroTaskImplTest("A");
+		NtroTask taskB = new NtroTaskImplTest("B");
+		NtroTask taskC = new NtroTaskImplTest("C");
+		NtroTask taskD = new NtroTaskImplTest("D");
 		
 		taskA.addSubTask(taskB);
 		taskB.addSubTask(taskC);
@@ -164,16 +163,16 @@ public class NtroTaskTests {
 		String testName = "mixed";
 		GraphWriterTest testWriter = createGraphWriter(testName);
 		
-		NtroTask taskA = new NtroTaskImpl("A");
-		NtroTask taskB = new NtroTaskImpl("B");
-		NtroTask taskC = new NtroTaskImpl("C");
+		NtroTask taskA = new NtroTaskImplTest("A");
+		NtroTask taskB = new NtroTaskImplTest("B");
+		NtroTask taskC = new NtroTaskImplTest("C");
 		
 		taskA.addNextTask(taskB);
 		taskB.addNextTask(taskC);
 
-		NtroTask taskA1 = new NtroTaskImpl("A1");
-		NtroTask taskA2 = new NtroTaskImpl("A2");
-		NtroTask taskA3 = new NtroTaskImpl("A3");
+		NtroTask taskA1 = new NtroTaskImplTest("A1");
+		NtroTask taskA2 = new NtroTaskImplTest("A2");
+		NtroTask taskA3 = new NtroTaskImplTest("A3");
 		
 		taskA.addSubTask(taskA1);
 		taskA.addSubTask(taskA2);
@@ -182,9 +181,9 @@ public class NtroTaskTests {
 		taskA1.addNextTask(taskA2);
 		taskA1.addNextTask(taskA3);
 
-		NtroTask taskB1 = new NtroTaskImpl("B1");
-		NtroTask taskB2 = new NtroTaskImpl("B2");
-		NtroTask taskB3 = new NtroTaskImpl("B3");
+		NtroTask taskB1 = new NtroTaskImplTest("B1");
+		NtroTask taskB2 = new NtroTaskImplTest("B2");
+		NtroTask taskB3 = new NtroTaskImplTest("B3");
 		
 		taskB.addSubTask(taskB1);
 		taskB.addSubTask(taskB2);
@@ -193,7 +192,7 @@ public class NtroTaskTests {
 		taskB1.addNextTask(taskB3);
 		taskB2.addNextTask(taskB3);
 
-		NtroTask taskD = new NtroTaskImpl("D");
+		NtroTask taskD = new NtroTaskImplTest("D");
 		
 		taskB2.addNextTask(taskD);
 		taskC.addNextTask(taskD);
