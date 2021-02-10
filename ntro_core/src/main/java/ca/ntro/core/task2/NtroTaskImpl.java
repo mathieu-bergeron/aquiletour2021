@@ -77,9 +77,10 @@ public class NtroTaskImpl implements NtroTask {
 			writer.addNode(this);
 		}
 		
+		/*
 		forEachNextTask(nextTask -> writer.addEdge(this, nextTask));
-
 		forEachPreviousTask(previousTask -> writer.addEdge(previousTask,this));
+		*/
 	}
 
 	private void forEachSubTask(TaskLambda lambda) {
