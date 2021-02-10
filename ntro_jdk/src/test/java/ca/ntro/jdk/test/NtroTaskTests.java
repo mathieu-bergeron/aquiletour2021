@@ -135,6 +135,31 @@ public class NtroTaskTests {
 		toFile(testName, testWriter);
 	}
 
+	@Test
+	public void twoLevels() throws IOException {
+		String testName = "twoLevels";
+		GraphWriterTest testWriter = createGraphWriter(testName);
+		
+		NtroTask taskA = new NtroTaskImpl("A");
+		NtroTask taskB = new NtroTaskImpl("B");
+		NtroTask taskC = new NtroTaskImpl("C");
+		NtroTask taskD = new NtroTaskImpl("D");
+		
+		taskA.addSubTask(taskB);
+		taskB.addSubTask(taskC);
+		taskB.addNextTask(taskD);
+		
+		taskA.writeGraph(testWriter);
+		
+		assertTrue(testWriter.hasNode("A"));
+		assertTrue(testWriter.hasNode("B"));
+		assertTrue(testWriter.hasNode("C"));
+		assertTrue(testWriter.hasNode("D"));
+		assertTrue(testWriter.hasEdge("B", "D"));
+
+		toFile(testName, testWriter);
+	}
+
 	@After
 	public void tearDown() {
 	}

@@ -7,11 +7,11 @@ import java.util.Map;
 
 import ca.ntro.core.task2.GraphWriter;
 import ca.ntro.core.task2.Identifiable;
+import guru.nidi.graphviz.attribute.Label;
 import guru.nidi.graphviz.attribute.Rank;
 import guru.nidi.graphviz.attribute.Rank.RankDir;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.model.LinkSource;
 import guru.nidi.graphviz.model.LinkTarget;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.MutableNode;
@@ -37,6 +37,8 @@ public class GraphWriterJdk implements GraphWriter {
 	public void addCluster(Identifiable clusterSpec) {
 		MutableGraph cluster = mutGraph(clusterSpec.getId()).setCluster(true);
 
+		cluster.graphAttrs().add(Label.of(clusterSpec.getId()));
+		
 		clusters.put(clusterSpec.getId(), cluster);
 
 		graph.add(cluster);
@@ -59,6 +61,16 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
+	public void addClusterToCluster(Identifiable parentClusterSpec, Identifiable childClusterSpec) {
+		addCluster(childClusterSpec);
+
+		MutableGraph parentCluster = clusters.get(parentClusterSpec.getId());
+		MutableGraph childCluster = clusters.get(childClusterSpec.getId());
+		
+		parentCluster.add(childCluster);
+	}
+
+	@Override
 	public void addEdge(Identifiable fromSpec, Identifiable toSpec) {
 		MutableGraph fromCluster = clusters.get(fromSpec.getId());
 		MutableNode fromNode = nodes.get(fromSpec.getId());
@@ -75,10 +87,6 @@ public class GraphWriterJdk implements GraphWriter {
 	private LinkTarget getLinkTarget(String id) {
 		return (LinkTarget) getNodeOrCluster(id);
 	}
-
-	private LinkSource getLinkSource(String id) {
-		return (LinkSource) getNodeOrCluster(id);
-	}
 	
 	private Object getNodeOrCluster(String id) {
 		Object nodeOrCluster = clusters.get(id);
@@ -88,5 +96,6 @@ public class GraphWriterJdk implements GraphWriter {
 		
 		return nodeOrCluster;
 	}
+
 	
 }

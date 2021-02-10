@@ -121,6 +121,17 @@ public class GraphWriterTest implements GraphWriter {
 		getCluster(clusterSpec.getId()).add(node);
 	}
 
+	@Override
+	public void addClusterToCluster(Identifiable parentCluster, Identifiable childCluster) {
+		Node node = nodes.get(childCluster.getId());
+		if(node == null) {
+			node = new Node(childCluster.getId());
+			nodes.put(childCluster.getId(), node);
+		}
+
+		getCluster(parentCluster.getId()).add(node);
+	}
+
 	public boolean ifClusterContains(String clusterId, String nodeId) {
 		return getCluster(clusterId).children.contains(getNode(nodeId));
 	}
@@ -154,5 +165,6 @@ public class GraphWriterTest implements GraphWriter {
 		
 		edges.add(new Edge(from, to));
 	}
+
 
 }

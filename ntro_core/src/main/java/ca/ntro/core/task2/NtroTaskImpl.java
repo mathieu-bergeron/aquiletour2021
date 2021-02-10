@@ -82,6 +82,7 @@ public class NtroTaskImpl implements NtroTask {
 			writer.addCluster(this);
 
 			forEachSubTask(subTask -> writer.addNodeToCluster(this, subTask));
+			forEachSubTask(subTask -> subTask.writeGraph(writer, visitedTasks));
 
 		}else {
 			writer.addNode(this);
