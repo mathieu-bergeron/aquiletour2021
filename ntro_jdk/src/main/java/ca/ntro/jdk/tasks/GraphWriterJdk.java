@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.task2.GraphWriter;
+import ca.ntro.core.task2.Identifiable;
 import guru.nidi.graphviz.attribute.Rank;
 import guru.nidi.graphviz.attribute.Rank.RankDir;
 import guru.nidi.graphviz.engine.Format;
@@ -31,27 +32,33 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addCluster(String clusterId) {
-		MutableGraph cluster = mutGraph(clusterId).setCluster(true);
+	public void addCluster(Identifiable clusterSpec) {
+		MutableGraph cluster = mutGraph(clusterSpec.getId()).setCluster(true);
 
-		clusters.put(clusterId, cluster);
+		clusters.put(clusterSpec.getId(), cluster);
 
 		graph.add(cluster);
 	}
 
 	@Override
-	public void addNode(String nodeId) {
-		MutableNode node = mutNode(nodeId);
-		nodes.put(nodeId, node);
+	public void addNode(Identifiable nodeSpec) {
+		MutableNode node = mutNode(nodeSpec.getId());
+		nodes.put(nodeSpec.getId(), node);
 		graph.add(node);
 	}
 
 	@Override
-	public void addNodeToCluster(String clusterId, String nodeId) {
-		addNode(nodeId);
-		MutableGraph cluster = clusters.get(clusterId);
-		MutableNode node = nodes.get(nodeId);
+	public void addNodeToCluster(Identifiable clusterSpec, Identifiable nodeSpec) {
+		addNode(nodeSpec);
+		MutableGraph cluster = clusters.get(clusterSpec.getId());
+		MutableNode node = nodes.get(nodeSpec.getId());
 
 		cluster.add(node);
+	}
+
+	@Override
+	public void addEdge(Identifiable from, Identifiable to) {
+		// TODO Auto-generated method stub
+		
 	}
 }

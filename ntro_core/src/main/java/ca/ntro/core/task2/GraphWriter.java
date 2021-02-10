@@ -1,7 +1,7 @@
 package ca.ntro.core.task2;
 
 public interface GraphWriter {
-	
+
 	void addCluster(Identifiable cluster);
 	void addNode(Identifiable node);
 	void addNodeToCluster(Identifiable cluster, Identifiable node);

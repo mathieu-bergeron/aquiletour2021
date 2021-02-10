@@ -9,14 +9,34 @@ import java.util.Set;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.task2.GraphWriter;
+import ca.ntro.core.task2.Identifiable;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
 
 
 public class GraphWriterTestJdk implements GraphWriter {
 	
 	private GraphWriterJdk graphWriterJdk;
-	private Map<String, Set<String>> clusters = new HashMap<>();
-	private Set<String> nodes = new HashSet<>();
+	
+	private class Node {}
+
+	private class Cluster extends Node {
+		public Set<String> children = new HashSet<>();
+		public void add(String node) {
+			children.add(node);
+		}
+	}
+
+	private class Edge {
+		public String from;
+		public String to;
+		public Edge(String from, String to) {
+			this.from = from;
+			this.to = to;
+		}
+	}
+
+	private Map<String, Node> nodes = new HashMap<>();
+	private Set<Edge> edges = new HashSet<>();
 	
 	public GraphWriterTestJdk(String graphName) {
 		graphWriterJdk = new GraphWriterJdk(graphName);
@@ -27,13 +47,14 @@ public class GraphWriterTestJdk implements GraphWriter {
 	}
 
 	public boolean hasCluster(String clusterId) {
-		return clusters.containsKey(clusterId);
+		return nodes.containsKey(clusterId) &&
+				nodes.get(clusterId) instanceof Cluster;
 	}
 
 	@Override
-	public void addCluster(String clusterId) {
-		clusters.put(clusterId, new HashSet<>());
-		graphWriterJdk.addCluster(clusterId);
+	public void addCluster(Identifiable cluster) {
+		clusters.put(cluster.getId(), new HashSet<>());
+		graphWriterJdk.addCluster(cluster);
 	}
 
 	public boolean hasNode(String nodeId) {
@@ -41,17 +62,19 @@ public class GraphWriterTestJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addNode(String nodeId) {
-		T.call(this);
-		nodes.add(nodeId);
-		graphWriterJdk.addNode(nodeId);
+	public void addNode(Identifiable node) {
+		nodes.add(node.getId());
+
+		graphWriterJdk.addNode(node);
 	}
 
 	@Override
-	public void addNodeToCluster(String clusterId, String nodeId) {
-		Set<String> clusterNodes = clusters.get(clusterId);
-		clusterNodes.add(nodeId);
-		nodes.add(nodeId);
+	public void addNodeToCluster(Identifiable cluster, Identifiable node) {
+		Set<String> clusterNodes = clusters.get(cluster.getId());
+		clusterNodes.add(node.getId());
+		nodes.add(node.getId());
+
+		graphWriterJdk.addNodeToCluster(cluster, node);
 	}
 
 	public boolean clusterContains(String clusterId, String nodeId) {
@@ -61,6 +84,11 @@ public class GraphWriterTestJdk implements GraphWriter {
 
 	public boolean hasEdge(String string, String string2) {
 		return false;
+	}
+
+	@Override
+	public void addEdge(Identifiable from, Identifiable to) {
+		
 	}
 
 }

@@ -1,6 +1,8 @@
 package ca.ntro.core.task2;
 
 public interface NtroTask extends Identifiable {
+
+	void setId(String id);
 	
 	void addSubTask(NtroTask task);
 	void addSubTask(NtroTask task, String taskId);
