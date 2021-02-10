@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.task2.GraphWriter;
 import ca.ntro.core.task2.Identifiable;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
@@ -14,6 +15,7 @@ public class GraphWriterTest implements GraphWriter {
 	
 	private class Node implements Identifiable {
 		public String id;
+		public Node parent;
 		public Node(String id) {
 			this.id = id;
 		}
@@ -30,8 +32,17 @@ public class GraphWriterTest implements GraphWriter {
 			if(!(other instanceof Node)) return false;
 			return ((Node)other).id.equals(id);
 		}
-		public void write(GraphWriter writer) {
-			writer.addNode(this);
+		public void write(GraphWriter writer, Set<Node> visitedNodes) {
+			if(visitedNodes.contains(this)) return;
+			visitedNodes.add(this);
+
+			System.out.println("Node.write: " + id);
+			
+			if(parent == null) {
+				writer.addNode(this);
+			}else {
+				writer.addSubNode(parent, this);
+			}
 		}
 	}
 
@@ -42,11 +53,22 @@ public class GraphWriterTest implements GraphWriter {
 		}
 		public void add(Node node) {
 			children.add(node);
+			node.parent = this;
 		}
 		@Override
-		public void write(GraphWriter writer) {
-			writer.addCluster(this);
-			children.forEach(n -> writer.addNodeToCluster(this, n));
+		public void write(GraphWriter writer, Set<Node> visitedNodes) {
+			if(visitedNodes.contains(this)) return;
+			visitedNodes.add(this);
+
+			System.out.println("Cluster.write: " + id);
+			
+			if(parent == null) {
+				writer.addCluster(this);
+			}else {
+				writer.addSubCluster(parent, this);
+			}
+
+			children.forEach(n -> n.write(writer, visitedNodes));
 		}
 	}
 
@@ -84,7 +106,7 @@ public class GraphWriterTest implements GraphWriter {
 	public GraphWriterJdk toGraphWriterJdk() {
 		GraphWriterJdk writer = new GraphWriterJdk(graphName);
 
-		nodes.values().forEach(n -> n.write(writer));
+		nodes.values().forEach(n -> n.write(writer, new HashSet<>()));
 		edges.forEach(e -> e.write(writer));
 
 		return writer;
@@ -97,6 +119,7 @@ public class GraphWriterTest implements GraphWriter {
 
 	@Override
 	public void addCluster(Identifiable clusterSpec) {
+		System.out.println("Test.addCluster: " + clusterSpec.getId());
 		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec.getId()));
 	}
 
@@ -107,29 +130,18 @@ public class GraphWriterTest implements GraphWriter {
 
 	@Override
 	public void addNode(Identifiable nodeSpec) {
+		System.out.println("Test.addNode: " + nodeSpec.getId());
 		nodes.put(nodeSpec.getId(), new Node(nodeSpec.getId()));
 	}
 
 	@Override
-	public void addNodeToCluster(Identifiable clusterSpec, Identifiable nodeSpec) {
-		Node node = nodes.get(nodeSpec.getId());
-		if(node == null) {
-			node = new Node(nodeSpec.getId());
-			nodes.put(nodeSpec.getId(), node);
-		}
-
-		getCluster(clusterSpec.getId()).add(node);
+	public void addSubCluster(Identifiable cluster, Identifiable subCluster) {
+		getCluster(cluster.getId()).add(new Cluster(subCluster.getId()));
 	}
 
 	@Override
-	public void addClusterToCluster(Identifiable parentCluster, Identifiable childCluster) {
-		Node node = nodes.get(childCluster.getId());
-		if(node == null) {
-			node = new Node(childCluster.getId());
-			nodes.put(childCluster.getId(), node);
-		}
-
-		getCluster(parentCluster.getId()).add(node);
+	public void addSubNode(Identifiable cluster, Identifiable subNode) {
+		getCluster(cluster.getId()).add(new Node(subNode.getId()));
 	}
 
 	public boolean ifClusterContains(String clusterId, String nodeId) {
@@ -141,12 +153,14 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	private Cluster getCluster(String clusterId) {
-		return (Cluster) nodes.get(clusterId);
+		Cluster cluster = (Cluster) nodes.get(clusterId);
+		
+		MustNot.beNull(cluster);
+
+		return cluster;
 	}
 
 	public boolean hasEdge(String fromId, String toId) {
-		System.out.println(edges.size());
-		
 		
 		Node from = getNode(fromId);
 		Node to = getNode(toId);
@@ -165,6 +179,5 @@ public class GraphWriterTest implements GraphWriter {
 		
 		edges.add(new Edge(from, to));
 	}
-
 
 }

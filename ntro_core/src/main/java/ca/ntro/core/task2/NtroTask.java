@@ -5,6 +5,7 @@ import java.util.Set;
 public interface NtroTask extends Identifiable {
 
 	void setId(String id);
+	void setParentTask(NtroTask parentTask);
 	
 	void addSubTask(NtroTask task);
 	void addSubTask(NtroTask task, String taskId);

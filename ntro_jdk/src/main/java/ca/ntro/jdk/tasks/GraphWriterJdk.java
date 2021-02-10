@@ -30,44 +30,55 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	public void toFile(File file) throws IOException {
+		System.out.println(graph);
 		Graphviz.fromGraph(graph).height(100).render(Format.PNG).toFile(file);
 	}
 
 	@Override
 	public void addCluster(Identifiable clusterSpec) {
-		MutableGraph cluster = mutGraph(clusterSpec.getId()).setCluster(true);
+		System.out.println("Jdk.addCluster: " + clusterSpec.getId());
+
+		MutableGraph cluster = createCluster(clusterSpec);
+		graph.add(cluster);
+	}
+
+	private MutableGraph createCluster(Identifiable clusterSpec) {
+		if(clusters.containsKey(clusterSpec.getId())) return clusters.get(clusterSpec.getId());
+		
+		MutableGraph cluster = mutGraph(clusterSpec.getId());
+		cluster.setCluster(true);
 
 		cluster.graphAttrs().add(Label.of(clusterSpec.getId()));
 		
 		clusters.put(clusterSpec.getId(), cluster);
 
-		graph.add(cluster);
+		return cluster;
 	}
 
 	@Override
 	public void addNode(Identifiable nodeSpec) {
-		MutableNode node = mutNode(nodeSpec.getId());
-		nodes.put(nodeSpec.getId(), node);
+		MutableNode node = createNode(nodeSpec);
 		graph.add(node);
 	}
 
-	@Override
-	public void addNodeToCluster(Identifiable clusterSpec, Identifiable nodeSpec) {
-		addNode(nodeSpec);
-		MutableGraph cluster = clusters.get(clusterSpec.getId());
-		MutableNode node = nodes.get(nodeSpec.getId());
+	private MutableNode createNode(Identifiable nodeSpec) {
+		if(nodes.containsKey(nodeSpec.getId())) return nodes.get(nodeSpec.getId());
 
-		cluster.add(node);
+		MutableNode node = mutNode(nodeSpec.getId());
+		nodes.put(nodeSpec.getId(), node);
+		return node;
 	}
 
 	@Override
-	public void addClusterToCluster(Identifiable parentClusterSpec, Identifiable childClusterSpec) {
-		addCluster(childClusterSpec);
+	public void addSubCluster(Identifiable clusterSpec, Identifiable subClusterSpec) {
+		MutableGraph cluster = clusters.get(clusterSpec.getId());
+		cluster.add(createCluster(subClusterSpec));
+	}
 
-		MutableGraph parentCluster = clusters.get(parentClusterSpec.getId());
-		MutableGraph childCluster = clusters.get(childClusterSpec.getId());
-		
-		parentCluster.add(childCluster);
+	@Override
+	public void addSubNode(Identifiable clusterSpec, Identifiable subNodeSpec) {
+		MutableGraph cluster = clusters.get(clusterSpec.getId());
+		cluster.add(createNode(subNodeSpec));
 	}
 
 	@Override
@@ -96,6 +107,7 @@ public class GraphWriterJdk implements GraphWriter {
 		
 		return nodeOrCluster;
 	}
+
 
 	
 }

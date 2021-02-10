@@ -12,6 +12,7 @@ public class NtroTaskImpl implements NtroTask {
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
 	private String taskId;
+	private NtroTask parentTask;
 	
 	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
 	private Map<String, NtroTask> subTasks = NtroCollections.concurrentMap(new HashMap<>());
@@ -54,7 +55,13 @@ public class NtroTaskImpl implements NtroTask {
 	}
 
 	@Override
+	public void setParentTask(NtroTask parentTask) {
+		this.parentTask = parentTask;
+	}
+
+	@Override
 	public void addSubTask(NtroTask task) {
+		task.setParentTask(this);
 		subTasks.put(task.getId(), task);
 	}
 
@@ -74,26 +81,28 @@ public class NtroTaskImpl implements NtroTask {
 	@Override
 	public void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks) {
 		if(visitedTasks.contains(this)) return;
-		
 		visitedTasks.add(this);
+		
+		if(parentTask == null && !hasSubTasks()) {
+			writer.addNode(this);
 
-		if(hasSubTasks()) {
-
+		}else if(parentTask == null && hasSubTasks()) {
 			writer.addCluster(this);
 
-			forEachSubTask(subTask -> writer.addNodeToCluster(this, subTask));
-			forEachSubTask(subTask -> subTask.writeGraph(writer, visitedTasks));
+		}else if(parentTask != null && !hasSubTasks()) {
+			writer.addSubNode(parentTask, this);
 
 		}else {
-			writer.addNode(this);
+			writer.addSubCluster(parentTask, this);
 		}
+		
+		forEachSubTask(subTask -> subTask.writeGraph(writer, visitedTasks));
 
 		forEachNextTask(nextTask -> nextTask.writeGraph(writer, visitedTasks));
 		forEachPreviousTask(previousTask -> previousTask.writeGraph(writer, visitedTasks));
 		
 		forEachNextTask(nextTask -> writer.addEdge(this, nextTask));
 		forEachPreviousTask(previousTask -> writer.addEdge(previousTask,this));
-
 	}
 
 	private void forEachSubTask(TaskLambda lambda) {
@@ -170,5 +179,6 @@ public class NtroTaskImpl implements NtroTask {
 	public void execute(GraphTraceWriter writer) {
 		
 	}
+
 
 }
