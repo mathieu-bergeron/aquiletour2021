@@ -41,3 +41,6 @@ __data__
 # Tests
 jsonLimitations.json
 build_*
+
+# MAC_OS
+.DS_Store
