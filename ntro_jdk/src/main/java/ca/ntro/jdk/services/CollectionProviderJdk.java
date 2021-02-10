@@ -20,23 +20,29 @@ package ca.ntro.jdk.services;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import ca.ntro.core.services.NtroCollections;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
 public class CollectionProviderJdk extends NtroCollections {
 
 	@Override
-	public List synchronizedListImpl(List elements) {
+	public <I extends Object> List<I> synchronizedListImpl(List<I> elements) {
 		return Collections.synchronizedList(elements);
-		
 	}
 
 	@Override
-	public Map concurrentHashMapImpl(Map elements) {
-		Map concurrentHashMap = new ConcurrentHashMap();
+	public <K extends Object, V extends Object> Map<K, V> concurrentMapImpl(Map<K, V> elements) {
+		Map<K,V> concurrentHashMap = new ConcurrentHashMap<K,V>();
 		concurrentHashMap.putAll(elements);
 		return concurrentHashMap;
+	}
+
+	@Override
+	protected <V extends Object> Set<V> concurrentSetImpl(Set<V> elements) {
+		Set<V> concurrentSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
+		concurrentSet.addAll(elements);
+		return concurrentSet;
 	}
 }

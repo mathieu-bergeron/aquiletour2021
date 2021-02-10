@@ -34,7 +34,7 @@ import ca.ntro.jdk.regex.RegExJdk;
 import ca.ntro.jdk.web.ViewLoaderWebJdk;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
-public abstract class InitializationTaskJdk extends InitializationTask {
+public class InitializationTaskJdk extends InitializationTask {
 
 	@Override
 	protected AppCloser provideAppCloser() {

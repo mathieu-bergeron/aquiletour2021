@@ -18,12 +18,19 @@ dependencies {
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
 
-    // FIXME: DEV ONLY
+    // <DEV ONLY>
     implementation group: 'org.dizitart', name: 'nitrite', version: '3.4.1'
+    implementation 'guru.nidi:graphviz-java-all-j2v8:0.18.0'
+    // </DEV ONLY>
 
+    testImplementation 'junit:junit:4.13'
 }
 
 tasks.build {
     finalizedBy 'install'
+}
+
+tasks.test{
+    //testLogging.showStandardStreams = true
 }
 
