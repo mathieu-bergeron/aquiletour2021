@@ -30,12 +30,15 @@ ajoute les commit dans DB
 Docker GIT:
 retourne une archive des fichiers selon requete:
 	message dictionnaire json
-	session?	cours?		groupe?		etudiant?	travail?	exercice?
+	session?	cours?		groupe?		etudiant?	travail?	exercice?	date?		commitID?
 	permettre d'exclure certains fichiers (optionnel) : 		exclude?
 	Si une information est absente (ou *) on ramasse tout, par exemple, on recupere
 	tous les groupes de 420ZF5 en mettant groupe: '*'
 	Structure de l'archive: DA/... 		(le repertoire du depot n'apparait pas)
 		conserve la structure des repertoires dans le depot (src/TP2/Ex02/test.java)
+	Besoin de la DB pour trouver les depots pertinents pour chaque etudiant
+API?
+	Definition des requetes?
 
 Pour un test:
 Soumettre une requete avec session/cours-gr/etudiant/tp/exercice (DB cours) au docker GIT
