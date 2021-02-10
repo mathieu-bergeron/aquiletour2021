@@ -19,15 +19,17 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void initialize() {
 		T.call(this);
 
+		System.out.println(getRootElement());
 		HtmlElement settingsLink = getRootElement().children("#settings-link").get(0);
-		
+
 		MustNot.beNull(settingsLink);
-		
+
+		// FIXME il semble que ceci ne fonctionne présentement pas
 		settingsLink.addEventListener("onclick", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				
+
 				ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
 				showSettingsMessage.sendMessage();
 			}
@@ -37,14 +39,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showSettings(SettingsView settingsView) {
 		T.call(this);
-		
+
 		showSubView(settingsView);
 	}
 
 	@Override
 	public void showDashboard(DashboardView dashboardView) {
 		T.call(this);
-		
+
 		showSubView(dashboardView);
 	}
 
@@ -52,9 +54,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		NtroViewWeb viewWeb = (NtroViewWeb) view;
-		
+
 		HtmlElement container = this.getRootElement().children("#page-container").get(0);
-		
+
 		MustNot.beNull(container);
 
 		HtmlElement subViewElement = viewWeb.getRootElement();
@@ -64,7 +66,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showQueue(QueueView queueView) {
 		T.call(this);
-		
+
 		showSubView(queueView);
 	}
 
