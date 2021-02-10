@@ -1,5 +1,7 @@
 package ca.ntro.core.task2;
 
+import java.util.Set;
+
 public interface NtroTask extends Identifiable {
 
 	void setId(String id);
@@ -17,4 +19,5 @@ public interface NtroTask extends Identifiable {
 	void execute(GraphTraceWriter writer);
 
 	void writeGraph(GraphWriter writer);
+	void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks);
 }

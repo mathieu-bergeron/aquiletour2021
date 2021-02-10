@@ -67,6 +67,16 @@ public class NtroTaskImpl implements NtroTask {
 
 	@Override
 	public void writeGraph(GraphWriter writer) {
+		Set<NtroTask> visitedTasks = new HashSet<>();
+		writeGraph(writer, visitedTasks);
+	}
+
+	@Override
+	public void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks) {
+		if(visitedTasks.contains(this)) return;
+		
+		visitedTasks.add(this);
+
 		if(hasSubTasks()) {
 
 			writer.addCluster(this);
@@ -76,11 +86,13 @@ public class NtroTaskImpl implements NtroTask {
 		}else {
 			writer.addNode(this);
 		}
+
+		forEachNextTask(nextTask -> nextTask.writeGraph(writer, visitedTasks));
+		forEachPreviousTask(previousTask -> previousTask.writeGraph(writer, visitedTasks));
 		
-		/*
 		forEachNextTask(nextTask -> writer.addEdge(this, nextTask));
 		forEachPreviousTask(previousTask -> writer.addEdge(previousTask,this));
-		*/
+
 	}
 
 	private void forEachSubTask(TaskLambda lambda) {
@@ -114,8 +126,8 @@ public class NtroTaskImpl implements NtroTask {
 	@Override
 	public void addNextTask(NtroTask task) {
 		if(!haveNextTask(task)) {
-			task.addPreviousTask(this);
 			nextTasks.put(task.getId(), task);
+			task.addPreviousTask(this);
 		}
 	}
 
@@ -132,8 +144,8 @@ public class NtroTaskImpl implements NtroTask {
 	@Override
 	public void addPreviousTask(NtroTask task) {
 		if(!havePreviousTask(task)) {
-			task.addNextTask(this);
 			previousTasks.put(task.getId(), task);
+			task.addNextTask(this);
 		}
 	}
 

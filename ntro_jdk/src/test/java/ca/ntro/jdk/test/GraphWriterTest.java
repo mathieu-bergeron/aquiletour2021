@@ -134,6 +134,9 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	public boolean hasEdge(String fromId, String toId) {
+		System.out.println(edges.size());
+		
+		
 		Node from = getNode(fromId);
 		Node to = getNode(toId);
 		

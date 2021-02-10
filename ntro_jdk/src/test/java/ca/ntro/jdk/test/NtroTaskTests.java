@@ -106,6 +106,8 @@ public class NtroTaskTests {
 		NtroTask taskB = new NtroTaskImpl("B");
 		
 		taskA.addNextTask(taskB);
+
+		taskA.writeGraph(testWriter);
 		
 		assertTrue(testWriter.hasNode("A"));
 		assertTrue(testWriter.hasNode("B"));
@@ -123,6 +125,8 @@ public class NtroTaskTests {
 		NtroTask taskB = new NtroTaskImpl("B");
 		
 		taskB.addPreviousTask(taskA);
+
+		taskB.writeGraph(testWriter);
 		
 		assertTrue(testWriter.hasNode("A"));
 		assertTrue(testWriter.hasNode("B"));
