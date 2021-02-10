@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
+import ca.ntro.core.system.log.Log;
 
 public class NtroTaskImpl implements NtroTask {
 
@@ -90,10 +91,17 @@ public class NtroTaskImpl implements NtroTask {
 			writer.addCluster(this);
 
 		}else if(parentTask != null && !hasSubTasks()) {
+
+			parentTask.writeGraph(writer, visitedTasks);
 			writer.addSubNode(parentTask, this);
 
-		}else {
+		}else if(parentTask != null && hasSubTasks()){
+
+			parentTask.writeGraph(writer, visitedTasks);
 			writer.addSubCluster(parentTask, this);
+
+		}else {
+			Log.warning("Should not occur");
 		}
 		
 		forEachSubTask(subTask -> subTask.writeGraph(writer, visitedTasks));

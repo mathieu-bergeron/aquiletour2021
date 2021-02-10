@@ -5,11 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.task2.GraphWriter;
 import ca.ntro.core.task2.Identifiable;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
-
 
 public class GraphWriterTest implements GraphWriter {
 	
@@ -36,8 +34,6 @@ public class GraphWriterTest implements GraphWriter {
 			if(visitedNodes.contains(this)) return;
 			visitedNodes.add(this);
 
-			System.out.println("Node.write: " + id);
-			
 			if(parent == null) {
 				writer.addNode(this);
 			}else {
@@ -59,8 +55,6 @@ public class GraphWriterTest implements GraphWriter {
 		public void write(GraphWriter writer, Set<Node> visitedNodes) {
 			if(visitedNodes.contains(this)) return;
 			visitedNodes.add(this);
-
-			System.out.println("Cluster.write: " + id);
 			
 			if(parent == null) {
 				writer.addCluster(this);
@@ -119,7 +113,6 @@ public class GraphWriterTest implements GraphWriter {
 
 	@Override
 	public void addCluster(Identifiable clusterSpec) {
-		System.out.println("Test.addCluster: " + clusterSpec.getId());
 		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec.getId()));
 	}
 
@@ -130,18 +123,21 @@ public class GraphWriterTest implements GraphWriter {
 
 	@Override
 	public void addNode(Identifiable nodeSpec) {
-		System.out.println("Test.addNode: " + nodeSpec.getId());
 		nodes.put(nodeSpec.getId(), new Node(nodeSpec.getId()));
 	}
 
 	@Override
-	public void addSubCluster(Identifiable cluster, Identifiable subCluster) {
-		getCluster(cluster.getId()).add(new Cluster(subCluster.getId()));
+	public void addSubCluster(Identifiable cluster, Identifiable subClusterSpec) {
+		Cluster subCluster = new Cluster(subClusterSpec.getId());
+		nodes.put(subClusterSpec.getId(), subCluster);
+		getCluster(cluster.getId()).add(subCluster);
 	}
 
 	@Override
-	public void addSubNode(Identifiable cluster, Identifiable subNode) {
-		getCluster(cluster.getId()).add(new Node(subNode.getId()));
+	public void addSubNode(Identifiable cluster, Identifiable subNodeSpec) {
+		Node subNode = new Node(subNodeSpec.getId());
+		nodes.put(subNodeSpec.getId(), subNode);
+		getCluster(cluster.getId()).add(subNode);
 	}
 
 	public boolean ifClusterContains(String clusterId, String nodeId) {
@@ -154,9 +150,6 @@ public class GraphWriterTest implements GraphWriter {
 
 	private Cluster getCluster(String clusterId) {
 		Cluster cluster = (Cluster) nodes.get(clusterId);
-		
-		MustNot.beNull(cluster);
-
 		return cluster;
 	}
 

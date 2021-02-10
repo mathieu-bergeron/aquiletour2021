@@ -30,14 +30,11 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	public void toFile(File file) throws IOException {
-		System.out.println(graph);
-		Graphviz.fromGraph(graph).height(100).render(Format.PNG).toFile(file);
+		Graphviz.fromGraph(graph).render(Format.PNG).toFile(file);
 	}
 
 	@Override
 	public void addCluster(Identifiable clusterSpec) {
-		System.out.println("Jdk.addCluster: " + clusterSpec.getId());
-
 		MutableGraph cluster = createCluster(clusterSpec);
 		graph.add(cluster);
 	}

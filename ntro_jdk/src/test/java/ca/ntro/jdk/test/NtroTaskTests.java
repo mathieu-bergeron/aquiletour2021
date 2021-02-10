@@ -89,12 +89,12 @@ public class NtroTaskTests {
 		parentTask.addSubTask(childTask);
 		
 		parentTask.writeGraph(testWriter);
-		
+		toFile(testName, testWriter);
+
 		assertTrue(testWriter.hasCluster("parent"));
 		assertTrue(testWriter.hasNode("child"));
 		assertTrue(testWriter.ifClusterContains("parent", "child"));
 
-		toFile(testName, testWriter);
 	}
 
 	@Test
@@ -108,12 +108,11 @@ public class NtroTaskTests {
 		taskA.addNextTask(taskB);
 
 		taskA.writeGraph(testWriter);
+		toFile(testName, testWriter);
 		
 		assertTrue(testWriter.hasNode("A"));
 		assertTrue(testWriter.hasNode("B"));
 		assertTrue(testWriter.hasEdge("A", "B"));
-
-		toFile(testName, testWriter);
 	}
 
 	@Test
@@ -127,12 +126,11 @@ public class NtroTaskTests {
 		taskB.addPreviousTask(taskA);
 
 		taskB.writeGraph(testWriter);
+		toFile(testName, testWriter);
 		
 		assertTrue(testWriter.hasNode("A"));
 		assertTrue(testWriter.hasNode("B"));
 		assertTrue(testWriter.hasEdge("A", "B"));
-
-		toFile(testName, testWriter);
 	}
 
 	@Test
@@ -150,13 +148,12 @@ public class NtroTaskTests {
 		taskC.addSubTask(taskD);
 		
 		taskA.writeGraph(testWriter);
-		
-		assertTrue(testWriter.hasNode("A"));
-		assertTrue(testWriter.hasNode("B"));
-		assertTrue(testWriter.hasNode("C"));
-		assertTrue(testWriter.hasNode("D"));
-
 		toFile(testName, testWriter);
+		
+		assertTrue(testWriter.hasCluster("A"));
+		assertTrue(testWriter.hasCluster("B"));
+		assertTrue(testWriter.hasCluster("C"));
+		assertTrue(testWriter.hasNode("D"));
 	}
 
 	@After
