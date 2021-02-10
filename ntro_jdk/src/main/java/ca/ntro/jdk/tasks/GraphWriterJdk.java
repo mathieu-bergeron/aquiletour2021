@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.task2.GraphWriter;
 import ca.ntro.core.task2.Identifiable;
 import guru.nidi.graphviz.attribute.Label;
@@ -12,6 +13,7 @@ import guru.nidi.graphviz.attribute.Rank;
 import guru.nidi.graphviz.attribute.Rank.RankDir;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.Link;
 import guru.nidi.graphviz.model.LinkTarget;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.MutableNode;
@@ -22,14 +24,17 @@ public class GraphWriterJdk implements GraphWriter {
 	
 	private MutableGraph graph;
 	private Map<String, MutableGraph> clusters = new HashMap<>();
+	private Map<String, MutableNode> clusterInvisibleNodes = new HashMap<>();
 	private Map<String, MutableNode> nodes = new HashMap<>();
 	
 	public GraphWriterJdk(String graphName) {
 		graph = mutGraph(graphName).setDirected(true)
-				.graphAttrs().add(Rank.dir(RankDir.LEFT_TO_RIGHT));
+				.graphAttrs().add(Rank.dir(RankDir.LEFT_TO_RIGHT))
+				.graphAttrs().add("compound", "true");
 	}
 
 	public void toFile(File file) throws IOException {
+		System.out.println(graph);
 		Graphviz.fromGraph(graph).render(Format.PNG).toFile(file);
 	}
 
@@ -44,12 +49,26 @@ public class GraphWriterJdk implements GraphWriter {
 		
 		MutableGraph cluster = mutGraph(clusterSpec.getId());
 		cluster.setCluster(true);
-
+		cluster.graphAttrs().add(Rank.dir(RankDir.LEFT_TO_RIGHT));
 		cluster.graphAttrs().add(Label.of(clusterSpec.getId()));
-		
+		cluster.setDirected(true);
+
 		clusters.put(clusterSpec.getId(), cluster);
 
 		return cluster;
+	}
+
+	private void createClusterInvisibleNode(MutableGraph cluster) {
+		if(clusterInvisibleNodes.containsKey(cluster.name().toString())) return;
+
+		String clusterInvisibleNodeId = "__" + cluster.name() + "__";
+		MutableNode clusterInvisiableNode = mutNode(clusterInvisibleNodeId);
+		clusterInvisiableNode.attrs().add("shape", "none");
+		clusterInvisiableNode.attrs().add("style", "invis");
+		clusterInvisiableNode.attrs().add("label", "");
+		
+		cluster.add(clusterInvisiableNode);
+		clusterInvisibleNodes.put(cluster.name().toString(), clusterInvisiableNode);
 	}
 
 	@Override
@@ -75,36 +94,47 @@ public class GraphWriterJdk implements GraphWriter {
 	@Override
 	public void addSubNode(Identifiable clusterSpec, Identifiable subNodeSpec) {
 		MutableGraph cluster = clusters.get(clusterSpec.getId());
+
+		
 		cluster.add(createNode(subNodeSpec));
 	}
 
 	@Override
 	public void addEdge(Identifiable fromSpec, Identifiable toSpec) {
+
 		MutableGraph fromCluster = clusters.get(fromSpec.getId());
+		MutableGraph toCluster = clusters.get(toSpec.getId());
 		MutableNode fromNode = nodes.get(fromSpec.getId());
-		LinkTarget to = getLinkTarget(toSpec.getId());
+		MutableNode toNode = nodes.get(toSpec.getId());
+		
+		Link link = null;
+		
+		if(toCluster != null) {
+			createClusterInvisibleNode(toCluster);
+			MutableNode toInvisibleNode = clusterInvisibleNodes.get(toSpec.getId());
+
+			link = Link.to(toInvisibleNode);
+			link.attrs().add("lhead","cluster_" + toCluster.name());
+
+		}else if(toNode != null) {
+
+			link = Link.to(toNode);
+		}
+
+		MustNot.beNull(link);
+		
 		
 		if(fromCluster != null) {
-			fromCluster.addLink(to);
+			createClusterInvisibleNode(fromCluster);
+			MutableNode fromInvisibleNode = clusterInvisibleNodes.get(fromSpec.getId());
 
-		}else if(fromNode != null){
-			fromNode.addLink(to);
+			MutableNode node = mutNode(fromInvisibleNode.name());
+			link.attrs().add("ltail","cluster_" + fromCluster.name());
+			node.links().add(link);
+			graph.add(node);
+			
+		} else if(fromNode != null){
+			fromNode.links().add(link);
 		}
 	}
-
-	private LinkTarget getLinkTarget(String id) {
-		return (LinkTarget) getNodeOrCluster(id);
-	}
-	
-	private Object getNodeOrCluster(String id) {
-		Object nodeOrCluster = clusters.get(id);
-		if(nodeOrCluster == null) {
-			nodeOrCluster = nodes.get(id);
-		}
-		
-		return nodeOrCluster;
-	}
-
-
-	
 }

@@ -37,6 +37,7 @@ public class GraphWriterTest implements GraphWriter {
 			if(parent == null) {
 				writer.addNode(this);
 			}else {
+				parent.write(writer, visitedNodes);
 				writer.addSubNode(parent, this);
 			}
 		}
@@ -59,6 +60,7 @@ public class GraphWriterTest implements GraphWriter {
 			if(parent == null) {
 				writer.addCluster(this);
 			}else {
+				parent.write(writer, visitedNodes);
 				writer.addSubCluster(parent, this);
 			}
 

@@ -154,6 +154,48 @@ public class NtroTaskTests {
 		assertTrue(testWriter.hasCluster("B"));
 		assertTrue(testWriter.hasCluster("C"));
 		assertTrue(testWriter.hasNode("D"));
+		assertTrue(testWriter.ifClusterContains("A", "B"));
+		assertTrue(testWriter.ifClusterContains("B", "C"));
+		assertTrue(testWriter.ifClusterContains("C", "D"));
+	}
+
+	@Test
+	public void mixed() throws IOException {
+		String testName = "mixed";
+		GraphWriterTest testWriter = createGraphWriter(testName);
+		
+		NtroTask taskA = new NtroTaskImpl("A");
+		NtroTask taskB = new NtroTaskImpl("B");
+		NtroTask taskC = new NtroTaskImpl("C");
+		
+		taskA.addNextTask(taskB);
+		taskB.addNextTask(taskC);
+
+		NtroTask taskA1 = new NtroTaskImpl("A1");
+		NtroTask taskA2 = new NtroTaskImpl("A2");
+		NtroTask taskA3 = new NtroTaskImpl("A3");
+		
+		taskA.addSubTask(taskA1);
+		taskA.addSubTask(taskA2);
+		taskA.addSubTask(taskA3);
+		
+		taskA1.addNextTask(taskA2);
+		taskA1.addNextTask(taskA3);
+
+		NtroTask taskB1 = new NtroTaskImpl("B1");
+		NtroTask taskB2 = new NtroTaskImpl("B2");
+		NtroTask taskB3 = new NtroTaskImpl("B3");
+		
+		taskB.addSubTask(taskB1);
+		taskB.addSubTask(taskB2);
+		taskB.addSubTask(taskB3);
+		
+		taskB1.addNextTask(taskB3);
+		taskB2.addNextTask(taskB3);
+
+		taskA.writeGraph(testWriter);
+
+		toFile(testName, testWriter);
 	}
 
 	@After
