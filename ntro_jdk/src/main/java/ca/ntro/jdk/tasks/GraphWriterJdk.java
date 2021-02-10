@@ -39,7 +39,7 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addCluster(Identifiable clusterSpec) {
+	public void addRootCluster(Identifiable clusterSpec) {
 		MutableGraph cluster = createCluster(clusterSpec);
 		graph.add(cluster);
 	}
@@ -72,7 +72,7 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addNode(Identifiable nodeSpec) {
+	public void addRootNode(Identifiable nodeSpec) {
 		MutableNode node = createNode(nodeSpec);
 		graph.add(node);
 	}
@@ -101,40 +101,42 @@ public class GraphWriterJdk implements GraphWriter {
 
 	@Override
 	public void addEdge(Identifiable fromSpec, Identifiable toSpec) {
+		System.out.println("addEdge: " + fromSpec.getId() + " " + toSpec.getId());
 
 		MutableGraph fromCluster = clusters.get(fromSpec.getId());
 		MutableGraph toCluster = clusters.get(toSpec.getId());
-		MutableNode fromNode = nodes.get(fromSpec.getId());
-		MutableNode toNode = nodes.get(toSpec.getId());
 		
 		Link link = null;
 		
 		if(toCluster != null) {
 			createClusterInvisibleNode(toCluster);
 			MutableNode toInvisibleNode = clusterInvisibleNodes.get(toSpec.getId());
-
 			link = Link.to(toInvisibleNode);
 			link.attrs().add("lhead","cluster_" + toCluster.name());
 
-		}else if(toNode != null) {
-
+		}else {
+			
+			MutableNode toNode = mutNode(toSpec.getId());
+			graph.add(toNode);
 			link = Link.to(toNode);
 		}
 
 		MustNot.beNull(link);
 		
-		
 		if(fromCluster != null) {
 			createClusterInvisibleNode(fromCluster);
 			MutableNode fromInvisibleNode = clusterInvisibleNodes.get(fromSpec.getId());
 
-			MutableNode node = mutNode(fromInvisibleNode.name());
+			MutableNode fromNode = mutNode(fromInvisibleNode.name());
 			link.attrs().add("ltail","cluster_" + fromCluster.name());
-			node.links().add(link);
-			graph.add(node);
-			
-		} else if(fromNode != null){
 			fromNode.links().add(link);
+			graph.add(fromNode);
+			
+		} else {
+
+			MutableNode fromNode = mutNode(fromSpec.getId());
+			fromNode.links().add(link);
+			graph.add(fromNode);
 		}
 	}
 }

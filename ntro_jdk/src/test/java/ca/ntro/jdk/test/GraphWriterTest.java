@@ -35,7 +35,7 @@ public class GraphWriterTest implements GraphWriter {
 			visitedNodes.add(this);
 
 			if(parent == null) {
-				writer.addNode(this);
+				writer.addRootNode(this);
 			}else {
 				parent.write(writer, visitedNodes);
 				writer.addSubNode(parent, this);
@@ -58,7 +58,7 @@ public class GraphWriterTest implements GraphWriter {
 			visitedNodes.add(this);
 			
 			if(parent == null) {
-				writer.addCluster(this);
+				writer.addRootCluster(this);
 			}else {
 				parent.write(writer, visitedNodes);
 				writer.addSubCluster(parent, this);
@@ -114,7 +114,7 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	@Override
-	public void addCluster(Identifiable clusterSpec) {
+	public void addRootCluster(Identifiable clusterSpec) {
 		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec.getId()));
 	}
 
@@ -124,7 +124,7 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	@Override
-	public void addNode(Identifiable nodeSpec) {
+	public void addRootNode(Identifiable nodeSpec) {
 		nodes.put(nodeSpec.getId(), new Node(nodeSpec.getId()));
 	}
 

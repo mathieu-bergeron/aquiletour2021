@@ -85,10 +85,10 @@ public class NtroTaskImpl implements NtroTask {
 		visitedTasks.add(this);
 		
 		if(parentTask == null && !hasSubTasks()) {
-			writer.addNode(this);
+			writer.addRootNode(this);
 
 		}else if(parentTask == null && hasSubTasks()) {
-			writer.addCluster(this);
+			writer.addRootCluster(this);
 
 		}else if(parentTask != null && !hasSubTasks()) {
 

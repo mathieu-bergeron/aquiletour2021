@@ -193,6 +193,11 @@ public class NtroTaskTests {
 		taskB1.addNextTask(taskB3);
 		taskB2.addNextTask(taskB3);
 
+		NtroTask taskD = new NtroTaskImpl("D");
+		
+		taskB2.addNextTask(taskD);
+		taskC.addNextTask(taskD);
+
 		taskA.writeGraph(testWriter);
 
 		toFile(testName, testWriter);
