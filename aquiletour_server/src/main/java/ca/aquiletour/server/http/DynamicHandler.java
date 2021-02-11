@@ -119,18 +119,22 @@ public class DynamicHandler extends AbstractHandler {
 		
 		Path path = new Path(baseRequest.getRequestURI().toString());
 
-		NtroWindowServer newWindow;
 		
-		newWindow = newWindowAndCookies(baseRequest, path, response);
+		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
-		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
+		NtroWindowServer newWindow = newWindow(ifJsOnly, path);
+		
+		if(!ifJsOnly) {
 
-		rootController.execute();
+			RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
 
-		Map<String, String[]> parameters = baseRequest.getParameterMap();
+			rootController.execute();
 
-		// XXX: sending a message unblocks a task
-		AquiletourRequestHandler.sendMessages(path, parameters);
+			Map<String, String[]> parameters = baseRequest.getParameterMap();
+
+			// XXX: sending a message unblocks a task
+			AquiletourRequestHandler.sendMessages(path, parameters);
+		}
 		
 		//System.out.println(rootController.getTask().toString());
 		
@@ -140,25 +144,38 @@ public class DynamicHandler extends AbstractHandler {
 		writeResponse(newWindow, baseRequest, out);
 	}
 
-	private NtroWindowServer newWindowAndCookies(Request baseRequest, Path path, HttpServletResponse response) {
+	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
-
-		NtroWindowServer newWindow;
+		
+		boolean ifJsOnly = true;
 
 		if(baseRequest.getParameter("nojs") != null) {
 			
 			response.addCookie(new Cookie("nojs", "true"));
-			newWindow = new NtroWindowServer("/private/nojs.html");
+			ifJsOnly = false;
 			
 		}else if(hasCookie(baseRequest, "nojs")) {
 
-			newWindow = new NtroWindowServer("/private/nojs.html");
+			ifJsOnly = false;
+		}
+		
+		return ifJsOnly;
+	}
 
-		} else {
+	private NtroWindowServer newWindow(boolean ifJsOnly, Path path) {
+		T.call(this);
+
+		NtroWindowServer newWindow;
+
+		if(ifJsOnly) {
 
 			newWindow = new NtroWindowServer("/private/index.html");
+			
+		}else {
 
-		}
+			newWindow = new NtroWindowServer("/private/nojs.html");
+
+		} 
 
 		newWindow.setCurrentPath(path);
 
