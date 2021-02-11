@@ -34,7 +34,7 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
 
-		HtmlElement container = this.getRootElement().children("#appointments-container").get(0);
+		HtmlElement container = this.getRootElement().children("#appointment-list").get(0);
 
 		String selector = "#appointment-" + appointmentId;
 
