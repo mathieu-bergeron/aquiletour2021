@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
-import ca.ntro.core.system.log.Log;
 
 public abstract class NtroTaskImpl implements NtroTask {
 
@@ -21,7 +20,18 @@ public abstract class NtroTaskImpl implements NtroTask {
 
 	private Set<String> finishedPreviousTasks = NtroCollections.concurrentSet(new HashSet<>());
 	private Set<String> finishedSubTasks = NtroCollections.concurrentSet(new HashSet<>());
-	private Set<String> finishedNextTasks = NtroCollections.concurrentSet(new HashSet<>());
+
+	@Override 
+	public int hashCode() {
+		return taskId.hashCode();
+	}
+
+	@Override 
+	public boolean equals(Object other) {
+		if(this == other) return true;
+		if(!(other instanceof NtroTask)) return false;
+		return ((NtroTask)other).getId().equals(this.getId());
+	}
 
 	public NtroTaskImpl() {
 		this.taskId = generateId();
@@ -51,6 +61,11 @@ public abstract class NtroTaskImpl implements NtroTask {
 	}
 
 	@Override
+	public String getLabel() {
+		return taskId;
+	}
+
+	@Override
 	public void setId(String taskId) {
 		this.taskId = taskId;
 	}
@@ -58,6 +73,11 @@ public abstract class NtroTaskImpl implements NtroTask {
 	@Override
 	public void setParentTask(NtroTask parentTask) {
 		this.parentTask = parentTask;
+	}
+
+	@Override
+	public NtroTask getParentTask() {
+		return parentTask;
 	}
 
 	@Override
@@ -72,44 +92,108 @@ public abstract class NtroTaskImpl implements NtroTask {
 		addSubTask(task);
 	}
 
-
 	@Override
 	public synchronized void writeGraph(GraphWriter writer) {
-		Set<NtroTask> visitedTasks = new HashSet<>();
-		writeGraph(writer, visitedTasks);
+		forEachTaskInGraph(t -> t.write(writer));
+	}
+	
+	public void write(GraphWriter writer) {
+		if(isRootNode()) {
+
+			writer.addRootNode(this);
+
+		}else if(isRootCluster()) {
+
+			writer.addRootCluster(this);
+
+		}else if(isSubNode()) {
+
+			writer.addSubNode(getParentTask(), this);
+
+		}else if(isSubCluster()){
+
+			writer.addSubCluster(getParentTask(), this);
+		}
 	}
 
 	@Override
-	public synchronized void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks) {
-		if(visitedTasks.contains(this)) return;
-		visitedTasks.add(this);
+	public boolean isSubCluster() {
+		return hasParent() && hasSubTasks();
+	}
+
+	@Override
+	public boolean isSubNode() {
+		return hasParent() && !hasSubTasks();
+	}
+
+	@Override
+	public boolean isRootCluster() {
+		return isRoot() && hasSubTasks();
+	}
+
+	@Override
+	public boolean isRootNode() {
+		return isRoot() && !hasSubTasks();
+	}
+	
+	public boolean isRoot() {
+		return !hasParent();
+	}
+
+	@Override
+	public boolean hasParent() {
+		return parentTask != null;
+	}
+	
+	private boolean hasPreviousTasks() {
+		return previousTasks.size() > 0;
+	}
+	
+	private boolean isStartNode() {
+		return !hasPreviousTasks() && !hasParent();
+	}
+	
+
+	private synchronized void forEachTaskInGraph(TaskLambda lambda) {
+		searchForStartNodesAndIterateForward(lambda, new HashSet<>(), new HashSet<>());
+	}
+
+	private synchronized void forEachStartTaskInGraph(TaskLambda lambda) {
+		// TODO
+	}
+	
+
+	private synchronized void iterateGraphForward(TaskLambda lambda, 
+										          Set<NtroTask> visitedNodes) {
+
+		if(visitedNodes.contains(this)) return;
+		visitedNodes.add(this);
 		
-		if(parentTask == null && !hasSubTasks()) {
-			writer.addRootNode(this);
+		forEachSubTask(lambda);
+		forEachNextTask(lambda);
+	}
 
-		}else if(parentTask == null && hasSubTasks()) {
-			writer.addRootCluster(this);
-
-		}else if(parentTask != null && !hasSubTasks()) {
-			parentTask.writeGraph(writer, visitedTasks);
-			writer.addSubNode(parentTask, this);
-
-		}else if(parentTask != null && hasSubTasks()){
-			parentTask.writeGraph(writer, visitedTasks);
-			writer.addSubCluster(parentTask, this);
+	private synchronized void searchForStartNodesAndIterateForward(TaskLambda lambda, 
+			                                                       Set<NtroTask> visitedSearchNodes, 
+			                                                       Set<NtroTask> visitedIterationNodes) {
+		
+		if(visitedSearchNodes.contains(this)) return;
+		visitedSearchNodes.add(this);
+		
+		if(isStartNode()) {
+			
+			iterateGraphForward(lambda, visitedIterationNodes);
 
 		}else {
-			Log.warning("Should not occur");
+			if(hasParent()) {
+				((NtroTaskImpl) this).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes);
+			}
+
+			forEachPreviousTask(pt -> ((NtroTaskImpl)pt).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes));
 		}
-
-		forEachPreviousTask(previousTask -> previousTask.writeGraph(writer, visitedTasks));
-		forEachPreviousTask(previousTask -> writer.addEdge(previousTask,this));
-		
-		forEachSubTask(subTask -> subTask.writeGraph(writer, visitedTasks));
-
-		forEachNextTask(nextTask -> nextTask.writeGraph(writer, visitedTasks));
-		forEachNextTask(nextTask -> writer.addEdge(this, nextTask));
 	}
+
+
 
 	private void forEachSubTask(TaskLambda lambda) {
 		synchronized (subTasks) {
@@ -135,7 +219,8 @@ public abstract class NtroTaskImpl implements NtroTask {
 		}
 	}
 
-	private boolean hasSubTasks() {
+	@Override
+	public boolean hasSubTasks() {
 		return subTasks.size() > 0;
 	}
 

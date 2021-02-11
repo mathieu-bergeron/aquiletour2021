@@ -7,28 +7,34 @@ import java.util.Set;
 
 import ca.ntro.core.task2.GraphWriter;
 import ca.ntro.core.task2.Identifiable;
+import ca.ntro.core.task2.NodeSpec;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
 
 public class GraphWriterTest implements GraphWriter {
 	
-	private class Node implements Identifiable {
-		public String id;
+	private class Node implements NodeSpec {
+		public NodeSpec wrappedSpec;
 		public Node parent;
-		public Node(String id) {
-			this.id = id;
+		public Node(NodeSpec wrappedSpec) {
+			this.wrappedSpec = wrappedSpec;
 		}
 		@Override
 		public String getId() {
-			return id;
+			return wrappedSpec.getId();
+		}
+		@Override
+		public String getLabel() {
+			return wrappedSpec.getLabel();
 		}
 		@Override
 		public int hashCode() {
-			return id.hashCode();
+			return wrappedSpec.hashCode();
 		}
 		@Override 
 		public boolean equals(Object other) {
+			if(this == other) return true;
 			if(!(other instanceof Node)) return false;
-			return ((Node)other).id.equals(id);
+			return ((Node)other).wrappedSpec.equals(wrappedSpec);
 		}
 		public void write(GraphWriter writer, Set<Node> visitedNodes) {
 			if(visitedNodes.contains(this)) return;
@@ -45,8 +51,8 @@ public class GraphWriterTest implements GraphWriter {
 
 	private class Cluster extends Node {
 		public Set<Node> children = new HashSet<>();
-		public Cluster(String id) {
-			super(id);
+		public Cluster(NodeSpec wrappedSpec) {
+			super(wrappedSpec);
 		}
 		public void add(Node node) {
 			children.add(node);
@@ -114,8 +120,8 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	@Override
-	public void addRootCluster(Identifiable clusterSpec) {
-		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec.getId()));
+	public void addRootCluster(NodeSpec clusterSpec) {
+		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec));
 	}
 
 	public boolean hasNode(String nodeId) {
@@ -124,20 +130,20 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	@Override
-	public void addRootNode(Identifiable nodeSpec) {
-		nodes.put(nodeSpec.getId(), new Node(nodeSpec.getId()));
+	public void addRootNode(NodeSpec nodeSpec) {
+		nodes.put(nodeSpec.getId(), new Node(nodeSpec));
 	}
 
 	@Override
-	public void addSubCluster(Identifiable cluster, Identifiable subClusterSpec) {
-		Cluster subCluster = new Cluster(subClusterSpec.getId());
+	public void addSubCluster(NodeSpec cluster, NodeSpec subClusterSpec) {
+		Cluster subCluster = new Cluster(subClusterSpec);
 		nodes.put(subClusterSpec.getId(), subCluster);
 		getCluster(cluster.getId()).add(subCluster);
 	}
 
 	@Override
-	public void addSubNode(Identifiable cluster, Identifiable subNodeSpec) {
-		Node subNode = new Node(subNodeSpec.getId());
+	public void addSubNode(NodeSpec cluster, NodeSpec subNodeSpec) {
+		Node subNode = new Node(subNodeSpec);
 		nodes.put(subNodeSpec.getId(), subNode);
 		getCluster(cluster.getId()).add(subNode);
 	}
@@ -168,7 +174,7 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	@Override
-	public void addEdge(Identifiable fromSpec, Identifiable toSpec) {
+	public void addEdge(NodeSpec fromSpec, NodeSpec toSpec) {
 		Node from = getNode(fromSpec.getId());
 		Node to = getNode(toSpec.getId());
 		

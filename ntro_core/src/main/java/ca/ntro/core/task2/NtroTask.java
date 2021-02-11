@@ -2,10 +2,19 @@ package ca.ntro.core.task2;
 
 import java.util.Set;
 
-public interface NtroTask extends Identifiable {
+public interface NtroTask extends NodeSpec {
 
 	void setId(String id);
 	void setParentTask(NtroTask parentTask);
+
+	boolean hasParent();
+	boolean hasSubTasks();
+	NtroTask getParentTask();
+
+	boolean isSubCluster();
+	boolean isSubNode();
+	boolean isRootCluster();
+	boolean isRootNode();
 	
 	void addSubTask(NtroTask task);
 	void addSubTask(NtroTask task, String taskId);
@@ -20,5 +29,5 @@ public interface NtroTask extends Identifiable {
 	void execute(GraphTraceWriter writer);
 
 	void writeGraph(GraphWriter writer);
-	void writeGraph(GraphWriter writer, Set<NtroTask> visitedTasks);
+	void write(GraphWriter writer);
 }

@@ -2,10 +2,10 @@ package ca.ntro.core.task2;
 
 public interface GraphWriter {
 	
-	void addRootCluster(Identifiable cluster);
-	void addRootNode(Identifiable node);
-	void addSubCluster(Identifiable cluster, Identifiable subCluster);
-	void addSubNode(Identifiable cluster, Identifiable subNode);
-	void addEdge(Identifiable from, Identifiable to);
+	void addRootCluster(NodeSpec cluster);
+	void addRootNode(NodeSpec node);
+	void addSubCluster(NodeSpec cluster, NodeSpec subCluster);
+	void addSubNode(NodeSpec cluster, NodeSpec subNode);
+	void addEdge(NodeSpec from, NodeSpec to);
 
 }
