@@ -27,7 +27,7 @@
   width: 20px;
   border-radius: 50%;
   display: inline-block;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   position: absolute;
   right: 10;
 }
