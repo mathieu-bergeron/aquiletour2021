@@ -1,10 +1,12 @@
 package ca.ntro.jdk.web;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.dom.HtmlElementJdk;
@@ -21,10 +23,13 @@ public class ViewLoaderWebJdk extends ViewLoaderWeb {
 
 		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
 		
-		// FIXME: better to have multiple elements?
-		Element jsoupElement = jsoupDocument.body().child(0);
+		Element jsoupRootElement = new Element("div");
+
+		List<Node> children = jsoupDocument.body().childNodes();
 		
-		rootElement = new HtmlElementJdk(jsoupElement);
+		children.forEach(c -> jsoupRootElement.appendChild(c.clone()));
+		
+		rootElement = new HtmlElementJdk(jsoupRootElement);
         
         return rootElement;
 	}
