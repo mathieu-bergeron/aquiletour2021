@@ -96,19 +96,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 	@Override
 	public synchronized void writeGraph(GraphWriter writer) {
-		forEachTaskInGraph(t -> t.write(writer));
+
+		Set<NtroTask> visitedTasks = forEachTaskInGraph(t -> t.writeNode(writer));
+
+		visitedTasks.forEach(t -> writeEdges(writer));
 	}
 	
-	public void write(GraphWriter writer) {
-		writeNode(writer);
-		writeEdges(writer);
-	}
-
-	private void writeEdges(GraphWriter writer) {
-		forEachPreviousTask(pt -> writer.addEdge(pt, this));
-	}
-
-	private void writeNode(GraphWriter writer) {
+	public void writeNode(GraphWriter writer) {
 		if(isRootNode()) {
 
 			writer.addRootNode(this);
@@ -127,12 +121,23 @@ public abstract class NtroTaskAsync implements NtroTask {
 		}
 	}
 
+	private void writeEdges(GraphWriter writer) {
+		forEachPreviousTask(pt -> writer.addEdge(pt, this));
+	}
+
 	private boolean isSubCluster() {
 		return !isRoot() && isCluster();
 	}
 
+	private boolean isCluster() {
+		return hasSubTasks();
+	}
 	private boolean isSubNode() {
 		return !isRoot() && isNode();
+	}
+
+	private boolean isNode() {
+		return !hasSubTasks();
 	}
 
 	private boolean isRootCluster() {
@@ -156,12 +161,12 @@ public abstract class NtroTaskAsync implements NtroTask {
 	}
 	
 	private boolean isStartNode() {
-		return !hasPreviousTasks() && !hasParent();
+		return isRoot() && !hasPreviousTasks();
 	}
 	
 
-	private synchronized void forEachTaskInGraph(TaskLambda lambda) {
-		searchForStartNodesAndIterateForward(lambda, new HashSet<>(), new HashSet<>());
+	private synchronized Set<NtroTask> forEachTaskInGraph(TaskLambda lambda) {
+		return searchForStartNodesAndIterateForward(lambda, new HashSet<>(), new HashSet<>());
 	}
 
 	private synchronized void forEachStartTaskInGraph(TaskLambda lambda) {
@@ -169,23 +174,25 @@ public abstract class NtroTaskAsync implements NtroTask {
 	}
 	
 
-	private synchronized void iterateGraphForward(TaskLambda lambda, 
+	private synchronized Set<NtroTask> iterateGraphForward(TaskLambda lambda, 
 										          Set<NtroTask> visitedNodes) {
 
-		if(visitedNodes.contains(this)) return;
+		if(visitedNodes.contains(this)) return visitedNodes;
 		visitedNodes.add(this);
 		
 		lambda.execute(this);
 
 		forEachSubTask(st -> ((NtroTaskAsync) st).iterateGraphForward(lambda, visitedNodes));
 		forEachNextTask(nt -> ((NtroTaskAsync) nt).iterateGraphForward(lambda, visitedNodes));
+		
+		return visitedNodes;
 	}
 
-	private synchronized void searchForStartNodesAndIterateForward(TaskLambda lambda, 
+	private synchronized Set<NtroTask> searchForStartNodesAndIterateForward(TaskLambda lambda, 
 			                                                       Set<NtroTask> visitedSearchNodes, 
 			                                                       Set<NtroTask> visitedIterationNodes) {
 		
-		if(visitedSearchNodes.contains(this)) return;
+		if(visitedSearchNodes.contains(this)) return visitedIterationNodes;
 		visitedSearchNodes.add(this);
 		
 		if(isStartNode()) {
@@ -199,6 +206,8 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes));
 		}
+		
+		return visitedIterationNodes;
 	}
 
 

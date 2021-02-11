@@ -23,7 +23,7 @@ public interface NtroTask extends NodeSpec {
 	void notifySomeSubTaskFinished(NtroTask finishedTask);
 
 	void writeGraph(GraphWriter writer);
-	void write(GraphWriter writer);
+	void writeNode(GraphWriter writer);
 
 
 }

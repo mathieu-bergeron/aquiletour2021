@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.task2.GraphWriter;
 import ca.ntro.core.task2.NodeSpec;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
@@ -83,7 +84,7 @@ public class GraphWriterTest implements GraphWriter {
 		}
 		@Override
 		public int hashCode() {
-			return from.hashCode() + to.hashCode();
+			return Objects.hash(from, to);
 		}
 		@Override
 		public boolean equals(Object other) {
