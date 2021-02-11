@@ -20,4 +20,9 @@ public class HtmlElementsJSweet implements HtmlElements {
 		return new HtmlElementJSweet($(jQueryElements.get(index)));
 	}
 
+	@Override
+	public int size() {
+		return (int) jQueryElements.length;
+	}
+
 }

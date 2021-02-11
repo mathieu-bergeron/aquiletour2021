@@ -36,6 +36,7 @@ public class HtmlElementJdk implements HtmlElement {
 		T.call(this);
 
 		jsoupElement.append(html);
+		
 	}
 
 	@Override
@@ -78,5 +79,10 @@ public class HtmlElementJdk implements HtmlElement {
 		T.call(this);
 		
 		jsoupElement.remove();
+	}
+
+	@Override
+	public void value(String value) {
+		jsoupElement.val(value);
 	}
 }
