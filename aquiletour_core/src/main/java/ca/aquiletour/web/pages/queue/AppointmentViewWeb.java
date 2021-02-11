@@ -24,7 +24,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		HtmlElements ids = this.getRootElement().children(".appointmentId");
 		for(int i = 0; i < ids.size(); i++) {
 			HtmlElement id = ids.get(i);
-			//id.appendHtml(appointment.getAppointmentId());
+			id.appendHtml(appointment.getAppointmentId());
 			id.value(appointment.getAppointmentId());
 			id.setAttribute("value", appointment.getAppointmentId());
 		}
