@@ -98,8 +98,10 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public synchronized void writeGraph(GraphWriter writer) {
 
 		Set<NtroTask> visitedTasks = forEachTaskInGraph(t -> t.writeNode(writer));
+		
+		System.out.println("visitedTasks.size(): " + visitedTasks.size() );
 
-		visitedTasks.forEach(t -> writeEdges(writer));
+		visitedTasks.forEach(t -> ((NtroTaskAsync)t).writeEdges(writer));
 	}
 	
 	public void writeNode(GraphWriter writer) {
@@ -121,7 +123,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 		}
 	}
 
-	private void writeEdges(GraphWriter writer) {
+	public void writeEdges(GraphWriter writer) {
 		forEachPreviousTask(pt -> writer.addEdge(pt, this));
 	}
 

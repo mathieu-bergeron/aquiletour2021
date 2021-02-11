@@ -176,6 +176,7 @@ public class GraphWriterTest implements GraphWriter {
 
 	@Override
 	public void addEdge(NodeSpec fromSpec, NodeSpec toSpec) {
+		System.out.println("addEdge: " + fromSpec.getId() + " " + toSpec.getId());
 		Node from = getNode(fromSpec.getId());
 		Node to = getNode(toSpec.getId());
 		
