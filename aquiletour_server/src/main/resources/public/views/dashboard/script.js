@@ -1,7 +1,3 @@
-console.log("Charged");
-
-
-
 window.onload = function(){
   var buttonAvailable = document.getElementById("buttonAvailable");
   var available = document.getElementById("teacherAvailable");
