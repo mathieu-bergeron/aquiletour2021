@@ -7,12 +7,21 @@ import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
 
-public abstract class NtroTaskImpl implements NtroTask {
+import static ca.ntro.core.task2.State.INACTIVE;
+import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
+import static ca.ntro.core.task2.State.RUNNING_ENTRY_TASK;
+import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
+import static ca.ntro.core.task2.State.RUNNING_EXIT_TASK;
+import static ca.ntro.core.task2.State.DONE;
+
+public abstract class NtroTaskAsync implements NtroTask {
 
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
 	private String taskId;
 	private NtroTask parentTask;
+	
+	private State state = INACTIVE;
 	
 	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
 	private Map<String, NtroTask> subTasks = NtroCollections.concurrentMap(new HashMap<>());
@@ -20,20 +29,14 @@ public abstract class NtroTaskImpl implements NtroTask {
 
 	private Set<String> finishedPreviousTasks = NtroCollections.concurrentSet(new HashSet<>());
 	private Set<String> finishedSubTasks = NtroCollections.concurrentSet(new HashSet<>());
+	
+	protected abstract void runEntryTaskAsync();
+	protected abstract void runExitTaskAsync();
+	protected abstract void onSomePreviousTaskFinished(String taskId, NtroTask previousTask);
+	protected abstract void onSomSubTaskFinished(String taskId, NtroTask subTask);
+	protected abstract void onFailure(Exception e);
 
-	@Override 
-	public int hashCode() {
-		return taskId.hashCode();
-	}
-
-	@Override 
-	public boolean equals(Object other) {
-		if(this == other) return true;
-		if(!(other instanceof NtroTask)) return false;
-		return ((NtroTask)other).getId().equals(this.getId());
-	}
-
-	public NtroTaskImpl() {
+	public NtroTaskAsync() {
 		this.taskId = generateId();
 	}
 	
@@ -51,7 +54,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 		return myClassName + "$" + suffix;
 	}
 
-	public NtroTaskImpl(String taskId) {
+	public NtroTaskAsync(String taskId) {
 		this.taskId = taskId;
 	}
 	
@@ -62,7 +65,7 @@ public abstract class NtroTaskImpl implements NtroTask {
 
 	@Override
 	public String getLabel() {
-		return taskId;
+		return taskId + "\n" + state;
 	}
 
 	@Override
@@ -75,7 +78,6 @@ public abstract class NtroTaskImpl implements NtroTask {
 		this.parentTask = parentTask;
 	}
 
-	@Override
 	public NtroTask getParentTask() {
 		return parentTask;
 	}
@@ -98,6 +100,15 @@ public abstract class NtroTaskImpl implements NtroTask {
 	}
 	
 	public void write(GraphWriter writer) {
+		writeNode(writer);
+		writeEdges(writer);
+	}
+
+	private void writeEdges(GraphWriter writer) {
+		forEachPreviousTask(pt -> writer.addEdge(pt, this));
+	}
+
+	private void writeNode(GraphWriter writer) {
 		if(isRootNode()) {
 
 			writer.addRootNode(this);
@@ -116,32 +127,27 @@ public abstract class NtroTaskImpl implements NtroTask {
 		}
 	}
 
-	@Override
-	public boolean isSubCluster() {
-		return hasParent() && hasSubTasks();
+	private boolean isSubCluster() {
+		return !isRoot() && isCluster();
 	}
 
-	@Override
-	public boolean isSubNode() {
-		return hasParent() && !hasSubTasks();
+	private boolean isSubNode() {
+		return !isRoot() && isNode();
 	}
 
-	@Override
-	public boolean isRootCluster() {
-		return isRoot() && hasSubTasks();
+	private boolean isRootCluster() {
+		return isRoot() && isCluster();
 	}
 
-	@Override
-	public boolean isRootNode() {
-		return isRoot() && !hasSubTasks();
+	private boolean isRootNode() {
+		return isRoot() && isNode();
 	}
 	
-	public boolean isRoot() {
+	private boolean isRoot() {
 		return !hasParent();
 	}
 
-	@Override
-	public boolean hasParent() {
+	private boolean hasParent() {
 		return parentTask != null;
 	}
 	
@@ -169,8 +175,10 @@ public abstract class NtroTaskImpl implements NtroTask {
 		if(visitedNodes.contains(this)) return;
 		visitedNodes.add(this);
 		
-		forEachSubTask(lambda);
-		forEachNextTask(lambda);
+		lambda.execute(this);
+
+		forEachSubTask(st -> ((NtroTaskAsync) st).iterateGraphForward(lambda, visitedNodes));
+		forEachNextTask(nt -> ((NtroTaskAsync) nt).iterateGraphForward(lambda, visitedNodes));
 	}
 
 	private synchronized void searchForStartNodesAndIterateForward(TaskLambda lambda, 
@@ -186,10 +194,10 @@ public abstract class NtroTaskImpl implements NtroTask {
 
 		}else {
 			if(hasParent()) {
-				((NtroTaskImpl) this).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes);
+				((NtroTaskAsync) this).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes);
 			}
 
-			forEachPreviousTask(pt -> ((NtroTaskImpl)pt).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes));
+			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes));
 		}
 	}
 
@@ -219,7 +227,6 @@ public abstract class NtroTaskImpl implements NtroTask {
 		}
 	}
 
-	@Override
 	public boolean hasSubTasks() {
 		return subTasks.size() > 0;
 	}
@@ -268,6 +275,43 @@ public abstract class NtroTaskImpl implements NtroTask {
 
 	@Override
 	public void execute(GraphTraceWriter writer) {
+		forEachStartTaskInGraph(t -> ((NtroTaskAsync)t).resumeExecution(writer));
+	}
+	
+	private void resumeExecution(GraphTraceWriter writer) {
 		
+		
+	}
+	
+	@Override
+	public void notifyEntryTaskFinished() {
+		
+	}
+
+	@Override
+	public void notifyExitTaskFinished() {
+		
+	}
+
+	@Override
+	public void notifySomePreviousTaskFinished(NtroTask finishedTask) {
+		
+	}
+
+	@Override
+	public void notifySomeSubTaskFinished(NtroTask finishedTask) {
+		
+	}
+	
+	@Override 
+	public int hashCode() {
+		return taskId.hashCode();
+	}
+
+	@Override 
+	public boolean equals(Object other) {
+		if(this == other) return true;
+		if(!(other instanceof NtroTask)) return false;
+		return ((NtroTask)other).getId().equals(this.getId());
 	}
 }

@@ -3,10 +3,10 @@ package ca.ntro.jdk.test;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import ca.ntro.core.task2.GraphWriter;
-import ca.ntro.core.task2.Identifiable;
 import ca.ntro.core.task2.NodeSpec;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
 
@@ -28,7 +28,7 @@ public class GraphWriterTest implements GraphWriter {
 		}
 		@Override
 		public int hashCode() {
-			return wrappedSpec.hashCode();
+			return Objects.hash(wrappedSpec);
 		}
 		@Override 
 		public boolean equals(Object other) {
