@@ -35,7 +35,6 @@ public class Ntro {
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
-	private static NtroWindow window;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -126,18 +125,5 @@ public class Ntro {
 	public static ViewLoaderWeb viewLoaderWeb() {
 		return Factory.newInstance(viewLoaderWebClass);
 	}
-
-	public static void __registerWindow(NtroWindow window) {
-		__T.call(Ntro.class, "__registerWindow");
-		
-		Ntro.window = window;
-		
-	}
-	public static NtroWindow window() {
-		__T.call(Ntro.class, "window");
-
-		return window;
-	}
-
 
 }

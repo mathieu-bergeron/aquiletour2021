@@ -22,11 +22,22 @@ import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.SettingsView;
+import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.javafx.NtroWindowFx;
 import ca.ntro.javafx.ViewLoaderFx;
+import javafx.stage.Stage;
 
 public class AquiletourMainFx extends AquiletourMain {
+	
+	private Stage primaryStage;
+	
+	public AquiletourMainFx(Stage primaryStage) {
+		T.call(this);
+		
+		this.primaryStage = primaryStage;
+	}
 
 	@Override
 	protected void registerViewLoaders() {
@@ -59,5 +70,12 @@ public class AquiletourMainFx extends AquiletourMain {
 			     	.setFxmlUrl("/views/course_summary/structure.xml")
 			     	.setCssUrl("/views/course_summary/style.css")
 			     	.setTranslationsName("i18n.strings"));
+	}
+
+	@Override
+	protected NtroWindow getWindow() {
+		T.call(this);
+		
+		return new NtroWindowFx(primaryStage);
 	}
 }

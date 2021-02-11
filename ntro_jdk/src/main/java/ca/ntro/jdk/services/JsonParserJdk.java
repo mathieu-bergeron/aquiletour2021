@@ -15,7 +15,7 @@ import ca.ntro.core.system.trace.T;
 
 public class JsonParserJdk extends JsonParser {
 
-	private static final Gson gson = new GsonBuilder().serializeNulls().create();
+	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
 	@Override
 	protected JsonObject jsonObjectImpl() {

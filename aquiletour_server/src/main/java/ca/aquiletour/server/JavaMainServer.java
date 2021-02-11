@@ -24,8 +24,8 @@ public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
-		
-		NtroWebserver.defaultInitializationTask("/private/index.html")
+
+		NtroWebserver.defaultInitializationTask()
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();

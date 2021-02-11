@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: aqlt_mariadb
+    build:
+      context: mariadb
+    networks:
+      - aqlt_net
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  mongodb:
+    container_name: aqlt_mongodb
+    build:
+      context: mongodb
+    networks:
+      - aqlt_net
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+
+  aqltweb:
+    container_name: aqlt_web
+    build:
+      context: ../.
+      dockerfile: dockers/aquiletour/Dockerfile
+    tty: true
+    networks:
+      - aqlt_net
+    depends_on:
+      - mongodb
+      - mariadb
+
+  httprouter:
+    container_name: aqlt_router
+    build:
+      context: httprouter
+    ports: 
+      - "8000:80"
+    networks:
+      - aqlt_net
+    depends_on:
+      - aqltweb
+      
+networks:
+  aqlt_net:
+    external: false
+    name: aqltnet
+
+volumes:
+  mariadb_data:
+    name: mariadb_data
+  mongodb_data:
+    name: mongodb_data
+  mongodb_config:
+    name: mongodb_config

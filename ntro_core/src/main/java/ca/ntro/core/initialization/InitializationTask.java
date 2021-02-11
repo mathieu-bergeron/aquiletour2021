@@ -80,8 +80,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 		JsonParser.initialize(provideJsonParser());
 		
 		LocalStore.initialize(provideLocalStore());
-		
-		Ntro.__registerWindow(provideWindow());
 	}
 
 
@@ -97,6 +95,4 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 	protected abstract JsonParser provideJsonParser();
 	protected abstract ModelStore provideLocalStore();
-	protected abstract NtroWindow provideWindow();
-
 }
