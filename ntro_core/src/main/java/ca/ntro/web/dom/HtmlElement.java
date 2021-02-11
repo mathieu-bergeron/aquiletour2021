@@ -10,5 +10,5 @@ public interface HtmlElement {
 	HtmlElements children(String cssQuery);
 	void setAttribute(String name, String value);
 	void remove();
-
+	void value(String value);
 }
