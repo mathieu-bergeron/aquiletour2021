@@ -75,8 +75,12 @@ public class AquiletourRequestHandler {
 			showQueueMessage.setCourseId(courseId);
 			showQueueMessage.setGroupId(groupId);
 			
-			T.here();
-			
+			showQueueMessage.sendMessage();
+
+		}else {
+
+			// TMP
+			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
 			showQueueMessage.sendMessage();
 		}
 
