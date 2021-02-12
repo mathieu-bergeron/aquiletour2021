@@ -7,7 +7,7 @@ import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
 
 public class DashboardController extends NtroController<RootController> {
@@ -18,7 +18,7 @@ public class DashboardController extends NtroController<RootController> {
 
 		setViewLoader(DashboardView.class, currentContext().getLang());
 		
-		setModelLoader(LocalStore.getLoader(DashboardModel.class, currentContext().getAuthToken(), currentContext().getUserId()));
+		setModelLoader(NetworkStore.getLoader(DashboardModel.class, currentContext().getAuthToken(), currentContext().getUserId()));
 		
 		addParentViewMessageHandler(ShowDashboardMessage.class, new ShowDashboardHandler());
 		

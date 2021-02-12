@@ -30,6 +30,7 @@ import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
@@ -80,6 +81,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 		JsonParser.initialize(provideJsonParser());
 		
 		LocalStore.initialize(provideLocalStore());
+		NetworkStore.initialize(provideNetworkStore());
 	}
 
 
@@ -95,4 +97,5 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 	protected abstract JsonParser provideJsonParser();
 	protected abstract ModelStore provideLocalStore();
+	protected abstract ModelStore provideNetworkStore();
 }
