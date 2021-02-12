@@ -16,7 +16,7 @@ public abstract class HtmlElement {
 		T.call(this);
 
 		for (int i = 0; i < children("*").size(); i++) {
-			HtmlElement child = children("*").get(i);
+			HtmlElement child = children("*").get(0);
 			child.remove();
 		}
 	}
