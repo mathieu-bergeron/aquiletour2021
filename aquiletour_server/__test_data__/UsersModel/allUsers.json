@@ -1,6 +1,6 @@
 {
   "users": {
-    "_T": "ca.aquiletour.core.pages.users.values.ObservableUsersMap",
+    "_T": "ca.aquiletour.core.pages.users.values.ObservableUserMap",
     "value": {
       "alice": {
         "_T": "ca.aquiletour.core.pages.users.values.User",
