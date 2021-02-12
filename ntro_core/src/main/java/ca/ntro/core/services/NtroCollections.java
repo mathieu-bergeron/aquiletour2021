@@ -19,6 +19,7 @@ package ca.ntro.core.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.log.Log;
@@ -54,17 +55,17 @@ public abstract class NtroCollections {
 		return synchronizedList;
 	}
 
-	public abstract <K extends Object, V extends Object> Map<K,V> concurrentHashMapImpl(Map<K,V> elements);
+	public abstract <K extends Object, V extends Object> Map<K,V> concurrentMapImpl(Map<K,V> elements);
 
-	public static <K extends Object, V extends Object> Map<K,V> concurrentHashMap(Map<K,V> elements) {
+	public static <K extends Object, V extends Object> Map<K,V> concurrentMap(Map<K,V> elements) {
 		T.call(NtroCollections.class);
 
 		Map<K,V> concurrentHashMap = null;
 
 		try {
-
-			concurrentHashMap = instance.concurrentHashMapImpl(elements);
-
+			
+			concurrentHashMap = instance.concurrentMapImpl(elements);
+			
 		}catch(NullPointerException e) {
 			// Introspector might not be registered here
 			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
@@ -72,5 +73,23 @@ public abstract class NtroCollections {
 
 		return concurrentHashMap;
 	}
+
+	public static <V extends Object> Set<V> concurrentSet(Set<V> elements) {
+
+		Set<V> concurrentSet = null;
+		
+		try {
+			
+			concurrentSet = instance.concurrentSetImpl(elements);
+			
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+
+		return concurrentSet;
+	}
+
+	protected abstract <V extends Object> Set<V> concurrentSetImpl(Set<V> elements);
 
 }

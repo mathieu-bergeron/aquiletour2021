@@ -60,8 +60,6 @@ public class IntrospectorJdk extends Introspector {
 
 		if(JsonParser.isUserDefined(rawValue)) {
 
-			T.here();
-
 			result = JsonParser.buildUserDefined(rawValue);
 
 		}else if(isAList(type)) {
@@ -69,8 +67,6 @@ public class IntrospectorJdk extends Introspector {
 			result = buildList(type, rawValue);
 
 		}else if(isAMap(type)) {
-
-			T.here();
 
 			result = buildMap(type, rawValue);
 
@@ -242,8 +238,6 @@ public class IntrospectorJdk extends Introspector {
 			result = ifImplementsInterface((Class<?>) type, List.class);
 
 		}
-
-		T.values(type, result);
 
 		return result;
 	}

@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardHandler;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
@@ -12,20 +13,29 @@ import ca.ntro.core.system.trace.T;
 public class DashboardController extends NtroController<RootController> {
 
 	@Override
-	protected void initialize() {
+	protected void onCreate() {
 		T.call(this);
 
-		setViewLoader(DashboardView.class, "fr");
+		setViewLoader(DashboardView.class, currentContext().getLang());
 		
-		setModelLoader(LocalStore.getLoader(DashboardModel.class, "TODO"));
+		setModelLoader(LocalStore.getLoader(DashboardModel.class, currentContext().getAuthToken(), currentContext().getUserId()));
 		
 		addParentViewMessageHandler(ShowDashboardMessage.class, new ShowDashboardHandler());
 		
 		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 
-		addSubViewLoader(CourseSummaryView.class, "fr");
+		addSubViewLoader(CourseSummaryView.class, currentContext().getLang());
 		
 		addModelViewSubViewHandler(CourseSummaryView.class, new DashboardViewModel());
+		
+		// TODO: add model handler to pre-load models of each courses
+		//       on the server, model pre-loading does nothing (or is restricted by path)
+	}
+
+	@Override
+	protected void onChangeContext(NtroContext previousContext) {
+		T.call(this);
+		
 	}
 
 	@Override
@@ -33,5 +43,6 @@ public class DashboardController extends NtroController<RootController> {
 		T.call(this);
 
 	}
+
 
 }

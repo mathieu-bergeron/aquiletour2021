@@ -15,13 +15,13 @@ public abstract class LocalStore {
 		LocalStore.instance = instance;
 	}
 
-	public static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String modelId) {
-
+	public static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+		
 		ModelLoader modelLoader = null;
 
 		try {
 
-			modelLoader = instance.getLoaderImpl(modelClass, modelId);
+			modelLoader = instance.getLoaderImpl(modelClass, authToken, firstPathName, pathRemainder);
 
 		}catch(NullPointerException e) {
 

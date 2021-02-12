@@ -1,7 +1,6 @@
 package ca.ntro.jsweet.dom;
 
 import java.util.function.BiFunction;
-
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
@@ -9,7 +8,10 @@ import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
-public class HtmlElementJSweet implements HtmlElement {
+import static def.jquery.Globals.$;
+
+
+public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
 
@@ -46,8 +48,7 @@ public class HtmlElementJSweet implements HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		// FIXME: parse HTML first
-		jQueryElement.html(html);
+		jQueryElement.append($.parseHTML(html));
 	}
 
 	@Override
@@ -79,19 +80,22 @@ public class HtmlElementJSweet implements HtmlElement {
 	}
 
 	@Override
-	public void clearChildren() {
-		T.call(this);
-
-		for (int i = 0; i < children("*").size(); i++) {
-			HtmlElement child = children("*").get(0);
-			child.remove();
-		}
-	}
-
-	@Override
 	public void remove() {
 		T.call(this);
 
 		jQueryElement.remove();
 	}
+<<<<<<< HEAD
+=======
+
+	@Override
+	public void value(String value) {
+		jQueryElement.val(value);
+	}
+
+	@Override
+	public String getValue() {
+		return jQueryElement.val().toString();
+	}
+>>>>>>> main
 }

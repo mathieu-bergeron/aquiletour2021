@@ -1,0 +1,29 @@
+{
+  "users": {
+    "_T": "ca.aquiletour.core.pages.users.values.ObservableUsersMap",
+    "value": {
+      "alice": {
+        "_T": "ca.aquiletour.core.pages.users.values.User",
+        "userId": "alice",
+        "authToken": "aliceToken",
+        "name": "Alice",
+        "surname": "Awama"
+      },
+      "bob": {
+        "_T": "ca.aquiletour.core.pages.users.values.User",
+        "userId": "bob",
+        "authToken": "bobToken",
+        "name": "Bob",
+        "surname": "Bérancourt"
+      },
+      "charlie": {
+        "_T": "ca.aquiletour.core.pages.users.values.User",
+        "userId": "charlie",
+        "authToken": "charlieToken",
+        "name": "Charlie",
+        "surname": "Ngo"
+      }
+    }
+  },
+  "_T": "ca.aquiletour.core.pages.users.UsersModel"
+}

@@ -6,13 +6,13 @@ import ca.ntro.core.system.trace.T;
 
 public class ControllerFactory {
 
-	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, String path, NtroWindow window) {
+	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, String path, NtroWindow window, NtroContext context) {
 		T.call(ControllerFactory.class);
 		
-		return createRootController(controllerClass, new Path(path), window);
+		return createRootController(controllerClass, new Path(path), window, context);
 	}
 
-	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, Path path, NtroWindow window) {
+	public static <RC extends NtroRootController> RC createRootController(Class<RC> controllerClass, Path path, NtroWindow window, NtroContext context) {
 		T.call(ControllerFactory.class);
 		
 		RC rootController = Factory.newInstance(controllerClass);
@@ -21,22 +21,26 @@ public class ControllerFactory {
 
 		rootController.setPath(path);
 		
-		rootController.initialize();
+		rootController.setContext(context);
+		
+		rootController.onCreate();
 		
 		return rootController;
 		
 	}
 
-	static <C extends NtroController> C createController(Class<C> controllerClass, Path path, NtroAbstractController parentController) {
+	static <C extends NtroController> C createController(Class<C> controllerClass, Path path, NtroAbstractController parentController, NtroContext context) {
 		T.call(ControllerFactory.class);
 		
 		C controller = Factory.newInstance(controllerClass);
 
+		controller.setParentController(parentController);
+
 		controller.setPath(path);
 		
-		controller.setParentController(parentController);
+		controller.setContext(context);
 		
-		controller.initialize();
+		controller.onCreate();
 		
 		return controller;
 	}
