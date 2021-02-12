@@ -33,7 +33,6 @@ import def.js.JSON;
 import static jsweet.util.Lang.object;
 import static jsweet.util.Lang.typeof;
 
-
 public class IntrospectorJSweet extends Introspector {
 
 	@Override
@@ -255,8 +254,8 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public List<FieldSignature> appointmentDefinedFieldsFromClass(Class<?> javaClass) {
-		throw new RuntimeException("TODO: IntrospectorJSweet.appointmentDefinedFieldsFromClass");
+	public List<FieldSignature> userDefinedFieldsFromClass(Class<?> javaClass) {
+		throw new RuntimeException("TODO: IntrospectorJSweet.userDefinedFieldsFromClass");
 	}
 
 	@Override

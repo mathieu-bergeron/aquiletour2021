@@ -24,4 +24,8 @@ public class ObservableUserMap extends ObservableMap<User> {
 		return NtroModelValue.class;
 	}
 
+	public boolean isUserValid(String userId, String authToken) {
+		return getValue().get(userId).isValid(authToken);
+	}
+
 }

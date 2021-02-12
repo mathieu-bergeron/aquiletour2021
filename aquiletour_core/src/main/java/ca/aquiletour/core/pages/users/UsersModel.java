@@ -9,13 +9,19 @@ public class UsersModel extends NtroModel {
 
 	private ObservableUserMap users = new ObservableUserMap();
 
-	public ObservableUsersMap getUsers() {
+	@Override
+	public void initializeStoredValues() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ObservableUserMap getUsers() {
 		T.call(this);
 
 		return users;
 	}
 
-	public void setUsers(ObservableUsersMap users) {
+	public void setUsers(ObservableUserMap users) {
 		T.call(this);
 
 		this.users = users;
@@ -40,4 +46,5 @@ public class UsersModel extends NtroModel {
 		
 		users.removeEntry(userId);
 	}
+
 }

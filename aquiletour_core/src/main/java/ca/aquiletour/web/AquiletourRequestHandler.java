@@ -10,7 +10,6 @@ import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
@@ -42,13 +41,6 @@ public class AquiletourRequestHandler {
 
 			sendLoginMessages(path.subPath(1), parameters);
 		}
-	}
-
-	private static void sendSettingsMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
-		
-		ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
-		showSettingsMessage.sendMessage();
 	}
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {

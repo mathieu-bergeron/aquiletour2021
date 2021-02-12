@@ -182,7 +182,7 @@ public abstract class Introspector {
 		return userDefinedMethodsFromClass(object.getClass());
 	}
 
-	public abstract List<Method> appointmentDefinedMethodsFromClass(Class<?> _class);
+	public abstract List<Method> userDefinedMethodsFromClass(Class<?> _class);
 
 
 	public abstract List<FieldSignature> userDefinedFieldsFromClass(Class<?> _class);

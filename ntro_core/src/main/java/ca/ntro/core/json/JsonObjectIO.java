@@ -48,7 +48,7 @@ public abstract class JsonObjectIO implements Serializable {
 
 		jsonObject.setTypeName(this.getClass().getName());
 		
-		for(Method getter : Ntro.introspector().appointmentDefinedGetters(this)) {
+		for(Method getter : Ntro.introspector().userDefinedGetters(this)) {
 			
 			Object value = null;
 			

@@ -131,31 +131,16 @@ public abstract class JsonParser {
 
 		String typeName = userDefinedTypeName(jsonValue);
 
-
 		Class<?> typeClass = Ntro.introspector().getClassFromName(typeName);
 
 		Object userDefinedObject = Factory.newInstance(typeClass);
 
 		try {
 
-			((JsonObjectIO) userDefinedObject).loadFromJsonObject(new JsonObject((Map<String, Object>) jsonValue));
-
-		String typeName = userDefinedTypeName(jsonValue);
-		
-		
-		Class<?> typeClass = Ntro.introspector().getClassFromName(typeName);
-
-		Object userDefinedObject = Factory.newInstance(typeClass);
-		
-		try {
-			
 			((JsonObjectIO) userDefinedObject).loadFromJsonObject(new JsonObject((Map<String, Object>) jsonValue));
 			
 		}catch(ClassCastException e) {}
 
 		return userDefinedObject;
 	}
-
-
-
 }

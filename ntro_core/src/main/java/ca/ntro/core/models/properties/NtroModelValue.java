@@ -31,7 +31,7 @@ public abstract class NtroModelValue extends JsonObjectIO implements StoreConnec
 	private void connectSubValues(ValuePath valuePath, ModelStore modelStore) {
 		T.call(this);
 		
-		for(Method getter : Ntro.introspector().appointmentDefinedGetters(this)) {
+		for(Method getter : Ntro.introspector().userDefinedGetters(this)) {
 			
 			String fieldName = Ntro.introspector().fieldNameForGetter(getter);
 			
