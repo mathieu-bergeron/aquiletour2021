@@ -94,9 +94,4 @@ public class HtmlElementJSweet implements HtmlElement {
 
 		jQueryElement.remove();
 	}
-
-	@Override
-	public void value(String value) {
-		jQueryElement.val(value);
-	}
 }

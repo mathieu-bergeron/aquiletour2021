@@ -12,5 +12,5 @@ public interface HtmlElement {
 	void setAttribute(String name, String value);
 	void clearChildren();
 	void remove();
-	void value(String value);
+
 }

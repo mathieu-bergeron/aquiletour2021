@@ -36,7 +36,10 @@ public class HtmlElementJdk implements HtmlElement {
 		T.call(this);
 
 		jsoupElement.append(html);
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of f45e5a4 (Merge)
 	}
 
 	@Override
@@ -98,10 +101,5 @@ public class HtmlElementJdk implements HtmlElement {
 		T.call(this);
 
 		jsoupElement.remove();
-	}
-
-	@Override
-	public void value(String value) {
-		jsoupElement.val(value);
 	}
 }
