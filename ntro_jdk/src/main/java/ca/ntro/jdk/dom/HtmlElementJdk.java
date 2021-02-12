@@ -36,7 +36,7 @@ public class HtmlElementJdk implements HtmlElement {
 		T.call(this);
 
 		jsoupElement.append(html);
-		
+
 	}
 
 	@Override
@@ -81,6 +81,16 @@ public class HtmlElementJdk implements HtmlElement {
 		T.call(this);
 
 		jsoupElement.attr(name, value);
+	}
+
+	@Override
+	public void clearChildren() {
+		T.call(this);
+
+		for (int i = 0; i < children("*").size(); i++) {
+			HtmlElement child = children("*").get(0);
+			child.remove();
+		}
 	}
 
 	@Override

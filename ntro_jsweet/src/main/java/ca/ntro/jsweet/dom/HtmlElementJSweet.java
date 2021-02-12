@@ -79,6 +79,16 @@ public class HtmlElementJSweet implements HtmlElement {
 	}
 
 	@Override
+	public void clearChildren() {
+		T.call(this);
+
+		for (int i = 0; i < children("*").size(); i++) {
+			HtmlElement child = children("*").get(0);
+			child.remove();
+		}
+	}
+
+	@Override
 	public void remove() {
 		T.call(this);
 

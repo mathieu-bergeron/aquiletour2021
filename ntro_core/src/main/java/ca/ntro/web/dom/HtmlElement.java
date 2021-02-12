@@ -10,6 +10,7 @@ public interface HtmlElement {
 	HtmlElements children(String cssQuery);
 	HtmlElements find(String cssQuery);
 	void setAttribute(String name, String value);
+	void clearChildren();
 	void remove();
 	void value(String value);
 }
