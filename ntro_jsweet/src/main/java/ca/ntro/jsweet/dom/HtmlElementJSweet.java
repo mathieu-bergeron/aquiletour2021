@@ -1,13 +1,15 @@
 package ca.ntro.jsweet.dom;
 
 import java.util.function.BiFunction;
-
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
+
+import static def.jquery.Globals.$;
+
 
 public class HtmlElementJSweet extends HtmlElement {
 
@@ -46,8 +48,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		// FIXME: parse HTML first
-		jQueryElement.html(html);
+		jQueryElement.append($.parseHTML(html));
 	}
 
 	@Override
@@ -88,5 +89,10 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void value(String value) {
 		jQueryElement.val(value);
+	}
+
+	@Override
+	public String getValue() {
+		return jQueryElement.val().toString();
 	}
 }

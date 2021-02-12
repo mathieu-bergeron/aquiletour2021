@@ -32,12 +32,10 @@ public class DashboardViewWeb extends NtroViewWeb implements DashboardView {
 				T.call(this);
 
 				AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary("asf","asdf","asdf"));
+				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue(),addCourseSummaryInput.getValue(),addCourseDateInput.getValue()));
 				addCourseMessage.sendMessage();
 			}
 		});
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

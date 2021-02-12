@@ -23,4 +23,5 @@ public abstract class HtmlElement {
 
 	public abstract void remove();
 	public abstract void value(String value);
+	public abstract String getValue();
 }
