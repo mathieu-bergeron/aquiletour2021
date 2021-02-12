@@ -10,9 +10,9 @@ import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
 public class HtmlElementJSweet implements HtmlElement {
-	
+
 	private JQuery jQueryElement;
-	
+
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
 	}
@@ -31,12 +31,12 @@ public class HtmlElementJSweet implements HtmlElement {
 			@Override
 			public Object apply(JQueryEventObject t, Object u) {
 				T.call(this);
-				
+
 				// FIXME: only for <a>?
 				t.preventDefault();
-				
+
 				listener.onEvent();
-				
+
 				return null;
 			}
 		});
@@ -45,7 +45,7 @@ public class HtmlElementJSweet implements HtmlElement {
 	@Override
 	public void appendHtml(String html) {
 		T.call(this);
-		
+
 		// FIXME: parse HTML first
 		jQueryElement.html(html);
 	}
@@ -65,16 +65,33 @@ public class HtmlElementJSweet implements HtmlElement {
 	}
 
 	@Override
+	public HtmlElements find(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJSweet(jQueryElement.find(cssQuery));
+	}
+
+	@Override
 	public void setAttribute(String name, String value) {
 		T.call(this);
-		
+
 		jQueryElement.attr(name, value);
+	}
+
+	@Override
+	public void clearChildren() {
+		T.call(this);
+
+		for (int i = 0; i < children("*").size(); i++) {
+			HtmlElement child = children("*").get(0);
+			child.remove();
+		}
 	}
 
 	@Override
 	public void remove() {
 		T.call(this);
-		
+
 		jQueryElement.remove();
 	}
 

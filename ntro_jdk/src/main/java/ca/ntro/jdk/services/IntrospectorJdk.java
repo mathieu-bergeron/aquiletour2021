@@ -43,112 +43,112 @@ public class IntrospectorJdk extends Introspector {
 	@Override
 	public Object buildValueForSetter(Method setter, Object rawValue) {
 		T.call(this);
-		
+
 		Object result = null;
-		
+
 		Type setterType = setterType(setter);
-		
+
 		result = buildValue(setterType, rawValue);
-		
+
 		return result;
 	}
 
 	protected Object buildValue(Type type, Object rawValue) {
 		T.call(this);
-		
+
 		Object result = null;
-		
+
 		if(JsonParser.isUserDefined(rawValue)) {
-			
+
 			T.here();
-			
+
 			result = JsonParser.buildUserDefined(rawValue);
-			
+
 		}else if(isAList(type)) {
 
 			result = buildList(type, rawValue);
-			
+
 		}else if(isAMap(type)) {
 
 			T.here();
-			
+
 			result = buildMap(type, rawValue);
 
 		}else {
-			
+
 			result = buildSimpleValue(type, rawValue);
 		}
-		
+
 		return result;
 	}
 
 	private Object buildSimpleValue(Type type, Object rawValue) {
 		T.call(this);
-		
+
 		Object result = null;
-		
+
 		if(rawValue == null) {
-			
+
 			result = null;
 
 		}else if(type.equals(Object.class)) {
-			
+
 			result = rawValue;
-			
+
 		}else if(type.equals(rawValue.getClass())) {
-			
+
 			result = rawValue;
-			
+
 		}else if(type.equals(String.class)) {
-			
+
 			result = String.valueOf(rawValue.toString());
 
 		}else if(type.equals(Boolean.class) || type.equals(boolean.class)) {
-			
+
 			result = Boolean.valueOf(rawValue.toString());
 
 		}else if(type.equals(Double.class) || type.equals(double.class)) {
-			
+
 			result = Double.valueOf(rawValue.toString());
 
 		}else if(type.equals(Float.class) || type.equals(float.class)) {
-			
+
 			result = Float.valueOf(rawValue.toString());
-			
+
 		}else if(type.equals(Integer.class) || type.equals(int.class)) {
-			
+
 			Double resultDouble = Double.parseDouble(rawValue.toString());
 			result = (int) Math.round(resultDouble);
 
 		}else if(type.equals(Long.class) || type.equals(long.class)) {
-			
+
 			Double resultDouble = Double.parseDouble(rawValue.toString());
 			result = (long) Math.round(resultDouble);
 
 		}else if(type.equals(Character.class) || type.equals(char.class)) {
-			
+
 			Double resultDouble = Double.parseDouble(rawValue.toString());
 			result = (char) Math.round(resultDouble);
 
 		}else if(type instanceof Class){
-			
+
 			Class<?> _class = (Class<?>) type;
-			
+
 			try {
-				
+
 				result = _class.cast(rawValue);
-				
+
 			}catch(ClassCastException e) {
-				
+
 				Log.fatalError("Cannot cast rawValue into type " + type + " for rawValue " + rawValue + " of type " + rawValue.getClass());
 			}
-			
-				
+
+
 		}else {
 
 			Log.fatalError("Unable to build simple value " + type + " for rawValue " + rawValue + " of type " + rawValue.getClass());
 		}
-		
+
 		return result;
 	}
 
@@ -161,13 +161,13 @@ public class IntrospectorJdk extends Introspector {
 		Type valueType = mapValueType(targetType);
 
 		Map<String, Object> inputMap = (Map<String, Object>) value;
-		
+
 		for(String key : inputMap.keySet()) {
-			
+
 			Object inputValue = inputMap.get(key);
-			
+
 			Object outputValue = buildValue(valueType, inputValue);
-			
+
 			result.put(key, outputValue);
 		}
 
@@ -179,11 +179,11 @@ public class IntrospectorJdk extends Introspector {
 		T.call(this);
 
 		List<Object> result = new ArrayList<>();
-		
+
 		Type itemType = listItemType(targetType);
 
 		List<Object> inputList = (List<Object>) value;
-		
+
 		for(Object inputItem : inputList) {
 
 			Object outputValue = buildValue(itemType, inputItem);
@@ -206,41 +206,41 @@ public class IntrospectorJdk extends Introspector {
 
 	private Type parameterType(Type type, int index) {
 		T.call(this);
-		
+
 		Type result = null;
-		
+
 		try {
-			
+
 			result = ((ParameterizedType)type).getActualTypeArguments()[index];
-			
+
 		}catch(ClassCastException | IndexOutOfBoundsException | NullPointerException e) {}
-		
+
 		return result;
 	}
 
 	private boolean isAList(Type type) {
 		T.call(this);
-		
+
 		boolean result = false;
-		
+
 		if(type == null) {
 
 			result = false;
 
 		}else if(type instanceof ParameterizedType) {
-			
+
 			Type rawType = ((ParameterizedType) type).getRawType();
 
 			result = rawType.equals(List.class);
 
 		}else if(type.equals(List.class)) {
-			
+
 			result = true;
-			
+
 		}else if(type instanceof Class<?>) {
-			
+
 			result = ifImplementsInterface((Class<?>) type, List.class);
-			
+
 		}
 
 		T.values(type, result);
@@ -250,28 +250,33 @@ public class IntrospectorJdk extends Introspector {
 
 	private boolean isAMap(Type type) {
 		T.call(this);
-		
+
 
 		boolean result = false;
-		
+
 		if(type instanceof ParameterizedType) {
-			
+
 			Type rawType = ((ParameterizedType) type).getRawType();
-			
+
 			result = rawType.equals(Map.class);
-			
+
 		}else if(type instanceof Class<?>) {
-			
+
 			result = ifImplementsInterface((Class<?>) type, Map.class);
-			
+
 		}
 
 		return result;
 	}
-	
+
+	@Override
+	public String getSimpleNameForClass(Class<?> clazz) {
+		return clazz.getSimpleName();
+	}
+
 	private boolean ifImplementsInterface(Class<?> typeClass, Class<?> targetInterface) {
 		T.call(this);
-		
+
 		boolean doesImplement = false;
 
 		for(Class<?> _interface : typeClass.getInterfaces()) {
@@ -279,29 +284,29 @@ public class IntrospectorJdk extends Introspector {
 				doesImplement = true;
 			}
 		}
-		
+
 		return doesImplement;
 	}
 
 	private Type setterType(Method setter) {
 		T.call(this);
-		
+
 		Type result = null;
-		
+
 		Type[] parameterTypes = setter.getGenericParameterTypes();
-		
+
 		if(parameterTypes != null && parameterTypes.length > 0) {
-			
+
 			result = parameterTypes[0];
 		}
-		
+
 		return result;
 	}
 
 	@Override
 	public Object buildValueForType(Class<?> superType, Object rawValue) {
 		T.call(this);
-		
+
 		return buildValue(superType, rawValue);
 
 	}
@@ -320,11 +325,11 @@ public class IntrospectorJdk extends Introspector {
 		T.call(IntrospectorJdk.class);
 
 		List<String> argumentTypes = new ArrayList<>();
-		
+
 		for(Type argumentType : constructor.getGenericParameterTypes()) {
 			argumentTypes.add(simpleTypeName(argumentType.getTypeName()));
 		}
-		
+
 		String name = simpleTypeName(constructor.getName());
 
 		return new ConstructorSignature(name, argumentTypes, modifiers(constructor));
@@ -333,9 +338,9 @@ public class IntrospectorJdk extends Introspector {
 	@Override
 	public MethodSignature methodSignature(Method method) {
 		T.call(this);
-		
+
 		List<String> argumentTypes = new ArrayList<>();
-		
+
 		for(Type argumentType : method.getGenericParameterTypes()) {
 			argumentTypes.add(simpleTypeName(argumentType.getTypeName()));
 		}
@@ -345,34 +350,34 @@ public class IntrospectorJdk extends Introspector {
 
 	public static FieldSignature fieldSignature(Field field) {
 		T.call(IntrospectorJdk.class);
-		
+
 		return new FieldSignature(field.getName(), simpleTypeName(field.getGenericType().getTypeName()), modifiers(field));
 	}
 
 	@SuppressWarnings("rawtypes")
 	private static List<String> modifiers(Constructor constructor){
 		T.call(IntrospectorJdk.class);
-		
+
 		return modifiers(constructor.getModifiers());
 	}
-	
+
 	private static List<String> modifiers(Method method){
 		T.call(IntrospectorJdk.class);
-		
+
 		return modifiers(method.getModifiers());
 	}
 
 	private static List<String> modifiers(Field field){
 		T.call(IntrospectorJdk.class);
-		
+
 		return modifiers(field.getModifiers());
 	}
 
 	private static List<String> modifiers(int intModifiers){
 		T.call(IntrospectorJdk.class);
-		
+
 		List<String> modifiers = new ArrayList<>();
-		
+
 		if(Modifier.isPublic(intModifiers)) {
 			modifiers.add("public");
 		}else if(Modifier.isProtected(intModifiers)) {
@@ -389,15 +394,15 @@ public class IntrospectorJdk extends Introspector {
 		T.call(this);
 
 		List<Method> result = new ArrayList<>();
-		
+
 		for(Method m : _class.getDeclaredMethods()) {
 			result.add(m);
 		}
-		
+
 		Class<?> superClass = _class.getSuperclass();
-		
+
 		while(superClass != null && !superClass.equals(Object.class)) {
-			
+
 			for(Method m : superClass.getDeclaredMethods()) {
 				if(!Modifier.isAbstract(m.getModifiers()) && !Modifier.isPrivate(m.getModifiers())) {
 					result.add(m);
@@ -406,7 +411,7 @@ public class IntrospectorJdk extends Introspector {
 
 			superClass = superClass.getSuperclass();
 		}
-		
+
 		return result;
 	}
 
@@ -415,22 +420,22 @@ public class IntrospectorJdk extends Introspector {
 		T.call(this);
 
 		List<FieldSignature> result = new ArrayList<>();
-		
+
 		for(Field f : _class.getDeclaredFields()) {
 			result.add(fieldSignature(f));
 		}
-		
+
 		Class<?> superClass = _class.getSuperclass();
-		
+
 		while(superClass != null && !superClass.equals(Object.class)) {
-			
+
 			for(Field f : superClass.getDeclaredFields()) {
 				result.add(fieldSignature(f));
 			}
 
 			superClass = superClass.getSuperclass();
 		}
-		
+
 		return result;
 	}
 

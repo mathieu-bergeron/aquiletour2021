@@ -26,24 +26,24 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class Introspector {
-	
+
 	private static Introspector instance;
-	
+
 	public abstract boolean isClass(Object object);
-	
+
 	public abstract MethodSignature methodSignature(Method method);
 
 	public Method findMethodBySignature(Class<?> currentClass, MethodSignature methodSignature) {
 		T.call(Introspector.class);
-		
+
 		Method result = null;
-		
+
 		for(Method candidate : userDefinedMethodsFromClass(currentClass)) {
-			
+
 			MethodSignature candidateSignature = methodSignature(candidate);
-			
+
 			if(candidateSignature.equals(methodSignature)) {
-				
+
 				result = candidate;
 				break;
 			}
@@ -57,49 +57,50 @@ public abstract class Introspector {
 
 	public abstract Object buildValueForType(Class<?> type, Object rawValue);
 
-	
-	
+
 	public Method findMethodByName(Class<?> _class, String methodName) {
 		T.call(Introspector.class);
-		
+
 		Method result = null;
-		
+
 		for(Method method : userDefinedMethodsFromClass(_class)) {
-			
+
 			if(method.getName().equals(methodName)) {
-				
+
 				result = method;
 				break;
 			}
 		}
-		
+
 		return result;
 	}
+
+	public abstract String getSimpleNameForClass(Class<?> clazz);
 
 	public Class<?> getClassFromName(String className){
 		T.call(Introspector.class);
 
 		Class<? extends Object> _class = null;
-		
+
 		try {
 
 			_class = Class.forName(className);
 
 		} catch (ClassNotFoundException e) {
-			
+
 			Log.fatalError("Cannot find class " + className, e);
 
 		}
-		
+
 		return _class;
-		
+
 	}
 
 	private String setterName(String fieldName) {
 		T.call(Introspector.class);
 		return "set" + capitalize(fieldName);
 	}
-	
+
 	private String capitalize(String value) {
 		T.call(Introspector.class);
 		return value.substring(0, 1).toUpperCase() + value.substring(1);
@@ -118,23 +119,23 @@ public abstract class Introspector {
 
 		// remove get
 		String fieldName = methodName.substring(3);
-		
+
 		fieldName = unCapitalize(fieldName);
-		
+
 		return fieldName;
 	}
-	
 
- 
+
+
 	public Method findSetter(Class<?> _class, String fieldName) {
 		T.call(Introspector.class);
-		
+
 		Method result = null;
-		
+
 		String setterName = setterName(fieldName);
-		
+
 		result = findMethodByName(_class, setterName);
-		
+
 		return result;
 	}
 
@@ -142,13 +143,13 @@ public abstract class Introspector {
 		T.call(Introspector.class);
 
 		boolean isNotGetClass = !method.getName().equals("getClass");
-		
+
 		return isASetterOrSetter(method, "get") && isNotGetClass;
 	}
 
 	public boolean isASetter(Method method) {
 		T.call(Introspector.class);
-		
+
 		return isASetterOrSetter(method, "set");
 	}
 
@@ -156,19 +157,19 @@ public abstract class Introspector {
 		T.call(Introspector.class);
 
 		String methodName = method.getName();
-		
+
 		boolean methodStartsWithPrefix = methodName.startsWith(prefix);
-		
+
 		boolean upperCaseAfterPrefix = false;
-		
+
 		if(methodName.length() > prefix.length()) {
-			
+
 			String letterAfterGet = methodName.substring(prefix.length(), prefix.length()+1);
-			
+
 			upperCaseAfterPrefix = letterAfterGet != null && letterAfterGet != "" && letterAfterGet.toUpperCase().equals(letterAfterGet);
 		}
-		
-		
+
+
 		return methodStartsWithPrefix && upperCaseAfterPrefix;
 	}
 
@@ -176,10 +177,10 @@ public abstract class Introspector {
 
 	public List<Method> userDefinedMethodsFromObject(Object object) {
 		T.call(Introspector.class);
-		
+
 		// FIXME: does not work in JSweet
 		//MustNot.beTrue(object instanceof Class);
-		
+
 		return userDefinedMethodsFromClass(object.getClass());
 	}
 
@@ -187,16 +188,16 @@ public abstract class Introspector {
 
 
 	public abstract List<FieldSignature> userDefinedFieldsFromClass(Class<?> _class);
-	
+
 
 	public List<Method> userDefinedSetters(Object object) {
 
 		//MustNot.beTrue(object instanceof Class);
-		
+
 		List<Method> allSetters = new ArrayList<>();
-		
+
 		for(Method method : userDefinedMethodsFromObject(object)) {
-			
+
 			System.out.println("method: " + method.getName());
 
 			if(isASetter(method)) {
@@ -206,7 +207,7 @@ public abstract class Introspector {
 				allSetters.add(method);
 			}
 		}
-		
+
 		return allSetters;
 	}
 
@@ -215,9 +216,9 @@ public abstract class Introspector {
 
 		// FIXME: does not work in JSweet
 		// MustNot.beTrue(object instanceof Class);
-		
+
 		List<Method> allGetters = new ArrayList<>();
-		
+
 		for(Method method : userDefinedMethodsFromObject(object)) {
 
 			if(isAGetter(method)) {
@@ -225,7 +226,7 @@ public abstract class Introspector {
 				allGetters.add(method);
 			}
 		}
-		
+
 		return allGetters;
 	}
 }

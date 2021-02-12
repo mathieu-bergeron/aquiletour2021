@@ -10,9 +10,9 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public abstract class NtroWindowWeb extends NtroWindow {
-	
+
 	protected abstract HtmlDocument getDocument();
-	
+
 	public void writeHtml(StringBuilder out) {
 		T.call(this);
 
@@ -22,9 +22,9 @@ public abstract class NtroWindowWeb extends NtroWindow {
 	@Override
 	public void installRootView(NtroView rootView) {
 		T.call(this);
-		
+
 		HtmlElement body = getDocument().select("body").get(0);
-		
+
 		NtroViewWeb rootViewWeb = (NtroViewWeb) rootView;
 
 		body.appendElement(rootViewWeb.getRootElement());
@@ -38,5 +38,5 @@ public abstract class NtroWindowWeb extends NtroWindow {
 		body.setAttribute("current-path", path.toString());
 	}
 
-	
+
 }
