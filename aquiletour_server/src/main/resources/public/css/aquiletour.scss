@@ -88,31 +88,45 @@
   right: 0;
 }
 
-.modal-footer{
+//dashboard modal
+.dashboard-mFooter{
   position: absolute;
   bottom: 0;
 }
 
-.modal-body{
+.dashboard-mBody{
   text-align: justify;
   height: 15rem;
   width: 15rem;
 }
 
-.modal-content{
+.dashboard-mContent{
   width: fit-content;
   height: fit-content;
   position: absolute;
   left: 30%;
 }
 
-/*For site footer*/
+//For site footer
 #page-container{
   padding-bottom: 2.5rem;
+  height: 100%;
 }
 
-.site-footer {
+.page-contains{
+  min-height: 100%;
+  height: 100%; /*try min height*/
+  width: 100%;
   position: absolute;
+}
+
+html, body{
+  height: 100%;
+  position: relative;
+ }
+
+.site-footer {
+  position: relative;
   bottom: 0;
   width: 100%;
   color:#737373;

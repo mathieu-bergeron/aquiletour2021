@@ -2,7 +2,6 @@ package ca.ntro.jdk.dom;
 
 import org.jsoup.select.Elements;
 
-import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 
@@ -19,17 +18,10 @@ public class HtmlElementsJdk implements HtmlElements {
 		HtmlElement element = null;
 
 		if(index < elements.size()) {
-			element = new HtmlElementJdk(elements.get(index));
+			element = new HtmlElementJdk(elements.get(0));
 		}
 
 		return element;
-	}
-
-	@Override
-	public int size() {
-		T.call(this);
-
-		return elements.size();
 	}
 
 }
