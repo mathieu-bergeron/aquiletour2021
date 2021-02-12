@@ -20,7 +20,8 @@ public class ShowQueueHandler extends ControllerMessageHandler<QueueController, 
 
 		String authToken = currentController.currentContext().getAuthToken();
 		
-		currentController.setModelLoader(LocalStore.getLoader(QueueModel.class, authToken, courseId, groupId));
+		// TODO: load model according to the message
+		//currentController.setModelLoader(LocalStore.getLoader(QueueModel.class, authToken, courseId, groupId));
 		
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		

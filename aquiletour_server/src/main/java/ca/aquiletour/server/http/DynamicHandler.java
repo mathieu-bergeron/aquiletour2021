@@ -122,18 +122,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		boolean userIsLoggedIn = authenticateUsersAddCookiesSetContext(context, baseRequest, response);
 
-		Path path;
-		
-		if(userIsLoggedIn) {
-			
-			path = new Path(baseRequest.getRequestURI().toString());
-			
-		}else {
-			
-			path = new Path("/");
-			
-		}
-
+		Path path = new Path(baseRequest.getRequestURI().toString());
 		
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
@@ -170,8 +159,24 @@ public class DynamicHandler extends AbstractHandler {
 		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
 		usersLoader.execute();
 		UsersModel usersModel = (UsersModel) usersLoader.getModel();
-		
-		if(hasCookie(baseRequest, "userId") 
+
+		if(baseRequest.getParameter("userId") != null 
+				&& baseRequest.getParameter("authToken") != null) {
+			
+			String userId = baseRequest.getParameter("userId");
+			String authToken  = baseRequest.getParameter("authToken");
+
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(isUserLoggedIn) {
+				setCookie(response, "userId", userId);
+				setCookie(response, "authToken", authToken);
+				
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+
+		} else if(hasCookie(baseRequest, "userId") 
 				&& hasCookie(baseRequest, "authToken")) {
 			
 			String userId = getCookie(baseRequest, "userId");
@@ -188,22 +193,6 @@ public class DynamicHandler extends AbstractHandler {
 				context.setAuthToken(authToken);
 				context.setUserId(userId);
 			}
-			
-		}else if(baseRequest.getParameter("userId") != null 
-				&& baseRequest.getParameter("authToken") != null) {
-			
-			String userId = baseRequest.getParameter("userId");
-			String authToken  = baseRequest.getParameter("authToken");
-
-			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
-			
-			if(isUserLoggedIn) {
-				setCookie(response, "userId", userId);
-				setCookie(response, "authToken", authToken);
-				
-				context.setAuthToken(authToken);
-				context.setUserId(userId);
-			}
 		}
 
 		if(!isUserLoggedIn){
@@ -212,12 +201,16 @@ public class DynamicHandler extends AbstractHandler {
 
 		    String userId = defaultUser.getUserId();
 		    String authToken = defaultUser.getAuthToken();
+		    
+		    T.values(userId, authToken);
 
 			setCookie(response, "userId", userId);
 			setCookie(response, "authToken", authToken);
 			
 			context.setAuthToken(authToken);
 			context.setUserId(userId);
+			
+			isUserLoggedIn = true;
 		}
 
 		return isUserLoggedIn;

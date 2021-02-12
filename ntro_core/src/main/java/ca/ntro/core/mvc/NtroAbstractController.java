@@ -35,7 +35,8 @@ abstract class NtroAbstractController implements TaskWrapper {
 
 		mainTask.setTaskId(Ntro.introspector().getSimpleNameForClass(this.getClass()));
 
-		addDefaultTasks();
+		// TODO
+		//addDefaultTasks();
 	}
 
 	private void addDefaultTasks() {

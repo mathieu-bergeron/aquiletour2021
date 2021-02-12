@@ -10,6 +10,7 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 
 public class QueueController extends NtroController<RootController> {
@@ -21,6 +22,9 @@ public class QueueController extends NtroController<RootController> {
 		setViewLoader(QueueView.class, currentContext().getLang());
 
 		addSubViewLoader(AppointmentView.class, currentContext().getLang());
+		
+		// TODO: delay installing the loader until the ShowQueue message
+		setModelLoader(LocalStore.getLoader(QueueModel.class, "TODO", "coursA", "groupe01"));
 
 		// (1) installing a ModelMessageHandler even if there is no modelLoader
 		//      this means it will block until the model is loaded
