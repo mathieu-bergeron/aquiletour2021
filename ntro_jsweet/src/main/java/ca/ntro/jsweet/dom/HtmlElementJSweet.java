@@ -9,7 +9,7 @@ import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
-public class HtmlElementJSweet implements HtmlElement {
+public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
 
@@ -76,16 +76,6 @@ public class HtmlElementJSweet implements HtmlElement {
 		T.call(this);
 
 		jQueryElement.attr(name, value);
-	}
-
-	@Override
-	public void clearChildren() {
-		T.call(this);
-
-		for (int i = 0; i < children("*").size(); i++) {
-			HtmlElement child = children("*").get(0);
-			child.remove();
-		}
 	}
 
 	@Override
