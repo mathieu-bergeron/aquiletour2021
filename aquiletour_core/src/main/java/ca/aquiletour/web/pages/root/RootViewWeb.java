@@ -4,8 +4,6 @@ import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.settings.SettingsView;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -20,20 +18,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void initialize() {
 		T.call(this);
 
-		HtmlElement settingsLink = getRootElement().find("#settings-link").get(0);
 		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
 
-		MustNot.beNull(settingsLink);
-
-		settingsLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-
-				ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
-				showSettingsMessage.sendMessage();
-			}
-		});
+		MustNot.beNull(dashboardLink);
 
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -44,13 +31,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				showDashboardMessage.sendMessage();
 			}
 		});
-	}
-
-	@Override
-	public void showSettings(SettingsView settingsView) {
-		T.call(this);
-
-		showSubView(settingsView);
 	}
 
 	@Override

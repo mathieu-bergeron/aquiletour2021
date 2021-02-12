@@ -5,13 +5,11 @@ import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.queue.AppointmentView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
-import ca.aquiletour.web.pages.settings.SettingsViewWeb;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
@@ -28,14 +26,6 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/root/root.css")
 			     	.setTranslationsUrl("/i18n/fr/strings.json")
 			     	.setTargetClass(RootViewWeb.class));
-
-		ViewLoaders.registerViewLoader(SettingsView.class,
-				"fr"
-				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/settings/settings.html")
-			     	.setCssUrl("/views/settings/settings.css")
-			     	.setTranslationsUrl("/i18n/fr/strings.json")
-			     	.setTargetClass(SettingsViewWeb.class));
 
 		ViewLoaders.registerViewLoader(DashboardView.class,
 				"fr"

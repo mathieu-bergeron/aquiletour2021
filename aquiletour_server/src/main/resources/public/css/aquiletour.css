@@ -136,5 +136,10 @@
   letter-spacing: 2px;
 }
 
+.flush-right{
+    position:absolute;
+    right:10%;
+}
+
 /* For chatbox feature*/
 /*# sourceMappingURL=aquiletour.css.map */

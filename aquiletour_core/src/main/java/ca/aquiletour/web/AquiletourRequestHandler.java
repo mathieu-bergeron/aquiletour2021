@@ -9,7 +9,6 @@ import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -21,25 +20,14 @@ public class AquiletourRequestHandler {
 	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.startsWith("settings")) {
-			
-			sendSettingsMessages(path.subPath(1), parameters);
-			
-		}else if(path.startsWith("dashboard")) {
+		if(path.startsWith("mescours")) {
 
 			sendDashboardMessages(path.subPath(1), parameters);
 
-		}else if(path.startsWith("queue")) {
+		}else if(path.startsWith("billetteries")) {
 
 			sendQueueMessages(path.subPath(1), parameters);
 		}
-	}
-
-	private static void sendSettingsMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
-
-		ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
-		showSettingsMessage.sendMessage();
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters) {
