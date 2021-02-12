@@ -28,40 +28,40 @@ public class ViewLoaderRegistrationWeb {
 		ViewLoaders.registerViewLoader(RootView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/root/structure.html")
-			     	.setCssUrl("/views/root/style.css")
+			     	.setHtmlUrl("/views/root/root.html")
+			     	.setCssUrl("/views/root/root.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(RootViewWeb.class));
 
 		ViewLoaders.registerViewLoader(DashboardView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/dashboard/structure.html")
-			     	.setCssUrl("/views/dashboard/style.css")
+			     	.setHtmlUrl("/views/dashboard/dashboard.html")
+			     	.setCssUrl("/views/dashboard/dashboard.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(DashboardViewWeb.class));
 
 		ViewLoaders.registerViewLoader(CourseSummaryView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/course_summary/structure.html")
-			     	.setCssUrl("/views/course_summary/style.css")
+			     	.setHtmlUrl("/views/course_summary/course_summary.html")
+			     	.setCssUrl("/views/course_summary/course_summary.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CourseSummaryViewWeb.class));
 
 		ViewLoaders.registerViewLoader(QueueView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/queue/structure.html")
-			     	.setCssUrl("/views/queue/style.css")
+			     	.setHtmlUrl("/views/queue/queue.html")
+			     	.setCssUrl("/views/queue/queue.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(QueueViewWeb.class));
 
 		ViewLoaders.registerViewLoader(AppointmentView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/appointment/structure.html")
-			     	.setCssUrl("/views/appointment/style.css")
+			     	.setHtmlUrl("/views/appointment/appointment.html")
+			     	.setCssUrl("/views/appointment/appointment.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(AppointmentViewWeb.class));
 		

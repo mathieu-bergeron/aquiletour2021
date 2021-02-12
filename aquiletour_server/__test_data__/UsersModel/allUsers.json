@@ -7,21 +7,27 @@
         "userId": "alice",
         "authToken": "aliceToken",
         "name": "Alice",
-        "surname": "Awama"
+        "surname": "Awama",
+        "userEmail": "alice.awama@test.com",
+        "userPassword": "alicePassword"
       },
       "bob": {
         "_T": "ca.aquiletour.core.pages.users.values.User",
         "userId": "bob",
         "authToken": "bobToken",
         "name": "Bob",
-        "surname": "Bérancourt"
+        "surname": "Bérancourt",
+        "userEmail": "bob.berancourt@test.ca",
+        "userPassword": "bobPassword"
       },
       "charlie": {
         "_T": "ca.aquiletour.core.pages.users.values.User",
         "userId": "charlie",
         "authToken": "charlieToken",
         "name": "Charlie",
-        "surname": "Ngo"
+        "surname": "Ngo",
+        "userEmail": "charlie.ngo@test.org",
+        "userPassword": "charliePassword"
       }
     }
   },

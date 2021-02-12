@@ -19,7 +19,7 @@ public class HtmlElementsJdk implements HtmlElements {
 		HtmlElement element = null;
 
 		if(index < elements.size()) {
-			element = new HtmlElementJdk(elements.get(0));
+			element = new HtmlElementJdk(elements.get(index));
 		}
 
 		return element;
