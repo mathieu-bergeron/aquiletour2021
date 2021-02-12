@@ -85,6 +85,8 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		jQueryElement.remove();
 	}
+<<<<<<< HEAD
+=======
 
 	@Override
 	public void value(String value) {
@@ -95,4 +97,5 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String getValue() {
 		return jQueryElement.val().toString();
 	}
+>>>>>>> main
 }

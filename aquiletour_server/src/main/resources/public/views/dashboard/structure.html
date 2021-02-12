@@ -1,0 +1,58 @@
+<div class="dashboard-container">
+  <head>
+    <meta charset="utf-8">
+		<title>aquiletour</title>
+
+
+    <script type="text/javascript" src="/_R/views/dashboard/script.js"></script>
+  </head>
+
+
+  <button type="button" data-toggle="modal" data-target="#modalDashboard">Launch modal</button>
+  
+  <div class="flex-container" id="courses-container">
+  </div>
+
+  <div class="modal fade" id="modalDashboard" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content dashboard-mContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Ajout d'un travail</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body dashboard-mBody">
+          <form action="" method="post" class="add-course-form">
+            <label for="title">Titre</label>
+            <input name="title"></input>
+            <label for="summary">Remise</label>
+            <input name="summary" label="Remise"></input>
+            <label for="date">Date</label>
+            <input name="date"></input>
+            <div class="modal-footer dashboard-mFooter border-0">         
+              <button class="btn btn-primary" >Ajouter</button>  
+              <button type="button" class="btn btn-secondary" id="btn-confirm"data-toggle="modal" data-target="#modalTest">Close</button>          
+            </div>  
+          </form>
+          
+          </div>
+        </div>          
+      </div>
+    </div>
+
+    
+    
+    <div class="toast">
+      <div class="toast-header">
+        Travail Ajouté!
+      </div>
+      <div class="toast-body">
+        Un travail a été ajouté au cours ZB4!
+      </div>
+    </div>
+
+</div>
+
+
+
+
