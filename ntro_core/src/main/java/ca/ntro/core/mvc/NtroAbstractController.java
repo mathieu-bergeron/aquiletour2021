@@ -2,6 +2,7 @@ package ca.ntro.core.mvc;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -22,17 +23,27 @@ import static ca.ntro.core.mvc.Constants.VIEW_HANDLER_TASK_ID;
 abstract class NtroAbstractController implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
+	private NtroContext context;
 	private Path path;
 
-	protected abstract void initialize();
+	protected abstract void onCreate();
+	protected abstract void onChangeContext(NtroContext previousContext);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
 		T.call(this);
 
 		mainTask.setTaskId(Ntro.introspector().getSimpleNameForClass(this.getClass()));
+
+		// TODO
+		//addDefaultTasks();
 	}
 
+	private void addDefaultTasks() {
+		T.call(this);
+		
+		setModelLoader(new EmptyModelLoader());
+	}
 	@Override
 	public NtroTask getTask() {
 		T.call(this);
@@ -46,11 +57,21 @@ abstract class NtroAbstractController implements TaskWrapper {
 
 		getTask().execute();
 	}
+	
+	void setContext(NtroContext context) {
+		this.context = context;
+	}
 
-	protected void setPath(Path path) {
+	void setPath(Path path) {
 		T.call(this);
 
 		this.path = path;
+	}
+	
+	public NtroContext currentContext() {
+		T.call(this);
+		
+		return context;
 	}
 
 
@@ -59,8 +80,8 @@ abstract class NtroAbstractController implements TaskWrapper {
 
 		if(path.startsWith(controllerId) || path.startsWith("*")) {
 			Path pathRemainder = path.removePrefix(controllerId);
-
-			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this);
+			
+			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
 
 			getTask().addNextTask(subController.getTask());
 
@@ -147,7 +168,7 @@ abstract class NtroAbstractController implements TaskWrapper {
 		}
 	}
 
-	protected void setModelLoader(ModelLoader modelLoader) {
+	public void setModelLoader(ModelLoader modelLoader) {
 		T.call(this);
 
 		modelLoader.setTaskId(MODEL_LOADER_TASK_ID);
@@ -212,11 +233,12 @@ abstract class NtroAbstractController implements TaskWrapper {
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 	}
 
-	NtroView getView() {
+	public NtroView getView() {
 		T.call(this);
 
 		NtroView view = getTask().getSubTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
 
 		return view;
 	}
+
 }

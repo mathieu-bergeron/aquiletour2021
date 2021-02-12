@@ -10,7 +10,7 @@ import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 
 
-public class HtmlElementJdk implements HtmlElement {
+public class HtmlElementJdk extends HtmlElement {
 
 	private Element jsoupElement;
 
@@ -83,15 +83,6 @@ public class HtmlElementJdk implements HtmlElement {
 		jsoupElement.attr(name, value);
 	}
 
-	@Override
-	public void clearChildren() {
-		T.call(this);
-
-		for (int i = 0; i < children("*").size(); i++) {
-			HtmlElement child = children("*").get(0);
-			child.remove();
-		}
-	}
 
 	@Override
 	public void remove() {
@@ -103,5 +94,10 @@ public class HtmlElementJdk implements HtmlElement {
 	@Override
 	public void value(String value) {
 		jsoupElement.val(value);
+	}
+
+	@Override
+	public String getValue() {
+		return jsoupElement.val();
 	}
 }

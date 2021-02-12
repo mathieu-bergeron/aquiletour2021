@@ -11,15 +11,16 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.ntro.core.Path;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 
 public class AquiletourRequestHandler {
 	
 	
-	public static void sendMessages(Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
-
+		
 		if(path.startsWith("settings")) {
 			
 			sendSettingsMessages(path.subPath(1), parameters);
@@ -63,9 +64,21 @@ public class AquiletourRequestHandler {
 
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
-
-		ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
-		showQueueMessage.sendMessage();
+		
+		if(path.size() >= 2) {
+			
+			String courseId = path.getName(0);
+			String groupId = path.getName(1);
+			
+			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
+			
+			showQueueMessage.setCourseId(courseId);
+			showQueueMessage.setGroupId(groupId);
+			
+			T.here();
+			
+			showQueueMessage.sendMessage();
+		}
 
 		if(parameters.containsKey("makeAppointment")) { //regarde si parametre makeAppointment/ regarde si delete appointment
 

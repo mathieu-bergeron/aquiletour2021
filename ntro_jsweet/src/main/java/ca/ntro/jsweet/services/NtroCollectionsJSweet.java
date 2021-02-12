@@ -19,8 +19,10 @@ package ca.ntro.jsweet.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
 
@@ -36,11 +38,19 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	public <K, V> Map<K, V> concurrentHashMapImpl(Map<K, V> elements) {
+	public <K, V> Map<K, V> concurrentMapImpl(Map<K, V> elements) {
 		// XXX: no need for a concurrent map in single-threaded Javascript
 		Map<K,V> map = new HashMap<>();
 		map.putAll(elements);
 		return map;
+	}
+
+	@Override
+	protected <V> Set<V> concurrentSetImpl(Set<V> elements) {
+		// XXX: no need for a concurrent set in single-threaded Javascript
+		Set<V> set = new HashSet<>();
+		set.addAll(elements);
+		return set;
 	}
 
 }

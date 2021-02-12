@@ -103,9 +103,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		NtroViewWeb view = Factory.newInstance(viewClass);
 
-
 		HtmlElement rootElement = parseHtml(html);
-		System.out.println(rootElement);
 
 		view.setRootElement(rootElement);
 

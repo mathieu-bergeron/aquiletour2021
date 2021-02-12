@@ -1,4 +1,4 @@
-package ca.ntro.test;
+package ca.ntro.core.test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
