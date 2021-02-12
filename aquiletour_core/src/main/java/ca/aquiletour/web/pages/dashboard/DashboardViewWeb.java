@@ -41,6 +41,7 @@ public class DashboardViewWeb extends NtroViewWeb implements DashboardView {
 	@Override
 	public void appendCourse(CourseSummaryView courseView) {
 		T.call(this);
+		T.here();
 
 		HtmlElement container = this.getRootElement().children("#courses-container").get(0);
 		

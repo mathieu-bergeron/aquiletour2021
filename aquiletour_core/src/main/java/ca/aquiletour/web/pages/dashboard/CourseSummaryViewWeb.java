@@ -18,6 +18,7 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
+		T.here();
 
 		HtmlElement title = this.getRootElement().children("#course-title").get(0);
 		HtmlElement summaryText = this.getRootElement().children("#summary-text").get(0);

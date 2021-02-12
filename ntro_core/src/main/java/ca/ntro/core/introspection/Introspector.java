@@ -64,7 +64,6 @@ public abstract class Introspector {
 		Method result = null;
 
 		for(Method method : userDefinedMethodsFromClass(_class)) {
-
 			if(method.getName().equals(methodName)) {
 
 				result = method;
@@ -180,17 +179,15 @@ public abstract class Introspector {
 
 		// FIXME: does not work in JSweet
 		//MustNot.beTrue(object instanceof Class);
-
 		return userDefinedMethodsFromClass(object.getClass());
 	}
 
-	public abstract List<Method> userDefinedMethodsFromClass(Class<?> _class);
+	public abstract List<Method> appointmentDefinedMethodsFromClass(Class<?> _class);
 
 
 	public abstract List<FieldSignature> userDefinedFieldsFromClass(Class<?> _class);
 
-
-	public List<Method> userDefinedSetters(Object object) {
+	public List<Method> appointmentDefinedSetters(Object object) {
 
 		//MustNot.beTrue(object instanceof Class);
 
@@ -198,11 +195,7 @@ public abstract class Introspector {
 
 		for(Method method : userDefinedMethodsFromObject(object)) {
 
-			System.out.println("method: " + method.getName());
-
 			if(isASetter(method)) {
-
-				System.out.println("method/setter: " + method.getName());
 
 				allSetters.add(method);
 			}
