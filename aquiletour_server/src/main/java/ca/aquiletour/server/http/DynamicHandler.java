@@ -151,12 +151,19 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(baseRequest.getParameter("nojs") != null) {
 			
-			response.addCookie(new Cookie("nojs", "true"));
+			response.addCookie(new Cookie("jsOnly", "false"));
 			ifJsOnly = false;
-			
-		}else if(hasCookie(baseRequest, "nojs")) {
 
-			ifJsOnly = false;
+		} else if(baseRequest.getParameter("js") != null) {
+			
+			response.addCookie(new Cookie("jsOnly", "true"));
+			ifJsOnly = true;
+			
+		}else if(hasCookie(baseRequest, "jsOnly")) {
+			
+			String jsOnlyCookie = getCookie(baseRequest, "jsOnly");
+			ifJsOnly = Boolean.valueOf(jsOnlyCookie);
+
 		}
 		
 		return ifJsOnly;
@@ -194,6 +201,20 @@ public class DynamicHandler extends AbstractHandler {
 		}
 		
 		return false;
+	}
+
+	private String getCookie(Request baseRequest, String name) {
+		T.call(this);
+		
+		if(baseRequest.getCookies() == null) return null;
+		
+		for(Cookie cookie : baseRequest.getCookies()) {
+			if(cookie.getName().equals(name)) {
+				return cookie.getValue();
+			}
+		}
+		
+		return null;
 	}
 
 
