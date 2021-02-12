@@ -6,6 +6,7 @@ import ca.ntro.web.mvc.ViewLoaderWeb;
 import def.dom.Globals;
 import def.jquery.JQuery;
 
+import static def.dom.Globals.console;
 import static def.jquery.Globals.$;
 
 public class ViewLoaderWebJSweet extends ViewLoaderWeb {
@@ -14,8 +15,13 @@ public class ViewLoaderWebJSweet extends ViewLoaderWeb {
 	protected HtmlElement parseHtml(String html) {
 		Object[] parsedHtml = $.parseHTML(html, Globals.document, false);
 
-		// TODO améliorer ceci
-		return new HtmlElementJSweet($(parsedHtml[0]));
+		if (parsedHtml.length > 1) {
+			console.warn("[ViewLoader] Root HTML contains more than one root node. First non-text node will be used.");
+		}
+
+		JQuery firstNonTextNode = $(parsedHtml).filter((index, element) -> element.nodeType != 3);
+
+		return new HtmlElementJSweet($(firstNonTextNode));
 	}
 
 }
