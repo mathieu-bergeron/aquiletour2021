@@ -70,7 +70,6 @@ public abstract class NtroModel extends JsonObjectIO {
 
 		// FIXME: this inserts the wrong value in a StoredString
 		//        (it inserts a StoredString instead of a String)
-
 		for(Method getter : Ntro.introspector().userDefinedGetters(this)) {
 
 			String fieldName = Ntro.introspector().fieldNameForGetter(getter);
@@ -95,7 +94,4 @@ public abstract class NtroModel extends JsonObjectIO {
 			}
 		}
 	}
-
-
-
 }

@@ -9,13 +9,27 @@ public class User extends NtroModelValue {
 	private String authToken;
 	private String name;
 	private String surname;
+	private String userEmail;
+	private String userPassword;
+
+	public User() {
+		
+	}
+	
+	public User(String email, String password) {
+		this.userEmail = email;
+		this.userPassword = password;;
+		
+	}
 
 	public String getUserId() {
 		return userId;
 	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
 	public String getAuthToken() {
 		return authToken;
 	}
@@ -46,5 +60,18 @@ public class User extends NtroModelValue {
 		}
 		
 		return isValid;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 }

@@ -65,7 +65,7 @@ public abstract class JsonObjectIO implements Serializable {
 			String fieldName = Ntro.introspector().fieldNameForGetter(getter);
 			
 			// TODO: go inside a Map or a List to look
-			//       for user-defined values (JsonObjectIO)
+			//       for appointment-defined values (JsonObjectIO)
 			Object jsonValue = buildJsonValue(value);
 			
 			jsonObject.put(fieldName, jsonValue);
