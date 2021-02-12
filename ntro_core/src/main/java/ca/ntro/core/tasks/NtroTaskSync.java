@@ -17,7 +17,7 @@
 
 package ca.ntro.core.tasks;
 
-public abstract class NtroTaskSync extends NtroTaskImpl {
+public abstract class NtroTaskSync extends NtroTaskAsync {
 	
 	@Override
 	protected void runTaskAsync() {

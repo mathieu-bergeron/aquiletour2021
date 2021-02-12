@@ -15,4 +15,10 @@ public class SettingsViewFx extends NtroViewFx implements SettingsView {
 		
 	}
 
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

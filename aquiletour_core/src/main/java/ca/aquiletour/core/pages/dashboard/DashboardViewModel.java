@@ -3,28 +3,18 @@ package ca.aquiletour.core.pages.dashboard;
 import java.util.List;
 
 import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.NtroViewModel;
 import ca.ntro.core.models.properties.observable.list.ListObserver;
-import ca.ntro.core.mvc.view.NtroView;
+import ca.ntro.core.mvc.ModelViewSubViewHandler;
+import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardViewModel implements NtroViewModel {
+public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, DashboardView> {
 
 	@Override
-	public void observeAndDisplay(NtroModel model, NtroView view) {
+	protected void handle(DashboardModel model, DashboardView view, ViewLoader subViewLoader) {
 		T.call(this);
-		
-		DashboardModel dashboardModel = (DashboardModel) model;
-		DashboardView dashboardView = (DashboardView) view;
-		
-		/*
-				T.call(this);
-				
-				dashboardView.appendCourse(item);
-				*/
-		
-		dashboardModel.getCourses().observe(new ListObserver<CourseSummary>() {
+
+		model.getCourses().observe(new ListObserver<CourseSummary>() {
 
 			@Override
 			public void onValueChanged(List<CourseSummary> oldValue, List<CourseSummary> value) {
@@ -48,7 +38,10 @@ public class DashboardViewModel implements NtroViewModel {
 			public void onItemAdded(int index, CourseSummary item) {
 				T.call(this);
 				
-				dashboardView.appendCourse(item);
+				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
+				courseView.displaySummary(item);
+				
+				view.appendCourse(courseView);
 			}
 
 			@Override
@@ -62,8 +55,9 @@ public class DashboardViewModel implements NtroViewModel {
 				// TODO Auto-generated method stub
 				
 			}
-
 		});
 	}
-
+	
+	
+	
 }

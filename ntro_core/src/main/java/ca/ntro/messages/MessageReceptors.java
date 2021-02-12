@@ -5,52 +5,53 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 
 public class MessageReceptors {
 
-	private static Map<Class<? extends NtroMessage>, Set<MessageReceptor>> messageReceptors = new HashMap<>();
+	private static Map<Class<? extends NtroMessage>, Set<MessageHandler>> messageReceptors = new HashMap<>();
 
-	public void addReceptor(Class<? extends NtroMessage> messageClass, MessageReceptor messageReceptionTask) {
+	public void addReceptor(Class<? extends NtroMessage> messageClass, MessageHandler messageReceptionTask) {
 		T.call(this);
-		
-		Set<MessageReceptor> receptorSet = messageReceptors.get(messageClass);
-		
+
+		Set<MessageHandler> receptorSet = messageReceptors.get(messageClass);
+
 		if(receptorSet == null) {
 			receptorSet = new HashSet<>();
 		}
-		
+
 		// FIXME: limiting to a single receptor for now
 		receptorSet.clear();
 
 		receptorSet.add(messageReceptionTask);
-		
+
 		messageReceptors.put(messageClass, receptorSet);
 	}
 
 	public void sendMessage(NtroMessage message) {
 		T.call(this);
 
-		Set<MessageReceptor> receptorSet = messageReceptors.get(message.getClass());
-		
+		Set<MessageHandler> receptorSet = messageReceptors.get(message.getClass());
+
 		if(receptorSet != null) {
-			
+
 			sendMessage(message, receptorSet);
 
 		}else {
-			System.out.println("[WARNING] no receptor for message " + message.getClass().getSimpleName());
+			System.out.println("[WARNING] no receptor for message " + Ntro.introspector().getSimpleNameForClass(message.getClass()));
 		}
 	}
 
-	private void sendMessage(NtroMessage message, Set<MessageReceptor> receptorSet) {
+	private void sendMessage(NtroMessage message, Set<MessageHandler> receptorSet) {
 		T.call(this);
-		
-		for(MessageReceptor receptor : receptorSet) {
+
+		for(MessageHandler receptor : receptorSet) {
 			receptor.reset();
 			receptor.setMessage(message);
 			receptor.execute();
 		}
 	}
-	
+
 
 }

@@ -17,101 +17,31 @@
 
 package ca.aquiletour.core.pages.root;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.settings.SettingsController;
-import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.mvc.view.NtroView;
-import ca.ntro.core.mvc.view.ViewLoader;
+import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
-import ca.ntro.messages.MessageReceptor;
-import ca.ntro.web.mvc.NtroViewWeb;
 
-public abstract class RootController extends NtroController {
-
-	private ViewLoader viewLoader;
-	private DashboardController dashboardController;
-	private SettingsController settingsController;
-
-	private RootView rootView;
+public class RootController extends NtroRootController {
 
 	@Override
-	protected void initializeTask() {
+	protected void initialize() {
 		T.call(this);
+		
+		setViewLoader(RootView.class, "fr");
 
-		viewLoader = createViewLoader(Constants.LANG);
-		dashboardController = createDashboardController();
-		settingsController = createSettingsController();
+		addSubController(SettingsController.class, "settings");
+		addSubController(DashboardController.class, "dashboard");
+		addSubController(QueueController.class, "queue");
 
-		addSubTask(viewLoader);
-		addSubTask(dashboardController);
-		addSubTask(settingsController);
-
-		MessageFactory.addMessageReceptor(OpenSettingsMessage.class, new MessageReceptor() {
-			@Override
-			protected void initializeTask() {
-				T.call(this);
-			}
-
-			@Override
-			protected void runTaskAsync() {
-				T.call(this);
-
-				settingsController.createShowSettingsTask().execute();
-			}
-
-			@Override
-			protected void onFailure(Exception e) {
-				T.call(this);
-			}
-		});
-
-		MessageFactory.addMessageReceptor(QuitMessage.class, new QuitReceptor());
-	}
-
-	protected abstract ViewLoader createViewLoader(String lang);
-	protected abstract NtroWindow getWindow();
-
-	@Override
-	//             afterPreviousTaskAndSubTaskFinished    eq. runTask
-	//             afterPreviousTaskFinished              optionnel!!
-	//             afterPreviousSubTaskFinished           optionnel!!
-	protected void runTask() {
-		T.call(this);
-		System.out.println("test");
-
-		rootView = (RootView) viewLoader.createView();
-
-		getWindow().installRootView(rootView);
+		addWindowViewHandler(new RootViewHandler());
+		
+		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-
-	}
-
-	public abstract SettingsController createSettingsController();
-	public abstract DashboardController createDashboardController();
-
-	public void installSubView(NtroView view) {
 		T.call(this);
-
-		System.out.println(((NtroViewWeb) this.rootView).getRootElement());
-		rootView.installSubView(view);
 	}
-
-	protected SettingsController getSettingsController() {
-		T.call(this);
-
-		return settingsController;
-	}
-
-	protected DashboardController getDashboardController() {
-		T.call(this);
-
-		return dashboardController;
-	}
-
 }

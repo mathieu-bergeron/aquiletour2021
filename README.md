@@ -26,6 +26,8 @@
 
 1. Installer le JDK **1.8**
 
+        $ sudo apt-get install openjdk-8-jdk
+
 1. Configurer `~/.bash_profile`:
 
         $ EDITEUR ~/.bash_profile
@@ -38,7 +40,40 @@
 1. Doit afficher `java version "1.8.XXX"`
 
         $ java -version
+        $ javac -version
 
+1. Installer node.js et npm
+
+        $ sudo apt-get install npm
+
+1. Installer TypeScript
+
+        $ sudo npm install -g typescript
+
+1. Installer Docker
+
+        $ sudo apt-get update
+        $ sudo apt-get install \
+            apt-transport-https ca-certificates curl \
+            gnupg-agent software-properties-common dirmngr wget
+        $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        $ sudo add-apt-repository \
+           "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+           $(lsb_release -cs) stable"
+        $ sudo apt-get update
+        $ sudo apt-get install docker-ce docker-ce-cli containerd.io
+        $ sudo docker run hello-world
+
+1. Installer Docker-compose
+
+        $ sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        $ sudo chmod +x /usr/local/bin/docker-compose
+
+1. Optionnel: Installer Gradle
+
+        $ sudo add-apt-repository ppa:cwchien/gradle
+        $ sudo apt-get update
+        $ sudo apt-get install gradle
 
 ## Commandes
 

@@ -34,7 +34,7 @@ import ca.ntro.jdk.regex.RegExJdk;
 import ca.ntro.jdk.web.ViewLoaderWebJdk;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
-public class InitializationTaskJdk extends InitializationTask {
+public abstract class InitializationTaskJdk extends InitializationTask {
 
 	@Override
 	protected AppCloser provideAppCloser() {
@@ -111,7 +111,8 @@ public class InitializationTaskJdk extends InitializationTask {
 	protected ModelStore provideLocalStore() {
 		__T.call(InitializationTaskJdk.class, "provideLocalStore");
 		
-		return new LocalStoreNitrite();
+		//return new LocalStoreNitrite();
+		return new LocalStoreFiles();
 	}
 
 }

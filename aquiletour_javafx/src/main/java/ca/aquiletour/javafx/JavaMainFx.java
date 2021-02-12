@@ -18,6 +18,7 @@
 package ca.aquiletour.javafx;
 
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.javafx.NtroJavaFx;
 import ca.ntro.jdk.NtroJdk;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -37,9 +38,9 @@ public class JavaMainFx extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		__T.call(JavaMainFx.class, "start");
 
-		NtroJdk.defaultInitializationTask()
-		       .setOptions(args)
-		       .addNextTask(new AquiletourMainFx(primaryStage))
-		       .execute();
+		NtroJavaFx.defaultInitializationTask()
+		          .setOptions(args)
+		          .addNextTask(new AquiletourMainFx(primaryStage))
+		          .execute();
 	}
 }

@@ -17,9 +17,9 @@
 
 package ca.ntro.core.services;
 
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class ResourceLoaderTask extends NtroTaskImpl {
+public abstract class ResourceLoaderTask extends NtroTaskAsync {
 	
 	private String resourcePath;
 
