@@ -45,6 +45,7 @@ import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.aquiletour.core.pages.users.UsersModel;
+import ca.aquiletour.core.pages.users.values.User;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
@@ -207,9 +208,9 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(!isUserLoggedIn){
 
-		    User defaultUser = usersModel.getValue().get(0);
+		    User defaultUser = usersModel.getUsers().getValue().values().iterator().next();
 
-		    String userId = defaultUser.getId();
+		    String userId = defaultUser.getUserId();
 		    String authToken = defaultUser.getAuthToken();
 
 			setCookie(response, "userId", userId);
