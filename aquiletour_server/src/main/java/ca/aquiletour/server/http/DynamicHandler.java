@@ -29,6 +29,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -43,10 +44,14 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
+import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
@@ -111,13 +116,22 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		response.setContentType("text/html; charset=utf-8");
-		response.setStatus(HttpServletResponse.SC_OK);
+		NtroContext context = new NtroContext();
+		context.setLang(Constants.LANG); // TODO
+
+		boolean userIsLoggedIn = authenticateUsersAddCookiesSetContext(context, baseRequest, response);
+
+		Path path;
 		
-		String authToken = null; // TODO
-		Constants.LANG = "fr";   // TODO
-		
-		Path path = new Path(baseRequest.getRequestURI().toString());
+		if(userIsLoggedIn) {
+			
+			path = new Path(baseRequest.getRequestURI().toString());
+			
+		}else {
+			
+			path = new Path("/");
+			
+		}
 
 		
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
@@ -126,14 +140,14 @@ public class DynamicHandler extends AbstractHandler {
 		
 		if(!ifJsOnly) {
 
-			RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
+		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
 
 			rootController.execute();
 
 			Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 			// XXX: sending a message unblocks a task
-			AquiletourRequestHandler.sendMessages(path, parameters);
+			AquiletourRequestHandler.sendMessages(context, path, parameters);
 		}
 		
 		//System.out.println(rootController.getTask().toString());
@@ -141,8 +155,73 @@ public class DynamicHandler extends AbstractHandler {
 		// XXX the entire taskGraph is not really async
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
+		response.setContentType("text/html; charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
 		writeResponse(newWindow, baseRequest, out);
 	}
+
+
+	private boolean authenticateUsersAddCookiesSetContext(NtroContext context, Request baseRequest, HttpServletResponse response) {
+		T.call(this);
+		
+		boolean isUserLoggedIn = false;
+
+		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
+		usersLoader.execute();
+		UsersModel usersModel = (UsersModel) usersLoader.getModel();
+		
+		if(hasCookie(baseRequest, "userId") 
+				&& hasCookie(baseRequest, "authToken")) {
+			
+			String userId = getCookie(baseRequest, "userId");
+			String authToken = getCookie(baseRequest, "authToken");
+			
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(!isUserLoggedIn) {
+				eraseCookie(response, "userId");
+				eraseCookie(response, "authToken");
+
+			}else {
+
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+			
+		}else if(baseRequest.getParameter("userId") != null 
+				&& baseRequest.getParameter("authToken") != null) {
+			
+			String userId = baseRequest.getParameter("userId");
+			String authToken  = baseRequest.getParameter("authToken");
+
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(isUserLoggedIn) {
+				setCookie(response, "userId", userId);
+				setCookie(response, "authToken", authToken);
+				
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+		}
+
+		if(!isUserLoggedIn){
+
+		    User defaultUser = usersModel.getValue().get(0);
+
+		    String userId = defaultUser.getId();
+		    String authToken = defaultUser.getAuthToken();
+
+			setCookie(response, "userId", userId);
+			setCookie(response, "authToken", authToken);
+			
+			context.setAuthToken(authToken);
+			context.setUserId(userId);
+		}
+
+		return isUserLoggedIn;
+	}
+
 
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
@@ -167,6 +246,7 @@ public class DynamicHandler extends AbstractHandler {
 		}
 		
 		return ifJsOnly;
+
 	}
 
 	private NtroWindowServer newWindow(boolean ifJsOnly, Path path) {
@@ -217,6 +297,22 @@ public class DynamicHandler extends AbstractHandler {
 		return null;
 	}
 
+	private void eraseCookie(HttpServletResponse response, String name) {
+		T.call(this);
+		
+		Cookie cookie = new Cookie(name, "");
+		cookie.setMaxAge(0);
+
+		response.addCookie(cookie);
+	}
+
+	private void setCookie(HttpServletResponse response, String name, String value) {
+		T.call(this);
+		
+		Cookie cookie = new Cookie(name, value);
+
+		response.addCookie(cookie);
+	}
 
 	private void writeResponse(NtroWindowServer window, Request baseRequest, OutputStream out) {
 		T.call(this);
@@ -234,8 +330,5 @@ public class DynamicHandler extends AbstractHandler {
 
 		baseRequest.setHandled(true);
 	}
-	
-	
-	
 }
 

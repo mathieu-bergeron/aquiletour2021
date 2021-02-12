@@ -17,8 +17,8 @@ import ca.ntro.core.system.trace.T;
 public class MemoryStore extends ModelStore {
 	
 	// XXX: we need ConcurrentHashMap as MemoryStore is accessed from different threads
-	private Map<DocumentPath, JsonObject> values = NtroCollections.concurrentHashMap(new HashMap<DocumentPath, JsonObject>());
-	private Map<String, JsonObject> valuesById = NtroCollections.concurrentHashMap(new HashMap<String, JsonObject>());
+	private Map<DocumentPath, JsonObject> values = NtroCollections.concurrentMap(new HashMap<DocumentPath, JsonObject>());
+	private Map<String, JsonObject> valuesById = NtroCollections.concurrentMap(new HashMap<String, JsonObject>());
 	
 	private static MemoryStore instance = new MemoryStore();
 	
@@ -29,10 +29,10 @@ public class MemoryStore extends ModelStore {
 	}
 
 	// XXX: must synchronize here as get can be called from multiple threads
-	public synchronized static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String modelId) {
+	public synchronized static <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String firstPathName, String... pathRemainder) {
 		T.call(MemoryStore.class);
 
-		ModelLoader result = instance.getLoaderImpl(modelClass, modelId);
+		ModelLoader result = instance.getLoaderImpl(modelClass, "NO_TOKEN", firstPathName, pathRemainder);
 		
 		return result;
 	}

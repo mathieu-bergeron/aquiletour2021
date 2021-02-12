@@ -2,7 +2,6 @@ package ca.ntro.javafx;
 
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.__T;
-import javafx.stage.Stage;
 
 public class NtroJavaFx {
 

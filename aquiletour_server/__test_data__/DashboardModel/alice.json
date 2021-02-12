@@ -1,0 +1,26 @@
+{
+  "courses": {
+    "_T": "ca.aquiletour.core.pages.dashboard.values.ObservableCourseList",
+    "value": [
+      {
+        "date": "3 mars",
+        "summary": "Exercices 5-10",
+        "_T": "ca.aquiletour.core.pages.dashboard.values.CourseSummary",
+        "title": "3C6"
+      },
+      {
+        "date": "15 janvier",
+        "summary": "Lecture roman",
+        "_T": "ca.aquiletour.core.pages.dashboard.values.CourseSummary",
+        "title": "4F5"
+      },
+      {
+        "date": "4 février",
+        "summary": "Essay 3",
+        "_T": "ca.aquiletour.core.pages.dashboard.values.CourseSummary",
+        "title": "5B5"
+      }
+    ]
+  },
+  "_T": "ca.aquiletour.core.pages.dashboard.DashboardModel"
+}

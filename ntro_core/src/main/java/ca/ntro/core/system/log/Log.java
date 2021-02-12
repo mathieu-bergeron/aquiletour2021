@@ -19,17 +19,16 @@ package ca.ntro.core.system.log;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.__Ntro;
-import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.stack.StackFrame;
 
 public class Log {
 
-	public static void warning(String[] messages) {
+	public static void warning(String... messages) {
 
 	}
 
-	public static void error(String[] messages) {
+	public static void error(String... messages) {
 
 	}
 	

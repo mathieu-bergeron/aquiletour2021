@@ -44,3 +44,6 @@ build_*
 
 # MAC_OS
 .DS_Store
+
+# task graphs
+__tasks__
