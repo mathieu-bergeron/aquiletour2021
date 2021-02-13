@@ -133,12 +133,8 @@ abstract class NtroAbstractController implements TaskWrapper {
 		addPreviousTaskTo(handler.getTask(), ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
 
-	protected void setViewLoader(Class<? extends NtroView> viewClass, String lang) {
+	protected void setViewLoader(ViewLoader viewLoader) {
 		T.call(this);
-
-		ViewLoader viewLoader = ViewLoaders.getViewLoader(viewClass, lang);
-
-		MustNot.beNull(viewLoader);
 
 		// FIXME: it should be ok to reuse a viewLoader at DONE
 		//        it simply means the files are already loaded
@@ -156,6 +152,17 @@ abstract class NtroAbstractController implements TaskWrapper {
 
 		addPreviousTaskTo(ModelViewHandlerTask.class, VIEW_MODEL_TASK_ID, viewCreator);
 		addPreviousTaskTo(ViewHandlerTask.class, VIEW_HANDLER_TASK_ID, viewCreator);
+		
+
+	}
+	protected void setViewLoader(Class<? extends NtroView> viewClass, String lang) {
+		T.call(this);
+
+		ViewLoader viewLoader = ViewLoaders.getViewLoader(viewClass, lang);
+
+		MustNot.beNull(viewLoader);
+		
+		setViewLoader(viewLoader);
 	}
 
 	private <NT extends NtroTask> void addPreviousTaskTo(Class<NT> taskClass, String taskId, NtroTask previousTask) {

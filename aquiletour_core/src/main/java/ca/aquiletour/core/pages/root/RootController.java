@@ -20,6 +20,7 @@ package ca.aquiletour.core.pages.root;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.queue.QueueController;
+import ca.aquiletour.core.pages.queues.QueuesController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
@@ -34,7 +35,8 @@ public class RootController extends NtroRootController {
 		setViewLoader(RootView.class, currentContext().getLang());
 
 		addSubController(DashboardController.class, "mescours");
-		addSubController(QueueController.class, "billetteries");
+		addSubController(QueuesController.class, "billetteries");
+		addSubController(QueueController.class, "billetterie");
 		addSubController(UsersController.class, "usagers");
 		addSubController(LoginController.class, "connexion");
 

@@ -22,7 +22,6 @@ public class DashboardController extends NtroController<RootController> {
 		
 		addParentViewMessageHandler(ShowDashboardMessage.class, new ShowDashboardHandler());
 		
-		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 
 		addSubViewLoader(CourseSummaryView.class, currentContext().getLang());
 		

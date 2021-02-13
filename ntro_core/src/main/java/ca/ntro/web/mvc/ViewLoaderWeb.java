@@ -41,7 +41,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
 
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
@@ -49,6 +49,8 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
 
 		MustNot.beNull(html);
+		
+		notifyTaskFinished();
 	}
 
 	@Override

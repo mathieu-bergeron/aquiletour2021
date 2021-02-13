@@ -33,9 +33,11 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.backend.RootBackendController;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.values.User;
+import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
@@ -116,13 +118,19 @@ public class DynamicHandler extends AbstractHandler {
 		
 		if(!ifJsOnly) {
 
+		    RootBackendController rootBackendController =  ControllerFactory.createRootController(RootBackendController.class, path, newWindow, context);
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
+
+		    rootBackendController.execute();
+
+			Map<String, String[]> parameters = baseRequest.getParameterMap();
+			
+			// FIXME: sending a message unblocks the whole graph!!
+			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
 
 			rootController.execute();
 
-			Map<String, String[]> parameters = baseRequest.getParameterMap();
-
-			// XXX: sending a message unblocks a task
+			// FIXME: sending a message unblocks the whole graph!!
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
 		}
 		

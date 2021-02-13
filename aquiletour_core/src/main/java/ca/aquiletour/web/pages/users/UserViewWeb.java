@@ -34,7 +34,7 @@ public class UserViewWeb extends NtroViewWeb implements UserView {
 		userId.appendHtml(user.getUserId());
 		userEmail.appendHtml(user.getUserEmail());
 		userPassword.appendHtml(user.getUserPassword());
-		close.setAttribute("href", "users?deleteUser=" + user.getUserId());
+		close.setAttribute("href", "/usagers?deleteUser=" + user.getUserId());
 		
 		getRootElement().setAttribute("id", "user-" + user.getUserId());
 	}

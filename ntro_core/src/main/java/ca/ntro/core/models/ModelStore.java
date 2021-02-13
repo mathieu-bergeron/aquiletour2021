@@ -1,6 +1,5 @@
 package ca.ntro.core.models;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
@@ -13,7 +12,6 @@ public abstract class ModelStore {
 
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
-
 
 	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);

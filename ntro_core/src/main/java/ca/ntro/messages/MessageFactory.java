@@ -24,7 +24,6 @@ public class MessageFactory {
 			MustNot.beNull(message);
 		}
 
-
 		return message;
 	}
 

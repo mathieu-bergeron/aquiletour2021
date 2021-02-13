@@ -7,14 +7,19 @@
         "appointmentId": "0",
         "time": "11:59"
       },
-      "1": {
-        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
-        "appointmentId": "1",
-        "time": "11:59"
-      },
       "2": {
         "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
         "appointmentId": "2",
+        "time": "11:59"
+      },
+      "3": {
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "3",
+        "time": "11:59"
+      },
+      "4": {
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "4",
         "time": "11:59"
       }
     }

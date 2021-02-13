@@ -2,27 +2,24 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
-import ca.aquiletour.core.pages.login.ShowLoginMessage;
+import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
-import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
-import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.aquiletour.core.pages.users.values.User;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 
-public class AquiletourRequestHandler {
+public class AquiletourBackendRequestHandler {
 	
 	
 	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
+		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.startsWith("mescours")) {
 
@@ -47,48 +44,43 @@ public class AquiletourRequestHandler {
 	}
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
+		T.call(AquiletourBackendRequestHandler.class);
 
-		ShowLoginMessage showLoginMessage = MessageFactory.getOutgoingMessage(ShowLoginMessage.class);
-		showLoginMessage.sendMessage();
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
+		T.call(AquiletourBackendRequestHandler.class);
 
-		ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
-		showDashboardMessage.sendMessage();
+		if(parameters.containsKey("title") 
+				&& parameters.containsKey("summary")
+				&& parameters.containsKey("date")) {
 
+			String courseTitle = parameters.get("title")[0];
+			String summaryText = parameters.get("summary")[0];
+			String summaryDate = parameters.get("date")[0];
+
+			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate));
+			addCourseMessage.sendMessage();
+		}
 	}
 
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
+		T.call(AquiletourBackendRequestHandler.class);
 
-		ShowQueuesMessage showQueuesMessage = MessageFactory.getOutgoingMessage(ShowQueuesMessage.class);
-		showQueuesMessage.sendMessage();
 	}
 		
 
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
+		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.size() >= 1) {
-
-			String courseId = path.getName(0);
-			
-			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
-			
-			showQueueMessage.setCourseId(courseId);
-			
-			showQueueMessage.sendMessage();
-			
 			sendAppointmentMessages(parameters);
-			
 		}
 	}
 
 	private static void sendAppointmentMessages(Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
+		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("makeAppointment")) { 
 			
@@ -119,10 +111,7 @@ public class AquiletourRequestHandler {
 	}
 
 	private static void sendUsersMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
-
-		ShowUsersMessage showUsersMessage = MessageFactory.getOutgoingMessage(ShowUsersMessage.class);
-		showUsersMessage.sendMessage();
+		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("email") 
 		&& parameters.containsKey("password")) {
@@ -147,7 +136,5 @@ public class AquiletourRequestHandler {
 			deleteUserMessage.sendMessage();
 		}
 	}
-
-
 
 }
