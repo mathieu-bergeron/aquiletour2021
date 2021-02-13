@@ -25,7 +25,7 @@ import ca.ntro.core.system.trace.__T;
 
 public abstract class NtroTaskAsync implements NtroTask {
 	
-	private boolean  REPLACE_TASKS_WHILE_EXECUTING = false;
+	private boolean  REPLACE_TASKS_WHILE_EXECUTING = true;
 
 	private NtroTask parentTask;
 
@@ -332,7 +332,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				//      we have a ConcurrentModification exception
 				previousTasks.set(existingPreviousTaskIndex, task);
 				
-				((NtroTaskAsync)task).state = State.EXECUTE_CURRENT_TASK;
+				((NtroTaskAsync)task).state = State.EXECUTE_PREVIOUS_TASKS;
 				((NtroTaskAsync)task).resumeExecution();
 			}
 
@@ -396,7 +396,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				//      we have a ConcurrentModification exception
 				subTasks.set(existingSubTaskIndex, task);
 				
-				((NtroTaskAsync)task).state = State.EXECUTE_CURRENT_TASK;
+				((NtroTaskAsync)task).state = State.EXECUTE_PREVIOUS_TASKS;
 				((NtroTaskAsync)task).resumeExecution();
 			}
 		}else {
