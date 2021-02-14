@@ -66,5 +66,4 @@ public class ModelLoader extends NtroTaskAsync {
 		this.modelClass = modelClass;
 	}
 
-
 }

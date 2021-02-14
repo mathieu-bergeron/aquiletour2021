@@ -26,4 +26,9 @@ public class EmptyViewLoader extends ViewLoader {
 		
 	}
 
+	@Override
+	protected ViewLoader clone() {
+		return new EmptyViewLoader();
+	}
+
 }

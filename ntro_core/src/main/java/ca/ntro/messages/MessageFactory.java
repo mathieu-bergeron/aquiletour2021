@@ -37,4 +37,11 @@ public class MessageFactory {
 
 		return message;
 	}
+
+
+	public static void reset() {
+		T.call(MessageFactory.class);
+		
+		messages = new HashMap<>();
+	}
 }

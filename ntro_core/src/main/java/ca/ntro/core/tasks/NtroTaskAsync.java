@@ -22,6 +22,7 @@ import java.util.List;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.__T;
+import jsweet.util.StringTypes.pre;
 
 public abstract class NtroTaskAsync implements NtroTask {
 	
@@ -50,6 +51,27 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 	public NtroTaskAsync() {
 		initializeTask();
+	}
+	
+	@Override
+	public void destroy() {
+		if(parentTask != null) {
+			parentTask.destroy();
+			parentTask = null;
+		}
+		
+		List<NtroTask> tasksToDetroy = new ArrayList<>();
+		tasksToDetroy.addAll(previousTasks);
+		tasksToDetroy.addAll(subTasks);
+		tasksToDetroy.addAll(nextTasks);
+
+		previousTasks = new ArrayList<>();
+		subTasks = new ArrayList<>();
+		nextTasks = new ArrayList<>();
+
+		for(NtroTask taskToDestroy : tasksToDetroy) {
+			taskToDestroy.destroy();
+		}
 	}
 
 	@Override

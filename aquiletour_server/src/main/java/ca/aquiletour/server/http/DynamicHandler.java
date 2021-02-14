@@ -48,6 +48,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.web.NtroWindowServer;
+import ca.ntro.messages.MessageFactory;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -105,6 +106,16 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+
+		System.err.println("");
+		System.err.println("");
+		System.err.println("");
+		System.err.println("");
+		
 		NtroContext<User> context = new NtroContext<>();
 		context.setLang(Constants.LANG); // TODO
 
@@ -117,6 +128,10 @@ public class DynamicHandler extends AbstractHandler {
 		NtroWindowServer newWindow = newWindow(ifJsOnly, path);
 		
 		if(!ifJsOnly) {
+
+			// FIXME: a proper implementation of NtroMessage
+			//        should not require a reset
+			MessageFactory.reset();
 
 		    RootBackendController rootBackendController =  ControllerFactory.createRootController(RootBackendController.class, path, newWindow, context);
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
@@ -132,6 +147,10 @@ public class DynamicHandler extends AbstractHandler {
 
 			// FIXME: sending a message unblocks the whole graph!!
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
+			
+			//rootBackendController.getTask().destroy();
+			//rootController.getTask().destroy();
+
 		}
 		
 		//System.out.println(rootController.getTask().toString());

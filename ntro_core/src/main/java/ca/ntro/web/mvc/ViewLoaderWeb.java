@@ -29,10 +29,12 @@ import ca.ntro.core.system.assertions.MustNot;
 public abstract class ViewLoaderWeb extends ViewLoader {
 
 	private String html;
+	private String htmlUrl;
 	private Class<? extends NtroViewWeb> viewClass;
 
 	public ViewLoaderWeb() {
 		super();
+		T.call(this);
 	}
 
 	@Override
@@ -60,8 +62,8 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 	public ViewLoaderWeb setHtmlUrl(String htmlPath) {
 		T.call(this);
-
-		System.out.println("htmlPath: " + htmlPath);
+		
+		this.htmlUrl = htmlPath;
 
 		ResourceLoaderTask htmlLoader = Ntro.resourceLoader().loadResourceTask(htmlPath);
 		htmlLoader.setTaskId("Html");
@@ -89,12 +91,24 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		return html;
 	}
 
+	public String getHtmlUrl() {
+		T.call(this);
+
+		return htmlUrl;
+	}
+
 	public ViewLoader setTargetClass(Class<? extends NtroViewWeb> viewClass) {
 		T.call(this);
 
 		this.viewClass = viewClass;
 
 		return this;
+	}
+	
+	protected Class<? extends NtroViewWeb> getTargetClass(){
+		T.call(this);
+		
+		return viewClass;
 	}
 
 	@Override
@@ -113,5 +127,6 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	}
 
 	protected abstract HtmlElement parseHtml(String html);
+
 
 }
