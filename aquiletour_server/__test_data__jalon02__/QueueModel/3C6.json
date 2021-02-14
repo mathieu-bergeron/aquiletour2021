@@ -1,0 +1,9 @@
+{
+  "appointments": {
+    "_T": "ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap",
+    "value": {
+      }
+    }
+  },
+  "_T": "ca.aquiletour.core.pages.queue.QueueModel"
+}

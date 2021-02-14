@@ -1,0 +1,20 @@
+{
+  "appointments": {
+    "_T": "ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap",
+    "value": {
+      "0": {
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "id": "0",
+        "studentName": "Bob",
+        "studentSurname": "Bérancourt"
+      },
+      "2": {
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "id": "2",
+        "studentName": "Autre",
+        "studentSurname": "Étudiant"
+      }
+    }
+  },
+  "_T": "ca.aquiletour.core.pages.queue.QueueModel"
+}

@@ -7,7 +7,6 @@ public class NtroUser extends NtroModel {
 	
 	private String id;
 	private String authToken;
-	private String role;
 
 	@Override
 	public void initializeStoredValues() {
@@ -28,14 +27,6 @@ public class NtroUser extends NtroModel {
 
 	public void setAuthToken(String authToken) {
 		this.authToken = authToken;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
 	}
 
 	public boolean isValid(String queryToken) {

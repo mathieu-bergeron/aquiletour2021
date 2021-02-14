@@ -30,6 +30,7 @@ public abstract class ModelStore {
 		return modelLoader;
 	}
 
+
 	public abstract void addValueListener(ValuePath valuePath, ValueListener valueListener);
 
 	// XXX: value could be a JsonObjectIO or a plain Java value

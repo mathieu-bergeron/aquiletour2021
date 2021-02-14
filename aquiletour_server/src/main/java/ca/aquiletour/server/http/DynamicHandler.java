@@ -34,6 +34,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.backend.RootBackendController;
+import ca.aquiletour.core.models.users.AnonUser;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
@@ -41,12 +42,14 @@ import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.mvc.BackendControllerFactory;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
+import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageFactory;
 
@@ -133,7 +136,10 @@ public class DynamicHandler extends AbstractHandler {
 			//        should not require a reset
 			MessageFactory.reset();
 
-		    RootBackendController rootBackendController =  ControllerFactory.createRootController(RootBackendController.class, path, newWindow, context);
+			// FIXME: in NtroServer.getLocalStore();
+			LocalStoreFiles backendStore = new LocalStoreFiles();
+
+		    RootBackendController rootBackendController =  BackendControllerFactory.createBackendRootController(RootBackendController.class, backendStore);
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
 
 		    rootBackendController.execute();
@@ -215,10 +221,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(!isUserLoggedIn){
 
-		    User defaultUser = new User();
-		    defaultUser.setId("__defaultUser");
-		    defaultUser.setAuthToken("__noneToken");
-		    defaultUser.setRole("public");
+		    User defaultUser = new AnonUser();
 
 		    context.setUser(defaultUser);
 

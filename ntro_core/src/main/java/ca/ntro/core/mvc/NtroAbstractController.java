@@ -10,7 +10,6 @@ import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageFactory;
-import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
@@ -20,7 +19,7 @@ import static ca.ntro.core.mvc.Constants.VIEW_MODEL_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_HANDLER_TASK_ID;
 
 
-abstract class NtroAbstractController implements TaskWrapper {
+abstract class NtroAbstractController extends AnyController implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
 	private NtroContext context;
@@ -109,13 +108,16 @@ abstract class NtroAbstractController implements TaskWrapper {
 		getTask().addSubTask(viewLoader);
 	}
 
-	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageHandler handler) {
+	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageHandler<?,?> handler) {
 		T.call(this);
 
 		NtroTask message = MessageFactory.getIncomingMessage(messageClass);
-		message.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
+		
+		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
+		message.setTaskId(messageId);
+		handler.setMessageId(messageId);
 
-		message.addNextTask(handler);
+		handler.getTask().addPreviousTask(message);
 	}
 
 	protected void addModelMessageHandler(Class<? extends NtroMessage> messageClass, ModelMessageHandler<?,?> handler) {

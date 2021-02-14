@@ -1,8 +1,6 @@
 package ca.aquiletour.core.models.users;
 
 import ca.ntro.core.NtroUser;
-import ca.ntro.core.models.properties.NtroModelValue;
-import ca.ntro.core.system.trace.T;
 
 public class User extends NtroUser {
 	

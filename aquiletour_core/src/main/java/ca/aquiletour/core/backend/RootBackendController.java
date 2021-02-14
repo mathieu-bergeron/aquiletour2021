@@ -1,10 +1,8 @@
 package ca.aquiletour.core.backend;
 
-import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.mvc.NtroRootController;
+import ca.ntro.core.mvc.BackendRootController;
 
-                                           // TODO: create NtroBackendController
-public class RootBackendController extends NtroRootController  {
+public class RootBackendController extends BackendRootController  {
 
 	@Override
 	protected void onCreate() {
@@ -14,13 +12,7 @@ public class RootBackendController extends NtroRootController  {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
-		
-	}
-
-	@Override
 	protected void onFailure(Exception e) {
 		
 	}
-
 }

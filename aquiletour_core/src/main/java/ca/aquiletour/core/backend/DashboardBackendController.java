@@ -1,18 +1,17 @@
 package ca.aquiletour.core.backend;
 
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseHandler;
+import ca.aquiletour.core.backend.handlers.AddCourseHandler;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
-import ca.ntro.core.mvc.EmptyViewLoader;
-import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.NetworkStore;
+import ca.ntro.core.mvc.BackendController;
 
-public class DashboardBackendController extends NtroController<DashboardBackendController>{
+public class DashboardBackendController extends BackendController<RootBackendController>{
 
 	@Override
 	protected void onCreate() {
+		
+		addMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 
+		/*
 		// FIXME: should not be needed, we should have a BackendController
 		setViewLoader(new EmptyViewLoader());
 		
@@ -26,12 +25,8 @@ public class DashboardBackendController extends NtroController<DashboardBackendC
 		// FIXME: in the backend, should not be a ModelMessageHandler
 		//        only a MessageHandler and context info in the message
 		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
+		*/
 
-	}
-
-	@Override
-	protected void onChangeContext(NtroContext previousContext) {
-		
 	}
 
 	@Override

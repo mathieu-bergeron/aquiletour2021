@@ -2,6 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
@@ -9,6 +10,7 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboard
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
+import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -58,10 +60,16 @@ public class AquiletourRequestHandler {
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
 			showTeacherDashboardMessage.sendMessage();
 			
-		}else{
+		}else if(user instanceof Student){
 			
 			ShowStudentDashboardMessage showStudentDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
 			showStudentDashboardMessage.sendMessage();
+
+		}else {
+			
+			ShowLoginDialogMessage showLoginDialogMessage = MessageFactory.getOutgoingMessage(ShowLoginDialogMessage.class);
+			showLoginDialogMessage.sendMessage();
+			
 		}
 	}
 
