@@ -34,9 +34,9 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.backend.RootBackendController;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
-import ca.aquiletour.core.pages.users.values.User;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;

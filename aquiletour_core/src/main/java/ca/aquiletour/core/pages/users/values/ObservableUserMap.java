@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.users.values;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.models.properties.observable.map.ObservableMap;
 import ca.ntro.core.system.trace.T;

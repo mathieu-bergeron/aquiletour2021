@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.users;
 
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.users.UserView;
-import ca.aquiletour.core.pages.users.values.User;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

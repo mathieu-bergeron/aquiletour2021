@@ -3,31 +3,29 @@
     "_T": "ca.aquiletour.core.pages.users.values.ObservableUserMap",
     "value": {
       "alice": {
-        "_T": "ca.aquiletour.core.pages.users.values.User",
+        "_T": "ca.aquiletour.core.models.users.Teacher",
         "id": "alice",
         "authToken": "aliceToken",
-        "role": "teacher",
         "name": "Alice",
         "surname": "Awama",
         "userEmail": "alice.awama@test.com",
         "userPassword": "alicePassword"
       },
       "bob": {
-        "_T": "ca.aquiletour.core.pages.users.values.User",
+        "_T": "ca.aquiletour.core.models.users.Student",
         "id": "bob",
         "authToken": "bobToken",
         "name": "Bob",
-        "role": "student",
         "surname": "Bérancourt",
+        "registrationId" : "1234567",
         "userEmail": "bob.berancourt@test.ca",
         "userPassword": "bobPassword"
       },
       "charlie": {
-        "_T": "ca.aquiletour.core.pages.users.values.User",
+        "_T": "ca.aquiletour.core.models.users.Teacher",
         "id": "charlie",
         "authToken": "charlieToken",
         "name": "Charlie",
-        "role": "teacher",
         "surname": "Ngo",
         "userEmail": "charlie.ngo@test.org",
         "userPassword": "charliePassword"

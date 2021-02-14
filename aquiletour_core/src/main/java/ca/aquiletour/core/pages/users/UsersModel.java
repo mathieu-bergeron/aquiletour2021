@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.users;
 
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.users.values.ObservableUserMap;
-import ca.aquiletour.core.pages.users.values.User;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 

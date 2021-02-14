@@ -2,6 +2,8 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
@@ -16,12 +18,12 @@ import ca.ntro.messages.MessageFactory;
 public class AquiletourRequestHandler {
 	
 	
-	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
 		if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters, context.getUser().getRole());
+			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
 
 		}else if(path.startsWith("billetteries")) {
 			
@@ -48,10 +50,10 @@ public class AquiletourRequestHandler {
 		showLoginMessage.sendMessage();
 	}
 
-	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, String role) {
+	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(role.equals("teacher")) {
+		if(user instanceof Teacher) {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
 			showTeacherDashboardMessage.sendMessage();

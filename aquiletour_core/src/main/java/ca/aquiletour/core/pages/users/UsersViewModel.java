@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.users;
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.users.values.User;
+import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.models.properties.observable.map.MapObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;

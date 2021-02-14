@@ -1,4 +1,4 @@
-package ca.aquiletour.core.pages.users.values;
+package ca.aquiletour.core.models.users;
 
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.properties.NtroModelValue;
