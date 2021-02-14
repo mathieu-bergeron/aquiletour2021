@@ -1,39 +1,27 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.Path;
-import ca.ntro.core.system.trace.T;
+import ca.ntro.core.NtroUser;
 
-public class NtroContext {
+public class NtroContext<U extends NtroUser>{
 	
 	private String lang;
-	private String userId;
-	private String authToken;
+	private U user;
 	
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getAuthToken() {
-		return authToken;
-	}
-
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
-	}
-
 	public String getLang() {
 		return lang;
 	}
-
 	public void setLang(String lang) {
 		this.lang = lang;
 	}
+	public U getUser() {
+		return user;
+	}
+	public void setUser(U user) {
+		this.user = user;
+	}
 
-	public boolean hasDifferentLang(NtroContext otherContext) {
-		return !this.lang.equals(otherContext.getLang());
+	public boolean hasSameLang(NtroContext<U> otherContext) {
+		if(lang == null && otherContext.lang != null) return false;
+		return this.lang.equals(otherContext.lang);
 	}
 }

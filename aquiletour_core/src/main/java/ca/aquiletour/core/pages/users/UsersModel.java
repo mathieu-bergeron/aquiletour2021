@@ -37,7 +37,7 @@ public class UsersModel extends NtroModel {
 		T.call(this);
 
 		String userId = Integer.toString(users.size());
-		user.setUserId(userId);
+		user.setId(userId);
 		users.addEntry(userId, user);
 	}
 	

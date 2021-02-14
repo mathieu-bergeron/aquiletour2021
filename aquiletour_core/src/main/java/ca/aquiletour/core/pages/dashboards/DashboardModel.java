@@ -1,9 +1,9 @@
-package ca.aquiletour.core.pages.dashboard;
+package ca.aquiletour.core.pages.dashboards;
 
 import java.util.ArrayList;
 
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.aquiletour.core.pages.dashboard.values.ObservableCourseList;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 

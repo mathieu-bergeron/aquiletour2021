@@ -2,8 +2,8 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;

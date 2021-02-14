@@ -1,6 +1,6 @@
-package ca.aquiletour.core.pages.dashboard.messages;
+package ca.aquiletour.core.pages.dashboards.teacher.messages;
 
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 

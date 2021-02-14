@@ -1,4 +1,4 @@
-package ca.aquiletour.core.pages.dashboard;
+package ca.aquiletour.core.pages.dashboards;
 
 import ca.ntro.core.mvc.NtroView;
 

@@ -1,6 +1,6 @@
-package ca.aquiletour.core.pages.dashboard.messages;
+package ca.aquiletour.core.pages.dashboards.teacher.messages;
 
-import ca.aquiletour.core.pages.dashboard.DashboardModel;
+import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.ntro.core.mvc.ModelMessageHandler;
 import ca.ntro.core.system.trace.T;
 

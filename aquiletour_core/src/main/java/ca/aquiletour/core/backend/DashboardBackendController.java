@@ -1,8 +1,8 @@
 package ca.aquiletour.core.backend;
 
-import ca.aquiletour.core.pages.dashboard.DashboardModel;
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseHandler;
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.DashboardModel;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseHandler;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.ntro.core.mvc.EmptyViewLoader;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
@@ -16,7 +16,9 @@ public class DashboardBackendController extends NtroController<DashboardBackendC
 		// FIXME: should not be needed, we should have a BackendController
 		setViewLoader(new EmptyViewLoader());
 		
-		setModelLoader(NetworkStore.getLoader(DashboardModel.class, currentContext().getAuthToken(), currentContext().getUserId()));
+		setModelLoader(NetworkStore.getLoader(DashboardModel.class, 
+				                              currentContext().getUser().getAuthToken(), 
+				                              currentContext().getUser().getId()));
 
 		addModelMessageHandler(AddCourseMessage.class, new AddCourseHandler());
 		

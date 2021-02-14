@@ -105,10 +105,10 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		NtroContext context = new NtroContext();
+		NtroContext<User> context = new NtroContext<>();
 		context.setLang(Constants.LANG); // TODO
 
-		boolean userIsLoggedIn = authenticateUsersAddCookiesSetContext(context, baseRequest, response);
+		authenticateUsersAddCookiesSetContext(context, baseRequest, response);
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		
@@ -145,7 +145,7 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private boolean authenticateUsersAddCookiesSetContext(NtroContext context, Request baseRequest, HttpServletResponse response) {
+	private boolean authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
 		boolean isUserLoggedIn = false;
@@ -159,15 +159,18 @@ public class DynamicHandler extends AbstractHandler {
 			
 			String userId = baseRequest.getParameter("userId");
 			String authToken  = baseRequest.getParameter("authToken");
-
-			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
 			
-			if(isUserLoggedIn) {
-				setCookie(response, "userId", userId);
-				setCookie(response, "authToken", authToken);
+			User user = usersModel.getUsers().getValue().get(userId);
+
+			if(user != null) {
+
+				isUserLoggedIn = user.isValid(authToken);
 				
-				context.setAuthToken(authToken);
-				context.setUserId(userId);
+				if(isUserLoggedIn) {
+					setCookie(response, "userId", userId);
+					setCookie(response, "authToken", authToken);
+					context.setUser(user);
+				}
 			}
 
 		} else if(hasCookie(baseRequest, "userId") 
@@ -175,35 +178,31 @@ public class DynamicHandler extends AbstractHandler {
 			
 			String userId = getCookie(baseRequest, "userId");
 			String authToken = getCookie(baseRequest, "authToken");
-			
-			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
-			
-			if(!isUserLoggedIn) {
-				eraseCookie(response, "userId");
-				eraseCookie(response, "authToken");
 
-			}else {
+			User user = usersModel.getUsers().getValue().get(userId);
 
-				context.setAuthToken(authToken);
-				context.setUserId(userId);
+			if(user != null) {
+
+				isUserLoggedIn = user.isValid(authToken);
+				
+				if(isUserLoggedIn) {
+					context.setUser(user);
+				}else {
+					eraseCookie(response, "userId");
+					eraseCookie(response, "authToken");
+				}
 			}
 		}
 
 		if(!isUserLoggedIn){
 
-		    User defaultUser = usersModel.getUsers().getValue().values().iterator().next();
+		    User defaultUser = new User();
+		    defaultUser.setId("__defaultUser");
+		    defaultUser.setAuthToken("__noneToken");
+		    defaultUser.setRole("public");
 
-		    String userId = defaultUser.getUserId();
-		    String authToken = defaultUser.getAuthToken();
-		    
-		    T.values(userId, authToken);
+		    context.setUser(defaultUser);
 
-			setCookie(response, "userId", userId);
-			setCookie(response, "authToken", authToken);
-			
-			context.setAuthToken(authToken);
-			context.setUserId(userId);
-			
 			isUserLoggedIn = true;
 		}
 

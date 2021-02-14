@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.dashboard;
 
-import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

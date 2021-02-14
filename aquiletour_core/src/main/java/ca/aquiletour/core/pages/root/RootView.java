@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.root;
 
-import ca.aquiletour.core.pages.dashboard.DashboardView;
+import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;

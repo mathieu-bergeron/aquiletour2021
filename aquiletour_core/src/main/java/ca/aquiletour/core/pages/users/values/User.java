@@ -1,12 +1,11 @@
 package ca.aquiletour.core.pages.users.values;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class User extends NtroModelValue {
+public class User extends NtroUser {
 	
-	private String userId;
-	private String authToken;
 	private String name;
 	private String surname;
 	private String userEmail;
@@ -22,20 +21,6 @@ public class User extends NtroModelValue {
 		
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getAuthToken() {
-		return authToken;
-	}
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
-	}
 	public String getName() {
 		return name;
 	}
@@ -49,18 +34,6 @@ public class User extends NtroModelValue {
 		this.surname = surname;
 	}
 
-	public boolean isValid(String queryToken) {
-		T.call(this);
-		
-		boolean isValid = false;
-		
-		if(authToken != null) {
-			
-			isValid = authToken.equals(queryToken);
-		}
-		
-		return isValid;
-	}
 
 	public String getUserEmail() {
 		return userEmail;

@@ -17,7 +17,8 @@
 
 package ca.aquiletour.core.pages.root;
 
-import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.queues.QueuesController;
@@ -34,9 +35,12 @@ public class RootController extends NtroRootController {
 		
 		setViewLoader(RootView.class, currentContext().getLang());
 
-		addSubController(DashboardController.class, "mescours");
+		addSubController(StudentDashboardController.class, "mescours");
+		addSubController(TeacherDashboardController.class, "mescours");
+
 		addSubController(QueuesController.class, "billetteries");
 		addSubController(QueueController.class, "billetterie");
+
 		addSubController(UsersController.class, "usagers");
 		addSubController(LoginController.class, "connexion");
 

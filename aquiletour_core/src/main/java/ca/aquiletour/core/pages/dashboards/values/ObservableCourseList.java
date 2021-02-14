@@ -1,4 +1,4 @@
-package ca.aquiletour.core.pages.dashboard.values;
+package ca.aquiletour.core.pages.dashboards.values;
 
 import java.util.ArrayList;
 import java.util.List;

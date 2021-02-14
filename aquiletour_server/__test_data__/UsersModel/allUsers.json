@@ -4,8 +4,9 @@
     "value": {
       "alice": {
         "_T": "ca.aquiletour.core.pages.users.values.User",
-        "userId": "alice",
+        "id": "alice",
         "authToken": "aliceToken",
+        "role": "teacher",
         "name": "Alice",
         "surname": "Awama",
         "userEmail": "alice.awama@test.com",
@@ -13,18 +14,20 @@
       },
       "bob": {
         "_T": "ca.aquiletour.core.pages.users.values.User",
-        "userId": "bob",
+        "id": "bob",
         "authToken": "bobToken",
         "name": "Bob",
+        "role": "student",
         "surname": "Bérancourt",
         "userEmail": "bob.berancourt@test.ca",
         "userPassword": "bobPassword"
       },
       "charlie": {
         "_T": "ca.aquiletour.core.pages.users.values.User",
-        "userId": "charlie",
+        "id": "charlie",
         "authToken": "charlieToken",
         "name": "Charlie",
+        "role": "teacher",
         "surname": "Ngo",
         "userEmail": "charlie.ngo@test.org",
         "userPassword": "charliePassword"

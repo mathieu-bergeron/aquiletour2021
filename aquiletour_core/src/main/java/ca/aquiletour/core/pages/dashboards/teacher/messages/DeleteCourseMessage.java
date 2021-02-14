@@ -1,4 +1,4 @@
-package ca.aquiletour.core.pages.dashboard.messages;
+package ca.aquiletour.core.pages.dashboards.teacher.messages;
 
 import ca.ntro.messages.NtroMessage;
 

@@ -1,7 +1,8 @@
 package ca.aquiletour.web;
 
-import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboard.DashboardView;
+import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.AppointmentView;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -11,7 +12,8 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.users.UserView;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
-import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
+import ca.aquiletour.web.pages.dashboard.StudentDashboardViewWeb;
+import ca.aquiletour.web.pages.dashboard.TeacherDashboardViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
@@ -37,13 +39,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(RootViewWeb.class));
 
-		ViewLoaders.registerViewLoader(DashboardView.class,
+		ViewLoaders.registerViewLoader(TeacherDashboardView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/dashboard/dashboard.html")
-			     	.setCssUrl("/views/dashboard/dashboard.css")
+			     	.setHtmlUrl("/views/dashboards/teacher_dashboard/teacher_dashboard.html")
+			     	.setCssUrl("/views/dashboards/teacher_dashboard/teacher_dashboard.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(DashboardViewWeb.class));
+			     	.setTargetClass(TeacherDashboardViewWeb.class));
+
+		ViewLoaders.registerViewLoader(StudentDashboardView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/dashboards/student_dashboard/student_dashboard.html")
+			     	.setCssUrl("/views/dashboards/student_dashboard/student_dashboard.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(StudentDashboardViewWeb.class));
 
 		ViewLoaders.registerViewLoader(CourseSummaryView.class,
 				"fr"

@@ -46,7 +46,7 @@ public class QueueController extends NtroController<RootController> {
 		
 		// TODO: we can automatize this!
 		//       «simply» reset the tasks with the new lang
-		if(previousContext.hasDifferentLang(currentContext())) {
+		if(!previousContext.hasSameLang(currentContext())) {
 			setViewLoader(QueueView.class, currentContext().getLang());
 			addSubViewLoader(AppointmentView.class, currentContext().getLang());
 		}

@@ -2,7 +2,8 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
@@ -26,7 +27,7 @@ public class AquiletourRequestHandler {
 		
 		if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters);
+			sendDashboardMessages(path.subPath(1), parameters, context.getUser().getRole());
 
 		}else if(path.startsWith("billetteries")) {
 			
@@ -53,12 +54,19 @@ public class AquiletourRequestHandler {
 		showLoginMessage.sendMessage();
 	}
 
-	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters) {
+	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, String role) {
 		T.call(AquiletourRequestHandler.class);
+		
+		if(role.equals("teacher")) {
 
-		ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
-		showDashboardMessage.sendMessage();
-
+			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
+			showTeacherDashboardMessage.sendMessage();
+			
+		}else{
+			
+			ShowStudentDashboardMessage showStudentDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
+			showStudentDashboardMessage.sendMessage();
+		}
 	}
 
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {

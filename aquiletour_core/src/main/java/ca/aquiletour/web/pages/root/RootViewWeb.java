@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.root;
 
-import ca.aquiletour.core.pages.dashboard.DashboardView;
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
@@ -30,7 +30,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			public void onEvent() {
 				T.call(this);
 
-				ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
+				ShowStudentDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
 				showDashboardMessage.sendMessage();
 			}
 		});
