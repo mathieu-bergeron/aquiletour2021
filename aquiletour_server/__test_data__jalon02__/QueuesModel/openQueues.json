@@ -5,8 +5,7 @@
       "4F5": {
         "_T": "ca.aquiletour.core.pages.queues.values.Queue",
         "id": "4F5",
-        "students": ["bob"],
-        "numberOfAppointments": 2
+        "numberOfAnswersToDate":  100
       }
     }
   },
