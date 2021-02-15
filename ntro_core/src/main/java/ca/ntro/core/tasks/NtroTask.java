@@ -17,5 +17,6 @@ public interface NtroTask {
 	<NT extends NtroTask> NT getSubTask(Class<NT> taskClass);
 	<NT extends NtroTask> NT getSubTask(Class<NT> taskClass, String taskId);
 	void write(StringBuilder out, int indentLevel);
+	void destroy();
 
 }

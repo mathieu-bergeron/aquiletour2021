@@ -130,7 +130,6 @@ public class ValueFormatterJdk extends ValueFormatter {
 		for(Method userDefinedMethod : userDefinedMethods) {
 
 			if(userDefinedMethod.getName().equals("toString")) {
-
 				result = true;
 				break;
 			}

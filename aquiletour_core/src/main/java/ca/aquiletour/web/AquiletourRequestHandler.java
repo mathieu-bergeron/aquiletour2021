@@ -2,14 +2,16 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
-import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
+import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
-import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
+import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
+import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -18,100 +20,89 @@ import ca.ntro.messages.MessageFactory;
 public class AquiletourRequestHandler {
 	
 	
-	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.startsWith("settings")) {
+		if(path.startsWith("mescours")) {
+
+			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
+
+		}else if(path.startsWith("billetteries")) {
 			
-			sendSettingsMessages(path.subPath(1), parameters);
+			sendQueuesMessages(path.subPath(1), parameters);
+
+		}else if(path.startsWith("billetterie")) {
 			
-		}else if(path.startsWith("dashboard")) {
-
-			sendDashboardMessages(path.subPath(1), parameters);
-
-		}else if(path.startsWith("queue")) {
-
 			sendQueueMessages(path.subPath(1), parameters);
-		}
-	}
-
-	private static void sendSettingsMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
-
-		ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
-		showSettingsMessage.sendMessage();
-	}
-
-	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
-
-		ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
-		showDashboardMessage.sendMessage();
+			
+		}else if(path.startsWith("usagers")) {
+			
+			sendUsersMessages(path.subPath(1), parameters);
 		
-		if(parameters.containsKey("title") 
-				&& parameters.containsKey("summary")
-				&& parameters.containsKey("date")) {
+		}else if(path.startsWith("connexion")) {
 
-			String courseTitle = parameters.get("title")[0];
-			String summaryText = parameters.get("summary")[0];
-			String summaryDate = parameters.get("date")[0];
-
-			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate));
-			addCourseMessage.sendMessage();
+			sendLoginMessages(path.subPath(1), parameters);
 		}
 	}
+
+	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
+
+		ShowLoginMessage showLoginMessage = MessageFactory.getOutgoingMessage(ShowLoginMessage.class);
+		showLoginMessage.sendMessage();
+	}
+
+	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourRequestHandler.class);
+		
+		if(user instanceof Teacher) {
+
+			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
+			showTeacherDashboardMessage.sendMessage();
+			
+		}else if(user instanceof Student){
+			
+			ShowStudentDashboardMessage showStudentDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
+			showStudentDashboardMessage.sendMessage();
+
+		}else {
+			
+			ShowLoginDialogMessage showLoginDialogMessage = MessageFactory.getOutgoingMessage(ShowLoginDialogMessage.class);
+			showLoginDialogMessage.sendMessage();
+			
+		}
+	}
+
+	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
+
+		ShowQueuesMessage showQueuesMessage = MessageFactory.getOutgoingMessage(ShowQueuesMessage.class);
+		showQueuesMessage.sendMessage();
+	}
+		
 
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.size() >= 2) {
-			
+		if(path.size() >= 1) {
+
 			String courseId = path.getName(0);
-			String groupId = path.getName(1);
 			
 			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
 			
 			showQueueMessage.setCourseId(courseId);
-			showQueueMessage.setGroupId(groupId);
 			
 			showQueueMessage.sendMessage();
 
-		}else {
-
-			// TMP
-			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
-			showQueueMessage.sendMessage();
-		}
-
-		if(parameters.containsKey("makeAppointment")) { //regarde si parametre makeAppointment/ regarde si delete appointment
-
-			// FIXME: we need a Ntro service for dates
-			/*
-			Calendar rightNow = Calendar.getInstance();
-			int hour = rightNow.get(Calendar.HOUR_OF_DAY);
-			int minute = rightNow.get(Calendar.MINUTE);
-			String time = hour + ":" + minute;
-			*/
-			
-			AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
-			Appointment newAppointment = new Appointment();
-			newAppointment.setTime("11:59");
-			addAppointmentMessage.setAppointment(newAppointment);
-
-			addAppointmentMessage.sendMessage();
-
-		} else if(parameters.containsKey("deleteAppointment")){
-
-			DeleteAppointmentMessage deleteAppointmentMessage = MessageFactory.getOutgoingMessage(DeleteAppointmentMessage.class);
-			
-			String appointmentId = parameters.get("deleteAppointment")[0];
-			deleteAppointmentMessage.setAppointmentId(appointmentId);
-			
-			deleteAppointmentMessage.sendMessage();
 		}
 	}
 
+	private static void sendUsersMessages(Path path, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
 
+		ShowUsersMessage showUsersMessage = MessageFactory.getOutgoingMessage(ShowUsersMessage.class);
+		showUsersMessage.sendMessage();
+
+	}
 
 }

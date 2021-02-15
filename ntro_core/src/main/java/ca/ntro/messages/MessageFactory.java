@@ -24,7 +24,6 @@ public class MessageFactory {
 			MustNot.beNull(message);
 		}
 
-
 		return message;
 	}
 
@@ -37,5 +36,12 @@ public class MessageFactory {
 		messages.put(messageClass, message);
 
 		return message;
+	}
+
+
+	public static void reset() {
+		T.call(MessageFactory.class);
+		
+		messages = new HashMap<>();
 	}
 }

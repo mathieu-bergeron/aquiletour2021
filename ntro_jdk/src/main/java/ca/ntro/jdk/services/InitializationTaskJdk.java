@@ -118,4 +118,12 @@ public class InitializationTaskJdk extends InitializationTask {
 		return new LocalStoreFiles();
 	}
 
+	@Override
+	protected ModelStore provideNetworkStore() {
+		__T.call(InitializationTaskJdk.class, "provideNetworkStore");
+
+		// FIXME: only for the server!
+		return new LocalStoreFiles();
+	}
+
 }

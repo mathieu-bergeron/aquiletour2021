@@ -73,7 +73,7 @@ public class Ntro {
 	}
 
 	public static Introspector introspector() {
-		System.out.println("#T.call (Ntro.java) >> Ntro.introspector");
+		__T.call(Ntro.class, "introspector");
 
 		if(introspector == null) {
 			System.err.println("#FATAL | Introspector not registered");

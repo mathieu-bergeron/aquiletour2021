@@ -8,6 +8,7 @@ import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.services.stores.LocalStore;
@@ -18,13 +19,13 @@ public class QueueController extends NtroController<RootController> {
 	@Override
 	protected void onCreate() {
 		T.call(this);
+		
+		// XXX: is replaced by actual loader in ShowQueueHandler
+		setModelLoader(new EmptyModelLoader());
 
 		setViewLoader(QueueView.class, currentContext().getLang());
 
 		addSubViewLoader(AppointmentView.class, currentContext().getLang());
-		
-		// TODO: delay installing the loader until the ShowQueue message
-		setModelLoader(LocalStore.getLoader(QueueModel.class, "TODO", "coursA", "groupe01"));
 
 		// (1) installing a ModelMessageHandler even if there is no modelLoader
 		//      this means it will block until the model is loaded
@@ -45,7 +46,7 @@ public class QueueController extends NtroController<RootController> {
 		
 		// TODO: we can automatize this!
 		//       «simply» reset the tasks with the new lang
-		if(previousContext.hasDifferentLang(currentContext())) {
+		if(!previousContext.hasSameLang(currentContext())) {
 			setViewLoader(QueueView.class, currentContext().getLang());
 			addSubViewLoader(AppointmentView.class, currentContext().getLang());
 		}

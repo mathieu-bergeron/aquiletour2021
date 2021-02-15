@@ -18,9 +18,9 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class ViewLoader extends NtroTaskSync {
+public abstract class ViewLoader extends NtroTaskAsync implements Cloneable {
 
 	public NtroView createView(){
 		T.call(this);
@@ -33,5 +33,7 @@ public abstract class ViewLoader extends NtroTaskSync {
 	}
 
 	protected abstract NtroView createViewImpl();
+	
+	protected abstract ViewLoader clone();
 
 }

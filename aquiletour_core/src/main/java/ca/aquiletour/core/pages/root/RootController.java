@@ -17,10 +17,13 @@
 
 package ca.aquiletour.core.pages.root;
 
-import ca.aquiletour.core.pages.dashboard.DashboardController;
+import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
+import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.queue.QueueController;
-import ca.aquiletour.core.pages.settings.SettingsController;
+import ca.aquiletour.core.pages.queues.QueuesController;
 import ca.ntro.core.mvc.NtroContext;
+import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 
@@ -32,9 +35,14 @@ public class RootController extends NtroRootController {
 		
 		setViewLoader(RootView.class, currentContext().getLang());
 
-		addSubController(SettingsController.class, "settings");
-		addSubController(DashboardController.class, "dashboard");
-		addSubController(QueueController.class, "queue");
+		addSubController(StudentDashboardController.class, "mescours");
+		addSubController(TeacherDashboardController.class, "mescours");
+
+		addSubController(QueuesController.class, "billetteries");
+		addSubController(QueueController.class, "billetterie");
+
+		addSubController(UsersController.class, "usagers");
+		addSubController(LoginController.class, "connexion");
 
 		addWindowViewHandler(new RootViewHandler());
 		

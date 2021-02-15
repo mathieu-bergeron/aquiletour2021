@@ -19,8 +19,10 @@ package ca.ntro.core.system.trace;
 
 public class __T {
 
-	private static TraceFilter traceFilter = TraceLevel.APP;
+	//private static TraceFilter traceFilter = TraceLevel.APP;
 	//private static TraceFilter traceFilter = TraceLevel.ALL;
+
+	private static TraceFilter traceFilter = TraceLevel.NONE;
 
 	public static void setTraceLevel(TraceFilter traceFilter) {
 		__T.traceFilter = traceFilter;

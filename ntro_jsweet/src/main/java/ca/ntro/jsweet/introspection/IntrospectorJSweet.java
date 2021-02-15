@@ -33,7 +33,6 @@ import def.js.JSON;
 import static jsweet.util.Lang.object;
 import static jsweet.util.Lang.typeof;
 
-
 public class IntrospectorJSweet extends Introspector {
 
 	@Override

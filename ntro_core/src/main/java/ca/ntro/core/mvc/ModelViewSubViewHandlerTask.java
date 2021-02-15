@@ -42,6 +42,9 @@ public class ModelViewSubViewHandlerTask<M extends NtroModel, V extends NtroView
 		M model = (M) modelLoader.getModel();
 
 		MustNot.beNull(viewCreator);
+		if(model == null) {
+			System.out.println("modelLoader " + modelLoader.getClass().getSimpleName() );
+		}
 		MustNot.beNull(model);
 
 		@SuppressWarnings("unchecked")

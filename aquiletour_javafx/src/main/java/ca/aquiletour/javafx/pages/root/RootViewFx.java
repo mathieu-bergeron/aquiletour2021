@@ -5,11 +5,13 @@ import java.util.ResourceBundle;
 
 import ca.aquiletour.core.pages.dashboard.DashboardView;
 import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.QuitMessage;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.settings.SettingsView;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.core.pages.users.UsersView;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -110,6 +112,21 @@ public class RootViewFx extends NtroViewFx implements RootView {
 	@Override
 	public void initialize() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showUsers(UsersView usersView) {
+		T.call(this);
+		
+		showSubView(usersView);
+	}
+
+	@Override
+	public void showLogin(LoginView loginView) {
+		T.call(this);
+		
+		showSubView(loginView);
 		
 	}
 }

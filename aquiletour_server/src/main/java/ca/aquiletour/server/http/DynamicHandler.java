@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.io.OutputStream;
-import java.util.Calendar;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -29,35 +28,28 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
-import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
-import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
-import ca.aquiletour.core.pages.queue.values.Appointment;
+import ca.aquiletour.core.backend.RootBackendController;
+import ca.aquiletour.core.models.users.AnonUser;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.aquiletour.core.pages.users.UsersModel;
-import ca.aquiletour.core.pages.users.values.User;
+import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
-import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.mvc.BackendControllerFactory;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.ContainerTask;
-import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
+import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageFactory;
 
@@ -117,10 +109,20 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		NtroContext context = new NtroContext();
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+
+		System.err.println("");
+		System.err.println("");
+		System.err.println("");
+		System.err.println("");
+		
+		NtroContext<User> context = new NtroContext<>();
 		context.setLang(Constants.LANG); // TODO
 
-		boolean userIsLoggedIn = authenticateUsersAddCookiesSetContext(context, baseRequest, response);
+		authenticateUsersAddCookiesSetContext(context, baseRequest, response);
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		
@@ -130,14 +132,31 @@ public class DynamicHandler extends AbstractHandler {
 		
 		if(!ifJsOnly) {
 
+			// FIXME: a proper implementation of NtroMessage
+			//        should not require a reset
+			MessageFactory.reset();
+
+			// FIXME: in NtroServer.getLocalStore();
+			LocalStoreFiles backendStore = new LocalStoreFiles();
+
+		    RootBackendController rootBackendController =  BackendControllerFactory.createBackendRootController(RootBackendController.class, backendStore);
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
+
+		    rootBackendController.execute();
+
+			Map<String, String[]> parameters = baseRequest.getParameterMap();
+			
+			// FIXME: sending a message unblocks the whole graph!!
+			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
 
 			rootController.execute();
 
-			Map<String, String[]> parameters = baseRequest.getParameterMap();
-
-			// XXX: sending a message unblocks a task
+			// FIXME: sending a message unblocks the whole graph!!
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
+			
+			//rootBackendController.getTask().destroy();
+			//rootController.getTask().destroy();
+
 		}
 		
 		//System.out.println(rootController.getTask().toString());
@@ -151,7 +170,7 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private boolean authenticateUsersAddCookiesSetContext(NtroContext context, Request baseRequest, HttpServletResponse response) {
+	private boolean authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
 		boolean isUserLoggedIn = false;
@@ -165,15 +184,18 @@ public class DynamicHandler extends AbstractHandler {
 			
 			String userId = baseRequest.getParameter("userId");
 			String authToken  = baseRequest.getParameter("authToken");
-
-			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
 			
-			if(isUserLoggedIn) {
-				setCookie(response, "userId", userId);
-				setCookie(response, "authToken", authToken);
+			User user = usersModel.getUsers().getValue().get(userId);
+
+			if(user != null) {
+
+				isUserLoggedIn = user.isValid(authToken);
 				
-				context.setAuthToken(authToken);
-				context.setUserId(userId);
+				if(isUserLoggedIn) {
+					setCookie(response, "userId", userId);
+					setCookie(response, "authToken", authToken);
+					context.setUser(user);
+				}
 			}
 
 		} else if(hasCookie(baseRequest, "userId") 
@@ -181,35 +203,28 @@ public class DynamicHandler extends AbstractHandler {
 			
 			String userId = getCookie(baseRequest, "userId");
 			String authToken = getCookie(baseRequest, "authToken");
-			
-			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
-			
-			if(!isUserLoggedIn) {
-				eraseCookie(response, "userId");
-				eraseCookie(response, "authToken");
 
-			}else {
+			User user = usersModel.getUsers().getValue().get(userId);
 
-				context.setAuthToken(authToken);
-				context.setUserId(userId);
+			if(user != null) {
+
+				isUserLoggedIn = user.isValid(authToken);
+				
+				if(isUserLoggedIn) {
+					context.setUser(user);
+				}else {
+					eraseCookie(response, "userId");
+					eraseCookie(response, "authToken");
+				}
 			}
 		}
 
 		if(!isUserLoggedIn){
 
-		    User defaultUser = usersModel.getUsers().getValue().values().iterator().next();
+		    User defaultUser = new AnonUser();
 
-		    String userId = defaultUser.getUserId();
-		    String authToken = defaultUser.getAuthToken();
-		    
-		    T.values(userId, authToken);
+		    context.setUser(defaultUser);
 
-			setCookie(response, "userId", userId);
-			setCookie(response, "authToken", authToken);
-			
-			context.setAuthToken(authToken);
-			context.setUserId(userId);
-			
 			isUserLoggedIn = true;
 		}
 

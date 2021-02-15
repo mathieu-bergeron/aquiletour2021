@@ -1,0 +1,18 @@
+{
+  "appointments": {
+    "_T": "ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap",
+    "value": {
+      "0": {
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "0",
+        "time": "11:59"
+      },
+      "3": {
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "3",
+        "time": "11:59"
+      }
+    }
+  },
+  "_T": "ca.aquiletour.core.pages.queue.QueueModel"
+}
