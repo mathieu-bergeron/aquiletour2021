@@ -33,37 +33,37 @@ public class ValueFormatterJdk extends ValueFormatter {
 	@Override
 	public void formatImpl(StringBuilder builder, boolean isHtml, Object... values) {
 		T.call(this);
-		
+
 		if(values.length > 0) {
-			
+
 			Object firstValue = values[0];
-			
+
 			formatValue(builder, isHtml, firstValue);
-			
+
 			for(int i = 1; i < values.length; i++) {
-				
+
 				Object value = values[i];
-				
+
 				builder.append(", ");
-				
+
 				formatValue(builder, isHtml, value);
 			}
 		}
 	}
-	
+
 	private void formatValue(StringBuilder builder, boolean isHtml, Object value) {
 		T.call(this);
-		
+
 		if(isHtml) {
 			builder.append("<code>");
 		}
-		
+
 		if(value == null) {
-			
+
 			builder.append("null");
 
 		}else if(value instanceof String) {
-			
+
 			builder.append("\"");
 			builder.append(value);
 			builder.append("\"");
@@ -89,13 +89,13 @@ public class ValueFormatterJdk extends ValueFormatter {
 			builder.append(value);
 
 		}else if(value.getClass().isArray()) {
-			
+
 			builder.append("[");
-			
+
 			if(Array.getLength(value) > 0) {
 				formatValue(builder, isHtml, Array.get(value, 0));
 			}
-			
+
 			for(int i = 1; i < Array.getLength(value); i++) {
 				builder.append(",");
 				formatValue(builder, isHtml, Array.get(value, i));
@@ -105,12 +105,12 @@ public class ValueFormatterJdk extends ValueFormatter {
 
 
 		}else if(overridesToString(value)) {
-			
+
 			builder.append(value.toString());
 
 		}else {
-		
-			builder.append(value.getClass().getSimpleName());
+
+			builder.append(Ntro.introspector().getSimpleNameForClass(value.getClass()));
 			builder.append("@");
 			builder.append(intToHex(System.identityHashCode(value)));
 		}
@@ -119,18 +119,18 @@ public class ValueFormatterJdk extends ValueFormatter {
 			builder.append("</code>");
 		}
 	}
-	
+
 	private boolean overridesToString(Object value) {
 		T.call(this);
-		
+
 		boolean result = false;
-		
+
 		List<Method> userDefinedMethods = Ntro.introspector().userDefinedMethodsFromObject(value);
-		
+
 		for(Method userDefinedMethod : userDefinedMethods) {
-			
+
 			if(userDefinedMethod.getName().equals("toString")) {
-				
+
 				result = true;
 				break;
 			}
@@ -138,15 +138,15 @@ public class ValueFormatterJdk extends ValueFormatter {
 
 		return result;
 	}
-	
+
 	private String intToHex(int input) {
 		T.call(this);
-		
+
 		String result;
-		
+
 		BigInteger bigInt = BigInteger.valueOf(input);
 		byte[] bytes = bigInt.toByteArray();
-		
+
 	    Formatter formatter = new Formatter();
 
 	    for (byte b : bytes) {
@@ -158,12 +158,12 @@ public class ValueFormatterJdk extends ValueFormatter {
 
 		return result;
 	}
-	
 
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 }

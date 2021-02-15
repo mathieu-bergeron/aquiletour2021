@@ -29,6 +29,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -43,10 +44,15 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.core.pages.users.UsersModel;
+import ca.aquiletour.core.pages.users.values.User;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
+import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.NtroTask;
@@ -111,54 +117,146 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		response.setContentType("text/html; charset=utf-8");
-		response.setStatus(HttpServletResponse.SC_OK);
-		
-		String authToken = null; // TODO
-		Constants.LANG = "fr";   // TODO
-		
+		NtroContext context = new NtroContext();
+		context.setLang(Constants.LANG); // TODO
+
+		boolean userIsLoggedIn = authenticateUsersAddCookiesSetContext(context, baseRequest, response);
+
 		Path path = new Path(baseRequest.getRequestURI().toString());
-
-		NtroWindowServer newWindow;
 		
-		newWindow = newWindowAndCookies(baseRequest, path, response);
+		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
-		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow);
+		NtroWindowServer newWindow = newWindow(ifJsOnly, path);
+		
+		if(!ifJsOnly) {
 
-		rootController.execute();
+		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
 
-		Map<String, String[]> parameters = baseRequest.getParameterMap();
+			rootController.execute();
 
-		// XXX: sending a message unblocks a task
-		AquiletourRequestHandler.sendMessages(path, parameters);
+			Map<String, String[]> parameters = baseRequest.getParameterMap();
+
+			// XXX: sending a message unblocks a task
+			AquiletourRequestHandler.sendMessages(context, path, parameters);
+		}
 		
 		//System.out.println(rootController.getTask().toString());
 		
 		// XXX the entire taskGraph is not really async
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
+		response.setContentType("text/html; charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
 		writeResponse(newWindow, baseRequest, out);
 	}
 
-	private NtroWindowServer newWindowAndCookies(Request baseRequest, Path path, HttpServletResponse response) {
+
+	private boolean authenticateUsersAddCookiesSetContext(NtroContext context, Request baseRequest, HttpServletResponse response) {
+		T.call(this);
+		
+		boolean isUserLoggedIn = false;
+
+		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
+		usersLoader.execute();
+		UsersModel usersModel = (UsersModel) usersLoader.getModel();
+
+		if(baseRequest.getParameter("userId") != null 
+				&& baseRequest.getParameter("authToken") != null) {
+			
+			String userId = baseRequest.getParameter("userId");
+			String authToken  = baseRequest.getParameter("authToken");
+
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(isUserLoggedIn) {
+				setCookie(response, "userId", userId);
+				setCookie(response, "authToken", authToken);
+				
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+
+		} else if(hasCookie(baseRequest, "userId") 
+				&& hasCookie(baseRequest, "authToken")) {
+			
+			String userId = getCookie(baseRequest, "userId");
+			String authToken = getCookie(baseRequest, "authToken");
+			
+			isUserLoggedIn = usersModel.isUserValid(userId, authToken);
+			
+			if(!isUserLoggedIn) {
+				eraseCookie(response, "userId");
+				eraseCookie(response, "authToken");
+
+			}else {
+
+				context.setAuthToken(authToken);
+				context.setUserId(userId);
+			}
+		}
+
+		if(!isUserLoggedIn){
+
+		    User defaultUser = usersModel.getUsers().getValue().values().iterator().next();
+
+		    String userId = defaultUser.getUserId();
+		    String authToken = defaultUser.getAuthToken();
+		    
+		    T.values(userId, authToken);
+
+			setCookie(response, "userId", userId);
+			setCookie(response, "authToken", authToken);
+			
+			context.setAuthToken(authToken);
+			context.setUserId(userId);
+			
+			isUserLoggedIn = true;
+		}
+
+		return isUserLoggedIn;
+	}
+
+
+	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
+		T.call(this);
+		
+		boolean ifJsOnly = true;
+
+		if(baseRequest.getParameter("nojs") != null) {
+			
+			response.addCookie(new Cookie("jsOnly", "false"));
+			ifJsOnly = false;
+
+		} else if(baseRequest.getParameter("js") != null) {
+			
+			response.addCookie(new Cookie("jsOnly", "true"));
+			ifJsOnly = true;
+			
+		}else if(hasCookie(baseRequest, "jsOnly")) {
+			
+			String jsOnlyCookie = getCookie(baseRequest, "jsOnly");
+			ifJsOnly = Boolean.valueOf(jsOnlyCookie);
+
+		}
+		
+		return ifJsOnly;
+
+	}
+
+	private NtroWindowServer newWindow(boolean ifJsOnly, Path path) {
 		T.call(this);
 
 		NtroWindowServer newWindow;
 
-		if(baseRequest.getParameter("nojs") != null) {
-			
-			response.addCookie(new Cookie("nojs", "true"));
-			newWindow = new NtroWindowServer("/private/nojs.html");
-			
-		}else if(hasCookie(baseRequest, "nojs")) {
-
-			newWindow = new NtroWindowServer("/private/nojs.html");
-
-		} else {
+		if(ifJsOnly) {
 
 			newWindow = new NtroWindowServer("/private/index.html");
+			
+		}else {
 
-		}
+			newWindow = new NtroWindowServer("/private/nojs.html");
+
+		} 
 
 		newWindow.setCurrentPath(path);
 
@@ -179,6 +277,36 @@ public class DynamicHandler extends AbstractHandler {
 		return false;
 	}
 
+	private String getCookie(Request baseRequest, String name) {
+		T.call(this);
+		
+		if(baseRequest.getCookies() == null) return null;
+		
+		for(Cookie cookie : baseRequest.getCookies()) {
+			if(cookie.getName().equals(name)) {
+				return cookie.getValue();
+			}
+		}
+		
+		return null;
+	}
+
+	private void eraseCookie(HttpServletResponse response, String name) {
+		T.call(this);
+		
+		Cookie cookie = new Cookie(name, "");
+		cookie.setMaxAge(0);
+
+		response.addCookie(cookie);
+	}
+
+	private void setCookie(HttpServletResponse response, String name, String value) {
+		T.call(this);
+		
+		Cookie cookie = new Cookie(name, value);
+
+		response.addCookie(cookie);
+	}
 
 	private void writeResponse(NtroWindowServer window, Request baseRequest, OutputStream out) {
 		T.call(this);
@@ -196,8 +324,5 @@ public class DynamicHandler extends AbstractHandler {
 
 		baseRequest.setHandled(true);
 	}
-	
-	
-	
 }
 

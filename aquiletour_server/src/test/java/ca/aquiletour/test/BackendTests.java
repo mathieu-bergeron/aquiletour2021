@@ -1,30 +1,46 @@
 package ca.aquiletour.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Map;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.jdk.web.NtroWebserver;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.util.HttpCookieStore;
+import org.hamcrest.MatcherAssert;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import static ca.aquiletour.test.Constants.*;
 
+@RunWith(JUnit4.class)
 public class BackendTests {
 	
-	private HttpClient client;
-	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
+	private static HttpClient client;
+	
+	@BeforeClass
+	public static void initializeNtro(){
+		NtroWebserver.defaultInitializationTask()
+		             .execute();
+	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -35,11 +51,18 @@ public class BackendTests {
 	}
 
 	@Test
-	public void makeAppointmentTest() throws InterruptedException, ExecutionException, TimeoutException, FileNotFoundException {
-		
+	public void shouldAddAppointment() throws InterruptedException, ExecutionException, TimeoutException, FileNotFoundException, URISyntaxException {
+
 		int startingSize = numberOfAppointments();
+
+		HttpCookieStore cookies = new HttpCookieStore();
 		
-        ContentResponse res = client.GET(HOST + "/queue?makeAppointment");
+		cookies.add(new URI(HOST), new HttpCookie("userId","bob"));
+		cookies.add(new URI(HOST), new HttpCookie("authToken","bobToken"));
+		
+		client.setCookieStore(cookies);
+		
+        client.GET(HOST + "/queue?makeAppointment");
         
         int newSize = numberOfAppointments();
         
@@ -47,25 +70,50 @@ public class BackendTests {
 	}
 
 	private int numberOfAppointments() throws FileNotFoundException {
-		FileReader reader = new FileReader(new File("__data__/QueueModel/TODO.json"));
+		
+		// XXX: assuming that modelLoader is actually Sync
+		//      will not work in JSweet
+		ModelLoader modelLoader = LocalStore.getLoader(QueueModel.class, "bobToken", "bob");
+		modelLoader.execute();
+		
+		QueueModel queue = (QueueModel) modelLoader.getModel();
 
-		Map<String, Object> queue = gson.fromJson(reader, Map.class);
-		Map<String, Object> appointments = (Map<String,Object>) queue.get("appointments");
-		Map<String, Object> value = (Map<String,Object>) appointments.get("value");
-		int startingSize = value.size();
-
-		/*
-		QueueModel queue = gson.fromJson(reader,QueueModel.class);
-		int startingSize = queue.getAppointments().getValue().size();
-		*/
-
-		return startingSize;
+		return queue.getAppointments().getValue().size();
 	}
 
 
 	@Test
-	public void loginTest() {
+	public void loginShouldSucceed() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+		
+		HttpCookieStore cookies = new HttpCookieStore();
+		
+		cookies.add(new URI(HOST), new HttpCookie("userId","bob"));
+		cookies.add(new URI(HOST), new HttpCookie("authToken","bobToken"));
+		
+		client.setCookieStore(cookies);
 
+        ContentResponse res = client.GET(HOST + "/dashboard");
+        
+        Document document = Jsoup.parse(res.getContentAsString());
+        
+        assertTrue(document.select(".dashboard-container").size() > 0);
+	}
+
+	@Test
+	public void loginShouldFail() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+		
+		HttpCookieStore cookies = new HttpCookieStore();
+		
+		cookies.add(new URI(HOST), new HttpCookie("userId","bob"));
+		cookies.add(new URI(HOST), new HttpCookie("authToken","wrongToken"));
+		
+		client.setCookieStore(cookies);
+
+        ContentResponse res = client.GET(HOST + "/dashboard");
+        
+        Document document = Jsoup.parse(res.getContentAsString());
+        
+        assertFalse(document.select(".dashboard-container").size() > 0);
 	}
 
 	@After

@@ -19,18 +19,20 @@ package ca.ntro.core.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 @SuppressWarnings("rawtypes")
 public abstract class NtroCollections {
-	
+
 	private static NtroCollections instance;
-	
+
 	public static void initialize(NtroCollections instance) {
 		T.call(NtroCollections.class);
-		
+
 		NtroCollections.instance = instance;
 	}
 
@@ -38,38 +40,56 @@ public abstract class NtroCollections {
 
 	public static <I extends Object> List<I> synchronizedList(List<I> elements) {
 		T.call(NtroCollections.class);
-		
+
 		List<I> synchronizedList = null;
-		
+
 		try {
-			
+
 			synchronizedList = instance.synchronizedListImpl(elements);
-			
+
 		}catch(NullPointerException e) {
-			
-			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+
+			Log.fatalError(Ntro.introspector().getSimpleNameForClass(NtroCollections.class) + " must be initialized");
 		}
-		
+
 		return synchronizedList;
 	}
 
-	public abstract <K extends Object, V extends Object> Map<K,V> concurrentHashMapImpl(Map<K,V> elements);
+	public abstract <K extends Object, V extends Object> Map<K,V> concurrentMapImpl(Map<K,V> elements);
 
-	public static <K extends Object, V extends Object> Map<K,V> concurrentHashMap(Map<K,V> elements) {
+	public static <K extends Object, V extends Object> Map<K,V> concurrentMap(Map<K,V> elements) {
 		T.call(NtroCollections.class);
-		
+
 		Map<K,V> concurrentHashMap = null;
-		
+
 		try {
 			
-			concurrentHashMap = instance.concurrentHashMapImpl(elements);
+			concurrentHashMap = instance.concurrentMapImpl(elements);
 			
 		}catch(NullPointerException e) {
-			
+			// Introspector might not be registered here
 			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
 		}
 
 		return concurrentHashMap;
 	}
+
+	public static <V extends Object> Set<V> concurrentSet(Set<V> elements) {
+
+		Set<V> concurrentSet = null;
+		
+		try {
+			
+			concurrentSet = instance.concurrentSetImpl(elements);
+			
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+
+		return concurrentSet;
+	}
+
+	protected abstract <V extends Object> Set<V> concurrentSetImpl(Set<V> elements);
 
 }

@@ -23,9 +23,12 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		HtmlElement summaryText = this.getRootElement().children("#summary-text").get(0);
 		HtmlElement summaryDate = this.getRootElement().children("#summary-date").get(0);
 		
+		
 		MustNot.beNull(title);
 		MustNot.beNull(summaryText);
 		MustNot.beNull(summaryDate);
+
+		T.values(course.getTitle(), course.getSummary(), course.getDate());
 		
 		title.appendHtml(course.getTitle());
 		summaryText.appendHtml(course.getSummary());

@@ -24,6 +24,7 @@ public abstract class ParentViewMessageHandler<PV extends NtroView,
 		T.call(this);
 		
 		this.parentController = parentController;
+
 	}
 
 	@Override

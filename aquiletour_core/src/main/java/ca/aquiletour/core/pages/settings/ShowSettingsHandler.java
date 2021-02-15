@@ -9,11 +9,11 @@ public class ShowSettingsHandler extends ParentViewMessageHandler<RootView,
                                                                   ShowSettingsMessage> {
 
 	@Override
-	protected void handle(RootView parentView, 
-			              SettingsView currentView, 
+	protected void handle(RootView parentView,
+			              SettingsView currentView,
 			              ShowSettingsMessage message) {
 		T.call(this);
-		
+
 		// FIXME: parentView needs to be the one installed in
 		//        the parent controller. We cannot do viewLoader.createView()
 
