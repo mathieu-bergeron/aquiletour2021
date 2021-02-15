@@ -70,7 +70,7 @@ public class NtroTaskTests {
 		
 		NtroTask taskA = new NtroTaskImplTest("A");
 		
-		taskA.writeGraph(testWriter);
+		taskA.asGraph().writeGraph(testWriter);
 
 		assertTrue(testWriter.hasNode("A"));
 
@@ -87,7 +87,7 @@ public class NtroTaskTests {
 		
 		parentTask.addSubTask(childTask);
 		
-		parentTask.writeGraph(testWriter);
+		childTask.asGraph().writeGraph(testWriter);
 		toFile(testName, testWriter);
 
 		assertTrue(testWriter.hasCluster("parent"));
@@ -106,7 +106,7 @@ public class NtroTaskTests {
 		
 		taskA.addNextTask(taskB);
 
-		taskA.writeGraph(testWriter);
+		taskB.asGraph().writeGraph(testWriter);
 		toFile(testName, testWriter);
 		
 		assertTrue(testWriter.hasNode("A"));
@@ -124,7 +124,7 @@ public class NtroTaskTests {
 		
 		taskB.addPreviousTask(taskA);
 
-		taskB.writeGraph(testWriter);
+		taskB.asGraph().writeGraph(testWriter);
 		toFile(testName, testWriter);
 		
 		assertTrue(testWriter.hasNode("A"));
@@ -146,7 +146,7 @@ public class NtroTaskTests {
 		taskB.addSubTask(taskC);
 		taskC.addSubTask(taskD);
 		
-		taskA.writeGraph(testWriter);
+		taskC.asGraph().writeGraph(testWriter);
 		toFile(testName, testWriter);
 		
 		assertTrue(testWriter.hasCluster("A"));
@@ -197,7 +197,7 @@ public class NtroTaskTests {
 		taskB2.addNextTask(taskD);
 		taskC.addNextTask(taskD);
 
-		taskA.writeGraph(testWriter);
+		taskC.asGraph().writeGraph(testWriter);
 
 		toFile(testName, testWriter);
 	}

@@ -1,6 +1,6 @@
 package ca.ntro.core.task2;
 
-public interface NtroTask extends NodeSpec {
+public interface NtroTask extends Identifiable {
 
 	void setId(String id);
 	void setParentTask(NtroTask parentTask);
@@ -21,10 +21,9 @@ public interface NtroTask extends NodeSpec {
 	void notifyExitTaskFinished();
 	void notifySomePreviousTaskFinished(NtroTask finishedTask);
 	void notifySomeSubTaskFinished(NtroTask finishedTask);
-
-	void writeGraph(GraphWriter writer);
-	void writeNode(GraphWriter writer);
-
+	
+	TaskGraph asGraph();
+	TaskGraphNode asNode();
 
 }
 	

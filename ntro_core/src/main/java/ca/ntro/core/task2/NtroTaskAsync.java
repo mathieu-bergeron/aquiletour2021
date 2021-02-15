@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
+import ca.ntro.core.system.trace.T;
 
 import static ca.ntro.core.task2.State.INACTIVE;
 import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
@@ -14,7 +15,7 @@ import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.State.RUNNING_EXIT_TASK;
 import static ca.ntro.core.task2.State.DONE;
 
-public abstract class NtroTaskAsync implements NtroTask {
+public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNode {
 
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
@@ -96,35 +97,90 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 	@Override
 	public synchronized void writeGraph(GraphWriter writer) {
-
-		Set<NtroTask> visitedTasks = forEachTaskInGraph(t -> t.writeNode(writer));
 		
-		System.out.println("visitedTasks.size(): " + visitedTasks.size() );
+		asGraph().forEachNode(t -> t.asNode().writeNode(writer));
 
-		visitedTasks.forEach(t -> ((NtroTaskAsync)t).writeEdges(writer));
+		asGraph().forEachEdge((from, to) -> writer.addEdge(from.asNode(), to.asNode()));
 	}
 	
-	public void writeNode(GraphWriter writer) {
-		if(isRootNode()) {
+	@Override
+	public synchronized void forEachStartNode(TaskLambda lambda) {
+		visitStartNodes(new HashSet<>(), lambda);
+	}
 
-			writer.addRootNode(this);
+	private synchronized void visitStartNodes(Set<NtroTask> visitedNodes, TaskLambda lambda) {
+		if(visitedNodes.contains(this)) return;
+		visitedNodes.add(this);
+		
+		if(isStartNode()) {
+			
+			lambda.execute(this);
 
-		}else if(isRootCluster()) {
+		}else {
 
-			writer.addRootCluster(this);
+			if(parentTask != null) {
+				((NtroTaskAsync) parentTask).visitStartNodes(visitedNodes, lambda);
+			}
 
-		}else if(isSubNode()) {
-
-			writer.addSubNode(getParentTask(), this);
-
-		}else if(isSubCluster()){
-
-			writer.addSubCluster(getParentTask(), this);
+			forEachPreviousTask(pt -> ((NtroTaskAsync) pt).visitStartNodes(visitedNodes, lambda));
 		}
 	}
 
-	public void writeEdges(GraphWriter writer) {
-		forEachPreviousTask(pt -> writer.addEdge(pt, this));
+	@Override
+	public synchronized void forEachNode(TaskLambda lambda) {
+		
+		Set<NtroTask> visitedNodes = new HashSet<>();
+
+		forEachStartNode(sn -> ((NtroTaskAsync)sn).visitAllNodes(visitedNodes, lambda));
+	}
+
+	private synchronized void visitAllNodes(Set<NtroTask> visitedNodes, TaskLambda lambda) {
+		if(visitedNodes.contains(this)) return;
+		visitedNodes.add(this);
+		
+		lambda.execute(this);
+
+		forEachSubTask(st -> ((NtroTaskAsync)st).visitAllNodes(visitedNodes, lambda));
+		forEachNextTask(nt -> ((NtroTaskAsync)nt).visitAllNodes(visitedNodes, lambda));
+	}
+	
+	@Override
+	public synchronized void forEachEdge(EdgeLambda lambda) {
+
+		Set<NtroTask> visitedNodes = new HashSet<>();
+
+		forEachStartNode(sn -> ((NtroTaskAsync)sn).visitAllEdges(visitedNodes, lambda));
+	}
+
+	private synchronized void visitAllEdges(Set<NtroTask> visitedNodes, EdgeLambda lambda) {
+		if(visitedNodes.contains(this)) return;
+		visitedNodes.add(this);
+
+		forEachSubTask(st -> ((NtroTaskAsync)st).visitAllEdges(visitedNodes, lambda));
+
+		forEachNextTask(nt -> {
+			lambda.execute(this, nt);
+			((NtroTaskAsync)nt).visitAllEdges(visitedNodes, lambda);
+		});
+	}
+
+	public void writeNode(GraphWriter writer) {
+		if(isRootNode()) {
+
+			writer.addRootNode(this.asNode());
+
+		}else if(isRootCluster()) {
+
+			writer.addRootCluster(this.asNode());
+
+		}else if(isSubNode()) {
+
+			writer.addSubNode(getParentTask().asNode(), this.asNode());
+
+		}else if(isSubCluster()){
+
+			writer.addSubCluster(getParentTask().asNode(), this.asNode());
+		}
 	}
 
 	private boolean isSubCluster() {
@@ -324,5 +380,17 @@ public abstract class NtroTaskAsync implements NtroTask {
 		if(this == other) return true;
 		if(!(other instanceof NtroTask)) return false;
 		return ((NtroTask)other).getId().equals(this.getId());
+	}
+
+
+	@Override
+	public TaskGraph asGraph() {
+		return this;
+		
+	}
+	
+	@Override
+	public TaskGraphNode asNode() {
+		return this;
 	}
 }
