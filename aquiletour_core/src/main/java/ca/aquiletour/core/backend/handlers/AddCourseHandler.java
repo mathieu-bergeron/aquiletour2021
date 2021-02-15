@@ -19,16 +19,24 @@ public class AddCourseHandler extends MessageHandler<DashboardBackendController,
 		
 		DashboardModel dashboardModel = getController().getModel(DashboardModel.class, 
 				                                                 requestingUser.getAuthToken(),
-				                                                 courseId);
+				                                                 requestingUser.getId());
 		
-		dashboardModel.addCourse(message.getCourse());
-		dashboardModel.save();
+		if(dashboardModel != null) {
+			
+			dashboardModel.addCourse(message.getCourse());
+			dashboardModel.save();
 
-		// XXX: create Queue
-		QueueModel queueModel = getController().getModel(QueueModel.class, 
-				                                requestingUser.getAuthToken(),
-				                                courseId);
+			// XXX: create Queue
+			QueueModel queueModel = getController().getModel(QueueModel.class, 
+													requestingUser.getAuthToken(),
+													courseId);
 
-		queueModel.save();
+			queueModel.save();
+
+		}else {
+			
+			// TODO: error handling
+			
+		}
 	}
 }

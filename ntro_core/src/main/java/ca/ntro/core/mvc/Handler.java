@@ -6,10 +6,10 @@ public class Handler<C extends AnyController> {
 
 	private C controller;
 
-	void setController(C controller) {
+	void setController(AnyController controller) {
 		T.call(this);
 		
-		this.controller = controller;
+		this.controller = (C) controller;
 	}
 	
 	protected C getController() {

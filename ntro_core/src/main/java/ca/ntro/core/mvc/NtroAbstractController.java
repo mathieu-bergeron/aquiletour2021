@@ -116,6 +116,8 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 		message.setTaskId(messageId);
 		handler.setMessageId(messageId);
+		
+		handler.setController(this);
 
 		handler.getTask().addPreviousTask(message);
 	}

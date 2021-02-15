@@ -40,6 +40,8 @@ public abstract class BackendAbstractController extends AnyController implements
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 		message.setTaskId(messageId);
 		handler.setMessageId(messageId);
+		
+		handler.setController(this);
 
 		handler.getTask().addPreviousTask(message);
 	}
@@ -47,7 +49,7 @@ public abstract class BackendAbstractController extends AnyController implements
 	protected <C extends BackendController<?>> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
 
-		C subController = BackendControllerFactory.createBackendController(controllerClass, this);
+		BackendControllerFactory.createBackendController(controllerClass, this);
 
 	}
 

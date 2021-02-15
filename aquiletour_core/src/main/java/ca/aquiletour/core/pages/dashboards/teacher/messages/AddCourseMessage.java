@@ -8,6 +8,7 @@ import ca.ntro.messages.NtroMessage;
 public class AddCourseMessage extends NtroMessage {
 
 	private CourseSummary course;
+	private User user;
 
 	public void setCourse(CourseSummary course) {
 		T.call(this);
@@ -21,9 +22,12 @@ public class AddCourseMessage extends NtroMessage {
 		return course;
 	}
 
-
 	public User getUser() {
-		throw new RuntimeException("TODO");
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

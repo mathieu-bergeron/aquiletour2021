@@ -18,12 +18,12 @@ import ca.ntro.messages.MessageFactory;
 public class AquiletourBackendRequestHandler {
 	
 	
-	public static void sendMessages(NtroContext context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters);
+			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
 
 		}else if(path.startsWith("billetteries")) {
 			
@@ -48,7 +48,7 @@ public class AquiletourBackendRequestHandler {
 
 	}
 
-	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters) {
+	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("title") 
@@ -61,6 +61,7 @@ public class AquiletourBackendRequestHandler {
 
 			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate));
+			addCourseMessage.setUser(user);
 			addCourseMessage.sendMessage();
 		}
 	}
