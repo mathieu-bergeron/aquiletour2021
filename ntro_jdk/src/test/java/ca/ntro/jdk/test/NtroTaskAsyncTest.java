@@ -3,9 +3,9 @@ package ca.ntro.jdk.test;
 import ca.ntro.core.task2.NtroTask;
 import ca.ntro.core.task2.NtroTaskAsync;
 
-public class NtroTaskImplTest extends NtroTaskAsync {
+public class NtroTaskAsyncTest extends NtroTaskAsync {
 
-	public NtroTaskImplTest(String string) {
+	public NtroTaskAsyncTest(String string) {
 		super(string);
 	}
 

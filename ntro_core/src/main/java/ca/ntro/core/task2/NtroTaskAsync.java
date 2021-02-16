@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
-import ca.ntro.core.system.trace.T;
 
 import static ca.ntro.core.task2.State.INACTIVE;
 import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
@@ -183,30 +182,38 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 		}
 	}
 
-	private boolean isSubCluster() {
+	@Override
+	public boolean isSubCluster() {
 		return !isRoot() && isCluster();
 	}
 
-	private boolean isCluster() {
+	@Override
+	public boolean isCluster() {
 		return hasSubTasks();
 	}
-	private boolean isSubNode() {
+	
+	@Override
+	public boolean isSubNode() {
 		return !isRoot() && isNode();
 	}
 
-	private boolean isNode() {
+	@Override
+	public boolean isNode() {
 		return !hasSubTasks();
 	}
 
-	private boolean isRootCluster() {
+	@Override
+	public boolean isRootCluster() {
 		return isRoot() && isCluster();
 	}
 
-	private boolean isRootNode() {
+	@Override
+	public boolean isRootNode() {
 		return isRoot() && isNode();
 	}
 	
-	private boolean isRoot() {
+	@Override
+	public boolean isRoot() {
 		return !hasParent();
 	}
 
@@ -217,58 +224,11 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 	private boolean hasPreviousTasks() {
 		return previousTasks.size() > 0;
 	}
-	
-	private boolean isStartNode() {
+
+	@Override
+	public boolean isStartNode() {
 		return isRoot() && !hasPreviousTasks();
 	}
-	
-
-	private synchronized Set<NtroTask> forEachTaskInGraph(TaskLambda lambda) {
-		return searchForStartNodesAndIterateForward(lambda, new HashSet<>(), new HashSet<>());
-	}
-
-	private synchronized void forEachStartTaskInGraph(TaskLambda lambda) {
-		// TODO
-	}
-	
-
-	private synchronized Set<NtroTask> iterateGraphForward(TaskLambda lambda, 
-										          Set<NtroTask> visitedNodes) {
-
-		if(visitedNodes.contains(this)) return visitedNodes;
-		visitedNodes.add(this);
-		
-		lambda.execute(this);
-
-		forEachSubTask(st -> ((NtroTaskAsync) st).iterateGraphForward(lambda, visitedNodes));
-		forEachNextTask(nt -> ((NtroTaskAsync) nt).iterateGraphForward(lambda, visitedNodes));
-		
-		return visitedNodes;
-	}
-
-	private synchronized Set<NtroTask> searchForStartNodesAndIterateForward(TaskLambda lambda, 
-			                                                       Set<NtroTask> visitedSearchNodes, 
-			                                                       Set<NtroTask> visitedIterationNodes) {
-		
-		if(visitedSearchNodes.contains(this)) return visitedIterationNodes;
-		visitedSearchNodes.add(this);
-		
-		if(isStartNode()) {
-			
-			iterateGraphForward(lambda, visitedIterationNodes);
-
-		}else {
-			if(hasParent()) {
-				((NtroTaskAsync) this).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes);
-			}
-
-			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).searchForStartNodesAndIterateForward(lambda, visitedSearchNodes, visitedIterationNodes));
-		}
-		
-		return visitedIterationNodes;
-	}
-
-
 
 	private void forEachSubTask(TaskLambda lambda) {
 		synchronized (subTasks) {
@@ -342,12 +302,11 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 
 	@Override
 	public void execute(GraphTraceWriter writer) {
-		forEachStartTaskInGraph(t -> ((NtroTaskAsync)t).resumeExecution(writer));
+		// TODO
 	}
 	
 	private void resumeExecution(GraphTraceWriter writer) {
-		
-		
+		// TODO
 	}
 	
 	@Override
@@ -388,9 +347,14 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 		return this;
 		
 	}
-	
+
 	@Override
 	public TaskGraphNode asNode() {
+		return this;
+	}
+
+	@Override
+	public NtroTask asTask() {
 		return this;
 	}
 }
