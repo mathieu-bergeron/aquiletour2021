@@ -363,13 +363,11 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		
 	}
 
-	@Override
-	public void notifySomePreviousTaskFinished(NtroTask finishedTask) {
+	void notifySomePreviousTaskFinished(NtroTask finishedTask) {
 		
 	}
 
-	@Override
-	public void notifySomeSubTaskFinished(NtroTask finishedTask) {
+	void notifySomeSubTaskFinished(NtroTask finishedTask) {
 		
 	}
 	

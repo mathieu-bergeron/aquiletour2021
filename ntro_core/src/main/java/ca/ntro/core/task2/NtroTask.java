@@ -19,8 +19,6 @@ public interface NtroTask extends Identifiable {
 
 	void notifyEntryTaskFinished();
 	void notifyExitTaskFinished();
-	void notifySomePreviousTaskFinished(NtroTask finishedTask);
-	void notifySomeSubTaskFinished(NtroTask finishedTask);
 	
 	TaskGraph asGraph();
 	Node asNode();
