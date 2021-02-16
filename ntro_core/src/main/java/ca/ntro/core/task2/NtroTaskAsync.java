@@ -3,6 +3,7 @@ package ca.ntro.core.task2;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
@@ -329,19 +330,6 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 		
 	}
 	
-	@Override 
-	public int hashCode() {
-		return taskId.hashCode();
-	}
-
-	@Override 
-	public boolean equals(Object other) {
-		if(this == other) return true;
-		if(!(other instanceof NtroTask)) return false;
-		return ((NtroTask)other).getId().equals(this.getId());
-	}
-
-
 	@Override
 	public TaskGraph asGraph() {
 		return this;
@@ -357,4 +345,75 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 	public NtroTask asTask() {
 		return this;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		Set<NtroTask> subTasks = new HashSet<>();
+		forEachSubTask(st -> subTasks.add(st));
+
+		return getId().hashCode() + Objects.hash(subTasks.toArray());
+	}
+
+	@Override
+	public boolean equals(Object otherObject) {
+		if(this == otherObject) return true;
+		if(otherObject == null) return false;
+
+		if(otherObject instanceof NtroTaskAsync) {
+			NtroTaskAsync otherTask = (NtroTaskAsync) otherObject;
+			
+			if(parentTask != null && otherTask.parentTask == null) return false;
+			if(parentTask != null && otherTask.parentTask != null) return parentTask.equals(otherTask.parentTask);
+		}
+		
+		return true;
+	}
+	
+	private class Edge{
+		public NtroTask from;
+		public NtroTask to;
+		public Edge(NtroTask from, NtroTask to) {
+			this.from = from;
+			this.to = to;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(from, to);
+		}
+		@Override
+		public boolean equals(Object otherObject) {
+			if(otherObject == null) return false;
+			if(this == otherObject) return true;
+			if(otherObject instanceof Edge) {
+				Edge otherEdge = (Edge) otherObject;
+				return from.equals(otherEdge.from) && to.equals(((Edge) otherObject).to);
+			}
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isSameGraphAs(TaskGraph otherGraph) {
+		
+		Set<NtroTask> myNodes = new HashSet<>();
+		asGraph().forEachNode(n -> myNodes.add(n));
+
+		Set<NtroTask> otherNodes = new HashSet<>();
+		otherGraph.forEachNode(n -> otherNodes.add(n));
+		
+		if(!myNodes.equals(otherNodes)) return false;
+		
+		Set<Edge> myEdges = new HashSet<>();
+		asGraph().forEachEdge((from, to) -> myEdges.add(new Edge(from, to)));
+
+		Set<Edge> otherEdges = new HashSet<>();
+		otherGraph.forEachEdge((from, to) -> otherEdges.add(new Edge(from, to)));
+		
+		if(!myEdges.equals(otherEdges)) return false;
+		
+		return true;
+	}
+	
+	
 }

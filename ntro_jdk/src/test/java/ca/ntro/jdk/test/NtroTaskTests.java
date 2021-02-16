@@ -66,6 +66,8 @@ public class NtroTaskTests {
 		NtroTask taskA = new NtroTaskAsyncTest("A");
 		
 		taskA.asGraph().writeGraph(writer);
+		
+		assertTrue(taskA.equals(taskA));
 
 		assertTrue(taskA.asNode().isRoot());
 		assertTrue(taskA.asNode().isNode());
@@ -75,6 +77,15 @@ public class NtroTaskTests {
 		assertFalse(taskA.asNode().isRootCluster());
 		
 		taskA.asGraph().forEachEdge((from, to) -> assertTrue(false)); // should not have any edge
+		
+		NtroTask otherA = new NtroTaskAsyncTest("A");
+		
+		assertTrue(taskA.equals(otherA));
+		assertTrue(taskA.asGraph().isSameGraphAs(otherA.asGraph()));
+
+		NtroTask taskB = new NtroTaskAsyncTest("B");
+		
+		assertFalse(taskA.equals(taskB));
 
 		writer.toFile(new File(taskDir, testName + ".png"));
 	}
@@ -99,6 +110,15 @@ public class NtroTaskTests {
 
 		parentTask.asGraph().forEachEdge((from, to) -> assertTrue(false)); // should not have edges
 		childTask.asGraph().forEachEdge((from, to) -> assertTrue(false)); // should not have edges
+		
+		assertTrue(parentTask.asGraph().isSameGraphAs(childTask.asGraph()));
+
+		NtroTask otherParent = new NtroTaskAsyncTest("parent");
+		NtroTask otherChild = new NtroTaskAsyncTest("child");
+		
+		otherParent.addSubTask(otherChild);
+		
+		assertTrue(otherParent.asGraph().isSameGraphAs(parentTask.asGraph()));
 
 		writer.toFile(new File(taskDir, testName + ".png"));
 	}

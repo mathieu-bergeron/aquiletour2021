@@ -6,5 +6,7 @@ public interface TaskGraph {
 	void forEachNode(TaskLambda lambda);
 	void forEachEdge(EdgeLambda lambda);
 
+	boolean isSameGraphAs(TaskGraph otherGraph);
+
 	void writeGraph(GraphWriter writer);
 }
