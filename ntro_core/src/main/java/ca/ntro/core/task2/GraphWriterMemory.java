@@ -1,4 +1,4 @@
-package ca.ntro.jdk.test;
+package ca.ntro.core.task2;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,13 +6,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import ca.ntro.core.system.assertions.MustNot;
-import ca.ntro.core.task2.GraphWriter;
-import ca.ntro.core.task2.NodeSpec;
-import ca.ntro.jdk.tasks.GraphWriterJdk;
 
-public class GraphWriterTest implements GraphWriter {
-	
+public class GraphWriterMemory implements GraphWriter {
+
 	private class Node implements NodeSpec {
 		public NodeSpec wrappedSpec;
 		public Node parent;
@@ -98,23 +94,9 @@ public class GraphWriterTest implements GraphWriter {
 		}
 	}
 
-	private String graphName;
 	private Map<String, Node> nodes = new HashMap<>();
 	private Set<Edge> edges = new HashSet<>();
 	
-	public GraphWriterTest(String graphName) {
-		this.graphName = graphName;
-	}
-	
-	public GraphWriterJdk toGraphWriterJdk() {
-		GraphWriterJdk writer = new GraphWriterJdk(graphName);
-
-		nodes.values().forEach(n -> n.write(writer, new HashSet<>()));
-		edges.forEach(e -> e.write(writer));
-
-		return writer;
-	}
-
 	public boolean hasCluster(String clusterId) {
 		return nodes.containsKey(clusterId) &&
 				nodes.get(clusterId) instanceof Cluster;
@@ -162,25 +144,12 @@ public class GraphWriterTest implements GraphWriter {
 		return cluster;
 	}
 
-	public boolean hasEdge(String fromId, String toId) {
-		
-		Node from = getNode(fromId);
-		Node to = getNode(toId);
-		
-		if(from != null && to != null) {
-			return edges.contains(new Edge(from,to));
-		}
-
-		return false;
-	}
-
 	@Override
 	public void addEdge(NodeSpec fromSpec, NodeSpec toSpec) {
-		System.out.println("addEdge: " + fromSpec.getId() + " " + toSpec.getId());
 		Node from = getNode(fromSpec.getId());
 		Node to = getNode(toSpec.getId());
 		
 		edges.add(new Edge(from, to));
 	}
-
 }
+

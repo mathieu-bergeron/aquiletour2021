@@ -54,10 +54,6 @@ public class NtroTaskTests {
 	public void setUp() {
 	}
 	
-	private GraphWriterTest createGraphWriter(String testName) {
-		return new GraphWriterTest(testName);
-	}
-
 	@Test
 	public void simpleTask() throws IOException {
 		String testName = "simpleTask";
@@ -270,7 +266,7 @@ public class NtroTaskTests {
 	@Test
 	public void mixed() throws IOException {
 		String testName = "mixed";
-		GraphWriterTest testWriter = createGraphWriter(testName);
+		GraphWriterJdk writer = new GraphWriterJdk(testName);
 		
 		NtroTask taskA = new NtroTaskAsyncTest("A");
 		NtroTask taskB = new NtroTaskAsyncTest("B");
@@ -306,7 +302,7 @@ public class NtroTaskTests {
 		taskB2.addNextTask(taskD);
 		taskC.addNextTask(taskD);
 
-		taskC.asGraph().writeGraph(testWriter);
+		taskC.asGraph().writeGraph(writer);
 	}
 
 	@After
