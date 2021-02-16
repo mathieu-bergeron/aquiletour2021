@@ -14,15 +14,21 @@ public class AddAppointmentHandler extends MessageHandler<QueueBackendController
 		T.call(this);
 		
 		User requestingUser = message.getUser();
+		String courseId = message.getCourseId();
 		
 		QueueModel queueModel = getController().getModel(QueueModel.class, 
-				                                                 requestingUser.getAuthToken(),
-				                                                 requestingUser.getId());
+				requestingUser.getAuthToken(),
+				courseId);
+
 		
 		if(queueModel != null) {
 			
 			queueModel.addAppointment(message.getAppointment());
 			queueModel.save();
+			
+			//TODO charger le dashboard modelk de chaque etudiant de la billetrie 
+			//et metre a jour nb of appointment et myappointment
+			//queuemodel -> students ->  chercher dashboardmodel -> mettre a jour les donnees
 		}else {
 			
 			// TODO: error handling
