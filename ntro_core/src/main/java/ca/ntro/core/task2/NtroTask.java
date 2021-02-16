@@ -23,7 +23,7 @@ public interface NtroTask extends Identifiable {
 	void notifySomeSubTaskFinished(NtroTask finishedTask);
 	
 	TaskGraph asGraph();
-	TaskGraphNode asNode();
+	Node asNode();
 
 }
 	

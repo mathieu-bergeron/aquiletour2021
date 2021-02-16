@@ -111,6 +111,9 @@ public class NtroTaskTests {
 		parentTask.asGraph().forEachEdge((from, to) -> assertTrue(false)); // should not have edges
 		childTask.asGraph().forEachEdge((from, to) -> assertTrue(false)); // should not have edges
 		
+		parentTask.asNode().forEachSubNode(sn -> assertTrue(sn.asTask().equals(childTask)));
+		assertTrue(childTask.asNode().getParentNode().asTask().equals(parentTask));
+
 		assertTrue(parentTask.asGraph().isSameGraphAs(childTask.asGraph()));
 
 		NtroTask otherParent = new NtroTaskAsyncTest("parent");
@@ -119,6 +122,31 @@ public class NtroTaskTests {
 		otherParent.addSubTask(otherChild);
 		
 		assertTrue(otherParent.asGraph().isSameGraphAs(parentTask.asGraph()));
+		assertTrue(otherParent.asGraph().isSameGraphAs(childTask.asGraph()));
+		assertTrue(otherChild.asGraph().isSameGraphAs(parentTask.asGraph()));
+		assertTrue(otherChild.asGraph().isSameGraphAs(childTask.asGraph()));
+
+		NtroTask sameParent = new NtroTaskAsyncTest("parent");
+		NtroTask sameChild = new NtroTaskAsyncTest("child");
+		NtroTask butHasNext = new NtroTaskAsyncTest("next");
+		
+		sameParent.addSubTask(sameChild);
+		sameChild.addNextTask(butHasNext);
+		
+		assertTrue(sameParent.equals(parentTask));
+		assertFalse(sameParent.asGraph().isSameGraphAs(parentTask.asGraph()));
+
+		NtroTask biggerParent = new NtroTaskAsyncTest("parent");
+		NtroTask biggerChild = new NtroTaskAsyncTest("child");
+		NtroTask grandChild = new NtroTaskAsyncTest("grandChild");
+		
+		biggerParent.addSubTask(biggerChild);
+		biggerChild.addSubTask(grandChild);
+		
+		assertFalse(biggerParent.equals(parentTask));
+		assertFalse(biggerChild.equals(childTask));
+		assertFalse(biggerParent.asGraph().isSameGraphAs(parentTask.asGraph()));
+		
 
 		writer.toFile(new File(taskDir, testName + ".png"));
 	}
@@ -139,10 +167,18 @@ public class NtroTaskTests {
 		taskA.asGraph().forEachEdge((from, to) -> {
 			assertTrue(from == taskA && to == taskB);
 		});
+		
+		assertTrue(taskA.asGraph().isSameGraphAs(taskB.asGraph()));
 
-		taskB.asGraph().forEachEdge((from, to) -> {
-			assertTrue(from == taskA && to == taskB);
-		});
+		NtroTask otherA = new NtroTaskAsyncTest("A");
+		NtroTask otherB = new NtroTaskAsyncTest("B");
+		
+		otherB.addPreviousTask(otherA);
+
+		assertTrue(otherA.asGraph().isSameGraphAs(taskA.asGraph()));
+		assertTrue(otherA.asGraph().isSameGraphAs(taskB.asGraph()));
+		assertTrue(otherB.asGraph().isSameGraphAs(taskA.asGraph()));
+		assertTrue(otherB.asGraph().isSameGraphAs(taskB.asGraph()));
 
 		taskB.asGraph().writeGraph(writer);
 	}
@@ -164,9 +200,7 @@ public class NtroTaskTests {
 			assertTrue(from == taskA && to == taskB);
 		});
 
-		taskB.asGraph().forEachEdge((from, to) -> {
-			assertTrue(from == taskA && to == taskB);
-		});
+		assertTrue(taskA.asGraph().isSameGraphAs(taskB.asGraph()));
 
 		taskB.asGraph().writeGraph(writer);
 	}
@@ -198,6 +232,37 @@ public class NtroTaskTests {
 		taskB.asGraph().forEachEdge((from, to) -> assertTrue(false)); 
 		taskC.asGraph().forEachEdge((from, to) -> assertTrue(false)); 
 		taskD.asGraph().forEachEdge((from, to) -> assertTrue(false)); 
+
+		assertTrue(taskA.asGraph().isSameGraphAs(taskD.asGraph()));
+		assertTrue(taskB.asGraph().isSameGraphAs(taskD.asGraph()));
+		assertTrue(taskC.asGraph().isSameGraphAs(taskD.asGraph()));
+		
+		taskA.asNode().forEachSubNode(sn -> {
+			assertTrue(sn.asTask().equals(taskB));
+		});
+
+		taskA.asNode().forEachSubNodeTransitive(sn -> {
+			assertTrue(sn.asTask().equals(taskB)
+					|| sn.asTask().equals(taskC)
+					|| sn.asTask().equals(taskD));
+		});
+		
+		taskB.asNode().getParentNode().equals(taskB);
+		taskB.asNode().forEachSubNode(sn -> {
+			assertTrue(sn.asTask().equals(taskC));
+		});
+		taskB.asNode().forEachSubNodeTransitive(sn -> {
+			assertTrue(sn.asTask().equals(taskC) 
+					|| sn.asTask().equals(taskD));
+		});
+
+		NtroTask otherC = new NtroTaskAsyncTest("C");
+		NtroTask otherD = new NtroTaskAsyncTest("D");
+		
+		otherC.addSubTask(otherD);
+		
+		assertTrue(otherC.equals(taskC));
+		assertFalse(otherC.asGraph().isSameGraphAs(taskC.asGraph()));
 		
 		taskD.asGraph().writeGraph(writer);
 	}

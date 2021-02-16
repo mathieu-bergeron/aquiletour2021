@@ -15,7 +15,7 @@ import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.State.RUNNING_EXIT_TASK;
 import static ca.ntro.core.task2.State.DONE;
 
-public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNode {
+public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
@@ -98,17 +98,17 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 	@Override
 	public synchronized void writeGraph(GraphWriter writer) {
 		
-		asGraph().forEachNode(t -> t.asNode().writeNode(writer));
+		asGraph().forEachNode(n -> n.writeNode(writer));
 
-		asGraph().forEachEdge((from, to) -> writer.addEdge(from.asNode(), to.asNode()));
+		asGraph().forEachEdge((from, to) -> writer.addEdge(from, to));
 	}
 	
 	@Override
-	public synchronized void forEachStartNode(TaskLambda lambda) {
+	public synchronized void forEachStartNode(NodeLambda lambda) {
 		visitStartNodes(new HashSet<>(), lambda);
 	}
 
-	private synchronized void visitStartNodes(Set<NtroTask> visitedNodes, TaskLambda lambda) {
+	private synchronized void visitStartNodes(Set<NtroTask> visitedNodes, NodeLambda lambda) {
 		if(visitedNodes.contains(this)) return;
 		visitedNodes.add(this);
 		
@@ -127,14 +127,57 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 	}
 
 	@Override
-	public synchronized void forEachNode(TaskLambda lambda) {
+	public synchronized void forEachNode(NodeLambda lambda) {
 		
 		Set<NtroTask> visitedNodes = new HashSet<>();
 
 		forEachStartNode(sn -> ((NtroTaskAsync)sn).visitAllNodes(visitedNodes, lambda));
 	}
 
-	private synchronized void visitAllNodes(Set<NtroTask> visitedNodes, TaskLambda lambda) {
+	@Override
+	public synchronized void forEachSubNode(NodeLambda lambda) {
+		forEachSubTask(st -> lambda.execute(st.asNode()));
+	}
+
+	@Override
+	public synchronized void forEachSubNodeTransitive(NodeLambda lambda) {
+		Set<Node> visitedNodes = new HashSet<>();
+
+		forEachSubTask(st -> ((NtroTaskAsync) st).visitSubNodes(visitedNodes, lambda));
+	}
+	
+	private synchronized void visitSubNodes(Set<Node> visitedNodes, NodeLambda lambda) {
+		if(visitedNodes.contains(this)) return;
+		visitedNodes.add(this);
+		
+		lambda.execute(this);
+
+		forEachSubTask(st -> ((NtroTaskAsync) st).visitSubNodes(visitedNodes, lambda));
+	}
+
+	@Override
+	public synchronized void forEachNextNode(NodeLambda lambda) {
+	}
+
+	@Override
+	public synchronized void forEachNextNodeTransitive(NodeLambda lambda) {
+	}
+
+	@Override
+	public synchronized void forEachReachableNode(NodeLambda lambda) {
+	}
+
+	@Override
+	public synchronized void forEachReachableNodeTransitive(NodeLambda lambda) {
+	}
+	
+	@Override 
+	public Node getParentNode() {
+		if(parentTask != null) return parentTask.asNode();
+		return null;
+	}
+
+	private synchronized void visitAllNodes(Set<NtroTask> visitedNodes, NodeLambda lambda) {
 		if(visitedNodes.contains(this)) return;
 		visitedNodes.add(this);
 		
@@ -159,7 +202,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 		forEachSubTask(st -> ((NtroTaskAsync)st).visitAllEdges(visitedNodes, lambda));
 
 		forEachNextTask(nt -> {
-			lambda.execute(this, nt);
+			lambda.execute(this.asNode(), nt.asNode());
 			((NtroTaskAsync)nt).visitAllEdges(visitedNodes, lambda);
 		});
 	}
@@ -337,7 +380,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 	}
 
 	@Override
-	public TaskGraphNode asNode() {
+	public Node asNode() {
 		return this;
 	}
 
@@ -363,17 +406,24 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 		if(otherObject instanceof NtroTaskAsync) {
 			NtroTaskAsync otherTask = (NtroTaskAsync) otherObject;
 			
-			if(parentTask != null && otherTask.parentTask == null) return false;
-			if(parentTask != null && otherTask.parentTask != null) return parentTask.equals(otherTask.parentTask);
+			if(!getId().equals(otherTask.getId())) return false;
+			
+			Set<NtroTask> mySubTasks = new HashSet<>();
+			forEachSubTask(st -> mySubTasks.add(st));
+			
+			Set<NtroTask> otherSubTasks = new HashSet<>();
+			otherTask.forEachSubTask(st -> otherSubTasks.add(st));
+			
+			return mySubTasks.equals(otherSubTasks);
 		}
 		
-		return true;
+		return false;
 	}
 	
 	private class Edge{
-		public NtroTask from;
-		public NtroTask to;
-		public Edge(NtroTask from, NtroTask to) {
+		public Node from;
+		public Node to;
+		public Edge(Node from, Node to) {
 			this.from = from;
 			this.to = to;
 		}
@@ -387,7 +437,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 			if(this == otherObject) return true;
 			if(otherObject instanceof Edge) {
 				Edge otherEdge = (Edge) otherObject;
-				return from.equals(otherEdge.from) && to.equals(((Edge) otherObject).to);
+				return from.equals(otherEdge.from) && to.equals(otherEdge.to);
 			}
 			return false;
 		}
@@ -396,10 +446,10 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 	@Override
 	public boolean isSameGraphAs(TaskGraph otherGraph) {
 		
-		Set<NtroTask> myNodes = new HashSet<>();
+		Set<Node> myNodes = new HashSet<>();
 		asGraph().forEachNode(n -> myNodes.add(n));
 
-		Set<NtroTask> otherNodes = new HashSet<>();
+		Set<Node> otherNodes = new HashSet<>();
 		otherGraph.forEachNode(n -> otherNodes.add(n));
 		
 		if(!myNodes.equals(otherNodes)) return false;
@@ -409,11 +459,8 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, TaskGraphNod
 
 		Set<Edge> otherEdges = new HashSet<>();
 		otherGraph.forEachEdge((from, to) -> otherEdges.add(new Edge(from, to)));
-		
-		if(!myEdges.equals(otherEdges)) return false;
-		
-		return true;
+
+		return myEdges.equals(otherEdges);
 	}
-	
 	
 }
