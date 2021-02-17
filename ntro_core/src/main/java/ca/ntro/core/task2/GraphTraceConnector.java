@@ -4,4 +4,6 @@ public interface GraphTraceConnector {
 
 	void addWriter(GraphTraceWriter writer);
 
+	GraphTrace getTrace();
+
 }

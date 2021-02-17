@@ -26,4 +26,9 @@ public class GraphTraceImpl implements GraphTrace, GraphTraceConnector {
 		return null;
 	}
 
+	@Override
+	public GraphTrace getTrace() {
+		return this;
+	}
+
 }
