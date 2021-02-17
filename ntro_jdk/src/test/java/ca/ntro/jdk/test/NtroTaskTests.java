@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.ntro.core.task2.GraphTraceConnector;
+import ca.ntro.core.task2.Node;
 import ca.ntro.core.task2.NtroTask;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
@@ -279,8 +280,8 @@ public class NtroTaskTests {
 	}
 
 	@Test
-	public void simple() throws IOException {
-		String testName = "simple";
+	public void simpleGraph() throws IOException {
+		String testName = "simpleGraph";
 		GraphWriterJdk writer = new GraphWriterJdk(testName);
 		
 		NtroTask taskA = new NtroTaskAsyncTest("A");
@@ -296,7 +297,7 @@ public class NtroTaskTests {
 
 		writeFiles(writer, testName);
 
-		TraceTester traceTester = traceTesterForSimple();
+		TraceTester traceTester = traceTesterForSimpleGraph();
 		
 		GraphTraceConnector trace = taskC.execute();
 		trace.addTaskStateListener(traceTester);
@@ -312,7 +313,7 @@ public class NtroTaskTests {
 		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 	}
 
-	private TraceTester traceTesterForSimple() {
+	private TraceTester traceTesterForSimpleGraph() {
 		TraceTester traceTester = new TraceTester();
 
 		traceTester.mustFinishBefore("B", "A");
@@ -322,8 +323,8 @@ public class NtroTaskTests {
 	}
 
 	@Test
-	public void complex() throws IOException {
-		String testName = "complex";
+	public void complexGraph() throws IOException {
+		String testName = "complexGraph";
 		GraphWriterJdk writer = new GraphWriterJdk(testName);
 		
 		NtroTask taskA = new NtroTaskAsyncTest("A");
@@ -365,29 +366,47 @@ public class NtroTaskTests {
 		writeFiles(writer, testName);
 		
 		GraphTraceConnector trace = taskA.execute();
-		TraceTester traceTester = traceTesterForComplex();
+		TraceTester traceTester = traceTesterForComplexGraph();
 		trace.addTaskStateListener(traceTester);
 
 		taskC.asGraph().resetGraph();
 		trace = taskC.execute();
-		traceTester = traceTesterForComplex();
+		traceTester = traceTesterForComplexGraph();
 		trace.addTaskStateListener(traceTester);
 
 		taskA1.asGraph().resetGraph();
 		trace = taskA1.execute();
-		traceTester = traceTesterForComplex();
+		traceTester = traceTesterForComplexGraph();
 		trace.addTaskStateListener(traceTester);
 
 		taskB3.asGraph().resetGraph();
 		trace = taskB3.execute();
-		traceTester = traceTesterForComplex();
+		traceTester = traceTesterForComplexGraph();
+		trace.addTaskStateListener(traceTester);
+		
+		Node nodeB3 = taskA.asGraph().findNodeById("B3");
+		taskB3 = nodeB3.asTask();
+		
+		NtroTask newB3 = new NtroTaskAsyncTest("B3");
+		NtroTask B3_A = new NtroTaskAsyncTest("B3_A");
+		NtroTask B3_B = new NtroTaskAsyncTest("B3_B");
+		
+		newB3.addSubTask(B3_A);
+		newB3.addSubTask(B3_B);
+
+		B3_A.addNextTask(B3_B);
+		
+		taskB3.replaceWith(newB3);
+
+		trace = newB3.execute();
+		traceTester = traceTesterForComplexGraph();
 		trace.addTaskStateListener(traceTester);
 		
 		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 		
 	}
 
-	private TraceTester traceTesterForComplex() {
+	private TraceTester traceTesterForComplexGraph() {
 		TraceTester traceTester = new TraceTester();
 
 		traceTester.mustFinishBefore("A1", "A");

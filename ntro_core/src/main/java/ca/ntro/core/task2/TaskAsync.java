@@ -1,6 +1,5 @@
 package ca.ntro.core.task2;
 
-import java.lang.invoke.LambdaConversionException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -638,5 +637,15 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	
 		finishedPreviousTasks = NtroCollections.concurrentSet(new HashSet<>());
 		finishedSubTasks = NtroCollections.concurrentSet(new HashSet<>());
+	}
+
+	@Override
+	public void replaceWith(NtroTask task) {
+		throw new RuntimeException("TODO");
+	}
+
+	@Override
+	public Node findNodeById(String id) {
+		throw new RuntimeException("TODO");
 	}
 }

@@ -13,7 +13,8 @@ public interface NtroTask extends Identifiable {
 
 	void addPreviousTask(NtroTask task);
 	void addPreviousTask(NtroTask task, String taskId);
-
+	
+	void replaceWith(NtroTask task);
 
 	GraphTraceConnector execute();
 
