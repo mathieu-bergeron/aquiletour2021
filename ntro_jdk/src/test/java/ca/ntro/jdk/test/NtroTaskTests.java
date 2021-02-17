@@ -316,6 +316,12 @@ public class NtroTaskTests {
 					assertTrue(states.contains(new TaskStateDescriptionImpl("B",TaskState.DONE)));
 					assertTrue(states.contains(new TaskStateDescriptionImpl("C",TaskState.DONE)));
 				}
+
+				if(taskState.getId().equals("C") 
+						&& taskState.getState().equals(TaskState.DONE)) {
+					
+					assertTrue(states.contains(new TaskStateDescriptionImpl("B",TaskState.DONE)));
+				}
 			}
 		});
 
