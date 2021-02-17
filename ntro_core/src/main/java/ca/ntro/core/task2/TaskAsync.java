@@ -10,7 +10,7 @@ import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.log.Log;
 
 import static ca.ntro.core.task2.TaskState.INIT;
-import static ca.ntro.core.task2.TaskState.WAITING_FOR_PARENT;
+import static ca.ntro.core.task2.TaskState.DELEGATING_TO_PARENT;
 import static ca.ntro.core.task2.TaskState.WAITING_FOR_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.TaskState.RUNNING_ENTRY_TASK;
 import static ca.ntro.core.task2.TaskState.WAITING_FOR_SUB_TASKS;
@@ -459,7 +459,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 				launchExecution();
 			break;
 
-			case WAITING_FOR_PARENT:
+			case DELEGATING_TO_PARENT:
 				launchPreviousTasks();
 			break;
 
@@ -507,7 +507,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private void launchExecution() {
 		if(parentTask != null && parentTask.state == INIT) {
 
-			changeState(WAITING_FOR_PARENT);
+			changeState(DELEGATING_TO_PARENT);
 			parentTask.execute(trace);
 
 		}else {
