@@ -296,9 +296,10 @@ public class NtroTaskTests {
 
 		writeFiles(writer, testName);
 		
+		/*
 		GraphTraceConnector trace = taskC.execute();
-
 		trace.addWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+		*/
 	}
 
 	@Test
