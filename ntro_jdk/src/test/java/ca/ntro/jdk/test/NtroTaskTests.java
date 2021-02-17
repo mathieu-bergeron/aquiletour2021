@@ -7,10 +7,6 @@ import org.junit.Test;
 
 import ca.ntro.core.task2.GraphTraceConnector;
 import ca.ntro.core.task2.NtroTask;
-import ca.ntro.core.task2.TaskState;
-import ca.ntro.core.task2.TaskStateDescription;
-import ca.ntro.core.task2.TaskStateDescriptionImpl;
-import ca.ntro.core.task2.TaskStateListener;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
@@ -20,8 +16,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class NtroTaskTests {
 	
