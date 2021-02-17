@@ -464,8 +464,10 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 			break;
 
 			case WAITING_FOR_PREVIOUS_TASKS:
-				changeState(RUNNING_ENTRY_TASK);
-				resumeExecution();
+				if(haveFinishedPreviousTasks()) {
+					changeState(RUNNING_ENTRY_TASK);
+					resumeExecution();
+				}
 			break;
 
 			case RUNNING_ENTRY_TASK:
@@ -473,9 +475,14 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 			break;
 
 			case WAITING_FOR_SUB_TASKS:
+				if(haveFinishedSubTasks()) {
+					changeState(RUNNING_EXIT_TASK);
+					resumeExecution();
+				}
 			break;
 
 			case RUNNING_EXIT_TASK:
+				runExitTaskAsync();
 			break;
 
 			case AFTER_EXECUTION:
@@ -565,6 +572,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private void notifyTaskFinished() {
 		if(parentTask != null) {
 			parentTask.notifySomeSubTaskFinished(this);
+			parentTask.execute(trace);
 		}
 
 		forEachNextTask(nt -> ((TaskAsync)nt).notifySomePreviousTaskFinished(this));
