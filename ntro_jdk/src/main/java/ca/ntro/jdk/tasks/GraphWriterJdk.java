@@ -110,8 +110,6 @@ public class GraphWriterJdk implements GraphWriter {
 
 	@Override
 	public void addEdge(NodeDescription fromSpec, NodeDescription toSpec) {
-		System.out.println("addEdge: " + fromSpec.getId() + " " + toSpec.getId());
-
 		MutableGraph fromCluster = clusters.get(fromSpec.getId());
 		MutableGraph toCluster = clusters.get(toSpec.getId());
 		

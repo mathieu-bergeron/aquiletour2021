@@ -7,6 +7,10 @@ import org.junit.Test;
 
 import ca.ntro.core.task2.GraphTraceConnector;
 import ca.ntro.core.task2.NtroTask;
+import ca.ntro.core.task2.TaskState;
+import ca.ntro.core.task2.TaskStateDescription;
+import ca.ntro.core.task2.TaskStateDescriptionImpl;
+import ca.ntro.core.task2.TaskStateListener;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
@@ -16,6 +20,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NtroTaskTests {
 	
@@ -297,7 +303,23 @@ public class NtroTaskTests {
 		writeFiles(writer, testName);
 		
 		GraphTraceConnector trace = taskC.execute();
-		trace.addWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+		
+		List<TaskStateDescription> states = new ArrayList<>();
+		
+		trace.addTaskStateListener(new TaskStateListener() {
+			@Override
+			public void onNewTaskState(TaskStateDescription taskState) {
+				states.add(taskState);
+				if(taskState.getId().equals("A") 
+						&& taskState.getState().equals(TaskState.DONE)) {
+					
+					assertTrue(states.contains(new TaskStateDescriptionImpl("B",TaskState.DONE)));
+					assertTrue(states.contains(new TaskStateDescriptionImpl("C",TaskState.DONE)));
+				}
+			}
+		});
+
+		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 	}
 
 	@Test
@@ -344,7 +366,8 @@ public class NtroTaskTests {
 		writeFiles(writer, testName);
 		
 		GraphTraceConnector trace = taskB3.execute();
-		trace.addWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+		
 	}
 
 

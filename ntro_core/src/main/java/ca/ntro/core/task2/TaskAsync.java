@@ -430,13 +430,21 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		return description;
 	}
+	
+	private TaskStateDescription getTaskStateDescription() {
+		return new TaskStateDescriptionImpl(getId(), state);
+	}
+	
+	private void appendCurrentStateToTrace(GraphTrace trace) {
+		trace.append(getGraphDescription(), getTaskStateDescription());
+	}
 
 	@Override
 	public GraphTraceConnector execute() {
 
 		GraphTraceImpl trace = new GraphTraceImpl();
-
-		trace.appendGraph(getGraphDescription());
+		
+		appendCurrentStateToTrace(trace);
 
 		execute(trace);
 		
@@ -500,7 +508,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private void changeState(TaskState newState) {
 		if(state != newState) {
 			state = newState;
-			trace.appendGraph(getGraphDescription());
+			appendCurrentStateToTrace(trace);
 		}
 	}
 

@@ -2,8 +2,8 @@ package ca.ntro.core.task2;
 
 public interface GraphTraceConnector {
 
-	void addWriter(GraphTraceWriter writer);
+	void addGraphWriter(GraphTraceWriter writer);
+	void addTaskStateListener(TaskStateListener listener);
 
-	GraphTrace getTrace();
 
 }
