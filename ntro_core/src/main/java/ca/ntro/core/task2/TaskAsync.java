@@ -9,14 +9,14 @@ import java.util.Set;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.log.Log;
 
-import static ca.ntro.core.task2.TaskState.BEFORE_EXECUTION;
+import static ca.ntro.core.task2.TaskState.INIT;
 import static ca.ntro.core.task2.TaskState.WAITING_FOR_PARENT;
 import static ca.ntro.core.task2.TaskState.WAITING_FOR_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.TaskState.RUNNING_ENTRY_TASK;
-import static ca.ntro.core.task2.TaskState.WAITING_FOR_PREVIOUS_TASKS;
+import static ca.ntro.core.task2.TaskState.WAITING_FOR_SUB_TASKS;
 import static ca.ntro.core.task2.TaskState.RUNNING_EXIT_TASK;
-import static ca.ntro.core.task2.TaskState.AFTER_EXECUTION;
-import static ca.ntro.core.task2.TaskState.REMOVED_FROM_GRAPH;
+import static ca.ntro.core.task2.TaskState.DONE;
+import static ca.ntro.core.task2.TaskState.DELETED;
 
 public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
@@ -25,7 +25,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private String taskId;
 	private TaskAsync parentTask;
 	
-	private TaskState state = BEFORE_EXECUTION;
+	private TaskState state = INIT;
 	private GraphTraceImpl trace;
 	
 	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
@@ -455,7 +455,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		switch(state) {
 
-			case BEFORE_EXECUTION:
+			case INIT:
 				launchExecution();
 			break;
 
@@ -485,10 +485,10 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 				runExitTaskAsync();
 			break;
 
-			case AFTER_EXECUTION:
+			case DONE:
 			break;
 
-			case REMOVED_FROM_GRAPH:
+			case DELETED:
 			break;
 			
 			default:
@@ -505,14 +505,13 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	}
 
 	private void launchExecution() {
-		if(parentTask != null && parentTask.state == BEFORE_EXECUTION) {
+		if(parentTask != null && parentTask.state == INIT) {
 
 			changeState(WAITING_FOR_PARENT);
 			parentTask.execute(trace);
 
 		}else {
-			
-			changeState(WAITING_FOR_PREVIOUS_TASKS);
+
 			launchPreviousTasks();
 
 		}
@@ -526,6 +525,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 			
 		}else {
 
+			changeState(WAITING_FOR_PREVIOUS_TASKS);
 			forEachPreviousTask(pt -> ((TaskAsync)pt).execute(trace));
 
 		}
@@ -547,6 +547,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 			
 		}else {
 
+			changeState(WAITING_FOR_SUB_TASKS);
 			forEachSubTask(pt -> ((TaskAsync)pt).execute(trace));
 
 		}
@@ -555,7 +556,6 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	@Override
 	public void notifyEntryTaskFinished() {
 		if(state == RUNNING_ENTRY_TASK) {
-			changeState(TaskState.WAITING_FOR_SUB_TASKS);
 			launchSubTasks();
 		}
 	}
@@ -563,7 +563,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	@Override
 	public void notifyExitTaskFinished() {
 		if(state == RUNNING_EXIT_TASK) {
-			changeState(TaskState.AFTER_EXECUTION);
+			changeState(TaskState.DONE);
 			notifyTaskFinished();
 			launchNextTasks();
 		}
