@@ -1,26 +1,28 @@
 package ca.ntro.core.task2;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GraphDescriptionImpl implements GraphDescription {
 	
-	private Set<NodeDescription> nodes = new HashSet<>();
-	private Set<NodeDescription> startNodes = new HashSet<>();
-	private Set<EdgeDescription> edges = new HashSet<>();
+	// XXX: we assume nodes are inserted in a traversable order
+	private List<NodeDescription> nodes = new ArrayList<>();
+	private List<EdgeDescription> edges = new ArrayList<>();
 
 	@Override
 	public void addNode(NodeDescription node) {
 		nodes.add(node);
 	}
+
 	@Override
 	public void addEdge(NodeDescription from, NodeDescription to) {
 		edges.add(new EdgeDescriptionImpl(from, to));
 	}
+
 	@Override
 	public void write(GraphWriter writer) {
-		// TODO Auto-generated method stub
-		
+		nodes.forEach(n -> n.writeNode(writer));
+		edges.forEach(e -> e.write(writer));
 	}
 
 

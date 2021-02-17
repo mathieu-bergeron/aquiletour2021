@@ -2,6 +2,11 @@ package ca.ntro.core.task2;
 
 public interface GraphWriter {
 	
+	/**
+	 *  IMPORTANT: nodes must be added in a traversable order
+	 * 
+	 * @param cluster
+	 */
 	void addRootCluster(NodeDescription cluster);
 	void addRootNode(NodeDescription node);
 	void addSubCluster(NodeDescription cluster, NodeDescription subCluster);

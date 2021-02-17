@@ -7,13 +7,15 @@ import java.util.Objects;
 import java.util.Set;
 
 import ca.ntro.core.services.NtroCollections;
+import ca.ntro.core.system.log.Log;
 
-import static ca.ntro.core.task2.State.INACTIVE;
+import static ca.ntro.core.task2.State.BEFORE_EXECUTION;
 import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.State.RUNNING_ENTRY_TASK;
 import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.State.RUNNING_EXIT_TASK;
-import static ca.ntro.core.task2.State.DONE;
+import static ca.ntro.core.task2.State.AFTER_EXECUTION;
+import static ca.ntro.core.task2.State.REMOVED_FROM_GRAPH;
 
 public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 
@@ -22,7 +24,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	private String taskId;
 	private NtroTask parentTask;
 	
-	private State state = INACTIVE;
+	private State state = BEFORE_EXECUTION;
 	
 	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
 	private Map<String, NtroTask> subTasks = NtroCollections.concurrentMap(new HashMap<>());
@@ -331,35 +333,6 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		addPreviousTask(task);
 	}
 
-	@Override
-	public GraphTraceConnector execute() {
-		execute();
-		
-		return new GraphTraceImpl();
-	}
-
-	
-	private void resumeExecution(GraphTrace trace) {
-		// TODO
-	}
-	
-	@Override
-	public void notifyEntryTaskFinished() {
-		
-	}
-
-	@Override
-	public void notifyExitTaskFinished() {
-		
-	}
-
-	void notifySomePreviousTaskFinished(NtroTask finishedTask) {
-		
-	}
-
-	void notifySomeSubTaskFinished(NtroTask finishedTask) {
-		
-	}
 	
 	@Override
 	public TaskGraph asGraph() {
@@ -460,5 +433,89 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		asGraph().forEachEdge((from, to) -> description.addEdge(from, to));
 		
 		return description;
+	}
+
+	@Override
+	public GraphTraceConnector execute() {
+		GraphTraceImpl trace = new GraphTraceImpl();
+		
+		asGraph().forEachStartNode(n -> {
+			((NtroTaskAsync) n).executeForward(trace);
+		});
+		
+		return trace;
+	}
+
+	
+	private void executeForward(GraphTrace trace) {
+		switch(state) {
+
+			case BEFORE_EXECUTION:
+				launchPreviousTasks(trace);
+			break;
+
+			case WAITING_FOR_PREVIOUS_TASKS:
+			break;
+
+			case RUNNING_ENTRY_TASK:
+			break;
+
+			case WAITING_FOR_SUB_TASKS:
+			break;
+
+			case RUNNING_EXIT_TASK:
+			break;
+
+			case AFTER_EXECUTION:
+			break;
+
+			case REMOVED_FROM_GRAPH:
+			break;
+			
+			default:
+				Log.fatalError("resumeExecution should not get here");
+			break;
+		}
+	}
+	
+	private void changeState(State newState, GraphTrace trace) {
+		if(state != newState) {
+			state = newState;
+			trace.appendGraph(getGraphDescription());
+		}
+	}
+	
+	private void launchPreviousTasks(GraphTrace trace) {
+		if(!hasPreviousTasks() || haveFinishedPreviousTasks()) {
+
+			changeState(RUNNING_ENTRY_TASK, trace);
+			
+		}else {
+
+			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).executeForward(trace));
+
+		}
+	}
+	
+	private boolean haveFinishedPreviousTasks() {
+		return finishedPreviousTasks.size() == previousTasks.size();
+	}
+	
+	@Override
+	public void notifyEntryTaskFinished() {
+		
+	}
+
+	@Override
+	public void notifyExitTaskFinished() {
+		
+	}
+
+	void notifySomePreviousTaskFinished(NtroTask finishedTask) {
+		
+	}
+
+	void notifySomeSubTaskFinished(NtroTask finishedTask) {
+		
 	}
 }

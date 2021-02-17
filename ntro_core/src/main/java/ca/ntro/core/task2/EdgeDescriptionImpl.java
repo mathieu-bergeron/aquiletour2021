@@ -31,10 +31,9 @@ public class EdgeDescriptionImpl implements EdgeDescription {
 	public void setTo(NodeDescription to) {
 		this.to = to;
 	}
-	
-	
-	
-	
 
-
+	@Override
+	public void write(GraphWriter writer) {
+		writer.addEdge(from, to);
+	}
 }

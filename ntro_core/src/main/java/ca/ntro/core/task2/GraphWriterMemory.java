@@ -9,6 +9,37 @@ import java.util.Set;
 
 public class GraphWriterMemory implements GraphWriter {
 
+	@Override
+	public void addRootCluster(NodeDescription cluster) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addRootNode(NodeDescription node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSubCluster(NodeDescription cluster, NodeDescription subCluster) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSubNode(NodeDescription cluster, NodeDescription subNode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addEdge(NodeDescription from, NodeDescription to) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*
 	private class Node implements NodeDescription {
 		public NodeDescription wrappedSpec;
 		public Node parent;
@@ -151,5 +182,7 @@ public class GraphWriterMemory implements GraphWriter {
 		
 		edges.add(new Edge(from, to));
 	}
+	
+	*/
 }
 
