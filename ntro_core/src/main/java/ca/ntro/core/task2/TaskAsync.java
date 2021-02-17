@@ -1,5 +1,6 @@
 package ca.ntro.core.task2;
 
+import java.lang.invoke.LambdaConversionException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -126,9 +127,9 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	@Override
 	public synchronized void forEachNode(NodeLambda lambda) {
 		
-		Set<NtroTask> visitedNodes = new HashSet<>();
+		Set<Node> visitedNodes = new HashSet<>();
 
-		forEachStartNode(sn -> ((TaskAsync)sn).visitAllNodes(visitedNodes, lambda));
+		forEachStartNode(sn -> ((TaskAsync)sn).visitReachableNodes(visitedNodes, lambda));
 	}
 
 	@Override
@@ -154,18 +155,37 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public synchronized void forEachNextNode(NodeLambda lambda) {
+		forEachNextTask(nt -> lambda.execute(nt.asNode()));
 	}
 
 	@Override
 	public synchronized void forEachNextNodeTransitive(NodeLambda lambda) {
+		Set<Node> visitedNodes = new HashSet<>();
+
+		forEachNextTask(st -> ((TaskAsync) st).visitNextNodes(visitedNodes, lambda));
+	}
+
+	private synchronized void visitNextNodes(Set<Node> visitedNodes, NodeLambda lambda) {
+		if(visitedNodes.contains(this)) return;
+		visitedNodes.add(this);
+		
+		lambda.execute(this);
+
+		forEachNextTask(st -> ((TaskAsync) st).visitNextNodes(visitedNodes, lambda));
 	}
 
 	@Override
 	public synchronized void forEachReachableNode(NodeLambda lambda) {
+		forEachNextNode(lambda);
+		forEachSubNode(lambda);
 	}
 
 	@Override
 	public synchronized void forEachReachableNodeTransitive(NodeLambda lambda) {
+		Set<Node> visitedNodes = new HashSet<>();
+
+		forEachSubTask(st -> ((TaskAsync) st).visitReachableNodes(visitedNodes, lambda));
+		forEachNextTask(nt -> ((TaskAsync) nt).visitReachableNodes(visitedNodes, lambda));
 	}
 	
 	@Override 
@@ -174,14 +194,14 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		return null;
 	}
 
-	private synchronized void visitAllNodes(Set<NtroTask> visitedNodes, NodeLambda lambda) {
+	private synchronized void visitReachableNodes(Set<Node> visitedNodes, NodeLambda lambda) {
 		if(visitedNodes.contains(this)) return;
 		visitedNodes.add(this);
 		
 		lambda.execute(this);
 
-		forEachSubTask(st -> ((TaskAsync)st).visitAllNodes(visitedNodes, lambda));
-		forEachNextTask(nt -> ((TaskAsync)nt).visitAllNodes(visitedNodes, lambda));
+		forEachSubTask(st -> ((TaskAsync)st).visitReachableNodes(visitedNodes, lambda));
+		forEachNextTask(nt -> ((TaskAsync)nt).visitReachableNodes(visitedNodes, lambda));
 	}
 	
 	@Override
@@ -598,5 +618,25 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	void notifySomeSubTaskFinished(NtroTask finishedTask) {
 		finishedSubTasks.add(finishedTask.getId());
 		onSomSubTaskFinished(finishedTask.getId(), finishedTask);
+	}
+
+	@Override
+	public void resetGraph() {
+		forEachStartNode(sn -> sn.resetNode());
+	}
+
+	@Override
+	public void resetNode() {
+		asTask().resetTask();
+		forEachReachableNodeTransitive(n -> n.asTask().resetTask());
+	}
+
+	@Override
+	public void resetTask() {
+		state = INIT;
+		trace = null;
+	
+		finishedPreviousTasks = NtroCollections.concurrentSet(new HashSet<>());
+		finishedSubTasks = NtroCollections.concurrentSet(new HashSet<>());
 	}
 }

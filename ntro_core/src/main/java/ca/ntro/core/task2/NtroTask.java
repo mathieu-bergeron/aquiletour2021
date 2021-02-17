@@ -14,10 +14,13 @@ public interface NtroTask extends Identifiable {
 	void addPreviousTask(NtroTask task);
 	void addPreviousTask(NtroTask task, String taskId);
 
+
 	GraphTraceConnector execute();
 
 	void notifyEntryTaskFinished();
 	void notifyExitTaskFinished();
+
+	void resetTask();
 	
 	TaskGraph asGraph();
 	Node asNode();

@@ -6,8 +6,9 @@ public interface TaskGraph {
 	void forEachNode(NodeLambda lambda);
 	void forEachEdge(EdgeLambda lambda);
 
-	boolean isSameGraphAs(TaskGraph otherGraph);
+	void resetGraph();
 
+	boolean isSameGraphAs(TaskGraph otherGraph);
 
 	GraphDescription getGraphDescription();
 }
