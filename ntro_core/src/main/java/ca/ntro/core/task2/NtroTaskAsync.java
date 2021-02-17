@@ -10,9 +10,10 @@ import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.log.Log;
 
 import static ca.ntro.core.task2.State.BEFORE_EXECUTION;
-import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
+import static ca.ntro.core.task2.State.WAITING_FOR_PARENT_ENTRY;
+import static ca.ntro.core.task2.State.RUNNING_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.State.RUNNING_ENTRY_TASK;
-import static ca.ntro.core.task2.State.WAITING_FOR_PREVIOUS_TASKS;
+import static ca.ntro.core.task2.State.RUNNING_PREVIOUS_TASKS;
 import static ca.ntro.core.task2.State.RUNNING_EXIT_TASK;
 import static ca.ntro.core.task2.State.AFTER_EXECUTION;
 import static ca.ntro.core.task2.State.REMOVED_FROM_GRAPH;
@@ -22,7 +23,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
 	private String taskId;
-	private NtroTask parentTask;
+	private NtroTaskAsync parentTask;
 	
 	private State state = BEFORE_EXECUTION;
 	
@@ -78,7 +79,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public void setParentTask(NtroTask parentTask) {
-		this.parentTask = parentTask;
+		this.parentTask = (NtroTaskAsync) parentTask;
 	}
 
 	public NtroTask getParentTask() {
@@ -434,28 +435,24 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		GraphTraceImpl trace = new GraphTraceImpl();
 		
 		trace.appendGraph(getGraphDescription());
-		
-		// FIXME: we still need to check if parentTask
-		//        has finished executing!
-		
-		asGraph().forEachStartNode(n -> {
-			((NtroTaskAsync) n).executeForward(trace);
-		});
+
+		resumeExecution(trace);
 		
 		return trace;
 	}
 
 	
-	private void executeForward(GraphTrace trace) {
+	private void resumeExecution(GraphTrace trace) {
 		
 		
 		switch(state) {
 
 			case BEFORE_EXECUTION:
-				launchPreviousTasks(trace);
+				launchExecution(trace);
 			break;
 
-			case WAITING_FOR_PREVIOUS_TASKS:
+			case RUNNING_PREVIOUS_TASKS:
+				runPreviousTasks(trace);
 			break;
 
 			case RUNNING_ENTRY_TASK:
@@ -474,7 +471,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 			break;
 			
 			default:
-				Log.fatalError("NtroTask.executeForward should not get here");
+				Log.fatalError("NtroTaskAsync.resumeExecution should not get here");
 			break;
 		}
 	}
@@ -483,17 +480,32 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		if(state != newState) {
 			state = newState;
 			trace.appendGraph(getGraphDescription());
+			resumeExecution(trace);
+		}
+	}
+
+	private void launchExecution(GraphTrace trace) {
+		if(parentTask != null && parentTask.state == BEFORE_EXECUTION) {
+
+			parentTask.resumeExecution(trace);
+			changeState(WAITING_FOR_PARENT_ENTRY, trace);
+
+		}else {
+
+			changeState(RUNNING_PREVIOUS_TASKS, trace);
+			resumeExecution(trace);
+
 		}
 	}
 	
-	private void launchPreviousTasks(GraphTrace trace) {
+	private void runPreviousTasks(GraphTrace trace) {
 		if(!hasPreviousTasks() || haveFinishedPreviousTasks()) {
 
 			changeState(RUNNING_ENTRY_TASK, trace);
 			
 		}else {
 
-			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).executeForward(trace));
+			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).resumeExecution(trace));
 
 		}
 	}
