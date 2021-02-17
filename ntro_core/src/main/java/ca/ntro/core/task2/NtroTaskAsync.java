@@ -203,22 +203,6 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	}
 
 	public void writeNode(GraphWriter writer) {
-		if(isRootNode()) {
-
-			writer.addRootNode(this.asNode());
-
-		}else if(isRootCluster()) {
-
-			writer.addRootCluster(this.asNode());
-
-		}else if(isSubNode()) {
-
-			writer.addSubNode(getParentTask().asNode(), this.asNode());
-
-		}else if(isSubCluster()){
-
-			writer.addSubCluster(getParentTask().asNode(), this.asNode());
-		}
 	}
 
 	@Override
@@ -426,7 +410,12 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public synchronized NodeDescription getNodeDescription() {
-		throw new RuntimeException("TODO");
+		return new NodeDescriptionImpl(getId(), 
+				                       getLabel(),
+				                       isRoot(),
+				                       isCluster(),
+				                       isStartNode(),
+				                       parentTask != null ? parentTask.asNode() : null);
 	}
 
 	@Override

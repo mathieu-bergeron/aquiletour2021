@@ -14,6 +14,8 @@ public interface NodeDescription extends Identifiable, Labellable {
 	boolean isSubCluster();
 	
 	boolean isStartNode();
+	
+	NodeDescription getParentNode();
 
 	void writeNode(GraphWriter writer);
 

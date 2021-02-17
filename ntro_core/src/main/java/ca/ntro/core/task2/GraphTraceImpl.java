@@ -36,8 +36,7 @@ public class GraphTraceImpl implements GraphTrace, GraphTraceConnector {
 
 	@Override
 	public GraphDescription getGraph(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return graphs.get(0);
 	}
 
 	@Override

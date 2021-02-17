@@ -1,70 +1,106 @@
 package ca.ntro.core.task2;
 
 public class NodeDescriptionImpl implements NodeDescription {
+	
+	private String id;
+	private String label;
+	private boolean isRoot;
+	private boolean isCluster;
+	private boolean isStartNode;
+	
+	private NodeDescription parentNode;
+
+	public NodeDescriptionImpl(String id, 
+			                   String label, 
+			                   boolean isRoot, 
+			                   boolean isCluster, 
+			                   boolean isStartNode,
+			                   NodeDescription parentNode) {
+		this.id = id;
+		this.label = label;
+		this.isRoot = isRoot;
+		this.isCluster = isCluster;
+		this.isStartNode = isStartNode;
+		this.parentNode = parentNode;
+	}
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
 	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return label;
 	}
 
 	@Override
 	public boolean isRoot() {
-		// TODO Auto-generated method stub
-		return false;
+		return isRoot;
 	}
 
 	@Override
 	public boolean isNode() {
-		// TODO Auto-generated method stub
-		return false;
+		return !isCluster;
 	}
 
 	@Override
 	public boolean isCluster() {
-		// TODO Auto-generated method stub
-		return false;
+		return isCluster;
 	}
 
 	@Override
 	public boolean isRootNode() {
-		// TODO Auto-generated method stub
-		return false;
+		return isRoot() && isNode();
 	}
 
 	@Override
 	public boolean isRootCluster() {
-		// TODO Auto-generated method stub
-		return false;
+		return isRoot() && isCluster();
+	}
+	
+	private boolean hasParent() {
+		return getParentNode() != null;
 	}
 
 	@Override
 	public boolean isSubNode() {
-		// TODO Auto-generated method stub
-		return false;
+		return hasParent() && isNode();
 	}
 
 	@Override
 	public boolean isSubCluster() {
-		// TODO Auto-generated method stub
-		return false;
+		return hasParent() && isCluster();
 	}
 
 	@Override
 	public boolean isStartNode() {
-		// TODO Auto-generated method stub
-		return false;
+		return isStartNode;
+	}
+
+	@Override
+	public NodeDescription getParentNode() {
+		return parentNode;
 	}
 
 	@Override
 	public void writeNode(GraphWriter writer) {
-		// TODO Auto-generated method stub
-		
+		if(isRootNode()) {
+
+			writer.addRootNode(this);
+
+		}else if(isRootCluster()) {
+
+			writer.addRootCluster(this);
+
+		}else if(isSubNode()) {
+
+			writer.addSubNode(getParentNode(), this);
+
+		}else if(isSubCluster()){
+
+			writer.addSubCluster(getParentNode(), this);
+		}
 	}
+
 }
