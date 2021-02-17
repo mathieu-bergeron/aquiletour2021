@@ -323,8 +323,8 @@ public class NtroTaskTests {
 	}
 
 	@Test
-	public void complexGraph() throws IOException {
-		String testName = "complexGraph";
+	public void biggerGraph() throws IOException {
+		String testName = "biggerGraph";
 		GraphWriterJdk writer = new GraphWriterJdk(testName);
 		
 		NtroTask taskA = new NtroTaskAsyncTest("A");
