@@ -4,7 +4,7 @@ public interface GraphTrace {
 
 	int size();
 	
-	void appendGraph(TaskGraph graph);
-	TaskGraph getGraph(int index);
+	void appendGraph(GraphDescription graph);
+	GraphDescription getGraph(int index);
 
 }

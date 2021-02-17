@@ -1,17 +1,18 @@
 package ca.ntro.core.task2;
 
-public class SimpleEdge implements Edge {
+public class EdgeDescriptionImpl implements EdgeDescription {
 
 	@Override
-	public Node getFrom() {
+	public NodeDescription from() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Node getTo() {
+	public NodeDescription to() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

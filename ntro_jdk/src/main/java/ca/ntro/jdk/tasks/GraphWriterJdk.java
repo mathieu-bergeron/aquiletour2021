@@ -7,8 +7,8 @@ import java.util.Map;
 
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.task2.GraphWriter;
-import ca.ntro.core.task2.NodeSpec;
-import ca.ntro.core.task2.NodeSpec;
+import ca.ntro.core.task2.NodeDescription;
+import ca.ntro.core.task2.NodeDescription;
 import guru.nidi.graphviz.attribute.Label;
 import guru.nidi.graphviz.attribute.Rank;
 import guru.nidi.graphviz.attribute.Rank.RankDir;
@@ -40,12 +40,12 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addRootCluster(NodeSpec clusterSpec) {
+	public void addRootCluster(NodeDescription clusterSpec) {
 		MutableGraph cluster = createCluster(clusterSpec);
 		graph.add(cluster);
 	}
 
-	private MutableGraph createCluster(NodeSpec clusterSpec) {
+	private MutableGraph createCluster(NodeDescription clusterSpec) {
 		if(clusters.containsKey(clusterSpec.getId())) return clusters.get(clusterSpec.getId());
 		
 		MutableGraph cluster = mutGraph(clusterSpec.getId());
@@ -73,12 +73,12 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addRootNode(NodeSpec nodeSpec) {
+	public void addRootNode(NodeDescription nodeSpec) {
 		MutableNode node = createNode(nodeSpec);
 		graph.add(node);
 	}
 
-	private MutableNode createNode(NodeSpec nodeSpec) {
+	private MutableNode createNode(NodeDescription nodeSpec) {
 		if(nodes.containsKey(nodeSpec.getId())) return nodes.get(nodeSpec.getId());
 
 		MutableNode node = mutNode(nodeSpec.getId());
@@ -88,13 +88,13 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addSubCluster(NodeSpec clusterSpec, NodeSpec subClusterSpec) {
+	public void addSubCluster(NodeDescription clusterSpec, NodeDescription subClusterSpec) {
 		MutableGraph cluster = clusters.get(clusterSpec.getId());
 		cluster.add(createCluster(subClusterSpec));
 	}
 
 	@Override
-	public void addSubNode(NodeSpec clusterSpec, NodeSpec subNodeSpec) {
+	public void addSubNode(NodeDescription clusterSpec, NodeDescription subNodeSpec) {
 		MutableGraph cluster = clusters.get(clusterSpec.getId());
 
 		
@@ -102,7 +102,7 @@ public class GraphWriterJdk implements GraphWriter {
 	}
 
 	@Override
-	public void addEdge(NodeSpec fromSpec, NodeSpec toSpec) {
+	public void addEdge(NodeDescription fromSpec, NodeDescription toSpec) {
 		System.out.println("addEdge: " + fromSpec.getId() + " " + toSpec.getId());
 
 		MutableGraph fromCluster = clusters.get(fromSpec.getId());

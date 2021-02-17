@@ -14,8 +14,7 @@ public interface NtroTask extends Identifiable {
 	void addPreviousTask(NtroTask task);
 	void addPreviousTask(NtroTask task, String taskId);
 
-	void execute();
-	void execute(GraphTraceWriter writer);
+	GraphTraceConnector execute();
 
 	void notifyEntryTaskFinished();
 	void notifyExitTaskFinished();

@@ -9,4 +9,6 @@ public interface TaskGraph {
 	boolean isSameGraphAs(TaskGraph otherGraph);
 
 	void writeGraph(GraphWriter writer);
+
+	GraphDescription getDescription();
 }

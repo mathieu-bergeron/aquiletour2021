@@ -9,10 +9,10 @@ import java.util.Set;
 
 public class GraphWriterMemory implements GraphWriter {
 
-	private class Node implements NodeSpec {
-		public NodeSpec wrappedSpec;
+	private class Node implements NodeDescription {
+		public NodeDescription wrappedSpec;
 		public Node parent;
-		public Node(NodeSpec wrappedSpec) {
+		public Node(NodeDescription wrappedSpec) {
 			this.wrappedSpec = wrappedSpec;
 		}
 		@Override
@@ -48,7 +48,7 @@ public class GraphWriterMemory implements GraphWriter {
 
 	private class Cluster extends Node {
 		public Set<Node> children = new HashSet<>();
-		public Cluster(NodeSpec wrappedSpec) {
+		public Cluster(NodeDescription wrappedSpec) {
 			super(wrappedSpec);
 		}
 		public void add(Node node) {
@@ -103,7 +103,7 @@ public class GraphWriterMemory implements GraphWriter {
 	}
 
 	@Override
-	public void addRootCluster(NodeSpec clusterSpec) {
+	public void addRootCluster(NodeDescription clusterSpec) {
 		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec));
 	}
 
@@ -113,19 +113,19 @@ public class GraphWriterMemory implements GraphWriter {
 	}
 
 	@Override
-	public void addRootNode(NodeSpec nodeSpec) {
+	public void addRootNode(NodeDescription nodeSpec) {
 		nodes.put(nodeSpec.getId(), new Node(nodeSpec));
 	}
 
 	@Override
-	public void addSubCluster(NodeSpec cluster, NodeSpec subClusterSpec) {
+	public void addSubCluster(NodeDescription cluster, NodeDescription subClusterSpec) {
 		Cluster subCluster = new Cluster(subClusterSpec);
 		nodes.put(subClusterSpec.getId(), subCluster);
 		getCluster(cluster.getId()).add(subCluster);
 	}
 
 	@Override
-	public void addSubNode(NodeSpec cluster, NodeSpec subNodeSpec) {
+	public void addSubNode(NodeDescription cluster, NodeDescription subNodeSpec) {
 		Node subNode = new Node(subNodeSpec);
 		nodes.put(subNodeSpec.getId(), subNode);
 		getCluster(cluster.getId()).add(subNode);
@@ -145,7 +145,7 @@ public class GraphWriterMemory implements GraphWriter {
 	}
 
 	@Override
-	public void addEdge(NodeSpec fromSpec, NodeSpec toSpec) {
+	public void addEdge(NodeDescription fromSpec, NodeDescription toSpec) {
 		Node from = getNode(fromSpec.getId());
 		Node to = getNode(toSpec.getId());
 		

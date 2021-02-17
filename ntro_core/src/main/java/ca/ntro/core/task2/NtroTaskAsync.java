@@ -95,13 +95,6 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		addSubTask(task);
 	}
 
-	@Override
-	public synchronized void writeGraph(GraphWriter writer) {
-		
-		asGraph().forEachNode(n -> n.writeNode(writer));
-
-		asGraph().forEachEdge((from, to) -> writer.addEdge(from, to));
-	}
 	
 	@Override
 	public synchronized void forEachStartNode(NodeLambda lambda) {
@@ -339,17 +332,14 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	}
 
 	@Override
-	public void execute() {
-		execute(new GraphTraceWriterNull());
+	public GraphTraceConnector execute() {
+		execute();
+		
+		return new GraphTraceImpl();
 	}
 
-
-	@Override
-	public void execute(GraphTraceWriter writer) {
-		// TODO
-	}
 	
-	private void resumeExecution(GraphTraceWriter writer) {
+	private void resumeExecution(GraphTrace trace) {
 		// TODO
 	}
 	
@@ -459,6 +449,26 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		otherGraph.forEachEdge((from, to) -> otherEdges.add(new Edge(from, to)));
 
 		return myEdges.equals(otherEdges);
+	}
+
+	@Override
+	public synchronized GraphDescription getDescription() {
+		GraphDescriptionImpl description = new GraphDescriptionImpl();
+		
+		asGraph().forEachNode(n -> description.addNode(n));
+
+		asGraph().forEachEdge((from, to) -> description.addEdge(from, to));
+		
+		return description;
+	}
+
+	@Override
+	public synchronized void writeGraph(GraphWriter writer) {
+
+		asGraph().forEachNode(n -> n.writeNode(writer));
+
+		asGraph().forEachEdge((from, to) -> writer.addEdge(from, to));
+		
 	}
 	
 }
