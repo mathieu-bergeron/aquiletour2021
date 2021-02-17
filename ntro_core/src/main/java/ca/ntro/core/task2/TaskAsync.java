@@ -483,15 +483,14 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(state != newState) {
 			state = newState;
 			trace.appendGraph(getGraphDescription());
-			resumeExecution(trace);
 		}
 	}
 
 	private void launchExecution(GraphTrace trace) {
 		if(parentTask != null && parentTask.state == BEFORE_EXECUTION) {
 
-			parentTask.resumeExecution(trace);
 			changeState(WAITING_FOR_PARENT, trace);
+			parentTask.resumeExecution(trace);
 
 		}else {
 			
