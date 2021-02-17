@@ -46,12 +46,14 @@ public class CourseSummary extends NtroModelValue {
 		this.date = date;
 	}
 
-	public CourseSummary(String title, String summary, String date) {
+	public CourseSummary(String title, String summary, String date, String courseId) {
 		super();
 		this.title = title;
 		this.summary = summary;
 		this.date = date;
+		this.id = courseId;
 	}
+	
 
 	public String getTitle() {
 		return title;

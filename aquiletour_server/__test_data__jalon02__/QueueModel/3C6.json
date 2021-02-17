@@ -4,7 +4,7 @@
     "value": {
       }
     },
-    "students": ["bob"]
+    "studentIds": ["bob"]
   },
   "_T": "ca.aquiletour.core.pages.queue.QueueModel"
 }

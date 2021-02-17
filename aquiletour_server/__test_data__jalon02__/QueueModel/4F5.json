@@ -17,7 +17,7 @@
         "studentSurname": "Étudiant"
       }
     },
-    "students": ["bob","autre"]
+    "studentIds": ["bob","autre"]
   },
   "_T": "ca.aquiletour.core.pages.queue.QueueModel"
 }

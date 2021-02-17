@@ -67,9 +67,10 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("title")[0];
 			String summaryText = parameters.get("summary")[0];
 			String summaryDate = parameters.get("date")[0];
+			String courseId = parameters.get("date")[0];
 
 			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate));
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate, courseTitle));
 			addCourseMessage.setUser(user);
 			addCourseMessage.sendMessage();
 		}
@@ -85,14 +86,15 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.size() >= 1) {
-			sendAppointmentMessages(parameters, user);
+			sendAppointmentMessages(parameters, user, path.getName(0));
+			//TODO courseID
 		}
 	}
 
-	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user) {
+	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("makeAppointment")) { 
+		if(parameters.containsKey("makeAppointment")) { //localhost8080/billeterie/courseId/makeAppointment
 			
 			// FIXME: we need a Ntro service for dates
 			/*
@@ -101,11 +103,13 @@ public class AquiletourBackendRequestHandler {
 			int minute = rightNow.get(Calendar.MINUTE);
 			String time = hour + ":" + minute;
 			 */
-			String courseId = parameters.get("courseId")[0];
+
 			AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
 			Appointment newAppointment = new Appointment();
 			newAppointment.setTime("11:59");
 			addAppointmentMessage.setAppointment(newAppointment);
+			addAppointmentMessage.setUser(user);
+			addAppointmentMessage.setCourseId(courseId);
 			
 			addAppointmentMessage.sendMessage();
 			

@@ -33,7 +33,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				T.call(this);
 
 				AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue(),addCourseSummaryInput.getValue(),addCourseDateInput.getValue()));
+				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue(),addCourseSummaryInput.getValue(),addCourseDateInput.getValue(), addCourseTitleInput.getValue()));
 				addCourseMessage.sendMessage();
 			}
 		});

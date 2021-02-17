@@ -23,17 +23,20 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		HtmlElement title = this.getRootElement().children("#course-title").get(0);
 		HtmlElement summaryText = this.getRootElement().children("#summary-text").get(0);
 		HtmlElement summaryDate = this.getRootElement().children("#summary-date").get(0);
+		HtmlElement makeAppointmentLink = this.getRootElement().children("#availableLink").get(0);
 		
 		
 		MustNot.beNull(title);
 		MustNot.beNull(summaryText);
 		MustNot.beNull(summaryDate);
+		MustNot.beNull(makeAppointmentLink);
 
-		T.values(course.getTitle(), course.getSummary(), course.getDate());
+		T.values(course.getTitle(), /*course.getSummary(), course.getDate(),*/ course.getTitle()); //TODO for now replace courseId for title because the data is outdated
 		
 		title.appendHtml(course.getTitle());
-		summaryText.appendHtml(course.getSummary());
-		summaryDate.appendHtml(course.getDate());
+//		summaryText.appendHtml(course.getSummary());
+//		summaryDate.appendHtml(course.getDate());
+		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
 	}
 
 }

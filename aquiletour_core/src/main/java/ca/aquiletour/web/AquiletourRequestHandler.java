@@ -97,7 +97,7 @@ public class AquiletourRequestHandler {
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.size() >= 1) {
+		if(path.size() >= 1) {//TODO 
 
 			String courseId = path.getName(0);
 			
