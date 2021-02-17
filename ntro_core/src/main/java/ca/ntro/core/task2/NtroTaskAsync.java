@@ -452,7 +452,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	}
 
 	@Override
-	public synchronized GraphDescription getDescription() {
+	public synchronized GraphDescription getGraphDescription() {
 		GraphDescriptionImpl description = new GraphDescriptionImpl();
 		
 		asGraph().forEachNode(n -> description.addNode(n));
@@ -461,14 +461,4 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		
 		return description;
 	}
-
-	@Override
-	public synchronized void writeGraph(GraphWriter writer) {
-
-		asGraph().forEachNode(n -> n.writeNode(writer));
-
-		asGraph().forEachEdge((from, to) -> writer.addEdge(from, to));
-		
-	}
-	
 }

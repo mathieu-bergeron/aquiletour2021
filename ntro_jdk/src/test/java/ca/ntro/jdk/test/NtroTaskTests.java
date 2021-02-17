@@ -61,7 +61,7 @@ public class NtroTaskTests {
 		
 		NtroTask taskA = new NtroTaskAsyncTest("A");
 		
-		taskA.asGraph().writeGraph(writer);
+		taskA.asGraph().getGraphDescription().write(writer);
 		
 		assertTrue(taskA.equals(taskA));
 
@@ -96,7 +96,7 @@ public class NtroTaskTests {
 		
 		parentTask.addSubTask(childTask);
 		
-		childTask.asGraph().writeGraph(writer);
+		childTask.asGraph().getGraphDescription().write(writer);
 
 		assertTrue(parentTask.asNode().isRoot());
 		assertTrue(parentTask.asNode().isCluster());
@@ -176,7 +176,7 @@ public class NtroTaskTests {
 		assertTrue(otherB.asGraph().isSameGraphAs(taskA.asGraph()));
 		assertTrue(otherB.asGraph().isSameGraphAs(taskB.asGraph()));
 
-		taskB.asGraph().writeGraph(writer);
+		taskB.asGraph().getGraphDescription().write(writer);
 	}
 
 	@Test
@@ -198,7 +198,7 @@ public class NtroTaskTests {
 
 		assertTrue(taskA.asGraph().isSameGraphAs(taskB.asGraph()));
 
-		taskB.asGraph().writeGraph(writer);
+		taskB.asGraph().getGraphDescription().write(writer);
 	}
 
 	@Test
@@ -260,7 +260,7 @@ public class NtroTaskTests {
 		assertTrue(otherC.equals(taskC));
 		assertFalse(otherC.asGraph().isSameGraphAs(taskC.asGraph()));
 		
-		taskD.asGraph().writeGraph(writer);
+		taskD.asGraph().getGraphDescription().write(writer);
 	}
 
 	@Test
@@ -302,7 +302,7 @@ public class NtroTaskTests {
 		taskB2.addNextTask(taskD);
 		taskC.addNextTask(taskD);
 
-		taskC.asGraph().writeGraph(writer);
+		taskC.asGraph().getGraphDescription().write(writer);
 	}
 
 	@After

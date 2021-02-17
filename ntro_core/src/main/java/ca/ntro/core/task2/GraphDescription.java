@@ -2,8 +2,9 @@ package ca.ntro.core.task2;
 
 public interface GraphDescription {
 
-	void addNode(Node n);
-	void addEdge(Node from, Node to);
-	
+	void addNode(NodeDescription node);
+	void addEdge(NodeDescription from, NodeDescription to);
+
+	void write(GraphWriter writer);
 
 }
