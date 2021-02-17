@@ -279,8 +279,31 @@ public class NtroTaskTests {
 	}
 
 	@Test
-	public void mixed() throws IOException {
-		String testName = "mixed";
+	public void simple() throws IOException {
+		String testName = "simple";
+		GraphWriterJdk writer = new GraphWriterJdk(testName);
+		
+		NtroTask taskA = new NtroTaskAsyncTest("A");
+		NtroTask taskB = new NtroTaskAsyncTest("B");
+		NtroTask taskC = new NtroTaskAsyncTest("C");
+		
+		taskA.addSubTask(taskB);
+		taskA.addSubTask(taskC);
+		
+		taskB.addNextTask(taskC);
+		
+		taskC.asGraph().getGraphDescription().write(writer);
+
+		writeFiles(writer, testName);
+		
+		GraphTraceConnector trace = taskC.execute();
+
+		trace.addWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+	}
+
+	@Test
+	public void complex() throws IOException {
+		String testName = "complex";
 		GraphWriterJdk writer = new GraphWriterJdk(testName);
 		
 		NtroTask taskA = new NtroTaskAsyncTest("A");
@@ -322,9 +345,9 @@ public class NtroTaskTests {
 		writeFiles(writer, testName);
 		
 		GraphTraceConnector trace = taskC.execute();
-
 		trace.addWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 	}
+
 
 	@After
 	public void tearDown() {
