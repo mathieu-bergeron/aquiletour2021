@@ -26,6 +26,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private TaskAsync parentTask;
 	
 	private TaskState state = BEFORE_EXECUTION;
+	private GraphTraceImpl trace;
 	
 	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
 	private Map<String, NtroTask> subTasks = NtroCollections.concurrentMap(new HashMap<>());
@@ -432,27 +433,34 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public GraphTraceConnector execute() {
+
 		GraphTraceImpl trace = new GraphTraceImpl();
 		
-		trace.appendGraph(getGraphDescription());
-
-		resumeExecution(trace);
+		execute(trace);
 		
 		return trace;
 	}
+	
+	private void execute(GraphTraceImpl trace) {
+		
+		this.trace = trace;
+
+		trace.appendGraph(getGraphDescription());
+		
+		resumeExecution();
+	}
 
 	
-	private void resumeExecution(GraphTrace trace) {
-		
+	private void resumeExecution() {
 		
 		switch(state) {
 
 			case BEFORE_EXECUTION:
-				launchExecution(trace);
+				launchExecution();
 			break;
 
 			case WAITING_FOR_PARENT:
-				launchPreviousTasks(trace);
+				launchPreviousTasks();
 			break;
 
 			case WAITING_FOR_PREVIOUS_TASKS:
@@ -479,36 +487,36 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		}
 	}
 	
-	private void changeState(TaskState newState, GraphTrace trace) {
+	private void changeState(TaskState newState) {
 		if(state != newState) {
 			state = newState;
 			trace.appendGraph(getGraphDescription());
 		}
 	}
 
-	private void launchExecution(GraphTrace trace) {
+	private void launchExecution() {
 		if(parentTask != null && parentTask.state == BEFORE_EXECUTION) {
 
-			changeState(WAITING_FOR_PARENT, trace);
-			parentTask.resumeExecution(trace);
+			changeState(WAITING_FOR_PARENT);
+			parentTask.execute(trace);
 
 		}else {
 			
-			changeState(WAITING_FOR_PREVIOUS_TASKS, trace);
-			launchPreviousTasks(trace);
+			changeState(WAITING_FOR_PREVIOUS_TASKS);
+			launchPreviousTasks();
 
 		}
 	}
 	
-	private void launchPreviousTasks(GraphTrace trace) {
+	private void launchPreviousTasks() {
 		if(!hasPreviousTasks() || haveFinishedPreviousTasks()) {
 
-			changeState(RUNNING_ENTRY_TASK, trace);
-			resumeExecution(trace);
+			changeState(RUNNING_ENTRY_TASK);
+			resumeExecution();
 			
 		}else {
 
-			forEachPreviousTask(pt -> ((TaskAsync)pt).resumeExecution(trace));
+			forEachPreviousTask(pt -> ((TaskAsync)pt).execute(trace));
 
 		}
 	}
@@ -516,22 +524,60 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private boolean haveFinishedPreviousTasks() {
 		return finishedPreviousTasks.size() == previousTasks.size();
 	}
+
+	private boolean haveFinishedSubTasks() {
+		return finishedSubTasks.size() == subTasks.size();
+	}
+
+	private void launchSubTasks() {
+		if(!hasSubTasks() || haveFinishedSubTasks()) {
+
+			changeState(RUNNING_EXIT_TASK);
+			resumeExecution();
+			
+		}else {
+
+			forEachSubTask(pt -> ((TaskAsync)pt).execute(trace));
+
+		}
+	}
 	
 	@Override
 	public void notifyEntryTaskFinished() {
-		
+		if(state == RUNNING_ENTRY_TASK) {
+			changeState(TaskState.WAITING_FOR_SUB_TASKS);
+			launchSubTasks();
+		}
 	}
 
 	@Override
 	public void notifyExitTaskFinished() {
-		
+		if(state == RUNNING_EXIT_TASK) {
+			changeState(TaskState.AFTER_EXECUTION);
+			notifyTaskFinished();
+			launchNextTasks();
+		}
+	}
+
+	private void notifyTaskFinished() {
+		if(parentTask != null) {
+			parentTask.notifySomeSubTaskFinished(this);
+		}
+
+		forEachNextTask(nt -> ((TaskAsync)nt).notifySomePreviousTaskFinished(this));
+	}
+
+	private void launchNextTasks() {
+		forEachNextTask(nt -> ((TaskAsync)nt).execute(trace));
 	}
 
 	void notifySomePreviousTaskFinished(NtroTask finishedTask) {
-		
+		finishedPreviousTasks.add(finishedTask.getId());
+		onSomePreviousTaskFinished(finishedTask.getId(), finishedTask);
 	}
 
 	void notifySomeSubTaskFinished(NtroTask finishedTask) {
-		
+		finishedSubTasks.add(finishedTask.getId());
+		onSomSubTaskFinished(finishedTask.getId(), finishedTask);
 	}
 }
