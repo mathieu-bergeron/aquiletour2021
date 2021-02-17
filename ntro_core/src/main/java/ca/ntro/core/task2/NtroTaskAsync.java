@@ -425,12 +425,17 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	}
 
 	@Override
+	public synchronized NodeDescription getNodeDescription() {
+		throw new RuntimeException("TODO");
+	}
+
+	@Override
 	public synchronized GraphDescription getGraphDescription() {
 		GraphDescriptionImpl description = new GraphDescriptionImpl();
 		
-		asGraph().forEachNode(n -> description.addNode(n.getDescription()));
+		asGraph().forEachNode(n -> description.addNode(n.getNodeDescription()));
 
-		asGraph().forEachEdge((from, to) -> description.addEdge(from.getDescription(), to.getDescription()));
+		asGraph().forEachEdge((from, to) -> description.addEdge(from.getNodeDescription(), to.getNodeDescription()));
 		
 		return description;
 	}
@@ -441,6 +446,9 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 		
 		trace.appendGraph(getGraphDescription());
 		
+		// FIXME: we still need to check if parentTask
+		//        has finished executing!
+		
 		asGraph().forEachStartNode(n -> {
 			((NtroTaskAsync) n).executeForward(trace);
 		});
@@ -450,6 +458,8 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 
 	
 	private void executeForward(GraphTrace trace) {
+		
+		
 		switch(state) {
 
 			case BEFORE_EXECUTION:
