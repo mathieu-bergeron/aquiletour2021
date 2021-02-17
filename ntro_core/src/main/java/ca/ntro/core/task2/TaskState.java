@@ -3,7 +3,7 @@ package ca.ntro.core.task2;
 public enum TaskState {
 
 	INIT,
-	DELEGATING_TO_PARENT,
+	ASKED_PARENT,
 	WAITING_FOR_PREVIOUS_TASKS,
 	RUNNING_ENTRY_TASK,
 	WAITING_FOR_SUB_TASKS,

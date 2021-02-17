@@ -304,26 +304,13 @@ public class NtroTaskTests {
 		
 		GraphTraceConnector trace = taskC.execute();
 		
-		List<TaskStateDescription> states = new ArrayList<>();
-		
-		trace.addTaskStateListener(new TaskStateListener() {
-			@Override
-			public void onNewTaskState(TaskStateDescription taskState) {
-				states.add(taskState);
-				if(taskState.getId().equals("A") 
-						&& taskState.getState().equals(TaskState.DONE)) {
-					
-					assertTrue(states.contains(new TaskStateDescriptionImpl("B",TaskState.DONE)));
-					assertTrue(states.contains(new TaskStateDescriptionImpl("C",TaskState.DONE)));
-				}
+		TraceTester traceTester = new TraceTester();
 
-				if(taskState.getId().equals("C") 
-						&& taskState.getState().equals(TaskState.DONE)) {
-					
-					assertTrue(states.contains(new TaskStateDescriptionImpl("B",TaskState.DONE)));
-				}
-			}
-		});
+		traceTester.mustFinishBefore("B", "A");
+		traceTester.mustFinishBefore("C", "A");
+		traceTester.mustFinishBefore("B", "C");
+
+		trace.addTaskStateListener(traceTester);
 
 		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 	}
@@ -371,7 +358,32 @@ public class NtroTaskTests {
 
 		writeFiles(writer, testName);
 		
-		GraphTraceConnector trace = taskB3.execute();
+		//GraphTraceConnector trace = taskB3.execute();
+		GraphTraceConnector trace = taskD.execute();
+		
+		TraceTester traceTester = new TraceTester();
+
+		traceTester.mustFinishBefore("A1", "A");
+		traceTester.mustFinishBefore("A2", "A");
+		traceTester.mustFinishBefore("A3", "A");
+		traceTester.mustFinishBefore("A1", "A3");
+		traceTester.mustFinishBefore("A1", "A2");
+		traceTester.mustFinishBefore("A", "B");
+		traceTester.mustFinishBefore("A1", "B");
+		traceTester.mustFinishBefore("A2", "B");
+		traceTester.mustFinishBefore("A3", "B");
+		traceTester.mustFinishBefore("B", "C");
+		traceTester.mustFinishBefore("B1", "B");
+		traceTester.mustFinishBefore("B2", "B");
+		traceTester.mustFinishBefore("B3", "B");
+		traceTester.mustFinishBefore("B1", "B3");
+		traceTester.mustFinishBefore("B2", "B3");
+		traceTester.mustFinishBefore("C", "D");
+		traceTester.mustFinishBefore("B2", "D");
+
+		trace.addTaskStateListener(traceTester);
+		
+		
 		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 		
 	}
