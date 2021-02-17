@@ -435,7 +435,9 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	public GraphTraceConnector execute() {
 
 		GraphTraceImpl trace = new GraphTraceImpl();
-		
+
+		trace.appendGraph(getGraphDescription());
+
 		execute(trace);
 		
 		return trace;
@@ -444,8 +446,6 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	private void execute(GraphTraceImpl trace) {
 		
 		this.trace = trace;
-
-		trace.appendGraph(getGraphDescription());
 		
 		resumeExecution();
 	}
@@ -464,9 +464,12 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 			break;
 
 			case WAITING_FOR_PREVIOUS_TASKS:
+				changeState(RUNNING_ENTRY_TASK);
+				resumeExecution();
 			break;
 
 			case RUNNING_ENTRY_TASK:
+				runEntryTaskAsync();
 			break;
 
 			case WAITING_FOR_SUB_TASKS:
