@@ -1,0 +1,14 @@
+<svg width="267px" height="62px"
+ viewBox="0.00 0.00 266.80 61.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 57.7401)">
+<title>simpleTask</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-57.7401 262.8011,-57.7401 262.8011,4 -4,4"/>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="129.4005" cy="-26.8701" rx="129.3012" ry="26.7407"/>
+<text text-anchor="middle" x="129.4005" y="-30.6701" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+<text text-anchor="middle" x="129.4005" y="-15.6701" font-family="Times,serif" font-size="14.00" fill="#000000">BEFORE_EXECUTION</text>
+</g>
+</g>
+</svg>

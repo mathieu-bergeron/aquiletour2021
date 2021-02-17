@@ -5,8 +5,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.ntro.core.task2.GraphTraceConnector;
 import ca.ntro.core.task2.NtroTask;
 import ca.ntro.jdk.NtroJdk;
+import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
 
 import static org.junit.Assert.assertFalse;
@@ -17,7 +19,7 @@ import java.io.IOException;
 
 public class NtroTaskTests {
 	
-	private static File taskDir = new File("__tasks__");
+	private static File graphDir = new File("__task_graphs__");
 
 	@BeforeClass
 	public static void initializeNtro() {
@@ -26,11 +28,11 @@ public class NtroTaskTests {
 
 	@BeforeClass
 	public static void initializeTaskDir() {
-		if(taskDir.exists()) {
-			deleteDir(taskDir);
+		if(graphDir.exists()) {
+			deleteDir(graphDir);
 		}
 		
-		taskDir.mkdirs();
+		graphDir.mkdirs();
 	}
 
 	private static void deleteDir(File aDir) {
@@ -41,7 +43,7 @@ public class NtroTaskTests {
 			File file = new File(aDir, fileName);
 			
 			if(file.isDirectory()) {
-				deleteDir(aDir);
+				deleteDir(file);
 			}else {
 				file.delete();
 			}
@@ -52,6 +54,14 @@ public class NtroTaskTests {
 	
 	@Before
 	public void setUp() {
+	}
+
+	private void writeFiles(GraphWriterJdk writer, String testName) throws IOException {
+		File svgFile = new File(graphDir, testName + ".svg");
+		File dotFile = new File(graphDir, testName + ".dot");
+		
+		writer.toSvg(svgFile);
+		writer.toDot(dotFile);
 	}
 	
 	@Test
@@ -83,7 +93,7 @@ public class NtroTaskTests {
 		
 		assertFalse(taskA.equals(taskB));
 
-		writer.toFile(new File(taskDir, testName + ".png"));
+		writeFiles(writer, testName);
 	}
 
 	@Test
@@ -143,8 +153,7 @@ public class NtroTaskTests {
 		assertFalse(biggerChild.equals(childTask));
 		assertFalse(biggerParent.asGraph().isSameGraphAs(parentTask.asGraph()));
 		
-
-		writer.toFile(new File(taskDir, testName + ".png"));
+		writeFiles(writer, testName);
 	}
 
 	@Test
@@ -177,6 +186,8 @@ public class NtroTaskTests {
 		assertTrue(otherB.asGraph().isSameGraphAs(taskB.asGraph()));
 
 		taskB.asGraph().getGraphDescription().write(writer);
+
+		writeFiles(writer, testName);
 	}
 
 	@Test
@@ -199,6 +210,8 @@ public class NtroTaskTests {
 		assertTrue(taskA.asGraph().isSameGraphAs(taskB.asGraph()));
 
 		taskB.asGraph().getGraphDescription().write(writer);
+
+		writeFiles(writer, testName);
 	}
 
 	@Test
@@ -261,6 +274,8 @@ public class NtroTaskTests {
 		assertFalse(otherC.asGraph().isSameGraphAs(taskC.asGraph()));
 		
 		taskD.asGraph().getGraphDescription().write(writer);
+
+		writeFiles(writer, testName);
 	}
 
 	@Test
@@ -303,6 +318,12 @@ public class NtroTaskTests {
 		taskC.addNextTask(taskD);
 
 		taskC.asGraph().getGraphDescription().write(writer);
+
+		writeFiles(writer, testName);
+		
+		GraphTraceConnector trace = taskC.execute();
+
+		trace.addWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 	}
 
 	@After

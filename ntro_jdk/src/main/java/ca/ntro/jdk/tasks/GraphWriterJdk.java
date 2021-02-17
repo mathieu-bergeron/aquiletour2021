@@ -34,9 +34,16 @@ public class GraphWriterJdk implements GraphWriter {
 				.graphAttrs().add("compound", "true");
 	}
 
-	public void toFile(File file) throws IOException {
-		System.out.println(graph);
+	public void toPng(File file) throws IOException {
 		Graphviz.fromGraph(graph).render(Format.PNG).toFile(file);
+	}
+
+	public void toSvg(File file) throws IOException {
+		Graphviz.fromGraph(graph).render(Format.SVG).toFile(file);
+	}
+
+	public void toDot(File file) throws IOException {
+		Graphviz.fromGraph(graph).render(Format.DOT).toFile(file);
 	}
 
 	@Override

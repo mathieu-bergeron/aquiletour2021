@@ -428,9 +428,9 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	public synchronized GraphDescription getGraphDescription() {
 		GraphDescriptionImpl description = new GraphDescriptionImpl();
 		
-		asGraph().forEachNode(n -> description.addNode(n));
+		asGraph().forEachNode(n -> description.addNode(n.getDescription()));
 
-		asGraph().forEachEdge((from, to) -> description.addEdge(from, to));
+		asGraph().forEachEdge((from, to) -> description.addEdge(from.getDescription(), to.getDescription()));
 		
 		return description;
 	}
@@ -438,6 +438,8 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 	@Override
 	public GraphTraceConnector execute() {
 		GraphTraceImpl trace = new GraphTraceImpl();
+		
+		trace.appendGraph(getGraphDescription());
 		
 		asGraph().forEachStartNode(n -> {
 			((NtroTaskAsync) n).executeForward(trace);
@@ -473,7 +475,7 @@ public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 			break;
 			
 			default:
-				Log.fatalError("resumeExecution should not get here");
+				Log.fatalError("NtroTask.executeForward should not get here");
 			break;
 		}
 	}

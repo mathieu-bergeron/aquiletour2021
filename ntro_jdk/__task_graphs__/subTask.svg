@@ -1,0 +1,20 @@
+<svg width="299px" height="132px"
+ viewBox="0.00 0.00 298.80 132.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 128)">
+<title>subTask</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-128 294.8011,-128 294.8011,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_parent</title>
+<polygon fill="none" stroke="#000000" points="8,-8 8,-116 282.8011,-116 282.8011,-8 8,-8"/>
+<text text-anchor="middle" x="145.4005" y="-100.8" font-family="Times,serif" font-size="14.00" fill="#000000">parent</text>
+<text text-anchor="middle" x="145.4005" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">BEFORE_EXECUTION</text>
+</g>
+<!-- child -->
+<g id="node1" class="node">
+<title>child</title>
+<ellipse fill="none" stroke="#000000" cx="145.4005" cy="-43" rx="129.3012" ry="26.7407"/>
+<text text-anchor="middle" x="145.4005" y="-46.8" font-family="Times,serif" font-size="14.00" fill="#000000">child</text>
+<text text-anchor="middle" x="145.4005" y="-31.8" font-family="Times,serif" font-size="14.00" fill="#000000">BEFORE_EXECUTION</text>
+</g>
+</g>
+</svg>

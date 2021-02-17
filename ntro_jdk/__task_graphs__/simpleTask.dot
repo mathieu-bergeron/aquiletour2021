@@ -1,0 +1,4 @@
+digraph "simpleTask" {
+graph ["rankdir"="LR","compound"="true"]
+"A" ["label"="A\nBEFORE_EXECUTION"]
+}

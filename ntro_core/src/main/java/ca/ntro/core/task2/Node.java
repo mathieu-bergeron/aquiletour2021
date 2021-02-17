@@ -15,4 +15,6 @@ public interface Node extends NodeDescription {
 	
 	NtroTask asTask();
 
+	NodeDescription getDescription();
+
 }

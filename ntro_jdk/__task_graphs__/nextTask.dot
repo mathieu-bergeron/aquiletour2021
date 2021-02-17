@@ -1,0 +1,6 @@
+digraph "nextTask" {
+graph ["rankdir"="LR","compound"="true"]
+"A" ["label"="A\nBEFORE_EXECUTION"]
+"B" ["label"="B\nBEFORE_EXECUTION"]
+"A" -> "B"
+}
