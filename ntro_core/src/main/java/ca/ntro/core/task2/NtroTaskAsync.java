@@ -18,12 +18,12 @@ import static ca.ntro.core.task2.TaskState.RUNNING_EXIT_TASK;
 import static ca.ntro.core.task2.TaskState.DONE;
 import static ca.ntro.core.task2.TaskState.DELETED;
 
-public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
+public abstract class NtroTaskAsync implements NtroTask, TaskGraph, Node {
 
 	private static Map<String, Integer> classIds = new HashMap<>();
 	
 	private String taskId;
-	private TaskAsync parentTask;
+	private NtroTaskAsync parentTask;
 	
 	private TaskState state = INIT;
 	private GraphTraceImpl trace;
@@ -41,7 +41,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	protected abstract void onSomSubTaskFinished(String taskId, NtroTask subTask);
 	protected abstract void onFailure(Exception e);
 
-	public TaskAsync() {
+	public NtroTaskAsync() {
 		this.taskId = generateId();
 	}
 	
@@ -59,7 +59,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		return myClassName + "$" + suffix;
 	}
 
-	public TaskAsync(String taskId) {
+	public NtroTaskAsync(String taskId) {
 		this.taskId = taskId;
 	}
 	
@@ -80,7 +80,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public void setParentTask(NtroTask parentTask) {
-		this.parentTask = (TaskAsync) parentTask;
+		this.parentTask = (NtroTaskAsync) parentTask;
 	}
 
 	public NtroTask getParentTask() {
@@ -116,10 +116,10 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		}else {
 
 			if(parentTask != null) {
-				((TaskAsync) parentTask).visitStartNodes(visitedNodes, lambda);
+				((NtroTaskAsync) parentTask).visitStartNodes(visitedNodes, lambda);
 			}
 
-			forEachPreviousTask(pt -> ((TaskAsync) pt).visitStartNodes(visitedNodes, lambda));
+			forEachPreviousTask(pt -> ((NtroTaskAsync) pt).visitStartNodes(visitedNodes, lambda));
 		}
 	}
 
@@ -128,7 +128,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		Set<Node> visitedNodes = new HashSet<>();
 
-		forEachStartNode(sn -> ((TaskAsync)sn).visitReachableNodes(visitedNodes, lambda));
+		forEachStartNode(sn -> ((NtroTaskAsync)sn).visitReachableNodes(visitedNodes, lambda));
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	public synchronized void forEachSubNodeTransitive(NodeLambda lambda) {
 		Set<Node> visitedNodes = new HashSet<>();
 
-		forEachSubTask(st -> ((TaskAsync) st).visitSubNodes(visitedNodes, lambda));
+		forEachSubTask(st -> ((NtroTaskAsync) st).visitSubNodes(visitedNodes, lambda));
 	}
 	
 	private synchronized void visitSubNodes(Set<Node> visitedNodes, NodeLambda lambda) {
@@ -149,7 +149,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		lambda.execute(this);
 
-		forEachSubTask(st -> ((TaskAsync) st).visitSubNodes(visitedNodes, lambda));
+		forEachSubTask(st -> ((NtroTaskAsync) st).visitSubNodes(visitedNodes, lambda));
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	public synchronized void forEachNextNodeTransitive(NodeLambda lambda) {
 		Set<Node> visitedNodes = new HashSet<>();
 
-		forEachNextTask(st -> ((TaskAsync) st).visitNextNodes(visitedNodes, lambda));
+		forEachNextTask(st -> ((NtroTaskAsync) st).visitNextNodes(visitedNodes, lambda));
 	}
 
 	private synchronized void visitNextNodes(Set<Node> visitedNodes, NodeLambda lambda) {
@@ -170,7 +170,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		lambda.execute(this);
 
-		forEachNextTask(st -> ((TaskAsync) st).visitNextNodes(visitedNodes, lambda));
+		forEachNextTask(st -> ((NtroTaskAsync) st).visitNextNodes(visitedNodes, lambda));
 	}
 
 	@Override
@@ -183,8 +183,8 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	public synchronized void forEachReachableNodeTransitive(NodeLambda lambda) {
 		Set<Node> visitedNodes = new HashSet<>();
 
-		forEachSubTask(st -> ((TaskAsync) st).visitReachableNodes(visitedNodes, lambda));
-		forEachNextTask(nt -> ((TaskAsync) nt).visitReachableNodes(visitedNodes, lambda));
+		forEachSubTask(st -> ((NtroTaskAsync) st).visitReachableNodes(visitedNodes, lambda));
+		forEachNextTask(nt -> ((NtroTaskAsync) nt).visitReachableNodes(visitedNodes, lambda));
 	}
 	
 	@Override 
@@ -199,8 +199,8 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		lambda.execute(this);
 
-		forEachSubTask(st -> ((TaskAsync)st).visitReachableNodes(visitedNodes, lambda));
-		forEachNextTask(nt -> ((TaskAsync)nt).visitReachableNodes(visitedNodes, lambda));
+		forEachSubTask(st -> ((NtroTaskAsync)st).visitReachableNodes(visitedNodes, lambda));
+		forEachNextTask(nt -> ((NtroTaskAsync)nt).visitReachableNodes(visitedNodes, lambda));
 	}
 	
 	@Override
@@ -208,18 +208,18 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
 		Set<NtroTask> visitedNodes = new HashSet<>();
 
-		forEachStartNode(sn -> ((TaskAsync)sn).visitAllEdges(visitedNodes, lambda));
+		forEachStartNode(sn -> ((NtroTaskAsync)sn).visitAllEdges(visitedNodes, lambda));
 	}
 
 	private synchronized void visitAllEdges(Set<NtroTask> visitedNodes, EdgeLambda lambda) {
 		if(visitedNodes.contains(this)) return;
 		visitedNodes.add(this);
 
-		forEachSubTask(st -> ((TaskAsync)st).visitAllEdges(visitedNodes, lambda));
+		forEachSubTask(st -> ((NtroTaskAsync)st).visitAllEdges(visitedNodes, lambda));
 
 		forEachNextTask(nt -> {
 			lambda.execute(this.asNode(), nt.asNode());
-			((TaskAsync)nt).visitAllEdges(visitedNodes, lambda);
+			((NtroTaskAsync)nt).visitAllEdges(visitedNodes, lambda);
 		});
 	}
 
@@ -369,8 +369,8 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(this == otherObject) return true;
 		if(otherObject == null) return false;
 
-		if(otherObject instanceof TaskAsync) {
-			TaskAsync otherTask = (TaskAsync) otherObject;
+		if(otherObject instanceof NtroTaskAsync) {
+			NtroTaskAsync otherTask = (NtroTaskAsync) otherObject;
 			
 			if(!getId().equals(otherTask.getId())) return false;
 			
@@ -553,7 +553,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		}else {
 
 			changeState(WAITING_FOR_PREVIOUS_TASKS);
-			forEachPreviousTask(pt -> ((TaskAsync)pt).execute(trace));
+			forEachPreviousTask(pt -> ((NtroTaskAsync)pt).execute(trace));
 
 		}
 	}
@@ -575,7 +575,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		}else {
 
 			changeState(WAITING_FOR_SUB_TASKS);
-			forEachSubTask(pt -> ((TaskAsync)pt).execute(trace));
+			forEachSubTask(pt -> ((NtroTaskAsync)pt).execute(trace));
 
 		}
 	}
@@ -590,7 +590,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	@Override
 	public void notifyExitTaskFinished() {
 		if(state == RUNNING_EXIT_TASK) {
-			changeState(TaskState.DONE);
+			changeState(DONE);
 			notifyTaskFinished();
 			launchNextTasks();
 		}
@@ -602,11 +602,11 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 			parentTask.execute(trace);
 		}
 
-		forEachNextTask(nt -> ((TaskAsync)nt).notifySomePreviousTaskFinished(this));
+		forEachNextTask(nt -> ((NtroTaskAsync)nt).notifySomePreviousTaskFinished(this));
 	}
 
 	private void launchNextTasks() {
-		forEachNextTask(nt -> ((TaskAsync)nt).execute(trace));
+		forEachNextTask(nt -> ((NtroTaskAsync)nt).execute(trace));
 	}
 
 	void notifySomePreviousTaskFinished(NtroTask finishedTask) {
@@ -660,30 +660,30 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		}
 
 		forEachPreviousTask(pt -> {
-			((TaskAsync)pt).replaceNextTaskWith(this.getId(), replacementTask);
+			((NtroTaskAsync)pt).replaceNextTaskWith(this.getId(), replacementTask);
 			replacementTask.addPreviousTask(pt, pt.getId());
 		});
 		
 		forEachNextTask(nt -> {
-			((TaskAsync)nt).replacePreviousTaskWith(this.getId(), replacementTask);
-			((TaskAsync)nt).state = INIT;
+			((NtroTaskAsync)nt).replacePreviousTaskWith(this.getId(), replacementTask);
+			((NtroTaskAsync)nt).state = INIT;
 			replacementTask.addNextTask(nt, nt.getId());
 		});
 		
 		this.deleteTask();
 
 		if(shouldExecuteReplacement) {
-			finishedPreviousTasks.forEach(ft -> ((TaskAsync)replacementTask).notifySomePreviousTaskFinished(ft));
-			((TaskAsync)replacementTask).appendCurrentStateToTrace(trace);
-			((TaskAsync)replacementTask).execute(trace);
+			finishedPreviousTasks.forEach(ft -> ((NtroTaskAsync)replacementTask).notifySomePreviousTaskFinished(ft));
+			((NtroTaskAsync)replacementTask).appendCurrentStateToTrace(trace);
+			((NtroTaskAsync)replacementTask).execute(trace);
 		}
 	}
 
 	private void deleteSubTasksTransitive() {
 		forEachSubTask(st -> {
-			((TaskAsync)st).forEachPreviousTask(pt -> ((TaskAsync)pt).deleteNextTask(st.getId()));
-			((TaskAsync)st).forEachNextTask(nt -> ((TaskAsync)nt).deletePreviousTask(st.getId()));
-			((TaskAsync)st).deleteSubTasksTransitive();
+			((NtroTaskAsync)st).forEachPreviousTask(pt -> ((NtroTaskAsync)pt).deleteNextTask(st.getId()));
+			((NtroTaskAsync)st).forEachNextTask(nt -> ((NtroTaskAsync)nt).deletePreviousTask(st.getId()));
+			((NtroTaskAsync)st).deleteSubTasksTransitive();
 		});
 	}
 	
@@ -707,7 +707,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(finishedSubTasks.contains(id)) {
 			finishedSubTasks.remove(id);
 			state = INIT;
-			forEachNextTask(nt -> ((TaskAsync)nt).removeFinishedPreviousTask(this.getId()));
+			forEachNextTask(nt -> ((NtroTaskAsync)nt).removeFinishedPreviousTask(this.getId()));
 		}
 	}
 
@@ -729,7 +729,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(finishedPreviousTasks.contains(id)) {
 			finishedPreviousTasks.remove(id);
 			state = INIT;
-			forEachNextTask(nt -> ((TaskAsync)nt).removeFinishedPreviousTask(this.getId()));
+			forEachNextTask(nt -> ((NtroTaskAsync)nt).removeFinishedPreviousTask(this.getId()));
 		}
 	}
 
@@ -762,7 +762,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(foundNode == null) {
 			synchronized(previousTasks) {
 				for(NtroTask previousTask : previousTasks.values()) {
-					foundNode = ((TaskAsync) previousTask).findNodeById(id, visitedNodes);
+					foundNode = ((NtroTaskAsync) previousTask).findNodeById(id, visitedNodes);
 					if(foundNode != null) break;
 				}
 			}
@@ -771,7 +771,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(foundNode == null) {
 			synchronized(subTasks) {
 				for(NtroTask subTask : subTasks.values()) {
-					foundNode = ((TaskAsync) subTask).findNodeById(id, visitedNodes);
+					foundNode = ((NtroTaskAsync) subTask).findNodeById(id, visitedNodes);
 					if(foundNode != null) break;
 				}
 			}
@@ -780,7 +780,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(foundNode == null) {
 			synchronized(nextTasks) {
 				for(NtroTask nextTask : nextTasks.values()) {
-					foundNode = ((TaskAsync) nextTask).findNodeById(id, visitedNodes);
+					foundNode = ((NtroTaskAsync) nextTask).findNodeById(id, visitedNodes);
 					if(foundNode != null) break;
 				}
 			}

@@ -17,7 +17,7 @@
 
 package ca.ntro.core.tasks;
 
-public enum State {
+public enum TaskState {
 
 	INITIALIZING,
 	EXECUTE_PREVIOUS_TASKS,

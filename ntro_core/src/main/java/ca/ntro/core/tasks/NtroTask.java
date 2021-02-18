@@ -9,7 +9,7 @@ public interface NtroTask {
 	NtroTask addPreviousTask(NtroTask task);
 	NtroTask addNextTask(NtroTask task);
 	void notifySomePreviousTaskFinished();
-	State getState();
+	TaskState getState();
 	boolean hasId(String id);
 	void addSubTask(NtroTask task);
 	void notifySomeSubTaskFinished();

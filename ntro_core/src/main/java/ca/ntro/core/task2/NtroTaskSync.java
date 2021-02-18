@@ -1,6 +1,6 @@
 package ca.ntro.core.task2;
 
-public abstract class TaskSync extends TaskAsync {
+public abstract class NtroTaskSync extends NtroTaskAsync {
 	
 	protected abstract void runEntryTask();
 	protected abstract void runExitTask();

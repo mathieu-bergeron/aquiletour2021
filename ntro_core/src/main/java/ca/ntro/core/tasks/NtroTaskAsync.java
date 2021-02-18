@@ -41,7 +41,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 	private List<NtroTask> nextTasks = new ArrayList<>();
 
-	private State state = State.INITIALIZING;
+	private TaskState state = TaskState.INITIALIZING;
 
 	private String taskId;
 
@@ -94,7 +94,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public void reset() {
 		// FIXME: this requires more thought
 
-		state = State.INITIALIZING;
+		state = TaskState.INITIALIZING;
 
 		for(NtroTask subTask : subTasks) {
 			subTask.reset();
@@ -110,13 +110,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public void execute() {
 		//__T.call(this, "execute");
 
-		if(state == State.INITIALIZING) {
+		if(state == TaskState.INITIALIZING) {
 			startExecution();
 		}
 	}
 
 	@Override
-	public State getState() {
+	public TaskState getState() {
 		return state;
 	}
 
@@ -124,20 +124,20 @@ public abstract class NtroTaskAsync implements NtroTask {
 		//__T.call(this, "startExecution");
 
 		if(parentTask != null
-				&& parentTask.getState() == State.INITIALIZING) {
+				&& parentTask.getState() == TaskState.INITIALIZING) {
 
 			parentTask.execute();
 
 		}else {
 
-			state = State.EXECUTE_PREVIOUS_TASKS;
+			state = TaskState.EXECUTE_PREVIOUS_TASKS;
 			resumeExecution();
 		}
 	}
 
 	@Override
 	public void setParentTask(NtroTask parentTask) {
-		if(state == State.INITIALIZING) {
+		if(state == TaskState.INITIALIZING) {
 			this.parentTask = parentTask;
 		}else {
 			throw new IllegalStateException("Task.setParentTask called on state " + state);
@@ -153,7 +153,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				if(ifShouldExecutePreviousTasks()) {
 					executePreviousTasks();
 				}else {
-					state = State.EXECUTE_SUB_TASKS;
+					state = TaskState.EXECUTE_SUB_TASKS;
 					resumeExecution();
 				}
 				break;
@@ -162,7 +162,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				if(ifShouldExecuteSubTasks()) {
 					executeSubTasks();
 				}else {
-					state = State.EXECUTE_CURRENT_TASK;
+					state = TaskState.EXECUTE_CURRENT_TASK;
 					resumeExecution();
 				}
 				break;
@@ -173,7 +173,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 			case EXECUTE_NEXT_TASKS:
 				executeNextTasks();
-				state = State.DONE;
+				state = TaskState.DONE;
 				break;
 
 			case DONE:
@@ -198,7 +198,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 		finishedPreviousTasks++;
 
-		if(state == State.EXECUTE_PREVIOUS_TASKS) {
+		if(state == TaskState.EXECUTE_PREVIOUS_TASKS) {
 			resumeExecution();
 		}
 	}
@@ -210,7 +210,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			parentTask.notifySomeSubTaskFinished();
 		}
 
-		state = State.EXECUTE_NEXT_TASKS;
+		state = TaskState.EXECUTE_NEXT_TASKS;
 		resumeExecution();
 	}
 
@@ -231,7 +231,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 		finishedSubTasks++;
 
 		if(finishedSubTasks == subTasks.size()) {
-			state = State.EXECUTE_CURRENT_TASK;
+			state = TaskState.EXECUTE_CURRENT_TASK;
 			resumeExecution();
 		}
 	}
@@ -241,7 +241,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 		for(NtroTask nextTask : nextTasks) {
 			nextTask.notifySomePreviousTaskFinished();
-			if(nextTask.getState() == State.INITIALIZING) {
+			if(nextTask.getState() == TaskState.INITIALIZING) {
 				nextTask.execute();
 			}
 		}
@@ -332,7 +332,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public NtroTask addPreviousTask(NtroTask task) {
 		String taskId = task.getTaskId();
 
-		if(state == State.INITIALIZING) {
+		if(state == TaskState.INITIALIZING) {
 			if(!hasPreviousTask(taskId)) {
 				previousTasks.add(task);
 				task.addNextTask(this);
@@ -354,7 +354,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				//      we have a ConcurrentModification exception
 				previousTasks.set(existingPreviousTaskIndex, task);
 				
-				((NtroTaskAsync)task).state = State.EXECUTE_PREVIOUS_TASKS;
+				((NtroTaskAsync)task).state = TaskState.EXECUTE_PREVIOUS_TASKS;
 				((NtroTaskAsync)task).resumeExecution();
 			}
 
@@ -367,7 +367,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 
 	@Override
 	public NtroTask addNextTask(NtroTask task) {
-		if(state == State.INITIALIZING) {
+		if(state == TaskState.INITIALIZING) {
 			if(!nextTasks.contains(task)) {
 				nextTasks.add(task);
 				task.addPreviousTask(this);
@@ -401,7 +401,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public void addSubTask(NtroTask task) {
 		String taskId = task.getTaskId();
 
-		if(state == State.INITIALIZING) {
+		if(state == TaskState.INITIALIZING) {
 			if(!hasSubTask(taskId)) {
 				task.setParentTask(this);
 				subTasks.add(task);
@@ -418,7 +418,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				//      we have a ConcurrentModification exception
 				subTasks.set(existingSubTaskIndex, task);
 				
-				((NtroTaskAsync)task).state = State.EXECUTE_PREVIOUS_TASKS;
+				((NtroTaskAsync)task).state = TaskState.EXECUTE_PREVIOUS_TASKS;
 				((NtroTaskAsync)task).resumeExecution();
 			}
 		}else {
