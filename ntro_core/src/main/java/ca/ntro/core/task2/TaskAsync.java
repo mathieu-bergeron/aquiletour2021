@@ -721,6 +721,9 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(finishedPreviousTasks.contains(id)) {
 			finishedPreviousTasks.remove(id);
 			state = INIT;
+			
+			// FIXME: this needs to be transitive
+			//        if we are INIT, the our reachableTasks are INIT as well
 		}
 	}
 
