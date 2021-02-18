@@ -656,6 +656,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		if(parentTask != null) {
 			parentTask.replaceSubTaskWith(getId(), replacementTask);
+			//parentTask.resetNodeTransitive();
 			replacementTask.setParentTask(parentTask);
 		}
 
