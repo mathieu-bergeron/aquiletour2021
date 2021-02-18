@@ -6,6 +6,7 @@ public class Appointment extends NtroModelValue {
 	
 	private String appointmentId;
 	private String time;
+	
 
 	public String getAppointmentId() {
 		return appointmentId;

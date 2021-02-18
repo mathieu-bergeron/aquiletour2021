@@ -1,24 +1,15 @@
 package ca.aquiletour.core.pages.root;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.mvc.MessageHandler;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageHandler;
 
-public class QuitMessageHandler extends MessageHandler {
-
-	@Override
-	protected void initializeTask() {
-	}
+public class QuitMessageHandler extends MessageHandler<RootController, QuitMessage> {
 
 	@Override
-	protected void runTaskAsync() {
+	protected void handle(QuitMessage message) {
 		T.call(this);
 
 		Ntro.appCloser().close();
 	}
-
-	@Override
-	protected void onFailure(Exception e) {
-	}
-
 }

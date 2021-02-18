@@ -51,7 +51,7 @@ public class Path {
 		Path path = null;
 		
 		if(ifValidIndices(beginIndex, endIndex)) {
-			path = new Path(names.subList(beginIndex, endIndex));
+			path = new Path(names.subList(beginIndex, endIndex+1));
 		}else {
 			path = new Path(new ArrayList<>());
 		}
@@ -92,5 +92,30 @@ public class Path {
 		}
 
 		return remainder;
+	}
+
+	public String getName(int index) {
+		T.call(this);
+		
+		String name = null;
+		
+		if(ifIndexValid(index)) {
+
+			name = names.get(index);
+		}
+
+		return name;
+	}
+
+	private boolean ifIndexValid(int index) {
+		T.call(this);
+
+		return index >= 0 && index < names.size();
+	}
+
+	public int size() {
+		T.call(this);
+		
+		return names.size();
 	}
 }

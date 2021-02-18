@@ -34,14 +34,33 @@ public class ViewLoaderFx extends ViewLoader {
 	private ResourceBundle strings;
 	private Parent parent;
 	private FXMLLoader loader;
+	
+	public ViewLoaderFx() {
+		T.call(this);
+	}
+
+	public ViewLoaderFx(URL fxmlUrl, 
+			            URL cssUrl, 
+			            ResourceBundle strings, 
+			            Parent parent,
+			            FXMLLoader loader) {
+		T.call(this);
+
+		this.fxmlUrl = fxmlUrl;
+		this.cssUrl = cssUrl;
+		this.strings = strings;
+		this.parent = parent;
+		this.loader = loader;
+	}
 
 	@Override
 	protected void initializeTask() {
 	}
 
 	@Override
-	protected void runTask() {
+	protected void runTaskAsync() {
 		T.call(this);
+		notifyTaskFinished();
 	}
 
 	@Override
@@ -114,5 +133,10 @@ public class ViewLoaderFx extends ViewLoader {
 		view.setParent(parent);
 		
 		return view;
+	}
+
+	@Override
+	protected ViewLoader clone() {
+		return new ViewLoaderFx(fxmlUrl, cssUrl, strings, parent, loader);
 	}
 }

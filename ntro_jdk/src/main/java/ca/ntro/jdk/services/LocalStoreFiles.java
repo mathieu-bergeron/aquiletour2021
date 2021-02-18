@@ -1,11 +1,5 @@
 package ca.ntro.jdk.services;
 
-import org.dizitart.no2.Document;
-import org.dizitart.no2.Nitrite;
-import org.dizitart.no2.NitriteCollection;
-
-import static org.dizitart.no2.filters.Filters.eq;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.dizitart.no2.Cursor;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
@@ -27,6 +19,7 @@ import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.json.JsonLoaderFiles;
 
 public class LocalStoreFiles extends ModelStore {
 	
@@ -55,29 +48,8 @@ public class LocalStoreFiles extends ModelStore {
 		T.call(this);
 		
 		File modelFile = getModelFile(documentPath);
-		
-		JsonObject jsonObject = null;
-		
-		if(modelFile.exists()) {
-			
-			try {
 
-				jsonObject = JsonParser.fromStream(new FileInputStream(modelFile));
-
-			} catch (FileNotFoundException e) {
-				
-				Log.fatalError("Cannot load " + modelFile.toString(), e);
-			}
-
-		}else {
-
-			// XXX: create document if none exists
-			jsonObject = JsonParser.jsonObject();
-
-			writeJsonFile(modelFile, jsonObject);
-		}
-
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonObject);
+		JsonLoader jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
 		
 		return jsonLoader;
 	}

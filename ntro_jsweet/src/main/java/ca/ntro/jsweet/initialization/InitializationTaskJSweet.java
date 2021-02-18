@@ -38,6 +38,7 @@ import ca.ntro.jsweet.services.AppCloserJSweet;
 import ca.ntro.jsweet.services.JsonParserJSweet;
 import ca.ntro.jsweet.services.LocalStoreJSweet;
 import ca.ntro.jsweet.services.LoggerJSweet;
+import ca.ntro.jsweet.services.NetworkStoreJSweet;
 import ca.ntro.jsweet.services.NtroCollectionsJSweet;
 import ca.ntro.jsweet.services.ResourceLoaderJSweet;
 import ca.ntro.jsweet.services.ValueFormatterJSweet;
@@ -131,5 +132,13 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideLocalStore");
 
 		return new LocalStoreJSweet();
+	}
+
+
+	@Override
+	protected ModelStore provideNetworkStore() {
+		__T.call(this, "provideNetworkStore");
+
+		return new NetworkStoreJSweet();
 	}
 }

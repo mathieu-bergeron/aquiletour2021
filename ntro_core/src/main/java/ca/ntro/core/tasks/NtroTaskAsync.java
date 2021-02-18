@@ -17,36 +17,63 @@
 
 package ca.ntro.core.tasks;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import ca.ntro.core.system.trace.T;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.__T;
+import jsweet.util.StringTypes.pre;
 
 public abstract class NtroTaskAsync implements NtroTask {
+	
+	private boolean  REPLACE_TASKS_WHILE_EXECUTING = true;
 
 	private NtroTask parentTask;
 
-	private Set<NtroTask> previousTasks = new HashSet<>();
+	// XXX: must be ArrayList since we need to
+	//      replace tasks while interating over lists
+	//      (w/o running into a ConcurrentModification exception)
+	private List<NtroTask> previousTasks = new ArrayList<>();
 	private int finishedPreviousTasks = 0;
 
-	private Set<NtroTask> subTasks = new HashSet<>();
+	private List<NtroTask> subTasks = new ArrayList<>();
 	private int finishedSubTasks = 0;
 
-	private Set<NtroTask> nextTasks = new HashSet<>();
+	private List<NtroTask> nextTasks = new ArrayList<>();
 
 	private State state = State.INITIALIZING;
-	
+
 	private String taskId;
-	
+
 	protected abstract void initializeTask();
 	protected abstract void runTaskAsync();
 	protected abstract void onFailure(Exception e);
-	
+
 	public NtroTaskAsync() {
 		initializeTask();
 	}
 	
+	@Override
+	public void destroy() {
+		if(parentTask != null) {
+			parentTask.destroy();
+			parentTask = null;
+		}
+		
+		List<NtroTask> tasksToDetroy = new ArrayList<>();
+		tasksToDetroy.addAll(previousTasks);
+		tasksToDetroy.addAll(subTasks);
+		tasksToDetroy.addAll(nextTasks);
+
+		previousTasks = new ArrayList<>();
+		subTasks = new ArrayList<>();
+		nextTasks = new ArrayList<>();
+
+		for(NtroTask taskToDestroy : tasksToDetroy) {
+			taskToDestroy.destroy();
+		}
+	}
+
 	@Override
 	public void setTaskId(String taskId) {
 		// __T.call(this, "setTaskId");
@@ -59,7 +86,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 		if(taskId == null) {
 			taskId = defaultId(this);
 		}
-		
+
 		return taskId;
 	}
 
@@ -73,7 +100,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			subTask.reset();
 		}
 		finishedSubTasks = 0;
-		
+
 		for(NtroTask nextTask : nextTasks) {
 			nextTask.reset();
 		}
@@ -87,16 +114,16 @@ public abstract class NtroTaskAsync implements NtroTask {
 			startExecution();
 		}
 	}
-	
+
 	@Override
 	public State getState() {
 		return state;
 	}
-	
+
 	private void startExecution() {
 		//__T.call(this, "startExecution");
 
-		if(parentTask != null 
+		if(parentTask != null
 				&& parentTask.getState() == State.INITIALIZING) {
 
 			parentTask.execute();
@@ -107,7 +134,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			resumeExecution();
 		}
 	}
-	
+
 	@Override
 	public void setParentTask(NtroTask parentTask) {
 		if(state == State.INITIALIZING) {
@@ -148,7 +175,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 				executeNextTasks();
 				state = State.DONE;
 				break;
-				
+
 			case DONE:
 			default:
 				break;
@@ -175,25 +202,25 @@ public abstract class NtroTaskAsync implements NtroTask {
 			resumeExecution();
 		}
 	}
-	
+
 	protected void notifyTaskFinished() {
 		//__T.call(this, "notifyTaskFinished");
-		
+
 		if(parentTask != null) {
 			parentTask.notifySomeSubTaskFinished();
 		}
-		
+
 		state = State.EXECUTE_NEXT_TASKS;
 		resumeExecution();
 	}
 
 	protected void notifyTaskFailed(Exception e) {
 		//__T.call(this, "notifyTaskFailed");
-		
+
 		// TODO: propagate failure to
 		//       parentTask
 		//       nextTasks
-		
+
 		throw new RuntimeException("TODO");
 	}
 
@@ -219,7 +246,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			}
 		}
 	}
-	
+
 	protected <T extends NtroTask> T getPreviousTask(Class<T> taskClass) {
 		return getPreviousTask(taskClass, defaultIdFromClass(taskClass));
 	}
@@ -228,7 +255,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	protected <T extends NtroTask> T getPreviousTask(Class<T> taskClass, String id) {
 		return (T) getPreviousTask(id);
 	}
-	
+
 	private NtroTask getPreviousTask(String id) {
 		NtroTask task = null;
 
@@ -246,7 +273,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 	public boolean hasId(String id) {
 		return id.equals(taskId);
 	}
-	
+
 	@Override
 	public <NT extends NtroTask> NT getSubTask(Class<NT> taskClass) {
 		return getSubTask(taskClass, defaultIdFromClass(taskClass));
@@ -266,13 +293,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 				break;
 			}
 		}
-		
+
 		return task;
-		
+
 	}
 
 	protected <T extends NtroTask> T getFinishedTask(Class<T> taskClass) {
-		return getFinishedTask(taskClass, taskClass.getSimpleName());
+		return getFinishedTask(taskClass, Ntro.introspector().getSimpleNameForClass(taskClass));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -283,12 +310,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 		}
 		return finishedTask;
 	}
-	
+
 	private String defaultId(NtroTask task) {
 		return defaultIdFromClass(task.getClass());
 	}
 
 	private String defaultIdFromClass(Class<? extends NtroTask> taskClass) {
+		// Introspector is not registered here
 		return taskClass.getSimpleName();
 	}
 
@@ -316,10 +344,24 @@ public abstract class NtroTaskAsync implements NtroTask {
 			}else {
 				System.err.println("[WARNING] a previousTask already exists with id " + taskId);
 			}
+		}else if(REPLACE_TASKS_WHILE_EXECUTING){
+			NtroTask existingPreviousTask = getPreviousTask(taskId);
+			if(existingPreviousTask != null) {
+				int existingPreviousTaskIndex = subTasks.indexOf(existingPreviousTask);
+				((NtroTaskAsync)task).mimicTask((NtroTaskAsync) existingPreviousTask);
+
+				// XXX: must be done by index otherwise
+				//      we have a ConcurrentModification exception
+				previousTasks.set(existingPreviousTaskIndex, task);
+				
+				((NtroTaskAsync)task).state = State.EXECUTE_PREVIOUS_TASKS;
+				((NtroTaskAsync)task).resumeExecution();
+			}
+
 		}else {
 			throw new IllegalStateException("Task.addPreviousTask called on state " + state);
 		}
-		
+
 		return this;
 	}
 
@@ -335,12 +377,13 @@ public abstract class NtroTaskAsync implements NtroTask {
 					parentTask.addSubTask(task);
 				}
 			}else {
+				// Introspector might not be registered here
 				System.err.println("[WARNING] a nextTask already exists with class " + task.getClass().getSimpleName());
 			}
 		}else {
 			throw new IllegalStateException("Task.addPreviousTask called on state " + state);
 		}
-		
+
 		return this;
 	}
 
@@ -353,7 +396,7 @@ public abstract class NtroTaskAsync implements NtroTask {
 			subTask.execute();
 		}
 	}
-	
+
 	@Override
 	public void addSubTask(NtroTask task) {
 		String taskId = task.getTaskId();
@@ -365,24 +408,59 @@ public abstract class NtroTaskAsync implements NtroTask {
 			}else {
 				System.err.println("[WARNING] a task already exists with id " + taskId);
 			}
+		}else if(REPLACE_TASKS_WHILE_EXECUTING){
+			NtroTask existingSubTask = getSubTask(taskId);
+			if(existingSubTask != null) {
+				int existingSubTaskIndex = subTasks.indexOf(existingSubTask);
+				((NtroTaskAsync)task).mimicTask((NtroTaskAsync) existingSubTask);
+
+				// XXX: must be done by index otherwise
+				//      we have a ConcurrentModification exception
+				subTasks.set(existingSubTaskIndex, task);
+				
+				((NtroTaskAsync)task).state = State.EXECUTE_PREVIOUS_TASKS;
+				((NtroTaskAsync)task).resumeExecution();
+			}
 		}else {
-			throw new IllegalStateException("Task.addSubTask called on state " + state + " for task " + getTaskId());
+			throw new IllegalStateException("Task.addSubTask called on state " + state);
 		}
 	}
 	
+	private void mimicTask(NtroTaskAsync otherTask) {
+		
+		setTaskId(otherTask.getTaskId());
+
+		previousTasks.addAll(otherTask.previousTasks);
+		subTasks.addAll(otherTask.subTasks);
+		nextTasks.addAll(otherTask.nextTasks);
+		setParentTask(otherTask.parentTask);
+
+		// FIXME:
+		// previousTasks.forEach(pt -> pt.replaceNext(otherTask, this))
+		// nextTasks.forEach(nt -> nt.replacePrevious(otherTask, this))
+		
+		for(NtroTask nextTask : nextTasks) {
+			((NtroTaskAsync)nextTask).replacePreviousTask(otherTask, this);
+		}
+	}
+	
+	private void replacePreviousTask(NtroTask oldTask, NtroTask newTask) {
+		int oldTaskIndex = previousTasks.indexOf(oldTask);
+		previousTasks.set(oldTaskIndex, newTask);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder out = new StringBuilder();
-		
+
 		write(out, 0);
-		
+
 		return out.toString();
 	}
 
 	@Override
 	public void write(StringBuilder out, int indentLevel) {
-		T.call(this);
-		
+
 		indent(out, indentLevel);
 		out.append(getTaskId());
 		out.append(" {\n");
@@ -390,16 +468,17 @@ public abstract class NtroTaskAsync implements NtroTask {
 		if(indentLevel == 0) {
 			writeTaskSet(out, indentLevel+1, "previousTasks", previousTasks);
 		}
+		
 		writeTaskSet(out, indentLevel+1, "subTasks", subTasks);
 		writeTaskSet(out, indentLevel+1, "nextTasks", nextTasks);
 
 		indent(out, indentLevel);
 		out.append("}\n");
-		
-		
-	}
-	private void writeTaskSet(StringBuilder out, int indentLevel, String taskSetName, Set<NtroTask> taskSet) {
 
+
+	}
+
+	private void writeTaskSet(StringBuilder out, int indentLevel, String taskSetName, List<NtroTask> taskSet) {
 		indent(out, indentLevel);
 		out.append(taskSetName);
 		out.append(" {\n");
@@ -409,13 +488,12 @@ public abstract class NtroTaskAsync implements NtroTask {
 		indent(out, indentLevel);
 		out.append("}\n");
 	}
-	
+
 	private void indent(StringBuilder out, int indentLevel) {
-		T.call(this);
 		for(int i = 0; i < indentLevel*4; i++) {
 			out.append(" ");
 		}
 	}
-	
-	
+
+
 }

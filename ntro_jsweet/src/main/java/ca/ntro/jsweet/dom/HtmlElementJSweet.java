@@ -1,7 +1,6 @@
 package ca.ntro.jsweet.dom;
 
 import java.util.function.BiFunction;
-
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
@@ -9,10 +8,13 @@ import ca.ntro.web.dom.HtmlEventListener;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
-public class HtmlElementJSweet implements HtmlElement {
-	
+import static def.jquery.Globals.$;
+
+
+public class HtmlElementJSweet extends HtmlElement {
+
 	private JQuery jQueryElement;
-	
+
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
 	}
@@ -31,12 +33,12 @@ public class HtmlElementJSweet implements HtmlElement {
 			@Override
 			public Object apply(JQueryEventObject t, Object u) {
 				T.call(this);
-				
+
 				// FIXME: only for <a>?
 				t.preventDefault();
-				
+
 				listener.onEvent();
-				
+
 				return null;
 			}
 		});
@@ -45,9 +47,8 @@ public class HtmlElementJSweet implements HtmlElement {
 	@Override
 	public void appendHtml(String html) {
 		T.call(this);
-		
-		// FIXME: parse HTML first
-		jQueryElement.html(html);
+
+		jQueryElement.append($.parseHTML(html));
 	}
 
 	@Override
@@ -65,16 +66,33 @@ public class HtmlElementJSweet implements HtmlElement {
 	}
 
 	@Override
+	public HtmlElements find(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJSweet(jQueryElement.find(cssQuery));
+	}
+
+	@Override
 	public void setAttribute(String name, String value) {
 		T.call(this);
-		
+
 		jQueryElement.attr(name, value);
 	}
 
 	@Override
 	public void remove() {
 		T.call(this);
-		
+
 		jQueryElement.remove();
+	}
+
+	@Override
+	public void value(String value) {
+		jQueryElement.val(value);
+	}
+
+	@Override
+	public String getValue() {
+		return jQueryElement.val().toString();
 	}
 }

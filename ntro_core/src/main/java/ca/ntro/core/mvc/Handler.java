@@ -2,17 +2,17 @@ package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
 
-public class Handler {
+public class Handler<C extends AnyController> {
 
-	private NtroAbstractController controller;
+	private C controller;
 
-	public void setController(NtroAbstractController controller) {
+	void setController(AnyController controller) {
 		T.call(this);
 		
-		this.controller = controller;
+		this.controller = (C) controller;
 	}
 	
-	protected NtroAbstractController getController() {
+	protected C getController() {
 		T.call(this);
 
 		return controller;

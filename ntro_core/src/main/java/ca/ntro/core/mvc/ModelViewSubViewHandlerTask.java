@@ -34,10 +34,17 @@ public class ModelViewSubViewHandlerTask<M extends NtroModel, V extends NtroView
 		
 		ViewCreatorTask viewCreator = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 
+		ModelLoader modelLoader = (ModelLoader) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID);
+		
+		MustNot.beNull(modelLoader);
+
 		@SuppressWarnings("unchecked")
-		M model = (M) ((ModelLoader) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID)).getModel();
+		M model = (M) modelLoader.getModel();
 
 		MustNot.beNull(viewCreator);
+		if(model == null) {
+			System.out.println("modelLoader " + modelLoader.getClass().getSimpleName() );
+		}
 		MustNot.beNull(model);
 
 		@SuppressWarnings("unchecked")

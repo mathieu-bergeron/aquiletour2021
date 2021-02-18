@@ -52,6 +52,7 @@ public class ViewLoaders {
 		
 		ViewLoader viewLoader = viewLoaders.get(new ViewLoaderId(viewClass, lang));
 		
-		return viewLoader;
+		return (ViewLoader) viewLoader.clone();
+		//return viewLoader;
 	}
 }

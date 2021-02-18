@@ -23,4 +23,13 @@ import ca.ntro.jdk.services.InitializationTaskJdk;
 
 public class NtroJdk {
 
+	public static NtroInitializationTask defaultInitializationTask() {
+		__T.call(NtroJdk.class, "defaultInitializationTask");
+		
+		NtroInitializationTask initializationTask = new NtroInitializationTask();
+		initializationTask.addSubTask(new InitializationTaskJdk());
+
+		return initializationTask;
+	}
+
 }

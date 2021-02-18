@@ -1,10 +1,12 @@
 package ca.aquiletour.web.pages.root;
 
-import ca.aquiletour.core.pages.dashboard.DashboardView;
+import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.settings.SettingsView;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
+import ca.aquiletour.core.pages.login.LoginView;
+import ca.aquiletour.core.pages.users.UsersView;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -19,32 +21,25 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void initialize() {
 		T.call(this);
 
-		HtmlElement settingsLink = getRootElement().children("#settings-link").get(0);
-		
-		MustNot.beNull(settingsLink);
-		
-		settingsLink.addEventListener("onclick", new HtmlEventListener() {
+		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
+
+		MustNot.beNull(dashboardLink);
+
+		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				
-				ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
-				showSettingsMessage.sendMessage();
+
+				ShowStudentDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
+				showDashboardMessage.sendMessage();
 			}
 		});
 	}
 
 	@Override
-	public void showSettings(SettingsView settingsView) {
-		T.call(this);
-		
-		showSubView(settingsView);
-	}
-
-	@Override
 	public void showDashboard(DashboardView dashboardView) {
 		T.call(this);
-		
+
 		showSubView(dashboardView);
 	}
 
@@ -52,22 +47,44 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		NtroViewWeb viewWeb = (NtroViewWeb) view;
-		
+
 		HtmlElement container = this.getRootElement().children("#page-container").get(0);
-		
+
 		MustNot.beNull(container);
 
 		HtmlElement subViewElement = viewWeb.getRootElement();
+
+		container.clearChildren();
 		container.appendElement(subViewElement);
 	}
 
 	@Override
 	public void showQueue(QueueView queueView) {
 		T.call(this);
-		
+
 		showSubView(queueView);
 	}
 
+	@Override
+	public void showUsers(UsersView usersView) {
+		T.call(this);
+		
+		showSubView(usersView);
 
+	}
 
+	@Override
+	public void showLogin(LoginView loginView) {
+		T.call(this);
+		
+		showSubView(loginView);
+		
+	}
+
+	@Override
+	public void showQueues(QueuesView currentView) {
+		T.call(this);
+
+		showSubView(currentView);
+	}
 }

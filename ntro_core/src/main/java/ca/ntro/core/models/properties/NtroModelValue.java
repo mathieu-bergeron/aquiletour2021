@@ -13,7 +13,7 @@ import ca.ntro.core.system.trace.T;
 
 
 /**
- * Every user-defined value inside a model
+ * Every appointment-defined value inside a model
  * must be a subclass of ModelValue
  * 
  * @author mbergeron
