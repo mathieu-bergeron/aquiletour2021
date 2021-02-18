@@ -396,7 +396,7 @@ public class NtroTaskTests {
 		traceTester = traceTesterForBiggerGraph();
 		trace.addTaskStateListener(traceTester);
 		
-		NtroTask taskB3Bis = new NtroTaskAsyncTest("B1");
+		NtroTask taskB3Bis = new NtroTaskAsyncTest("B");
 		NtroTask taskB3A = new NtroTaskAsyncTest("B3A");
 		NtroTask taskB3B = new NtroTaskAsyncTest("B3B");
 		
@@ -406,7 +406,7 @@ public class NtroTaskTests {
 		taskB3A.addNextTask(taskB3B);
 		
 		// XXX: replacing during execution
-		taskB1.replaceWith(taskB3Bis);
+		taskB.replaceWith(taskB3Bis);
 
 		traceTester = traceTesterForBiggerGraph();
 		trace.addTaskStateListener(traceTester);

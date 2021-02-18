@@ -651,13 +651,14 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		this.finishedPreviousTasks.forEach(id -> finishedPreviousTasks.add(previousTasks.get(id)));
 
 		replacementTask.resetTask();
-		this.resetNodeTransitive();
+
+		deleteSubTasksTransitive();
 		
 		if(parentTask != null) {
 			parentTask.replaceSubTaskWith(getId(), replacementTask);
 			replacementTask.setParentTask(parentTask);
 		}
-		
+
 		forEachPreviousTask(pt -> {
 			((TaskAsync)pt).replaceNextTaskWith(this.getId(), replacementTask);
 			replacementTask.addPreviousTask(pt, pt.getId());
@@ -665,21 +666,25 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		forEachNextTask(nt -> {
 			((TaskAsync)nt).replacePreviousTaskWith(this.getId(), replacementTask);
+			((TaskAsync)nt).state = INIT;
 			replacementTask.addNextTask(nt, nt.getId());
 		});
-
-		deleteNodeTransitive();
 		
+		this.deleteTask();
+
 		if(shouldExecuteReplacement) {
 			finishedPreviousTasks.forEach(ft -> ((TaskAsync)replacementTask).notifySomePreviousTaskFinished(ft));
 			((TaskAsync)replacementTask).appendCurrentStateToTrace(trace);
 			((TaskAsync)replacementTask).execute(trace);
 		}
-
 	}
-	private void deleteNodeTransitive() {
-		forEachSubTask(st -> ((TaskAsync)st).deleteNodeTransitive());
-		this.deleteTask();
+
+	private void deleteSubTasksTransitive() {
+		forEachSubTask(st -> {
+			((TaskAsync)st).forEachPreviousTask(pt -> ((TaskAsync)pt).deleteNextTask(st.getId()));
+			((TaskAsync)st).forEachNextTask(nt -> ((TaskAsync)nt).deletePreviousTask(st.getId()));
+			((TaskAsync)st).deleteSubTasksTransitive();
+		});
 	}
 	
 	private void deleteTask() {
@@ -703,7 +708,25 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
 	private void replacePreviousTaskWith(String id, NtroTask replacementTask) {
 		previousTasks.put(id, replacementTask);
+		removeFinishedPreviousTask(id);
 	}
+	
+	private void deletePreviousTask(String id) {
+		previousTasks.remove(id);
+		removeFinishedPreviousTask(id);
+	}
+
+	private void removeFinishedPreviousTask(String id) {
+		if(finishedPreviousTasks.contains(id)) {
+			finishedPreviousTasks.remove(id);
+			state = INIT;
+		}
+	}
+
+	private void deleteNextTask(String id) {
+		nextTasks.remove(id);
+	}
+	
 
 	@Override
 	public Node findNodeById(String id) {
