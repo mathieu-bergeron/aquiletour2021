@@ -656,7 +656,6 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		
 		if(parentTask != null) {
 			parentTask.replaceSubTaskWith(getId(), replacementTask);
-			//parentTask.resetNodeTransitive();
 			replacementTask.setParentTask(parentTask);
 		}
 
@@ -701,6 +700,15 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	
 	private void replaceSubTaskWith(String id, NtroTask replacementTask) {
 		subTasks.put(id, replacementTask);
+		removeFinishedSubTask(id);
+	}
+	
+	private void removeFinishedSubTask(String id) {
+		if(finishedSubTasks.contains(id)) {
+			finishedSubTasks.remove(id);
+			state = INIT;
+			forEachNextTask(nt -> ((TaskAsync)nt).removeFinishedPreviousTask(this.getId()));
+		}
 	}
 
 	private void replaceNextTaskWith(String id, NtroTask replacementTask) {
@@ -721,9 +729,7 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 		if(finishedPreviousTasks.contains(id)) {
 			finishedPreviousTasks.remove(id);
 			state = INIT;
-			
-			// FIXME: this needs to be transitive
-			//        if we are INIT, the our reachableTasks are INIT as well
+			forEachNextTask(nt -> ((TaskAsync)nt).removeFinishedPreviousTask(this.getId()));
 		}
 	}
 
