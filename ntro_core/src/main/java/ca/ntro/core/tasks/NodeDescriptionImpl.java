@@ -1,4 +1,6 @@
-package ca.ntro.core.task2;
+package ca.ntro.core.tasks;
+
+import java.util.Objects;
 
 public class NodeDescriptionImpl implements NodeDescription {
 	
@@ -25,7 +27,7 @@ public class NodeDescriptionImpl implements NodeDescription {
 	}
 
 	@Override
-	public String getId() {
+	public String getNodeId() {
 		return id;
 	}
 
@@ -101,6 +103,35 @@ public class NodeDescriptionImpl implements NodeDescription {
 
 			writer.addSubCluster(getParentNode(), this);
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, label, parentNode);
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if(this == other) return true;
+		if(other == null) return false;
+		if(other instanceof NodeDescriptionImpl) {
+
+			NodeDescriptionImpl otherNode = (NodeDescriptionImpl) other;
+
+			boolean parentEqual = false;
+			if(parentNode == null && otherNode.parentNode == null) {
+				parentEqual = true;
+			}else if(parentNode != null) {
+				parentEqual = parentNode.equals(otherNode.parentNode);
+			}
+			
+			return id.equals(otherNode.id)
+					&& label.equals(otherNode.label)
+					&& parentEqual;
+		}
+		
+		return false;
+		
 	}
 
 }

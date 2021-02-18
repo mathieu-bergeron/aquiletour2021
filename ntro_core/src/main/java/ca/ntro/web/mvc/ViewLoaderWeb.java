@@ -23,6 +23,7 @@ import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.core.system.assertions.MustNot;
 
@@ -36,10 +37,14 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		super();
 		T.call(this);
 	}
-
+	
 	@Override
-	protected void initializeTask() {
+	protected void onSomeSubTaskFinished(String taskId, NtroTask subTask) {
+		T.call(this);
 
+		if(taskId.contains("Html")) {
+			html = ((ResourceLoaderTask) subTask).getResourceAsString();
+		}
 	}
 
 	@Override
@@ -48,7 +53,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
 		//        can we fix this??
-		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
+		//html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
 
 		MustNot.beNull(html);
 		

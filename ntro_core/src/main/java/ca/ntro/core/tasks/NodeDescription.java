@@ -1,6 +1,8 @@
-package ca.ntro.core.task2;
+package ca.ntro.core.tasks;
 
-public interface NodeDescription extends Identifiable, Labellable {
+public interface NodeDescription extends Labellable {
+	
+	String getNodeId();
 
 	boolean isRoot();
 	

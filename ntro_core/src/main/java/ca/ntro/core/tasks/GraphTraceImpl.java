@@ -1,4 +1,4 @@
-package ca.ntro.core.task2;
+package ca.ntro.core.tasks;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +22,16 @@ public class GraphTraceImpl implements GraphTrace, GraphTraceConnector {
 	}
 
 	@Override
-	public void append(GraphDescription graph, TaskStateDescription task) {
+	public boolean append(GraphDescription graph, TaskStateDescription task) {
+		// TMP
+		if(task.getState() == TaskState.DONE || graphs.size() == 0); else return false;
+		
+		boolean cycleDetected = false;
+
+		if(graphs.contains(graph)) {
+			cycleDetected = true;
+		}
+
 		for(GraphTraceWriter writer : writers) {
 			writer.write(graphs.size(), graph);
 		}
@@ -33,6 +42,8 @@ public class GraphTraceImpl implements GraphTrace, GraphTraceConnector {
 
 		tasks.add(task);
 		graphs.add(graph);
+		
+		return cycleDetected;
 	}
 
 	@Override

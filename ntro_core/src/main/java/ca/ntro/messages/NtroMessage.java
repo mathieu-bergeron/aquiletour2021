@@ -9,13 +9,9 @@ public abstract class NtroMessage extends NtroTaskAsync {
 		T.call(this);
 		
 		notifyTaskFinished();
-		reset();
+		execute();             // FIXME: must we re-execute???
+		resetTask();
 		execute();
-	}
-
-	@Override
-	protected void initializeTask() {
-		T.call(this);
 	}
 
 	@Override

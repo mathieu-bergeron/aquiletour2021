@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ca.ntro.core.task2.TaskState;
-import ca.ntro.core.task2.TaskStateDescription;
-import ca.ntro.core.task2.TaskStateDescriptionImpl;
-import ca.ntro.core.task2.TaskStateListener;
+import ca.ntro.core.tasks.TaskState;
+import ca.ntro.core.tasks.TaskStateDescription;
+import ca.ntro.core.tasks.TaskStateDescriptionImpl;
+import ca.ntro.core.tasks.TaskStateListener;
 
 public class TraceTester implements TaskStateListener {
 	

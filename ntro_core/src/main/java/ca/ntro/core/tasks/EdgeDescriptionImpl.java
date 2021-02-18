@@ -1,4 +1,6 @@
-package ca.ntro.core.task2;
+package ca.ntro.core.tasks;
+
+import java.util.Objects;
 
 public class EdgeDescriptionImpl implements EdgeDescription {
 	
@@ -36,4 +38,27 @@ public class EdgeDescriptionImpl implements EdgeDescription {
 	public void write(GraphWriter writer) {
 		writer.addEdge(from, to);
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(from, to);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(this == other) return true;
+		if(other instanceof EdgeDescriptionImpl) {
+			
+			EdgeDescriptionImpl otherEdge = (EdgeDescriptionImpl) other;
+			
+			return from.equals(otherEdge.from) 
+					&& to.equals(otherEdge.to);
+		}
+		
+		return false;
+	}
+	
+	
+	
 }

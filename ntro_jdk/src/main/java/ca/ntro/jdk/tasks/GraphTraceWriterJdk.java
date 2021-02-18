@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import ca.ntro.core.system.log.Log;
-import ca.ntro.core.task2.GraphDescription;
-import ca.ntro.core.task2.GraphTraceWriter;
+import ca.ntro.core.tasks.GraphDescription;
+import ca.ntro.core.tasks.GraphTraceWriter;
 
 public class GraphTraceWriterJdk implements GraphTraceWriter {
 	

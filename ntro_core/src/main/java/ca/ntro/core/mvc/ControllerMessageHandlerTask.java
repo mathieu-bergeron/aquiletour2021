@@ -23,12 +23,6 @@ class ControllerMessageHandlerTask<C extends NtroAbstractController, CV extends 
 	}
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		

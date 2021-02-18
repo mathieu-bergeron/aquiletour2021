@@ -19,6 +19,7 @@ package ca.ntro.core;
 
 public class Constants {
 	
+	public static final String INITIALIZATION_TASK_ID="initializationTask";
 	public static final String RESOURCES_URL_PREFIX = "_R";
 
 }

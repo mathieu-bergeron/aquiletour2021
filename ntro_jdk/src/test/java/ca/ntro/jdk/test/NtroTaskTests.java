@@ -5,9 +5,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.ntro.core.task2.GraphTraceConnector;
-import ca.ntro.core.task2.Node;
-import ca.ntro.core.task2.NtroTask;
+import ca.ntro.core.tasks.GraphTraceConnector;
+import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
@@ -299,26 +298,28 @@ public class NtroTaskTests {
 
 		TraceTester traceTester = traceTesterForSimpleGraph();
 		
-		GraphTraceConnector trace = taskC.execute();
-		trace.addTaskStateListener(traceTester);
-		
-		taskA.asGraph().resetGraph();
-		trace = taskA.execute();
-		trace.addTaskStateListener(traceTester);
-
-		taskB.asGraph().resetGraph();
-		trace = taskB.execute();
-		trace.addTaskStateListener(traceTester);
-
+		GraphTraceConnector trace = taskA.execute();
 		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+		trace.addTaskStateListener(traceTester);
+
+		traceTester = traceTesterForSimpleGraph();
+		taskC.asGraph().resetGraph();
+		trace = taskA.execute();
+		
+		NtroTask newC = new NtroTaskAsyncTest("C");
+		
+		// XXX: replacing during execution
+		taskC.replaceWith(newC);
+		
+		trace.addTaskStateListener(traceTester);
 	}
 
 	private TraceTester traceTesterForSimpleGraph() {
 		TraceTester traceTester = new TraceTester();
 
-		traceTester.mustFinishBefore("B", "A");
-		traceTester.mustFinishBefore("C", "A");
-		traceTester.mustFinishBefore("B", "C");
+		traceTester.mustFinishBefore("A_B", "A");
+		traceTester.mustFinishBefore("A_C", "A");
+		traceTester.mustFinishBefore("A_B", "A_C");
 		return traceTester;
 	}
 
@@ -337,22 +338,23 @@ public class NtroTaskTests {
 		NtroTask taskA1 = new NtroTaskAsyncTest("A1");
 		NtroTask taskA2 = new NtroTaskAsyncTest("A2");
 		NtroTask taskA3 = new NtroTaskAsyncTest("A3");
-		NtroTask taskA3Bis = new NtroTaskAsyncTest("A3");
-		NtroTask taskA3A = new NtroTaskAsyncTest("A3A");
-		NtroTask taskA3B = new NtroTaskAsyncTest("A3B");
-		
-		taskA3Bis.addSubTask(taskA3A);
-		taskA3Bis.addSubTask(taskA3B);
-		taskA3A.addNextTask(taskA3B);
 		
 		taskA.addSubTask(taskA1);
 		taskA.addSubTask(taskA2);
 		taskA.addSubTask(taskA3);
-		
-		taskA3.replaceWith(taskA3Bis);
 
 		taskA1.addNextTask(taskA2);
-		taskA1.addNextTask(taskA.asGraph().findNodeById("A3").asTask()); 
+		taskA1.addNextTask(taskA3); 
+
+		NtroTask taskA3Bis = new NtroTaskAsyncTest("A3");
+		NtroTask taskA3A = new NtroTaskAsyncTest("A3A");
+		NtroTask taskA3B = new NtroTaskAsyncTest("A3B");
+
+		taskA3Bis.addSubTask(taskA3A);
+		taskA3Bis.addSubTask(taskA3B);
+		taskA3A.addNextTask(taskA3B);
+		
+		taskA3.replaceWith(taskA3Bis);
 
 		NtroTask taskB1 = new NtroTaskAsyncTest("B1");
 		NtroTask taskB2 = new NtroTaskAsyncTest("B2");
@@ -374,6 +376,7 @@ public class NtroTaskTests {
 
 		writeFiles(writer, testName);
 
+		/*
 		Node nodeA = taskB3.asGraph().findNodeById("A");
 		assertTrue(nodeA.asTask().equals(taskA));
 
@@ -385,25 +388,13 @@ public class NtroTaskTests {
 
 		Node nodeD = taskA.asGraph().findNodeById("D");
 		assertTrue(nodeD.asTask().equals(taskD));
+		*/
 		
 		GraphTraceConnector trace = taskA.execute();
+		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+		
 		TraceTester traceTester = traceTesterForBiggerGraph();
-		trace.addTaskStateListener(traceTester);
-
-		taskC.asGraph().resetGraph();
-		trace = taskC.execute();
-		traceTester = traceTesterForBiggerGraph();
-		trace.addTaskStateListener(traceTester);
-
-		taskA1.asGraph().resetGraph();
-		trace = taskA1.execute();
-		traceTester = traceTesterForBiggerGraph();
-		trace.addTaskStateListener(traceTester);
-
-		taskB3.asGraph().resetGraph();
-		trace = taskB3.execute();
-		traceTester = traceTesterForBiggerGraph();
-		trace.addTaskStateListener(traceTester);
+		//trace.addTaskStateListener(traceTester);
 		
 		NtroTask taskB3Bis = new NtroTaskAsyncTest("B3");
 		NtroTask taskB3A = new NtroTaskAsyncTest("B3A");
@@ -417,15 +408,9 @@ public class NtroTaskTests {
 		// XXX: replacing during execution
 		taskB3.replaceWith(taskB3Bis);
 
-		traceTester = traceTesterForBiggerGraph();
-		trace.addTaskStateListener(traceTester);
-
 		writer = new GraphWriterJdk(testName);
 		taskA.asGraph().getGraphDescription().write(writer);
 		writeFiles(writer, testName);
-		
-		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
-		
 	}
 
 	private TraceTester traceTesterForBiggerGraph() {
@@ -451,7 +436,62 @@ public class NtroTaskTests {
 
 		return traceTester;
 	}
+	
+	@Test
+	public void cycle() throws IOException {
+		String testName = "cycle";
+		GraphWriterJdk writer = new GraphWriterJdk(testName);
+		
+		NtroTask taskA = new NtroTaskAsyncTest("A");
+		NtroTask taskB = new NtroTaskAsyncTest("B");
+		NtroTask taskC = new NtroTaskAsyncTest("C");
+		
+		taskA.addSubTask(taskB);
+		taskA.addSubTask(taskC);
+		
+		taskB.addNextTask(taskC);
+		taskC.addNextTask(taskB);
+		
+		taskC.asGraph().getGraphDescription().write(writer);
 
+		writeFiles(writer, testName);
+		
+		GraphTraceConnector trace = taskC.execute();
+		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+	}
+
+	@Test
+	public void biggerCycle() throws IOException {
+		String testName = "biggerCycle";
+		GraphWriterJdk writer = new GraphWriterJdk(testName);
+		
+		NtroTask taskA = new NtroTaskAsyncTest("A");
+		NtroTask taskB = new NtroTaskAsyncTest("B");
+		NtroTask taskC = new NtroTaskAsyncTest("C");
+		NtroTask taskD = new NtroTaskAsyncTest("D");
+		NtroTask taskE = new NtroTaskAsyncTest("E");
+		NtroTask taskF = new NtroTaskAsyncTest("F");
+		
+		taskA.addSubTask(taskB);
+		taskA.addSubTask(taskC);
+		taskA.addSubTask(taskD);
+		taskA.addSubTask(taskE);
+		taskA.addSubTask(taskF);
+		
+		taskB.addNextTask(taskC);
+		taskC.addNextTask(taskD);
+		taskD.addNextTask(taskE);
+		taskE.addNextTask(taskF);
+		taskF.addNextTask(taskB);
+		
+		taskC.asGraph().getGraphDescription().write(writer);
+
+		writeFiles(writer, testName);
+		
+		GraphTraceConnector trace = taskC.execute();
+		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
+	}
+	
 
 	@After
 	public void tearDown() {

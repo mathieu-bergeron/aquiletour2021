@@ -23,12 +23,6 @@ public class ModelViewHandlerTask<M extends NtroModel, V extends NtroView> exten
 	}
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
