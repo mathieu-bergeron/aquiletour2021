@@ -8,7 +8,7 @@ public class RootBackendController extends BackendRootController  {
 	protected void onCreate() {
 
 		addSubController(DashboardBackendController.class, "mescours");
-		//addSubController(QueueBackendController.class, "billetrie");
+		addSubController(QueueBackendController.class, "billeterie");
 
 	}
 

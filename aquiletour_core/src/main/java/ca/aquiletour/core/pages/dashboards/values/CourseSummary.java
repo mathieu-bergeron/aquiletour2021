@@ -6,9 +6,7 @@ import ca.ntro.core.system.trace.T;
 public class CourseSummary extends NtroModelValue {
 
 	private String title;
-	private String id;
-	private String summary;
-	private String date;
+	private String courseId;
 	private boolean isQueueOpen;
 	private String myAppointment;
 	private int numberOfAppointments;
@@ -18,42 +16,20 @@ public class CourseSummary extends NtroModelValue {
 		super();
 	}
 	
-	public CourseSummary(String title, String id, boolean isQueueOpen, String myAppointment, int numberOfAppointments) {
+	public CourseSummary(String title, String courseId, boolean isQueueOpen, String myAppointment, int numberOfAppointments) {
 		super();
 		T.call(this);
 		this.title = title;
-		this.id = id;
+		this.courseId = courseId;
 		this.isQueueOpen = isQueueOpen;
 		this.myAppointment = myAppointment;
 		this.numberOfAppointments = numberOfAppointments;
 	}
 
 	
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public CourseSummary(String title, String summary, String date, String courseId) {
-		super();
+	public CourseSummary(String title) {
 		this.title = title;
-		this.summary = summary;
-		this.date = date;
-		this.id = courseId;
 	}
-	
 
 	public String getTitle() {
 		return title;
@@ -64,11 +40,11 @@ public class CourseSummary extends NtroModelValue {
 	}
 
 	public String getCourseId() {
-		return id;
+		return courseId;
 	}
 
-	public void setCourseId(String id) {
-		this.id = id;
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 
 	public boolean isQueueOpen() {

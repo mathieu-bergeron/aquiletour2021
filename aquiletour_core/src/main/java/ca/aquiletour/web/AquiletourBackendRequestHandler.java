@@ -60,17 +60,13 @@ public class AquiletourBackendRequestHandler {
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("title") 
-				&& parameters.containsKey("summary")
-				&& parameters.containsKey("date")) {
+		if(parameters.containsKey("title")) {
 
 			String courseTitle = parameters.get("title")[0];
-			String summaryText = parameters.get("summary")[0];
-			String summaryDate = parameters.get("date")[0];
-			String courseId = parameters.get("date")[0];
+			String courseId = parameters.get("title")[0];
 
 			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, summaryText, summaryDate, courseTitle));
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, true, "yes", 100));
 			addCourseMessage.setUser(user);
 			addCourseMessage.sendMessage();
 		}
@@ -87,7 +83,6 @@ public class AquiletourBackendRequestHandler {
 		
 		if(path.size() >= 1) {
 			sendAppointmentMessages(parameters, user, path.getName(0));
-			//TODO courseID
 		}
 	}
 
@@ -106,7 +101,9 @@ public class AquiletourBackendRequestHandler {
 
 			AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
 			Appointment newAppointment = new Appointment();
-			newAppointment.setTime("11:59");
+			newAppointment.setStudentId(user.getId());
+			newAppointment.setStudentName(user.getName());
+			newAppointment.setStudentSurname(user.getSurname());
 			addAppointmentMessage.setAppointment(newAppointment);
 			addAppointmentMessage.setUser(user);
 			addAppointmentMessage.setCourseId(courseId);

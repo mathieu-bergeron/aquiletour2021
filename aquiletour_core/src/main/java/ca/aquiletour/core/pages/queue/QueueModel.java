@@ -5,12 +5,13 @@ import java.awt.List;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.properties.observable.list.ObservableList;
 import ca.ntro.core.system.trace.T;
 
 public class QueueModel extends NtroModel {
 
 	private ObservableAppointmentMap appointments = new ObservableAppointmentMap();
-	private List studentIds = new List();
+	//private List studentIds = new List();
 
 	@Override
 	public void initializeStoredValues() {
@@ -19,7 +20,7 @@ public class QueueModel extends NtroModel {
 
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
-
+		
 		String appointmenId = Integer.toString(appointments.size());
 		appointment.setAppointmentId(appointmenId);
 		appointments.addEntry(appointmenId, appointment);
@@ -30,18 +31,43 @@ public class QueueModel extends NtroModel {
 		
 		appointments.removeEntry(appointmentId);
 	}
-
+	
 	public ObservableAppointmentMap getAppointments() {
 		T.call(this);
-
+		
 		return appointments;
 	}
-
+	
 	public void setAppointments(ObservableAppointmentMap appointments) {
 		T.call(this);
-
+		
 		this.appointments = appointments;
 	}
+//	public void addStudentId(String studentId) {
+//		T.call(this);
+//
+//		studentIds.add(studentId);;
+//	}
+//	
+//	public void deleteStudent(String studentId) {
+//		T.call(this);
+//		
+//		studentIds.remove(studentId);;
+//	}
+//
+//	public List getStudentIds() {
+//		T.call(this);
+//
+//		return studentIds;
+//	}
+//
+//	public void setStudentIds(List studentIds) {
+//		T.call(this);
+//
+//		this.studentIds = studentIds;
+//	}
+//	
+	
 	
 	
 
