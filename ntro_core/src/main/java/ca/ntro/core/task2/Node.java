@@ -13,7 +13,7 @@ public interface Node extends NodeDescription {
 	void forEachReachableNode(NodeLambda lambda);
 	void forEachReachableNodeTransitive(NodeLambda lambda);
 
-	void resetNode();
+	void resetNodeTransitive();
 	
 	NtroTask asTask();
 

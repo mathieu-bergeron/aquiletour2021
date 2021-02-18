@@ -364,6 +364,18 @@ public class NtroTaskTests {
 		taskC.asGraph().getGraphDescription().write(writer);
 
 		writeFiles(writer, testName);
+
+		Node nodeA = taskB3.asGraph().findNodeById("A");
+		assertTrue(nodeA.asTask().equals(taskA));
+
+		Node nodeB = taskD.asGraph().findNodeById("B");
+		assertTrue(nodeB.asTask().equals(taskB));
+
+		Node nodeB3 = taskA.asGraph().findNodeById("B3");
+		assertTrue(nodeB3.asTask().equals(taskB3));
+
+		Node nodeD = taskA.asGraph().findNodeById("D");
+		assertTrue(nodeD.asTask().equals(taskD));
 		
 		GraphTraceConnector trace = taskA.execute();
 		TraceTester traceTester = traceTesterForBiggerGraph();
@@ -384,27 +396,24 @@ public class NtroTaskTests {
 		traceTester = traceTesterForBiggerGraph();
 		trace.addTaskStateListener(traceTester);
 		
-		/*
-		Node nodeB3 = taskA.asGraph().findNodeById("B3");
-		taskB3 = nodeB3.asTask();
+		NtroTask taskB3Bis = new NtroTaskAsyncTest("B1");
+		NtroTask taskB3A = new NtroTaskAsyncTest("B3A");
+		NtroTask taskB3B = new NtroTaskAsyncTest("B3B");
 		
-		
-		NtroTask newB3 = new NtroTaskAsyncTest("B3");
-		NtroTask B3_A = new NtroTaskAsyncTest("B3_A");
-		NtroTask B3_B = new NtroTaskAsyncTest("B3_B");
-		
-		newB3.addSubTask(B3_A);
-		newB3.addSubTask(B3_B);
+		taskB3Bis.addSubTask(taskB3A);
+		taskB3Bis.addSubTask(taskB3B);
 
-		B3_A.addNextTask(B3_B);
+		taskB3A.addNextTask(taskB3B);
 		
-		taskB3.replaceWith(newB3);
+		// XXX: replacing during execution
+		taskB1.replaceWith(taskB3Bis);
 
-		trace = newB3.execute();
 		traceTester = traceTesterForBiggerGraph();
 		trace.addTaskStateListener(traceTester);
-		
-		*/
+
+		writer = new GraphWriterJdk(testName);
+		taskA.asGraph().getGraphDescription().write(writer);
+		writeFiles(writer, testName);
 		
 		trace.addGraphWriter(new GraphTraceWriterJdk(new File(graphDir, testName)));
 		

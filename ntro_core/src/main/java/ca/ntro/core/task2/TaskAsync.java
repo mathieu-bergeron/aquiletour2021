@@ -621,11 +621,11 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public void resetGraph() {
-		forEachStartNode(sn -> sn.resetNode());
+		forEachStartNode(sn -> sn.resetNodeTransitive());
 	}
 
 	@Override
-	public void resetNode() {
+	public void resetNodeTransitive() {
 		asTask().resetTask();
 		forEachReachableNodeTransitive(n -> n.asTask().resetTask());
 	}
@@ -640,12 +640,119 @@ public abstract class TaskAsync implements NtroTask, TaskGraph, Node {
 	}
 
 	@Override
-	public void replaceWith(NtroTask task) {
-		throw new RuntimeException("TODO");
+	public void replaceWith(NtroTask replacementTask) {
+		if(!getId().equals(replacementTask.getId())) {
+			throw new IllegalArgumentException("replacementTask must have same id as replaced task");
+		}
+
+		boolean shouldExecuteReplacement = (state != INIT);
+		GraphTraceImpl trace = this.trace;
+		Set<NtroTask> finishedPreviousTasks = new HashSet<>();
+		this.finishedPreviousTasks.forEach(id -> finishedPreviousTasks.add(previousTasks.get(id)));
+
+		replacementTask.resetTask();
+		this.resetNodeTransitive();
+		
+		if(parentTask != null) {
+			parentTask.replaceSubTaskWith(getId(), replacementTask);
+			replacementTask.setParentTask(parentTask);
+		}
+		
+		forEachPreviousTask(pt -> {
+			((TaskAsync)pt).replaceNextTaskWith(this.getId(), replacementTask);
+			replacementTask.addPreviousTask(pt, pt.getId());
+		});
+		
+		forEachNextTask(nt -> {
+			((TaskAsync)nt).replacePreviousTaskWith(this.getId(), replacementTask);
+			replacementTask.addNextTask(nt, nt.getId());
+		});
+
+		deleteNodeTransitive();
+		
+		if(shouldExecuteReplacement) {
+			finishedPreviousTasks.forEach(ft -> ((TaskAsync)replacementTask).notifySomePreviousTaskFinished(ft));
+			((TaskAsync)replacementTask).appendCurrentStateToTrace(trace);
+			((TaskAsync)replacementTask).execute(trace);
+		}
+
+	}
+	private void deleteNodeTransitive() {
+		forEachSubTask(st -> ((TaskAsync)st).deleteNodeTransitive());
+		this.deleteTask();
+	}
+	
+	private void deleteTask() {
+		parentTask = null;
+		subTasks = null;
+		nextTasks = null;
+		previousTasks = null;
+		finishedPreviousTasks = null;
+		finishedSubTasks = null;
+		trace = null;
+		state = DELETED;
+	}
+	
+	private void replaceSubTaskWith(String id, NtroTask replacementTask) {
+		subTasks.put(id, replacementTask);
+	}
+
+	private void replaceNextTaskWith(String id, NtroTask replacementTask) {
+		nextTasks.put(id, replacementTask);
+	}
+
+	private void replacePreviousTaskWith(String id, NtroTask replacementTask) {
+		previousTasks.put(id, replacementTask);
 	}
 
 	@Override
 	public Node findNodeById(String id) {
-		throw new RuntimeException("TODO");
+		Set<Node> visitedNodes = new HashSet<>();
+		
+		return findNodeById(id, visitedNodes);
+	}
+	
+	private Node findNodeById(String id, Set<Node> visitedNodes) {
+		if(visitedNodes.contains(this)) return null;
+		visitedNodes.add(this);
+
+		Node foundNode = null;
+
+		if(getId().equals(id)) {
+			foundNode = this;
+		}
+		
+		if(foundNode == null && parentTask != null) {
+			foundNode = parentTask.findNodeById(id, visitedNodes);
+		}
+		
+		if(foundNode == null) {
+			synchronized(previousTasks) {
+				for(NtroTask previousTask : previousTasks.values()) {
+					foundNode = ((TaskAsync) previousTask).findNodeById(id, visitedNodes);
+					if(foundNode != null) break;
+				}
+			}
+		}
+
+		if(foundNode == null) {
+			synchronized(subTasks) {
+				for(NtroTask subTask : subTasks.values()) {
+					foundNode = ((TaskAsync) subTask).findNodeById(id, visitedNodes);
+					if(foundNode != null) break;
+				}
+			}
+		}
+
+		if(foundNode == null) {
+			synchronized(nextTasks) {
+				for(NtroTask nextTask : nextTasks.values()) {
+					foundNode = ((TaskAsync) nextTask).findNodeById(id, visitedNodes);
+					if(foundNode != null) break;
+				}
+			}
+		}
+		
+		return foundNode;
 	}
 }
