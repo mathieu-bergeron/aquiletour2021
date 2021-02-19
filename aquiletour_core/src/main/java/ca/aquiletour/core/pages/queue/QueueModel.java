@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.queue;
 
-import java.awt.List;
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap;
@@ -11,7 +12,8 @@ import ca.ntro.core.system.trace.T;
 public class QueueModel extends NtroModel {
 
 	private ObservableAppointmentMap appointments = new ObservableAppointmentMap();
-	//private List studentIds = new List();
+	private List<String> studentIds = new ArrayList<>();
+	private int maxId;
 
 	@Override
 	public void initializeStoredValues() {
@@ -21,7 +23,8 @@ public class QueueModel extends NtroModel {
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
 		
-		String appointmenId = Integer.toString(appointments.size());
+		setMaxId(getMaxId() + 1);
+		String appointmenId = Integer.toString(getMaxId());
 		appointment.setAppointmentId(appointmenId);
 		appointments.addEntry(appointmenId, appointment);
 	}
@@ -43,30 +46,40 @@ public class QueueModel extends NtroModel {
 		
 		this.appointments = appointments;
 	}
-//	public void addStudentId(String studentId) {
-//		T.call(this);
-//
-//		studentIds.add(studentId);;
-//	}
-//	
-//	public void deleteStudent(String studentId) {
-//		T.call(this);
-//		
-//		studentIds.remove(studentId);;
-//	}
-//
-//	public List getStudentIds() {
-//		T.call(this);
-//
-//		return studentIds;
-//	}
-//
-//	public void setStudentIds(List studentIds) {
-//		T.call(this);
-//
-//		this.studentIds = studentIds;
-//	}
-//	
+
+	public int getMaxId() {
+		return maxId;
+	}
+
+	public void setMaxId(int maxId) {
+		this.maxId = maxId;
+	}
+	
+	
+	public void addStudentId(String studentId) {
+		T.call(this);
+
+		studentIds.add(studentId);;
+	}
+	
+	public void deleteStudent(String studentId) {
+		T.call(this);
+		
+		studentIds.remove(studentId);;
+	}
+
+	public List<String> getStudentIds() {
+		T.call(this);
+
+		return studentIds;
+	}
+
+	public void setStudentIds(List<String> studentIds) {
+		T.call(this);
+
+		this.studentIds = studentIds;
+	}
+	
 	
 	
 	

@@ -29,4 +29,16 @@ public class DashboardModel extends NtroModel {
 	public void setCourses(ObservableCourseList courses) {
 		this.courses = courses;
 	}
+	
+	public void updateNbAppointmentOfCourse(String courseId) {
+		for (int i = 0; i < courses.size(); i++) {
+				CourseSummary currentCourse =  courses.getItem(i);
+				if(currentCourse.getTitle() == courseId) {
+					currentCourse.setNumberOfAppointments(4000);
+					courses.insertItem(i, currentCourse);
+					T.values(currentCourse.getNumberOfAppointments());
+				};
+			
+		}
+	}
 }

@@ -2,6 +2,9 @@ package ca.aquiletour.core.backend.handlers;
 
 import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.dashboards.DashboardModel;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.ntro.core.mvc.MessageHandler;
@@ -29,6 +32,18 @@ public class AddAppointmentHandler extends MessageHandler<QueueBackendController
 			//TODO charger le dashboard modelk de chaque etudiant de la billetrie 
 			//et metre a jour nb of appointment et myappointment
 			//queuemodel -> students ->  chercher dashboardmodel -> mettre a jour les donnees
+			queueModel.getStudentIds();
+			
+			DashboardModel dashboardModel = getController().getModel(DashboardModel.class, 
+                    requestingUser.getAuthToken(),
+                    requestingUser.getId());
+			
+
+				
+			dashboardModel.updateNbAppointmentOfCourse(courseId);
+			dashboardModel.save();
+			
+			
 
 		}else {
 			

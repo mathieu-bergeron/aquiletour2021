@@ -40,9 +40,11 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
-		myAppointment.appendHtml(course.getMyAppointment());
-		if(course.isQueueOpen()) {isQueueOpen.appendHtml("true");}
-		else {isQueueOpen.appendHtml("false");}
+		if (course.getMyAppointment() != null) {
+			myAppointment.appendHtml(course.getMyAppointment());
+		}
+		if(course.isQueueOpen()) {isQueueOpen.appendHtml("false");}
+		else {isQueueOpen.appendHtml("true");}
 		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
 	}
 

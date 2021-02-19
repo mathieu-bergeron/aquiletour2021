@@ -37,7 +37,7 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 	
 	public I getItem(int id) {
 		T.call(this);
-		return (I) listObservers.get(id);
+		return getValue().get(id);
 	}
 
 	public void insertItem(int index, I item) {
