@@ -14,12 +14,12 @@ public class AddCourseHandler extends MessageHandler<DashboardBackendController,
 	protected void handle(AddCourseMessage message) {
 		T.call(this);
 		
-		User requestingUser = message.getUser();
+		User fromUser = message.getUser();
 		String courseId = message.getCourse().getTitle();
 		
 		DashboardModel dashboardModel = getController().getModel(DashboardModel.class, 
-				                                                 requestingUser.getAuthToken(),
-				                                                 requestingUser.getId());
+				                                                 fromUser.getAuthToken(),
+				                                                 fromUser.getId());
 		
 		if(dashboardModel != null) {
 			
@@ -28,7 +28,7 @@ public class AddCourseHandler extends MessageHandler<DashboardBackendController,
 
 			// XXX: create Queue
 			QueueModel queueModel = getController().getModel(QueueModel.class, 
-													requestingUser.getAuthToken(),
+													fromUser.getAuthToken(),
 													courseId);
 
 			queueModel.save();
