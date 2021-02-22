@@ -1,6 +1,7 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.NtroTaskAsync;
 
 public class ViewCreatorTask extends NtroTaskAsync {
@@ -13,12 +14,17 @@ public class ViewCreatorTask extends NtroTaskAsync {
 	}
 
 	@Override
-	protected void initializeTask() {
+	protected void onSomePreviousTaskFinished(String taskId, NtroTask subTask) {
+		T.call(this);
+
+		if(taskId.contains(Constants.VIEW_LOADER_TASK_ID)) {
+			view = ((ViewLoader)subTask).createView();
+		}
 	}
 
 	@Override
 	protected void runTaskAsync() {
-		view = ((ViewLoader) getPreviousTask(ViewLoader.class, Constants.VIEW_LOADER_TASK_ID)).createView();
+		//view = ((ViewLoader) getPreviousTask(ViewLoader.class, Constants.VIEW_LOADER_TASK_ID)).createView();
 		notifyTaskFinished();
 	}
 

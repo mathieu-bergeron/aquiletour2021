@@ -54,10 +54,6 @@ public class ViewLoaderFx extends ViewLoader {
 	}
 
 	@Override
-	protected void initializeTask() {
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		notifyTaskFinished();

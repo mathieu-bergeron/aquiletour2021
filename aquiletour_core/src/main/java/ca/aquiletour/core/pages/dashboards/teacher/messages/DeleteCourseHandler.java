@@ -14,11 +14,6 @@ public class DeleteCourseHandler extends MessageHandler {
 	}
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 

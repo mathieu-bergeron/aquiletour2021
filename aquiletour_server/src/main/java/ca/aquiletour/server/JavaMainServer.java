@@ -17,7 +17,11 @@
 
 package ca.aquiletour.server;
 
+
+import java.io.File;
+
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.web.NtroWebserver;
 
 public class JavaMainServer {
@@ -28,6 +32,6 @@ public class JavaMainServer {
 		NtroWebserver.defaultInitializationTask()
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
-		             .execute();
+		             .execute().addGraphWriter(new GraphTraceWriterJdk(new File("TMP")));
 	}
 }

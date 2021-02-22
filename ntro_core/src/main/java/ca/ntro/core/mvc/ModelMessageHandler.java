@@ -2,6 +2,7 @@ package ca.ntro.core.mvc;
 
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.NtroMessage;
@@ -27,10 +28,10 @@ public abstract class   ModelMessageHandler<M extends NtroModel, MSG extends Ntr
 	}
 
 	@Override
-	public void execute() {
+	public GraphTraceConnector execute() {
 		T.call(this);
 		
-		task.execute();
+		return task.execute();
 	}
 
 	void handleImpl(M model, MSG message) {

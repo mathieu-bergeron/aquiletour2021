@@ -17,6 +17,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class DashboardViewTest {
 	private WebDriver driver;
 	private String aquiletourSite = "http://localhost:8080";
+//	private String connectTeacher = "localhost:8080?userId=alice&authToken=aliceToken";
+	//private String loadJS = "localhost:8080?nojs";
 	
 	@Before
 	public void setUp() throws IOException {
@@ -43,18 +45,20 @@ public class DashboardViewTest {
 		Boolean created = false;
 		
 
-		driver.get(aquiletourSite);
-
-		driver.manage().addCookie(new Cookie("userId", "bob"));
-		driver.manage().addCookie(new Cookie("authToken", "bobToken"));
+//		driver.get(loadJS);
+//		waitForPageToLoad(100);
 		
+		driver.get(aquiletourSite);
 		waitForPageToLoad(500);
+		driver.manage().addCookie(new Cookie("userId", "alice"));
+		driver.manage().addCookie(new Cookie("authToken", "aliceToken"));
 
         //search for tasks
-        driver.findElement(By.xpath("//a[@href='/dashboard']")).click();
+		driver.findElement(By.xpath("//a[@href='/mescours']")).click();
         waitForPageToLoad(500);
         
         //add class
+        driver.findElement(By.xpath("//button[@data-target='#modalDashboard']")).click();
         WebElement title = driver.findElement(By.name("title"));
         WebElement summary = driver.findElement(By.name("summary"));
         WebElement date = driver.findElement(By.name("date"));
@@ -62,7 +66,7 @@ public class DashboardViewTest {
         summary.sendKeys(summaryInput);
         date.sendKeys(dateInput);
         
-        driver.findElement(By.xpath("//button[text()='Ajouter']")).click();
+        driver.findElement(By.xpath("//button[@id='add-course-submit-button']")).click();
         ArrayList<WebElement> titles = (ArrayList<WebElement>) driver.findElements(By.id("course-title"));
         for (WebElement webElement : titles) {
         	if (webElement.getAttribute("innerHTML").equals(titleInput)) {

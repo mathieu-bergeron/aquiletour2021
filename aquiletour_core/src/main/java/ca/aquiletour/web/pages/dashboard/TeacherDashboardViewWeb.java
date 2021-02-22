@@ -19,13 +19,9 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 		HtmlElement addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
 		HtmlElement addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
-		HtmlElement addCourseSummaryInput = getRootElement().find("#add-course-summary-input").get(0);
-		HtmlElement addCourseDateInput = getRootElement().find("#add-course-date-input").get(0);
 
 		MustNot.beNull(addCourseButton);
 		MustNot.beNull(addCourseTitleInput);
-		MustNot.beNull(addCourseSummaryInput);
-		MustNot.beNull(addCourseDateInput);
 
 		addCourseButton.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -33,7 +29,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				T.call(this);
 
 				AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue(),addCourseSummaryInput.getValue(),addCourseDateInput.getValue()));
+				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue()));
 				addCourseMessage.sendMessage();
 			}
 		});

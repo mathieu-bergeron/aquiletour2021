@@ -21,19 +21,31 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		T.here();
 
 		HtmlElement title = this.getRootElement().children("#course-title").get(0);
-		HtmlElement summaryText = this.getRootElement().children("#summary-text").get(0);
-		HtmlElement summaryDate = this.getRootElement().children("#summary-date").get(0);
+		HtmlElement courseId = this.getRootElement().children("#courseId").get(0);
+		HtmlElement nbAppointment = this.getRootElement().children("#nbAppointment").get(0);
+		HtmlElement makeAppointmentLink = this.getRootElement().children("#availableLink").get(0);
+		HtmlElement myAppointment = this.getRootElement().children("#myAppointment").get(0);
+		HtmlElement isQueueOpen = this.getRootElement().children("#isQueueOpen").get(0);
 		
 		
 		MustNot.beNull(title);
-		MustNot.beNull(summaryText);
-		MustNot.beNull(summaryDate);
+		MustNot.beNull(courseId);
+		MustNot.beNull(nbAppointment);
+		MustNot.beNull(makeAppointmentLink);
+		MustNot.beNull(myAppointment);
+		MustNot.beNull(isQueueOpen);
 
-		T.values(course.getTitle(), course.getSummary(), course.getDate());
+		T.values(course.getTitle()); 
 		
 		title.appendHtml(course.getTitle());
-		summaryText.appendHtml(course.getSummary());
-		summaryDate.appendHtml(course.getDate());
+		//courseId.appendHtml(course.getCourseId());
+		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
+		if (course.getMyAppointment() != null) {
+			myAppointment.appendHtml(course.getMyAppointment());
+		}
+		if(course.isQueueOpen()) {isQueueOpen.appendHtml("false");}
+		else {isQueueOpen.appendHtml("true");}
+		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
 	}
 
 }

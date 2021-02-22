@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
@@ -40,9 +41,21 @@ public class AquiletourRequestHandler {
 			sendUsersMessages(path.subPath(1), parameters);
 		
 		}else if(path.startsWith("connexion")) {
-
+			
 			sendLoginMessages(path.subPath(1), parameters);
+			
+		} else if(path.startsWith("acceuil")) {
+
+			sendHomeMessages(path.subPath(1), parameters);
 		}
+	}
+
+	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
+
+		ShowHomeMessage showHomeMessage = MessageFactory.getOutgoingMessage(ShowHomeMessage.class);
+		showHomeMessage.sendMessage();
+		
 	}
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
@@ -84,7 +97,7 @@ public class AquiletourRequestHandler {
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.size() >= 1) {
+		if(path.size() >= 1) {//TODO 
 
 			String courseId = path.getName(0);
 			

@@ -32,7 +32,6 @@ public class User extends NtroUser {
 		this.surname = surname;
 	}
 
-
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -45,4 +44,7 @@ public class User extends NtroUser {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
+
+	
+	
 }

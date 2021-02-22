@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
@@ -86,5 +87,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		showSubView(currentView);
+	}
+
+	@Override
+	public void showHome(HomeView homeView) {
+		T.call(this);
+		showSubView(homeView);
 	}
 }

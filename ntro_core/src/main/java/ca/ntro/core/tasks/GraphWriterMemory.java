@@ -1,4 +1,4 @@
-package ca.ntro.jdk.test;
+package ca.ntro.core.tasks;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,17 +6,44 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import ca.ntro.core.system.assertions.MustNot;
-import ca.ntro.core.task2.GraphWriter;
-import ca.ntro.core.task2.NodeSpec;
-import ca.ntro.jdk.tasks.GraphWriterJdk;
 
-public class GraphWriterTest implements GraphWriter {
-	
-	private class Node implements NodeSpec {
-		public NodeSpec wrappedSpec;
+public class GraphWriterMemory implements GraphWriter {
+
+	@Override
+	public void addRootCluster(NodeDescription cluster) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addRootNode(NodeDescription node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSubCluster(NodeDescription cluster, NodeDescription subCluster) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addSubNode(NodeDescription cluster, NodeDescription subNode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addEdge(NodeDescription from, NodeDescription to) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*
+	private class Node implements NodeDescription {
+		public NodeDescription wrappedSpec;
 		public Node parent;
-		public Node(NodeSpec wrappedSpec) {
+		public Node(NodeDescription wrappedSpec) {
 			this.wrappedSpec = wrappedSpec;
 		}
 		@Override
@@ -52,7 +79,7 @@ public class GraphWriterTest implements GraphWriter {
 
 	private class Cluster extends Node {
 		public Set<Node> children = new HashSet<>();
-		public Cluster(NodeSpec wrappedSpec) {
+		public Cluster(NodeDescription wrappedSpec) {
 			super(wrappedSpec);
 		}
 		public void add(Node node) {
@@ -98,30 +125,16 @@ public class GraphWriterTest implements GraphWriter {
 		}
 	}
 
-	private String graphName;
 	private Map<String, Node> nodes = new HashMap<>();
 	private Set<Edge> edges = new HashSet<>();
 	
-	public GraphWriterTest(String graphName) {
-		this.graphName = graphName;
-	}
-	
-	public GraphWriterJdk toGraphWriterJdk() {
-		GraphWriterJdk writer = new GraphWriterJdk(graphName);
-
-		nodes.values().forEach(n -> n.write(writer, new HashSet<>()));
-		edges.forEach(e -> e.write(writer));
-
-		return writer;
-	}
-
 	public boolean hasCluster(String clusterId) {
 		return nodes.containsKey(clusterId) &&
 				nodes.get(clusterId) instanceof Cluster;
 	}
 
 	@Override
-	public void addRootCluster(NodeSpec clusterSpec) {
+	public void addRootCluster(NodeDescription clusterSpec) {
 		nodes.put(clusterSpec.getId(), new Cluster(clusterSpec));
 	}
 
@@ -131,19 +144,19 @@ public class GraphWriterTest implements GraphWriter {
 	}
 
 	@Override
-	public void addRootNode(NodeSpec nodeSpec) {
+	public void addRootNode(NodeDescription nodeSpec) {
 		nodes.put(nodeSpec.getId(), new Node(nodeSpec));
 	}
 
 	@Override
-	public void addSubCluster(NodeSpec cluster, NodeSpec subClusterSpec) {
+	public void addSubCluster(NodeDescription cluster, NodeDescription subClusterSpec) {
 		Cluster subCluster = new Cluster(subClusterSpec);
 		nodes.put(subClusterSpec.getId(), subCluster);
 		getCluster(cluster.getId()).add(subCluster);
 	}
 
 	@Override
-	public void addSubNode(NodeSpec cluster, NodeSpec subNodeSpec) {
+	public void addSubNode(NodeDescription cluster, NodeDescription subNodeSpec) {
 		Node subNode = new Node(subNodeSpec);
 		nodes.put(subNodeSpec.getId(), subNode);
 		getCluster(cluster.getId()).add(subNode);
@@ -162,25 +175,14 @@ public class GraphWriterTest implements GraphWriter {
 		return cluster;
 	}
 
-	public boolean hasEdge(String fromId, String toId) {
-		
-		Node from = getNode(fromId);
-		Node to = getNode(toId);
-		
-		if(from != null && to != null) {
-			return edges.contains(new Edge(from,to));
-		}
-
-		return false;
-	}
-
 	@Override
-	public void addEdge(NodeSpec fromSpec, NodeSpec toSpec) {
-		System.out.println("addEdge: " + fromSpec.getId() + " " + toSpec.getId());
+	public void addEdge(NodeDescription fromSpec, NodeDescription toSpec) {
 		Node from = getNode(fromSpec.getId());
 		Node to = getNode(toSpec.getId());
 		
 		edges.add(new Edge(from, to));
 	}
-
+	
+	*/
 }
+

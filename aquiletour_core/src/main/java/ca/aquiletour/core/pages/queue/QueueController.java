@@ -1,26 +1,23 @@
 package ca.aquiletour.core.pages.queue;
 
-import ca.aquiletour.core.pages.queue.handlers.AddAppointmentHandler;
 import ca.aquiletour.core.pages.queue.handlers.DeleteAppointmentHandler;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.handlers.ShowQueueHandler;
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 
-public class QueueController extends NtroController<RootController> {
+public  class QueueController extends NtroController<RootController> {
 
 	@Override
 	protected void onCreate() {
 		T.call(this);
-		
-		// XXX: is replaced by actual loader in ShowQueueHandler
+
+		// empty model loader until the ShowQueue message
 		setModelLoader(new EmptyModelLoader());
 
 		setViewLoader(QueueView.class, currentContext().getLang());
@@ -29,7 +26,7 @@ public class QueueController extends NtroController<RootController> {
 
 		// (1) installing a ModelMessageHandler even if there is no modelLoader
 		//      this means it will block until the model is loaded
-		addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
+		//addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 
 		addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
 
@@ -39,17 +36,19 @@ public class QueueController extends NtroController<RootController> {
 		addControllerMessageHandler(ShowQueueMessage.class, new ShowQueueHandler());
 
 	}
-
+	
+	
 	@Override
 	protected void onChangeContext(NtroContext previousContext) {
 		T.call(this);
 		
 		// TODO: we can automatize this!
-		//       «simply» reset the tasks with the new lang
-		if(!previousContext.hasSameLang(currentContext())) {
-			setViewLoader(QueueView.class, currentContext().getLang());
-			addSubViewLoader(AppointmentView.class, currentContext().getLang());
-		}
+				//      simply reset the tasks with the new lang
+				if(!previousContext.hasSameLang(currentContext())) {
+					setViewLoader(QueueView.class, currentContext().getLang());
+					addSubViewLoader(AppointmentView.class, currentContext().getLang());
+				}
+		
 	}
 
 	@Override

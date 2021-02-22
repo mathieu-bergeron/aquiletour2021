@@ -25,7 +25,8 @@ public abstract class ModelStore {
 
 		modelLoader.setTargetClass(modelClass);
 
-		modelLoader.addPreviousTask(jsonLoader);
+		//modelLoader.addPreviousTask(jsonLoader);
+		modelLoader.addSubTask(jsonLoader);
 
 		return modelLoader;
 	}
