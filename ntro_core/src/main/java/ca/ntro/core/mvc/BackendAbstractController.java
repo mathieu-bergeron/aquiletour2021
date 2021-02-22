@@ -6,6 +6,7 @@ import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
+import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageFactory;
@@ -16,6 +17,13 @@ public abstract class BackendAbstractController extends AnyController implements
 	private NtroTask mainTask = new ContainerTask();
 
 	private ModelStore modelStore;
+
+	public BackendAbstractController() {
+		T.call(this);
+
+		mainTask.setTaskId(Ntro.introspector().getSimpleNameForClass(this.getClass()));
+	}
+		
 
 	public void setModelStore(ModelStore modelStore) {
 		T.call(this);
@@ -44,13 +52,16 @@ public abstract class BackendAbstractController extends AnyController implements
 		handler.setController(this);
 
 		handler.getTask().addPreviousTask(message);
+		
+		getTask().addSubTask(handler.getTask());
 	}
 
 	protected <C extends BackendController<?>> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
 
-		BackendControllerFactory.createBackendController(controllerClass, this);
-
+		C subController = BackendControllerFactory.createBackendController(controllerClass, this);
+		
+		mainTask.addSubTask(subController.getTask());
 	}
 
 	@Override
@@ -61,10 +72,10 @@ public abstract class BackendAbstractController extends AnyController implements
 	}
 
 	@Override
-	public void execute() {
+	public GraphTraceConnector execute() {
 		T.call(this);
 		
-		mainTask.execute();
+		return mainTask.execute();
 	}
 
 

@@ -17,17 +17,23 @@
 
 package ca.ntro.jsweet;
 
+
+import ca.ntro.core.Constants;
 import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.initialization.InitializationTaskJSweet;
-import ca.ntro.web.mvc.ViewLoaderWeb;
+import ca.ntro.jsweet.services.NtroCollectionsJSweet;
 
 public class NtroJSweet {
 
 	public static NtroInitializationTask defaultInitializationTask() {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");
+
+		NtroCollections.initialize(new NtroCollectionsJSweet());
 		
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
+		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
 		
 		InitializationTaskJSweet initJSweet = new InitializationTaskJSweet();
 

@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 
 public class ResourceHandler extends AbstractHandler {
+	
+	private static int BUFFER_SIZE = 1024;
 
 	public static ContextHandler createResourceHandler(String resourcesUrlPrefix, String publicFilesPrefix) {
 		T.call(ResourceHandler.class);
@@ -150,6 +153,12 @@ public class ResourceHandler extends AbstractHandler {
 			response.setContentType("application/json; charset=utf-8");
 		}else if(filePath.endsWith("css")) {
 			response.setContentType("text/css; charset=utf-8");
+		}else if(filePath.endsWith("png")) {
+			response.setContentType("image/png");
+		}else if(filePath.endsWith("gif")) {
+			response.setContentType("image/gif");
+		}else if(filePath.endsWith("jpg")) {
+			response.setContentType("image/jpeg");
 		}else {
 			response.setContentType("text/plain; charset=utf-8");
 		}
@@ -158,12 +167,20 @@ public class ResourceHandler extends AbstractHandler {
 
 	private void copyFileToOutStream(OutputStream out, InputStream fileStream) throws IOException {
 		T.call(this);
-
-		int c;
 		
-		while((c = fileStream.read()) > 0) {
-			out.write(c);
-		}
+        byte[] buffer = new byte[BUFFER_SIZE];
+
+        int readSize = 0;
+
+        while(true){
+
+            readSize = fileStream.read(buffer);
+            if(readSize > 0) {
+				out.write(buffer, 0, readSize);
+            }else {
+            	break;
+            }
+        } 
 	}
 
 }

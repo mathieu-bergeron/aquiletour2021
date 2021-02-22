@@ -21,18 +21,12 @@ public class ModelLoader extends NtroTaskAsync {
 		this.modelStore = modelStore;
 	}
 	
-
-	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 
-		JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
+		//JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
+		JsonLoader jsonLoader = (JsonLoader) getSubTask(JsonLoader.class, "JsonLoader");
 		
 		JsonObject jsonObject = jsonLoader.getJsonObject();
 		DocumentPath documentPath = jsonLoader.getDocumentPath();

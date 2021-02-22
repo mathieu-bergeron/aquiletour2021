@@ -1,4 +1,4 @@
-package ca.ntro.core.task2;
+package ca.ntro.core.tasks;
 
 public interface Identifiable {
 

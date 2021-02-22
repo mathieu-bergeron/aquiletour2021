@@ -1,5 +1,9 @@
 package ca.aquiletour.core.pages.login;
 
+
+import java.io.File;
+import java.io.IOException;
+
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
@@ -12,7 +16,7 @@ public class LoginController extends NtroController<RootController> {
 		T.call(this);
 
 		setViewLoader(LoginView.class, "fr");
-
+		
 		addParentViewMessageHandler(ShowLoginMessage.class, new ShowLoginHandler());
 	}
 

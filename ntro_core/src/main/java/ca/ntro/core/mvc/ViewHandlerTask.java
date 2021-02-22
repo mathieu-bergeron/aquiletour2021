@@ -19,12 +19,6 @@ public class ViewHandlerTask<CB extends NtroAbstractController, V extends NtroVi
 	}
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		

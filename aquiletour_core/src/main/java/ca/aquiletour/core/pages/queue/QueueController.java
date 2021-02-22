@@ -1,22 +1,14 @@
 package ca.aquiletour.core.pages.queue;
 
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.dashboards.DashboardViewModel;
-import ca.aquiletour.core.pages.queue.handlers.AddAppointmentHandler;
 import ca.aquiletour.core.pages.queue.handlers.DeleteAppointmentHandler;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.handlers.ShowQueueHandler;
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.LocalStore;
-import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
 
 public  class QueueController extends NtroController<RootController> {
@@ -24,8 +16,8 @@ public  class QueueController extends NtroController<RootController> {
 	@Override
 	protected void onCreate() {
 		T.call(this);
-		
-		// XXX: is replaced by actual loader in ShowQueueHandler
+
+		// empty model loader until the ShowQueue message
 		setModelLoader(new EmptyModelLoader());
 
 		setViewLoader(QueueView.class, currentContext().getLang());

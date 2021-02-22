@@ -76,7 +76,7 @@ public class InitializationTaskJdk extends InitializationTask {
 	protected NtroCollections provideNtroCollections() {
 		T.call(this);
 
-		return new CollectionProviderJdk();
+		return new NtroCollectionsJdk();
 	}
 
 	@Override

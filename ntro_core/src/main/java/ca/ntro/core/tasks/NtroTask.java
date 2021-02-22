@@ -1,22 +1,35 @@
 package ca.ntro.core.tasks;
 
 public interface NtroTask {
-
+	
 	String getTaskId();
-	void setTaskId(String taskId);
-	void reset();
-	void execute();
-	NtroTask addPreviousTask(NtroTask task);
+
+	void setTaskId(String id);
+	void setParentTask(NtroTask parentTask);
+
+	NtroTask addSubTask(NtroTask task);
+	NtroTask addSubTask(NtroTask task, String taskId);
+
 	NtroTask addNextTask(NtroTask task);
-	void notifySomePreviousTaskFinished();
-	State getState();
-	boolean hasId(String id);
-	void addSubTask(NtroTask task);
-	void notifySomeSubTaskFinished();
-	void setParentTask(NtroTask ntroTaskImpl);
-	<NT extends NtroTask> NT getSubTask(Class<NT> taskClass);
-	<NT extends NtroTask> NT getSubTask(Class<NT> taskClass, String taskId);
-	void write(StringBuilder out, int indentLevel);
-	void destroy();
+	NtroTask addNextTask(NtroTask task, String taskId);
+
+	NtroTask addPreviousTask(NtroTask task);
+	NtroTask addPreviousTask(NtroTask task, String taskId);
+	
+	<N extends NtroTask> N getPreviousTask(Class<N> taskClass, String taskId);
+	<N extends NtroTask> N getSubTask(Class<N> taskClass, String taskId);
+	
+	void replaceWith(NtroTask task);
+
+	GraphTraceConnector execute();
+
+	void notifyEntryTaskFinished();
+	void notifyExitTaskFinished();
+
+	void resetTask();
+	
+	TaskGraph asGraph();
+	Node asNode();
 
 }
+	

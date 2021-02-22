@@ -21,14 +21,10 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 
 public class OnLoadTask extends NtroTaskAsync {
 
-	@Override
-	protected void initializeTask() {
-	}
 
 	@Override
 	public void runTaskAsync() {
-		// XXX: here we want setReturnValue(null) to 
-		//      be called from Javascript (for now)
+		// XXX: notifyTaskFinished() is called from Javascript
 	}
 
 	@Override
