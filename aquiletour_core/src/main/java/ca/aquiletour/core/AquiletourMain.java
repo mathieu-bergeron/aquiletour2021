@@ -18,7 +18,6 @@
 package ca.aquiletour.core;
 
 import ca.aquiletour.core.pages.root.RootController;
-import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
@@ -28,18 +27,13 @@ import ca.ntro.core.tasks.NtroTaskSync;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 
-	@Override
-	protected void initializeTask() {
-
-	}
-	
 	protected abstract void registerViewLoaders();
 
 	@Override
 	protected void runTask() {
 		T.call(this);
 
-		Constants.LANG = getPreviousTask(NtroInitializationTask.class).getOption("lang");
+		Constants.LANG = getPreviousTask(NtroInitializationTask.class, "initializationTask").getOption("lang");
 
 		// FIXME
 		Constants.LANG = "fr";

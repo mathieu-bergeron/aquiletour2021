@@ -16,13 +16,6 @@ public class JsonLoaderMemory extends JsonLoader {
 		this.documentPath = documentPath;
 	}
 
-
-	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);

@@ -11,7 +11,6 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 
 public class QueueController extends NtroController<RootController> {
@@ -19,8 +18,8 @@ public class QueueController extends NtroController<RootController> {
 	@Override
 	protected void onCreate() {
 		T.call(this);
-		
-		// XXX: is replaced by actual loader in ShowQueueHandler
+
+		// empty model loader until the ShowQueue message
 		setModelLoader(new EmptyModelLoader());
 
 		setViewLoader(QueueView.class, currentContext().getLang());

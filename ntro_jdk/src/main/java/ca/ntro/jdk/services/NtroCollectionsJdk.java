@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import ca.ntro.core.services.NtroCollections;
 
-public class CollectionProviderJdk extends NtroCollections {
+public class NtroCollectionsJdk extends NtroCollections {
 
 	@Override
 	public <I extends Object> List<I> synchronizedListImpl(List<I> elements) {

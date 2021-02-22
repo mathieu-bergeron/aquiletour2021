@@ -118,4 +118,15 @@ public class Path {
 		
 		return names.size();
 	}
+
+	public String toFileName() {
+		StringBuilder builder = new StringBuilder();
+		
+		for(String name : names) {
+			builder.append(name);
+			builder.append("_");
+		}
+		
+		return builder.toString();
+	}
 }

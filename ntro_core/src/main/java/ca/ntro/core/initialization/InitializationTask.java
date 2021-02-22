@@ -40,11 +40,6 @@ import ca.ntro.web.mvc.ViewLoaderWeb;
 public abstract class InitializationTask extends NtroTaskSync {
 
 	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	protected void runTask() {
 		__T.call(InitializationTask.class, "runSyncTask");
 		performInitialization();

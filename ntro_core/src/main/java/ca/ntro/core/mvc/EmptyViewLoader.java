@@ -7,11 +7,6 @@ public class EmptyViewLoader extends ViewLoader {
 		throw new RuntimeException("should not be called!");
 	}
 
-	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	protected void runTaskAsync() {

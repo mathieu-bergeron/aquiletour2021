@@ -17,8 +17,11 @@
 
 package ca.ntro.jdk;
 
+import ca.ntro.core.Constants;
 import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.jdk.services.NtroCollectionsJdk;
 import ca.ntro.jdk.services.InitializationTaskJdk;
 
 public class NtroJdk {
@@ -26,7 +29,11 @@ public class NtroJdk {
 	public static NtroInitializationTask defaultInitializationTask() {
 		__T.call(NtroJdk.class, "defaultInitializationTask");
 		
+		NtroCollections.initialize(new NtroCollectionsJdk());
+		
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
+		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
+
 		initializationTask.addSubTask(new InitializationTaskJdk());
 
 		return initializationTask;
