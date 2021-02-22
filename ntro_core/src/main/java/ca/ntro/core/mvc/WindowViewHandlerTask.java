@@ -36,13 +36,12 @@ public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskAsync{
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		/*
 		ViewCreatorTask viewCreatorTask = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
+
 		MustNot.beNull(viewCreatorTask);
 
 		@SuppressWarnings("unchecked")
 		V view = (V) viewCreatorTask.getView();
-		*/
 		
 		MustNot.beNull(view);
 

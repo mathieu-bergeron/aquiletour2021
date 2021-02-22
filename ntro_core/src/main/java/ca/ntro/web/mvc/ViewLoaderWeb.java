@@ -53,7 +53,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		// FIXME: explicit casting as otherwise we get type errors in JSweet
 		//        can we fix this??
-		//html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
+		html = ((ResourceLoaderTask) getSubTask(ResourceLoaderTask.class, "Html")).getResourceAsString();
 
 		MustNot.beNull(html);
 		
