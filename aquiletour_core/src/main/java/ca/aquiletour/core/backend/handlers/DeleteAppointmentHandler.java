@@ -43,6 +43,9 @@ public class DeleteAppointmentHandler extends MessageHandler<QueueBackendControl
 	                    studentId);
 				if(dashboardModel != null) {
 					dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
+					if(requestingUser.getId().equals(studentId)) {
+						dashboardModel.updateMyAppointment(courseId, false);
+					}
 					dashboardModel.save();
 				}
 			}

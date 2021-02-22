@@ -22,7 +22,7 @@
         "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
         "title": "ZD4",
         "courseId": "ZD4",
-        "isQueueOpen": false,
+        "isQueueOpen": true,
         "numberOfAppointments": 0,
         "myAppointment": null
       }

@@ -42,6 +42,9 @@ public class AddAppointmentHandler extends MessageHandler<QueueBackendController
 	                    studentId);
 				if(dashboardModel != null) {
 					dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
+					if(requestingUser.getId().equals(studentId)) {
+						dashboardModel.updateMyAppointment(courseId, true);
+					}
 					dashboardModel.save();
 				}
 			}

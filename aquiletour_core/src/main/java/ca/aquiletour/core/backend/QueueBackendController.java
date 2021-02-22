@@ -8,11 +8,13 @@ import ca.ntro.core.mvc.BackendController;
 
 public class QueueBackendController extends BackendController<RootBackendController>{
 
+	//TODO MAP de STRING vers timer, un timer par queue
 	@Override
 	protected void onCreate() {
 		
 		addMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 		addMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
+		//message teacherusesQueue -> isQUEUEOPEN = true-> qq timer fini -> false -> visiter chque queuesummary pr update a false
 
 	}
 

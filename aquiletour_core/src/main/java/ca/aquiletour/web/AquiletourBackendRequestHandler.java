@@ -66,7 +66,7 @@ public class AquiletourBackendRequestHandler {
 			String courseId = parameters.get("title")[0];
 
 			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, true, "yes", 100));
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, true, null, 100));
 			addCourseMessage.setUser(user);
 			addCourseMessage.sendMessage();
 		}

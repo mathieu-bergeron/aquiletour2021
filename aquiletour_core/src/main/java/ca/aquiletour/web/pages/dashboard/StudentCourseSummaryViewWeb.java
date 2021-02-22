@@ -22,32 +22,28 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 		HtmlElement title = this.getRootElement().children("#course-title").get(0);
 		HtmlElement courseId = this.getRootElement().children("#courseId").get(0);
-		HtmlElement nbAppointment = this.getRootElement().children("#nbAppointment").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().children("#availableLink").get(0);
-		HtmlElement myAppointment = this.getRootElement().children("#myAppointment").get(0);
-		HtmlElement isQueueOpen = this.getRootElement().children("#isQueueOpen").get(0);
+		HtmlElement teacherAvailable = this.getRootElement().children("#buttonAvailable").get(0);
 		
 		
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
-		MustNot.beNull(nbAppointment);
 		MustNot.beNull(makeAppointmentLink);
-		MustNot.beNull(myAppointment);
-		MustNot.beNull(isQueueOpen);
+		MustNot.beNull(teacherAvailable);
+		
 
 		T.values(course.getTitle()); 
 		
-		title.appendHtml("this is student");
+		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
-		T.values(course.getIsQueueOpen());
-		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
-		if (course.getMyAppointment() != null) {
-			myAppointment.appendHtml(course.getMyAppointment());
-		}
-		if(course.getIsQueueOpen()) {
-			isQueueOpen.appendHtml("true");
-		} else {
-			isQueueOpen.appendHtml("false");
+		if(course.getMyAppointment() != null && course.getIsQueueOpen() != null) {
+			if(course.getMyAppointment()) {
+				teacherAvailable.appendHtml("j'ai déjà un rendez-vous");
+			} else if (course.getIsQueueOpen()) {
+				teacherAvailable.appendHtml("prof disponible");
+			} else {
+				teacherAvailable.appendHtml("prof non-disponible");
+			}
 		}
 		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
 	}
