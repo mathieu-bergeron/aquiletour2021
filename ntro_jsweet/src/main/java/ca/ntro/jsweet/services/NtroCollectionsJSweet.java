@@ -33,7 +33,9 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	public <I> List<I> synchronizedListImpl(List<I> elements) {
 		// XXX: no need for a synchronized list in single-threaded Javascript
 		List<I> list = new ArrayList<>();
-		list.addAll(elements);
+		for(I item : elements) {
+			list.add(item);
+		}
 		return list;
 	}
 
@@ -41,7 +43,9 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	public <K, V> Map<K, V> concurrentMapImpl(Map<K, V> elements) {
 		// XXX: no need for a concurrent map in single-threaded Javascript
 		Map<K,V> map = new HashMap<>();
-		map.putAll(elements);
+		for(Map.Entry<K,V> entry : elements.entrySet()) {
+			map.put(entry.getKey(), entry.getValue());
+		}
 		return map;
 	}
 
@@ -49,7 +53,9 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	protected <V> Set<V> concurrentSetImpl(Set<V> elements) {
 		// XXX: no need for a concurrent set in single-threaded Javascript
 		Set<V> set = new HashSet<>();
-		set.addAll(elements);
+		for(V value : elements) {
+			set.add(value);
+		}
 		return set;
 	}
 
