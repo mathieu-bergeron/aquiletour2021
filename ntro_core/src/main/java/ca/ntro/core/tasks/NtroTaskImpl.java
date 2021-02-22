@@ -658,6 +658,8 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 		if(state == WAITING_FOR_EXIT_TASK) {
 			state = DONE;
 			notifyTaskFinished();
+			//if(asGraph().isExecuting){}
+			execute();                // FIXME: needed to be async 
 		}
 	}
 
