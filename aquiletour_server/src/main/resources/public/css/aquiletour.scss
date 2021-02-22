@@ -143,8 +143,17 @@
   
 }
 
-.btn.home-start{
-  margin: 0 auto;
+.img-homepage {
+  height: 80vh;
+  margin: auto;
+}
+
+#carouselIndicators{
+  //background-image: url(/_R/img/aiguilleur.png);
+}
+
+.carousel-indicators{
+  top: 0!important;
 }
 //WHOLE SITE
 html, body{

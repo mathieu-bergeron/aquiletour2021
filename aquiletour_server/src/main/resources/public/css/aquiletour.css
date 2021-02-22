@@ -134,8 +134,13 @@
   letter-spacing: 2px;
 }
 
-.btn.home-start {
-  margin: 0 auto;
+.img-homepage {
+  height: 80vh;
+  margin: auto;
+}
+
+.carousel-indicators {
+  top: 0 !important;
 }
 
 html, body {
