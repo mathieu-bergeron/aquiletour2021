@@ -44,7 +44,7 @@ public class AquiletourRequestHandler {
 			
 			sendLoginMessages(path.subPath(1), parameters);
 			
-		} else if(path.startsWith("acceuil")) {
+		} else if(path.startsWith("accueil")) {
 
 			sendHomeMessages(path.subPath(1), parameters);
 		}
