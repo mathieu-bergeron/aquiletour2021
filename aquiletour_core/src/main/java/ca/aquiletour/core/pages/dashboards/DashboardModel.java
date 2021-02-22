@@ -30,12 +30,13 @@ public class DashboardModel extends NtroModel {
 		this.courses = courses;
 	}
 	
-	public void updateNbAppointmentOfCourse(String courseId) {
+	public void updateNbAppointmentOfCourse(String courseId, int nbAppointment) {
 		for (int i = 0; i < courses.size(); i++) {
 				CourseSummary currentCourse =  courses.getItem(i);
-				if(currentCourse.getTitle() == courseId) {
-					currentCourse.setNumberOfAppointments(4000);
-					courses.insertItem(i, currentCourse);
+				if(currentCourse.getTitle().equals(courseId)) {
+					T.here();
+					currentCourse.setNumberOfAppointments(nbAppointment);
+//					courses.insertItem(i, currentCourse);
 					T.values(currentCourse.getNumberOfAppointments());
 				};
 			

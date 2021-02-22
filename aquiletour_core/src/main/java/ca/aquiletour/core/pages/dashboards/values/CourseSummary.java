@@ -7,7 +7,7 @@ public class CourseSummary extends NtroModelValue {
 
 	private String title;
 	private String courseId;
-	private boolean isQueueOpen;
+	private Boolean isQueueOpen;
 	private String myAppointment;
 	private int numberOfAppointments;
 	
@@ -16,7 +16,7 @@ public class CourseSummary extends NtroModelValue {
 		super();
 	}
 	
-	public CourseSummary(String title, String courseId, boolean isQueueOpen, String myAppointment, int numberOfAppointments) {
+	public CourseSummary(String title, String courseId, Boolean isQueueOpen, String myAppointment, int numberOfAppointments) {
 		super();
 		T.call(this);
 		this.title = title;
@@ -47,11 +47,11 @@ public class CourseSummary extends NtroModelValue {
 		this.courseId = courseId;
 	}
 
-	public boolean isQueueOpen() {
+	public Boolean getIsQueueOpen() {
 		return isQueueOpen;
 	}
 
-	public void setQueueOpen(boolean isQueueOpen) {
+	public void setIsQueueOpen(Boolean isQueueOpen) {
 		this.isQueueOpen = isQueueOpen;
 	}
 

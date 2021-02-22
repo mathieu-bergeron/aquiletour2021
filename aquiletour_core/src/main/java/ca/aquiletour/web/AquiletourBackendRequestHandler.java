@@ -116,7 +116,8 @@ public class AquiletourBackendRequestHandler {
 			
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
-			
+			deleteAppointmentMessage.setUser(user);
+			deleteAppointmentMessage.setCourseId(courseId);
 			deleteAppointmentMessage.sendMessage();
 		}
 	}
