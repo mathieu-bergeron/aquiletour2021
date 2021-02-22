@@ -1,5 +1,7 @@
 package ca.aquiletour.web.pages.dashboard;
 
+import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
@@ -35,4 +37,5 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 		});
 
 	}
+
 }

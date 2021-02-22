@@ -1,7 +1,9 @@
 package ca.aquiletour.web;
 
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
@@ -12,7 +14,8 @@ import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.users.UserView;
 import ca.aquiletour.core.pages.users.UsersView;
-import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.TeacherCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.StudentCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.StudentDashboardViewWeb;
 import ca.aquiletour.web.pages.dashboard.TeacherDashboardViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
@@ -57,13 +60,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(StudentDashboardViewWeb.class));
 
-		ViewLoaders.registerViewLoader(CourseSummaryView.class,
+		ViewLoaders.registerViewLoader(TeacherCourseSummaryView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/course_summary/course_summary.html")
-			     	.setCssUrl("/views/course_summary/course_summary.css")
+				.setHtmlUrl("/views/course_summaries/teacher_course_summary/course_summary.html")
+		     	.setCssUrl("/views/course_summaries/teacher_course_summary/course_summary.css")
+				.setTranslationsUrl("/i18n/fr/string.json")
+				.setTargetClass(TeacherCourseSummaryViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(StudentCourseSummaryView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/course_summaries/student_course_summary/course_summary.html")
+			     	.setCssUrl("/views/course_summaries/student_course_summary/course_summary.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(CourseSummaryViewWeb.class));
+			     	.setTargetClass(StudentCourseSummaryViewWeb.class));
 
 		ViewLoaders.registerViewLoader(QueueView.class,
 				"fr"
