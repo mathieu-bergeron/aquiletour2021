@@ -20,5 +20,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY --from=build /code/aquiletour_server/build/libs/aquiletour_server-all.jar ./aqlt_srv.jar
 RUN mkdir -p src/main/resources
-COPY aquiletour_server/src/main/resources src/main/resources
+COPY --from=build /code/aquiletour_server/src/main/resources src/main/resources
+RUN mkdir -p __data__
+COPY --from=build /code/aquiletour_server/__test_data__ __data__
 CMD java -cp aqlt_srv.jar ca.aquiletour.server.JavaMainServer
