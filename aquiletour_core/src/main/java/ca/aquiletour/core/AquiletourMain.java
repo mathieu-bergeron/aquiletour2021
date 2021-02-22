@@ -17,6 +17,8 @@
 
 package ca.aquiletour.core;
 
+import ca.aquiletour.core.models.users.AnonUser;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
@@ -39,6 +41,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Constants.LANG = "fr";
 		
 		NtroContext context = new NtroContext();
+		context.setUser(new AnonUser());
 		context.setLang(Constants.LANG);
 		
 		registerViewLoaders();
