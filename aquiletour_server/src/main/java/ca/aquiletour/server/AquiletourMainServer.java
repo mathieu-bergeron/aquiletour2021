@@ -26,6 +26,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
+import ca.ntro.core.Constants;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
@@ -34,17 +35,11 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 public class AquiletourMainServer extends NtroTaskAsync {
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
 		// TODO: fetching option (parsed by InitializationTask)
-		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
+		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
 
 		ViewLoaderRegistrationWeb.registerViewLoaders();
 		

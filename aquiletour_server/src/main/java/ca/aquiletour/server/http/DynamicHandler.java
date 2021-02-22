@@ -17,6 +17,7 @@
 
 package ca.aquiletour.server.http;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -47,9 +48,12 @@ import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.services.LocalStoreFiles;
+import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
+import ca.ntro.jdk.tasks.GraphWriterJdk;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageFactory;
 
@@ -141,19 +145,22 @@ public class DynamicHandler extends AbstractHandler {
 
 		    RootBackendController rootBackendController =  BackendControllerFactory.createBackendRootController(RootBackendController.class, backendStore);
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
-
-		    rootBackendController.execute();
+		    
+		    GraphTraceConnector backendTrace = rootBackendController.execute();
 
 			Map<String, String[]> parameters = baseRequest.getParameterMap();
-			
-			// FIXME: sending a message unblocks the whole graph!!
 			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
+		    
+			backendTrace.addGraphWriter(new GraphTraceWriterJdk(new File("__backend_task_graphs__", path.toFileName())));
 
-			rootController.execute();
+			// Client controller executes after
+			// to make sure modifications to the
+			// models are loaded up
+			GraphTraceConnector trace = rootController.execute();
+			trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
 
-			// FIXME: sending a message unblocks the whole graph!!
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
-			
+
 			//rootBackendController.getTask().destroy();
 			//rootController.getTask().destroy();
 

@@ -23,12 +23,6 @@ public class ViewMessageHandlerTask<V extends NtroView,
 	}
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		

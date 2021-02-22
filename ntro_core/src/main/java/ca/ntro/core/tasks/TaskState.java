@@ -1,0 +1,14 @@
+package ca.ntro.core.tasks;
+
+public enum TaskState {
+
+	INIT,
+	WAITING_FOR_PREVIOUS_TASKS,
+	LAUNCHING_ENTRY_TASK,
+	WAITING_FOR_ENTRY_TASK,
+	WAITING_FOR_SUB_TASKS,
+	LAUNCHING_EXIT_TASK,
+	WAITING_FOR_EXIT_TASK,
+	DONE,
+	DELETED;                
+}

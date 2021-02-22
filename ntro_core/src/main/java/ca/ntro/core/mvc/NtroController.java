@@ -35,6 +35,9 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
 		message.setTaskId(messageId);
 
+		// FIXME: we don't really need this
+		//getTask().addSubTask(message);
+
 		handler.getTask().addPreviousTask(message);
 	}
 

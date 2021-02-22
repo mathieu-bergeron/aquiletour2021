@@ -38,12 +38,6 @@ public class JsonLoaderFiles extends JsonLoader {
 	}
 
 	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		T.values(documentPath.getCollection(), documentPath.getId());

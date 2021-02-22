@@ -10,6 +10,10 @@ public class DashboardBackendController extends BackendController<RootBackendCon
 	protected void onCreate() {
 		
 		addMessageHandler(AddCourseMessage.class, new AddCourseHandler());
+		
+		// TODO: other backend messages, e.g.
+		//       DeleteCourseMessage
+		//       AddUserMessage
 
 	}
 

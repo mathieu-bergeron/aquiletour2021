@@ -23,19 +23,16 @@ import def.es6.Globals;
 
 public class LoadSourceMapTask extends NtroTaskSync {
 
-	@Override
-	protected void initializeTask() {
-	}
-
 	public LoadSourceMapTask(String path) {
 
-		addSubTask(new ResourceLoaderTaskJsweet(path));
+		addSubTask(new ResourceLoaderTaskJsweet(path), "Loader");
 
 	}
 
 	@Override
 	protected void runTask() {
-		String sourceMap = getSubTask(ResourceLoaderTaskJsweet.class).getResourceAsString();
+
+		String sourceMap = getSubTask(ResourceLoaderTaskJsweet.class, "Loader").getResourceAsString();
 
 		Globals.installSourceMap(sourceMap);
 	}
