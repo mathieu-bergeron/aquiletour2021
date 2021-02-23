@@ -30,7 +30,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			@Override
 			public void onEvent() {
 				T.call(this);
-
+				
 				ShowStudentDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
 				showDashboardMessage.sendMessage();
 			}
@@ -40,7 +40,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showDashboard(DashboardView dashboardView) {
 		T.call(this);
-
+		
 		showSubView(dashboardView);
 	}
 
