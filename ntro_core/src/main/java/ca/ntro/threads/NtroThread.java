@@ -24,5 +24,5 @@ public interface NtroThread {
 	
 	// Ntro.backend().sendMessage(NtroMessage message);
 	// on server: sends directly to backend thread
-	// on client: sends to WebSocket connexion
+	// on client: sends to WebSocket connection
 }
