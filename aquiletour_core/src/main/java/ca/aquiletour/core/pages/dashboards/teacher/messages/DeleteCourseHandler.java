@@ -7,23 +7,5 @@ import ca.ntro.messages.MessageHandler;
 
 public class DeleteCourseHandler extends MessageHandler {
 
-	private DashboardController dashboardController;
-
-	public DeleteCourseHandler(DashboardController dashboardController) {
-		this.dashboardController = dashboardController;
-	}
-
-	@Override
-	protected void runTaskAsync() {
-		T.call(this);
-
-		notifyTaskFinished();
-	}
-
-	@Override
-	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
