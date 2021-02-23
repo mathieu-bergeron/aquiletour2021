@@ -13,8 +13,16 @@ public interface NtroThread {
 	
 	// NtroThread t = Ntro.threads().createThread();
 	
-	// Ntro.threads().runLater(NtroTask task);
+	// Ntro.threads().executeLater(NtroTask task);  // executes as soon as message queue is empty
 	
 	// Ntro.threads().isCurrentThreadRoot();
+	
+	
+	// Ntro.messages().sendMessage(NtroMessage message);  
+	// sends to currentThread().messageReceptors
+	//       if no receptors, send to parent thread
+	//       if no parent thread, send to backend
+	
+	// Ntro.backend().sendMessage(NtroMessage message);
 
 }
