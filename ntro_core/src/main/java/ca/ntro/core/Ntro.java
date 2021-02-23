@@ -22,8 +22,11 @@ import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
+import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.ResourceLoader;
+import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
@@ -125,5 +128,18 @@ public class Ntro {
 	public static ViewLoaderWeb viewLoaderWeb() {
 		return Factory.newInstance(viewLoaderWebClass);
 	}
+
+	public static ThreadService threadService() {
+		return null;
+	}
+
+	public static MessageService messageService() {
+		return null;
+	}
+
+	public static BackendService backendService() {
+		return null;
+	}
+
 
 }
