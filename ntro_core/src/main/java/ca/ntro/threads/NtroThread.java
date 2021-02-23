@@ -17,12 +17,12 @@ public interface NtroThread {
 	
 	// Ntro.threads().isCurrentThreadRoot();
 	
-	
 	// Ntro.messages().sendMessage(NtroMessage message);  
 	// sends to currentThread().messageReceptors
 	//       if no receptors, send to parent thread
 	//       if no parent thread, send to backend
 	
 	// Ntro.backend().sendMessage(NtroMessage message);
-
+	// on server: sends directly to backend thread
+	// on client: sends to WebSocket connexion
 }
