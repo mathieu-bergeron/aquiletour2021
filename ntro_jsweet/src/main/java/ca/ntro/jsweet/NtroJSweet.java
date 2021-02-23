@@ -17,7 +17,6 @@
 
 package ca.ntro.jsweet;
 
-
 import ca.ntro.core.Constants;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.services.NtroCollections;
