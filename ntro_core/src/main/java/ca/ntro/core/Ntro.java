@@ -17,6 +17,9 @@
 
 package ca.ntro.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.mvc.NtroWindow;
@@ -28,6 +31,7 @@ import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.threads.NtroThread;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -38,6 +42,11 @@ public class Ntro {
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
+	
+	
+	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
+	private static ThreadService threadService;
+	private static BackendService backendService;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -129,17 +138,27 @@ public class Ntro {
 		return Factory.newInstance(viewLoaderWebClass);
 	}
 
+	public static void zzz_registerThreadService(ThreadService threadService) {
+		Ntro.threadService = threadService;
+	}
+
 	public static ThreadService threadService() {
-		return null;
+		return threadService;
+	}
+	
+	public static void zzz_registerMessageService(NtroThread thread, MessageService service) {
+		messageServices.put(thread, service);
 	}
 
 	public static MessageService messageService() {
-		return null;
+		return messageServices.get(threadService().currentThread());
+	}
+
+	public static void zzz_registerBackendService(BackendService backendService) {
+		Ntro.backendService = backendService;
 	}
 
 	public static BackendService backendService() {
-		return null;
+		return backendService;
 	}
-
-
 }

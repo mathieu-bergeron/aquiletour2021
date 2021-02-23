@@ -2,43 +2,42 @@ package ca.ntro.core.services;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.threads.NtroThread;
 
 public abstract class MessageService {
 	
-	public <M extends NtroMessage> void sendMessage(M message) {
-		sendMessageToThread(Ntro.threadService().currentThread(), message);
+	public <M extends NtroMessage> void registerHandler(Class<M> messageClass, MessageHandler<M> handler) {
+		// TODO: this creates an handler inside the currentThread
+		
+		// XXX: we also handle messages coming from subthread
+		for(NtroThread subThread : Ntro.threadService().subThreads()) {
+			subThread.handleMessageFromThread(messageClass, handler);
+		}
+
+		// XXX: we also handle messages coming from backend
+		Ntro.backendService().handleMessageFromBackend(messageClass, handler);
 	}
 
-	private <M extends NtroMessage> void sendMessageToThread(NtroThread thread, M message) {
-
-		Class<M> messageClass = (Class<M>) message.getClass();
-
-		MessageHandler<M> handler = new MessageHandler<M>() {
-			@Override
-			public void handle(M message) {
-
-				// XXX: the thread has not handled the message
-				//      it HAS TO send it back
-
-				NtroThread parentThread = Ntro.threadService().parentThreadOf(thread);
-
-				if(parentThread != null) {
-					
-					sendMessageToThread(parentThread, message);
-					
-				}else {
-
-					Ntro.backendService().sendMessageToBackend(message);
-				}
-			}
-		};
+	public <M extends NtroMessage> void registerHandlerTask(Class<M> messageClass, MessageHandlerTask task) {
 		
-		thread.handleMessageFromThread(messageClass, handler);
+		// TODO: create an anon handler that launches the MessageHandlerTask when message is treated
 
-		thread.sendMessageToThread(message);
 	}
 	
+	public <M extends NtroMessage> void sendMessage(M message) {
+		// XXX: if we have a handler inside this thread, use it
+		Boolean TODO = null;
+		if(TODO) {
 
+		} else if(Ntro.threadService().hasParentThread()) {
+			
+			Ntro.threadService().sendMessageToParentThread(message);
+
+		}else {
+
+			Ntro.backendService().sendMessageToBackend(message);
+		}
+	}
 }
