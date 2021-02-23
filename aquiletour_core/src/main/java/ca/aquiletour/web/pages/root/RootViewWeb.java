@@ -41,6 +41,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void showDashboard(DashboardView dashboardView) {
 		T.call(this);
 		
+		
 		showSubView(dashboardView);
 	}
 

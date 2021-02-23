@@ -38,6 +38,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		T.call(this);
 	}
 	
+	/*
 	@Override
 	protected void onSomeSubTaskFinished(String taskId, NtroTask subTask) {
 		T.call(this);
@@ -45,7 +46,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		if(taskId.contains("Html")) {
 			html = ((ResourceLoaderTask) subTask).getResourceAsString();
 		}
-	}
+	}*/
 
 	@Override
 	protected void runTaskAsync() {
