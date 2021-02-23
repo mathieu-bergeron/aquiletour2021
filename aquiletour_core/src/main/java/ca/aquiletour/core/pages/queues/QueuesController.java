@@ -2,7 +2,6 @@ package ca.aquiletour.core.pages.queues;
 
 import ca.aquiletour.core.pages.queue.AppointmentView;
 import ca.aquiletour.core.pages.queue.QueueView;
-import ca.aquiletour.core.pages.queue.handlers.DeleteAppointmentHandler;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.handlers.ShowQueueHandler;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;

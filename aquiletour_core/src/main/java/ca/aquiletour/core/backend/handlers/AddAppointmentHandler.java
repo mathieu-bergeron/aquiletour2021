@@ -5,8 +5,6 @@ import java.util.List;
 import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.ntro.core.mvc.MessageHandler;

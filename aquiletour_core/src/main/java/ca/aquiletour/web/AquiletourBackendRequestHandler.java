@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
@@ -69,6 +70,14 @@ public class AquiletourBackendRequestHandler {
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, true, null, 100));
 			addCourseMessage.setUser(user);
 			addCourseMessage.sendMessage();
+		} else if(parameters.containsKey("deleteCourse")) {
+			DeleteCourseMessage deleteCourseMessage = MessageFactory.getOutgoingMessage(DeleteCourseMessage.class);
+			
+			String courseId = parameters.get("deleteCourse")[0];
+			deleteCourseMessage.setCourseId(courseId);
+			deleteCourseMessage.setUser(user);
+			deleteCourseMessage.setCourseId(courseId);
+			deleteCourseMessage.sendMessage();
 		}
 	}
 

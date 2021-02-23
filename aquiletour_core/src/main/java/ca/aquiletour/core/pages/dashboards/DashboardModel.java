@@ -21,6 +21,22 @@ public class DashboardModel extends NtroModel {
 		
 		courses.addItem(course);
 	}
+	public void deleteCourse(CourseSummary course) {
+		T.call(this);
+		
+		courses.removeItem(course);
+	}
+	
+	public void deleteCourseById(String courseId) {
+		T.call(this);
+		
+		for (int i = 0; i < courses.size(); i++) {
+			CourseSummary currentCourse =  courses.getItem(i);
+			if(currentCourse.getTitle().equals(courseId)) {
+				courses.removeItem(currentCourse);
+			}
+		}
+	}
 
 	public ObservableCourseList getCourses() {
 		return courses;

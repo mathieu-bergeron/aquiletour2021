@@ -1,6 +1,7 @@
 package ca.aquiletour.core.backend;
 
 import ca.aquiletour.core.backend.handlers.AddCourseHandler;
+import ca.aquiletour.core.backend.handlers.DeleteCourseHandler;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.ntro.core.mvc.BackendController;
 
@@ -9,7 +10,8 @@ public class DashboardBackendController extends BackendController<RootBackendCon
 	@Override
 	protected void onCreate() {
 		
-		addMessageHandler(AddCourseMessage.class, new AddCourseHandler());
+		//addMessageHandler(AddCourseMessage.class, new AddCourseHandler());
+		addMessageHandler(AddCourseMessage.class, new DeleteCourseHandler());
 		
 		// TODO: other backend messages, e.g.
 		//       DeleteCourseMessage
