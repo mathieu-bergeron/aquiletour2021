@@ -25,9 +25,9 @@ public abstract class MessageService {
 	}
 
 	public <M extends NtroMessage> void registerHandlerTask(Class<M> messageClass, NtroTask task) {
-		handlers.put(messageClass, new MessageHandler<M>() {
+		handlers.put(messageClass, new MessageHandler() {
 			@Override
-			public void handle(M message) {
+			public void handle(NtroMessage message) {
 				task.notifyExitTaskFinished();
 			}
 		});
