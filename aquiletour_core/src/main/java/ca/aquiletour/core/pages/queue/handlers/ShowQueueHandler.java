@@ -14,9 +14,7 @@ public class ShowQueueHandler extends ControllerMessageHandler<QueueController, 
 	@Override
 	protected void handle(QueueController currentController, QueueView currentView, ShowQueueMessage message) {
 		T.call(this);
-		
-		System.out.println("SHOW QUEUE: " + currentController);
-		
+
 		String courseId = message.getCourseId();
 
 		String authToken = currentController.currentContext().getUser().getAuthToken();
