@@ -19,10 +19,6 @@ public abstract class DashboardController extends NtroController<RootController>
 				                              currentContext().getUser().getId()));
 
 		installParentViewMessageHandler();
-
-		addSubViewLoader(CourseSummaryView.class, currentContext().getLang());
-		
-		addModelViewSubViewHandler(CourseSummaryView.class, new DashboardViewModel());
 		
 		// TODO: add model handler to pre-load models of each courses
 		//       on the server, model pre-loading does nothing (or is restricted by path)

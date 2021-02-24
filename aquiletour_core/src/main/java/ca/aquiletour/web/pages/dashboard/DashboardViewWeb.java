@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.dashboard;
 
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -13,7 +14,7 @@ public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardV
 	public void initialize() {
 
 	}
-
+	
 	@Override
 	public void appendCourse(CourseSummaryView courseView) {
 		T.call(this);

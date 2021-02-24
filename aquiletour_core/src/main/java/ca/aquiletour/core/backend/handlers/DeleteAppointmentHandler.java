@@ -9,13 +9,14 @@ import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.ntro.core.mvc.MessageHandler;
 import ca.ntro.core.system.trace.T;
 
-public class AddAppointmentHandler extends MessageHandler<QueueBackendController,AddAppointmentMessage> {
+public class DeleteAppointmentHandler extends MessageHandler<QueueBackendController,DeleteAppointmentMessage> {
 
 	@Override
-	protected void handle(AddAppointmentMessage message) {
+	protected void handle(DeleteAppointmentMessage message) {
 		T.call(this);
 		
 		User requestingUser = message.getUser();
@@ -28,7 +29,7 @@ public class AddAppointmentHandler extends MessageHandler<QueueBackendController
 		
 		if(queueModel != null) {
 			
-			queueModel.addAppointment(message.getAppointment());
+			queueModel.deleteAppointment(message.getAppointmentId());
 			queueModel.save();
 			
 			//TODO charger le dashboard modelk de chaque etudiant de la billetrie 
@@ -43,7 +44,7 @@ public class AddAppointmentHandler extends MessageHandler<QueueBackendController
 				if(dashboardModel != null) {
 					dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
 					if(requestingUser.getId().equals(studentId)) {
-						dashboardModel.updateMyAppointment(courseId, true);
+						dashboardModel.updateMyAppointment(courseId, false);
 					}
 					dashboardModel.save();
 				}

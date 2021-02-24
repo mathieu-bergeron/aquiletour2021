@@ -17,6 +17,7 @@ public abstract class   MessageHandler<C extends AnyController,
 		T.call(this);
 		
 		task = new MessageHandlerTask<C,MSG>(this, messageId);
+		task.setTaskId(messageId);
 	}
 
 	@Override

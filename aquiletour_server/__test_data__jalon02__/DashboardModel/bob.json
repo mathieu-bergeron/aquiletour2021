@@ -5,15 +5,15 @@
       {
         "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
         "title": "4F5",
-        "id": "4F5",
+        "courseId": "4F5",
         "isQueueOpen": true,
-        "numberOfAppointments": 2,
+        "numberOfAppointments": 0,
         "myAppointment": 0
       },
       {
         "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
         "title": "3C6",
-        "id": "3C6",
+        "courseId": "3C6",
         "isQueueOpen": true,
         "numberOfAppointments": 0,
         "myAppointment": 0

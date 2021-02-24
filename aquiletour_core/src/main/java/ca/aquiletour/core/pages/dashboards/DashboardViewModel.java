@@ -2,6 +2,8 @@ package ca.aquiletour.core.pages.dashboards;
 
 import java.util.List;
 
+import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.ntro.core.models.properties.observable.list.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;

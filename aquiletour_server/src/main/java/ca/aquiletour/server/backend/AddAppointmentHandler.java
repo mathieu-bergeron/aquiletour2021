@@ -46,7 +46,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 					
 
 						
-					dashboardModel.updateNbAppointmentOfCourse(courseId);
+					dashboardModel.updateNbAppointmentOfCourse(courseId, 0);
 					dashboardModel.save();
 				}
 

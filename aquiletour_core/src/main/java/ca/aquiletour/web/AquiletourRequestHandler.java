@@ -108,6 +108,7 @@ public class AquiletourRequestHandler {
 			String courseId = path.getName(0);
 			
 			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
+			//teacher uses queue message (prof encore actif)
 			
 			showQueueMessage.setCourseId(courseId);
 			

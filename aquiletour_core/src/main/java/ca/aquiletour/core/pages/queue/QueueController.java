@@ -28,7 +28,7 @@ public  class QueueController extends NtroController<RootController> {
 		//      this means it will block until the model is loaded
 		//addModelMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 
-		addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
+		//addModelMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
 
 		addModelViewSubViewHandler(AppointmentView.class, new QueueViewModel());
 
