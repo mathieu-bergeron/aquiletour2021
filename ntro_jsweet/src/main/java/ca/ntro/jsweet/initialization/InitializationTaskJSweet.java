@@ -27,20 +27,26 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
+import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.ResourceLoader;
+import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.jsweet.introspection.IntrospectorJSweet;
 import ca.ntro.jsweet.regex.RegExJSweet;
 import ca.ntro.jsweet.services.AppCloserJSweet;
+import ca.ntro.jsweet.services.BackendServiceJSweet;
 import ca.ntro.jsweet.services.JsonParserJSweet;
 import ca.ntro.jsweet.services.LocalStoreJSweet;
 import ca.ntro.jsweet.services.LoggerJSweet;
+import ca.ntro.jsweet.services.MessageServiceJSweet;
 import ca.ntro.jsweet.services.NetworkStoreJSweet;
 import ca.ntro.jsweet.services.NtroCollectionsJSweet;
 import ca.ntro.jsweet.services.ResourceLoaderJSweet;
+import ca.ntro.jsweet.services.ThreadServiceJSweet;
 import ca.ntro.jsweet.services.ValueFormatterJSweet;
 import ca.ntro.jsweet.services.ViewLoaderWebJSweet;
 import ca.ntro.web.mvc.ViewLoaderWeb;
@@ -140,5 +146,29 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideNetworkStore");
 
 		return new NetworkStoreJSweet();
+	}
+
+
+	@Override
+	protected ThreadService provideThreadService() {
+		__T.call(this, "provideThreadService");
+		
+		return new ThreadServiceJSweet();
+	}
+
+
+	@Override
+	protected Class<? extends MessageService> provideMessageServiceClass() {
+		__T.call(this, "provideMessageServiceClass");
+
+		return MessageServiceJSweet.class;
+	}
+
+
+	@Override
+	protected BackendService provideBackendService() {
+		__T.call(this, "provideBackendService");
+
+		return new BackendServiceJSweet();
 	}
 }

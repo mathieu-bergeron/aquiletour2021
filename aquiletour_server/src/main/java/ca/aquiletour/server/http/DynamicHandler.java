@@ -158,7 +158,7 @@ public class DynamicHandler extends AbstractHandler {
 			// models are loaded up
 			GraphTraceConnector trace = rootController.execute();
 
-			trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
+			//trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
 
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
 

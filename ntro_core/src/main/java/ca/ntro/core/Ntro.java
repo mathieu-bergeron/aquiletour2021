@@ -22,7 +22,6 @@ import java.util.Map;
 
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.BackendService;
@@ -43,7 +42,7 @@ public class Ntro {
 	private static ResourceLoader resourceLoader;
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
 	
-	
+	private static Class<? extends MessageService> messageServiceClass;
 	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
 	private static ThreadService threadService;
 	private static BackendService backendService;
@@ -145,13 +144,20 @@ public class Ntro {
 	public static ThreadService threadService() {
 		return threadService;
 	}
-	
-	public static void zzz_registerMessageService(NtroThread thread, MessageService service) {
-		messageServices.put(thread, service);
+
+	public static void zzz_registerMessageServiceClass(Class<? extends MessageService> messageServiceClass) {
+		Ntro.messageServiceClass = messageServiceClass;
 	}
 
 	public static MessageService messageService() {
-		return messageServices.get(threadService().currentThread());
+		MessageService service = messageServices.get(threadService().currentThread());
+
+		if(service == null) {
+			service = Factory.newInstance(messageServiceClass);
+			messageServices.put(threadService().currentThread(), service);
+		}
+		
+		return service;
 	}
 
 	public static void zzz_registerBackendService(BackendService backendService) {
