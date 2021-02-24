@@ -17,7 +17,23 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 
 	@Override
 	public void displaySummary(CourseSummary course) {
-		// TODO Auto-generated method stub
+		T.call(this);
+
+		HtmlElement title = this.getRootElement().children("#course-title").get(0);
+		HtmlElement courseId = this.getRootElement().children("#courseId").get(0);
+		HtmlElement nbAppointment = this.getRootElement().children("#nbAppointment").get(0);
+		HtmlElement makeAppointmentLink = this.getRootElement().children("#availableLink").get(0);
+		HtmlElement myAppointment = this.getRootElement().children("#myAppointment").get(0);
+		HtmlElement isQueueOpen = this.getRootElement().children("#isQueueOpen").get(0);
+		
+		
+		MustNot.beNull(title);
+		MustNot.beNull(courseId);
+		MustNot.beNull(nbAppointment);
+		MustNot.beNull(makeAppointmentLink);
+		MustNot.beNull(myAppointment);
+		MustNot.beNull(isQueueOpen);
+
 		
 	}
 

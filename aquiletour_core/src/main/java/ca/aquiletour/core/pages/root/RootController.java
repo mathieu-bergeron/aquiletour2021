@@ -44,7 +44,7 @@ public class RootController extends NtroRootController {
 
 		addSubController(UsersController.class, "usagers");
 		addSubController(LoginController.class, "connexion");
-		addSubController(HomeController.class, "acceuil");
+		addSubController(HomeController.class, "accueil");
 
 		addWindowViewHandler(new RootViewHandler());
 		

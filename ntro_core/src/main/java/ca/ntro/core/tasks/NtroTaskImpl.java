@@ -16,10 +16,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.services.NtroCollections;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
-import ca.ntro.core.system.trace.T;
 
 public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 
@@ -659,6 +658,8 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 		if(state == WAITING_FOR_EXIT_TASK) {
 			state = DONE;
 			notifyTaskFinished();
+			//if(asGraph().isExecuting){}
+			execute();                // FIXME: needed to be async 
 		}
 	}
 

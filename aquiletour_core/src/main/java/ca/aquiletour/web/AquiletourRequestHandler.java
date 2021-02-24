@@ -13,6 +13,7 @@ import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -44,7 +45,7 @@ public class AquiletourRequestHandler {
 			
 			sendLoginMessages(path.subPath(1), parameters);
 			
-		} else if(path.startsWith("acceuil")) {
+		} else if(path.startsWith("accueil")) {
 
 			sendHomeMessages(path.subPath(1), parameters);
 		}
@@ -61,8 +62,13 @@ public class AquiletourRequestHandler {
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
+		/*
 		ShowLoginMessage showLoginMessage = MessageFactory.getOutgoingMessage(ShowLoginMessage.class);
 		showLoginMessage.sendMessage();
+		*/
+
+		ShowLoginMessage showLoginMessage = new ShowLoginMessage();
+		Ntro.messageService().sendMessage(showLoginMessage);
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {

@@ -40,7 +40,6 @@ public class JsonLoaderFiles extends JsonLoader {
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
-		T.values(documentPath.getCollection(), documentPath.getId());
 
 		if(modelFile.exists()) {
 			
@@ -61,8 +60,6 @@ public class JsonLoaderFiles extends JsonLoader {
 			writeJsonFile(modelFile, jsonObject);
 		}
 
-		T.values(jsonObject.toString());
-		
 		notifyTaskFinished();
 	}
 

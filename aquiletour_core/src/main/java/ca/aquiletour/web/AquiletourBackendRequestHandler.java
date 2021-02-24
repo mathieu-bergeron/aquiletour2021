@@ -11,6 +11,7 @@ import ca.aquiletour.core.pages.queue.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -69,7 +70,7 @@ public class AquiletourBackendRequestHandler {
 			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, true, null, 100));
 			addCourseMessage.setUser(user);
-			addCourseMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 		} else if(parameters.containsKey("deleteCourse")) {
 			DeleteCourseMessage deleteCourseMessage = MessageFactory.getOutgoingMessage(DeleteCourseMessage.class);
 			
