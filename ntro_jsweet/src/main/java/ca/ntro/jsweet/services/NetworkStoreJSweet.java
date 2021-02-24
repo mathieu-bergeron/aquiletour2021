@@ -13,11 +13,17 @@ import ca.ntro.core.system.trace.T;
 import def.dom.Event;
 import def.dom.EventListener;
 import def.dom.Storage;
+import def.es6.Globals;
+import def.js.JSON;
+import def.js.Object;
+import def.js.Promise;
+import jsweet.util.Lang;
 
 import static def.dom.Globals.window;
+import static def.es6.Globals.fetch;
 
 public class NetworkStoreJSweet extends ModelStore {
-	
+
 	// FIXME: replace by a server connection!!
 	Storage localStorage = window.localStorage;
 
@@ -31,45 +37,40 @@ public class NetworkStoreJSweet extends ModelStore {
 			@Override
 			public void $apply(Event evt) {
 				T.call(this);
-				
+
 				updateListener.onExternalUpdate();
 			}
 		});
-		
+
 	}
-	
+
 	private String fullId(DocumentPath documentPath) {
-		
-		return documentPath.getCollection() + "_" + documentPath.getId();
-		
+		return documentPath.getCollection() + "/" + documentPath.getId();
 	}
 
 	@Override
 	protected JsonLoader getJsonObject(DocumentPath documentPath) {
 		T.call(this);
-		
-		String fullId = fullId(documentPath);
-		
-		String jsonString = (String) localStorage.getItem(fullId);
-		
-		JsonObject jsonObject = null;
-		
-		if(jsonString != null) {
 
-			jsonObject =  JsonParser.fromString(jsonString);
-			
-		}else {
-			
-			jsonObject = JsonParser.jsonObject();
-		}
-		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonObject);
+		// Cela ne compile pas - comprendre pourquoi (bloquant!)
+		Object jsObject = Lang.await(fetchJsonObject(documentPath));
+		JsonObject jsonObject = JsonParser.fromString(JSON.stringify(jsObject));
 
-		return jsonLoader;
+		return new JsonLoaderMemory(documentPath, jsonObject);
 	}
 
-
-
+	private Promise<Object> fetchJsonObject(DocumentPath documentPath) {
+		return fetch("/_B/" + fullId(documentPath)).then((Globals.FetchResponse response) -> {
+			if (response.ok) {
+				return response.json()
+						.Catch((java.lang.Object error) -> {
+							System.err.println("[NetworkStore] Erreur lors du chargement du modèle (JSON invalide)");
+						});
+			} else {
+				return Promise.reject("[NetworkStore] Erreur lors du chargement du modèle (code non-200 du serveur)");
+			}
+		});
+	}
 
 	@Override
 	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
@@ -78,7 +79,7 @@ public class NetworkStoreJSweet extends ModelStore {
 		String jsonString = JsonParser.toString(jsonObject);
 
 		String fullId = fullId(documentPath);
-		
+
 		localStorage.setItem(fullId, jsonString);
 	}
 
@@ -90,7 +91,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	public void addValueListener(ValuePath valuePath, ValueListener valueListener) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -98,6 +99,6 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	public <V> void setValue(ValuePath valuePath, V value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
