@@ -9,7 +9,6 @@ public class NtroThreadJdk extends Thread implements NtroThread {
 	private Thread javaThread;
 	
 	public NtroThreadJdk(Thread javaThread) {
-		System.out.println(javaThread.getId());
 		this.javaThread = javaThread;
 	}
 	
