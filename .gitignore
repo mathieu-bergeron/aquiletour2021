@@ -39,7 +39,7 @@ aquiletour_server/src/main/resources/public/js/ntro_jsweet
 __data__
 
 # Tests
-jsonLimitations.json
+gsonLimitations.json
 build_*
 
 # MAC_OS
