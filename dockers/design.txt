@@ -34,11 +34,21 @@ retourne une archive des fichiers selon requete:
 	permettre d'exclure certains fichiers (optionnel) : 		exclude?
 	Si une information est absente (ou *) on ramasse tout, par exemple, on recupere
 	tous les groupes de 420ZF5 en mettant groupe: '*'
+	Depots sur disque local / exterieur du docker
 	Structure de l'archive: DA/... 		(le repertoire du depot n'apparait pas)
 		conserve la structure des repertoires dans le depot (src/TP2/Ex02/test.java)
 	Besoin de la DB pour trouver les depots pertinents pour chaque etudiant
 API?
 	Definition des requetes?
+Communication FastAPI <-> GIT manager
+	DB SQLLite: Impossible de partager queue avec workers FastAPI
+	1 ligne par requete et reponse
+	ID	Priorite	Date	Requete	Date	Reponse	Date
+		Requete et Reponse: JSON
+		Priorite: 1 (max) a 9 (min)
+	SQLLite et fichiers ZIP dans RAMDisk
+	Poll resultat avec ID requete?
+	Nettoyage DB et fichiers?
 
 Pour un test:
 Soumettre une requete avec session/cours-gr/etudiant/tp/exercice (DB cours) au docker GIT
@@ -51,4 +61,6 @@ Soumettre une requete avec session/cours-gr/etudiant/tp/exercice (DB cours) au d
 	docker git retourne les fichiers pertinents
 Soumettre fichiers et session/cours-gr/etudiant/tp/exercice au docker JPLAG
 OU STOCKER LE RESULTAT?
+
+
 
