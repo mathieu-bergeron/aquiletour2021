@@ -18,6 +18,7 @@
 package def.es6;
 
 import def.dom.Blob;
+import def.js.Object;
 import def.js.Promise;
 import jsweet.lang.Interface;
 
@@ -29,10 +30,11 @@ public class Globals {
 
 		public native Promise<Blob> blob();
 		public native Promise<String> text();
+		public native Promise<Object> json();
 	}
 
 	public native static Promise<FetchResponse> fetch(String path);
-	
+
 	public native static void installSourceMap(String rawSourceMap);
 
 }
