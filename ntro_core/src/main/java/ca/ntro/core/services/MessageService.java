@@ -17,12 +17,10 @@ public abstract class MessageService {
 		
 		handlers.put(messageClass, handler);
 		
-		// XXX: we also handle messages coming from subthread
 		for(NtroThread subThread : Ntro.threadService().subThreads()) {
 			subThread.handleMessageFromThread(messageClass, handler);
 		}
 
-		// XXX: we also handle messages coming from backend
 		Ntro.backendService().handleMessageFromBackend(messageClass, handler);
 	}
 
@@ -37,7 +35,6 @@ public abstract class MessageService {
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroMessage> void sendMessage(M message) {
-		// XXX: if we have a handler inside this thread, use it
 
 		if(handlers.containsKey(message.getClass())) {
 			
