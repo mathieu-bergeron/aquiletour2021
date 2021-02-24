@@ -5,10 +5,13 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +31,8 @@ public class JsonLimitations {
 	public void setUp() {
 	}
 	
-	private class LinkedListNode {
-		public LinkedListNode next;
-	}
-
 	@Test
-	public void jsonCycle() throws FileNotFoundException, IOException {
+	public void jsonCycle() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
 		LinkedListNode a = new LinkedListNode();
 		LinkedListNode b = new LinkedListNode();
@@ -53,21 +52,25 @@ public class JsonLimitations {
 				gson.toJson(a);
 			}
 		});
-	}
+		
+	    FileOutputStream fileOut = new FileOutputStream("javaSerialization.bin");
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(a);
+		out.close();
+		fileOut.close();
 
-	private interface ListItem {
-	}
-	
-	private class ListItemA implements ListItem {
-		public int propA = 10;
-	}
-
-	private class ListItemB implements ListItem {
-		public int propB = 10;
+		FileInputStream fileIn = new FileInputStream("javaSerialization.bin");
+		ObjectInputStream in = new ObjectInputStream(fileIn);
+		LinkedListNode newA = (LinkedListNode) in.readObject();
+		in.close();
+		fileIn.close();
+		
+		// Not a limitation in standard Java serialization
+		assertTrue(newA.next.next == newA);
 	}
 
 	@Test
-	public void gsonLimitations() throws FileNotFoundException, IOException {
+	public void gsonLimitations() throws FileNotFoundException, IOException, ClassNotFoundException {
 
 		List<ListItem> list = new ArrayList<>();
 		list.add(new ListItemA());
@@ -76,7 +79,7 @@ public class JsonLimitations {
 		assertTrue(list.get(0) instanceof ListItemA);
 		assertTrue(list.get(1) instanceof ListItemB);
 		
-		new FileOutputStream(new File("gsonLimitations.json")).write(gson.toJson(list).getBytes());
+		new FileOutputStream(new File("jsonLimitations.json")).write(gson.toJson(list).getBytes());
 		
 		List<ListItem> parsedList = gson.fromJson(new FileReader(new File("jsonLimitations.json")), List.class);
 		
@@ -107,5 +110,20 @@ public class JsonLimitations {
 			}
 		});
 		
+	    FileOutputStream fileOut = new FileOutputStream("javaSerialization.bin");
+		ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		out.writeObject(list);
+		out.close();
+		fileOut.close();
+
+		FileInputStream fileIn = new FileInputStream("javaSerialization.bin");
+		ObjectInputStream in = new ObjectInputStream(fileIn);
+		List<ListItem> newList = (List<ListItem>) in.readObject();
+		in.close();
+		fileIn.close();
+		
+		// Not a limitation in standard Java serialization
+		assertTrue(newList.get(0) instanceof ListItemA);
+		assertTrue(newList.get(1) instanceof ListItemB);
 	}
 }
