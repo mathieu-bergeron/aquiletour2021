@@ -73,10 +73,9 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("deleteCourse")) {
 			DeleteCourseMessage deleteCourseMessage = MessageFactory.getOutgoingMessage(DeleteCourseMessage.class);
 			
-			String courseId = parameters.get("deleteCourse")[0];
+			String courseId = path.getName(0);
 			deleteCourseMessage.setCourseId(courseId);
 			deleteCourseMessage.setUser(user);
-			deleteCourseMessage.setCourseId(courseId);
 			deleteCourseMessage.sendMessage();
 		}
 	}

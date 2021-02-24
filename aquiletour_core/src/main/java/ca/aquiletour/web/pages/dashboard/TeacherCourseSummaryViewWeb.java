@@ -24,6 +24,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement courseId = this.getRootElement().children("#courseId").get(0);
 		HtmlElement nbAppointment = this.getRootElement().children("#nbAppointment").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().children("#availableLink").get(0);
+		HtmlElement deleteCourseLink = this.getRootElement().children("#deleteLink").get(0);
 		
 		
 		MustNot.beNull(title);
@@ -38,6 +39,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		//courseId.appendHtml(course.getCourseId());
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
 		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
+		deleteCourseLink.setAttribute("href", "mescours/" + course.getTitle() + "?deleteCourse");
 	}
 
 
