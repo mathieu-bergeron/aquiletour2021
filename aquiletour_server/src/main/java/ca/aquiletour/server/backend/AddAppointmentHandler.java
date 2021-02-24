@@ -1,12 +1,14 @@
 package ca.aquiletour.server.backend;
 
+import java.util.List;
+
 import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
@@ -38,16 +40,20 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 					//TODO charger le dashboard modelk de chaque etudiant de la billetrie 
 					//et metre a jour nb of appointment et myappointment
 					//queuemodel -> students ->  chercher dashboardmodel -> mettre a jour les donnees
-					queueModel.getStudentIds();
-					
-					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-							requestingUser.getAuthToken(),
-							requestingUser.getId());
-					
-
-						
-					dashboardModel.updateNbAppointmentOfCourse(courseId);
-					dashboardModel.save();
+					List<String> studentIds = queueModel.getStudentIds();
+					for (String studentId : studentIds) {
+						int nbAppointment = queueModel.getAppointments().size();
+						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
+			                    "admin",
+			                    studentId);
+						if(dashboardModel != null) {
+							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
+							if(requestingUser.getId().equals(studentId)) {
+								dashboardModel.updateMyAppointment(courseId, true);
+							}
+							dashboardModel.save();
+						}
+					}
 				}
 
 				@Override

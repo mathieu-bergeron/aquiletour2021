@@ -1,11 +1,8 @@
-package ca.aquiletour.core.pages.queue.handlers;
+package ca.aquiletour.core.pages.queue;
 
 
 import java.util.Map;
 
-import ca.aquiletour.core.pages.queue.AppointmentView;
-import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.ntro.core.models.properties.observable.map.MapObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;

@@ -38,8 +38,8 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		NtroWebserver.defaultInitializationTask()
-		             .execute();
+		//NtroWebserver.defaultInitializationTask()
+		        //     .execute();
 	}
 	
 	@Before

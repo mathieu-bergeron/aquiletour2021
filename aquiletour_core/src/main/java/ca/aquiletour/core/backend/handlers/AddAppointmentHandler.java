@@ -6,7 +6,7 @@ import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.ntro.core.mvc.MessageHandler;
 import ca.ntro.core.system.trace.T;
 

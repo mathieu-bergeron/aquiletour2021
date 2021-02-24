@@ -1,10 +1,11 @@
-package ca.aquiletour.web.pages.dashboard;
+package ca.aquiletour.web.pages.dashboard.teacher;
 
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
