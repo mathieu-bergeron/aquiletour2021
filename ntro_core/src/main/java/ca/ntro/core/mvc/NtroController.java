@@ -36,6 +36,8 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 
 		NtroMessage messageReceptor = MessageFactory.getIncomingMessage(messageClass);
 		
+		Ntro.messageService().registerHandlerTask(messageClass, messageReceptor);
+		
 		//MessageHandlerTask messageReceptorTask = MessageFactory.createMessageHandlerTask(messageClass);
 
 		messageReceptor.setTaskId(messageId);
