@@ -81,7 +81,6 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 		return context;
 	}
 
-
 	protected <C extends NtroController<?>> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
 
@@ -91,12 +90,7 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
 			initTasks.addNextTask(subController.getTask());
 
-		}else {
-
-			System.err.println("[WARNING]: subController not added: " + controllerId);
-
 		}
-
 	}
 
 	protected void addSubViewLoader(Class<? extends NtroView> subViewClass, String lang) {

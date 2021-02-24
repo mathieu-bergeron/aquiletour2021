@@ -12,6 +12,8 @@ public class MessageFactory {
 
 	private static Map<Class<? extends NtroMessage>, NtroMessage> messages = new HashMap<>();
 
+	private static MessageHandlers handlers = new MessageHandlers();
+	private static MessageHandlerTasks tasks = new MessageHandlerTasks();
 
 	public static <M extends NtroMessage> M getOutgoingMessage(Class<M> messageClass) {
 		T.call(MessageFactory.class);
@@ -25,6 +27,18 @@ public class MessageFactory {
 		}
 
 		return message;
+	}
+
+	public static <M extends NtroMessage> MessageHandler<M> createMessageHandler(Class<M> messageClass, Class<MessageHandler<M>> handlerClass) {
+		T.call(MessageFactory.class);
+
+		return null;
+	}
+
+	public static <M extends NtroMessage> MessageHandlerTask createMessageHandlerTask(Class<M> messageClass) {
+		T.call(MessageFactory.class);
+
+		return null;
 	}
 
 

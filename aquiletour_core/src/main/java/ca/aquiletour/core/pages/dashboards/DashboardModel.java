@@ -36,7 +36,6 @@ public class DashboardModel extends NtroModel {
 				if(currentCourse.getTitle() == courseId) {
 					currentCourse.setNumberOfAppointments(4000);
 					courses.insertItem(i, currentCourse);
-					T.values(currentCourse.getNumberOfAppointments());
 				};
 			
 		}

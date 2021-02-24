@@ -83,7 +83,6 @@ public class MemoryStore extends ModelStore {
 		T.call(this);
 		values.put(documentPath, jsonObject);
 		valuesById.put(documentPath.getId(), jsonObject);
-		T.values(jsonObject.toString());
 	}
 
 	@Override
