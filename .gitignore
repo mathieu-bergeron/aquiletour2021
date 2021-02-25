@@ -39,6 +39,7 @@ aquiletour_server/src/main/resources/public/js/ntro_jsweet
 __data__
 
 # Tests
+__json__
 jsonLimitations.json
 javaSerialization.bin
 build_*

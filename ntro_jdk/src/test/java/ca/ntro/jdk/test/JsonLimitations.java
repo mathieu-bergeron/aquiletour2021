@@ -23,6 +23,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 
+import ca.ntro.jdk.test.json.LinkedListNode;
+import ca.ntro.jdk.test.json.ListItem;
+import ca.ntro.jdk.test.json.ListItemA;
+import ca.ntro.jdk.test.json.ListItemB;
+
 public class JsonLimitations {
 
 	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
@@ -37,8 +42,8 @@ public class JsonLimitations {
 		LinkedListNode a = new LinkedListNode();
 		LinkedListNode b = new LinkedListNode();
 		
-		a.next = b;
-		b.next = a;
+		a.setNext(b);
+		b.setNext(a);
 		
 		// a json object should not have any cycle
 		//
@@ -66,7 +71,7 @@ public class JsonLimitations {
 		fileIn.close();
 		
 		// Not a limitation in standard Java serialization
-		assertTrue(newA.next.next == newA);
+		assertTrue(newA.getNext().getNext() == newA);
 	}
 
 	@Test

@@ -151,6 +151,11 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
+	public String getFullNameForClass(Class<?> clazz) {
+		return clazz.getName();
+	}
+
+	@Override
 	public List<Method> userDefinedMethodsFromClass(Class<?> javaClass) {
 		T.call(this);
 

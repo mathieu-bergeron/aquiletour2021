@@ -161,4 +161,21 @@ public class JsonObject implements Serializable {
 		
 		return value;
 	}
+	
+	@Override
+	public int hashCode() {
+		return map.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object otherObject) {
+		if(otherObject == null) return false;
+		if(otherObject == this) return true;
+		if(otherObject instanceof JsonObject) {
+			JsonObject otherJsonObject = (JsonObject) otherObject;
+			return map.equals(otherJsonObject.map);
+		}
+		
+		return false;
+	}
 }

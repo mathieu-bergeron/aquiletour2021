@@ -53,10 +53,12 @@ public class NetworkStoreJSweet extends ModelStore {
 		T.call(this);
 
 		// Cela ne compile pas - comprendre pourquoi (bloquant!)
-		Object jsObject = Lang.await(fetchJsonObject(documentPath));
-		JsonObject jsonObject = JsonParser.fromString(JSON.stringify(jsObject));
+		//Object jsObject = Lang.await(fetchJsonObject(documentPath));
+		//JsonObject jsonObject = JsonParser.fromString(JSON.stringify(jsObject));
 
-		return new JsonLoaderMemory(documentPath, jsonObject);
+		//return new JsonLoaderMemory(documentPath, jsonObject);
+		
+		return null;
 	}
 
 	private Promise<Object> fetchJsonObject(DocumentPath documentPath) {

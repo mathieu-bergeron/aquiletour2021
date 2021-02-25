@@ -76,6 +76,8 @@ public abstract class Introspector {
 
 	public abstract String getSimpleNameForClass(Class<?> clazz);
 
+	public abstract String getFullNameForClass(Class<?> clazz);
+
 	public Class<?> getClassFromName(String className){
 		T.call(Introspector.class);
 

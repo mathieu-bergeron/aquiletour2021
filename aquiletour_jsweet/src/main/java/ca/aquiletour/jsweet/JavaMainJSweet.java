@@ -19,6 +19,7 @@ package ca.aquiletour.jsweet;
 
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.NtroJSweet;
+import ca.ntro.jsweet.introspection.IntrospectorJSweet;
 
 public class JavaMainJSweet {
 
@@ -26,6 +27,11 @@ public class JavaMainJSweet {
 		__T.call(JavaMainJSweet.class,"main");
 
 		String[] options = new String[] {"--traceLevel","APP"};
+		
+		IntrospectorJSweet introspector = new IntrospectorJSweet();
+		
+		System.out.println("fullName: " + introspector.getFullNameForClass(JavaMainJSweet.class));
+		
 
 		NtroJSweet.defaultInitializationTask()
 				  .setOptions(options)

@@ -268,6 +268,11 @@ public class IntrospectorJdk extends Introspector {
 		return clazz.getSimpleName();
 	}
 
+	@Override
+	public String getFullNameForClass(Class<?> clazz) {
+		return clazz.getName();
+	}
+
 	private boolean ifImplementsInterface(Class<?> typeClass, Class<?> targetInterface) {
 		T.call(this);
 
@@ -437,4 +442,5 @@ public class IntrospectorJdk extends Introspector {
 	public boolean isClass(Object object) {
 		return object instanceof Class;
 	}
+
 }

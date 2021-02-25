@@ -1,4 +1,4 @@
-package ca.ntro.jdk.test;
+package ca.ntro.jdk.test.tasks;
 
 import ca.ntro.core.tasks.NtroTaskSync;
 
