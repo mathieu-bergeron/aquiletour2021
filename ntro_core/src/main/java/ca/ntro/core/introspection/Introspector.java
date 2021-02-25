@@ -35,6 +35,10 @@ public abstract class Introspector {
 		serializableClasses.put(getSimpleNameForClass(_class), _class);
 	}
 
+	public Class getSeriazableClass(String className) {
+		return serializableClasses.get(className);
+	}
+
 	public abstract boolean isClass(Object object);
 
 	public abstract boolean isMap(Object object);

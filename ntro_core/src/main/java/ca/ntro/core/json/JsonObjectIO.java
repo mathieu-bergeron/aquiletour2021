@@ -130,6 +130,7 @@ public abstract class JsonObjectIO implements Serializable {
 
 			}catch(ClassCastException e) {
 				
+				// JSWEET: will not throw in JS
 				Log.fatalError("Only Map<String, ?> are supported for serialization", e);
 			}
 			
