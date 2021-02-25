@@ -8,10 +8,9 @@ public abstract class NtroMessage extends NtroTaskAsync {
 	public void sendMessage() {
 		T.call(this);
 		
-		notifyTaskFinished();
-		execute();             // FIXME: must we re-execute???
-		resetTask();
-		execute();
+		notifyTaskFinished(); // XXX: this re-executes the graph
+		resetTask();		  // FIXME: should not reset right away
+		execute();            // 
 	}
 
 	@Override

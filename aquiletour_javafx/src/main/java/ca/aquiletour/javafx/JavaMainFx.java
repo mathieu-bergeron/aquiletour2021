@@ -19,7 +19,6 @@ package ca.aquiletour.javafx;
 
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.javafx.NtroJavaFx;
-import ca.ntro.jdk.NtroJdk;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -17,14 +17,20 @@
 
 package ca.ntro.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
+import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.ResourceLoader;
+import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.threads.NtroThread;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -35,6 +41,11 @@ public class Ntro {
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
+	
+	private static Class<? extends MessageService> messageServiceClass;
+	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
+	private static ThreadService threadService;
+	private static BackendService backendService;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -126,4 +137,34 @@ public class Ntro {
 		return Factory.newInstance(viewLoaderWebClass);
 	}
 
+	public static void zzz_registerThreadService(ThreadService threadService) {
+		Ntro.threadService = threadService;
+	}
+
+	public static ThreadService threadService() {
+		return threadService;
+	}
+
+	public static void zzz_registerMessageServiceClass(Class<? extends MessageService> messageServiceClass) {
+		Ntro.messageServiceClass = messageServiceClass;
+	}
+
+	public static MessageService messageService() {
+		MessageService service = messageServices.get(threadService().currentThread());
+
+		if(service == null) {
+			service = Factory.newInstance(messageServiceClass);
+			messageServices.put(threadService().currentThread(), service);
+		}
+		
+		return service;
+	}
+
+	public static void zzz_registerBackendService(BackendService backendService) {
+		Ntro.backendService = backendService;
+	}
+
+	public static BackendService backendService() {
+		return backendService;
+	}
 }
