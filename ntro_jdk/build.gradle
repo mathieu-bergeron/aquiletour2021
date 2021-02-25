@@ -26,6 +26,14 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
+}
+
+
 tasks.build {
     finalizedBy 'install'
 }
