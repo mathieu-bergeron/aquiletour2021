@@ -443,4 +443,14 @@ public class IntrospectorJdk extends Introspector {
 		return object instanceof Class;
 	}
 
+	@Override
+	public boolean isMap(Object object) {
+		return object instanceof Map;
+	}
+
+	@Override
+	public boolean isList(Object object) {
+		return object instanceof List;
+	}
+
 }

@@ -93,9 +93,10 @@ public abstract class JsonObjectIO implements Serializable {
 		if(value instanceof JsonObjectIO) {
 			
 			if(serializedObjects.containsKey(value)) {
-
-				jsonValue = new HashMap<String, Object>();
-				((HashMap) jsonValue).put("_I", serializedObjects.get(value));
+				
+				Map<String, Object> reference = new HashMap<>();
+				reference.put("_I", serializedObjects.get(value));
+				jsonValue = reference;
 
 			}else {
 
@@ -103,27 +104,7 @@ public abstract class JsonObjectIO implements Serializable {
 				jsonValue = ((JsonObjectIO) value).toJsonObject(serializedObjects, valuePath).toMap();
 			}
 
-		}else if(value instanceof Map) {
-			
-			HashMap result = new HashMap();
-			
-			Map map = (Map) value;
-			
-			Set keySet = map.keySet();
-			
-			for(Object key : keySet) {
-				
-				Object mapValue = map.get(key);
-				
-				Object jsonMapValue = buildJsonValue(serializedObjects, valuePath + "/" + key,  mapValue);
-				
-				result.put(key, jsonMapValue);
-			}
-			
-			jsonValue = result;
-			
-		}else if(value instanceof List) {
-			
+		}else if(Ntro.introspector().isList(value)) {
 			List result = new ArrayList();
 			
 			List list = (List) value;
@@ -135,6 +116,32 @@ public abstract class JsonObjectIO implements Serializable {
 				Object jsonItem = buildJsonValue(serializedObjects, valuePath + "/" + index, item);
 				
 				result.add(jsonItem);
+			}
+			
+			jsonValue = result;
+
+		}else if(Ntro.introspector().isMap(value)) {
+
+			Map<String, Object> map = null;
+			
+			try {
+
+				map = (Map<String, Object>) value;
+
+			}catch(ClassCastException e) {
+				
+				Log.fatalError("Only Map<String, ?> are supported for serialization", e);
+			}
+			
+			Map<String, Object> result = new HashMap<>();
+			
+			for(String key : map.keySet()) {
+				
+				Object mapValue = map.get(key);
+				
+				Object jsonMapValue = buildJsonValue(serializedObjects, valuePath + "/" + key,  mapValue);
+				
+				result.put(key, jsonMapValue);
 			}
 			
 			jsonValue = result;

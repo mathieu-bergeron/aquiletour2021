@@ -267,4 +267,19 @@ public class IntrospectorJSweet extends Introspector {
 	public boolean isClass(Object object) {
 		return object.getClass().getSimpleName().equals("Function");
 	}
+
+	@Override
+	public boolean isMap(Object object) {
+		
+		// XXX: this is only true for maps where keys are NOT strings
+		// def.js.Object jsObject = (def.js.Object) object;
+		// return jsObject.$get("entries") != null;
+		
+		return object instanceof Map;
+	}
+
+	@Override
+	public boolean isList(Object object) {
+		return object instanceof List;
+	}
 }

@@ -37,6 +37,9 @@ public abstract class Introspector {
 
 	public abstract boolean isClass(Object object);
 
+	public abstract boolean isMap(Object object);
+	public abstract boolean isList(Object object);
+
 	public abstract MethodSignature methodSignature(Method method);
 
 	public Method findMethodBySignature(Class<?> currentClass, MethodSignature methodSignature) {

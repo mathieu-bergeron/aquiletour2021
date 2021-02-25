@@ -17,6 +17,9 @@
 
 package ca.aquiletour.jsweet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.aquiletour.jsweet.test.LinkedListNode;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
@@ -41,6 +44,22 @@ public class JavaMainJSweet {
 		LinkedListNode c = new LinkedListNode("C");
 		LinkedListNode d = new LinkedListNode("D");
 		
+		Map<LinkedListNode, Integer> map = new HashMap<>();
+		map.put(a, 10);
+
+		Map<Integer, LinkedListNode> otherMap = new HashMap<>();
+		otherMap.put(2, a);
+		
+		int x = map.get(a);
+		
+		for(Map.Entry<LinkedListNode, Integer> entry : map.entrySet()) {
+			System.out.println(entry.getKey());
+		}
+		
+		for(int value : map.values()) {
+			System.out.println(value);
+		}
+		
 		//a.setNext(a);
 
 		//a.setNext(b);
@@ -54,11 +73,14 @@ public class JavaMainJSweet {
 		c.getNextMap().put("d", d);
 		d.getNextMap().put("b", b);
 		
+		b.getNextList().add(a);
 		b.getNextList().add(b);
 		b.getNextList().add(c);
 		b.getNextList().add(d);
 		
 		JsonObject jsonObject = a.toJsonObject();
+		
+		System.out.println(jsonObject);
 		
 		System.out.println(JsonParser.toString(jsonObject));
 		
