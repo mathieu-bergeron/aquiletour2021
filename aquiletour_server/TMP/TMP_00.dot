@@ -1,0 +1,10 @@
+digraph "TMP_00" {
+graph ["rankdir"="LR","compound"="true"]
+"AquiletourMainServer" ["label"="AquiletourMainServer\nWAIT"]
+subgraph "cluster_initializationTask" {
+graph ["rankdir"="LR","label"="initializationTask\nWAIT"]
+"initializationTask_InitializationTaskWebserver" ["label"="InitializationTaskWebserver\nWAIT"]
+"__initializationTask__" ["shape"="none","style"="invis","label"=""]
+}
+"__initializationTask__" -> "AquiletourMainServer" ["ltail"="cluster_initializationTask"]
+}
