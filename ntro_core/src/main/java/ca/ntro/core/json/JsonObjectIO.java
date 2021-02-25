@@ -120,7 +120,7 @@ public abstract class JsonObjectIO implements Serializable {
 			
 			jsonValue = result;
 
-		}else if(Ntro.introspector().isMap(value)) {
+		}else if(Ntro.introspector().isMap(value) && ((Map)value).size() > 0) {
 
 			Map<String, Object> map = null;
 			
