@@ -41,8 +41,8 @@ public class JsonLimitations {
 	@Test
 	public void jsonCycle() throws FileNotFoundException, IOException, ClassNotFoundException {
 		
-		LinkedListNode a = new LinkedListNode();
-		LinkedListNode b = new LinkedListNode();
+		LinkedListNode a = new LinkedListNode("A");
+		LinkedListNode b = new LinkedListNode("B");
 		
 		a.setNext(b);
 		b.setNext(a);

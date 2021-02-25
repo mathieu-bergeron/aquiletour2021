@@ -46,10 +46,12 @@ public abstract class JsonObjectIO implements Serializable {
 		
 		Map<Object, String> serializedObjects = new HashMap<>();
 		
-		return toJsonObject(serializedObjects);
+		serializedObjects.put(this, "");
+		
+		return toJsonObject(serializedObjects, "");
 	}
 
-	private JsonObject toJsonObject(Map<Object, String> serializedObjects) {
+	private JsonObject toJsonObject(Map<Object, String> serializedObjects, String valuePath) {
 		T.call(this);
 		
 		JsonObject jsonObject = JsonParser.jsonObject();
@@ -72,10 +74,11 @@ public abstract class JsonObjectIO implements Serializable {
 
 			String fieldName = Ntro.introspector().fieldNameForGetter(getter);
 			
-			// TODO: go inside a Map or a List to look
-			//       for appointment-defined values (JsonObjectIO)
-			Object jsonValue = buildJsonValue(serializedObjects, value);
+			String newValuePath = valuePath + "/"  + fieldName;
+
+			Object jsonValue = buildJsonValue(serializedObjects, newValuePath, value);
 			
+
 			jsonObject.put(fieldName, jsonValue);
 		}
 		
@@ -83,13 +86,22 @@ public abstract class JsonObjectIO implements Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Object buildJsonValue(Map<Object, String> serializedObjects, Object value) {
+	private Object buildJsonValue(Map<Object, String> serializedObjects, String valuePath, Object value) {
 		
 		Object jsonValue = value;
 
 		if(value instanceof JsonObjectIO) {
+			
+			if(serializedObjects.containsKey(value)) {
 
-			jsonValue = ((JsonObjectIO) value).toJsonObject().toMap();
+				jsonValue = new HashMap<String, Object>();
+				((HashMap) jsonValue).put("_I", serializedObjects.get(value));
+
+			}else {
+
+				serializedObjects.put(value, valuePath);
+				jsonValue = ((JsonObjectIO) value).toJsonObject(serializedObjects, valuePath).toMap();
+			}
 
 		}else if(value instanceof Map) {
 			
@@ -103,7 +115,7 @@ public abstract class JsonObjectIO implements Serializable {
 				
 				Object mapValue = map.get(key);
 				
-				Object jsonMapValue = buildJsonValue(serializedObjects, mapValue);
+				Object jsonMapValue = buildJsonValue(serializedObjects, valuePath + "/" + key,  mapValue);
 				
 				result.put(key, jsonMapValue);
 			}
@@ -116,9 +128,11 @@ public abstract class JsonObjectIO implements Serializable {
 			
 			List list = (List) value;
 			
-			for(Object item : list) {
+			for(int index = 0; index < list.size(); index++) {
 				
-				Object jsonItem = buildJsonValue(serializedObjects, item);
+				Object item = list.get(index);
+				
+				Object jsonItem = buildJsonValue(serializedObjects, valuePath + "/" + index, item);
 				
 				result.add(jsonItem);
 			}

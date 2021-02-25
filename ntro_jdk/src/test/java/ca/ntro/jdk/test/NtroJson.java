@@ -64,15 +64,33 @@ public class NtroJson {
 	}
 
 	@Test
-	public void jsonCycle() {
+	public void jsonCycle() throws IOException {
 
-		LinkedListNode a = new LinkedListNode();
-		LinkedListNode b = new LinkedListNode();
+		LinkedListNode a = new LinkedListNode("A");
+		LinkedListNode b = new LinkedListNode("B");
+		LinkedListNode c = new LinkedListNode("C");
+		LinkedListNode d = new LinkedListNode("D");
+		
+		//a.setNext(a);
+
+		//a.setNext(b);
+		//b.setNext(a);
 		
 		a.setNext(b);
-		b.setNext(a);
+		b.setNext(c);
+		c.setNext(d);
+		d.setNext(c);
 		
-		JsonObject object = a.toJsonObject();
+		c.getNextMap().put("d", d);
+		d.getNextMap().put("b", b);
+		
+		b.getNextList().add(b);
+		b.getNextList().add(c);
+		b.getNextList().add(d);
+		
+		JsonObject jsonObject = a.toJsonObject();
+		
+		toFile(jsonObject, "cycle");
 	}
 
 	@Test
