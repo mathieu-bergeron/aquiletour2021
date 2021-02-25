@@ -99,7 +99,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("makeAppointment")) { //localhost8080/billeterie/courseId/makeAppointment
+		if(parameters.containsKey("makeAppointment")) { //localhost8080/billeterie/courseId?makeAppointment
 			
 			// FIXME: we need a Ntro service for dates
 			/*
@@ -129,6 +129,8 @@ public class AquiletourBackendRequestHandler {
 			deleteAppointmentMessage.setUser(user);
 			deleteAppointmentMessage.setCourseId(courseId);
 			deleteAppointmentMessage.sendMessage();
+		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
+			
 		}
 	}
 

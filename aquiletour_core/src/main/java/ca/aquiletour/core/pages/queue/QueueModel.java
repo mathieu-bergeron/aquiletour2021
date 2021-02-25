@@ -86,6 +86,28 @@ public class QueueModel extends NtroModel {
 
 		this.studentIds = studentIds;
 	}
+
+	public void updateOrder(String appointmentDestinationId, String appointmentDepartureId) {
+		Appointment appointmentDestination = null;
+		Appointment appointmentDeparture = null;
+		for (int i = 0; i < appointments.size(); i++) {
+			Appointment currentAppointment = appointments.getItem(i);
+			if(currentAppointment.getAppointmentId().equals(appointmentDestinationId)) {
+				appointmentDestination = currentAppointment;
+			} else if (currentAppointment.getAppointmentId().equals(appointmentDepartureId)) {
+				appointmentDeparture = currentAppointment;
+			}
+		}
+		if(appointmentDestination != null && appointmentDeparture != null) {
+			int destinationIndex = appointments.indexOf(appointmentDestination);
+			int departureIndex = appointments.indexOf(appointmentDeparture);
+			
+			appointments.insertItem(destinationIndex + 1, appointmentDeparture );
+			appointments.removeItem(appointmentDestination);
+			appointments.insertItem(departureIndex + 1, appointmentDeparture );
+			appointments.removeItem(appointmentDeparture);
+		}
+	}
 	
 	
 	
