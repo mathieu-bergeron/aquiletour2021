@@ -8,19 +8,19 @@ import ca.ntro.core.json.JsonObjectIO;
 public class MyList extends JsonObjectIO {
 	private static final long serialVersionUID = 8669571506241213302L;
 
-	private List<ListItem> value = new ArrayList<>();
+	private List<ListItem> list = new ArrayList<>();
 
-	public List<ListItem> getValue() {
-		return value;
+	public List<ListItem> getList() {
+		return list;
 	}
 
-	public void setValue(List<ListItem> value) {
-		this.value = value;
+	public void setList(List<ListItem> list) {
+		this.list = list;
 	}
-	
+
 	@Override 
 	public int hashCode() {
-		return value.hashCode();
+		return list.hashCode();
 	}
 
 	@Override 
@@ -29,7 +29,7 @@ public class MyList extends JsonObjectIO {
 		if(other == this) return true;
 		if(other instanceof MyList) {
 			MyList otherList = (MyList) other;
-			return value.equals(otherList.value);
+			return list.equals(otherList.list);
 		}
 		return false;
 	}

@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -14,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.jdk.NtroJdk;
@@ -31,7 +31,10 @@ public class NtroJson {
 	public static void initializeNtro() {
 		NtroJdk.defaultInitializationTask().execute();
 		
-		JsonParser.registerClass(LinkedListNode.class);
+		Ntro.introspector().registerSerializableClass(LinkedListNode.class);
+		Ntro.introspector().registerSerializableClass(MyList.class);
+		Ntro.introspector().registerSerializableClass(ListItemA.class);
+		Ntro.introspector().registerSerializableClass(ListItemB.class);
 	}
 
 	@BeforeClass
@@ -76,7 +79,7 @@ public class NtroJson {
 	public void jsonTypes() throws IOException {
 		
 		MyList myList = new MyList();
-		List<ListItem> list = myList.getValue();
+		List<ListItem> list = myList.getList();
 		
 		list.add(new ListItemA());
 		list.add(new ListItemB());

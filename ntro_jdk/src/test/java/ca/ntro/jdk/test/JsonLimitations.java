@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
@@ -28,6 +29,7 @@ import ca.ntro.jdk.test.json.ListItem;
 import ca.ntro.jdk.test.json.ListItemA;
 import ca.ntro.jdk.test.json.ListItemB;
 
+@Ignore
 public class JsonLimitations {
 
 	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();

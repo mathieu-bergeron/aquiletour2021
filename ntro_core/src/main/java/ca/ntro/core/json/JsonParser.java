@@ -43,7 +43,7 @@ public abstract class JsonParser {
 		return result;
 	}
 
-	public static void registerClass(Class _class) {
+	public static void registerSerializableClass(Class _class) {
 		T.call(JsonParser.class);
 		
 		classes.put(Ntro.introspector().getSimpleNameForClass(_class), Ntro.introspector().getFullNameForClass(_class));
