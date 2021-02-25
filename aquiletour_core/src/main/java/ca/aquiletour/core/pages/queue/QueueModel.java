@@ -11,6 +11,7 @@ import ca.ntro.core.system.trace.T;
 
 public class QueueModel extends NtroModel {
 
+	private static final long serialVersionUID = 2545995167728311236L;
 	private ObservableAppointmentList appointments = new ObservableAppointmentList(new ArrayList<>());
 	private List<String> studentIds = new ArrayList<>();
 	private int maxId;

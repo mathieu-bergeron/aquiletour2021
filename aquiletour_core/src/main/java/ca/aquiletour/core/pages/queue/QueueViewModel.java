@@ -10,10 +10,11 @@ import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
 public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueView>  {
-
+	
 	@Override
 	protected void handle(QueueModel model, QueueView view, ViewLoader subViewLoader) {
 		T.call(this);
+		T.here();//TODO goes here
 		
 		model.getAppointments().observe(new ListObserver<Appointment>() {
 

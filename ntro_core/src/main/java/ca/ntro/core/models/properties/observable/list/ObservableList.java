@@ -107,7 +107,6 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 			
 			synchronized (list) {
 				for(int i = 0; i < list.size(); i++) {
-
 					listObserver.onItemAdded(i, list.get(i));
 				}
 			}
