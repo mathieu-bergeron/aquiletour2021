@@ -91,7 +91,7 @@ public abstract class Introspector {
 		
 		if(serializableClasses.containsKey(className)) {
 
-			_class = serializableClasses.get(_class);
+			_class = serializableClasses.get(className);
 
 		}else {
 			try {

@@ -28,6 +28,15 @@ dependencies {
 
 }
 
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
+}
+
+
+
 tasks.test{
     dependsOn 'testServer'
     /*
@@ -38,6 +47,7 @@ tasks.test{
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
 }
+
 
 task server (type:JavaExec) {
     dependsOn 'classes'
