@@ -25,7 +25,6 @@ public class AddAppointmentHandler extends MessageHandler<QueueBackendController
 
 		
 		if(queueModel != null) {
-			
 			queueModel.addAppointment(message.getAppointment());
 			queueModel.save();
 			

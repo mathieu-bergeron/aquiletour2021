@@ -9,7 +9,7 @@ import ca.ntro.core.system.trace.T;
 public class ObservableAppointmentList extends ObservableList<Appointment> {
 
 	public ObservableAppointmentList() {
-		super(new ArrayList<>());
+		super(new ArrayList<Appointment>());
 	}
 
 	public ObservableAppointmentList(List<Appointment> value) {

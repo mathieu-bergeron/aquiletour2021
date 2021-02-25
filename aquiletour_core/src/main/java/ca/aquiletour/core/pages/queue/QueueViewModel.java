@@ -1,57 +1,64 @@
 package ca.aquiletour.core.pages.queue;
 
 
-import java.util.Map;
+import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.ntro.core.models.properties.observable.map.MapObserver;
+import ca.ntro.core.models.properties.observable.list.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class QueueViewModel 
-       extends ModelViewSubViewHandler<QueueModel, QueueView>  {
+public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueView>  {
 
 	@Override
 	protected void handle(QueueModel model, QueueView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
-		model.getAppointments().observe(new MapObserver<Appointment>() {
+		model.getAppointments().observe(new ListObserver<Appointment>() {
 
 			@Override
-			public void onValueChanged(Map<String, Appointment> oldValue, Map<String, Appointment> value) {
+			public void onValueChanged(List<Appointment> oldValue, List<Appointment> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValue(Map<String, Appointment> value) {
+			public void onValue(List<Appointment> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onDeleted(Map<String, Appointment> lastValue) {
+			public void onDeleted(List<Appointment> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onEntryAdded(String key, Appointment value) {
+			public void onItemAdded(int index, Appointment item) {
+				// TODO Auto-generated method stub
 				T.call(this);
-
+				T.here();
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				
-				appointmentView.displayAppointement(value);
+				appointmentView.displayAppointement(item);
 				
-				view.appendAppointement(value, appointmentView);
+				view.appendAppointement(item, appointmentView);
 			}
 
 			@Override
-			public void onEntryRemoved(String key, Appointment value) {
+			public void onItemUpdated(int index, Appointment item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemRemoved(int index, Appointment item) {
+				// TODO Auto-generated method stub
 				T.call(this);
 
-				view.deleteAppointment(key);
+				view.deleteAppointment(Integer.toString(index));
 			}
 		});
 	}

@@ -61,8 +61,14 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 	
 	public void addItem(I item) {
 		T.call(this);
+		T.here();
+		T.values(item);
+		getValue().add(item);
 		
-		insertItem(getValue().size(), item);
+//		for(ListObserver<I> listObserver : listObservers) {
+//			T.here();
+//			listObserver.onItemAdded(getValue().indexOf(item), item);
+//		}
 	}
 
 	public void removeItem(I item) {

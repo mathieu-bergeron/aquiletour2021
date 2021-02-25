@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend;
 
 
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
 
@@ -15,5 +16,6 @@ public class AquiletourBackendService extends BackendServiceServer {
 	protected void addBackendMessageHandlers() {
 
 		addBackendMessageHandler(AddCourseMessage.class, new AddCourseHandler());
+		addBackendMessageHandler(AddAppointmentMessage.class, new AddAppointmentHandler());
 	}
 }

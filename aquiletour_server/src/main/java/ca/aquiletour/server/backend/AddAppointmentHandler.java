@@ -37,9 +37,6 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
-					//TODO charger le dashboard modelk de chaque etudiant de la billetrie 
-					//et metre a jour nb of appointment et myappointment
-					//queuemodel -> students ->  chercher dashboardmodel -> mettre a jour les donnees
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
 						int nbAppointment = queueModel.getAppointments().size();

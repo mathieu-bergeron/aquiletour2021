@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap;
+import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.properties.observable.list.ObservableList;
 import ca.ntro.core.system.trace.T;
 
 public class QueueModel extends NtroModel {
 
-	private ObservableAppointmentMap appointments = new ObservableAppointmentMap();
+	private ObservableAppointmentList appointments = new ObservableAppointmentList(new ArrayList<>());
 	private List<String> studentIds = new ArrayList<>();
 	private int maxId;
 
@@ -22,26 +22,32 @@ public class QueueModel extends NtroModel {
 
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
+		T.here();
 		
 		setMaxId(getMaxId() + 1);
-		String appointmenId = Integer.toString(getMaxId());
-		appointment.setAppointmentId(appointmenId);
-		appointments.addEntry(appointmenId, appointment);
+		T.values(getMaxId());
+		String appointmentId = Integer.toString(getMaxId());
+		appointment.setAppointmentId(appointmentId);
+		appointments.addItem(appointment);;
 	}
 	
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
 		
-		appointments.removeEntry(appointmentId);
+		for (int i = 0; i < appointments.size(); i++) {
+			if(appointments.getItem(i).getAppointmentId().equals(appointmentId)) {
+				appointments.removeItem(appointments.getItem(i));
+			}
+		};
 	}
 	
-	public ObservableAppointmentMap getAppointments() {
+	public ObservableAppointmentList getAppointments() {
 		T.call(this);
 		
 		return appointments;
 	}
 	
-	public void setAppointments(ObservableAppointmentMap appointments) {
+	public void setAppointments(ObservableAppointmentList appointments) {
 		T.call(this);
 		
 		this.appointments = appointments;

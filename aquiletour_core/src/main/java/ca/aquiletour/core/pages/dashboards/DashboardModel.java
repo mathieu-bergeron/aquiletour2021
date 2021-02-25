@@ -50,7 +50,6 @@ public class DashboardModel extends NtroModel {
 		for (int i = 0; i < courses.size(); i++) {
 				CourseSummary currentCourse =  courses.getItem(i);
 				if(currentCourse.getTitle().equals(courseId)) {
-					T.here();
 					currentCourse.setNumberOfAppointments(nbAppointment);
 				};
 			
@@ -61,7 +60,6 @@ public class DashboardModel extends NtroModel {
 		for (int i = 0; i < courses.size(); i++) {
 			CourseSummary currentCourse =  courses.getItem(i);
 			if(currentCourse.getTitle().equals(courseId)) {
-				T.here();
 				currentCourse.setMyAppointment(state);
 			};
 		

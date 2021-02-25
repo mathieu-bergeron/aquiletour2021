@@ -2,6 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -119,7 +120,7 @@ public class AquiletourBackendRequestHandler {
 			
 			addAppointmentMessage.sendMessage();
 			
-		} else if(parameters.containsKey("deleteAppointment")){
+		} else if(parameters.containsKey("deleteAppointment") && user instanceof Teacher){
 			
 			DeleteAppointmentMessage deleteAppointmentMessage = MessageFactory.getOutgoingMessage(DeleteAppointmentMessage.class);
 			
