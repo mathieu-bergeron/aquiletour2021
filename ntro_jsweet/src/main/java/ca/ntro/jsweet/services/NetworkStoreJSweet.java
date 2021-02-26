@@ -10,17 +10,12 @@ import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jsweet.json.JsonLoaderJSweet;
 import def.dom.Event;
 import def.dom.EventListener;
 import def.dom.Storage;
-import def.es6.Globals;
-import def.js.JSON;
-import def.js.Object;
-import def.js.Promise;
-import jsweet.util.Lang;
 
 import static def.dom.Globals.window;
-import static def.es6.Globals.fetch;
 
 public class NetworkStoreJSweet extends ModelStore {
 
@@ -52,15 +47,12 @@ public class NetworkStoreJSweet extends ModelStore {
 	protected JsonLoader getJsonObject(DocumentPath documentPath) {
 		T.call(this);
 
-		// Cela ne compile pas - comprendre pourquoi (bloquant!)
-		//Object jsObject = Lang.await(fetchJsonObject(documentPath));
-		//JsonObject jsonObject = JsonParser.fromString(JSON.stringify(jsObject));
-
-		//return new JsonLoaderMemory(documentPath, jsonObject);
-		
-		return null;
+		return new JsonLoaderJSweet(documentPath);
 	}
 
+    /*
+	// JSWEET: does not compile
+	// Object jsObject = Lang.await(fetchJsonObject(documentPath));
 	private Promise<Object> fetchJsonObject(DocumentPath documentPath) {
 		return fetch("/_B/" + fullId(documentPath)).then((Globals.FetchResponse response) -> {
 			if (response.ok) {
@@ -73,16 +65,13 @@ public class NetworkStoreJSweet extends ModelStore {
 			}
 		});
 	}
+	*/
 
 	@Override
 	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
 		T.call(this);
 
-		String jsonString = JsonParser.toString(jsonObject);
-
-		String fullId = fullId(documentPath);
-
-		localStorage.setItem(fullId, jsonString);
+        throw new RuntimeException("TODO");
 	}
 
 	@Override

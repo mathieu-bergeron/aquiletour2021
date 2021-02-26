@@ -34,14 +34,14 @@ import ca.ntro.threads.NtroThread;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
-	
+
 	private static Introspector introspector;
 	private static Logger logger;
 	private static AppCloser appCloser;
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
-	
+
 	private static Class<? extends MessageService> messageServiceClass;
 	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
 	private static ThreadService threadService;
@@ -112,7 +112,7 @@ public class Ntro {
 
 		return logger;
 	}
-	
+
 	public static AppCloser appCloser() {
 		__T.call(Ntro.class, "appCloser");
 
@@ -150,14 +150,14 @@ public class Ntro {
 	}
 
 	public static MessageService messageService() {
-		MessageService service = messageServices.get(threadService().currentThread());
-
-		if(service == null) {
-			service = Factory.newInstance(messageServiceClass);
-			messageServices.put(threadService().currentThread(), service);
-		}
-		
-		return service;
+//		MessageService service = messageServices.get(threadService().currentThread());
+//
+//		if(service == null) {
+//			service = Factory.newInstance(messageServiceClass);
+//			messageServices.put(threadService().currentThread(), service);
+//		}
+//
+		return Factory.newInstance(messageServiceClass);
 	}
 
 	public static void zzz_registerBackendService(BackendService backendService) {
