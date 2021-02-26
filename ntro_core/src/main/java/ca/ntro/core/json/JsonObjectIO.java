@@ -42,10 +42,13 @@ public abstract class JsonObjectIO implements Serializable {
 					Object setterValue;
 
 					if(isObjectReference(jsonValue)) {
-						
+
 						String objectReference = getObjectReference(jsonValue);
 						
 						setterValue = deserializedObjects.get(objectReference);
+						
+						throw new RuntimeException("Cycle references not yet supported in JSON deserialization");
+						
 						
 					}else {
 						

@@ -29,7 +29,6 @@ import ca.ntro.jdk.test.json.ListItem;
 import ca.ntro.jdk.test.json.ListItemA;
 import ca.ntro.jdk.test.json.ListItemB;
 
-@Ignore
 public class JsonLimitations {
 
 	private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();

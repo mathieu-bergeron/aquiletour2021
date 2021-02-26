@@ -1,5 +1,6 @@
 package ca.ntro.jdk.test;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
@@ -99,9 +101,13 @@ public class NtroJson {
 
 		LinkedListNode parsedA = new LinkedListNode();
 		
-		parsedA.loadFromJsonObject(parsedObject);
-
-		toFile(parsedA.toJsonObject(), "cycle2");
+		assertThrows(RuntimeException.class, new ThrowingRunnable() {
+			
+			@Override
+			public void run() throws Throwable {
+				parsedA.loadFromJsonObject(parsedObject);
+			}
+		});
 
 	}
 
