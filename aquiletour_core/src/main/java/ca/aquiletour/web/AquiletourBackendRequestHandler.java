@@ -2,6 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -15,7 +16,9 @@ import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.messages.MessageFactory;
 
 public class AquiletourBackendRequestHandler {
@@ -28,7 +31,19 @@ public class AquiletourBackendRequestHandler {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
 
-		}else if(path.startsWith("billetteries")) {
+		}else if(path.startsWith("csv")) {
+			
+			AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
+			
+			ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/students1.csv");
+			loadCsv.execute();
+
+			addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
+			
+			Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+			
+
+		} else if(path.startsWith("billetteries")) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
