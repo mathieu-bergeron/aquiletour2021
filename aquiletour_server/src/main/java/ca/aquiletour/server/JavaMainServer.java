@@ -20,18 +20,26 @@ package ca.aquiletour.server;
 
 import java.io.File;
 
+import ca.aquiletour.server.backend.AquiletourBackendService;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
+import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 
 public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
+		
+		ModelStoreSync localStore = new ModelStoreSync(new LocalStoreFiles());
+		
+		BackendService aquiletourBackend = new AquiletourBackendService(localStore);
 
-		NtroWebserver.defaultInitializationTask()
+		NtroWebserver.defaultInitializationTask(aquiletourBackend)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
-		             .execute().addGraphWriter(new GraphTraceWriterJdk(new File("TMP")));
+		             .execute();
+		             //.execute().addGraphWriter(new GraphTraceWriterJdk(new File("TMP")));
 	}
 }

@@ -47,9 +47,11 @@ public class MessageReceptors {
 		T.call(this);
 
 		for(MessageHandler receptor : receptorSet) {
+			/*
 			receptor.resetTask();
 			receptor.setMessage(message);
 			receptor.execute();
+			*/
 		}
 	}
 

@@ -18,10 +18,18 @@
 package ca.aquiletour.javafx;
 
 import ca.aquiletour.core.AquiletourMain;
-import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboard.DashboardView;
+import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
+import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
+import ca.aquiletour.core.pages.home.HomeView;
+import ca.aquiletour.core.pages.login.LoginView;
+import ca.aquiletour.core.pages.queue.AppointmentView;
+import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queues.QueueSummaryView;
+import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.settings.SettingsView;
+import ca.aquiletour.core.pages.users.UserView;
+import ca.aquiletour.core.pages.users.UsersView;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
@@ -46,30 +54,88 @@ public class AquiletourMainFx extends AquiletourMain {
 		ViewLoaders.registerViewLoader(RootView.class,
 				"fr"
 				, new ViewLoaderFx()
-			     	.setFxmlUrl("/views/root/structure.xml")
-			     	.setCssUrl("/views/root/style.css")
+			     	.setFxmlUrl("/views/root/root.xml")
+			     	.setCssUrl("/views/root/root.css")
 			     	.setTranslationsName("i18n.strings"));
 
-		ViewLoaders.registerViewLoader(SettingsView.class,
+		ViewLoaders.registerViewLoader(TeacherDashboardView.class,
 				"fr"
 				, new ViewLoaderFx()
-			     	.setFxmlUrl("/views/settings/structure.xml")
-			     	.setCssUrl("/views/settings/style.css")
+			     	.setFxmlUrl("/views/dashboards/teacher/teacher_dashboard.xml")
+			     	.setCssUrl("/views/dashboards/student/teacher_dashboard.css")
 			     	.setTranslationsName("i18n.strings"));
 
-		ViewLoaders.registerViewLoader(DashboardView.class,
+		ViewLoaders.registerViewLoader(StudentDashboardView.class,
 				"fr"
 				, new ViewLoaderFx()
-			     	.setFxmlUrl("/views/dashboard/structure.xml")
-			     	.setCssUrl("/views/dashboard/style.css")
+			     	.setFxmlUrl("/views/dashboards/teacher/student_dashboard.xml")
+			     	.setCssUrl("/views/dashboards/student/student_dashboard.css")
 			     	.setTranslationsName("i18n.strings"));
 
 		ViewLoaders.registerViewLoader(CourseSummaryView.class,
 				"fr"
 				, new ViewLoaderFx()
-			     	.setFxmlUrl("/views/course_summary/structure.xml")
-			     	.setCssUrl("/views/course_summary/style.css")
+			     	.setFxmlUrl("/views/course_summary/course_summary.xml")
+			     	.setCssUrl("/views/course_summary/course_summary.css")
 			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(QueueView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/queue/queue.xml")
+			     	.setCssUrl("/views/queue/queue.css")
+			     	.setTranslationsName("i18n.strings"));
+
+
+		ViewLoaders.registerViewLoader(QueuesView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/queues/queues.xml")
+			     	.setCssUrl("/views/queues/queues.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(QueueSummaryView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/queue_summary/queue_summary.xml")
+			     	.setCssUrl("/views/queue_summary/queue_summary.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(AppointmentView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/appointment/appointment.xml")
+			     	.setCssUrl("/views/appointment/appointment.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(UsersView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/users/users.xml")
+			     	.setCssUrl("/views/users/users.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(UserView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/user/user.xml")
+			     	.setCssUrl("/views/user/user.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(LoginView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/login/login.xml")
+			     	.setCssUrl("/views/login/login.css")
+			     	.setTranslationsName("i18n.strings"));
+
+		ViewLoaders.registerViewLoader(HomeView.class,
+				"fr"
+				, new ViewLoaderFx()
+			     	.setFxmlUrl("/views/home/home.xml")
+			     	.setCssUrl("/views/home/home.css")
+			     	.setTranslationsName("i18n.strings"));
+
 	}
 
 	@Override

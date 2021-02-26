@@ -21,6 +21,7 @@ public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskAsync{
 		this.handler = handler;
 	}
 	
+	/*
 	@Override
 	protected void onSomePreviousTaskFinished(String taskId, NtroTask previousTask) {
 		T.call(this);
@@ -30,19 +31,18 @@ public class WindowViewHandlerTask<V extends NtroView> extends NtroTaskAsync{
 		if(previousTask instanceof ViewCreatorTask) {
 			view = (V) ((ViewCreatorTask) previousTask).getView();
 		}
-	}
+	}*/
 
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		/*
 		ViewCreatorTask viewCreatorTask = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
+
 		MustNot.beNull(viewCreatorTask);
 
 		@SuppressWarnings("unchecked")
 		V view = (V) viewCreatorTask.getView();
-		*/
 		
 		MustNot.beNull(view);
 

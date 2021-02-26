@@ -23,9 +23,12 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
+import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.ResourceLoader;
+import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
@@ -124,6 +127,27 @@ public class InitializationTaskJdk extends InitializationTask {
 
 		// FIXME: only for the server!
 		return new LocalStoreFiles();
+	}
+
+	@Override
+	protected ThreadService provideThreadService() {
+		__T.call(InitializationTaskJdk.class, "provideThreadService");
+		
+		return new ThreadServiceJdk();
+	}
+
+	@Override
+	protected Class<? extends MessageService> provideMessageServiceClass() {
+		__T.call(InitializationTaskJdk.class, "provideMessageServiceClass");
+		
+		return MessageServiceJdk.class;
+	}
+
+	@Override
+	protected BackendService provideBackendService() {
+		__T.call(InitializationTaskJdk.class, "provideBackendService");
+		
+		return new BackendServiceJdk();
 	}
 
 }
