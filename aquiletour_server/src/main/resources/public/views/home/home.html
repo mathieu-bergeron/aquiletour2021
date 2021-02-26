@@ -1,1 +1,109 @@
-home
+<script defer type="text/javascript" src="/_R/js/home.js"></script>
+
+<div style="background-image: url('/_R/img/home.png');"></div>
+
+
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Modal title</h4>    
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div><div class="container"></div>
+          <div class="modal-body">
+            Êtes-vous étudiant ou prof?
+            <a data-toggle="modal" href="#myModal2" data-dismiss="modal" class="btn btn-primary">Prof</a>
+            <a data-toggle="modal" href="#myModal3" data-dismiss="modal" class="btn btn-primary">Étudiant</a>
+          </div>
+          <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Close</a>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="modal" id="myModal2" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Connexion Prof</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div><div class="container"></div>
+          <div class="modal-body">
+
+            <label for="fname">DA :  0</label>
+            <input type="text" id="fname" name="fname">
+
+          </div>
+          <div class="modal-footer">
+            <a data-toggle="modal" href="#myModal" data-dismiss="modal" class="btn">Go Back</a>
+            <a href="#" class="btn btn-primary">Save changes</a>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="modal" id="myModal3" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Connexion Étudiant</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div><div class="container"></div>
+          <div class="modal-body">
+
+            <label for="fname">DA :  20</label>
+            <input type="text" id="fname" name="fname">
+
+          </div>
+          <div class="modal-footer">
+            <a data-toggle="modal" href="#myModal" data-dismiss="modal" class="btn">Go Back</a>
+            <a href="#" class="btn btn-primary">Save changes</a>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+  <div id="carouselIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active ">
+        <img class="d-block w-50 img-homepage" src="/_R/img/aiguilleurChemin1.png" alt="Second slide">
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-50 img-homepage" src="/_R/img/aiguilleurChemin2.png" alt="Second slide">
+      </div>
+      <div class="carousel-item col-md-12 hover-slide text-center"> 
+        <img class="d-block w-50 img-homepage" src="/_R/img/aiguilleur.png" alt="Second slide">
+            <a data-toggle="modal" href="#myModal" class="btn btn-primary home-start">Commencer!</a>
+        </img>
+      </div>
+    </div>
+
+    <!--Next Previous Controllers-->
+    <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only"></span>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only"></span>
+    </a>
+  </div>
+
+  <!--<footer class="site-footer bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h6>À PROPOS</h6>
+                <p><code>aquiletour.ca</code> est un outil de prise de rendez-vous
+            </div>
+        </div>
+    </div>
+</footer>-->
