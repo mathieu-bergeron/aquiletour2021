@@ -39,7 +39,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		//courseId.appendHtml(course.getCourseId());
 		if(course.getMyAppointment() != null && course.getIsQueueOpen() != null) {
 			if(course.getMyAppointment()) {
-				teacherAvailable.appendHtml("j'ai dÈj‡ un rendez-vous");
+				teacherAvailable.appendHtml("j'ai d√©j√† un rendez-vous");
 			} else if (course.getIsQueueOpen()) {
 				teacherAvailable.appendHtml("prof disponible");
 			} else {

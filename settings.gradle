@@ -5,7 +5,7 @@ include 'ntro_jdk'
 include 'ntro_javafx'
 include 'ntro_jsweet'
 include 'aquiletour_core'
-include 'aquiletour_javafx'
+//include 'aquiletour_javafx'
 include 'aquiletour_jsweet'
 include 'aquiletour_server'
 
