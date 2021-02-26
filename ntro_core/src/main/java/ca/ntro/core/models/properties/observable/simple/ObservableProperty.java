@@ -22,7 +22,7 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 		T.call(this);
 	}
 	
-	protected abstract Class<?> getValueType();
+	protected abstract Class<?> valueType();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -30,7 +30,7 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 		
 		Object jsonValue = jsonObject.get("value");
 		
-		Object value = Ntro.introspector().buildValueForType(getValueType(), jsonValue);
+		Object value = Ntro.introspector().buildValueForType(valueType(), jsonValue);
 		
 		this.value = (V) value;
 	}
@@ -45,7 +45,7 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 		
 		Object jsonValue = value;
 		
-		if(getValueType().equals(NtroModelValue.class)) {
+		if(valueType().equals(NtroModelValue.class)) {
 			jsonValue = ((NtroModelValue) value).toJsonObject().toMap();
 		}
 		

@@ -19,7 +19,7 @@ public class ObservableUserMap extends ObservableMap<User> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 
 		return NtroModelValue.class;

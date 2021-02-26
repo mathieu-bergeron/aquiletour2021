@@ -15,7 +15,7 @@ public class ObservableString extends ObservableProperty<String> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		return String.class;
 	}
 }

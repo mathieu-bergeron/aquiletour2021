@@ -83,7 +83,7 @@ public abstract class ObservableMap<V extends Object> extends ObservableProperty
 			Object jsonValue = entry.getValue();
 			
 			// FIXME: this should be Ntro.introspector.ifItImplements(NtroModelValue.class)
-			if(getValueType().equals(NtroModelValue.class)) {
+			if(valueType().equals(NtroModelValue.class)) {
 				jsonValue = ((NtroModelValue) jsonValue).toJsonObject().toMap();
 			}
 			
@@ -103,7 +103,7 @@ public abstract class ObservableMap<V extends Object> extends ObservableProperty
 
 		for(Map.Entry<String, ?> entry : jsonMap.entrySet()) {
 			
-			Object entryValue = Ntro.introspector().buildValueForType(getValueType(), entry.getValue());
+			Object entryValue = Ntro.introspector().buildValueForType(valueType(), entry.getValue());
 			
 			getValue().put(entry.getKey(), (V) entryValue);
 		}

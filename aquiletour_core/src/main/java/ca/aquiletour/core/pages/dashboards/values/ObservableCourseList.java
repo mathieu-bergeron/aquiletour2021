@@ -21,7 +21,7 @@ public class ObservableCourseList extends ObservableList<CourseSummary>{
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 
 		//return CourseSummary.class;

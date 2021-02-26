@@ -125,7 +125,7 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 			Object jsonItem = item;
 			
 			// FIXME: this should be Ntro.introspector.ifItImplements(NtroModelValue.class)
-			if(getValueType().equals(NtroModelValue.class)) {
+			if(valueType().equals(NtroModelValue.class)) {
 				jsonItem = ((NtroModelValue) item).toJsonObject().toMap();
 			}
 			
@@ -145,7 +145,7 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 
 		for(Object jsonItem: jsonList) {
 			
-			Object item = Ntro.introspector().buildValueForType(getValueType(), jsonItem);
+			Object item = Ntro.introspector().buildValueForType(valueType(), jsonItem);
 			
 			getValue().add((I) item);
 		}

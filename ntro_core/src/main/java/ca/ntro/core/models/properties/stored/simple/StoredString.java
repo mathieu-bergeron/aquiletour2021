@@ -17,7 +17,7 @@ public class StoredString extends StoredProperty<String> {
 
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 		return String.class;
 	}

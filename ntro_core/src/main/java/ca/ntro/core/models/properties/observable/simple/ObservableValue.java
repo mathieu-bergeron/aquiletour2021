@@ -16,7 +16,7 @@ public class ObservableValue<M extends NtroModelValue> extends ObservablePropert
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 		return NtroModelValue.class;
 	}

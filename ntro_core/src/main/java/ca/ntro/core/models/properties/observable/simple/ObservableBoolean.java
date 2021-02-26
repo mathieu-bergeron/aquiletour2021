@@ -15,7 +15,7 @@ public class ObservableBoolean extends ObservableProperty<Boolean> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		return Boolean.class;
 	}
 }

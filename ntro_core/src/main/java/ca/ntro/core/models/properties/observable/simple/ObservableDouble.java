@@ -15,7 +15,7 @@ public class ObservableDouble extends ObservableProperty<Double> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		return Double.class;
 	}
 }

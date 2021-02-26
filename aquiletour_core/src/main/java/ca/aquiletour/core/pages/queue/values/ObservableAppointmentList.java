@@ -17,7 +17,7 @@ public class ObservableAppointmentList extends ObservableList<Appointment> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 
 		return List.class;

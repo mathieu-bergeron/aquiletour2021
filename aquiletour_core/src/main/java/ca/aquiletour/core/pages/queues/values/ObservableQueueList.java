@@ -19,7 +19,7 @@ public class ObservableQueueList extends ObservableList<QueueSummary> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 
 		// FIXME

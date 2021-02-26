@@ -18,7 +18,7 @@ public class ObservableAppointmentMap extends ObservableMap<Appointment> {
 	}
 
 	@Override
-	protected Class<?> getValueType() {
+	protected Class<?> valueType() {
 		T.call(this);
 
 		return NtroModelValue.class;

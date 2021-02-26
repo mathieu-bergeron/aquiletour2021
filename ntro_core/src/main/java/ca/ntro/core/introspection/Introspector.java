@@ -34,7 +34,7 @@ public abstract class Introspector {
 		serializableClasses.put(getSimpleNameForClass(_class), _class);
 	}
 
-	public Class getSeriazableClass(String className) {
+	public Class getSerializableClass(String className) {
 		return serializableClasses.get(className);
 	}
 
