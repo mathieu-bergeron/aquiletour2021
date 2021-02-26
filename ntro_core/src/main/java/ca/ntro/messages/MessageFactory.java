@@ -22,8 +22,9 @@ public class MessageFactory {
 		M message = (M) messages.get(messageClass);
 
 		if(message == null) {
-			System.out.println(Ntro.introspector().getSimpleNameForClass(messageClass));
-			MustNot.beNull(message);
+			System.err.println("No receptor for: " +  Ntro.introspector().getSimpleNameForClass(messageClass));
+			//MustNot.beNull(message);
+			message = Factory.newInstance(messageClass);
 		}
 
 		return message;
