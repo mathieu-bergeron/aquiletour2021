@@ -45,6 +45,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				
 				appointmentView.displayAppointement(item);
 				
+				//view.insertAppointment(index, item, appointmentView);
 				view.appendAppointement(item, appointmentView);
 			}
 
@@ -59,7 +60,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				// TODO Auto-generated method stub
 				T.call(this);
 
-				view.deleteAppointment(Integer.toString(index));
+				view.deleteAppointment(index);
 			}
 		});
 	}

@@ -9,6 +9,7 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
@@ -130,7 +131,17 @@ public class AquiletourBackendRequestHandler {
 			deleteAppointmentMessage.setCourseId(courseId);
 			deleteAppointmentMessage.sendMessage();
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
-			
+			String departureId = parameters.get("move")[0];
+			String destinationId = parameters.get("before")[0];
+			MoveAppointmentMessage moveAppointmentMessage = MessageFactory.getOutgoingMessage(MoveAppointmentMessage.class);
+			Appointment newAppointment = new Appointment();
+			moveAppointmentMessage.setappointmentDepartureId(departureId);
+			moveAppointmentMessage.setappointmentDestinationId(destinationId);
+			moveAppointmentMessage.setUser(user);
+			moveAppointmentMessage.setCourseId(courseId);
+			T.values(departureId);
+			T.values(destinationId);
+			//moveAppointmentMessage.sendMessage();
 		}
 	}
 
@@ -158,6 +169,16 @@ public class AquiletourBackendRequestHandler {
 			deleteUserMessage.setUserId(userId);
 			
 			deleteUserMessage.sendMessage();
+		} else if(parameters.containsKey("addUser")) { // /usagers?addUser=Id&to=IdDuCours
+			 AddUserMessage addUserMessage = MessageFactory.getOutgoingMessage(AddUserMessage.class);
+			 User newUser = new User();
+//				newUser.setUserEmail(email);			
+//				newUser.setUserPassword(password);		
+				addUserMessage.setUser(newUser);
+				addUserMessage.sendMessage();
+			 
+			 
+			
 		}
 	}
 

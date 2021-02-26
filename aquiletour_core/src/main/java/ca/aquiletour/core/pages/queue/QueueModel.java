@@ -34,7 +34,7 @@ public class QueueModel extends NtroModel {
 	
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
-		
+		if(getMaxId()>0)setMaxId(getMaxId() - 1);
 		for (int i = 0; i < appointments.size(); i++) {
 			if(appointments.getItem(i).getAppointmentId().equals(appointmentId)) {
 				appointments.removeItem(appointments.getItem(i));
@@ -104,7 +104,7 @@ public class QueueModel extends NtroModel {
 			
 			appointments.insertItem(destinationIndex + 1, appointmentDeparture );
 			appointments.removeItem(appointmentDestination);
-			appointments.insertItem(departureIndex + 1, appointmentDeparture );
+			appointments.insertItem(departureIndex + 1, appointmentDestination );
 			appointments.removeItem(appointmentDeparture);
 		}
 	}
