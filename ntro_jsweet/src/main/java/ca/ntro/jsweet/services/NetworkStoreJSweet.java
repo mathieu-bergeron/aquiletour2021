@@ -10,17 +10,12 @@ import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jsweet.json.JsonLoaderJSweet;
 import def.dom.Event;
 import def.dom.EventListener;
 import def.dom.Storage;
-import def.es6.Globals;
-import def.js.JSON;
-import def.js.Object;
-import def.js.Promise;
-import jsweet.util.Lang;
 
 import static def.dom.Globals.window;
-import static def.es6.Globals.fetch;
 
 public class NetworkStoreJSweet extends ModelStore {
 
@@ -52,24 +47,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	protected JsonLoader getJsonObject(DocumentPath documentPath) {
 		T.call(this);
 
-		// Cela ne compile pas - comprendre pourquoi (bloquant!)
-		Object jsObject = Lang.await(fetchJsonObject(documentPath));
-		JsonObject jsonObject = JsonParser.fromString(JSON.stringify(jsObject));
-
-		return new JsonLoaderMemory(documentPath, jsonObject);
-	}
-
-	private Promise<Object> fetchJsonObject(DocumentPath documentPath) {
-		return fetch("/_B/" + fullId(documentPath)).then((Globals.FetchResponse response) -> {
-			if (response.ok) {
-				return response.json()
-						.Catch((java.lang.Object error) -> {
-							System.err.println("[NetworkStore] Erreur lors du chargement du modèle (JSON invalide)");
-						});
-			} else {
-				return Promise.reject("[NetworkStore] Erreur lors du chargement du modèle (code non-200 du serveur)");
-			}
-		});
+		return new JsonLoaderJSweet(documentPath);
 	}
 
 	@Override

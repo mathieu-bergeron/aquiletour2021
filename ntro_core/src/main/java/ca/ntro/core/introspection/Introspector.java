@@ -19,15 +19,26 @@ package ca.ntro.core.introspection;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class Introspector {
 
 	private static Introspector instance;
+
+	private final Map<String, Class> serializableClasses = new HashMap<>();
+
+	public void registerSerializableClass(Class _class) {
+		serializableClasses.put(getSimpleNameForClass(_class), _class);
+	}
+
+	public Class getSerializableClass(String className) {
+		return serializableClasses.get(className);
+	}
 
 	public abstract boolean isClass(Object object);
 

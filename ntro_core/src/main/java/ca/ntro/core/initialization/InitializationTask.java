@@ -25,9 +25,12 @@ import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
+import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.ResourceLoader;
+import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.services.stores.NetworkStore;
@@ -77,8 +80,11 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		LocalStore.initialize(provideLocalStore());
 		NetworkStore.initialize(provideNetworkStore());
+		
+		Ntro.zzz_registerThreadService(provideThreadService());
+		Ntro.zzz_registerMessageServiceClass(provideMessageServiceClass());
+		Ntro.zzz_registerBackendService(provideBackendService());
 	}
-
 
 
 	protected abstract Logger provideLogger();
@@ -93,4 +99,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract JsonParser provideJsonParser();
 	protected abstract ModelStore provideLocalStore();
 	protected abstract ModelStore provideNetworkStore();
+	protected abstract ThreadService provideThreadService();
+	protected abstract Class<? extends MessageService> provideMessageServiceClass();
+	protected abstract BackendService provideBackendService();
 }
