@@ -18,6 +18,16 @@ public abstract class JsonObjectIO implements Serializable {
 	// FIXME: would be better package-private if possible
 	public void loadFromJsonObject(JsonObject jsonObject) {
 		T.call(this);
+		
+		Map<String, Object> deserializedObjects = new HashMap<>();
+		
+		deserializedObjects.put("", this);
+		
+		loadFromJsonObject(deserializedObjects, "", jsonObject);
+	}
+
+	public void loadFromJsonObject(Map<String, Object> deserializedObjects, String valuePath, JsonObject jsonObject) {
+		T.call(this);
 
 		for(String fieldName : jsonObject.keySet()) {
 			
@@ -29,7 +39,19 @@ public abstract class JsonObjectIO implements Serializable {
 
 				try {
 
-					Object setterValue = Ntro.introspector().buildValueForSetter(setter, jsonValue);
+					Object setterValue;
+
+					if(isObjectReference(jsonValue)) {
+						
+						String objectReference = getObjectReference(jsonValue);
+						
+						setterValue = deserializedObjects.get(objectReference);
+						
+					}else {
+						
+						setterValue = Ntro.introspector().buildValueForSetter(setter, jsonValue);
+						
+					}
 					
 					setter.invoke(this, setterValue);
 
@@ -40,6 +62,25 @@ public abstract class JsonObjectIO implements Serializable {
 			}
 		}
 	}
+	
+	private boolean isObjectReference(Object jsonValue) {
+		return getObjectReference(jsonValue) != null;
+	}
+
+	private String getObjectReference(Object jsonValue) {
+		String objectReference = null;
+		
+		if(Ntro.introspector().isMap(jsonValue)) {
+			
+			Map<String, Object> map = (Map<String, Object>) jsonValue;
+			
+			objectReference = (String) map.get("_I");
+		}
+		
+		return objectReference;
+	}
+	
+	
 	
 	public JsonObject toJsonObject() {
 		T.call(this);

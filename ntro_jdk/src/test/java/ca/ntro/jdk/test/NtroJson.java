@@ -73,9 +73,10 @@ public class NtroJson {
 		
 		//a.setNext(a);
 
-		//a.setNext(b);
-		//b.setNext(a);
+		a.setNext(b);
+		b.setNext(a);
 		
+		/*
 		a.setNext(b);
 		b.setNext(c);
 		c.setNext(d);
@@ -88,9 +89,20 @@ public class NtroJson {
 		b.getNextList().add(c);
 		b.getNextList().add(d);
 		
+		*/
+		
 		JsonObject jsonObject = a.toJsonObject();
 		
 		toFile(jsonObject, "cycle");
+
+		JsonObject parsedObject = fromFile("cycle");
+
+		LinkedListNode parsedA = new LinkedListNode();
+		
+		parsedA.loadFromJsonObject(parsedObject);
+
+		toFile(parsedA.toJsonObject(), "cycle2");
+
 	}
 
 	@Test

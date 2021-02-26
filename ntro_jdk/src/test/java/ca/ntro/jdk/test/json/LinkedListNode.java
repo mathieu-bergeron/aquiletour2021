@@ -16,6 +16,9 @@ public class LinkedListNode extends JsonObjectIO implements Serializable {
 	private List<LinkedListNode> nextList = new ArrayList<>();
 	private Map<String, LinkedListNode> nextMap = new HashMap<>();
 	private String value;
+
+	public LinkedListNode() {
+	}
 	
 	public LinkedListNode(String value) {
 		this.value = value;
