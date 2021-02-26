@@ -1,0 +1,31 @@
+{
+  "appointments": {
+    "_T": "ca.aquiletour.core.pages.queue.values.ObservableAppointmentList",
+    "value": [
+      {
+        "studentId": "alice",
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "1",
+        "studentSurname": "Awama",
+        "studentName": "Alice"
+      },
+      {
+        "studentId": "alice",
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "2",
+        "studentSurname": "Awama",
+        "studentName": "Alice"
+      },
+      {
+        "studentId": "alice",
+        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
+        "appointmentId": "3",
+        "studentSurname": "Awama",
+        "studentName": "Alice"
+      }
+    ]
+  },
+  "maxId": 3,
+  "_T": "ca.aquiletour.core.pages.queue.QueueModel",
+  "studentIds": []
+}

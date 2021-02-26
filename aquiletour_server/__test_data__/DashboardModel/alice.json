@@ -3,22 +3,28 @@
     "_T": "ca.aquiletour.core.pages.dashboards.values.ObservableCourseList",
     "value": [
       {
-        "date": "3 mars",
-        "summary": "Exercices 5-10",
         "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "3C6"
+        "title": "4F5",
+        "courseId": "4F5",
+        "isQueueOpen": true,
+        "numberOfAppointments": 0,
+        "myAppointment": null
       },
       {
-        "date": "15 janvier",
-        "summary": "Lecture roman",
         "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "4F5"
+        "title": "3C6",
+        "courseId": "3C6",
+        "isQueueOpen": true,
+        "numberOfAppointments": 0,
+        "myAppointment": null
       },
       {
-        "date": "4 février",
-        "summary": "Essay 3",
         "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "5B5"
+        "title": "ZD4",
+        "courseId": "ZD4",
+        "isQueueOpen": true,
+        "numberOfAppointments": 0,
+        "myAppointment": null
       }
     ]
   },
