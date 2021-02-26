@@ -35,10 +35,12 @@ public class AquiletourBackendRequestHandler {
 			
 			AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
 			
-			ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/students1.csv");
+			ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");
 			loadCsv.execute();
 
 			addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
+			
+			System.out.println(loadCsv.getResourceAsString());
 			
 			Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
 			
