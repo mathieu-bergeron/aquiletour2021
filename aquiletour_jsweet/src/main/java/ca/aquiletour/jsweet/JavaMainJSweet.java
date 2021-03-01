@@ -36,54 +36,6 @@ public class JavaMainJSweet {
 
 		String[] options = new String[] {"--traceLevel","APP"};
 		
-		Ntro.__registerIntrospector(new IntrospectorJSweet());
-		JsonParser.initialize(new JsonParserJSweet());
-
-		LinkedListNode a = new LinkedListNode("A");
-		LinkedListNode b = new LinkedListNode("B");
-		LinkedListNode c = new LinkedListNode("C");
-		LinkedListNode d = new LinkedListNode("D");
-		
-		Map<LinkedListNode, Integer> map = new HashMap<>();
-		map.put(a, 10);
-
-		Map<Integer, LinkedListNode> otherMap = new HashMap<>();
-		otherMap.put(2, a);
-		
-		int x = map.get(a);
-		
-		for(Map.Entry<LinkedListNode, Integer> entry : map.entrySet()) {
-			System.out.println(entry.getKey());
-		}
-		
-		for(int value : map.values()) {
-			System.out.println(value);
-		}
-		
-		//a.setNext(a);
-
-		//a.setNext(b);
-		//b.setNext(a);
-		
-		a.setNext(b);
-		b.setNext(c);
-		c.setNext(d);
-		d.setNext(c);
-		
-		c.getNextMap().put("d", d);
-		d.getNextMap().put("b", b);
-		
-		b.getNextList().add(a);
-		b.getNextList().add(b);
-		b.getNextList().add(c);
-		b.getNextList().add(d);
-		
-		JsonObject jsonObject = a.toJsonObject();
-		
-		System.out.println(jsonObject);
-		
-		System.out.println(JsonParser.toString(jsonObject));
-		
 
 		NtroJSweet.defaultInitializationTask()
 				  .setOptions(options)
