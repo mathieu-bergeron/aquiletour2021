@@ -15,25 +15,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.server;
+package ca.ntro.server;
 
 import java.io.IOException;
 
-import ca.aquiletour.server.http.ModelHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
-import ca.aquiletour.server.http.DynamicHandler;
-import ca.aquiletour.server.http.ResourceHandler;
-import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Constants;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.server.http.DynamicHandler;
+import ca.ntro.server.http.ModelHandler;
+import ca.ntro.server.http.ResourceHandler;
 
-public class AquiletourMainServer extends NtroTaskAsync {
+public class NtroServerMain extends NtroTaskAsync {
 
 	@Override
 	protected void runTaskAsync() {
@@ -41,8 +40,6 @@ public class AquiletourMainServer extends NtroTaskAsync {
 
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
-
-		ViewLoaderRegistrationWeb.registerViewLoaders();
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)

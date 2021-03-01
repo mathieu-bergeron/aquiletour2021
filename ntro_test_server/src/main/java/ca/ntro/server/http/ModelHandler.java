@@ -1,8 +1,5 @@
-package ca.aquiletour.server.http;
+package ca.ntro.server.http;
 
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.queues.QueuesModel;
-import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelLoader;
@@ -45,10 +42,6 @@ public class ModelHandler extends AbstractHandler {
                         String publicFilesPrefix) {
 
         T.call(this);
-
-        Ntro.introspector().registerSerializableClass(UsersModel.class);
-        Ntro.introspector().registerSerializableClass(DashboardModel.class);
-        Ntro.introspector().registerSerializableClass(QueuesModel.class);
 
         this.modelsUrlPrefix = modelsUrlPrefix;
         this.publicFilesPrefix = publicFilesPrefix;

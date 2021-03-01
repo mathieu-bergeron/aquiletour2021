@@ -15,17 +15,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.aquiletour.server;
+package ca.ntro.server;
 
-
-import java.io.File;
-
-import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.services.BackendService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
+import ca.ntro.server.backend.BackendServiceTest;
 
 public class JavaMainServer {
 	
@@ -34,11 +31,11 @@ public class JavaMainServer {
 		
 		ModelStoreSync localStore = new ModelStoreSync(new LocalStoreFiles());
 		
-		BackendService aquiletourBackend = new AquiletourBackendService(localStore);
+		BackendService aquiletourBackend = new BackendServiceTest(localStore);
 
 		NtroWebserver.defaultInitializationTask(aquiletourBackend)
 		             .setOptions(args)
-		             .addNextTask(new AquiletourMainServer())
+		             .addNextTask(new NtroServerMain())
 		             .execute();
 		             //.execute().addGraphWriter(new GraphTraceWriterJdk(new File("TMP")));
 	}
