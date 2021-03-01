@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.introspection.ClassSignatureImpl;
+import ca.ntro.core.introspection.ClassSignature;
 import ca.ntro.core.introspection.ConstructorSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
@@ -37,6 +37,7 @@ import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.introspection.ClassSignatureJdk;
 
 public class IntrospectorJdk extends Introspector {
 
@@ -454,9 +455,8 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public ClassSignatureImpl getClassSignature(Object object) {
-		// TODO
-		return null;
+	public ClassSignature getClassSignature(Object object) {
+		return new ClassSignatureJdk(object.getClass());
 	}
 
 }

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.introspection.ClassSignatureImpl;
+import ca.ntro.core.introspection.ClassSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.introspection.MethodSignature;
@@ -286,7 +286,7 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public ClassSignatureImpl getClassSignature(Object object) {
+	public ClassSignature getClassSignature(Object object) {
 		Log.fatalError("TODO");
 		return null;
 	}

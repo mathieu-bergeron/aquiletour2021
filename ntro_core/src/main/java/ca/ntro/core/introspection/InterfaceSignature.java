@@ -1,5 +1,7 @@
 package ca.ntro.core.introspection;
 
-public class InterfaceSignature {
+public interface InterfaceSignature {
+	
+	boolean ifExtends(Class<?> interfaceClass);
 
 }
