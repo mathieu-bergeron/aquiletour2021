@@ -20,39 +20,24 @@ package ca.ntro.server.http;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.server.Authentication.User;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
-import ca.ntro.core.Constants;
-import ca.ntro.core.NtroUser;
-import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.mvc.BackendControllerFactory;
-import ca.ntro.core.mvc.ControllerFactory;
-import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
-import ca.ntro.jdk.services.LocalStoreFiles;
-import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
-import ca.ntro.jdk.tasks.GraphWriterJdk;
-import ca.ntro.jdk.web.NtroWindowServer;
-import ca.ntro.messages.MessageFactory;
 
 public class DynamicHandler extends AbstractHandler {
+
+	private static int BUFFER_SIZE = 1024;
 
 	public static ContextHandler createDynamicHandler(String urlPrefix, String privateFilesPrefix) {
 		T.call(DynamicHandler.class);
@@ -117,12 +102,73 @@ public class DynamicHandler extends AbstractHandler {
 		System.err.println("");
 		System.err.println("");
 		System.err.println("");
-
+		
+		serveStaticFile(baseRequest, response, out, "/private/index.html");
 		
 		// nothing for now
 		response.setContentType("text/html; charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
 		baseRequest.setHandled(true);
 	}
+
+	private void serveStaticFile(Request baseRequest, HttpServletResponse response, OutputStream out, String filePath)
+			throws FileNotFoundException, IOException {
+
+		T.call(this);
+		
+		setContentType(response, filePath);
+
+		response.setStatus(HttpServletResponse.SC_OK);
+		
+		InputStream fileStream = fileLoader.loadFile(filePath);
+		
+		copyFileToOutStream(out, fileStream);
+		
+		out.close();
+		
+		baseRequest.setHandled(true);
+	}
+
+	private void setContentType(HttpServletResponse response, String filePath) {
+		T.call(this);
+
+		if(filePath.endsWith("html")) {
+			response.setContentType("text/html; charset=utf-8");
+		}else if(filePath.endsWith("js")) {
+			response.setContentType("application/javascript; charset=utf-8");
+		}else if(filePath.endsWith("map")) {
+			response.setContentType("application/json; charset=utf-8");
+		}else if(filePath.endsWith("css")) {
+			response.setContentType("text/css; charset=utf-8");
+		}else if(filePath.endsWith("png")) {
+			response.setContentType("image/png");
+		}else if(filePath.endsWith("gif")) {
+			response.setContentType("image/gif");
+		}else if(filePath.endsWith("jpg")) {
+			response.setContentType("image/jpeg");
+		}else {
+			response.setContentType("text/plain; charset=utf-8");
+		}
+	}
+
+
+	private void copyFileToOutStream(OutputStream out, InputStream fileStream) throws IOException {
+		T.call(this);
+		
+        byte[] buffer = new byte[BUFFER_SIZE];
+
+        int readSize = 0;
+
+        while(true){
+
+            readSize = fileStream.read(buffer);
+            if(readSize > 0) {
+				out.write(buffer, 0, readSize);
+            }else {
+            	break;
+            }
+        } 
+	}
+
 
 }

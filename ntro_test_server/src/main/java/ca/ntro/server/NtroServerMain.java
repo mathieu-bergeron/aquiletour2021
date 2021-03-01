@@ -34,6 +34,7 @@ import ca.ntro.server.http.ResourceHandler;
 
 public class NtroServerMain extends NtroTaskAsync {
 
+
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);

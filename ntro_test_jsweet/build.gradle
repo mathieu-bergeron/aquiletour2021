@@ -36,7 +36,7 @@ tasks.jsweet{
     // FIXME: same as above FIXME
     doLast{
         def serverProject = project(':ntro_test_server')
-        def projectPaths = [':ntro_core',':ntro_jsweet']
+        def projectPaths = [':ntro_core',':ntro_jsweet',':ntro_test_jsweet']
         for (projectPath in projectPaths){
             def aProject = project(projectPath)
             def outDir = new File("${serverProject.projectDir}/src/main/resources/public/js/${aProject.name}")

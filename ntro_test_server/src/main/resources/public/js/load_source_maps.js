@@ -5,8 +5,7 @@ sourceMap.SourceMapConsumer.initialize({
 const sourceMapsToLoad = [
 	"/_R/js/ntro_core/bundle.js.map",
 	"/_R/js/ntro_jsweet/bundle.js.map",
-	"/_R/js/aquiletour_core/bundle.js.map",
-	"/_R/js/aquiletour_jsweet/bundle.js.map",
+	"/_R/js/ntro_test_jsweet/bundle.js.map",
 ];
 
 const loadedSourceMaps = {};
