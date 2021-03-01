@@ -11,9 +11,16 @@ dependencies {
     implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.28.v20200408'
 }
 
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
+}
+
 task server (type:JavaExec) {
     dependsOn 'classes'
-    main = 'ca.aquiletour.server.JavaMainServer'
+    main = 'ca.ntro.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
     standardInput = System.in
