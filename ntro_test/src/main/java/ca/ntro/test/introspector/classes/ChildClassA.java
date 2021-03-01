@@ -1,4 +1,4 @@
-package ca.ntro.jsweet.test.introspector.classes;
+package ca.ntro.test.introspector.classes;
 
 public class ChildClassA extends ParentClassA {
 

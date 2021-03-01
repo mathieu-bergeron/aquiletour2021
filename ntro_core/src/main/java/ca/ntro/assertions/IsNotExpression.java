@@ -10,4 +10,5 @@ public class IsNotExpression extends IsExpression {
 	protected boolean shouldFail() {
 		return !super.shouldFail();
 	}
+
 }

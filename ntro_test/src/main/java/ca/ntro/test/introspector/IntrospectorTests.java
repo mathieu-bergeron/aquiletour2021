@@ -1,11 +1,11 @@
-package ca.ntro.jsweet.test.introspector;
+package ca.ntro.test.introspector;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.jsweet.test.introspector.classes.ChildClassAB;
-import ca.ntro.jsweet.test.introspector.classes.ParentClassAB;
-import ca.ntro.jsweet.test.introspector.interfaces.ChildInterfaceAB;
-import ca.ntro.jsweet.test.introspector.interfaces.ParentInterfaceA;
-import ca.ntro.jsweet.test.introspector.interfaces.ParentInterfaceB;
+import ca.ntro.test.introspector.classes.ChildClassAB;
+import ca.ntro.test.introspector.classes.ParentClassAB;
+import ca.ntro.test.introspector.interfaces.ChildInterfaceAB;
+import ca.ntro.test.introspector.interfaces.ParentInterfaceA;
+import ca.ntro.test.introspector.interfaces.ParentInterfaceB;
 
 public class IntrospectorTests {
 	
@@ -17,6 +17,9 @@ public class IntrospectorTests {
 		Ntro.verify().thatObject(childClassAB).doesImplement(ParentInterfaceB.class);
 		Ntro.verify().thatObject(childClassAB).doesImplement(ChildInterfaceAB.class);
 		Ntro.verify().thatObject(childClassAB).doesExtend(ParentClassAB.class);
+
+		// TODO
+		// Ntro.verify().thatObject(childClassAB).isInstanceOf(ParentClassAB.class);
 	}
 
 }

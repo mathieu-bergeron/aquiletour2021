@@ -24,4 +24,8 @@ public class ObjectExpression extends AssertExpression {
 		parentExpression.verify();
 	}
 
+	public void isInstanceOf(Class<?> classOrInterface) {
+		throw new RuntimeException("TODO");
+	}
+
 }

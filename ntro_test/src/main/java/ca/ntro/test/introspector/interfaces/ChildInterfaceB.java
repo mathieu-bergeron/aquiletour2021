@@ -1,4 +1,4 @@
-package ca.ntro.jsweet.test.introspector.interfaces;
+package ca.ntro.test.introspector.interfaces;
 
 public interface ChildInterfaceB extends ParentInterfaceB {
 

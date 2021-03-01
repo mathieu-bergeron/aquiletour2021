@@ -1,4 +1,4 @@
-package ca.ntro.jsweet.test.json;
+package ca.ntro.test.json;
 
 import java.io.Serializable;
 import java.util.ArrayList;

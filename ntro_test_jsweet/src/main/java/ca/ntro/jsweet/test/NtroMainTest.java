@@ -8,18 +8,17 @@ import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.jsweet.test.introspector.IntrospectorTests;
-import ca.ntro.jsweet.test.json.LinkedListNode;
+import ca.ntro.test.introspector.IntrospectorTests;
+import ca.ntro.test.json.LinkedListNode;
 
 public class NtroMainTest extends NtroTaskSync {
 
 	@Override
 	protected void runTask() {
 		T.call(this);
-		
+
 		IntrospectorTests introspectorTests = new IntrospectorTests();
 		introspectorTests.testDoesImplement();
-
 	}
 	
 	
