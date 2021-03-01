@@ -1,5 +1,7 @@
 package ca.ntro.test.introspector;
 
+import org.junit.Test;
+
 import ca.ntro.core.Ntro;
 import ca.ntro.test.introspector.classes.ChildClassAB;
 import ca.ntro.test.introspector.classes.ParentClassAB;
@@ -9,14 +11,19 @@ import ca.ntro.test.introspector.interfaces.ParentInterfaceB;
 
 public class IntrospectorTests {
 	
+	@Test
 	public void testDoesImplement() {
 
 		ChildClassAB childClassAB = new ChildClassAB();
 
+		/*
 		Ntro.verify().thatObject(childClassAB).doesImplement(ParentInterfaceA.class);
 		Ntro.verify().thatObject(childClassAB).doesImplement(ParentInterfaceB.class);
 		Ntro.verify().thatObject(childClassAB).doesImplement(ChildInterfaceAB.class);
 		Ntro.verify().thatObject(childClassAB).doesExtend(ParentClassAB.class);
+		*/
+		
+		Ntro.assertService().assertTrue(false);
 
 		// TODO
 		// Ntro.verify().thatObject(childClassAB).isInstanceOf(ParentClassAB.class);

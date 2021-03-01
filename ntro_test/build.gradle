@@ -16,6 +16,8 @@ dependencies {
 
 	// XXX: must be 'compile' and not 'implementation'
     compile group: 'org.jsweet.candies.ext', name: 'jquery', version: "1.10.0-SNAPSHOT"
+
+    implementation 'junit:junit:4.13'
 }
 
 tasks.jsweet{
