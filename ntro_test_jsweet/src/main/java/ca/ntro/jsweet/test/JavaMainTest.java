@@ -6,11 +6,6 @@ public class JavaMainTest {
 	
 	public static void main(String[] args) {
 		
-		/*
-
-		
-		*/
-		
 		String[] options = new String[] {"--traceLevel","APP"};
 		
 		NtroJSweet.defaultInitializationTask()

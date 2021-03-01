@@ -21,6 +21,7 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.assertions.NtroAssertion;
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
@@ -170,5 +171,12 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideBackendService");
 
 		return new BackendServiceJSweet();
+	}
+
+	@Override
+	protected Class<? extends NtroAssertion> provideAssertionClass() {
+		__T.call(InitializationTaskJSweet.class, "provideAssertionClass");
+
+		return NtroAssertion.class;
 	}
 }

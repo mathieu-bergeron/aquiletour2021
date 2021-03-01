@@ -176,7 +176,8 @@ public class Ntro {
 	}
 	
 	public static NtroAssertion verify() {
-		return Factory.newInstance(assertionClass);
+		//return Factory.newInstance(assertionClass);
+		return new NtroAssertion();
 	}
 
 }

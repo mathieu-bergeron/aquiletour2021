@@ -17,6 +17,7 @@
 
 package ca.ntro.jdk.services;
 
+import ca.ntro.assertions.NtroAssertion;
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
@@ -148,6 +149,13 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideBackendService");
 		
 		return new BackendServiceJdk();
+	}
+
+	@Override
+	protected Class<? extends NtroAssertion> provideAssertionClass() {
+		__T.call(InitializationTaskJdk.class, "provideAssertionClass");
+
+		return NtroAssertion.class;
 	}
 
 }
