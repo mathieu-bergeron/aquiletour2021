@@ -20,6 +20,7 @@ package ca.ntro.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.assertions.NtroAssertion;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.regex.RegEx;
@@ -46,6 +47,8 @@ public class Ntro {
 	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
 	private static ThreadService threadService;
 	private static BackendService backendService;
+	
+	private static Class<? extends NtroAssertion> assertionClass;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -167,4 +170,13 @@ public class Ntro {
 	public static BackendService backendService() {
 		return backendService;
 	}
+	
+	public static void zzz_registerAssertionClass(Class<? extends NtroAssertion> assertionClass) {
+		Ntro.assertionClass = assertionClass;
+	}
+	
+	public static NtroAssertion verify() {
+		return Factory.newInstance(assertionClass);
+	}
+
 }

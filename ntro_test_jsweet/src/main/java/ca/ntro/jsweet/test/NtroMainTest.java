@@ -3,6 +3,7 @@ package ca.ntro.jsweet.test;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.trace.T;
@@ -31,6 +32,8 @@ public class NtroMainTest extends NtroTaskSync {
 		otherMap.put(2, a);
 		
 		int x = map.get(a);
+		
+		Ntro.verify().that(a).isNot(null);
 		
 		for(Map.Entry<LinkedListNode, Integer> entry : map.entrySet()) {
 			System.out.println(entry.getKey());
