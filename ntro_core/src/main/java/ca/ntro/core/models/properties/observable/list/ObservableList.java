@@ -35,7 +35,7 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 		return getValue().indexOf(item);
 	}
 	
-	public I getItem(int id) {
+	public I item(int id) {
 		T.call(this);
 		return getValue().get(id);
 	}
