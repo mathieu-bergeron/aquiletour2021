@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.introspection.ClassSignatureImpl;
 import ca.ntro.core.introspection.ConstructorSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
@@ -450,6 +451,12 @@ public class IntrospectorJdk extends Introspector {
 	@Override
 	public boolean isList(Object object) {
 		return object instanceof List;
+	}
+
+	@Override
+	public ClassSignatureImpl getClassSignature(Object object) {
+		// TODO
+		return null;
 	}
 
 }

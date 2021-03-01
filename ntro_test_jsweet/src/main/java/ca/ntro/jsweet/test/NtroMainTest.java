@@ -8,6 +8,7 @@ import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.jsweet.test.introspector.IntrospectorTests;
 import ca.ntro.jsweet.test.json.LinkedListNode;
 
 public class NtroMainTest extends NtroTaskSync {
@@ -15,8 +16,14 @@ public class NtroMainTest extends NtroTaskSync {
 	@Override
 	protected void runTask() {
 		T.call(this);
+		
+		IntrospectorTests introspectorTests = new IntrospectorTests();
+		introspectorTests.testDoesImplement();
 
-		T.here();
+	}
+	
+	
+	private void tmp() {
 		
 		LinkedListNode a = new LinkedListNode("A");
 		LinkedListNode b = new LinkedListNode("B");
@@ -68,8 +75,9 @@ public class NtroMainTest extends NtroTaskSync {
 		System.out.println(jsonObject);
 		
 		System.out.println(JsonParser.toString(jsonObject));
-
+		
 	}
+	
 
 	@Override
 	protected void onFailure(Exception e) {

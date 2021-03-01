@@ -1,5 +1,5 @@
 package ca.ntro.core.introspection;
 
-public interface ClassSignature {
+public interface TypeSignature {
 
 }
