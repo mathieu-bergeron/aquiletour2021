@@ -1,5 +1,7 @@
 package ca.ntro.assertions;
 
+import ca.ntro.core.introspection.ClassSignature;
+
 public class NtroAssertion extends AssertExpression {
 	
 	public ValueExpression that(Object value) {
@@ -18,5 +20,23 @@ public class NtroAssertion extends AssertExpression {
 		addSubExpression(emptyExpression);
 
 		return emptyExpression;
+	}
+
+	public ClassSignatureExpression thatClassSignature(ClassSignature classSignature) {
+		
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(this, classSignature);
+		
+		addSubExpression(classSignatureExpression);
+
+		return classSignatureExpression;
+	}
+
+	public ObjectExpression thatObject(Object object) {
+		
+		ObjectExpression objectExpression = new ObjectExpression(this, object);
+		
+		addSubExpression(objectExpression);
+
+		return objectExpression;
 	}
 }
