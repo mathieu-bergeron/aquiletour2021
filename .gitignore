@@ -33,6 +33,9 @@ aquiletour_server/src/main/resources/public/js/aquiletour_jsweet
 aquiletour_server/src/main/resources/public/js/ntro_core  
 aquiletour_server/src/main/resources/public/js/ntro_jsweet
 
+ntro_test_server/src/main/resources/public/js/ntro_core  
+ntro_test_server/src/main/resources/public/js/ntro_jsweet
+
 
 # Dev databases
 *.db

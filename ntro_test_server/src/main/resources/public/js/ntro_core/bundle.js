@@ -37,8 +37,8 @@ var ca;
                     toString() {
                         ca.ntro.core.system.trace.T.call(this);
                         let builder = { str: "", toString: function () { return this.str; } };
-                        for (let index121 = 0; index121 < this.modifiers.length; index121++) {
-                            let modifier = this.modifiers[index121];
+                        for (let index206 = 0; index206 < this.modifiers.length; index206++) {
+                            let modifier = this.modifiers[index206];
                             {
                                 /* append */ (sb => { sb.str = sb.str.concat(modifier); return sb; })(builder);
                                 /* append */ (sb => { sb.str = sb.str.concat(" "); return sb; })(builder);
@@ -176,8 +176,8 @@ var ca;
                     }
                     formatModifiers(builder) {
                         ca.ntro.core.system.trace.T.call(this);
-                        for (let index122 = 0; index122 < this.modifiers.length; index122++) {
-                            let modifier = this.modifiers[index122];
+                        for (let index207 = 0; index207 < this.modifiers.length; index207++) {
+                            let modifier = this.modifiers[index207];
                             {
                                 /* append */ (sb => { sb.str = sb.str.concat(modifier); return sb; })(builder);
                                 /* append */ (sb => { sb.str = sb.str.concat(" "); return sb; })(builder);
@@ -290,9 +290,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(Introspector);
                         let result = null;
                         {
-                            let array124 = this.userDefinedMethodsFromClass(currentClass);
-                            for (let index123 = 0; index123 < array124.length; index123++) {
-                                let candidate = array124[index123];
+                            let array209 = this.userDefinedMethodsFromClass(currentClass);
+                            for (let index208 = 0; index208 < array209.length; index208++) {
+                                let candidate = array209[index208];
                                 {
                                     let candidateSignature = this.methodSignature(candidate);
                                     if (candidateSignature.equals(methodSignature)) {
@@ -308,9 +308,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(Introspector);
                         let result = null;
                         {
-                            let array126 = this.userDefinedMethodsFromClass(_class);
-                            for (let index125 = 0; index125 < array126.length; index125++) {
-                                let method = array126[index125];
+                            let array211 = this.userDefinedMethodsFromClass(_class);
+                            for (let index210 = 0; index210 < array211.length; index210++) {
+                                let method = array211[index210];
                                 {
                                     if (((o1, o2) => { if (o1 && o1.equals) {
                                         return o1.equals(o2);
@@ -406,9 +406,9 @@ var ca;
                     appointmentDefinedSetters(object) {
                         let allSetters = ([]);
                         {
-                            let array128 = this.userDefinedMethodsFromObject(object);
-                            for (let index127 = 0; index127 < array128.length; index127++) {
-                                let method = array128[index127];
+                            let array213 = this.userDefinedMethodsFromObject(object);
+                            for (let index212 = 0; index212 < array213.length; index212++) {
+                                let method = array213[index212];
                                 {
                                     if (this.isASetter(method)) {
                                         /* add */ (allSetters.push(method) > 0);
@@ -422,9 +422,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(Introspector);
                         let allGetters = ([]);
                         {
-                            let array130 = this.userDefinedMethodsFromObject(object);
-                            for (let index129 = 0; index129 < array130.length; index129++) {
-                                let method = array130[index129];
+                            let array215 = this.userDefinedMethodsFromObject(object);
+                            for (let index214 = 0; index214 < array215.length; index214++) {
+                                let method = array215[index214];
                                 {
                                     if (this.isAGetter(method)) {
                                         /* add */ (allGetters.push(method) > 0);
@@ -576,8 +576,8 @@ var ca;
                      */
                     write(writer) {
                         let visitedNodes = ([]);
-                        for (let index131 = 0; index131 < this.nodes.length; index131++) {
-                            let node = this.nodes[index131];
+                        for (let index216 = 0; index216 < this.nodes.length; index216++) {
+                            let node = this.nodes[index216];
                             {
                                 this.writeNode(writer, visitedNodes, node);
                             }
@@ -676,14 +676,14 @@ var ca;
                         if ((this.graphs.indexOf((graph)) >= 0)) {
                             cycleDetected = true;
                         }
-                        for (let index132 = 0; index132 < this.writers.length; index132++) {
-                            let writer = this.writers[index132];
+                        for (let index217 = 0; index217 < this.writers.length; index217++) {
+                            let writer = this.writers[index217];
                             {
                                 writer.write(/* size */ this.graphs.length, graph);
                             }
                         }
-                        for (let index133 = 0; index133 < this.listeners.length; index133++) {
-                            let listener = this.listeners[index133];
+                        for (let index218 = 0; index218 < this.listeners.length; index218++) {
+                            let listener = this.listeners[index218];
                             {
                                 listener.onNewTaskState(task);
                             }
@@ -704,8 +704,8 @@ var ca;
                         else {
                             return false;
                         } })(this.listeners, listener);
-                        for (let index134 = 0; index134 < this.tasks.length; index134++) {
-                            let taskStateDescription = this.tasks[index134];
+                        for (let index219 = 0; index219 < this.tasks.length; index219++) {
+                            let taskStateDescription = this.tasks[index219];
                             {
                                 listener.onNewTaskState(taskStateDescription);
                             }
@@ -1311,9 +1311,9 @@ var ca;
                     forEachSubTask(lambda) {
                         {
                             {
-                                let array136 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
-                                for (let index135 = 0; index135 < array136.length; index135++) {
-                                    let subTask = array136[index135];
+                                let array221 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
+                                for (let index220 = 0; index220 < array221.length; index220++) {
+                                    let subTask = array221[index220];
                                     {
                                         lambda.execute(subTask);
                                     }
@@ -1325,9 +1325,9 @@ var ca;
                     forEachPreviousTask(lambda) {
                         {
                             {
-                                let array138 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
-                                for (let index137 = 0; index137 < array138.length; index137++) {
-                                    let previousTask = array138[index137];
+                                let array223 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
+                                for (let index222 = 0; index222 < array223.length; index222++) {
+                                    let previousTask = array223[index222];
                                     {
                                         lambda.execute(previousTask);
                                     }
@@ -1339,9 +1339,9 @@ var ca;
                     forEachNextTask(lambda) {
                         {
                             {
-                                let array140 = (obj => Object.keys(obj).map(key => obj[key]))(this.nextTasks);
-                                for (let index139 = 0; index139 < array140.length; index139++) {
-                                    let nextTask = array140[index139];
+                                let array225 = (obj => Object.keys(obj).map(key => obj[key]))(this.nextTasks);
+                                for (let index224 = 0; index224 < array225.length; index224++) {
+                                    let nextTask = array225[index224];
                                     {
                                         lambda.execute(nextTask);
                                     }
@@ -1628,9 +1628,9 @@ var ca;
                             {
                                 ifShouldContinueExecution = false;
                                 {
-                                    let array142 = (obj => Object.keys(obj).map(key => obj[key]))(allTasks);
-                                    for (let index141 = 0; index141 < array142.length; index141++) {
-                                        let task = array142[index141];
+                                    let array227 = (obj => Object.keys(obj).map(key => obj[key]))(allTasks);
+                                    for (let index226 = 0; index226 < array227.length; index226++) {
+                                        let task = array227[index226];
                                         {
                                             let oldState = task.state;
                                             task.resumeExecutionIfPossible(trace);
@@ -1705,9 +1705,9 @@ var ca;
                         let allWaiting = true;
                         {
                             {
-                                let array144 = (obj => Object.keys(obj).map(key => obj[key]))(this.nextTasks);
-                                for (let index143 = 0; index143 < array144.length; index143++) {
-                                    let nextTask = array144[index143];
+                                let array229 = (obj => Object.keys(obj).map(key => obj[key]))(this.nextTasks);
+                                for (let index228 = 0; index228 < array229.length; index228++) {
+                                    let nextTask = array229[index228];
                                     {
                                         if (nextTask.state !== ca.ntro.core.tasks.TaskState.WAITING_FOR_PREVIOUS_TASKS) {
                                             allWaiting = false;
@@ -1724,9 +1724,9 @@ var ca;
                         let allDone = true;
                         {
                             {
-                                let array146 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
-                                for (let index145 = 0; index145 < array146.length; index145++) {
-                                    let previousTask = array146[index145];
+                                let array231 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
+                                for (let index230 = 0; index230 < array231.length; index230++) {
+                                    let previousTask = array231[index230];
                                     {
                                         if (previousTask.state !== ca.ntro.core.tasks.TaskState.DONE) {
                                             allDone = false;
@@ -1743,9 +1743,9 @@ var ca;
                         let allDone = true;
                         {
                             {
-                                let array148 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
-                                for (let index147 = 0; index147 < array148.length; index147++) {
-                                    let subTask = array148[index147];
+                                let array233 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
+                                for (let index232 = 0; index232 < array233.length; index232++) {
+                                    let subTask = array233[index232];
                                     {
                                         if (subTask.state !== ca.ntro.core.tasks.TaskState.DONE) {
                                             allDone = false;
@@ -1937,9 +1937,9 @@ var ca;
                         if (foundNode == null) {
                             {
                                 {
-                                    let array150 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
-                                    for (let index149 = 0; index149 < array150.length; index149++) {
-                                        let previousTask = array150[index149];
+                                    let array235 = (obj => Object.keys(obj).map(key => obj[key]))(this.previousTasks);
+                                    for (let index234 = 0; index234 < array235.length; index234++) {
+                                        let previousTask = array235[index234];
                                         {
                                             foundNode = previousTask.findNodeById$java_lang_String$java_util_Set(id, visitedNodes);
                                             if (foundNode != null)
@@ -1953,9 +1953,9 @@ var ca;
                         if (foundNode == null) {
                             {
                                 {
-                                    let array152 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
-                                    for (let index151 = 0; index151 < array152.length; index151++) {
-                                        let subTask = array152[index151];
+                                    let array237 = (obj => Object.keys(obj).map(key => obj[key]))(this.subTasks);
+                                    for (let index236 = 0; index236 < array237.length; index236++) {
+                                        let subTask = array237[index236];
                                         {
                                             foundNode = subTask.findNodeById$java_lang_String$java_util_Set(id, visitedNodes);
                                             if (foundNode != null)
@@ -1969,9 +1969,9 @@ var ca;
                         if (foundNode == null) {
                             {
                                 {
-                                    let array154 = (obj => Object.keys(obj).map(key => obj[key]))(this.nextTasks);
-                                    for (let index153 = 0; index153 < array154.length; index153++) {
-                                        let nextTask = array154[index153];
+                                    let array239 = (obj => Object.keys(obj).map(key => obj[key]))(this.nextTasks);
+                                    for (let index238 = 0; index238 < array239.length; index238++) {
+                                        let nextTask = array239[index238];
                                         {
                                             foundNode = nextTask.findNodeById$java_lang_String$java_util_Set(id, visitedNodes);
                                             if (foundNode != null)
@@ -2350,8 +2350,8 @@ var ca;
                         }
                         field(...fieldPath) {
                             ca.ntro.core.system.trace.T.call(this);
-                            for (let index155 = 0; index155 < fieldPath.length; index155++) {
-                                let fieldName = fieldPath[index155];
+                            for (let index240 = 0; index240 < fieldPath.length; index240++) {
+                                let fieldName = fieldPath[index240];
                                 {
                                     /* add */ (this.fieldPath.push(fieldName) > 0);
                                 }
@@ -3512,9 +3512,9 @@ var ca;
                         ca.ntro.core.system.trace.T.call(this);
                         let builder = { str: "", toString: function () { return this.str; } };
                         {
-                            let array157 = Object.keys(this.map);
-                            for (let index156 = 0; index156 < array157.length; index156++) {
-                                let key = array157[index156];
+                            let array242 = Object.keys(this.map);
+                            for (let index241 = 0; index241 < array242.length; index241++) {
+                                let key = array242[index241];
                                 {
                                     let value = ((m, k) => m[k] === undefined ? null : m[k])(this.map, key);
                                     /* append */ (sb => { sb.str = sb.str.concat(key + " " + value + ", "); return sb; })(builder);
@@ -3663,9 +3663,9 @@ var ca;
                     loadFromJsonObject$java_util_Map$java_lang_String$ca_ntro_core_json_JsonObject(deserializedObjects, valuePath, jsonObject) {
                         ca.ntro.core.system.trace.T.call(this);
                         {
-                            let array159 = jsonObject.keySet();
-                            for (let index158 = 0; index158 < array159.length; index158++) {
-                                let fieldName = array159[index158];
+                            let array244 = jsonObject.keySet();
+                            for (let index243 = 0; index243 < array244.length; index243++) {
+                                let fieldName = array244[index243];
                                 {
                                     let jsonValue = jsonObject.get(fieldName);
                                     let setter = ca.ntro.core.Ntro.introspector().findSetter(this.constructor, fieldName);
@@ -3728,9 +3728,9 @@ var ca;
                         let jsonObject = ca.ntro.core.json.JsonParser.jsonObject();
                         jsonObject.setTypeName(ca.ntro.core.Ntro.introspector().getFullNameForClass(this.constructor));
                         {
-                            let array161 = ca.ntro.core.Ntro.introspector().userDefinedGetters(this);
-                            for (let index160 = 0; index160 < array161.length; index160++) {
-                                let getter = array161[index160];
+                            let array246 = ca.ntro.core.Ntro.introspector().userDefinedGetters(this);
+                            for (let index245 = 0; index245 < array246.length; index245++) {
+                                let getter = array246[index245];
                                 {
                                     let value = null;
                                     try {
@@ -3810,9 +3810,9 @@ var ca;
                             ;
                             let result = ({});
                             {
-                                let array163 = Object.keys(map);
-                                for (let index162 = 0; index162 < array163.length; index162++) {
-                                    let key = array163[index162];
+                                let array248 = Object.keys(map);
+                                for (let index247 = 0; index247 < array248.length; index247++) {
+                                    let key = array248[index247];
                                     {
                                         let mapValue = ((m, k) => m[k] === undefined ? null : m[k])(map, key);
                                         let jsonMapValue = this.buildJsonValue(serializedObjects, valuePath + "/" + key, mapValue);
@@ -4013,9 +4013,9 @@ var ca;
                 /*private*/ parsePath(path) {
                     ca.ntro.core.system.trace.T.call(this);
                     {
-                        let array165 = path.split("/");
-                        for (let index164 = 0; index164 < array165.length; index164++) {
-                            let name = array165[index164];
+                        let array250 = path.split("/");
+                        for (let index249 = 0; index249 < array250.length; index249++) {
+                            let name = array250[index249];
                             {
                                 /* add */ (this.names.push(name) > 0);
                             }
@@ -4066,8 +4066,8 @@ var ca;
                  */
                 toString() {
                     let builder = { str: "", toString: function () { return this.str; } };
-                    for (let index166 = 0; index166 < this.names.length; index166++) {
-                        let name = this.names[index166];
+                    for (let index251 = 0; index251 < this.names.length; index251++) {
+                        let name = this.names[index251];
                         {
                             /* append */ (sb => { sb.str = sb.str.concat("/"); return sb; })(builder);
                             /* append */ (sb => { sb.str = sb.str.concat(name); return sb; })(builder);
@@ -4104,8 +4104,8 @@ var ca;
                 }
                 toFileName() {
                     let builder = { str: "", toString: function () { return this.str; } };
-                    for (let index167 = 0; index167 < this.names.length; index167++) {
-                        let name = this.names[index167];
+                    for (let index252 = 0; index252 < this.names.length; index252++) {
+                        let name = this.names[index252];
                         {
                             /* append */ (sb => { sb.str = sb.str.concat(name); return sb; })(builder);
                             /* append */ (sb => { sb.str = sb.str.concat("_"); return sb; })(builder);
@@ -4359,8 +4359,8 @@ var ca;
                 }
                 sendMessage$ca_ntro_messages_NtroMessage$java_util_Set(message, receptorSet) {
                     ca.ntro.core.system.trace.T.call(this);
-                    for (let index168 = 0; index168 < receptorSet.length; index168++) {
-                        let receptor = receptorSet[index168];
+                    for (let index253 = 0; index253 < receptorSet.length; index253++) {
+                        let receptor = receptorSet[index253];
                         {
                         }
                     }
@@ -4410,8 +4410,8 @@ var ca;
                         args = args.split(")").join("");
                         let argTypes = args.split(", ");
                         let argumentTypes = ([]);
-                        for (let index169 = 0; index169 < argTypes.length; index169++) {
-                            let argType = argTypes[index169];
+                        for (let index254 = 0; index254 < argTypes.length; index254++) {
+                            let argType = argTypes[index254];
                             {
                                 /* add */ (argumentTypes.push(/* replace */ argType.split(" ").join("")) > 0);
                             }
@@ -4472,8 +4472,8 @@ var ca;
                         args = args.split(")").join("");
                         let argTypes = args.split(", ");
                         let argumentTypes = ([]);
-                        for (let index170 = 0; index170 < argTypes.length; index170++) {
-                            let argType = argTypes[index170];
+                        for (let index255 = 0; index255 < argTypes.length; index255++) {
+                            let argType = argTypes[index255];
                             {
                                 /* add */ (argumentTypes.push(/* replace */ argType.split(" ").join("")) > 0);
                             }
@@ -5444,8 +5444,8 @@ var ca;
                                     ca.ntro.core.system.trace.T.call(this);
                                     let oldValue = this.value;
                                     this.value = newValue;
-                                    for (let index171 = 0; index171 < this.observers.length; index171++) {
-                                        let observer = this.observers[index171];
+                                    for (let index256 = 0; index256 < this.observers.length; index256++) {
+                                        let observer = this.observers[index256];
                                         {
                                             observer.onValueChanged(oldValue, newValue);
                                         }
@@ -5500,9 +5500,9 @@ var ca;
                         /*private*/ connectSubValues(valuePath, modelStore) {
                             ca.ntro.core.system.trace.T.call(this);
                             {
-                                let array173 = ca.ntro.core.Ntro.introspector().userDefinedGetters(this);
-                                for (let index172 = 0; index172 < array173.length; index172++) {
-                                    let getter = array173[index172];
+                                let array258 = ca.ntro.core.Ntro.introspector().userDefinedGetters(this);
+                                for (let index257 = 0; index257 < array258.length; index257++) {
+                                    let getter = array258[index257];
                                     {
                                         let fieldName = ca.ntro.core.Ntro.introspector().fieldNameForGetter(getter);
                                         let fieldValue = null;
@@ -5577,9 +5577,9 @@ var ca;
                     connectStoredValues() {
                         ca.ntro.core.system.trace.T.call(this);
                         {
-                            let array175 = ca.ntro.core.Ntro.introspector().userDefinedGetters(this);
-                            for (let index174 = 0; index174 < array175.length; index174++) {
-                                let getter = array175[index174];
+                            let array260 = ca.ntro.core.Ntro.introspector().userDefinedGetters(this);
+                            for (let index259 = 0; index259 < array260.length; index259++) {
+                                let getter = array260[index259];
                                 {
                                     let fieldName = ca.ntro.core.Ntro.introspector().fieldNameForGetter(getter);
                                     let fieldValue = null;
@@ -5733,9 +5733,9 @@ var ca;
                                 return;
                             } m.entries.push({ key: k, value: v, getKey: function () { return this.key; }, getValue: function () { return this.value; } }); })(this.handlers, messageClass, handler);
                         {
-                            let array177 = ca.ntro.core.Ntro.threadService().subThreads();
-                            for (let index176 = 0; index176 < array177.length; index176++) {
-                                let subThread = array177[index176];
+                            let array262 = ca.ntro.core.Ntro.threadService().subThreads();
+                            for (let index261 = 0; index261 < array262.length; index261++) {
+                                let subThread = array262[index261];
                                 {
                                     subThread.handleMessageFromThread(messageClass, handler);
                                 }
@@ -6660,15 +6660,15 @@ var ca;
                                     ca.ntro.core.system.trace.T.call(this);
                                     return this.getValue().indexOf(item);
                                 }
-                                getItem(id) {
+                                item(id) {
                                     ca.ntro.core.system.trace.T.call(this);
                                     return this.getValue()[id];
                                 }
                                 insertItem(index, item) {
                                     ca.ntro.core.system.trace.T.call(this);
                                     /* add */ this.getValue().splice(index, 0, item);
-                                    for (let index178 = 0; index178 < this.listObservers.length; index178++) {
-                                        let listObserver = this.listObservers[index178];
+                                    for (let index263 = 0; index263 < this.listObservers.length; index263++) {
+                                        let listObserver = this.listObservers[index263];
                                         {
                                             listObserver.onItemAdded(index, item);
                                         }
@@ -6676,8 +6676,8 @@ var ca;
                                 }
                                 updateItem(index, item) {
                                     /* set */ (this.getValue()[index] = item);
-                                    for (let index179 = 0; index179 < this.listObservers.length; index179++) {
-                                        let listObserver = this.listObservers[index179];
+                                    for (let index264 = 0; index264 < this.listObservers.length; index264++) {
+                                        let listObserver = this.listObservers[index264];
                                         {
                                             listObserver.onItemUpdated(index, item);
                                         }
@@ -6691,8 +6691,8 @@ var ca;
                                     ca.ntro.core.system.trace.T.call(this);
                                     let index = this.getValue().lastIndexOf(item);
                                     /* remove */ this.getValue().splice(index, 1)[0];
-                                    for (let index180 = 0; index180 < this.listObservers.length; index180++) {
-                                        let listObserver = this.listObservers[index180];
+                                    for (let index265 = 0; index265 < this.listObservers.length; index265++) {
+                                        let listObserver = this.listObservers[index265];
                                         {
                                             listObserver.onItemRemoved(index, item);
                                         }
@@ -6754,8 +6754,8 @@ var ca;
                                     result.setTypeName(/* getName */ (c => c["__class"] ? c["__class"] : c["name"])(this.constructor));
                                     let list = this.getValue();
                                     let jsonList = ([]);
-                                    for (let index181 = 0; index181 < list.length; index181++) {
-                                        let item = list[index181];
+                                    for (let index266 = 0; index266 < list.length; index266++) {
+                                        let item = list[index266];
                                         {
                                             let jsonItem = item;
                                             if (((o1, o2) => { if (o1 && o1.equals) {
@@ -6784,8 +6784,8 @@ var ca;
                                 }
                                 loadFromJsonObject$ca_ntro_core_json_JsonObject(jsonObject) {
                                     let jsonList = jsonObject.get("value");
-                                    for (let index182 = 0; index182 < jsonList.length; index182++) {
-                                        let jsonItem = jsonList[index182];
+                                    for (let index267 = 0; index267 < jsonList.length; index267++) {
+                                        let jsonItem = jsonList[index267];
                                         {
                                             let item = ca.ntro.core.Ntro.introspector().buildValueForType(this.valueType(), jsonItem);
                                             /* add */ (this.getValue().push(item) > 0);
@@ -6828,8 +6828,8 @@ var ca;
                                 }
                                 addEntry(key, value) {
                                     /* put */ (this.getValue()[key] = value);
-                                    for (let index183 = 0; index183 < this.mapObservers.length; index183++) {
-                                        let mapObserver = this.mapObservers[index183];
+                                    for (let index268 = 0; index268 < this.mapObservers.length; index268++) {
+                                        let mapObserver = this.mapObservers[index268];
                                         {
                                             mapObserver.onEntryAdded(key, value);
                                         }
@@ -6839,8 +6839,8 @@ var ca;
                                     let value = ((m, k) => m[k] === undefined ? null : m[k])(this.getValue(), key);
                                     /* remove */ (map => { let deleted = this.getValue()[key]; delete this.getValue()[key]; return deleted; })(this.getValue());
                                     if (value != null) {
-                                        for (let index184 = 0; index184 < this.mapObservers.length; index184++) {
-                                            let mapObserver = this.mapObservers[index184];
+                                        for (let index269 = 0; index269 < this.mapObservers.length; index269++) {
+                                            let mapObserver = this.mapObservers[index269];
                                             {
                                                 mapObserver.onEntryRemoved(key, value);
                                             }
@@ -6854,9 +6854,9 @@ var ca;
                                     if (map != null) {
                                         {
                                             {
-                                                let array186 = Object.keys(map);
-                                                for (let index185 = 0; index185 < array186.length; index185++) {
-                                                    let key = array186[index185];
+                                                let array271 = Object.keys(map);
+                                                for (let index270 = 0; index270 < array271.length; index270++) {
+                                                    let key = array271[index270];
                                                     {
                                                         let value = ((m, k) => m[k] === undefined ? null : m[k])(map, key);
                                                         mapObserver.onEntryAdded(key, value);
@@ -6894,10 +6894,10 @@ var ca;
                                     let map = this.getValue();
                                     let jsonMap = ({});
                                     {
-                                        let array188 = (o => { let s = []; for (let e in o)
+                                        let array273 = (o => { let s = []; for (let e in o)
                                             s.push({ k: e, v: o[e], getKey: function () { return this.k; }, getValue: function () { return this.v; } }); return s; })(map);
-                                        for (let index187 = 0; index187 < array188.length; index187++) {
-                                            let entry = array188[index187];
+                                        for (let index272 = 0; index272 < array273.length; index272++) {
+                                            let entry = array273[index272];
                                             {
                                                 let jsonValue = entry.getValue();
                                                 if (((o1, o2) => { if (o1 && o1.equals) {
@@ -6928,10 +6928,10 @@ var ca;
                                 loadFromJsonObject$ca_ntro_core_json_JsonObject(jsonObject) {
                                     let jsonMap = jsonObject.get("value");
                                     {
-                                        let array190 = (o => { let s = []; for (let e in o)
+                                        let array275 = (o => { let s = []; for (let e in o)
                                             s.push({ k: e, v: o[e], getKey: function () { return this.k; }, getValue: function () { return this.v; } }); return s; })(jsonMap);
-                                        for (let index189 = 0; index189 < array190.length; index189++) {
-                                            let entry = array190[index189];
+                                        for (let index274 = 0; index274 < array275.length; index274++) {
+                                            let entry = array275[index274];
                                             {
                                                 let entryValue = ca.ntro.core.Ntro.introspector().buildValueForType(this.valueType(), entry.getValue());
                                                 /* put */ (this.getValue()[entry.getKey()] = entryValue);

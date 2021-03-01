@@ -22,3 +22,49 @@ tasks.jsweet{
     dependsOn ':ntro_core:jsweet'
     dependsOn ':ntro_jsweet:jsweet'
 }
+
+tasks.jsweet{
+
+    dependsOn ':ntro_core:jsweet'
+    dependsOn ':ntro_jsweet:jsweet'
+
+    // FIXME: move this to the local-jsweet-plugin
+    //        i.e. by declaring a local-jsweet-plugin.includedProjects to iterate over
+    inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_core") 
+    inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_jsweet") 
+
+    // FIXME: same as above FIXME
+    doLast{
+        def serverProject = project(':ntro_test_server')
+        def projectPaths = [':ntro_core',':ntro_jsweet']
+        for (projectPath in projectPaths){
+            def aProject = project(projectPath)
+            def outDir = new File("${serverProject.projectDir}/src/main/resources/public/js/${aProject.name}")
+            outDir.mkdirs()
+
+            def srcDir = new File("${aProject.projectDir}/jsweet/jsOut/META-INF/resources/webjars/${aProject.name}/${aProject.version}")
+
+            copyLargeDir(srcDir, outDir, true)
+        }
+    }
+}
+
+// adapted from  https://stackoverflow.com/questions/6214703/copy-entire-directory-contents-to-another-directory
+def copyLargeDir(File dirFrom, File dirTo, boolean excludeHiddenFiles){
+    if (!dirTo.exists()){
+        dirTo.mkdir();
+    }
+
+    dirFrom.eachFile(groovy.io.FileType.FILES){File source ->
+        if(!excludeHiddenFiles || !source.getName().startsWith(".")){
+            File target = new File(dirTo,source.getName());
+            target.bytes = source.bytes;
+        }
+    }
+
+    dirFrom.eachFile(groovy.io.FileType.DIRECTORIES){File source ->
+        File target = new File(dirTo,source.getName());
+        copyLargeDir(source, target, excludeHiddenFiles)
+    }
+}
+
