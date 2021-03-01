@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
 
 public class LinkedListNode extends JsonObjectIO implements Serializable {
@@ -71,6 +72,11 @@ public class LinkedListNode extends JsonObjectIO implements Serializable {
 		}
 
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return Ntro.introspector().getSimpleNameForClass(getClass());
 	}
 
 }

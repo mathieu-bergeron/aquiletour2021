@@ -31,9 +31,8 @@ public class Log {
 	public static void error(String... messages) {
 
 	}
-	
-	public static void fatalError(String message, Exception... causedBy) {
-		int currentDepth = 1;
+
+	public static void fatalErrorAtDepth(String message, int currentDepth, Exception... causedBy) {
 		
 		StackAnalyzer stackAnalyzer = __Ntro.stackAnalyzer();
 		
@@ -68,6 +67,11 @@ public class Log {
 
 			Ntro.appCloser().close();
 		}
+
+	}
+	
+	public static void fatalError(String message, Exception... causedBy) {
+		fatalErrorAtDepth(message, 1, causedBy);
 	}
 
 }

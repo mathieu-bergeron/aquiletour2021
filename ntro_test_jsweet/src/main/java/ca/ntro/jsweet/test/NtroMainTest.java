@@ -17,8 +17,6 @@ public class NtroMainTest extends NtroTaskSync {
 		T.call(this);
 
 		T.here();
-
-		System.out.println("TEST");
 		
 		LinkedListNode a = new LinkedListNode("A");
 		LinkedListNode b = new LinkedListNode("B");
