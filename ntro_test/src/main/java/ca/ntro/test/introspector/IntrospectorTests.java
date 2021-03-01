@@ -23,7 +23,7 @@ public class IntrospectorTests {
 		Ntro.verify().thatObject(childClassAB).doesExtend(ParentClassAB.class);
 		*/
 		
-		Ntro.assertService().assertTrue(false);
+		Ntro.assertService().fail("ICI");
 
 		// TODO
 		// Ntro.verify().thatObject(childClassAB).isInstanceOf(ParentClassAB.class);
