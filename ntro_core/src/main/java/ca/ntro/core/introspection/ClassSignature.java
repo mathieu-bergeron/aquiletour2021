@@ -68,6 +68,7 @@ public abstract class ClassSignature {
 		List<MethodSignature> userDefinedMethods = new ArrayList<>();
 		
 		for(ClassSignature superClass : allSuperclasses()) {
+			// FIXME: we need to inject "owner" in JSweet
 			userDefinedMethods.addAll(superClass.declaredMethods());
 		}
 		

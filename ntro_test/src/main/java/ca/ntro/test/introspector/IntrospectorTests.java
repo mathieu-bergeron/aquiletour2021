@@ -15,6 +15,7 @@ import static ca.ntro.assertions.Factory.thatObject;
 import static ca.ntro.assertions.Factory.thatList;
 import static ca.ntro.assertions.Factory.that;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,8 +71,11 @@ public class IntrospectorTests {
 		desiredMethodNames.add("inheritedMethod");
 		desiredMethodNames.add("interfaceMethodA");
 		
+		
 		// FIXME: we need to actually save methods
 		System.out.println(ChildClassAB.class.getDeclaredMethods());
+
+		System.out.println(String.class);
 		
 		Ntro.verify(that(methodNames).is(desiredMethodNames));
 
