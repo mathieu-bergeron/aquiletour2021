@@ -23,12 +23,17 @@ public class IsExpression extends AssertExpression {
 		
 		if(thisValue == null) return otherValue == null;
 		
-		return thisValue.equals(otherValue);
+		return !thisValue.equals(otherValue);
 	}
 
 	@Override
 	public String failMessage() {
-		// TODO Auto-generated method stub
+		if(shouldFail()) {
+			
+			return "is(TODO)";
+			
+		}
+
 		return null;
 	}
 

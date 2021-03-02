@@ -2,6 +2,7 @@ package ca.ntro.core.introspection;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -65,8 +66,6 @@ public abstract class ClassSignature {
 
 	public List<MethodSignature> userDefinedMethods() {
 		List<MethodSignature> userDefinedMethods = new ArrayList<>();
-		
-		userDefinedMethods.addAll(declaredMethods());
 		
 		for(ClassSignature superClass : allSuperclasses()) {
 			userDefinedMethods.addAll(superClass.declaredMethods());

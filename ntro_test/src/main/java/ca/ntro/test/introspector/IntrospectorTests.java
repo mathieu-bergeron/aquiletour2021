@@ -13,9 +13,10 @@ import ca.ntro.test.introspector.interfaces.ParentInterfaceB;
 
 import static ca.ntro.assertions.Factory.thatObject;
 import static ca.ntro.assertions.Factory.thatList;
+import static ca.ntro.assertions.Factory.that;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class IntrospectorTests {
 	
@@ -53,14 +54,23 @@ public class IntrospectorTests {
 		ClassSignature classSignatureAB = Ntro.introspector().classSignature(childClassAB);
 
 		List<MethodSignature> methodSignatures = classSignatureAB.userDefinedMethods();
-
-		//methodSignatures.forEach(ms -> System.out.println(ms.name()));
+		methodSignatures.forEach(ms -> System.out.println(ms.name()));
+		
+		List<String> methodNames = new ArrayList<>();
+		methodSignatures.forEach(ms -> methodNames.add(ms.name()));
 		
 		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("abstractMethod")));
 
 		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("interfaceMethodA")));
 
 		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("inheritedMethod")));
+		
+		List<String> desiredMethodNames = new ArrayList<>();
+		desiredMethodNames.add("abstractMethod");
+		desiredMethodNames.add("inheritedMethod");
+		desiredMethodNames.add("interfaceMethodA");
+		
+		Ntro.verify(that(methodNames).is(desiredMethodNames));
 
 	}
 
