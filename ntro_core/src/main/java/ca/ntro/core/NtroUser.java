@@ -1,17 +1,18 @@
 package ca.ntro.core;
 
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class NtroUser extends NtroModel {
+public class NtroUser extends NtroModelValue {
 	
 	private String id;
 	private String authToken;
 
-	@Override
-	public void initializeStoredValues() {
-		
-	}
+//	@Override
+//	public void initializeStoredValues() {
+//		
+//	}
 
 	public String getId() {
 		return id;
@@ -41,4 +42,5 @@ public class NtroUser extends NtroModel {
 		
 		return isValid;
 	}
+
 }

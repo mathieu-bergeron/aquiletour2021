@@ -27,12 +27,13 @@ public class DeleteCourseHandler extends MessageHandler<DashboardBackendControll
 			dashboardModel.deleteCourseById(courseId);
 			dashboardModel.save();
 
-//			// XXX: create Queue
-//			QueueModel queueModel = getController().getModel(QueueModel.class, 
-//													fromUser.getAuthToken(),
-//													courseId);
-//
-//			queueModel.save();//TODO what to do with queueModel
+			// XXX: create Queue
+			QueueModel queueModel = getController().getModel(QueueModel.class, 
+													fromUser.getAuthToken(),
+													courseId);
+			queueModel.deleteStudent(fromUser.getId());
+
+			queueModel.save();
 
 		}else {
 			

@@ -33,17 +33,23 @@ public class AquiletourBackendRequestHandler {
 			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
 
 		}else if(path.startsWith("csv")) {
+			if(parameters.containsKey("queueId")) {// /csv?queueId=3C6
+				
+				String queueId = parameters.get("queueId")[0];
 			
-			AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
-			
-			ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");
-			loadCsv.execute();
-
-			addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
-			
-			System.out.println(loadCsv.getResourceAsString());
-			
-			Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+				AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
+				addStudentCsvMessage.setQueueId(queueId);
+				addStudentCsvMessage.setUser(context.getUser());
+				
+				ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");
+				loadCsv.execute();
+	
+				addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
+				
+				System.out.println(loadCsv.getResourceAsString());
+				
+				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+			}
 			
 
 		} else if(path.startsWith("billetteries")) {

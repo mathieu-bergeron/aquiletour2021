@@ -30,7 +30,6 @@ public abstract class ObservableMap<V extends Object> extends ObservableProperty
 	public void addEntry(String key, V value) {
 		
 		getValue().put(key, value);
-
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onEntryAdded(key, value);
 		}
