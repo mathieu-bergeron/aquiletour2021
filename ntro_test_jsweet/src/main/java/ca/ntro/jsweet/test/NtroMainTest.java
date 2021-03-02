@@ -22,9 +22,9 @@ public class NtroMainTest extends NtroTaskSync {
 		IntrospectorTests introspectorTests = new IntrospectorTests();
 		introspectorTests.testDoesImplement();
 		System.out.println("testDoesImplement finished");
-		
-		
-		
+
+		introspectorTests.testMethods();
+		System.out.println("testMethods finished");
 	}
 	
 	

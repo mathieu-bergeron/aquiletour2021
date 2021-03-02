@@ -1,5 +1,7 @@
 package ca.ntro.assertions;
 
+import java.util.List;
+
 import ca.ntro.core.introspection.ClassSignature;
 
 public class SimpleAssertExpression extends AssertExpression {
@@ -44,6 +46,15 @@ public class SimpleAssertExpression extends AssertExpression {
 	public AndExpression and() {
 
 		AndExpression result = new AndExpression(this); // XXX: result.child is the right-hand side of the AND
+
+		setChild(result);
+		
+		return result;
+	}
+
+	public ListExpression thatList(List<?> list) {
+
+		ListExpression result = new ListExpression(list);
 
 		setChild(result);
 		

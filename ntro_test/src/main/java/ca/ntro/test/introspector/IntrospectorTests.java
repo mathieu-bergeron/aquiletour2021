@@ -3,6 +3,8 @@ package ca.ntro.test.introspector;
 import org.junit.Test;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.test.introspector.classes.ChildClassAB;
 import ca.ntro.test.introspector.classes.ParentClassAB;
 import ca.ntro.test.introspector.interfaces.ChildInterfaceAB;
@@ -10,6 +12,9 @@ import ca.ntro.test.introspector.interfaces.ParentInterfaceA;
 import ca.ntro.test.introspector.interfaces.ParentInterfaceB;
 
 import static ca.ntro.assertions.Factory.thatObject;
+import static ca.ntro.assertions.Factory.thatList;
+
+import java.util.List;
 
 public class IntrospectorTests {
 	
@@ -28,6 +33,23 @@ public class IntrospectorTests {
 		Ntro.verify(thatObject(childClassAB).doesExtend(ParentClassAB.class));
 		
 		Ntro.verify(thatObject(childClassAB).isInstanceOf(ParentClassAB.class));
+	}
+
+	@Test
+	public void testMethods() {
+
+		ChildClassAB childClassAB = new ChildClassAB();
+		
+		ClassSignature classSignatureAB = Ntro.introspector().classSignature(childClassAB);
+		
+		List<MethodSignature> methodSignatures = classSignatureAB.userDefinedMethods();
+		
+		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("abstractMethod")));
+
+		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("interfaceMethodA")));
+
+		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("inheritedMethod")));
+
 	}
 
 }

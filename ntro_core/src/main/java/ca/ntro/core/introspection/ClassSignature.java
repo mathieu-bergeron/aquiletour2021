@@ -1,5 +1,7 @@
 package ca.ntro.core.introspection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
@@ -32,7 +34,11 @@ public abstract class ClassSignature {
 	public boolean ifExtends(Class<?> superClass) {
 		return NtroCollections.ifSetContains(allSuperclasses(), Ntro.introspector().classSignatureForClass(superClass));
 	}
-	
+
+	public boolean ifInstanceOf(Class<?> classOrInterface) {
+		return ifImplements(classOrInterface) || ifExtends(classOrInterface);
+	}
+
 	@Override
 	public int hashCode() {
 		return _class.hashCode();
@@ -55,4 +61,9 @@ public abstract class ClassSignature {
 	public String toString() {
 		return simpleName();
 	}
+
+	public List<MethodSignature> userDefinedMethods() {
+		return new ArrayList<>();
+	}
+
 }

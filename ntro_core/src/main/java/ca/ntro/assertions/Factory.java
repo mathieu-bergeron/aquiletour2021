@@ -1,5 +1,7 @@
 package ca.ntro.assertions;
 
+import java.util.List;
+
 import ca.ntro.core.introspection.ClassSignature;
 
 public class Factory {
@@ -14,6 +16,10 @@ public class Factory {
 
 	public static ObjectExpression thatObject(Object object) {
 		return new SimpleAssertExpression().thatObject(object);
+	}
+
+	public static ListExpression thatList(List<?> list) {
+		return new SimpleAssertExpression().thatList(list);
 	}
 
 }
