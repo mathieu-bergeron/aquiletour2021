@@ -22,10 +22,26 @@ public class ClassSignatureJdk implements ClassSignature {
 
 	@Override
 	public boolean ifImplements(Class<?> interfaceClass) {
+		return ifDirectlyImplements(interfaceClass) || ifSuperClassImplements(interfaceClass);
+	}
+
+	private boolean ifSuperClassImplements(Class<?> interfaceClass) {
+		boolean ifImplements = false;
+
+		Class<?> superClass = _class.getSuperclass();
+		
+		if(superClass != null) {
+			ifImplements = new ClassSignatureJdk(superClass).ifImplements(interfaceClass);
+		}
+		
+		return ifImplements;
+	}
+
+	private boolean ifDirectlyImplements(Class<?> interfaceClass) {
 		boolean ifImplements = false;
 
 		Class<?>[] interfaces = _class.getInterfaces();
-		
+
 		for(Class<?> candidateInterface : interfaces) {
 			if(candidateInterface.equals(interfaceClass)) {
 				ifImplements = true;
@@ -45,5 +61,4 @@ public class ClassSignatureJdk implements ClassSignature {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

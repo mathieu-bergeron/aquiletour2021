@@ -12,19 +12,24 @@ public class IsExpression extends AssertExpression {
 		this.otherValue = otherValue;
 	}
 	
-	@Override
 	void verify(){
 		if(shouldFail()) {
 			Log.fatalError("Assertion failed: " + valueExpression.toString());
 		}
 	}
 	
-	protected boolean shouldFail() {
+	public boolean shouldFail() {
 		Object thisValue = valueExpression.evaluate();
 		
 		if(thisValue == null) return otherValue == null;
 		
 		return thisValue.equals(otherValue);
+	}
+
+	@Override
+	public String failMessage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

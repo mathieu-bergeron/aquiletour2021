@@ -17,7 +17,6 @@
 
 package ca.ntro.core.initialization;
 
-import ca.ntro.assertions.NtroAssertion;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.__Ntro;
 import ca.ntro.core.introspection.Introspector;
@@ -25,6 +24,7 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
@@ -84,8 +84,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.zzz_registerThreadService(provideThreadService());
 		Ntro.zzz_registerMessageServiceClass(provideMessageServiceClass());
 		Ntro.zzz_registerBackendService(provideBackendService());
-		
-		Ntro.zzz_registerAssertionClass(provideAssertionClass());
+
+		Ntro.zzz_registerAssertService(provideAssertService());
 	}
 
 
@@ -106,5 +106,5 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
 	protected abstract BackendService provideBackendService();
-	protected abstract Class<? extends NtroAssertion> provideAssertionClass();
+	protected abstract AssertService provideAssertService();
 }

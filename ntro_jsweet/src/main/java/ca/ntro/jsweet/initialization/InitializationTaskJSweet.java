@@ -21,13 +21,13 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.assertions.NtroAssertion;
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
@@ -39,6 +39,7 @@ import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.jsweet.introspection.IntrospectorJSweet;
 import ca.ntro.jsweet.regex.RegExJSweet;
 import ca.ntro.jsweet.services.AppCloserJSweet;
+import ca.ntro.jsweet.services.AssertServiceJSweet;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
 import ca.ntro.jsweet.services.JsonParserJSweet;
 import ca.ntro.jsweet.services.LocalStoreJSweet;
@@ -174,9 +175,7 @@ public class InitializationTaskJSweet extends InitializationTask {
 	}
 
 	@Override
-	protected Class<? extends NtroAssertion> provideAssertionClass() {
-		__T.call(InitializationTaskJSweet.class, "provideAssertionClass");
-
-		return NtroAssertion.class;
+	protected AssertService provideAssertService() {
+		return new AssertServiceJSweet();
 	}
 }

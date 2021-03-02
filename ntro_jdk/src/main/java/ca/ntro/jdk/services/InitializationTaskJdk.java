@@ -17,13 +17,13 @@
 
 package ca.ntro.jdk.services;
 
-import ca.ntro.assertions.NtroAssertion;
 import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
@@ -152,10 +152,8 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected Class<? extends NtroAssertion> provideAssertionClass() {
-		__T.call(InitializationTaskJdk.class, "provideAssertionClass");
-
-		return NtroAssertion.class;
+	protected AssertService provideAssertService() {
+		return new AssertServiceJdkDev();
 	}
 
 }

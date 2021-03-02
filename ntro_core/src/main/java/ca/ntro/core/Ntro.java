@@ -20,7 +20,7 @@ package ca.ntro.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.assertions.NtroAssertion;
+import ca.ntro.assertions.AssertExpression;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.regex.RegEx;
@@ -49,7 +49,6 @@ public class Ntro {
 	private static ThreadService threadService;
 	private static BackendService backendService;
 	
-	private static Class<? extends NtroAssertion> assertionClass;
 	private static AssertService assertService;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
@@ -173,13 +172,11 @@ public class Ntro {
 		return backendService;
 	}
 	
-	public static void zzz_registerAssertionClass(Class<? extends NtroAssertion> assertionClass) {
-		Ntro.assertionClass = assertionClass;
-	}
-	
-	public static NtroAssertion verify() {
-		//return Factory.newInstance(assertionClass);
-		return new NtroAssertion();
+	public static void verify(AssertExpression assertExpression) {
+		String failMessage = assertExpression.failMessage();
+		if(failMessage != null) {
+			assertService().fail(failMessage);
+		}
 	}
 
 	public static void zzz_registerAssertService(AssertService assertService) {

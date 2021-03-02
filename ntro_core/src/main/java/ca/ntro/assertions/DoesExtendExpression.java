@@ -1,9 +1,9 @@
 package ca.ntro.assertions;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.ClassSignature;
-import ca.ntro.core.system.log.Log;
 
-public class DoesExtendExpression extends AssertExpression {
+public class DoesExtendExpression extends SimpleAssertExpression {
 	
 	private ClassSignatureExpression classSignatureExpression;
 	private Class<?> _class;
@@ -14,12 +14,15 @@ public class DoesExtendExpression extends AssertExpression {
 	}
 
 	@Override
-	void verify() {
+	public String failMessage() {
 		ClassSignature classSignature = classSignatureExpression.evaluate();
-
+		
 		if(!classSignature.ifExtends(_class)) {
-			Log.fatalError("Assertion failed: " + classSignatureExpression.toString());
+
+			return "doesExtend(" + Ntro.introspector().getSimpleNameForClass(_class) + ")";
 		}
+
+		return null;
 	}
 
 }

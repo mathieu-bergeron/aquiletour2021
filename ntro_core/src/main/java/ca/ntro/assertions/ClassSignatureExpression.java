@@ -2,28 +2,30 @@ package ca.ntro.assertions;
 
 import ca.ntro.core.introspection.ClassSignature;
 
-public class ClassSignatureExpression extends AssertExpression {
+public class ClassSignatureExpression extends ValueExpression<ClassSignature> {
 	
-	private AssertExpression parentExpression;
 	private ClassSignature classSignature;
 	
-	public ClassSignatureExpression(AssertExpression parentExpression, ClassSignature classSignature) {
-		this.parentExpression = parentExpression;
+	public ClassSignatureExpression(ClassSignature classSignature) {
 		this.classSignature = classSignature;
 	}
 	
-	public void doesExtend(Class<?> _class) {
-		parentExpression.addSubExpression(new DoesExtendExpression(this, _class));
-		parentExpression.verify();
+	public AssertExpression doesExtend(Class<?> _class) {
+		return new DoesExtendExpression(this, _class);
 	}
 
-	public void doesImplement(Class<?> _interface) {
-		parentExpression.addSubExpression(new DoesImplementExpression(this, _interface));
-		parentExpression.verify();
+	public AssertExpression doesImplement(Class<?> _interface) {
+		return new DoesImplementExpression(this, _interface);
 	}
 
+	@Override
 	public ClassSignature evaluate() {
 		return classSignature;
 	}
 
+	@Override
+	public String failMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

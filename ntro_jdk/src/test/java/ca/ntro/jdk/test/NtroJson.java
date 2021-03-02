@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
@@ -25,6 +26,7 @@ import ca.ntro.jdk.test.json.ListItemA;
 import ca.ntro.jdk.test.json.ListItemB;
 import ca.ntro.jdk.test.json.MyList;
 
+@Ignore
 public class NtroJson {
 
 	private static File jsonDir = new File("__json__");

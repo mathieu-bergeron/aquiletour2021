@@ -1,30 +1,24 @@
 package ca.ntro.assertions;
 
-import ca.ntro.core.system.log.Log;
-
 public class IsTrueExpression extends AssertExpression {
 	
-	private AssertExpression parentExpression;
-	private Object value;
+	private ValueExpression<Boolean> valueExpression;
 
-	public IsTrueExpression(AssertExpression parentExpression, Object value) {
-		this.parentExpression = parentExpression;
-		this.value = value;
+	public IsTrueExpression(ValueExpression<Boolean> valueExpression) {
+		this.valueExpression = valueExpression;
 	}
 
 	@Override
-	void verify(){
-		if(shouldFail()) {
-			Log.fatalError("Assertion failed: " + parentExpression.toString());
+	public String failMessage() {
+		boolean result = valueExpression.evaluate();
+		
+		if(!result) {
+			
+			return "isTrue(false)";
+
+		}else {
+			
+			return null;
 		}
 	}
-	
-	private boolean shouldFail() {
-		if(value == null) return true;
-		
-		return !value.equals(true);
-	}
-	
-	
-
 }

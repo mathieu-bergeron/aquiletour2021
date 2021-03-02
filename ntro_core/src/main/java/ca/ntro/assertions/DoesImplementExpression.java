@@ -1,9 +1,9 @@
 package ca.ntro.assertions;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.ClassSignature;
-import ca.ntro.core.system.log.Log;
 
-public class DoesImplementExpression extends AssertExpression {
+public class DoesImplementExpression extends SimpleAssertExpression {
 
 	private ClassSignatureExpression classSignatureExpression;
 	private Class<?> _interface;
@@ -14,12 +14,23 @@ public class DoesImplementExpression extends AssertExpression {
 	}
 
 	@Override
-	void verify() {
+	public String failMessage() {
 		ClassSignature classSignature = classSignatureExpression.evaluate();
-
+		
 		if(!classSignature.ifImplements(_interface)) {
-			Log.fatalError("Assertion failed: " + classSignatureExpression.toString());
+			
+			StringBuilder builder = new StringBuilder();
+			
+			builder.append("that(");
+			builder.append(classSignature.simpleName());
+			builder.append(").doesImplement(");
+			builder.append(Ntro.introspector().getSimpleNameForClass(_interface));
+			builder.append(")");
+
+			return builder.toString();
 		}
+
+		return null;
 	}
 
 }

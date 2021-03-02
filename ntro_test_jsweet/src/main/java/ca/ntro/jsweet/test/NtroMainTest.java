@@ -11,6 +11,8 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.test.introspector.IntrospectorTests;
 import ca.ntro.test.json.LinkedListNode;
 
+import static ca.ntro.assertions.Factory.that;
+
 public class NtroMainTest extends NtroTaskSync {
 
 	@Override
@@ -36,9 +38,9 @@ public class NtroMainTest extends NtroTaskSync {
 		otherMap.put(2, a);
 		
 		int x = map.get(a);
-		
-		Ntro.verify().that(a).isNot(null);
-		
+
+		Ntro.verify(that(a).isNot(null));
+
 		for(Map.Entry<LinkedListNode, Integer> entry : map.entrySet()) {
 			System.out.println(entry.getKey());
 		}

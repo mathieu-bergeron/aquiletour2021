@@ -2,30 +2,41 @@ package ca.ntro.assertions;
 
 import ca.ntro.core.Ntro;
 
-public class ObjectExpression extends AssertExpression {
+public class ObjectExpression extends SimpleAssertExpression {
 	
-	private AssertExpression parentExpression;
 	private Object object;
 
-	public ObjectExpression(AssertExpression parentExpression, Object object) {
-		this.parentExpression = parentExpression;
+	public ObjectExpression(Object object) {
 		this.object = object;
 	}
 
-	public void doesExtend(Class<?> _class) {
-		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(parentExpression, Ntro.introspector().getClassSignature(object));
-		parentExpression.addSubExpression(new DoesExtendExpression(classSignatureExpression, _class));
-		parentExpression.verify();
+	public DoesExtendExpression doesExtend(Class<?> _class) {
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().getClassSignature(object));
+		
+		DoesExtendExpression result = new DoesExtendExpression(classSignatureExpression, _class);
+		
+		setChild(result);
+		
+		return result;
 	}
 
-	public void doesImplement(Class<?> _interface) {
-		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(parentExpression, Ntro.introspector().getClassSignature(object));
-		parentExpression.addSubExpression(new DoesImplementExpression(classSignatureExpression, _interface));
-		parentExpression.verify();
+	public DoesImplementExpression doesImplement(Class<?> _interface) {
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().getClassSignature(object));
+
+		DoesImplementExpression result = new DoesImplementExpression(classSignatureExpression, _interface);
+		
+		setChild(result);
+		
+		return result;
 	}
 
-	public void isInstanceOf(Class<?> classOrInterface) {
-		throw new RuntimeException("TODO");
-	}
+	public IsInstanceOfExpression isInstanceOf(Class<?> classOrInterface) {
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().getClassSignature(object));
+		
+		IsInstanceOfExpression result = new IsInstanceOfExpression(classSignatureExpression, classOrInterface);
+		
+		setChild(result);
 
+		return result;
+	}
 }
