@@ -1,4 +1,12 @@
-# Introduction d'une JsonValue
+# Il faut laisser tomber JsonObject, JsonParser doit désérialiser d'un coup vers la targetClass
+
+QueueModel model = Ntro.jsonParser().fromJson(QueueModel.class, jsonString);
+
+On désérialise d'abord vers Map<String, Object> , puis on va chercher le _T, puis on appelle NtroClass.newInstance()
+
+
+
+# Introduction d'une JsonValue???
 
 JsonValue jsonValue = Ntro.jsonParser().fromJson(jsonString);
 
