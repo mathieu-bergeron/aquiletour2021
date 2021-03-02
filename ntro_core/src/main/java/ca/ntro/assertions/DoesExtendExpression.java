@@ -19,7 +19,7 @@ public class DoesExtendExpression extends SimpleAssertExpression {
 		
 		if(!classSignature.ifExtends(_class)) {
 
-			return "doesExtend(" + Ntro.introspector().getSimpleNameForClass(_class) + ")";
+			return "doesExtend(" + Ntro.introspector().classSignatureForClass(_class).simpleName() + ")";
 		}
 
 		return null;

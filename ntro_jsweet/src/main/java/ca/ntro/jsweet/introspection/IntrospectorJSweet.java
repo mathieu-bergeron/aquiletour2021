@@ -26,11 +26,9 @@ import ca.ntro.core.introspection.ClassSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.introspection.MethodSignature;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import def.js.Array;
 import def.js.Function;
-import def.js.JSON;
 
 import static jsweet.util.Lang.object;
 import static jsweet.util.Lang.typeof;
@@ -286,8 +284,12 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public ClassSignature getClassSignature(Object object) {
-		Log.fatalError("TODO");
-		return null;
+	public ClassSignature classSignature(Object object) {
+		return classSignatureForClass(object.getClass());
+	}
+
+	@Override
+	public ClassSignature classSignatureForClass(Class<?> _class) {
+		return new ClassSignatureJSweet(_class);
 	}
 }

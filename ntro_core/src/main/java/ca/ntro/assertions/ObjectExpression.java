@@ -11,7 +11,7 @@ public class ObjectExpression extends SimpleAssertExpression {
 	}
 
 	public DoesExtendExpression doesExtend(Class<?> _class) {
-		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().getClassSignature(object));
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().classSignature(object));
 		
 		DoesExtendExpression result = new DoesExtendExpression(classSignatureExpression, _class);
 		
@@ -21,7 +21,7 @@ public class ObjectExpression extends SimpleAssertExpression {
 	}
 
 	public DoesImplementExpression doesImplement(Class<?> _interface) {
-		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().getClassSignature(object));
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().classSignature(object));
 
 		DoesImplementExpression result = new DoesImplementExpression(classSignatureExpression, _interface);
 		
@@ -31,7 +31,7 @@ public class ObjectExpression extends SimpleAssertExpression {
 	}
 
 	public IsInstanceOfExpression isInstanceOf(Class<?> classOrInterface) {
-		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().getClassSignature(object));
+		ClassSignatureExpression classSignatureExpression = new ClassSignatureExpression(Ntro.introspector().classSignature(object));
 		
 		IsInstanceOfExpression result = new IsInstanceOfExpression(classSignatureExpression, classOrInterface);
 		

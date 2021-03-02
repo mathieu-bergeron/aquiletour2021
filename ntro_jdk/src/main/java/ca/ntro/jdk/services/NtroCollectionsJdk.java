@@ -45,4 +45,9 @@ public class NtroCollectionsJdk extends NtroCollections {
 		concurrentSet.addAll(elements);
 		return concurrentSet;
 	}
+
+	@Override
+	protected boolean ifSetContainsImpl(Set<?> set, Object target) {
+		return set.contains(target);
+	}
 }

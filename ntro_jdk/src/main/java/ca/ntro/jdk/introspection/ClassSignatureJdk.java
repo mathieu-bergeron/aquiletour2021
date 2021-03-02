@@ -1,64 +1,79 @@
 package ca.ntro.jdk.introspection;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.ClassSignature;
 
-public class ClassSignatureJdk implements ClassSignature {
-	
-	private Class<?> _class;
+public class ClassSignatureJdk extends ClassSignature {
 	
 	public ClassSignatureJdk(Class<?> _class) {
-		this._class = _class;
+		super(_class);
 	}
 
 	@Override
 	public String simpleName() {
-		return _class.getSimpleName();
+		return _class().getSimpleName();
 	}
 
 	@Override
 	public String name() {
-		return _class.getName();
+		return _class().getName();
 	}
 
 	@Override
-	public boolean ifImplements(Class<?> interfaceClass) {
-		return ifDirectlyImplements(interfaceClass) || ifSuperClassImplements(interfaceClass);
-	}
-
-	private boolean ifSuperClassImplements(Class<?> interfaceClass) {
-		boolean ifImplements = false;
-
-		Class<?> superClass = _class.getSuperclass();
+	public Set<ClassSignature> allInterfaces() {
+		Set<ClassSignature> allInterfaces = new HashSet<>();
 		
+		allInterfaces.addAll(interfacesAndSuperInterfaces());
+		
+		allInterfaces.addAll(superClassInterfaces());
+		
+		return allInterfaces;
+	}
+	
+	private Set<ClassSignature> interfacesAndSuperInterfaces(){
+		Set<ClassSignature> interfacesAndSuperInterfaces = new HashSet<>();
+
+		for(Class<?> _interface : _class().getInterfaces()) {
+			interfacesAndSuperInterfaces.add(Ntro.introspector().classSignatureForClass(_interface));
+			interfacesAndSuperInterfaces.addAll(new ClassSignatureJdk(_interface).interfacesAndSuperInterfaces());
+		}
+		
+		return interfacesAndSuperInterfaces;
+	}
+	
+	private Set<ClassSignature> superClassInterfaces(){
+		Set<ClassSignature> superInterfaces = new HashSet<>();
+
+		Class<?> superClass = _class().getSuperclass();
+
 		if(superClass != null) {
-			ifImplements = new ClassSignatureJdk(superClass).ifImplements(interfaceClass);
-		}
-		
-		return ifImplements;
-	}
-
-	private boolean ifDirectlyImplements(Class<?> interfaceClass) {
-		boolean ifImplements = false;
-
-		Class<?>[] interfaces = _class.getInterfaces();
-
-		for(Class<?> candidateInterface : interfaces) {
-			if(candidateInterface.equals(interfaceClass)) {
-				ifImplements = true;
-				break;
-
-			}else if(new InterfaceSignatureJdk(candidateInterface).ifExtends(interfaceClass)) {
-				ifImplements = true;
-				break;
-			}
+			superInterfaces.addAll(Ntro.introspector().classSignatureForClass(superClass).allInterfaces());
 		}
 
-		return ifImplements;
+		return superInterfaces;
 	}
 
 	@Override
-	public boolean ifExtends(Class<?> _class) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInterface() {
+		return _class().isInterface();
 	}
+
+	@Override
+	public Set<ClassSignature> allSuperclasses() {
+		Set<ClassSignature> allSuperclasses = new HashSet<>();
+
+		Class<?> superClass = _class().getSuperclass();
+
+		if(superClass != null) {
+			ClassSignature superClassSignature= Ntro.introspector().classSignatureForClass(superClass);
+			allSuperclasses.add(superClassSignature);
+			allSuperclasses.addAll(superClassSignature.allSuperclasses());
+		}
+
+		return allSuperclasses;
+	}
+
 }

@@ -40,7 +40,8 @@ public abstract class Introspector {
 
 	public abstract boolean isClass(Object object);
 
-	public abstract ClassSignature getClassSignature(Object object);
+	public abstract ClassSignature classSignature(Object object);
+	public abstract ClassSignature classSignatureForClass(Class<?> _class);
 
 	public abstract boolean isMap(Object object);
 	public abstract boolean isList(Object object);
@@ -243,4 +244,5 @@ public abstract class Introspector {
 
 		return allGetters;
 	}
+
 }

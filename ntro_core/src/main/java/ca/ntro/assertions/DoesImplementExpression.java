@@ -24,7 +24,7 @@ public class DoesImplementExpression extends SimpleAssertExpression {
 			builder.append("that(");
 			builder.append(classSignature.simpleName());
 			builder.append(").doesImplement(");
-			builder.append(Ntro.introspector().getSimpleNameForClass(_interface));
+			builder.append(Ntro.introspector().classSignatureForClass(_interface).simpleName());
 			builder.append(")");
 
 			return builder.toString();

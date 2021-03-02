@@ -13,5 +13,4 @@ public class JavaMainTest {
 				  .addNextTask(new NtroMainTest())
 				  .execute();
 	}
-
 }

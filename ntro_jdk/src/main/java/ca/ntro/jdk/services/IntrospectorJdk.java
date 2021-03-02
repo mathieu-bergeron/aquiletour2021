@@ -455,8 +455,12 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public ClassSignature getClassSignature(Object object) {
-		return new ClassSignatureJdk(object.getClass());
+	public ClassSignature classSignature(Object object) {
+		return classSignatureForClass(object.getClass());
 	}
 
+	@Override
+	public ClassSignature classSignatureForClass(Class<?> _class) {
+		return new ClassSignatureJdk(_class);
+	}
 }

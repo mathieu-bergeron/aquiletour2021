@@ -19,7 +19,6 @@ window.onload = async function() {
 
 			loadedSourceMaps[sourceMapUrl] = await new sourceMap.SourceMapConsumer(rawSourceMap);
 
-			console.info(`loaded sourceMap at url ${sourceMapUrl}`);
 		} else {
 			ca.ntro.jsweet.onLoadTask.setError(new Error("cannot load source map"));
 		}

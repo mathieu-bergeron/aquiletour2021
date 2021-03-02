@@ -6,7 +6,7 @@ public class AssertServiceJSweet extends AssertService {
 
 	@Override
 	public void fail(String message) {
-		System.err.println("AssertionError: " + message);
+		System.err.println("AssertionError, not true " + message);
 	}
 
 }
