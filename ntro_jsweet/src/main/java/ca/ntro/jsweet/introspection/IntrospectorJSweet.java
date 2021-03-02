@@ -255,7 +255,10 @@ public class IntrospectorJSweet extends Introspector {
 
 	@Override
 	public MethodSignature methodSignature(Method method) {
-		throw new RuntimeException("TODO: IntrospectorJSweet.methodSignature");
+		
+		MethodSignature methodSignature = new MethodSignature(method.toString(), null, null, null);
+		
+		return methodSignature;
 	}
 
 	@Override

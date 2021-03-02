@@ -1,10 +1,14 @@
 package ca.ntro.jdk.introspection;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.MethodSignature;
 
 public class ClassSignatureJdk extends ClassSignature {
 	
@@ -67,13 +71,24 @@ public class ClassSignatureJdk extends ClassSignature {
 
 		Class<?> superClass = _class().getSuperclass();
 
-		if(superClass != null) {
+		if(superClass != null && !superClass.equals(Object.class)) {
 			ClassSignature superClassSignature= Ntro.introspector().classSignatureForClass(superClass);
 			allSuperclasses.add(superClassSignature);
 			allSuperclasses.addAll(superClassSignature.allSuperclasses());
 		}
 
 		return allSuperclasses;
+	}
+
+	@Override
+	protected List<MethodSignature> declaredMethods() {
+		List<MethodSignature> declaredMethods = new ArrayList<>();
+		
+		for(Method declaredMethod : _class().getDeclaredMethods()) {
+			declaredMethods.add(Ntro.introspector().methodSignature(declaredMethod));
+		}
+		
+		return declaredMethods;
 	}
 
 }

@@ -15,6 +15,7 @@ import static ca.ntro.assertions.Factory.thatObject;
 import static ca.ntro.assertions.Factory.thatList;
 
 import java.util.List;
+import java.util.Set;
 
 public class IntrospectorTests {
 	
@@ -33,6 +34,15 @@ public class IntrospectorTests {
 		Ntro.verify(thatObject(childClassAB).doesExtend(ParentClassAB.class));
 		
 		Ntro.verify(thatObject(childClassAB).isInstanceOf(ParentClassAB.class));
+
+		/*
+		ClassSignature classSignatureAB = Ntro.introspector().classSignature(childClassAB);
+		Set<ClassSignature> superclasses =  classSignatureAB.allSuperclasses();
+		Set<ClassSignature> interfaces =  classSignatureAB.allInterfaces();
+		
+		superclasses.forEach(sc -> System.out.println(sc.simpleName()));
+		interfaces.forEach(i -> System.out.println(i.simpleName()));
+		*/
 	}
 
 	@Test
@@ -41,8 +51,10 @@ public class IntrospectorTests {
 		ChildClassAB childClassAB = new ChildClassAB();
 		
 		ClassSignature classSignatureAB = Ntro.introspector().classSignature(childClassAB);
-		
+
 		List<MethodSignature> methodSignatures = classSignatureAB.userDefinedMethods();
+
+		//methodSignatures.forEach(ms -> System.out.println(ms.name()));
 		
 		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("abstractMethod")));
 

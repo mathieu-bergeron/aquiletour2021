@@ -1,6 +1,7 @@
 package ca.ntro.core.introspection;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -63,7 +64,23 @@ public abstract class ClassSignature {
 	}
 
 	public List<MethodSignature> userDefinedMethods() {
-		return new ArrayList<>();
+		List<MethodSignature> userDefinedMethods = new ArrayList<>();
+		
+		userDefinedMethods.addAll(declaredMethods());
+		
+		for(ClassSignature superClass : allSuperclasses()) {
+			userDefinedMethods.addAll(superClass.declaredMethods());
+		}
+		
+		userDefinedMethods.sort(new Comparator<MethodSignature>() {
+			@Override
+			public int compare(MethodSignature o1, MethodSignature o2) {
+				return o1.name().compareTo(o2.name());
+			}});
+
+		return userDefinedMethods;
 	}
+
+	protected abstract List<MethodSignature> declaredMethods();
 
 }

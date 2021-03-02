@@ -2,11 +2,17 @@ package ca.ntro.jsweet.introspection;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.MethodSignature;
+import def.js.Array;
+import def.js.Function;
 
 import static jsweet.util.Lang.object;
 import static jsweet.util.Lang.typeof;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ClassSignatureJSweet extends ClassSignature {
@@ -95,7 +101,75 @@ public class ClassSignatureJSweet extends ClassSignature {
 	}
 
 	private def.js.Object jsSuperClass() {
-		return jsClass().$get("__proto__");
+		def.js.Object superClass = jsClass().$get("__proto__");
+
+		if(!isUserDefinedClass(superClass)) {
+			superClass = null;
+		}
+
+		return superClass;
+	}
+
+	private boolean isUserDefinedClass(def.js.Object jsClass) {
+		return jsClass.$get("__class") != null;
+	}
+
+	@Override
+	protected List<MethodSignature> declaredMethods() {
+		List<MethodSignature> declaredMethods = new ArrayList<>();
+
+		// XXX: does not return the same info as def.js.Object.getPrototypeOf()
+		def.js.Object prototype = jsClass().$get("prototype");
+
+		if(prototype != null) {
+			Array<def.js.String> prototypeMethods = def.js.Object.getOwnPropertyNames(prototype);
+
+			for(def.js.String method : prototypeMethods) {
+
+				String methodName = method.toString();
+
+				if(!isAJsSpecialFunction(methodName)) {
+
+					/* In JSweet a Method is a def.js.Object with
+					 *
+					 * fn: the actual function
+					 * name: Method.getName()
+					 * owner: the Class<?> where the method lives
+					 *
+					 */
+
+					def.js.Object jsMethod = new def.js.Object();
+
+					Function fn = prototype.$get(methodName);
+
+					jsMethod.$set("fn", fn);
+					jsMethod.$set("name", methodName);
+
+					// FIXME: should this be the superclass
+					//        where the method is defined??
+					jsMethod.$set("owner", _class());
+
+					// XXX: JSweet magic cast
+					Object methodAsObject = object(jsMethod);
+
+					Method javaMethod = (Method) methodAsObject;
+
+					declaredMethods.add(new MethodSignature(methodName));
+				}
+			}
+		}
+		
+		return declaredMethods;
+	}
+
+	private boolean isAJsSpecialFunction(String functionName) {
+		boolean result = false;
+
+		if(functionName.equals("constructor")) {
+			result = true;
+		}
+
+		return result;
 	}
 
 }
