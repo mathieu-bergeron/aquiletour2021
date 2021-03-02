@@ -145,8 +145,10 @@ public class ClassSignatureJSweet extends ClassSignature {
 					jsMethod.$set("fn", fn);
 					jsMethod.$set("name", methodName);
 
-					// FIXME: should this be the superclass
-					//        where the method is defined??
+					// FIXME: this is not correct
+					//        the owner should be the
+					//        class where the method 
+					//        will be executed
 					jsMethod.$set("owner", _class());
 
 					// XXX: JSweet magic cast

@@ -216,8 +216,9 @@ public class IntrospectorJSweet extends Introspector {
 
 					jsMethod.$set("fn", fn);
 					jsMethod.$set("name", methodName);
-					// FIXME: should the be the superclass
-					//        where the method is defined??
+					
+					// XXX: owner is the Class<?> where the
+					//      method executes
 					jsMethod.$set("owner", owner);
 
 					// XXX: JSweet magic cast

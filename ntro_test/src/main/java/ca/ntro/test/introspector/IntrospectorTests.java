@@ -70,6 +70,9 @@ public class IntrospectorTests {
 		desiredMethodNames.add("inheritedMethod");
 		desiredMethodNames.add("interfaceMethodA");
 		
+		// FIXME: we need to actually save methods
+		System.out.println(ChildClassAB.class.getDeclaredMethods());
+		
 		Ntro.verify(that(methodNames).is(desiredMethodNames));
 
 	}
