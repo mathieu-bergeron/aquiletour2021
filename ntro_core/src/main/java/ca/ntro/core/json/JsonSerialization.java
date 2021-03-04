@@ -57,7 +57,7 @@ public class JsonSerialization {
 			                                            String valuePath,
 			                                            Map<Object, String> localHeap) {
 
-		Object jsonValue = javaValue;
+		Object jsonValue = null;
 
 		NtroClass valueClass = Ntro.introspector().ntroClassFromObject(javaValue);
 
@@ -69,10 +69,13 @@ public class JsonSerialization {
 			
 			jsonValue = toJsonValueFromList((List<Object>) javaValue, valuePath, localHeap);
 
-		}else if(javaValue instanceof Map) {  // JSweet: this is always true, except for Array (lists)
+		}else if(javaValue instanceof Map) {
 
 			jsonValue = toJsonValueFromMap((Map<String,Object>) javaValue, valuePath, localHeap);
 			
+		}else {
+
+			jsonValue = javaValue; // primitive types
 		}
 
 		return jsonValue;
