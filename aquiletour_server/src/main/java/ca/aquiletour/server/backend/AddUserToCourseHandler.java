@@ -3,38 +3,43 @@ package ca.aquiletour.server.backend;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 
-public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
+public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCourseMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, AddCourseMessage message) {
+	public void handle(ModelStoreSync modelStore, AddUserToCourseMessage message) {
 		T.call(this);
 		
-		User fromUser = message.getUser();
-		String courseId = message.getCourse().getTitle();
+		String userId = message.getUserId();
+		String courseId = message.getCourseId();
 		
 		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-				                                            fromUser.getAuthToken(),
-				                                            fromUser.getId());
+				                                            "admin",
+				                                            userId);
 		
 		if(dashboardModel != null) {
 			
-			dashboardModel.addCourse(message.getCourse());
+			CourseSummary newCourse = new CourseSummary();
+			newCourse.setTitle(courseId);
+			newCourse.setCourseId(courseId);
+			dashboardModel.addCourse(newCourse);
 			dashboardModel.save();
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
 					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-													   fromUser.getAuthToken(),
+													   "admin",
 													   courseId);
-					queueModel.getStudentIds().add(fromUser.getId());
+					queueModel.getStudentIds().add(userId);
 
 					queueModel.save();
 				}

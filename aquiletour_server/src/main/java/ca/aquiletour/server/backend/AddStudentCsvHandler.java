@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.backend.QueueBackendController;
@@ -33,6 +34,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		UsersModel usersModel = modelStore.getModel(UsersModel.class, 
                 "adminToken",
                 "allUsers");
+		ArrayList<Student> usersToAdd = new ArrayList<Student>();
 		if(usersModel != null) {
 			String[] cutByLine = csvString.split("\\r?\\n");// cut by each line
 			
@@ -48,37 +50,44 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 					newUser.setSurname(cutBySeparator[1]);//PrenomA
 					newUser.setRegistrationId(cutBySeparator[2]);//DA
 					newUser.setProgramId(cutBySeparator[3]);//program number
+					newUser.setId(newUser.getSurname());
 //					newUser.setName(cutBySeparator[4]);//?
 					newUser.setPhoneNumber(cutBySeparator[5]);//phone
 					newUser.setAuthToken(newUser.getName() + "Token");
 					newUser.setUserEmail(newUser.getName() + "." + newUser.getSurname() + "@test.ca");
 					newUser.setUserPassword(newUser.getName() + "password");
 					usersModel.addUser(newUser);
+					usersToAdd.add(newUser);
 					usersModel.save();
-					Ntro.threadService().executeLater(new NtroTaskSync() {
-						@Override
-						protected void runTask() {
-							DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-                                    newUser.getAuthToken(),
-                                    newUser.getId());
-							dashboardModel.save();
-							QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-									newUser.getAuthToken(),
-									queueId);
-							queueModel.getStudentIds().add(Integer.toString((usersModel.getUsers().size())));
-							queueModel.save();
-							
-						}
-
-						@Override
-						protected void onFailure(Exception e) {
-						}
-					});
+					
+				}		
+			}
+			Ntro.threadService().executeLater(new NtroTaskSync() {
+				@Override
+				protected void runTask() {
+					for (int i = 0; i < usersToAdd.size(); i++) {
+						Student newUser = usersToAdd.get(i);
+						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
+								newUser.getAuthToken(),
+	                            newUser.getId());
+						CourseSummary newCourse = new CourseSummary();
+						newCourse.setTitle(queueId);
+						newCourse.setCourseId(queueId);
+						dashboardModel.addCourse(newCourse);
+						dashboardModel.save();
+						QueueModel queueModel = modelStore.getModel(QueueModel.class, 
+								newUser.getAuthToken(),
+								queueId);
+						queueModel.getStudentIds().add(newUser.getName());
+						queueModel.save();
+					}
 					
 				}
-				
-				
-			}
+
+				@Override
+				protected void onFailure(Exception e) {
+				}
+			});
 		} else {
 			
 			// TODO: error handling

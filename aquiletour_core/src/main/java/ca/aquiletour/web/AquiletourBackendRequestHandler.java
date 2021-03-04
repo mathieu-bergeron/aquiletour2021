@@ -13,6 +13,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
+import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
@@ -193,12 +194,14 @@ public class AquiletourBackendRequestHandler {
 			
 			deleteUserMessage.sendMessage();
 		} else if(parameters.containsKey("addUser")) { // /usagers?addUser=Id&to=IdDuCours
-			 AddUserMessage addUserMessage = MessageFactory.getOutgoingMessage(AddUserMessage.class);
-			 User newUser = new User();
-//				newUser.setUserEmail(email);			
-//				newUser.setUserPassword(password);		
-				addUserMessage.setUser(newUser);
-				addUserMessage.sendMessage();
+			T.here();
+			AddUserToCourseMessage addUserToCourseMessage = MessageFactory.getOutgoingMessage(AddUserToCourseMessage.class);
+			String userId = parameters.get("addUser")[0];
+			String courseId = parameters.get("to")[0];
+			 
+			addUserToCourseMessage.setUserId(userId);
+			addUserToCourseMessage.setCourseId(courseId);
+			addUserToCourseMessage.sendMessage();
 			 
 			 
 			
