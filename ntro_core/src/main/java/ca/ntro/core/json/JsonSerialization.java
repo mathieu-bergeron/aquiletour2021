@@ -23,17 +23,24 @@ public class JsonSerialization {
 	}
 
 	private static Object toJsonValue(Object javaValue, String valuePath, Map<Object, String> localHeap) {
+		
+		Object jsonValue = null;
 
 		if(localHeap.containsKey(javaValue)) {
 
 			localHeap.put(javaValue, valuePath);
 
-			return jsonReferenceObject(valuePath);
+			jsonValue = jsonReferenceObject(valuePath);
+
+		}else {
+			
+			localHeap.put(javaValue, valuePath);
+
+			jsonValue = toJsonValueWhenNotInLocalHeap(javaValue, valuePath, localHeap);
+			
 		}
 		
-		localHeap.put(javaValue, valuePath);
-		
-		return toJsonValueWhenNotInLocalHeap(javaValue, valuePath, localHeap);
+		return jsonValue;
 	}
 
 	private static Object jsonReferenceObject(String valuePath) {
