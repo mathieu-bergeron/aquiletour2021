@@ -82,14 +82,15 @@ public class NtroClassJdk extends NtroClass {
 	}
 
 	@Override
-	protected List<NtroMethod> declaredMethods() {
+	protected List<NtroMethod> declaredMethods(NtroClass rootClass) {
 		List<NtroMethod> declaredMethods = new ArrayList<>();
-		
+
 		for(Method declaredMethod : _class().getDeclaredMethods()) {
-			declaredMethods.add(Ntro.introspector().ntroMethod(declaredMethod));
+			if(!rootClass.ifOverrides(declaredMethod)) {
+				declaredMethods.add(Ntro.introspector().ntroMethod(declaredMethod));
+			}
 		}
 
 		return declaredMethods;
 	}
-
 }
