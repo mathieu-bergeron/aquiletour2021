@@ -5,10 +5,10 @@ import ca.ntro.core.introspection.NtroClass;
 
 public class DoesImplementExpression extends SimpleAssertExpression {
 
-	private ClassSignatureExpression classSignatureExpression;
+	private NtroClassExpression classSignatureExpression;
 	private Class<?> _interface;
 
-	public DoesImplementExpression(ClassSignatureExpression classSignatureExpression, Class<?> _interface) {
+	public DoesImplementExpression(NtroClassExpression classSignatureExpression, Class<?> _interface) {
 		this.classSignatureExpression = classSignatureExpression;
 		this._interface = _interface;
 	}

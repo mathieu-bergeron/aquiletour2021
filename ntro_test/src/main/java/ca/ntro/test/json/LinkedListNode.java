@@ -1,17 +1,14 @@
 package ca.ntro.test.json;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.json.JsonObjectIO;
+import ca.ntro.core.json.JsonSerializable;
 
-public class LinkedListNode extends JsonObjectIO implements Serializable {
-	private static final long serialVersionUID = 2667416858048644003L;
+public class LinkedListNode implements JsonSerializable {
 	
 	private LinkedListNode next;
 	private List<LinkedListNode> nextList = new ArrayList<>();

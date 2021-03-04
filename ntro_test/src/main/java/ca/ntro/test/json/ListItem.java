@@ -1,7 +1,8 @@
 package ca.ntro.test.json;
 
-import java.io.Serializable;
 
-public interface ListItem extends Serializable {
+import ca.ntro.core.json.JsonSerializable;
+
+public interface ListItem extends JsonSerializable {
 
 }

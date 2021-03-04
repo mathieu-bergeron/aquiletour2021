@@ -1,9 +1,7 @@
 package ca.ntro.jsweet.introspection;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
-import ca.ntro.core.introspection.MethodSignature;
 import def.js.Array;
 import def.js.Function;
 
@@ -68,9 +66,11 @@ public class NtroClassJSweet extends NtroClass {
 		
 		def.js.String[] interfaces = jsClass.$get("__interfaces");
 
-		for(def.js.String _interface : interfaces) {
-			// JSWEET: an interface is represented as a String
-			allInterfaces.add(jsClassSignature(_interface));
+		if(interfaces != null) {
+			for(def.js.String _interface : interfaces) {
+				// JSWEET: an interface is represented as a String
+				allInterfaces.add(jsClassSignature(_interface));
+			}
 		}
 
 		return allInterfaces;

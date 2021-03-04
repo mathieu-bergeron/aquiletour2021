@@ -1,8 +1,7 @@
 package ca.ntro.test.json;
 
-import ca.ntro.core.json.JsonObjectIO;
 
-public class ListItemA extends JsonObjectIO implements ListItem {
+public class ListItemA implements ListItem {
 
 	private int propA = 0;
 

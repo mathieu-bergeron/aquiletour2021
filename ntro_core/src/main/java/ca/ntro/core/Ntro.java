@@ -27,6 +27,7 @@ import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
+import ca.ntro.core.services.JsonService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.ResourceLoader;
@@ -50,6 +51,8 @@ public class Ntro {
 	private static BackendService backendService;
 	
 	private static AssertService assertService;
+
+	private static JsonService jsonService;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -187,4 +190,11 @@ public class Ntro {
 		return Ntro.assertService;
 	}
 
+	public static void zzz_registerJsonService(JsonService jsonService) {
+		Ntro.jsonService = jsonService;
+	}
+	
+	public static JsonService jsonService() {
+		return Ntro.jsonService;
+	}
 }

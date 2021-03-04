@@ -29,6 +29,7 @@ import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
 import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
+import ca.ntro.core.services.JsonService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.NtroCollections;
@@ -42,6 +43,7 @@ import ca.ntro.jsweet.services.AppCloserJSweet;
 import ca.ntro.jsweet.services.AssertServiceJSweet;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
 import ca.ntro.jsweet.services.JsonParserJSweet;
+import ca.ntro.jsweet.services.JsonServiceJSweet;
 import ca.ntro.jsweet.services.LocalStoreJSweet;
 import ca.ntro.jsweet.services.LoggerJSweet;
 import ca.ntro.jsweet.services.MessageServiceJSweet;
@@ -177,5 +179,11 @@ public class InitializationTaskJSweet extends InitializationTask {
 	@Override
 	protected AssertService provideAssertService() {
 		return new AssertServiceJSweet();
+	}
+
+
+	@Override
+	protected JsonService provideJsonService() {
+		return new JsonServiceJSweet();
 	}
 }

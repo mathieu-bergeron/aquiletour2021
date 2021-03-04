@@ -1,8 +1,10 @@
 package ca.ntro.core.introspection;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
@@ -65,13 +67,15 @@ public abstract class NtroClass {
 
 	public List<NtroMethod> userDefinedMethods() {
 		List<NtroMethod> userDefinedMethods = new ArrayList<>();
-		
+
 		userDefinedMethods.addAll(declaredMethods(this));
-		
+
 		for(NtroClass superClass : allSuperclasses()) {
-			// FIXME: we need to inject "owner" in JSweet
-			// FIXME: we need to remove overriden super methods
-			userDefinedMethods.addAll(superClass.declaredMethods(this));
+			for(NtroMethod superMethod : superClass.declaredMethods(this)) {
+				if(!ifOverrides(superMethod)) {
+					userDefinedMethods.add(superMethod);
+				}
+			}
 		}
 		
 		userDefinedMethods.sort(new Comparator<NtroMethod>() {
@@ -84,5 +88,44 @@ public abstract class NtroClass {
 	}
 
 	protected abstract List<NtroMethod> declaredMethods(NtroClass rootClass);
+
+	public boolean ifOverrides(NtroMethod targetMethod) {
+		boolean ifOverrides = false;
+
+		// FIXME: in Jdk, we'll need to compare types as well
+		for(NtroMethod declaredMethod : declaredMethods(this)) {
+			if(declaredMethod.name().equals(targetMethod.name())) {
+				ifOverrides = true;
+				break;
+			}
+		}
+
+		return ifOverrides;
+	}
+
+	public List<NtroMethod> userDefinedGetters() {
+		List<NtroMethod> getters = new ArrayList<>();
+
+		for(NtroMethod method : userDefinedMethods()) {
+			if(method.isGetter()) {
+				getters.add(method);
+			}
+		}
+
+		return getters;
+	}
+	
+
+	public List<NtroMethod> userDefinedSetters() {
+		List<NtroMethod> setters = new ArrayList<>();
+
+		for(NtroMethod method : userDefinedMethods()) {
+			if(method.isSetter()) {
+				setters.add(method);
+			}
+		}
+
+		return setters;
+	}
 
 }

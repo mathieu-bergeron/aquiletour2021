@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
-import ca.ntro.core.introspection.MethodSignature;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.test.introspector.classes.ChildClassAB;
 import ca.ntro.test.introspector.classes.ParentClassAB;
 import ca.ntro.test.introspector.interfaces.ChildInterfaceAB;
@@ -15,8 +15,6 @@ import static ca.ntro.assertions.Factory.thatObject;
 import static ca.ntro.assertions.Factory.thatList;
 import static ca.ntro.assertions.Factory.that;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 public class IntrospectorTests {
@@ -54,31 +52,17 @@ public class IntrospectorTests {
 		
 		NtroClass classSignatureAB = Ntro.introspector().ntroClassFromObject(childClassAB);
 
-		List<MethodSignature> methodSignatures = classSignatureAB.userDefinedMethods();
-		methodSignatures.forEach(ms -> System.out.println(ms.name()));
+		List<NtroMethod> methods = classSignatureAB.userDefinedMethods();
+		//methods.forEach(ms -> System.out.println(ms.name()));
 		
-		List<String> methodNames = new ArrayList<>();
-		methodSignatures.forEach(ms -> methodNames.add(ms.name()));
+		Ntro.verify(thatList(methods).contains(m -> ((NtroMethod)m).name().equals("abstractMethod")));
+		Ntro.verify(thatList(methods).contains(m -> ((NtroMethod)m).name().equals("interfaceMethodA")));
+		Ntro.verify(thatList(methods).contains(m -> ((NtroMethod)m).name().equals("inheritedMethod")));
 		
-		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("abstractMethod")));
-
-		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("interfaceMethodA")));
-
-		Ntro.verify(thatList(methodSignatures).contains(m -> ((MethodSignature)m).name().equals("inheritedMethod")));
-		
-		List<String> desiredMethodNames = new ArrayList<>();
-		desiredMethodNames.add("abstractMethod");
-		desiredMethodNames.add("inheritedMethod");
-		desiredMethodNames.add("interfaceMethodA");
-		
-		
-		// FIXME: we need to actually save methods
-		System.out.println(ChildClassAB.class.getDeclaredMethods());
-
-		System.out.println(String.class);
-		
-		Ntro.verify(that(methodNames).is(desiredMethodNames));
-
+		// XXX: test alphabetical order
+		Ntro.verify(that(methods.get(0).name()).is("abstractMethod"));
+		Ntro.verify(that(methods.get(1).name()).is("inheritedMethod"));
+		Ntro.verify(that(methods.get(2).name()).is("interfaceMethodA"));
 	}
 
 }

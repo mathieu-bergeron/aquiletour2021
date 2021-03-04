@@ -10,8 +10,8 @@ public class Factory {
 		return new SimpleAssertExpression().that(value);
 	}
 
-	public static ClassSignatureExpression thatClassSignature(NtroClass classSignature) {
-		return new SimpleAssertExpression().thatClassSignature(classSignature);
+	public static NtroClassExpression thatClass(NtroClass classSignature) {
+		return new SimpleAssertExpression().thatClass(classSignature);
 	}
 
 	public static ObjectExpression thatObject(Object object) {

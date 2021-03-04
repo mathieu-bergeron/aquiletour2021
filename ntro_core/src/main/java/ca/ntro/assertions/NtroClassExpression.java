@@ -2,12 +2,12 @@ package ca.ntro.assertions;
 
 import ca.ntro.core.introspection.NtroClass;
 
-public class ClassSignatureExpression extends ValueExpression<NtroClass> {
+public class NtroClassExpression extends ValueExpression<NtroClass> {
 	
-	private NtroClass classSignature;
+	private NtroClass ntroClass;
 	
-	public ClassSignatureExpression(NtroClass classSignature) {
-		this.classSignature = classSignature;
+	public NtroClassExpression(NtroClass classSignature) {
+		this.ntroClass = classSignature;
 	}
 	
 	public AssertExpression doesExtend(Class<?> _class) {
@@ -20,12 +20,11 @@ public class ClassSignatureExpression extends ValueExpression<NtroClass> {
 
 	@Override
 	public NtroClass evaluate() {
-		return classSignature;
+		return ntroClass;
 	}
 
 	@Override
 	public String failMessage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

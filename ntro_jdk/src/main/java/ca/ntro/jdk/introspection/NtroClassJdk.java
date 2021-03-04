@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
@@ -86,9 +87,7 @@ public class NtroClassJdk extends NtroClass {
 		List<NtroMethod> declaredMethods = new ArrayList<>();
 
 		for(Method declaredMethod : _class().getDeclaredMethods()) {
-			if(!rootClass.ifOverrides(declaredMethod)) {
-				declaredMethods.add(Ntro.introspector().ntroMethod(declaredMethod));
-			}
+			declaredMethods.add(Ntro.introspector().ntroMethod(declaredMethod));
 		}
 
 		return declaredMethods;

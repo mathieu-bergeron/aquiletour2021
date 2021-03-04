@@ -25,9 +25,9 @@ public class SimpleAssertExpression extends AssertExpression {
 		return result;
 	}
 
-	public ClassSignatureExpression thatClassSignature(NtroClass classSignature) {
+	public NtroClassExpression thatClass(NtroClass classSignature) {
 
-		ClassSignatureExpression result = new ClassSignatureExpression(classSignature);
+		NtroClassExpression result = new NtroClassExpression(classSignature);
 
 		setChild(result);
 		

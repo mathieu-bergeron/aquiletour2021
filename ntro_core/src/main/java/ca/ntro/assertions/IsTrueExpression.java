@@ -2,23 +2,34 @@ package ca.ntro.assertions;
 
 public class IsTrueExpression extends AssertExpression {
 	
-	private ValueExpression<Boolean> valueExpression;
+	private ValueExpression valueExpression;
 
-	public IsTrueExpression(ValueExpression<Boolean> valueExpression) {
+	public IsTrueExpression(ValueExpression valueExpression) {
 		this.valueExpression = valueExpression;
 	}
 
 	@Override
 	public String failMessage() {
-		boolean result = valueExpression.evaluate();
+		Object result = valueExpression.evaluate();
 		
-		if(!result) {
+		if(result instanceof Boolean || result.getClass().equals(boolean.class)) {
 			
-			return "isTrue(false)";
-
+			boolean isOk = (boolean) result;
+			
+			if(isOk) {
+				
+				return null;
+				
+				
+			}else {
+				
+				return "that(false).isTrue()";
+			}
+			
 		}else {
 			
-			return null;
+			return "isTrue called on non-boolean";
+			
 		}
 	}
 }

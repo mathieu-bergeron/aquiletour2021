@@ -1,14 +1,12 @@
 package ca.ntro.jdk.test;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 import ca.ntro.jdk.NtroJdk;
-import ca.ntro.test.introspector.IntrospectorTests;
+import ca.ntro.test.json.JsonTests;
 
-@Ignore
-public class InspectorTestsJdk extends IntrospectorTests {
-	
+public class JsonTestsJdk extends JsonTests {
+
 	@BeforeClass
 	public static void initializeNtro() {
 		NtroJdk.defaultInitializationTask().execute();

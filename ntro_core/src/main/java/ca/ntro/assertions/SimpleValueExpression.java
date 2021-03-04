@@ -26,6 +26,15 @@ public class SimpleValueExpression extends ValueExpression<Object> {
 		return result;
 	}
 
+	public IsTrueExpression isTrue() {
+
+		IsTrueExpression result = new IsTrueExpression(this);
+		
+		setChild(result);
+		
+		return result;
+	}
+
 	@Override
 	public Object evaluate() {
 		return value;

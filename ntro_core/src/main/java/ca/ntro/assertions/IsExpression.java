@@ -12,25 +12,23 @@ public class IsExpression extends AssertExpression {
 		this.otherValue = otherValue;
 	}
 	
-	void verify(){
-		if(shouldFail()) {
-			Log.fatalError("Assertion failed: " + valueExpression.toString());
-		}
-	}
-	
 	public boolean shouldFail() {
 		Object thisValue = valueExpression.evaluate();
+
+		if(thisValue == null) return otherValue != null;
 		
-		if(thisValue == null) return otherValue == null;
+		if(thisValue == otherValue) return false;
 		
 		return !thisValue.equals(otherValue);
 	}
 
 	@Override
 	public String failMessage() {
+		Object thisValue = valueExpression.evaluate();
+
 		if(shouldFail()) {
 			
-			return "is(TODO)";
+			return "that("+thisValue+").is("+ otherValue +")";
 			
 		}
 

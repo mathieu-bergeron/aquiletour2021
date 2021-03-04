@@ -1,17 +1,9 @@
 package ca.ntro.jsweet.test;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import ca.ntro.core.Ntro;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.test.introspector.IntrospectorTests;
-import ca.ntro.test.json.LinkedListNode;
-
-import static ca.ntro.assertions.Factory.that;
+import ca.ntro.test.json.JsonTests;
 
 public class NtroMainTest extends NtroTaskSync {
 
@@ -25,70 +17,39 @@ public class NtroMainTest extends NtroTaskSync {
 
 		introspectorTests.testMethods();
 		System.out.println("testMethods finished");
-		
-		tmp();
+
+		JsonTests jsonTests = new JsonTests();
+		jsonTests.testSimpleSerialization();
+		System.out.println("testSimpleSerialization finished");
+
+		jsonTests.testUserDefinedObjectSerialization();
+		System.out.println("testUserDefinedObjectSerialization finished");
+
+		jsonTests.testCycleSerialization();
+		System.out.println("testCycleSerialization finished");
+
+		jsonTests.testSimpleDeserialization();
+		System.out.println("testSimpleDeserialization finished");
+
+		jsonTests.testSimpleRoundTrip();
+		System.out.println("testSimpleRoundTrip finished");
+
+		jsonTests.testUserDefinedObjectDeserialization();
+		System.out.println("testUserDefinedObjectDeserialization finished");
+
+		jsonTests.testUserDefinedObjectRoundTrip();
+		System.out.println("testUserDefinedObjectRoundTrip finished");
+
+		jsonTests.testCycleDeserialization();
+		System.out.println("testCycleDeserialization finished");
+
+		jsonTests.testCycleRoundTrip();
+		System.out.println("testCycleRoundTrip finished");
 	}
-	
-	
-	private void tmp() {
-		
-		LinkedListNode a = new LinkedListNode("A");
-		LinkedListNode b = new LinkedListNode("B");
-		LinkedListNode c = new LinkedListNode("C");
-		LinkedListNode d = new LinkedListNode("D");
-		
-		Map<LinkedListNode, Integer> map = new HashMap<>();
-		map.put(a, 10);
-
-		Map<Integer, LinkedListNode> otherMap = new HashMap<>();
-		otherMap.put(2, a);
-		
-		int x = map.get(a);
-
-		Ntro.verify(that(a).isNot(null));
-
-		for(Map.Entry<LinkedListNode, Integer> entry : map.entrySet()) {
-			System.out.println(entry.getKey());
-		}
-		
-		for(int value : map.values()) {
-			System.out.println(value);
-		}
-		
-		/*
-		
-		//a.setNext(a);
-
-		//a.setNext(b);
-		//b.setNext(a);
-		
-		a.setNext(b);
-		b.setNext(c);
-		c.setNext(d);
-		d.setNext(c);
-		
-		c.getNextMap().put("d", d);
-		d.getNextMap().put("b", b);
-		
-		b.getNextList().add(a);
-		b.getNextList().add(b);
-		b.getNextList().add(c);
-		b.getNextList().add(d);
-		
-		*/
-		
-		JsonObject jsonObject = a.toJsonObject();
-		
-		System.out.println(jsonObject);
-		
-		System.out.println(JsonParser.toString(jsonObject));
-		
-	}
-	
 
 	@Override
 	protected void onFailure(Exception e) {
+		// TODO Auto-generated method stub
 		
 	}
-
 }

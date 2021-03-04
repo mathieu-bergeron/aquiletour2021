@@ -29,7 +29,6 @@ import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.server.http.DynamicHandler;
-import ca.ntro.server.http.ModelHandler;
 import ca.ntro.server.http.ResourceHandler;
 
 public class NtroServerMain extends NtroTaskAsync {
@@ -73,7 +72,6 @@ public class NtroServerMain extends NtroTaskAsync {
         // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-		handlers.addHandler(ModelHandler.createModelHandler("/_B", "/public"));
 		handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "/public"));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 

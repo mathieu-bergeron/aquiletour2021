@@ -71,7 +71,7 @@ public class ModelHandler extends AbstractHandler {
 
         System.out.println("Collection: " + collectionName + ", File: " + fileName);
 
-        Class<? extends NtroModel> modelClazz = Ntro.introspector().getSerializableClass(collectionName);
+        Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.introspector().serializableClass(collectionName);
 
         if (modelClazz == null) {
             Log.fatalError("[ModelHandler] Could not find NtroModel subclass for collection name '" + collectionName + "'");

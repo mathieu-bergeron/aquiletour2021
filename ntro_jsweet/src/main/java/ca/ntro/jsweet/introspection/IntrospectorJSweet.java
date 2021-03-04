@@ -287,7 +287,19 @@ public class IntrospectorJSweet extends Introspector {
 
 	@Override
 	public NtroClass ntroClassFromObject(Object object) {
-		return ntroClassFromJavaClass(object.getClass());
+		
+		Class<?> _class = null;
+		
+		if(typeof(object).equals("string")) {
+			
+			_class = String.class;
+
+		}else {
+			
+			_class = object.getClass();
+		}
+		
+		return ntroClassFromJavaClass(_class);
 	}
 
 	@Override
