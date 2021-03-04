@@ -10,6 +10,11 @@ import ca.ntro.core.system.trace.T;
 
 public class ObservableQueueList extends ObservableList<QueueSummary> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2576429171411484216L;
+
 	public ObservableQueueList() {
 		super(new ArrayList<QueueSummary>());
 	}
@@ -21,7 +26,6 @@ public class ObservableQueueList extends ObservableList<QueueSummary> {
 	@Override
 	protected Class<?> getValueType() {
 		T.call(this);
-
 		// FIXME
 		return NtroModelValue.class;
 	}
