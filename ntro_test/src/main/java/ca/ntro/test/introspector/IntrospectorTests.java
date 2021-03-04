@@ -3,7 +3,7 @@ package ca.ntro.test.introspector;
 import org.junit.Test;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.test.introspector.classes.ChildClassAB;
 import ca.ntro.test.introspector.classes.ParentClassAB;
@@ -52,7 +52,7 @@ public class IntrospectorTests {
 
 		ChildClassAB childClassAB = new ChildClassAB();
 		
-		ClassSignature classSignatureAB = Ntro.introspector().classSignature(childClassAB);
+		NtroClass classSignatureAB = Ntro.introspector().ntroClassFromObject(childClassAB);
 
 		List<MethodSignature> methodSignatures = classSignatureAB.userDefinedMethods();
 		methodSignatures.forEach(ms -> System.out.println(ms.name()));

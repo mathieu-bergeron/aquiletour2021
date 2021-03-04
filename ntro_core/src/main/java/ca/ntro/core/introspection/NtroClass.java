@@ -2,18 +2,17 @@ package ca.ntro.core.introspection;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.services.NtroCollections;
 
-public abstract class ClassSignature {
+public abstract class NtroClass {
 
 	private Class<?> _class;
 	
-	public ClassSignature(Class<?> _class) {
+	public NtroClass(Class<?> _class) {
 		this._class = _class;
 	}
 	
@@ -27,14 +26,14 @@ public abstract class ClassSignature {
 	public abstract String name();
 
 	public boolean ifImplements(Class<?> interfaceClass) {
-		return NtroCollections.ifSetContains(allInterfaces(), Ntro.introspector().classSignatureForClass(interfaceClass));
+		return NtroCollections.ifSetContains(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
 	}
 
-	public abstract Set<ClassSignature> allInterfaces();
-	public abstract Set<ClassSignature> allSuperclasses();
+	public abstract Set<NtroClass> allInterfaces();
+	public abstract Set<NtroClass> allSuperclasses();
 
 	public boolean ifExtends(Class<?> superClass) {
-		return NtroCollections.ifSetContains(allSuperclasses(), Ntro.introspector().classSignatureForClass(superClass));
+		return NtroCollections.ifSetContains(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
 	}
 
 	public boolean ifInstanceOf(Class<?> classOrInterface) {
@@ -50,8 +49,8 @@ public abstract class ClassSignature {
 	public boolean equals(Object other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		if(other instanceof ClassSignature) {
-			ClassSignature otherClassSignature = (ClassSignature) other;
+		if(other instanceof NtroClass) {
+			NtroClass otherClassSignature = (NtroClass) other;
 			
 			return _class.equals(otherClassSignature._class);
 		}
@@ -64,23 +63,26 @@ public abstract class ClassSignature {
 		return simpleName();
 	}
 
-	public List<MethodSignature> userDefinedMethods() {
-		List<MethodSignature> userDefinedMethods = new ArrayList<>();
+	public List<NtroMethod> userDefinedMethods() {
+		List<NtroMethod> userDefinedMethods = new ArrayList<>();
 		
-		for(ClassSignature superClass : allSuperclasses()) {
+		userDefinedMethods.addAll(declaredMethods(this));
+		
+		for(NtroClass superClass : allSuperclasses()) {
 			// FIXME: we need to inject "owner" in JSweet
-			userDefinedMethods.addAll(superClass.declaredMethods());
+			// FIXME: we need to remove overriden super methods
+			userDefinedMethods.addAll(superClass.declaredMethods(this));
 		}
 		
-		userDefinedMethods.sort(new Comparator<MethodSignature>() {
+		userDefinedMethods.sort(new Comparator<NtroMethod>() {
 			@Override
-			public int compare(MethodSignature o1, MethodSignature o2) {
-				return o1.name().compareTo(o2.name());
+			public int compare(NtroMethod m1, NtroMethod m2) {
+				return m1.name().compareTo(m2.name());
 			}});
 
 		return userDefinedMethods;
 	}
 
-	protected abstract List<MethodSignature> declaredMethods();
+	protected abstract List<NtroMethod> declaredMethods(NtroClass rootClass);
 
 }

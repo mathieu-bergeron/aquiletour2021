@@ -29,7 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.ConstructorSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
@@ -37,7 +38,8 @@ import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.jdk.introspection.ClassSignatureJdk;
+import ca.ntro.jdk.introspection.NtroClassJdk;
+import ca.ntro.jdk.introspection.NtroMethodJdk;
 
 public class IntrospectorJdk extends Introspector {
 
@@ -336,17 +338,12 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public MethodSignature methodSignature(Method method) {
+	public NtroMethod ntroMethod(Method method) {
 		T.call(this);
-
-		List<String> argumentTypes = new ArrayList<>();
-
-		for(Type argumentType : method.getGenericParameterTypes()) {
-			argumentTypes.add(simpleTypeName(argumentType.getTypeName()));
-		}
-
-		return new MethodSignature(method.getName(), argumentTypes, simpleTypeName(method.getGenericReturnType().getTypeName()), modifiers(method));
+		
+		return new NtroMethodJdk(method);
 	}
+
 
 	public static FieldSignature fieldSignature(Field field) {
 		T.call(IntrospectorJdk.class);
@@ -356,8 +353,6 @@ public class IntrospectorJdk extends Introspector {
 
 	@SuppressWarnings("rawtypes")
 	private static List<String> modifiers(Constructor constructor){
-		T.call(IntrospectorJdk.class);
-
 		return modifiers(constructor.getModifiers());
 	}
 
@@ -455,12 +450,12 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public ClassSignature classSignature(Object object) {
-		return classSignatureForClass(object.getClass());
+	public NtroClass ntroClassFromObject(Object object) {
+		return ntroClassFromJavaClass(object.getClass());
 	}
 
 	@Override
-	public ClassSignature classSignatureForClass(Class<?> _class) {
-		return new ClassSignatureJdk(_class);
+	public NtroClass ntroClassFromJavaClass(Class<?> _class) {
+		return new NtroClassJdk(_class);
 	}
 }

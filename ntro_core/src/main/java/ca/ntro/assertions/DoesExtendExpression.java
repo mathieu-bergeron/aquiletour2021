@@ -1,7 +1,7 @@
 package ca.ntro.assertions;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 
 public class DoesExtendExpression extends SimpleAssertExpression {
 	
@@ -15,11 +15,11 @@ public class DoesExtendExpression extends SimpleAssertExpression {
 
 	@Override
 	public String failMessage() {
-		ClassSignature classSignature = classSignatureExpression.evaluate();
+		NtroClass classSignature = classSignatureExpression.evaluate();
 		
 		if(!classSignature.ifExtends(_class)) {
 
-			return "doesExtend(" + Ntro.introspector().classSignatureForClass(_class).simpleName() + ")";
+			return "doesExtend(" + Ntro.introspector().ntroClassFromJavaClass(_class).simpleName() + ")";
 		}
 
 		return null;

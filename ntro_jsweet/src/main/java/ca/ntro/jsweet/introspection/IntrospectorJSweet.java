@@ -22,7 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.introspection.MethodSignature;
@@ -255,11 +256,8 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public MethodSignature methodSignature(Method method) {
-		
-		MethodSignature methodSignature = new MethodSignature(method.toString(), null, null, null);
-		
-		return methodSignature;
+	public NtroMethod ntroMethod(Method method) {
+		return new NtroMethodJSweet(method);
 	}
 
 	@Override
@@ -288,12 +286,12 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public ClassSignature classSignature(Object object) {
-		return classSignatureForClass(object.getClass());
+	public NtroClass ntroClassFromObject(Object object) {
+		return ntroClassFromJavaClass(object.getClass());
 	}
 
 	@Override
-	public ClassSignature classSignatureForClass(Class<?> _class) {
-		return new ClassSignatureJSweet(_class);
+	public NtroClass ntroClassFromJavaClass(Class<?> _class) {
+		return new NtroClassJSweet(_class);
 	}
 }

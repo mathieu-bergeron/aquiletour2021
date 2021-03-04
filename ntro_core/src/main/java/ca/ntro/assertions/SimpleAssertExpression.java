@@ -2,7 +2,7 @@ package ca.ntro.assertions;
 
 import java.util.List;
 
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 
 public class SimpleAssertExpression extends AssertExpression {
 
@@ -25,7 +25,7 @@ public class SimpleAssertExpression extends AssertExpression {
 		return result;
 	}
 
-	public ClassSignatureExpression thatClassSignature(ClassSignature classSignature) {
+	public ClassSignatureExpression thatClassSignature(NtroClass classSignature) {
 
 		ClassSignatureExpression result = new ClassSignatureExpression(classSignature);
 

@@ -1,12 +1,12 @@
 package ca.ntro.assertions;
 
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 
-public class ClassSignatureExpression extends ValueExpression<ClassSignature> {
+public class ClassSignatureExpression extends ValueExpression<NtroClass> {
 	
-	private ClassSignature classSignature;
+	private NtroClass classSignature;
 	
-	public ClassSignatureExpression(ClassSignature classSignature) {
+	public ClassSignatureExpression(NtroClass classSignature) {
 		this.classSignature = classSignature;
 	}
 	
@@ -19,7 +19,7 @@ public class ClassSignatureExpression extends ValueExpression<ClassSignature> {
 	}
 
 	@Override
-	public ClassSignature evaluate() {
+	public NtroClass evaluate() {
 		return classSignature;
 	}
 

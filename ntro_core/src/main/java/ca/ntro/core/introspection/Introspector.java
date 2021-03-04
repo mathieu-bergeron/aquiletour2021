@@ -28,25 +28,29 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class Introspector {
 	
-	private Map<String, Class> serializableClasses = new HashMap<>();
+	private Map<String, Class<?>> serializableClasses = new HashMap<>();
 	
-	public void registerSerializableClass(Class _class) {
+	public void registerSerializableClass(Class<?> _class) {
 		serializableClasses.put(getSimpleNameForClass(_class), _class);
 	}
 
-	public Class getSerializableClass(String className) {
+	public Class<?> getSerializableClass(String className) {
 		return serializableClasses.get(className);
 	}
 
 	public abstract boolean isClass(Object object);
 
-	public abstract ClassSignature classSignature(Object object);
-	public abstract ClassSignature classSignatureForClass(Class<?> _class);
+	public abstract NtroClass ntroClassFromObject(Object object);
+	public abstract NtroClass ntroClassFromJavaClass(Class<?> _class);
 
 	public abstract boolean isMap(Object object);
 	public abstract boolean isList(Object object);
 
-	public abstract MethodSignature methodSignature(Method method);
+	public abstract NtroMethod ntroMethod(Method method);
+
+	public MethodSignature methodSignature(Method method) {
+		return ntroMethod(method).signature();
+	}
 
 	public Method findMethodBySignature(Class<?> currentClass, MethodSignature methodSignature) {
 		T.call(Introspector.class);
@@ -55,9 +59,9 @@ public abstract class Introspector {
 
 		for(Method candidate : userDefinedMethodsFromClass(currentClass)) {
 
-			MethodSignature candidateSignature = methodSignature(candidate);
+			NtroMethod candidateMethod = ntroMethod(candidate);
 
-			if(candidateSignature.equals(methodSignature)) {
+			if(candidateMethod.hasSignature(methodSignature)) {
 
 				result = candidate;
 				break;

@@ -1,7 +1,7 @@
 package ca.ntro.assertions;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 
 public class IsInstanceOfExpression extends SimpleAssertExpression {
 	
@@ -15,7 +15,7 @@ public class IsInstanceOfExpression extends SimpleAssertExpression {
 
 	@Override
 	public String failMessage() {
-		ClassSignature classSignature = classSignatureExpression.evaluate();
+		NtroClass classSignature = classSignatureExpression.evaluate();
 
 		if(!classSignature.ifInstanceOf(classOrInterface)) {
 			
@@ -24,7 +24,7 @@ public class IsInstanceOfExpression extends SimpleAssertExpression {
 			builder.append("that(");
 			builder.append(classSignature.simpleName());
 			builder.append(").isInstanceOf(");
-			builder.append(Ntro.introspector().classSignatureForClass(classOrInterface).simpleName());
+			builder.append(Ntro.introspector().ntroClassFromJavaClass(classOrInterface).simpleName());
 			builder.append(")");
 
 			return builder.toString();

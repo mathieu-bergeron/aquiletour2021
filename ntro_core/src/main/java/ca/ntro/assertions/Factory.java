@@ -2,7 +2,7 @@ package ca.ntro.assertions;
 
 import java.util.List;
 
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 
 public class Factory {
 
@@ -10,7 +10,7 @@ public class Factory {
 		return new SimpleAssertExpression().that(value);
 	}
 
-	public static ClassSignatureExpression thatClassSignature(ClassSignature classSignature) {
+	public static ClassSignatureExpression thatClassSignature(NtroClass classSignature) {
 		return new SimpleAssertExpression().thatClassSignature(classSignature);
 	}
 

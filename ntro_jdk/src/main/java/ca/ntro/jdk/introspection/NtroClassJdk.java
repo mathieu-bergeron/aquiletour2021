@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.MethodSignature;
 
-public class ClassSignatureJdk extends ClassSignature {
+public class NtroClassJdk extends NtroClass {
 	
-	public ClassSignatureJdk(Class<?> _class) {
+	public NtroClassJdk(Class<?> _class) {
 		super(_class);
 	}
 
@@ -27,8 +28,8 @@ public class ClassSignatureJdk extends ClassSignature {
 	}
 
 	@Override
-	public Set<ClassSignature> allInterfaces() {
-		Set<ClassSignature> allInterfaces = new HashSet<>();
+	public Set<NtroClass> allInterfaces() {
+		Set<NtroClass> allInterfaces = new HashSet<>();
 		
 		allInterfaces.addAll(interfacesAndSuperInterfaces());
 		
@@ -37,24 +38,24 @@ public class ClassSignatureJdk extends ClassSignature {
 		return allInterfaces;
 	}
 	
-	private Set<ClassSignature> interfacesAndSuperInterfaces(){
-		Set<ClassSignature> interfacesAndSuperInterfaces = new HashSet<>();
+	private Set<NtroClass> interfacesAndSuperInterfaces(){
+		Set<NtroClass> interfacesAndSuperInterfaces = new HashSet<>();
 
 		for(Class<?> _interface : _class().getInterfaces()) {
-			interfacesAndSuperInterfaces.add(Ntro.introspector().classSignatureForClass(_interface));
-			interfacesAndSuperInterfaces.addAll(new ClassSignatureJdk(_interface).interfacesAndSuperInterfaces());
+			interfacesAndSuperInterfaces.add(Ntro.introspector().ntroClassFromJavaClass(_interface));
+			interfacesAndSuperInterfaces.addAll(new NtroClassJdk(_interface).interfacesAndSuperInterfaces());
 		}
 		
 		return interfacesAndSuperInterfaces;
 	}
 	
-	private Set<ClassSignature> superClassInterfaces(){
-		Set<ClassSignature> superInterfaces = new HashSet<>();
+	private Set<NtroClass> superClassInterfaces(){
+		Set<NtroClass> superInterfaces = new HashSet<>();
 
 		Class<?> superClass = _class().getSuperclass();
 
 		if(superClass != null) {
-			superInterfaces.addAll(Ntro.introspector().classSignatureForClass(superClass).allInterfaces());
+			superInterfaces.addAll(Ntro.introspector().ntroClassFromJavaClass(superClass).allInterfaces());
 		}
 
 		return superInterfaces;
@@ -66,13 +67,13 @@ public class ClassSignatureJdk extends ClassSignature {
 	}
 
 	@Override
-	public Set<ClassSignature> allSuperclasses() {
-		Set<ClassSignature> allSuperclasses = new HashSet<>();
+	public Set<NtroClass> allSuperclasses() {
+		Set<NtroClass> allSuperclasses = new HashSet<>();
 
 		Class<?> superClass = _class().getSuperclass();
 
 		if(superClass != null && !superClass.equals(Object.class)) {
-			ClassSignature superClassSignature= Ntro.introspector().classSignatureForClass(superClass);
+			NtroClass superClassSignature= Ntro.introspector().ntroClassFromJavaClass(superClass);
 			allSuperclasses.add(superClassSignature);
 			allSuperclasses.addAll(superClassSignature.allSuperclasses());
 		}
@@ -81,13 +82,13 @@ public class ClassSignatureJdk extends ClassSignature {
 	}
 
 	@Override
-	protected List<MethodSignature> declaredMethods() {
-		List<MethodSignature> declaredMethods = new ArrayList<>();
+	protected List<NtroMethod> declaredMethods() {
+		List<NtroMethod> declaredMethods = new ArrayList<>();
 		
 		for(Method declaredMethod : _class().getDeclaredMethods()) {
-			declaredMethods.add(Ntro.introspector().methodSignature(declaredMethod));
+			declaredMethods.add(Ntro.introspector().ntroMethod(declaredMethod));
 		}
-		
+
 		return declaredMethods;
 	}
 

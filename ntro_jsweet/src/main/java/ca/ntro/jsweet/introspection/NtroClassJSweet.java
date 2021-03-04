@@ -1,7 +1,8 @@
 package ca.ntro.jsweet.introspection;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.MethodSignature;
 import def.js.Array;
 import def.js.Function;
@@ -15,9 +16,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ClassSignatureJSweet extends ClassSignature {
+public class NtroClassJSweet extends NtroClass {
 	
-	public ClassSignatureJSweet(Class<?> _class) {
+	public NtroClassJSweet(Class<?> _class) {
 		super(_class);
 	}
 
@@ -60,8 +61,8 @@ public class ClassSignatureJSweet extends ClassSignature {
 	}
 
 	@Override
-	public Set<ClassSignature> allInterfaces() {
-		Set<ClassSignature> allInterfaces = new HashSet<>();
+	public Set<NtroClass> allInterfaces() {
+		Set<NtroClass> allInterfaces = new HashSet<>();
 		
 		def.js.Object jsClass = jsClass();
 		
@@ -75,19 +76,19 @@ public class ClassSignatureJSweet extends ClassSignature {
 		return allInterfaces;
 	}
 	
-	private ClassSignatureJSweet jsClassSignature(Object any) {
-		return new ClassSignatureJSweet((Class<?>) any);
+	private NtroClassJSweet jsClassSignature(Object any) {
+		return new NtroClassJSweet((Class<?>) any);
 	}
 
 	@Override
-	public Set<ClassSignature> allSuperclasses() {
-		Set<ClassSignature> allSuperclasses = new HashSet<>();
+	public Set<NtroClass> allSuperclasses() {
+		Set<NtroClass> allSuperclasses = new HashSet<>();
 		
 		def.js.Object jsSuperClass = jsSuperClass();
 		
 		if(jsSuperClass != null) {
 
-			ClassSignature superClass = jsClassSignature(jsSuperClass);
+			NtroClass superClass = jsClassSignature(jsSuperClass);
 
 			allSuperclasses.add(superClass);
 			allSuperclasses.addAll(superClass.allSuperclasses());
@@ -115,8 +116,8 @@ public class ClassSignatureJSweet extends ClassSignature {
 	}
 
 	@Override
-	protected List<MethodSignature> declaredMethods() {
-		List<MethodSignature> declaredMethods = new ArrayList<>();
+	protected List<NtroMethod> declaredMethods(NtroClass rootClass) {
+		List<NtroMethod> declaredMethods = new ArrayList<>();
 
 		// XXX: does not return the same info as def.js.Object.getPrototypeOf()
 		def.js.Object prototype = jsClass().$get("prototype");
@@ -144,19 +145,16 @@ public class ClassSignatureJSweet extends ClassSignature {
 
 					jsMethod.$set("fn", fn);
 					jsMethod.$set("name", methodName);
+					// XXX: owner is the class on which the method
+					//      would be invoked
+					jsMethod.$set("owner", ((NtroClassJSweet)rootClass)._class());
 
-					// FIXME: this is not correct
-					//        the owner should be the
-					//        class where the method 
-					//        will be executed
-					jsMethod.$set("owner", _class());
-
-					// XXX: JSweet magic cast
+					// JSWEET: magic cast
 					Object methodAsObject = object(jsMethod);
 
 					Method javaMethod = (Method) methodAsObject;
 
-					declaredMethods.add(new MethodSignature(methodName));
+					declaredMethods.add(new NtroMethodJSweet(javaMethod));
 				}
 			}
 		}

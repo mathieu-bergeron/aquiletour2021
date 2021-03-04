@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.ClassSignature;
+import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
