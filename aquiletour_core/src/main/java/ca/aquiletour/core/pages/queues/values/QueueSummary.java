@@ -5,6 +5,7 @@ import ca.ntro.core.system.trace.T;
 
 public class QueueSummary extends NtroModelValue {
 	
+	private String id;
 	private String teacherName;
 	private String teacherSurname;
 	private int numberOfAppointments;
@@ -27,5 +28,11 @@ public class QueueSummary extends NtroModelValue {
 	}
 	public void setNumberOfAppointments(int numberOfAppointments) {
 		this.numberOfAppointments = numberOfAppointments;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 }

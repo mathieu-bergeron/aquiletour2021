@@ -11,7 +11,7 @@ import ca.ntro.core.system.trace.T;
 public class ObservableQueueList extends ObservableList<QueueSummary> {
 
 	public ObservableQueueList() {
-		super(new ArrayList<>());
+		super(new ArrayList<QueueSummary>());
 	}
 
 	public ObservableQueueList(List<QueueSummary> value) {

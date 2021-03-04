@@ -8,7 +8,7 @@ public class User extends NtroUser {
 	private String surname;
 	private String userEmail;
 	private String userPassword;
-	private String phoneNumber;
+	private String phoneNumber;	
 	public User() {
 		
 	}

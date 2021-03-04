@@ -195,13 +195,14 @@ public class AquiletourBackendRequestHandler {
 			deleteUserMessage.sendMessage();
 		} else if(parameters.containsKey("addUser")) { // /usagers?addUser=Id&to=IdDuCours
 			T.here();
-			AddUserToCourseMessage addUserToCourseMessage = MessageFactory.getOutgoingMessage(AddUserToCourseMessage.class);
+			AddUserToCourseMessage addUserToCourseMessage = new AddUserToCourseMessage();
+			T.here();
 			String userId = parameters.get("addUser")[0];
 			String courseId = parameters.get("to")[0];
 			 
 			addUserToCourseMessage.setUserId(userId);
 			addUserToCourseMessage.setCourseId(courseId);
-			addUserToCourseMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(addUserToCourseMessage);
 			 
 			 
 			
