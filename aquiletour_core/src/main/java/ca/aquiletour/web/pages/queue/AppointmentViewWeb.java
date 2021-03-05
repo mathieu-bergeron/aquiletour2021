@@ -20,9 +20,9 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void displayAppointement(Appointment appointment) {
 		T.call(this);
 
-		HtmlElement studentId = this.getRootElement().children("#studentId").get(0);
-		HtmlElement studentSurname = this.getRootElement().children("#studentSurname").get(0);
-		HtmlElement studentName = this.getRootElement().children("#studentName").get(0);
+		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
+		HtmlElement studentSurname = this.getRootElement().find("#studentSurname").get(0);
+		HtmlElement studentName = this.getRootElement().find("#studentName").get(0);
 		HtmlElements ids = this.getRootElement().find(".appointmentId");
 		for(int i = 0; i < ids.size(); i++) {
 			HtmlElement id = ids.get(i);
