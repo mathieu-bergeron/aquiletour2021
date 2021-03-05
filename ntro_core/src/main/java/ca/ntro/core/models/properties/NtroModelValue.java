@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.StoreConnectable;
 import ca.ntro.core.services.stores.ValuePath;
@@ -19,7 +20,7 @@ import ca.ntro.core.system.trace.T;
  * @author mbergeron
  *
  */
-public abstract class NtroModelValue extends JsonObjectIO implements StoreConnectable {
+public abstract class NtroModelValue implements JsonSerializable, StoreConnectable {
 
 	@Override
 	public void connectToStore(ValuePath valuePath, ModelStore modelStore) {

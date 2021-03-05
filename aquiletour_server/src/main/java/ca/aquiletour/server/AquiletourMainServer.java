@@ -46,6 +46,8 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		ViewLoaderRegistrationWeb.registerViewLoaders();
 		
 		AquiletourMain.registerSerializableClasses();
+		
+		Ntro.jsonService().setPrettyPrinting(true);
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _R)

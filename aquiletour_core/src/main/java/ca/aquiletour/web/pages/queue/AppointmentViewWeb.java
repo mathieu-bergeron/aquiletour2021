@@ -26,8 +26,8 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		HtmlElements ids = this.getRootElement().find(".appointmentId");
 		for(int i = 0; i < ids.size(); i++) {
 			HtmlElement id = ids.get(i);
-			id.appendHtml(appointment.getAppointmentId());
-			id.setAttribute("value", appointment.getAppointmentId());
+			id.appendHtml(appointment.getId());
+			id.setAttribute("value", appointment.getId());
 		}
 
 		MustNot.beNull(studentId);
@@ -37,7 +37,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		studentSurname.appendHtml(appointment.getStudentSurname());
 		studentName.appendHtml(appointment.getStudentName());
 		
-		getRootElement().setAttribute("id", "appointment-" + appointment.getAppointmentId());
+		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 	}
 
 

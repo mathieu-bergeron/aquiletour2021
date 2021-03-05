@@ -7,12 +7,16 @@ import com.google.gson.GsonBuilder;
 
 public class JsonServiceJdk extends JsonService {
 
-	//private static final Gson gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
+	private static final Gson gsonPrettyPrint = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
 
 	@Override
 	protected String writeJson(Object javaValue) {
-		return gson.toJson(javaValue);
+		if(ifPrettyPrinting()) {
+			return gsonPrettyPrint.toJson(javaValue);
+		}else {
+			return gson.toJson(javaValue);
+		}
 	}
 
 	@Override

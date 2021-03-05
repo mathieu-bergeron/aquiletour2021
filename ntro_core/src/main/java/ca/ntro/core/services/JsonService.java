@@ -8,7 +8,8 @@ import ca.ntro.core.json.JsonDeserialization;
 import ca.ntro.core.json.JsonSerialization;
 
 public abstract class JsonService {
-
+	
+	private boolean prettyPrinting = false;
 	private Map<String, Class<?>> serializableClasses = new HashMap<>();
 	
 	public void registerSerializableClass(Class<?> _class) {
@@ -17,6 +18,14 @@ public abstract class JsonService {
 
 	public Class<?> serializableClass(String simpleName) {
 		return serializableClasses.get(simpleName);
+	}
+	
+	public void setPrettyPrinting(boolean prettyPrinting) {
+		this.prettyPrinting = prettyPrinting;
+	}
+
+	protected boolean ifPrettyPrinting() {
+		return prettyPrinting;
 	}
 	
 	public String toString(Object javaValue) {
