@@ -52,8 +52,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// FIXME
 		Constants.LANG = "fr";
 		
-		NtroContext context = new NtroContext();
-		context.setUser(new AnonUser());
+		NtroContext<User> context = new NtroContext<>();
+		
+		// TODO: in JSweet, get user from Cookies
+		User devUser = new Teacher();
+		devUser.setId("alice");
+		devUser.setAuthToken("aliceToken");
+		context.setUser(devUser);
 		context.setLang(Constants.LANG);
 		
 		registerViewLoaders();

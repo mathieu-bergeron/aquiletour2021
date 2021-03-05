@@ -67,21 +67,21 @@ public class ModelHandler extends AbstractHandler {
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String[] uriParts = uriParts(request.getRequestURI());
         String collectionName = uriParts[1];
-        String fileName = uriParts[2];
+        String modelId = uriParts[2];
 
-        System.out.println("Collection: " + collectionName + ", File: " + fileName);
+        System.out.println("Collection: " + collectionName + ", File: " + modelId);
 
-        Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.introspector().serializableClass(collectionName);
+        Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.jsonService().serializableClass(collectionName);
 
         if (modelClazz == null) {
             Log.fatalError("[ModelHandler] Could not find NtroModel subclass for collection name '" + collectionName + "'");
             MustNot.beNull(modelClazz);
         }
 
-        ModelLoader modelLoader = LocalStore.getLoader(modelClazz, null, collectionName, fileName);
+        ModelLoader modelLoader = LocalStore.getLoader(modelClazz, "TODO", modelId);
         modelLoader.execute();
 
-        response.getWriter().println(Ntro.jsonService().toString(modelLoader.getModel()));
+        response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
         response.flushBuffer();
 
         baseRequest.setHandled(true);
