@@ -15,14 +15,5 @@ public class ObservableAppointmentList extends ObservableList<Appointment> {
 	public ObservableAppointmentList(List<Appointment> value) {
 		super(value);
 	}
-
-	@Override
-	protected Class<?> valueType() {
-		T.call(this);
-
-		return List.class;
-	}
-	
-	
 	
 }

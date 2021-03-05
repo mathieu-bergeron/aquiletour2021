@@ -15,9 +15,4 @@ public class ObservableValue<M extends NtroModelValue> extends ObservablePropert
 		T.call(this);
 	}
 
-	@Override
-	protected Class<?> valueType() {
-		T.call(this);
-		return NtroModelValue.class;
-	}
 }

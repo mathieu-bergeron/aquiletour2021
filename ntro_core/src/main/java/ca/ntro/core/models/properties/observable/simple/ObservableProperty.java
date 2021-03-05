@@ -17,9 +17,7 @@ public abstract class ObservableProperty<V extends Object> implements JsonSerial
 	public ObservableProperty() {
 		T.call(this);
 	}
-	
-	protected abstract Class<?> valueType();
-	
+
 	public ObservableProperty(V value) {
 		T.call(this);
 		

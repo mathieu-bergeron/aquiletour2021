@@ -1,6 +1,5 @@
 package ca.ntro.core.models.properties.stored.simple;
 
-import ca.ntro.core.models.properties.observable.simple.ValueObserver;
 import ca.ntro.core.system.trace.T;
 
 public class StoredString extends StoredProperty<String> {
@@ -14,17 +13,5 @@ public class StoredString extends StoredProperty<String> {
 		super(value);
 		T.call(this);
 	}
-
-
-	@Override
-	protected Class<?> valueType() {
-		T.call(this);
-		return String.class;
-	}
-
-	public void test() {
-		T.call(this);
-	}
-
 
 }

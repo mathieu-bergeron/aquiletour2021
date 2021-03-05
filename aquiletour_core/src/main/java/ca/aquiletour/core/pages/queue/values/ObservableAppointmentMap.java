@@ -16,12 +16,4 @@ public class ObservableAppointmentMap extends ObservableMap<Appointment> {
 	public ObservableAppointmentMap(Map<String, Appointment> map) {
 		super(map);
 	}
-
-	@Override
-	protected Class<?> valueType() {
-		T.call(this);
-
-		return NtroModelValue.class;
-	}
-
 }

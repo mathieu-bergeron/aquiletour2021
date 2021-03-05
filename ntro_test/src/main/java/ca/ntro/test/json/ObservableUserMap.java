@@ -17,13 +17,6 @@ public class ObservableUserMap extends ObservableMap<User> {
 		super(map);
 	}
 
-	@Override
-	protected Class<?> valueType() {
-		T.call(this);
-
-		return NtroModelValue.class;
-	}
-
 	public boolean isUserValid(String userId, String authToken) {
 		return getValue().get(userId).isValid(authToken);
 	}

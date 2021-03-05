@@ -14,8 +14,4 @@ public class ObservableString extends ObservableProperty<String> {
 		T.call(this);
 	}
 
-	@Override
-	protected Class<?> valueType() {
-		return String.class;
-	}
 }
