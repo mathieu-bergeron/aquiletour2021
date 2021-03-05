@@ -21,16 +21,41 @@ public class JsonSerialization {
 
 		return toJsonValue(javaValue, valuePath, localHeap);
 	}
+	
+	// FIXME: push this into NtroCollections.containsXXX
+	private static boolean containsKeyByReference(Map<Object, String> localHeap, Object key) {
+		boolean containsKey = false;
+		
+		for(Object candidateKey : localHeap.keySet()) {
+			if(candidateKey == key) {
+				containsKey = true;
+				break;
+			}
+		}
+		
+		return containsKey;
+	}
+
+	private static String getValueByReference(Map<Object, String> localHeap, Object key) {
+		String value = null;
+		
+		for(Map.Entry<Object, String> entry : localHeap.entrySet()) {
+			if(entry.getKey() == key) {
+				value = entry.getValue();
+				break;
+			}
+		}
+
+		return value;
+	}
 
 	private static Object toJsonValue(Object javaValue, String valuePath, Map<Object, String> localHeap) {
 		
 		Object jsonValue = null;
 
-		// FIXME: not containsKey which uses equals
-		//        but we should check == (same object)
-		if(localHeap.containsKey(javaValue)) {
+		if(containsKeyByReference(localHeap, javaValue)) {
 
-			String referencePath = localHeap.get(javaValue);
+			String referencePath = getValueByReference(localHeap, javaValue);
 
 			jsonValue = jsonReferenceObject(referencePath);
 
