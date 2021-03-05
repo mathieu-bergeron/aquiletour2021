@@ -49,6 +49,11 @@ public class LocalStoreFiles extends ModelStore {
 		
 		File modelFile = getModelFile(documentPath);
 		
+		if(!modelFile.exists()) {
+			// XXX: create empty model if none exists
+			writeJsonFile(modelFile,ModelStore.emptyModelString(documentPath));
+		}
+		
 		JsonLoader jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
 		
 		return jsonLoader;

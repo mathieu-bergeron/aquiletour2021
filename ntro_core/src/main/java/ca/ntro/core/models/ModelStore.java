@@ -1,5 +1,6 @@
 package ca.ntro.core.models;
 
+import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
@@ -29,7 +30,10 @@ public abstract class ModelStore {
 
 		return modelLoader;
 	}
-
+	
+	public static String emptyModelString(DocumentPath documentPath) {
+		return "{\""+Constants.JSON_CLASS_KEY+"\":\""+documentPath.getCollection()+"\"}";
+	}
 
 	public abstract void addValueListener(ValuePath valuePath, ValueListener valueListener);
 

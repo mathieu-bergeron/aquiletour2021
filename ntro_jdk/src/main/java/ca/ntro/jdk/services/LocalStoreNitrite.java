@@ -61,7 +61,7 @@ public class LocalStoreNitrite extends ModelStore {
 		}else {
 
 			// XXX: create document if none exists
-			jsonString = "{}";
+			jsonString = ModelStore.emptyModelString(documentPath);
 
 			document = new Document();
 			document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());

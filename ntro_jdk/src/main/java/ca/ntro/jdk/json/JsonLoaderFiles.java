@@ -59,12 +59,6 @@ public class JsonLoaderFiles extends JsonLoader {
 				Log.fatalError("Cannot load " + modelFile.toString(), e);
 			}
 
-		}else {
-
-			// XXX: create document if none exists
-			jsonString = "{}";
-
-			writeJsonFile(modelFile, jsonString);
 		}
 
 		notifyTaskFinished();
