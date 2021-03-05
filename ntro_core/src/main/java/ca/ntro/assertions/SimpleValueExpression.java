@@ -8,18 +8,18 @@ public class SimpleValueExpression extends ValueExpression<Object> {
 		this.value = value;
 	}
 
-	public IsNotExpression isNot(Object otherValue) {
+	public IsNotEqualToExpression isNotEqualTo(Object otherValue) {
 
-		IsNotExpression result = new IsNotExpression(this, otherValue);
+		IsNotEqualToExpression result = new IsNotEqualToExpression(this, otherValue);
 		
 		setChild(result);
 		
 		return result;
 	}
 
-	public IsExpression is(Object otherValue) {
+	public IsEqualToExpression isEqualTo(Object otherValue) {
 
-		IsExpression result = new IsExpression(this, otherValue);
+		IsEqualToExpression result = new IsEqualToExpression(this, otherValue);
 		
 		setChild(result);
 		

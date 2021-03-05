@@ -106,7 +106,7 @@ public class JsonSerialization {
 		
 		List<String> keys = new ArrayList<>();
 		keys.addAll(javaMap.keySet());
-
+		
 		keys.sort(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {

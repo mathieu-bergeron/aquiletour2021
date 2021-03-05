@@ -18,19 +18,47 @@ public class JsonTests {
 	public static void registerSerializableClasses() {
 		Ntro.jsonService().registerSerializableClass(ListItemA.class);
 		Ntro.jsonService().registerSerializableClass(ListItemB.class);
+		Ntro.jsonService().registerSerializableClass(LinkedListNode.class);
 	}
 
 	@Test
 	public void testCycleRoundTrip() {
+		LinkedListNode a = new LinkedListNode("A");
+		LinkedListNode b = new LinkedListNode("B");
 
+		a.setNext(b);
+		b.setNext(a);
+
+		String jsonString = Ntro.jsonService().toString(a);
+
+		LinkedListNode deserializedA = Ntro.jsonService().fromString(LinkedListNode.class, jsonString);
+		
+		Ntro.verify(that(deserializedA.getNext().getNext()).isEqualTo(deserializedA));
 	}
 
 	@Test
 	public void testCycleDeserialization() {
+
+		//String jsonString = "{\"next\":{\"next\":{\"_R\":\"\"},\"nextList\":[],\"_C\":\"LinkedListNode\",\"value\":\"B\",\"nextMap\":{}},\"nextList\":[],\"_C\":\"LinkedListNode\",\"value\":\"A\",\"nextMap\":{}}"; 
+		String jsonString = "{\"next\":{\"next\":{\"_R\":\"\"},\"_C\":\"LinkedListNode\",\"value\":\"B\"},\"_C\":\"LinkedListNode\",\"value\":\"A\"}"; 
+
+		LinkedListNode deserializedA = Ntro.jsonService().fromString(LinkedListNode.class, jsonString);
+		
+		Ntro.verify(that(deserializedA.getNext().getNext()).isEqualTo(deserializedA));
 	}
 
 	@Test
 	public void testUserDefinedObjectRoundTrip() {
+		List<ListItem> javaList = new ArrayList<>();
+		javaList.add(new ListItemA());
+		javaList.add(new ListItemB());
+		
+		String jsonList = Ntro.jsonService().toString(javaList);
+
+		@SuppressWarnings("unchecked")
+		List<ListItem> javaDeserializedList = Ntro.jsonService().fromString(List.class, jsonList);
+		
+		Ntro.verify(that(javaList).isEqualTo(javaDeserializedList));
 	}
 
 	@Test
@@ -41,8 +69,8 @@ public class JsonTests {
 		@SuppressWarnings("unchecked")
 		List<ListItem> javaList = Ntro.jsonService().fromString(List.class, jsonString);
 		
-		Ntro.verify(that(((ListItemA)javaList.get(0)).getPropA()).is(0));
-		Ntro.verify(that(((ListItemB)javaList.get(0)).getPropB()).is(1));
+		Ntro.verify(that(((ListItemA)javaList.get(0)).getPropA()).isEqualTo(0));
+		Ntro.verify(that(((ListItemB)javaList.get(1)).getPropB()).isEqualTo(1));
 	}
 
 	@Test
@@ -71,7 +99,7 @@ public class JsonTests {
 
 		Map<String, Object> deserializedJavaMap = Ntro.jsonService().fromString(Map.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaMap).is(javaMap));
+		Ntro.verify(that(deserializedJavaMap).isEqualTo(javaMap));
 	}
 
 	private void simpleListRoundtrip() {
@@ -86,7 +114,7 @@ public class JsonTests {
 
 		List<Object> deserializedJavaList = Ntro.jsonService().fromString(List.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaList).is(javaList));
+		Ntro.verify(that(deserializedJavaList).isEqualTo(javaList));
 	}
 
 	private void simpleFloatRoundtrip() {
@@ -96,7 +124,7 @@ public class JsonTests {
 
 		float deserializedJavaFloat = Ntro.jsonService().fromString(Float.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaFloat).is(javaFloat));
+		Ntro.verify(that(deserializedJavaFloat).isEqualTo(javaFloat));
 	}
 
 	private void simpleLongRoundtrip() {
@@ -106,7 +134,7 @@ public class JsonTests {
 
 		long deserializedJavaLong = Ntro.jsonService().fromString(Long.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaLong).is(javaLong));
+		Ntro.verify(that(deserializedJavaLong).isEqualTo(javaLong));
 	}
 
 	private void simpleCharRoundtrip() {
@@ -116,7 +144,7 @@ public class JsonTests {
 
 		char deserializedJavaChar = Ntro.jsonService().fromString(Character.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaChar).is(javaChar));
+		Ntro.verify(that(deserializedJavaChar).isEqualTo(javaChar));
 	}
 
 	private void simpleIntegerRoundtrip() {
@@ -126,7 +154,7 @@ public class JsonTests {
 
 		int deserializedJavaInt = Ntro.jsonService().fromString(Integer.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaInt).is(javaInt));
+		Ntro.verify(that(deserializedJavaInt).isEqualTo(javaInt));
 	}
 
 	private void simpleStringRoundtrip() {
@@ -136,7 +164,7 @@ public class JsonTests {
 
 		String deserializedJavaString = Ntro.jsonService().fromString(String.class, jsonString);
 		
-		Ntro.verify(that(deserializedJavaString).is(javaString));
+		Ntro.verify(that(deserializedJavaString).isEqualTo(javaString));
 	}
 
 	@Test
@@ -153,7 +181,7 @@ public class JsonTests {
 
 		String javaString = Ntro.jsonService().fromString(String.class, jsonString);
 
-		Ntro.verify(that(initialJavaString).is(javaString));
+		Ntro.verify(that(initialJavaString).isEqualTo(javaString));
 	}
 
 	private void simpleBooleanDeserialization() {
@@ -161,7 +189,7 @@ public class JsonTests {
 
 		boolean javaBoolean = Ntro.jsonService().fromString(Boolean.class, jsonBoolean);
 
-		Ntro.verify(that(javaBoolean).is(true));
+		Ntro.verify(that(javaBoolean).isEqualTo(true));
 	}
 
 	private void simpleIntegerDeserialization() {
@@ -169,7 +197,7 @@ public class JsonTests {
 
 		int javaInteger = Ntro.jsonService().fromString(Integer.class, jsonInteger);
 
-		Ntro.verify(that(Integer.valueOf(jsonInteger)).is(javaInteger));
+		Ntro.verify(that(Integer.valueOf(jsonInteger)).isEqualTo(javaInteger));
 	}
 
 	private void simpleDoubleDeserialization() {
@@ -177,7 +205,7 @@ public class JsonTests {
 
 		double javaDouble = Ntro.jsonService().fromString(Double.class, jsonDouble);
 
-		Ntro.verify(that(Double.valueOf(jsonDouble)).is(javaDouble));
+		Ntro.verify(that(Double.valueOf(jsonDouble)).isEqualTo(javaDouble));
 	}
 
 	@Test
@@ -228,7 +256,7 @@ public class JsonTests {
 		
 		String jsonMap1 = Ntro.jsonService().toString(javaMap1);
 		
-		Ntro.verify(that(jsonMap1).is("{\"a\":1,\"b\":2,\"c\":3}"));
+		Ntro.verify(that(jsonMap1).isEqualTo("{\"a\":1,\"b\":2,\"c\":3}"));
 
 		Map<String, Object> javaMap2 = new HashMap<>();
 		javaMap2.put("a", 1);
@@ -237,7 +265,7 @@ public class JsonTests {
 		
 		String jsonMap2 = Ntro.jsonService().toString(javaMap2);
 		
-		Ntro.verify(that(jsonMap2).is("{\"a\":1,\"b\":false,\"c\":10.3}"));
+		Ntro.verify(that(jsonMap2).isEqualTo("{\"a\":1,\"b\":false,\"c\":10.3}"));
 	}
 
 	private void simpleListSerialization() {
@@ -248,7 +276,7 @@ public class JsonTests {
 		
 		String jsonList1 = Ntro.jsonService().toString(javaList1);
 		
-		Ntro.verify(that(jsonList1).is("[\"a\",\"b\",\"c\"]"));
+		Ntro.verify(that(jsonList1).isEqualTo("[\"a\",\"b\",\"c\"]"));
 
 		List<Object> javaList2 = new ArrayList<>();
 		javaList2.add("a");
@@ -258,7 +286,7 @@ public class JsonTests {
 		
 		String jsonList2 = Ntro.jsonService().toString(javaList2);
 		
-		Ntro.verify(that(jsonList2).is("[\"a\",10,false,10.45]"));
+		Ntro.verify(that(jsonList2).isEqualTo("[\"a\",10,false,10.45]"));
 	}
 
 	private void simpleDoubleSerialization() {
@@ -266,7 +294,7 @@ public class JsonTests {
 
 		String jsonDouble = Ntro.jsonService().toString(javaDouble);
 
-		Ntro.verify(that(Double.valueOf(jsonDouble)).is(javaDouble));
+		Ntro.verify(that(Double.valueOf(jsonDouble)).isEqualTo(javaDouble));
 	}
 
 	private void simpleIntegerSerialization() {
@@ -274,7 +302,7 @@ public class JsonTests {
 
 		String jsonInt = Ntro.jsonService().toString(javaInt);
 
-		Ntro.verify(that(Integer.valueOf(jsonInt)).is(javaInt));
+		Ntro.verify(that(Integer.valueOf(jsonInt)).isEqualTo(javaInt));
 	}
 
 	private void simpleBooleanSerialization() {
@@ -282,7 +310,7 @@ public class JsonTests {
 
 		String jsonBoolean = Ntro.jsonService().toString(javaBoolean);
 
-		Ntro.verify(that(String.valueOf(javaBoolean)).is(jsonBoolean));
+		Ntro.verify(that(String.valueOf(javaBoolean)).isEqualTo(jsonBoolean));
 	}
 
 	private void simpleStringSerialization() {

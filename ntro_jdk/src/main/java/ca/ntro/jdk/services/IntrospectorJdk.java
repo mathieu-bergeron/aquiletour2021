@@ -307,10 +307,10 @@ public class IntrospectorJdk extends Introspector {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <V extends Object> V castPrimitiveValue(Class<V> targetClass, Object primitiveValue) {
+	public Object castPrimitiveValue(Class<?> targetClass, Object primitiveValue) {
 		T.call(this);
 		
-		V result = null;
+		Object result = null;
 
 		if(primitiveValue == null) {
 
@@ -318,28 +318,29 @@ public class IntrospectorJdk extends Introspector {
 
 		}else if(targetClass.equals(primitiveValue.getClass())) {
 
-			result = (V) primitiveValue;
+			result = primitiveValue;
 
 		}else if(targetClass.equals(String.class)) {
 
-			result = (V) String.valueOf(primitiveValue.toString());
+			result = String.valueOf(primitiveValue.toString());
 
 		}else if(targetClass.equals(Boolean.class) || targetClass.equals(boolean.class)) {
 
-			result = (V) Boolean.valueOf(primitiveValue.toString());
+			result = Boolean.valueOf(primitiveValue.toString());
 
 		}else if(targetClass.equals(Double.class) || targetClass.equals(double.class)) {
 
-			result = (V) Double.valueOf(primitiveValue.toString());
+			result = Double.valueOf(primitiveValue.toString());
 
 		}else if(targetClass.equals(Float.class) || targetClass.equals(float.class)) {
 
-			result = (V) Float.valueOf(primitiveValue.toString());
+			result = Float.valueOf(primitiveValue.toString());
 
 		}else if(targetClass.equals(Integer.class) || targetClass.equals(int.class)) {
 
 			Double resultDouble = Double.parseDouble(primitiveValue.toString());
-			result = targetClass.cast((int) Math.round(resultDouble));
+			Long resultLong = Math.round(resultDouble);
+			result = resultLong.intValue();
 
 		}else if(targetClass.equals(Long.class) || targetClass.equals(long.class)) {
 

@@ -79,4 +79,14 @@ public class NtroCollectionsJdk extends NtroCollections {
 
 		return value;
 	}
+
+	@Override
+	protected boolean listEqualsImpl(List<?> list1, List<?> list2) {
+		return list1.equals(list2);
+	}
+
+	@Override
+	protected boolean mapEqualsImpl(Map<?, ?> map1, Map<?, ?> map2) {
+		return map1.equals(map2);
+	}
 }

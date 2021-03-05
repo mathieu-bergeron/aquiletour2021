@@ -11,8 +11,10 @@ import ca.ntro.core.json.JsonSerializable;
 public class LinkedListNode implements JsonSerializable {
 	
 	private LinkedListNode next;
+	/*
 	private List<LinkedListNode> nextList = new ArrayList<>();
 	private Map<String, LinkedListNode> nextMap = new HashMap<>();
+	*/
 	private String value;
 
 	public LinkedListNode() {
@@ -38,6 +40,7 @@ public class LinkedListNode implements JsonSerializable {
 		this.value = value;
 	}
 	
+	/*
 	public List<LinkedListNode> getNextList() {
 		return nextList;
 	}
@@ -52,7 +55,7 @@ public class LinkedListNode implements JsonSerializable {
 
 	public void setNextMap(Map<String, LinkedListNode> nextMap) {
 		this.nextMap = nextMap;
-	}
+	}*/
 
 	@Override
 	public int hashCode() {

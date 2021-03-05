@@ -130,11 +130,11 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public <V extends Object> V castPrimitiveValue(Class<V> targetClass, Object primitiveValue) {
+	public Object castPrimitiveValue(Class<?> targetClass, Object primitiveValue) {
 		T.call(this);
 
-		// JSWEET: such casting does not really exists in Javascript
-		return (V) primitiveValue;
+		// JSWEET: primitive casting does not make sense in Javascript
+		return primitiveValue;
 	}
 
 	@Override

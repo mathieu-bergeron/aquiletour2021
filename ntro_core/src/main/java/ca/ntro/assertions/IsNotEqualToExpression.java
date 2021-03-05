@@ -1,8 +1,8 @@
 package ca.ntro.assertions;
 
-public class IsNotExpression extends IsExpression {
+public class IsNotEqualToExpression extends IsEqualToExpression {
 	
-	public IsNotExpression(ValueExpression valueExpression, Object otherValue) {
+	public IsNotEqualToExpression(ValueExpression valueExpression, Object otherValue) {
 		super(valueExpression, otherValue);
 	}
 	

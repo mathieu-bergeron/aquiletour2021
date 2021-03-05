@@ -16,4 +16,10 @@ public class NtroMethodJSweet extends NtroMethod {
 		throw new RuntimeException("TODO");
 	}
 
+	@Override
+	protected Class<?> getSetterTypeImpl() {
+		// JSWEET: methods do not have parameter types
+		return null;
+	}
+
 }

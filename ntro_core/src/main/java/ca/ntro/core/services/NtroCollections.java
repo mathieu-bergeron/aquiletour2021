@@ -144,4 +144,38 @@ public abstract class NtroCollections {
 		return value;
 	}
 
+	protected abstract boolean listEqualsImpl(List<?> list1, List<?> list2);
+
+	public static boolean listEquals(List<?> list1, List<?> list2) {
+		boolean listEquals = false;
+		
+		try {
+			
+			listEquals = instance.listEqualsImpl(list1, list2);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return listEquals;
+	}
+
+	protected abstract boolean mapEqualsImpl(Map<?,?> map1, Map<?,?> map2);
+
+	public static boolean mapEquals(Map<?,?> map1, Map<?,?> map2) {
+		boolean mapEquals = false;
+		
+		try {
+			
+			mapEquals = instance.mapEqualsImpl(map1, map2);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return mapEquals;
+	}
+
 }

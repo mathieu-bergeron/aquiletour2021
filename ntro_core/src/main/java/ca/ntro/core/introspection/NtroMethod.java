@@ -55,7 +55,27 @@ public abstract class NtroMethod {
 
 	public abstract MethodSignature signature();
 
-	public Object invoke(Object targetObject, Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return method.invoke(targetObject, args);
+	// JSWEET: there is an issue
+	//         with varargs in JsonDeserialization
+	public Object invoke(Object targetObject) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return method.invoke(targetObject);
+	}
+
+	public Object invoke(Object targetObject, Object arg) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return method.invoke(targetObject, arg);
+	}
+
+	public Object invoke(Object targetObject, Object arg1, Object... remainderArgs) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return method.invoke(targetObject, arg1, remainderArgs);
+	}
+
+	protected abstract Class<?> getSetterTypeImpl();
+
+	public Class<?> getSetterType() {
+		if(!isSetter()) {
+			throw new IllegalArgumentException("method is not a setter");
+		}else {
+			return getSetterTypeImpl();
+		}
 	}
 }

@@ -55,4 +55,13 @@ public class NtroMethodJdk extends NtroMethod {
 
 		return typeName;
 	}
+
+	@Override
+	protected Class<?> getSetterTypeImpl() {
+		Class<?> setterType = null;
+		if(method().getParameterTypes().length > 0) {
+			setterType = method().getParameterTypes()[0];
+		}
+		return setterType;
+	}
 }
