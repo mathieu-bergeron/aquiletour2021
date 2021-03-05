@@ -26,11 +26,13 @@ public class JsonSerialization {
 		
 		Object jsonValue = null;
 
+		// FIXME: not containsKey which uses equals
+		//        but we should check == (same object)
 		if(localHeap.containsKey(javaValue)) {
 
-			localHeap.put(javaValue, valuePath);
+			String referencePath = localHeap.get(javaValue);
 
-			jsonValue = jsonReferenceObject(valuePath);
+			jsonValue = jsonReferenceObject(referencePath);
 
 		}else {
 			
