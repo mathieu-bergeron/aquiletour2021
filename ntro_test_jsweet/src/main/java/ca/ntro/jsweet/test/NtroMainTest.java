@@ -47,6 +47,9 @@ public class NtroMainTest extends NtroTaskSync {
 
 		jsonTests.testCycleRoundTrip();
 		System.out.println("testCycleRoundTrip finished");
+		
+		jsonTests.testUsersModel();
+		System.out.println("testUsersModel finished");
 	}
 
 	@Override

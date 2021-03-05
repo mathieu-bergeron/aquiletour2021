@@ -56,7 +56,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		context.setLang(Constants.LANG);
 		
 		registerViewLoaders();
-		
 		registerSerializableClasses();
 		
 		// XXX: "/**" means: execute every subController
@@ -68,7 +67,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 	}
 	
-	private void registerSerializableClasses() {
+	public static void registerSerializableClasses() {
 		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
 		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
 		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
@@ -81,8 +80,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
 		Ntro.jsonService().registerSerializableClass(Teacher.class);
 		Ntro.jsonService().registerSerializableClass(Student.class);
-		
-		
 	}
 	
 	protected abstract NtroWindow getWindow();

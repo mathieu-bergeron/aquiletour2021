@@ -19,6 +19,25 @@ public class JsonTests {
 		Ntro.jsonService().registerSerializableClass(ListItemA.class);
 		Ntro.jsonService().registerSerializableClass(ListItemB.class);
 		Ntro.jsonService().registerSerializableClass(LinkedListNode.class);
+
+		Ntro.jsonService().registerSerializableClass(UsersModel.class);
+		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
+		Ntro.jsonService().registerSerializableClass(Student.class);
+		Ntro.jsonService().registerSerializableClass(Teacher.class);
+	}
+
+	@Test
+	public void testUsersModel() {
+		
+		String jsonString = "{\"_C\":\"UsersModel\",\"users\":{\"_C\":\"ObservableUserMap\",\"value\":{\"bob\":{\"userPassword\":\"bobPassword\",\"_C\":\"Student\",\"surname\":\"Bérancourt\",\"authToken\":\"bobToken\",\"name\":\"Bob\",\"registrationId\":\"1234567\",\"userEmail\":\"bob.berancourt@test.ca\",\"id\":\"bob\"},\"alice\":{\"userPassword\":\"alicePassword\",\"_C\":\"Teacher\",\"surname\":\"Awama\",\"authToken\":\"aliceToken\",\"name\":\"Alice\",\"userEmail\":\"alice.awama@test.com\",\"id\":\"alice\"},\"charlie\":{\"userPassword\":\"charliePassword\",\"_C\":\"Teacher\",\"surname\":\"Ngo\",\"authToken\":\"charlieToken\",\"name\":\"Charlie\",\"userEmail\":\"charlie.ngo@test.org\",\"id\":\"charlie\"}}}}";
+		
+		UsersModel usersModel = Ntro.jsonService().fromString(UsersModel.class, jsonString);
+		
+		Ntro.verify(that(usersModel.getUsers().getValue().get("alice").getName()).isEqualTo("Alice"));
+		
+		String jsonString2 = Ntro.jsonService().toString(usersModel);
+
+		System.out.println(jsonString2);
 	}
 
 	@Test

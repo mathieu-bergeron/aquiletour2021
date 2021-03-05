@@ -28,8 +28,12 @@ public class JsonSerialization {
 	private static Object toJsonValue(Object javaValue, String valuePath, Map<Object, String> localHeap) {
 		
 		Object jsonValue = null;
-
-		if(NtroCollections.containsKeyExact(localHeap, javaValue)) {
+		
+		if(javaValue == null) {
+			
+			jsonValue = null;
+			
+		} else if(NtroCollections.containsKeyExact(localHeap, javaValue)) {
 
 			String referencePath = NtroCollections.getExactKey(localHeap, javaValue);
 
