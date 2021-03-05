@@ -2,6 +2,7 @@ package ca.ntro.core.json;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
+import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.log.Log;
 
 public class JsonSerialization {
@@ -22,40 +24,14 @@ public class JsonSerialization {
 		return toJsonValue(javaValue, valuePath, localHeap);
 	}
 	
-	// FIXME: push this into NtroCollections.containsXXX
-	private static boolean containsKeyByReference(Map<Object, String> localHeap, Object key) {
-		boolean containsKey = false;
-		
-		for(Object candidateKey : localHeap.keySet()) {
-			if(candidateKey == key) {
-				containsKey = true;
-				break;
-			}
-		}
-		
-		return containsKey;
-	}
-
-	private static String getValueByReference(Map<Object, String> localHeap, Object key) {
-		String value = null;
-		
-		for(Map.Entry<Object, String> entry : localHeap.entrySet()) {
-			if(entry.getKey() == key) {
-				value = entry.getValue();
-				break;
-			}
-		}
-
-		return value;
-	}
 
 	private static Object toJsonValue(Object javaValue, String valuePath, Map<Object, String> localHeap) {
 		
 		Object jsonValue = null;
 
-		if(containsKeyByReference(localHeap, javaValue)) {
+		if(NtroCollections.containsKeyExact(localHeap, javaValue)) {
 
-			String referencePath = getValueByReference(localHeap, javaValue);
+			String referencePath = NtroCollections.getExactKey(localHeap, javaValue);
 
 			jsonValue = jsonReferenceObject(referencePath);
 
@@ -128,23 +104,46 @@ public class JsonSerialization {
 		
 		Map<String, Object> jsonMap = new HashMap<>();
 		
-		for(Map.Entry<String, Object> entry : javaMap.entrySet()) {
+		List<String> keys = new ArrayList<>();
+		keys.addAll(javaMap.keySet());
+
+		keys.sort(new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return o1.compareTo(o2);
+			}
+		});
+		
+		for(String key : keys) {
+
+			Object javaValue = javaMap.get(key);
 			
-			String newValuePath = valuePath + "/" + entry.getKey();
-			
-			jsonMap.put(entry.getKey(), toJsonValue(entry.getValue(), newValuePath, localHeap));
+			if(isSpecialKey(key)) {
+				
+				jsonMap.put(key, javaValue);
+				
+			}else {
+				
+				String newValuePath = valuePath + "/" + key;
+				
+				jsonMap.put(key, toJsonValue(javaValue, newValuePath, localHeap));
+			}
 		}
 
 		return jsonMap;
 	}
-
+	
+	static boolean isSpecialKey(String key) {
+		return key.equals(Constants.JSON_CLASS_KEY) || key.equals(Constants.JSON_REFERENCE_KEY);
+	}
+	
 	private static Object toJsonValueFromSerializableObject(JsonSerializable javaObject, String valuePath, Map<Object, String> localHeap) {
 
-		Map<String, Object> jsonObject = new HashMap<>();
+		Map<String, Object> javaMap = new HashMap<>();
 		
 		NtroClass javaClass = Ntro.introspector().ntroClassFromObject(javaObject);
 		
-		jsonObject.put(Constants.JSON_CLASS_KEY, javaClass.simpleName());
+		javaMap.put(Constants.JSON_CLASS_KEY, javaClass.simpleName());
 		
 		List<NtroMethod> getters = javaClass.userDefinedGetters();
 		
@@ -162,14 +161,10 @@ public class JsonSerialization {
 				Log.fatalError("Unable to invoke getter " + getter.name(), e);
 			}
 			
-			String newValuePath = valuePath + "/" + attributeName;
-
-			Object jsonAttributeValue = toJsonValue(javaAttributeValue, newValuePath, localHeap);
-			
-			jsonObject.put(attributeName, jsonAttributeValue);
+			javaMap.put(attributeName, javaAttributeValue);
 		}
 		
-		return jsonObject;
+		return toJsonValueFromMap(javaMap, valuePath, localHeap);
 	}
 
 }

@@ -10,6 +10,8 @@ public class JsonTestsJdk extends JsonTests {
 	@BeforeClass
 	public static void initializeNtro() {
 		NtroJdk.defaultInitializationTask().execute();
+
+		JsonTests.registerSerializableClasses();
 	}
 
 }

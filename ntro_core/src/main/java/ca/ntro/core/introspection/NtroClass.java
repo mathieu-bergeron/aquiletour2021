@@ -28,14 +28,14 @@ public abstract class NtroClass {
 	public abstract String name();
 
 	public boolean ifImplements(Class<?> interfaceClass) {
-		return NtroCollections.ifSetContains(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
+		return NtroCollections.containsEquals(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
 	}
 
 	public abstract Set<NtroClass> allInterfaces();
 	public abstract Set<NtroClass> allSuperclasses();
 
 	public boolean ifExtends(Class<?> superClass) {
-		return NtroCollections.ifSetContains(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
+		return NtroCollections.containsEquals(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
 	}
 
 	public boolean ifInstanceOf(Class<?> classOrInterface) {
@@ -77,12 +77,6 @@ public abstract class NtroClass {
 				}
 			}
 		}
-		
-		userDefinedMethods.sort(new Comparator<NtroMethod>() {
-			@Override
-			public int compare(NtroMethod m1, NtroMethod m2) {
-				return m1.name().compareTo(m2.name());
-			}});
 
 		return userDefinedMethods;
 	}

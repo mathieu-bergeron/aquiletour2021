@@ -1,9 +1,23 @@
 package ca.ntro.core.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonDeserialization;
 import ca.ntro.core.json.JsonSerialization;
 
 public abstract class JsonService {
+
+	private Map<String, Class<?>> serializableClasses = new HashMap<>();
+	
+	public void registerSerializableClass(Class<?> _class) {
+		serializableClasses.put(Ntro.introspector().getSimpleNameForClass(_class), _class);
+	}
+
+	public Class<?> serializableClass(String simpleName) {
+		return serializableClasses.get(simpleName);
+	}
 	
 	public String toString(Object javaValue) {
 
@@ -12,7 +26,7 @@ public abstract class JsonService {
 
 	public <V extends Object> V fromString(Class<V> targetClass, String jsonString) {
 
-		return JsonDeserialization.fromJsonValue(targetClass, loadJson(jsonString));
+		return JsonDeserialization.toJavaValue(targetClass, loadJson(jsonString));
 	}
 
 	protected abstract String writeJson(Object javaValue);

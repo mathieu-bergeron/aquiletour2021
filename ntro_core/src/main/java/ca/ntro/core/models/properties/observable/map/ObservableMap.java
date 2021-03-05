@@ -103,7 +103,7 @@ public abstract class ObservableMap<V extends Object> extends ObservableProperty
 
 		for(Map.Entry<String, ?> entry : jsonMap.entrySet()) {
 			
-			Object entryValue = Ntro.introspector().buildValueForType(valueType(), entry.getValue());
+			Object entryValue = Ntro.introspector().castPrimitiveValue(valueType(), entry.getValue());
 			
 			getValue().put(entry.getKey(), (V) entryValue);
 		}

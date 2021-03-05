@@ -58,11 +58,6 @@ public class IntrospectorTests {
 		Ntro.verify(thatList(methods).contains(m -> ((NtroMethod)m).name().equals("abstractMethod")));
 		Ntro.verify(thatList(methods).contains(m -> ((NtroMethod)m).name().equals("interfaceMethodA")));
 		Ntro.verify(thatList(methods).contains(m -> ((NtroMethod)m).name().equals("inheritedMethod")));
-		
-		// XXX: test alphabetical order
-		Ntro.verify(that(methods.get(0).name()).is("abstractMethod"));
-		Ntro.verify(that(methods.get(1).name()).is("inheritedMethod"));
-		Ntro.verify(that(methods.get(2).name()).is("interfaceMethodA"));
 	}
 
 }

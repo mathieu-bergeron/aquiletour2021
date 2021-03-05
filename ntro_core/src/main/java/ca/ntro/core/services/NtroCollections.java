@@ -93,14 +93,14 @@ public abstract class NtroCollections {
 
 	protected abstract <V extends Object> Set<V> concurrentSetImpl(Set<V> elements);
 
-	protected abstract boolean ifSetContainsImpl(Set<?> set, Object target);
+	protected abstract boolean containsEqualsImpl(Set<?> set, Object target);
 
-	public static boolean ifSetContains(Set<?> set, Object target) {
+	public static boolean containsEquals(Set<?> set, Object target) {
 		boolean ifSetContains = false;
 		
 		try {
 			
-			ifSetContains = instance.ifSetContainsImpl(set, target);
+			ifSetContains = instance.containsEqualsImpl(set, target);
 
 		}catch(NullPointerException e) {
 			
@@ -108,6 +108,40 @@ public abstract class NtroCollections {
 		}
 		
 		return ifSetContains;
+	}
+	
+	protected abstract boolean containsKeyExactImpl(Map<?, ?> map, Object key);
+
+	public static boolean containsKeyExact(Map<?, ?> map, Object key) {
+		boolean containsKey = false;
+		
+		try {
+			
+			containsKey = instance.containsKeyExactImpl(map, key);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return containsKey;
+	}
+
+	protected abstract <V extends Object> V getExactKeyImpl(Map<?, V> map, Object key);
+
+	public static <V extends Object> V getExactKey(Map<?, V> map, Object key) {
+		V value = null;
+		
+		try {
+			
+			value = instance.getExactKeyImpl(map, key);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return value;
 	}
 
 }

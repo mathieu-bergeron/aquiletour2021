@@ -20,6 +20,7 @@ package ca.ntro.jdk.services;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,7 +48,35 @@ public class NtroCollectionsJdk extends NtroCollections {
 	}
 
 	@Override
-	protected boolean ifSetContainsImpl(Set<?> set, Object target) {
+	protected boolean containsEqualsImpl(Set<?> set, Object target) {
 		return set.contains(target);
+	}
+
+	@Override
+	protected boolean containsKeyExactImpl(Map<?, ?> map, Object key) {
+		boolean containsKey = false;
+		
+		for(Object candidateKey : map.keySet()) {
+			if(candidateKey == key) {
+				containsKey = true;
+				break;
+			}
+		}
+		
+		return containsKey;
+	}
+
+	@Override
+	protected <V> V getExactKeyImpl(Map<?, V> map, Object key) {
+		V value = null;
+
+		for(Entry<?, V> entry : map.entrySet()) {
+			if(entry.getKey() == key) {
+				value = entry.getValue();
+				break;
+			}
+		}
+
+		return value;
 	}
 }

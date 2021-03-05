@@ -60,7 +60,7 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	protected boolean ifSetContainsImpl(Set<?> set, Object target) {
+	protected boolean containsEqualsImpl(Set<?> set, Object target) {
 		boolean ifSetContains = false;
 
 		for(Object candidate : set) {
@@ -71,6 +71,16 @@ public class NtroCollectionsJSweet extends NtroCollections {
 		}
 
 		return ifSetContains;
+	}
+
+	@Override
+	protected boolean containsKeyExactImpl(Map<?, ?> map, Object key) {
+		return map.containsKey(key);
+	}
+
+	@Override
+	protected <V> V getExactKeyImpl(Map<?, V> map, Object key) {
+		return map.get(key);
 	}
 
 }

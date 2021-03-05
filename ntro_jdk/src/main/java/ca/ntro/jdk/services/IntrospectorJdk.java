@@ -305,11 +305,69 @@ public class IntrospectorJdk extends Introspector {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object buildValueForType(Class<?> superType, Object rawValue) {
+	public <V extends Object> V castPrimitiveValue(Class<V> targetClass, Object primitiveValue) {
 		T.call(this);
+		
+		V result = null;
 
-		return buildValue(superType, rawValue);
+		if(primitiveValue == null) {
+
+			result = null;
+
+		}else if(targetClass.equals(primitiveValue.getClass())) {
+
+			result = (V) primitiveValue;
+
+		}else if(targetClass.equals(String.class)) {
+
+			result = (V) String.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Boolean.class) || targetClass.equals(boolean.class)) {
+
+			result = (V) Boolean.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Double.class) || targetClass.equals(double.class)) {
+
+			result = (V) Double.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Float.class) || targetClass.equals(float.class)) {
+
+			result = (V) Float.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Integer.class) || targetClass.equals(int.class)) {
+
+			Double resultDouble = Double.parseDouble(primitiveValue.toString());
+			result = targetClass.cast((int) Math.round(resultDouble));
+
+		}else if(targetClass.equals(Long.class) || targetClass.equals(long.class)) {
+
+			Double resultDouble = Double.parseDouble(primitiveValue.toString());
+			result = targetClass.cast(Math.round(resultDouble));
+
+		}else if(targetClass.equals(Character.class) || targetClass.equals(char.class)) {
+			
+			if(primitiveValue instanceof String) {
+
+				String stringValue = (String) primitiveValue;
+				if(stringValue.length() > 0) {
+					result = targetClass.cast(((String)primitiveValue).charAt(0));
+				}
+
+			}else {
+
+				Double resultDouble = Double.parseDouble(primitiveValue.toString());
+				result = targetClass.cast((char) Math.round(resultDouble));
+			}
+
+		}else {
+			
+			result = targetClass.cast(primitiveValue);
+
+		}
+
+		return result;
 
 	}
 

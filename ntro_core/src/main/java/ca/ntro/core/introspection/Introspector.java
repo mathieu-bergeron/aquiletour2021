@@ -74,8 +74,7 @@ public abstract class Introspector {
 	public abstract Object buildValueForSetter(Method setter, Object rawValue);
 
 
-	public abstract Object buildValueForType(Class<?> type, Object rawValue);
-
+	public abstract <V extends Object> V castPrimitiveValue(Class<V> targetClass, Object primitiveValue);
 
 	public Method findMethodByName(Class<?> _class, String methodName) {
 		T.call(Introspector.class);

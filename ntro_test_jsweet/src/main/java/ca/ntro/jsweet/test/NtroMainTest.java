@@ -17,6 +17,8 @@ public class NtroMainTest extends NtroTaskSync {
 
 		introspectorTests.testMethods();
 		System.out.println("testMethods finished");
+		
+		JsonTests.registerSerializableClasses();
 
 		JsonTests jsonTests = new JsonTests();
 		jsonTests.testSimpleSerialization();
@@ -31,7 +33,7 @@ public class NtroMainTest extends NtroTaskSync {
 		jsonTests.testSimpleDeserialization();
 		System.out.println("testSimpleDeserialization finished");
 
-		jsonTests.testSimpleRoundTrip();
+		jsonTests.testSimpleRoundtrip();
 		System.out.println("testSimpleRoundTrip finished");
 
 		jsonTests.testUserDefinedObjectDeserialization();

@@ -30,7 +30,7 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 		
 		Object jsonValue = jsonObject.get("value");
 		
-		Object value = Ntro.introspector().buildValueForType(valueType(), jsonValue);
+		Object value = Ntro.introspector().castPrimitiveValue(valueType(), jsonValue);
 		
 		this.value = (V) value;
 	}

@@ -145,7 +145,7 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 
 		for(Object jsonItem: jsonList) {
 			
-			Object item = Ntro.introspector().buildValueForType(valueType(), jsonItem);
+			Object item = Ntro.introspector().castPrimitiveValue(valueType(), jsonItem);
 			
 			getValue().add((I) item);
 		}
