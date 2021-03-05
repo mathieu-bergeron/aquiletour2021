@@ -1,19 +1,16 @@
 package ca.ntro.jsweet.json;
 
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import def.es6.Globals;
-import def.js.JSON;
 import def.js.Promise;
 
 import static def.es6.Globals.fetch;
 
 public class JsonLoaderJSweet extends JsonLoader {
 
-    private       JsonObject   jsonObject;
+    private       String       jsonString;
     private final DocumentPath documentPath;
 
     public JsonLoaderJSweet(DocumentPath documentPath) {
@@ -29,10 +26,9 @@ public class JsonLoaderJSweet extends JsonLoader {
 
         fetch("/_B/" + fullId(documentPath)).then((Globals.FetchResponse response) -> {
             if (response.ok) {
-                return response.json()
-                        .then(json -> {
-                            // J'aime pas cette ligne! Comment passer d'objet JS en JsonObject?
-                            this.jsonObject = JsonParser.fromString(JSON.stringify(json));
+                return response.text()
+                        .then(text -> {
+                            this.jsonString = text;
 
                             notifyTaskFinished();
                         })
@@ -56,10 +52,10 @@ public class JsonLoaderJSweet extends JsonLoader {
     }
 
     @Override
-    public JsonObject getJsonObject() {
+    public String getJsonString() {
         T.call(this);
 
-        return jsonObject;
+        return jsonString;
     }
 
     @Override

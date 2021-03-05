@@ -44,11 +44,11 @@ public class LocalStoreFiles extends ModelStore {
 	}
 	
 	@Override
-	public JsonLoader getJsonObject(DocumentPath documentPath) {
+	public JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
 		File modelFile = getModelFile(documentPath);
-
+		
 		JsonLoader jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
 		
 		return jsonLoader;
@@ -71,13 +71,13 @@ public class LocalStoreFiles extends ModelStore {
 		return modelFile;
 	}
 
-	private void writeJsonFile(File file, JsonObject jsonObject) {
+	private void writeJsonFile(File file, String jsonString) {
 		T.call(this);
 
 		try {
 
 			FileOutputStream out = new FileOutputStream(file);
-			out.write(JsonParser.toString(jsonObject).getBytes());
+			out.write(jsonString.getBytes());
 			out.close();
 
 		} catch (IOException e) {
@@ -87,12 +87,12 @@ public class LocalStoreFiles extends ModelStore {
 
 
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		File modelFile = getModelFile(documentPath);
 		
-		writeJsonFile(modelFile, jsonObject);
+		writeJsonFile(modelFile, jsonString);
 	}
 
 	@Override

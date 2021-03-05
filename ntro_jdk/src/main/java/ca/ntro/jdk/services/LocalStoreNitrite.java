@@ -40,7 +40,7 @@ public class LocalStoreNitrite extends ModelStore {
 	}
 	
 	@Override
-	public JsonLoader getJsonObject(DocumentPath documentPath) {
+	public JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
@@ -50,34 +50,34 @@ public class LocalStoreNitrite extends ModelStore {
 		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()));
 		Document document  = cursor.firstOrDefault();
 		
-		JsonObject jsonObject = null;
+		String jsonString = null;
 		
 		if(document != null) {
 
-			jsonObject = (JsonObject) document.get(ModelStore.MODEL_DATA_KEY);
+			jsonString = (String) document.get(ModelStore.MODEL_DATA_KEY);
 			
 			//System.out.println(jsonObject.toString());
 
 		}else {
 
 			// XXX: create document if none exists
-			jsonObject = JsonParser.jsonObject();
+			jsonString = "{}";
 
 			document = new Document();
 			document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
-			document.put(ModelStore.MODEL_DATA_KEY, jsonObject);
+			document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 
 			models.insert(document);
 		}
 		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonObject);
+		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonString);
 		
 		return jsonLoader;
 	}
 
 
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
@@ -85,7 +85,7 @@ public class LocalStoreNitrite extends ModelStore {
 		Document document = new Document();
 		
 		document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
-		document.put(ModelStore.MODEL_DATA_KEY, jsonObject);
+		document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 		
 		
 		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()), document);

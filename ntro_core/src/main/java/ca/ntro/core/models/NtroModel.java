@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.properties.stored.simple.StoredProperty;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ValuePath;
@@ -22,7 +23,7 @@ import ca.ntro.core.system.trace.T;
  * @author mbergeron
  *
  */
-public abstract class NtroModel extends JsonObjectIO {
+public abstract class NtroModel implements JsonSerializable {
 
 	private String id;
 	private ModelStore modelStore;
@@ -30,7 +31,7 @@ public abstract class NtroModel extends JsonObjectIO {
 	public void save() {
 		T.call(this);
 
-		modelStore.saveJsonObject(documentPath(), toJsonObject());
+		modelStore.saveJsonString(documentPath(), Ntro.jsonService().toString(this));
 	}
 
 	public void updateOnceFrom(ModelStore store, String modelId, UpdateListener listener) {

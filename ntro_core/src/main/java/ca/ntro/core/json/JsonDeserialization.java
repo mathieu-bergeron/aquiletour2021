@@ -138,20 +138,23 @@ public class JsonDeserialization {
 			
 			String attributeName = setter.setterAttributeName();
 			Object jsonAttributeValue = jsonMap.get(attributeName);
-
-			Class<?> setterType = setter.getSetterType();
 			
-			String attributeValuePath = valuePath + "/" + attributeName;
-			
-			Object javaAttributeValue = toJavaValue(setterType, jsonAttributeValue, attributeValuePath, localHeap);
-			
-			try {
+			if(jsonAttributeValue != null) {
 
-				setter.invoke(javaObject, javaAttributeValue);
+				Class<?> setterType = setter.getSetterType();
+				
+				String attributeValuePath = valuePath + "/" + attributeName;
+				
+				Object javaAttributeValue = toJavaValue(setterType, jsonAttributeValue, attributeValuePath, localHeap);
+				
+				try {
 
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					setter.invoke(javaObject, javaAttributeValue);
 
-				Log.fatalError("Unable to invoke setter " + setter.name(), e);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+
+					Log.fatalError("Unable to invoke setter " + setter.name(), e);
+				}
 			}
 		}
 

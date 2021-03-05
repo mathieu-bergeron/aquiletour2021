@@ -81,7 +81,7 @@ public class ModelHandler extends AbstractHandler {
         ModelLoader modelLoader = LocalStore.getLoader(modelClazz, null, collectionName, fileName);
         modelLoader.execute();
 
-        response.getWriter().println(JsonParser.toString(modelLoader.getModel().toJsonObject()));
+        response.getWriter().println(Ntro.jsonService().toString(modelLoader.getModel()));
         response.flushBuffer();
 
         baseRequest.setHandled(true);

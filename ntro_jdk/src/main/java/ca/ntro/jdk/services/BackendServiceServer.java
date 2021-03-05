@@ -35,10 +35,13 @@ public abstract class BackendServiceServer extends BackendService {
 		BackendMessageHandler handler = handlers.get(message.getClass());
 		
 		if(handler == null) {
-			Log.fatalError("No BackendMessageHandler for " + message.getClass().getSimpleName());
+
+			Log.warning("No BackendMessageHandler for " + message.getClass().getSimpleName());
+
+		}else {
+			
+			handler.handle(modelStore, message);
 		}
-		
-		handler.handle(modelStore, message);
 	}
 
 	@Override

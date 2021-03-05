@@ -1,0 +1,10 @@
+{
+  "appointments": {
+    "_C": "ObservableAppointmentMap",
+    "value": {
+      }
+    },
+    "studentIds": ["bob"]
+  },
+  "_C": "QueueModel"
+}

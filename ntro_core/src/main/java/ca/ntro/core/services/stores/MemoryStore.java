@@ -17,8 +17,8 @@ import ca.ntro.core.system.trace.T;
 public class MemoryStore extends ModelStore {
 	
 	// XXX: we need ConcurrentHashMap as MemoryStore is accessed from different threads
-	private Map<DocumentPath, JsonObject> values = NtroCollections.concurrentMap(new HashMap<DocumentPath, JsonObject>());
-	private Map<String, JsonObject> valuesById = NtroCollections.concurrentMap(new HashMap<String, JsonObject>());
+	private Map<DocumentPath, String> values = NtroCollections.concurrentMap(new HashMap<DocumentPath, String>());
+	private Map<String, String> valuesById = NtroCollections.concurrentMap(new HashMap<String, String>());
 	
 	private static MemoryStore instance = new MemoryStore();
 	
@@ -44,18 +44,18 @@ public class MemoryStore extends ModelStore {
 	}
 
 	@Override
-	protected JsonLoader getJsonObject(DocumentPath documentPath) {
+	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
 		//JsonObject result = values.get(documentPath);
-		JsonObject result = valuesById.get(documentPath.getId());
+		String result = valuesById.get(documentPath.getId());
 		
 		// XXX: creates a new JsonObject when null
 		if(result == null) {
 			
 			T.here();
 			
-			result = JsonParser.jsonObject();
+			result = "{}";
 
 			values.put(documentPath, result);
 		}
@@ -73,16 +73,16 @@ public class MemoryStore extends ModelStore {
 	public <V extends Object> void setValue(ValuePath valuePath, V value) {
 		T.call(this);
 		
-		JsonObject document = values.get(valuePath.extractDocumentPath());
+		String document = values.get(valuePath.extractDocumentPath());
 		
-		valuePath.updateObject(document, value);
+		//valuePath.updateObject(document, value);
 	}
 
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
-		values.put(documentPath, jsonObject);
-		valuesById.put(documentPath.getId(), jsonObject);
+		values.put(documentPath, jsonString);
+		valuesById.put(documentPath.getId(), jsonString);
 	}
 
 	@Override

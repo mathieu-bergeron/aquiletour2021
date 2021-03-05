@@ -2,7 +2,6 @@ package ca.ntro.jsweet.services;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
@@ -44,7 +43,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	protected JsonLoader getJsonObject(DocumentPath documentPath) {
+	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 
 		return new JsonLoaderJSweet(documentPath);
@@ -68,7 +67,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	*/
 
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
         throw new RuntimeException("TODO");

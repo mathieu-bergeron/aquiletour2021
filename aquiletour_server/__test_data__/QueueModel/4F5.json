@@ -1,0 +1,21 @@
+{
+  "maxId": 8,
+  "appointments": {
+    "_C": "ObservableAppointmentMap",
+    "value": {
+      "0": {
+        "studentId": "alice",
+        "_C": "Appointment",
+        "appointmentId": "0",
+        "studentSurname": "Awama",
+        "studentName": "Alice"
+      }
+    }
+  },
+  "_C": "QueueModel",
+  "studentIds": [
+    "bob",
+    "autre",
+    "alice"
+  ]
+}
