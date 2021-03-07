@@ -18,8 +18,17 @@ public class DashboardModel extends NtroModel {
 
 	public void addCourse(CourseSummary course) {
 		T.call(this);
-		
-		courses.addItem(course);
+		boolean alreadyExists = false;
+		if (courses != null) {
+			for (int i = 0; i < courses.size(); i++) {
+				if (courses.getItem(i).getCourseId().equals(course.getCourseId())) {
+					alreadyExists = true;
+				}
+			}
+			if (!alreadyExists) {
+				courses.addItem(course);
+			}
+		}
 	}
 	public void deleteCourse(CourseSummary course) {
 		T.call(this);

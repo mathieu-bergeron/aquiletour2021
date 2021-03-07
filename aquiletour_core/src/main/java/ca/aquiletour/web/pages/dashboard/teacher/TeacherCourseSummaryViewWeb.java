@@ -34,7 +34,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(makeAppointmentLink);
 
 
-		T.values(course.getTitle()); 
 		
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());

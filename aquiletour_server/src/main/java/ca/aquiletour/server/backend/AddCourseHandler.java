@@ -46,7 +46,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 					queue.setId(courseId);
 					queue.setTeacherName(fromUser.getName());
 					queue.setTeacherSurname(fromUser.getSurname());
-					queuesModel.getQueues().addItem(queue);;
+					queuesModel.addQueueToList(queue);
 					queuesModel.save();
 				}
 

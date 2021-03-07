@@ -19,7 +19,6 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
-		T.here();
 
 		HtmlElement title = this.getRootElement().children("#course-title").get(0);
 		HtmlElement courseId = this.getRootElement().children("#courseId").get(0);
@@ -33,7 +32,6 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(teacherAvailable);
 		
 
-		T.values(course.getTitle()); 
 		
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
