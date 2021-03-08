@@ -23,17 +23,6 @@ public class UsersModel extends NtroModel {
 
 		return users;
 	}
-	
-	public ArrayList<User> getListOfAllUsers(){
-		ArrayList<User> usersList = new ArrayList<User>();
-		Map<String,User> usersMap = (Map<String, User>) users;
-		for (Map.Entry<String, User> entry : usersMap.entrySet()) {
-			usersList.add(entry.getValue());
-		}
-		return usersList;
-		
-	}
-
 	public void setUsers(ObservableUserMap users) {
 		T.call(this);
 

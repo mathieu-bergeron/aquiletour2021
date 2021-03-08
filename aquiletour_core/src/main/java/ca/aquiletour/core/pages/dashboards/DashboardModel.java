@@ -11,9 +11,16 @@ public class DashboardModel extends NtroModel {
 	private static final long serialVersionUID = -7945536015118582973L;
 
 	private ObservableCourseList courses = new ObservableCourseList(new ArrayList<>());
-	
+
 	@Override
 	public void initializeStoredValues() {
+	}
+	public void emptyCourses() {
+		ObservableCourseList newList = courses;
+		for (int i = 0; i < newList.size(); i++) {
+			CourseSummary course = newList.getItem(i);
+			courses.removeItem(course);;
+		}
 	}
 
 	public void addCourse(CourseSummary course) {
@@ -30,18 +37,19 @@ public class DashboardModel extends NtroModel {
 			}
 		}
 	}
+
 	public void deleteCourse(CourseSummary course) {
 		T.call(this);
-		
+
 		courses.removeItem(course);
 	}
-	
+
 	public void deleteCourseById(String courseId) {
 		T.call(this);
-		
+
 		for (int i = 0; i < courses.size(); i++) {
-			CourseSummary currentCourse =  courses.getItem(i);
-			if(currentCourse.getTitle().equals(courseId)) {
+			CourseSummary currentCourse = courses.getItem(i);
+			if (currentCourse.getTitle().equals(courseId)) {
 				courses.removeItem(currentCourse);
 			}
 		}
@@ -54,25 +62,33 @@ public class DashboardModel extends NtroModel {
 	public void setCourses(ObservableCourseList courses) {
 		this.courses = courses;
 	}
-	
+
 	public void updateNbAppointmentOfCourse(String courseId, int nbAppointment) {
 		for (int i = 0; i < courses.size(); i++) {
-				CourseSummary currentCourse =  courses.getItem(i);
-				if(currentCourse.getTitle().equals(courseId)) {
-					currentCourse.setNumberOfAppointments(nbAppointment);
-				};
-			
+			CourseSummary currentCourse = courses.getItem(i);
+			if (currentCourse.getTitle().equals(courseId)) {
+				currentCourse.setNumberOfAppointments(nbAppointment);
+			}
+			;
+
 		}
 	}
 
 	public void updateMyAppointment(String courseId, Boolean state) {
 		for (int i = 0; i < courses.size(); i++) {
-			CourseSummary currentCourse =  courses.getItem(i);
-			if(currentCourse.getTitle().equals(courseId)) {
+			CourseSummary currentCourse = courses.getItem(i);
+			if (currentCourse.getTitle().equals(courseId)) {
 				currentCourse.setMyAppointment(state);
-			};
-		
+			}
+		}
+
 	}
+	
+	public void setTeacherAvailability(boolean availabilty) {
+		for (int i = 0; i < courses.size(); i++) {
+			CourseSummary currentCourse = courses.getItem(i);
+			currentCourse.setIsQueueOpen(availabilty);
+		}
 		
 	}
 }

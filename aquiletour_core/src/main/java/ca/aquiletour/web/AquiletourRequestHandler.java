@@ -11,6 +11,7 @@ import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
@@ -114,6 +115,11 @@ public class AquiletourRequestHandler {
 				showTeacherQueueMessage.setCourseId(courseId);
 				showTeacherQueueMessage.sendMessage();
 				//teacher uses queue message (prof encore actif) TODO
+				TeacherUsesQueueMessage teacherUsesQueueMessage = MessageFactory.getOutgoingMessage(TeacherUsesQueueMessage.class);
+				teacherUsesQueueMessage.setCourseId(courseId);
+				teacherUsesQueueMessage.setTeacher(user);
+				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
+
 				
 			}else if(user instanceof Student){
 				

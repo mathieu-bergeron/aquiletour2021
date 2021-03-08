@@ -20,7 +20,28 @@ public class QueueModel extends NtroModel {
 	public void initializeStoredValues() {
 		T.call(this);
 	}
-
+	
+	public void removeStudentFromClass(String studentId) {
+		T.call(this);
+		for (int i = 0; i < studentIds.size(); i++) {
+			if(studentIds.get(i).equals(studentId)) {
+				studentIds.remove(i);
+			}
+		}
+	}
+	
+	public void addStudentToClass(String studentId) {
+		T.call(this);
+		boolean alreadyExists = false;
+		for (int i = 0; i < studentIds.size() && !alreadyExists; i++) {
+			if(studentIds.get(i).equals(studentId)) {
+				alreadyExists = true;
+			}
+		}
+		if (!alreadyExists) {
+			studentIds.add(studentId);
+		}
+	}
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
 		T.here();

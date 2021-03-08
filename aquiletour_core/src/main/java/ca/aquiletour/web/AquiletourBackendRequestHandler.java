@@ -14,6 +14,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
+import ca.aquiletour.core.pages.users.messages.DeleteUserFromCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
@@ -94,7 +95,7 @@ public class AquiletourBackendRequestHandler {
 			String courseId = parameters.get("title")[0];
 
 			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, true, null, 0));
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, null, null, 0));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 		} else if(parameters.containsKey("deleteCourse")) {
@@ -163,8 +164,6 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setappointmentDestinationId(destinationId);
 			moveAppointmentMessage.setUser(user);
 			moveAppointmentMessage.setCourseId(courseId);
-			T.values(departureId);
-			T.values(destinationId);
 			//moveAppointmentMessage.sendMessage();
 		}
 	}
@@ -177,13 +176,17 @@ public class AquiletourBackendRequestHandler {
 			
 			String email = parameters.get("email")[0];
 			String password = parameters.get("password")[0];
+			T.here();
 			
 			AddUserMessage addUserMessage = MessageFactory.getOutgoingMessage(AddUserMessage.class);
 			User newUser = new User();
 			newUser.setUserEmail(email);			
-			newUser.setUserPassword(password);		
+			newUser.setUserPassword(password);	
+			newUser.setName("test");
+			newUser.setAuthToken("test");
+			newUser.setId(email);
 			addUserMessage.setUser(newUser);
-			addUserMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(addUserMessage);
 
 		} else if(parameters.containsKey("deleteUser")){
 
@@ -192,7 +195,8 @@ public class AquiletourBackendRequestHandler {
 			String userId = parameters.get("deleteUser")[0];
 			deleteUserMessage.setUserId(userId);
 			
-			deleteUserMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(deleteUserMessage);
+
 		} else if(parameters.containsKey("addUser")) { // /usagers?addUser=Id&to=IdDuCours
 			T.here();
 			AddUserToCourseMessage addUserToCourseMessage = new AddUserToCourseMessage();
@@ -206,6 +210,16 @@ public class AquiletourBackendRequestHandler {
 			 
 			 
 			
+		}else if(parameters.containsKey("removeUser")) { // /usagers?removeUser=Id&from=IdDuCours
+			T.here();
+			DeleteUserFromCourseMessage deleteUserFromCourseMessage = new DeleteUserFromCourseMessage();
+			T.here();
+			String userId = parameters.get("removeUser")[0];
+			String courseId = parameters.get("from")[0];
+			 
+			deleteUserFromCourseMessage.setUserId(userId);
+			deleteUserFromCourseMessage.setCourseId(courseId);
+			Ntro.backendService().sendMessageToBackend(deleteUserFromCourseMessage);
 		}
 	}
 

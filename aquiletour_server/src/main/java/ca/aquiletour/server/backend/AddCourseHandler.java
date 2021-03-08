@@ -38,7 +38,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 													   fromUser.getAuthToken(),
 													   courseId);
-					queueModel.getStudentIds().add(fromUser.getId());//TODO the one who created the class is the teacher so maybe add teacherId to the model here
+					queueModel.addStudentToClass(fromUser.getId());;//TODO the one who created the class is the teacher so maybe add teacherId to the model here
 
 					queueModel.save();
 					QueuesModel queuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "openQueues");

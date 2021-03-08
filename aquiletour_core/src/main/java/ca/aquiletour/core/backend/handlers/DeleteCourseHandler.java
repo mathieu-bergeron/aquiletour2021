@@ -27,6 +27,9 @@ public class DeleteCourseHandler extends MessageHandler<DashboardBackendControll
 		UsersModel usersModel = getController().getModel(UsersModel.class, 
                 "admin",
                 "allUsers");
+		QueueModel queueModel = getController().getModel(QueueModel.class, 
+				fromUser.getAuthToken(),
+				courseId);
 		
 		if(usersModel != null) {
 			
@@ -45,13 +48,8 @@ public class DeleteCourseHandler extends MessageHandler<DashboardBackendControll
 						user.getId());
 				dashboardModel.deleteCourseById(courseId);
 				dashboardModel.save();
+				queueModel.deleteStudent(user.getId());
 			}
-			
-
-			QueueModel queueModel = getController().getModel(QueueModel.class, 
-													fromUser.getAuthToken(),
-													courseId);
-			queueModel.deleteStudent(fromUser.getId());
 
 			queueModel.save();
 			QueuesModel queuesModel = getController().getModel(QueuesModel.class, fromUser.getAuthToken(), "openQueues");

@@ -29,7 +29,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		String queueId = message.getQueueId();
 		User fromUser = message.getUser();
 		//T.values(csvString);
-		//TODO parse csv, get user info, make a userModel and dashboard for each.
 		//parse csv: trouver le bon fichier qui commence avec le queueId, chercher: (prenom;nom;DA9chiffres;numeroProgramme6characters;phoneNumber;;;;;
 		UsersModel usersModel = modelStore.getModel(UsersModel.class, 
                 "adminToken",
@@ -70,15 +69,17 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
 								newUser.getAuthToken(),
 	                            newUser.getId());
+						
 						CourseSummary newCourse = new CourseSummary();
 						newCourse.setTitle(queueId);
 						newCourse.setCourseId(queueId);
 						dashboardModel.addCourse(newCourse);
 						dashboardModel.save();
+						
 						QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 								newUser.getAuthToken(),
 								queueId);
-						queueModel.getStudentIds().add(newUser.getName());
+						queueModel.addStudentToClass(newUser.getName());
 						queueModel.save();
 					}
 					

@@ -6,16 +6,17 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
+import ca.aquiletour.core.pages.users.messages.DeleteUserFromCourseMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 
-public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCourseMessage> {
+public class DeleteUserFromCourseHandler extends BackendMessageHandler<DeleteUserFromCourseMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, AddUserToCourseMessage message) {
+	public void handle(ModelStoreSync modelStore, DeleteUserFromCourseMessage message) {
 		T.call(this);
 		
 		String userId = message.getUserId();
@@ -27,10 +28,7 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 		
 		if(dashboardModel != null) {
 			
-			CourseSummary newCourse = new CourseSummary();
-			newCourse.setTitle(courseId);
-			newCourse.setCourseId(courseId);
-			dashboardModel.addCourse(newCourse);
+			dashboardModel.deleteCourseById(courseId);;
 			dashboardModel.save();
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
@@ -39,7 +37,7 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 													   "admin",
 													   courseId);
-					queueModel.addStudentToClass(userId);
+					queueModel.removeStudentFromClass(userId);
 
 					queueModel.save();
 				}
