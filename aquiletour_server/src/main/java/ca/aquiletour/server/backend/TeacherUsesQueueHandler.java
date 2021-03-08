@@ -49,7 +49,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 						}
 						QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
 						QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
-						QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "OpenQueues");
+						QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 						openQueuesModel.addQueueToList(queue);
 						openQueuesModel.save();
 					}

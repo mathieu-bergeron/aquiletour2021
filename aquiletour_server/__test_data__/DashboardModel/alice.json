@@ -6,16 +6,14 @@
         "numberOfAppointments": 2,
         "_C": "CourseSummary",
         "isQueueOpen": true,
-        "myAppointment": {
-          "_R": "/courses/value/0/isQueueOpen"
-        },
+        "myAppointment": 0,
         "title": "4F5",
         "courseId": "4F5"
       },
       {
         "numberOfAppointments": 0,
         "_C": "CourseSummary",
-        "isQueueOpen": null,
+        "isQueueOpen": false,
         "myAppointment": null,
         "title": "3C6",
         "courseId": "3C6"
@@ -23,7 +21,7 @@
       {
         "numberOfAppointments": 0,
         "_C": "CourseSummary",
-        "isQueueOpen": null,
+        "isQueueOpen": true,
         "myAppointment": null,
         "title": "ZD4",
         "courseId": "ZD4"
