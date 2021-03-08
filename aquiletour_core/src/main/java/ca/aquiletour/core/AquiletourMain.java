@@ -74,6 +74,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 	}
 	
 	public static void registerSerializableClasses() {
+		T.call(AquiletourMain.class);
+
 		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
 		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
 		Ntro.jsonService().registerSerializableClass(CourseSummary.class);

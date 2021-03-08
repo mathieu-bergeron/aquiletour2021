@@ -67,7 +67,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	*/
 
 	@Override
-	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
         throw new RuntimeException("TODO");

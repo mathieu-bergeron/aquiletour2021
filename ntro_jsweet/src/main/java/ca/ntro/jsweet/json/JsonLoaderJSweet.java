@@ -33,10 +33,10 @@ public class JsonLoaderJSweet extends JsonLoader {
                             notifyTaskFinished();
                         })
                         .Catch((java.lang.Object error) -> {
-                            System.err.println("[NetworkStore] Erreur lors du chargement du modèle (JSON invalide)");
+                            System.err.println("[NetworkStore] for " + documentPath.toString() + ", " + error.toString());
                         });
             } else {
-                return Promise.reject("[NetworkStore] Erreur lors du chargement du modèle (code non-200 du serveur)");
+                return Promise.reject("[NetworkStore] Error (not a 200 code)");
             }
         });
     }

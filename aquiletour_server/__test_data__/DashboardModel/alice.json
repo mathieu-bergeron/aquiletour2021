@@ -3,28 +3,30 @@
     "_C": "ObservableCourseList",
     "value": [
       {
+        "numberOfAppointments": 5,
         "_C": "CourseSummary",
+        "isQueueOpen": true,
+        "myAppointment": {
+          "_R": "/courses/value/0/isQueueOpen"
+        },
         "title": "4F5",
-        "courseId": "4F5",
-        "isQueueOpen": true,
-        "numberOfAppointments": 0,
-        "myAppointment": null
+        "courseId": "4F5"
       },
       {
+        "numberOfAppointments": 0,
         "_C": "CourseSummary",
+        "isQueueOpen": null,
+        "myAppointment": null,
         "title": "3C6",
-        "courseId": "3C6",
-        "isQueueOpen": true,
-        "numberOfAppointments": 0,
-        "myAppointment": null
+        "courseId": "3C6"
       },
       {
-        "_C": "CourseSummary",
-        "title": "ZD4",
-        "courseId": "ZD4",
-        "isQueueOpen": true,
         "numberOfAppointments": 0,
-        "myAppointment": null
+        "_C": "CourseSummary",
+        "isQueueOpen": null,
+        "myAppointment": null,
+        "title": "ZD4",
+        "courseId": "ZD4"
       }
     ]
   },

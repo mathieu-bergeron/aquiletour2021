@@ -79,7 +79,7 @@ public class MemoryStore extends ModelStore {
 	}
 
 	@Override
-	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 		values.put(documentPath, jsonString);
 		valuesById.put(documentPath.getId(), jsonString);

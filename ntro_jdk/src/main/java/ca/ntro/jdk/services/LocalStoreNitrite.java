@@ -77,7 +77,7 @@ public class LocalStoreNitrite extends ModelStore {
 
 
 	@Override
-	protected void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		NitriteCollection models = db.getCollection(documentPath.getCollection());

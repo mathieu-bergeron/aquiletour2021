@@ -45,7 +45,7 @@ public abstract class ModelStore {
 
 	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
 
-	protected abstract void saveJsonString(DocumentPath documentPath, String jsonString);
+	public abstract void saveJsonString(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
 

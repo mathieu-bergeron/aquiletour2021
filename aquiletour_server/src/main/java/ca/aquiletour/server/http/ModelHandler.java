@@ -7,6 +7,7 @@ import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
@@ -74,7 +75,7 @@ public class ModelHandler extends AbstractHandler {
         System.out.println("Collection: " + collectionName + ", File: " + modelId);
 
         Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.jsonService().serializableClass(collectionName);
-
+        
         if (modelClazz == null) {
             Log.fatalError("[ModelHandler] Could not find NtroModel subclass for collection name '" + collectionName + "'");
             MustNot.beNull(modelClazz);
@@ -106,16 +107,23 @@ public class ModelHandler extends AbstractHandler {
     // TODO Faire que ça sauvegarde vraiment le modèle ! Seulement pour tester
     // TODO instancier + save ???
     private void handleModelWrite(Request baseRequest, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        BufferedReader bodyText = request.getReader();
 
+        String[] uriParts = uriParts(request.getRequestURI());
+        String collectionName = uriParts[1];
+        String modelId = uriParts[2];
+        
+        DocumentPath documentPath = new DocumentPath(collectionName, modelId);
+
+        BufferedReader bodyText = request.getReader();
         StringBuilder jsonText = new StringBuilder();
         String ln;
         while ((ln = bodyText.readLine()) != null) {
             jsonText.append(ln);
         }
 
-        System.out.println(jsonText);
-        response.setStatus(HttpStatus.IM_A_TEAPOT_418);
+        LocalStore.saveJsonString(documentPath, jsonText.toString());
+
+        response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);
     }
 
