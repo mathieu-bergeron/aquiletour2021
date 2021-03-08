@@ -17,7 +17,6 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.models.users.AnonUser;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
@@ -26,7 +25,7 @@ import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.queue.values.ObservableAppointmentMap;
+import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
 import ca.aquiletour.core.pages.root.RootController;
@@ -82,7 +81,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
 
 		Ntro.jsonService().registerSerializableClass(QueueModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableAppointmentMap.class);
+		Ntro.jsonService().registerSerializableClass(ObservableAppointmentList.class);
 		Ntro.jsonService().registerSerializableClass(Appointment.class);
 
 		Ntro.jsonService().registerSerializableClass(QueuesModel.class);
