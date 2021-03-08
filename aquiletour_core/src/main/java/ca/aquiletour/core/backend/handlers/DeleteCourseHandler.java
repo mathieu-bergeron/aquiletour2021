@@ -52,7 +52,7 @@ public class DeleteCourseHandler extends MessageHandler<DashboardBackendControll
 			}
 
 			queueModel.save();
-			QueuesModel queuesModel = getController().getModel(QueuesModel.class, fromUser.getAuthToken(), "openQueues");
+			QueuesModel queuesModel = getController().getModel(QueuesModel.class, fromUser.getAuthToken(), "allQueues");
 			queuesModel.deleteQueue(courseId);
 			queuesModel.save();
 

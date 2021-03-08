@@ -3,7 +3,7 @@
     "_C": "ObservableCourseList",
     "value": [
       {
-        "numberOfAppointments": 5,
+        "numberOfAppointments": 2,
         "_C": "CourseSummary",
         "isQueueOpen": true,
         "myAppointment": {

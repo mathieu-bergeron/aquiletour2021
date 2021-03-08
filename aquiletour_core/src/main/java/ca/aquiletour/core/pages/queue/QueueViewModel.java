@@ -40,7 +40,6 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 			public void onItemAdded(int index, Appointment item) {
 				// TODO Auto-generated method stub
 				T.call(this);
-				T.here();
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				
 				appointmentView.displayAppointement(item);
