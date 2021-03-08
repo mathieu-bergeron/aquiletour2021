@@ -9,6 +9,8 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.queues.QueuesModel;
+import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
@@ -38,15 +40,20 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 				protected void runTask() {
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
-						int nbAppointment = queueModel.getAppointments().size();
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
 			                    "admin",
 			                    studentId);
 						if(dashboardModel != null) {
-							dashboardModel.setTeacherAvailability(true);
+							dashboardModel.setTeacherAvailability(true, courseId);
 							dashboardModel.save();
 						}
+						QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
+						QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
+						QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "OpenQueues");
+						openQueuesModel.addQueueToList(queue);
+						openQueuesModel.save();
 					}
+					
 				}
 
 				@Override

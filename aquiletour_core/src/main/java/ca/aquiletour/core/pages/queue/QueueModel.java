@@ -44,10 +44,8 @@ public class QueueModel extends NtroModel {
 	}
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
-		T.here();
 		
 		setMaxId(getMaxId() + 1);
-		T.values(getMaxId());
 		String appointmentId = Integer.toString(getMaxId());
 		appointment.setAppointmentId(appointmentId);
 		appointments.addItem(appointment);;

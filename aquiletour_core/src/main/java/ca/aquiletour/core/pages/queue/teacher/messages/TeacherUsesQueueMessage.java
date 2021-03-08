@@ -1,8 +1,6 @@
 package ca.aquiletour.core.pages.queue.teacher.messages;
 
-import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
-import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 
 public class TeacherUsesQueueMessage extends NtroMessage {
