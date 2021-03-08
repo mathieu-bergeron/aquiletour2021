@@ -53,6 +53,34 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
+	public void insertBefore(HtmlElement element) {
+		T.call(this);
+
+		MustNot.beNull(jsoupElement);
+
+		HtmlElementJdk otherElement = (HtmlElementJdk) element;
+
+		MustNot.beNull(otherElement);
+		MustNot.beNull(otherElement.jsoupElement);
+
+		jsoupElement.before(otherElement.jsoupElement);
+	}
+
+	@Override
+	public void insertAfter(HtmlElement element) {
+		T.call(this);
+
+		MustNot.beNull(jsoupElement);
+
+		HtmlElementJdk otherElement = (HtmlElementJdk) element;
+
+		MustNot.beNull(otherElement);
+		MustNot.beNull(otherElement.jsoupElement);
+
+		jsoupElement.after(otherElement.jsoupElement);
+	}
+
+	@Override
 	public HtmlElements children(String cssQuery) {
 		T.call(this);
 
@@ -76,12 +104,25 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
+	public String id() {
+		T.call(this);
+
+		return jsoupElement.id();
+	}
+
+	@Override
+	public String getAttribute(String name) {
+		T.call(this);
+
+		return jsoupElement.attr(name);
+	}
+
+	@Override
 	public void setAttribute(String name, String value) {
 		T.call(this);
 
 		jsoupElement.attr(name, value);
 	}
-
 
 	@Override
 	public void remove() {
