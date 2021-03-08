@@ -3,14 +3,10 @@ package ca.ntro.core.models.properties.observable.simple;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonObjectIO;
-import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.properties.NtroModelValue;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public abstract class ObservableProperty<V extends Object> extends JsonObjectIO {
+public abstract class ObservableProperty<V extends Object> implements JsonSerializable {
 	
 	private V value;
 
@@ -21,39 +17,7 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 	public ObservableProperty() {
 		T.call(this);
 	}
-	
-	protected abstract Class<?> getValueType();
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void loadFromJsonObject(JsonObject jsonObject) {
-		
-		Object jsonValue = jsonObject.get("value");
-		
-		Object value = Ntro.introspector().buildValueForType(getValueType(), jsonValue);
-		
-		this.value = (V) value;
-	}
-
-	@Override
-	public JsonObject toJsonObject() {
-		T.call(this);
-		
-		JsonObject result = JsonParser.jsonObject();
-		
-		result.setTypeName(this.getClass().getName());
-		
-		Object jsonValue = value;
-		
-		if(getValueType().equals(NtroModelValue.class)) {
-			jsonValue = ((NtroModelValue) value).toJsonObject().toMap();
-		}
-		
-		result.put("value", jsonValue);
-
-		return result;
-	}
-	
 	public ObservableProperty(V value) {
 		T.call(this);
 		
@@ -66,7 +30,7 @@ public abstract class ObservableProperty<V extends Object> extends JsonObjectIO 
 		return value;
 	}
 
-	protected void setValue(V value) {
+	public void setValue(V value) {
 		T.call(this);
 		
 		this.value = value;

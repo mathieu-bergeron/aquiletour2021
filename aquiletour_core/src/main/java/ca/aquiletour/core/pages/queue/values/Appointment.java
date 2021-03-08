@@ -7,12 +7,13 @@ public class Appointment extends NtroModelValue {
 	private String id;
 	private String studentId;
 	private String studentName;
-	private String studentSurame;
+	private String studentSurname;
 	//private User user;
-	public String getAppointmentId() {
+
+	public String getId() {
 		return id;
 	}
-	public void setAppointmentId(String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getStudentId() {
@@ -28,10 +29,10 @@ public class Appointment extends NtroModelValue {
 		this.studentName = studentName;
 	}
 	public String getStudentSurname() {
-		return studentSurame;
+		return studentSurname;
 	}
-	public void setStudentSurname(String studentSurame) {
-		this.studentSurame = studentSurame;
+	public void setStudentSurname(String studentSurname) {
+		this.studentSurname = studentSurname;
 	}
 	
 

@@ -24,12 +24,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.ConstructorSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
@@ -37,6 +38,8 @@ import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.introspection.NtroClassJdk;
+import ca.ntro.jdk.introspection.NtroMethodJdk;
 
 public class IntrospectorJdk extends Introspector {
 
@@ -268,6 +271,11 @@ public class IntrospectorJdk extends Introspector {
 		return clazz.getSimpleName();
 	}
 
+	@Override
+	public String getFullNameForClass(Class<?> clazz) {
+		return clazz.getName();
+	}
+
 	private boolean ifImplementsInterface(Class<?> typeClass, Class<?> targetInterface) {
 		T.call(this);
 
@@ -297,11 +305,70 @@ public class IntrospectorJdk extends Introspector {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object buildValueForType(Class<?> superType, Object rawValue) {
+	public Object castPrimitiveValue(Class<?> targetClass, Object primitiveValue) {
 		T.call(this);
+		
+		Object result = null;
 
-		return buildValue(superType, rawValue);
+		if(primitiveValue == null) {
+
+			result = null;
+
+		}else if(targetClass.equals(primitiveValue.getClass())) {
+
+			result = primitiveValue;
+
+		}else if(targetClass.equals(String.class)) {
+
+			result = String.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Boolean.class) || targetClass.equals(boolean.class)) {
+
+			result = Boolean.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Double.class) || targetClass.equals(double.class)) {
+
+			result = Double.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Float.class) || targetClass.equals(float.class)) {
+
+			result = Float.valueOf(primitiveValue.toString());
+
+		}else if(targetClass.equals(Integer.class) || targetClass.equals(int.class)) {
+
+			Double resultDouble = Double.parseDouble(primitiveValue.toString());
+			Long resultLong = Math.round(resultDouble);
+			result = resultLong.intValue();
+
+		}else if(targetClass.equals(Long.class) || targetClass.equals(long.class)) {
+
+			Double resultDouble = Double.parseDouble(primitiveValue.toString());
+			result = targetClass.cast(Math.round(resultDouble));
+
+		}else if(targetClass.equals(Character.class) || targetClass.equals(char.class)) {
+			
+			if(primitiveValue instanceof String) {
+
+				String stringValue = (String) primitiveValue;
+				if(stringValue.length() > 0) {
+					result = targetClass.cast(((String)primitiveValue).charAt(0));
+				}
+
+			}else {
+
+				Double resultDouble = Double.parseDouble(primitiveValue.toString());
+				result = targetClass.cast((char) Math.round(resultDouble));
+			}
+
+		}else {
+			
+			result = targetClass.cast(primitiveValue);
+
+		}
+
+		return result;
 
 	}
 
@@ -330,17 +397,12 @@ public class IntrospectorJdk extends Introspector {
 	}
 
 	@Override
-	public MethodSignature methodSignature(Method method) {
+	public NtroMethod ntroMethod(Method method) {
 		T.call(this);
-
-		List<String> argumentTypes = new ArrayList<>();
-
-		for(Type argumentType : method.getGenericParameterTypes()) {
-			argumentTypes.add(simpleTypeName(argumentType.getTypeName()));
-		}
-
-		return new MethodSignature(method.getName(), argumentTypes, simpleTypeName(method.getGenericReturnType().getTypeName()), modifiers(method));
+		
+		return new NtroMethodJdk(method);
 	}
+
 
 	public static FieldSignature fieldSignature(Field field) {
 		T.call(IntrospectorJdk.class);
@@ -350,8 +412,6 @@ public class IntrospectorJdk extends Introspector {
 
 	@SuppressWarnings("rawtypes")
 	private static List<String> modifiers(Constructor constructor){
-		T.call(IntrospectorJdk.class);
-
 		return modifiers(constructor.getModifiers());
 	}
 
@@ -436,5 +496,25 @@ public class IntrospectorJdk extends Introspector {
 	@Override
 	public boolean isClass(Object object) {
 		return object instanceof Class;
+	}
+
+	@Override
+	public boolean isMap(Object object) {
+		return object instanceof Map;
+	}
+
+	@Override
+	public boolean isList(Object object) {
+		return object instanceof List;
+	}
+
+	@Override
+	public NtroClass ntroClassFromObject(Object object) {
+		return ntroClassFromJavaClass(object.getClass());
+	}
+
+	@Override
+	public NtroClass ntroClassFromJavaClass(Class<?> _class) {
+		return new NtroClassJdk(_class);
 	}
 }

@@ -186,7 +186,7 @@ public class DynamicHandler extends AbstractHandler {
 		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
 		usersLoader.execute();
 		UsersModel usersModel = (UsersModel) usersLoader.getModel();
-
+		
 		if(baseRequest.getParameter("userId") != null 
 				&& baseRequest.getParameter("authToken") != null) {
 			

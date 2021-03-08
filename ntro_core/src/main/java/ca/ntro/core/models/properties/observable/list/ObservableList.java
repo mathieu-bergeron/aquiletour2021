@@ -35,7 +35,7 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 		return getValue().indexOf(item);
 	}
 	
-	public I getItem(int id) {
+	public I item(int id) {
 		T.call(this);
 		return getValue().get(id);
 	}
@@ -113,46 +113,5 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 		}
 
 		//super.observe(listObserver);
-	}
-
-	@Override
-	public JsonObject toJsonObject() {
-		T.call(this);
-		
-		JsonObject result = JsonParser.jsonObject();
-		result.setTypeName(this.getClass().getName());
-
-		List<I> list = getValue();
-		
-		List<Object> jsonList = new ArrayList<>();
-		
-		for(I item : list) {
-			Object jsonItem = item;
-			
-			// FIXME: this should be Ntro.introspector.ifItImplements(NtroModelValue.class)
-			if(getValueType().equals(NtroModelValue.class)) {
-				jsonItem = ((NtroModelValue) item).toJsonObject().toMap();
-			}
-			
-			jsonList.add(jsonItem);
-		}
-		
-		result.put("value", jsonList);
-
-		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void loadFromJsonObject(JsonObject jsonObject) {
-		
-		List<?> jsonList = (List<?>) jsonObject.get("value");
-
-		for(Object jsonItem: jsonList) {
-			
-			Object item = Ntro.introspector().buildValueForType(getValueType(), jsonItem);
-			
-			getValue().add((I) item);
-		}
 	}
 }

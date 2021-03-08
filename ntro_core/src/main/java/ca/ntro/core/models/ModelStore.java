@@ -1,7 +1,7 @@
 package ca.ntro.core.models;
 
+import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
@@ -20,7 +20,7 @@ public abstract class ModelStore {
 		
 		DocumentPath documentPath = new DocumentPath(modelClass.getSimpleName(), firstPathName, pathRemainder);
 		
-		JsonLoader jsonLoader = getJsonObject(documentPath);
+		JsonLoader jsonLoader = getJsonLoader(documentPath);
 		jsonLoader.setTaskId("JsonLoader");
 
 		modelLoader.setTargetClass(modelClass);
@@ -30,7 +30,10 @@ public abstract class ModelStore {
 
 		return modelLoader;
 	}
-
+	
+	public static String emptyModelString(DocumentPath documentPath) {
+		return "{\""+Constants.JSON_CLASS_KEY+"\":\""+documentPath.getCollection()+"\"}";
+	}
 
 	public abstract void addValueListener(ValuePath valuePath, ValueListener valueListener);
 
@@ -40,9 +43,9 @@ public abstract class ModelStore {
 
 	protected abstract void installExternalUpdateListener(ExternalUpdateListener updateListener);
 
-	protected abstract JsonLoader getJsonObject(DocumentPath documentPath);
+	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
 
-	protected abstract void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject);
+	public abstract void saveJsonString(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
 

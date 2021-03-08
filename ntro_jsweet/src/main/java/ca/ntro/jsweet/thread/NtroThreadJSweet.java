@@ -5,6 +5,12 @@ import ca.ntro.messages.NtroMessage;
 import ca.ntro.threads.NtroThread;
 
 public class NtroThreadJSweet implements NtroThread {
+	
+	private long threadId;
+
+	public NtroThreadJSweet(long threadId) {
+		this.threadId = threadId;
+	}
 
 	@Override
 	public void sendMessageToThread(NtroMessage message) {

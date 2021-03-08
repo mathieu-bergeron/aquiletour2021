@@ -37,9 +37,6 @@ public class JsonParserJSweet extends JsonParser {
 	protected String toStringImpl(JsonObject jsonObject) {
 		T.call(this);
 		
-		System.out.println(jsonObject);
-		System.out.println(jsonObject.toMap());
-
 		return JSON.stringify(jsonObject.toMap());
 	}
 

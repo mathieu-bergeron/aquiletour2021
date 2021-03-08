@@ -18,8 +18,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.services.BackendService;
 import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 
 import org.eclipse.jetty.client.HttpClient;
@@ -38,8 +42,12 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		//NtroWebserver.defaultInitializationTask()
-		        //     .execute();
+		ModelStoreSync localStore = new ModelStoreSync(new LocalStoreFiles());
+		
+		BackendService aquiletourBackend = new AquiletourBackendService(localStore);
+
+		NtroWebserver.defaultInitializationTask(aquiletourBackend)
+		             .execute();
 	}
 	
 	@Before

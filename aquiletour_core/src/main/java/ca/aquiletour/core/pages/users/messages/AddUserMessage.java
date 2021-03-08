@@ -6,18 +6,16 @@ import ca.ntro.messages.NtroMessage;
 
 public class AddUserMessage extends NtroMessage {
 
-	private User user;
-
-	public void setUser(User user) {
-		T.call(this);
-		
-		this.user = user;
-	}
+	private User User;
 	
 	public User getUser() {
-		T.call(this);
-		
-		return user;
+		return User;
 	}
+
+	public void setUser(User user) {
+		User = user;
+	}
+
+
 
 }

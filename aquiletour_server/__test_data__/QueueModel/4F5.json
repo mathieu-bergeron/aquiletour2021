@@ -1,31 +1,48 @@
 {
   "appointments": {
-    "_T": "ca.aquiletour.core.pages.queue.values.ObservableAppointmentList",
-    "value": [
-      {
+    "_C": "ObservableAppointmentMap",
+    "value": {
+      "0": {
         "studentId": "alice",
-        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
-        "appointmentId": "1",
+        "_C": "Appointment",
         "studentSurname": "Awama",
-        "studentName": "Alice"
+        "studentName": "Alice",
+        "id": "0"
       },
-      {
+      "12": {
         "studentId": "alice",
-        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
-        "appointmentId": "2",
+        "_C": "Appointment",
         "studentSurname": "Awama",
-        "studentName": "Alice"
+        "studentName": "Alice",
+        "id": "12"
       },
-      {
+      "13": {
         "studentId": "alice",
-        "_T": "ca.aquiletour.core.pages.queue.values.Appointment",
-        "appointmentId": "3",
+        "_C": "Appointment",
         "studentSurname": "Awama",
-        "studentName": "Alice"
+        "studentName": "Alice",
+        "id": "13"
+      },
+      "9": {
+        "studentId": "alice",
+        "_C": "Appointment",
+        "studentSurname": "Awama",
+        "studentName": "Alice",
+        "id": "9"
+      },
+      "10": {
+        "studentId": "alice",
+        "_C": "Appointment",
+        "studentSurname": "Awama",
+        "studentName": "Alice",
+        "id": "10"
       }
-    ]
+    }
   },
-  "maxId": 3,
-  "_T": "ca.aquiletour.core.pages.queue.QueueModel",
-  "studentIds": []
+  "maxId": 13,
+  "_C": "QueueModel",
+  "studentIds": [
+    "bob",
+    "alice"
+  ]
 }

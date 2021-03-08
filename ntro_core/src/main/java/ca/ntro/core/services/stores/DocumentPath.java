@@ -27,5 +27,16 @@ public class DocumentPath {
 	public String getId() {
 		return documentId;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(collection);
+		builder.append("/");
+		builder.append(documentId);
+		
+		return builder.toString();
+	}
 
 }

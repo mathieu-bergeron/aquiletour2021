@@ -8,14 +8,12 @@ public class BackendServiceJdk extends BackendService {
 
 	@Override
 	public void sendMessageToBackend(NtroMessage message) {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("TODO");
 	}
 
 	@Override
 	public <M extends NtroMessage> void handleMessageFromBackend(Class<M> messageClass, MessageHandler<M> handler) {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("TODO");
 	}
 
 }

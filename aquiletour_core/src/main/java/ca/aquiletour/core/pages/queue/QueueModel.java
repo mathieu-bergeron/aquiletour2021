@@ -20,24 +20,44 @@ public class QueueModel extends NtroModel {
 	public void initializeStoredValues() {
 		T.call(this);
 	}
-
+	
+	public void removeStudentFromClass(String studentId) {
+		T.call(this);
+		for (int i = 0; i < studentIds.size(); i++) {
+			if(studentIds.get(i).equals(studentId)) {
+				studentIds.remove(i);
+			}
+		}
+	}
+	
+	public void addStudentToClass(String studentId) {
+		T.call(this);
+		boolean alreadyExists = false;
+		for (int i = 0; i < studentIds.size() && !alreadyExists; i++) {
+			if(studentIds.get(i).equals(studentId)) {
+				alreadyExists = true;
+			}
+		}
+		if (!alreadyExists) {
+			studentIds.add(studentId);
+		}
+	}
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
 		T.here();
 		
 		setMaxId(getMaxId() + 1);
-		T.values(getMaxId());
 		String appointmentId = Integer.toString(getMaxId());
-		appointment.setAppointmentId(appointmentId);
+		appointment.setId(appointmentId);
 		appointments.addItem(appointment);;
 	}
 	
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
-		
+		if(getMaxId()>0)setMaxId(getMaxId() - 1);
 		for (int i = 0; i < appointments.size(); i++) {
-			if(appointments.getItem(i).getAppointmentId().equals(appointmentId)) {
-				appointments.removeItem(appointments.getItem(i));
+			if(appointments.item(i).getId().equals(appointmentId)) {
+				appointments.removeItem(appointments.item(i));
 			}
 		};
 	}
@@ -91,10 +111,10 @@ public class QueueModel extends NtroModel {
 		Appointment appointmentDestination = null;
 		Appointment appointmentDeparture = null;
 		for (int i = 0; i < appointments.size(); i++) {
-			Appointment currentAppointment = appointments.getItem(i);
-			if(currentAppointment.getAppointmentId().equals(appointmentDestinationId)) {
+			Appointment currentAppointment = appointments.item(i);
+			if(currentAppointment.getId().equals(appointmentDestinationId)) {
 				appointmentDestination = currentAppointment;
-			} else if (currentAppointment.getAppointmentId().equals(appointmentDepartureId)) {
+			} else if (currentAppointment.getId().equals(appointmentDepartureId)) {
 				appointmentDeparture = currentAppointment;
 			}
 		}
@@ -104,8 +124,17 @@ public class QueueModel extends NtroModel {
 			
 			appointments.insertItem(destinationIndex + 1, appointmentDeparture );
 			appointments.removeItem(appointmentDestination);
-			appointments.insertItem(departureIndex + 1, appointmentDeparture );
+			appointments.insertItem(departureIndex + 1, appointmentDestination );
 			appointments.removeItem(appointmentDeparture);
+		}
+	}
+	
+	public void removeAllAppointmentsOfStudent(String studentId) {
+		ObservableAppointmentList copy = this.appointments;
+		for (int i = 0; i < copy.size(); i++) {
+			if(copy.item(i).getStudentId().equals(studentId)) {//if appointment is owned by student
+				appointments.removeItem(copy.item(i));
+			}
 		}
 	}
 	

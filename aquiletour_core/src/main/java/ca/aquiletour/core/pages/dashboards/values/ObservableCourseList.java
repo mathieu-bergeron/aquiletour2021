@@ -20,15 +20,4 @@ public class ObservableCourseList extends ObservableList<CourseSummary>{
 		T.call(this);
 	}
 
-	@Override
-	protected Class<?> getValueType() {
-		T.call(this);
-
-		//return CourseSummary.class;
-		
-		// FIXME: this should be CourseSummary.class
-		//        but ObservableList.toJsonObject needs fixing first
-		return NtroModelValue.class;
-	}
-
 }

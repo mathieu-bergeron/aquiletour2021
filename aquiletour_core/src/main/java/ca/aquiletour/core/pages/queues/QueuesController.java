@@ -16,9 +16,11 @@ public class QueuesController extends NtroController<RootController> {
 
 		setViewLoader(QueuesView.class, "fr");
 		
-		setModelLoader(NetworkStore.getLoader(QueuesModel.class, "TODO", "allQueues"));
+		setModelLoader(NetworkStore.getLoader(QueuesModel.class, "admin", "openQueues"));
 		
 		addParentViewMessageHandler(ShowQueuesMessage.class, new ShowQueuesHandler());
+		addSubViewLoader(QueueSummaryView.class, currentContext().getLang());
+		addModelViewSubViewHandler(QueueSummaryView.class, new QueuesViewModel());
 		
 		// TODO
 	}

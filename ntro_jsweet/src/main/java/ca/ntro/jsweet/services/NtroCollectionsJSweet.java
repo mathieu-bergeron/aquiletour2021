@@ -59,4 +59,74 @@ public class NtroCollectionsJSweet extends NtroCollections {
 		return set;
 	}
 
+	@Override
+	protected boolean containsEqualsImpl(Set<?> set, Object target) {
+		boolean ifSetContains = false;
+
+		for(Object candidate : set) {
+			if(candidate.equals(target)) {
+				ifSetContains = true;
+				break;
+			}
+		}
+
+		return ifSetContains;
+	}
+
+	@Override
+	protected boolean containsKeyExactImpl(Map<?, ?> map, Object key) {
+		return map.containsKey(key);
+	}
+
+	@Override
+	protected <V> V getExactKeyImpl(Map<?, V> map, Object key) {
+		return map.get(key);
+	}
+
+	@Override
+	protected boolean listEqualsImpl(List<?> list1, List<?> list2) {
+		if(list1.size() != list2.size()) return false;
+		
+		boolean ifEquals = true;
+		
+		for(int i = 0; i < list1.size(); i++) {
+			Object item1 = list1.get(i);
+			Object item2 = list1.get(i);
+			if(item1 instanceof List) {
+				ifEquals = listEqualsImpl((List<?>)item1, (List<?>)item2);
+			}else if(item1 instanceof Map) {
+				ifEquals = mapEqualsImpl((Map<?,?>)item1, (Map<?,?>)item2);
+			}else if(item1 == null){
+				ifEquals = (item2 == null);
+			}else {
+				ifEquals = item1.equals(item2);
+			}
+		}
+		
+		return ifEquals;
+	}
+
+	@Override
+	protected boolean mapEqualsImpl(Map<?, ?> map1, Map<?, ?> map2) {
+		if(map1.size() != map2.size()) return false;
+
+		boolean ifEquals = true;
+		
+		for(Map.Entry<?, ?> entry : map1.entrySet()) {
+			Object item1 = entry.getValue();
+			Object item2 = map1.get(entry.getKey());
+			if(item1 instanceof List) {
+				ifEquals = listEqualsImpl((List<?>)item1, (List<?>)item2);
+			}else if(item1 instanceof Map) {
+				ifEquals = mapEqualsImpl((Map<?,?>)item1, (Map<?,?>)item2);
+			}else if(item1 == null){
+				ifEquals = (item2 == null);
+			}else {
+				ifEquals = item1.equals(item2);
+			}
+		}
+		
+		return ifEquals;
+	}
+
 }

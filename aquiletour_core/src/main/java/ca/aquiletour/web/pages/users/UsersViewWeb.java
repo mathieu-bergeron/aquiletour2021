@@ -21,7 +21,7 @@ public class UsersViewWeb extends NtroViewWeb implements UsersView {
 		T.call(this);
 		T.here();
 		
-		HtmlElement container = this.getRootElement().children("#showUsers-container").get(0);
+		HtmlElement container = this.getRootElement().find("#showUsers-container").get(0);
 		
 		MustNot.beNull(container);
 		
@@ -34,11 +34,11 @@ public class UsersViewWeb extends NtroViewWeb implements UsersView {
 	public void deleteUser(String userId) {
 		T.call(this);
 
-		HtmlElement container = this.getRootElement().children("#showUsers-container").get(0);
+		HtmlElement container = this.getRootElement().find("#showUsers-container").get(0);
 
 		String selector = "#user-" + userId;
 
-		HtmlElement userElement = container.children(selector).get(0);
+		HtmlElement userElement = container.find(selector).get(0);
 		
 		userElement.remove();
 

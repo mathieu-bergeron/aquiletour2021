@@ -18,7 +18,6 @@ public class ThreadServiceJdk extends ThreadService {
 
 	@Override
 	public boolean hasParentThread() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

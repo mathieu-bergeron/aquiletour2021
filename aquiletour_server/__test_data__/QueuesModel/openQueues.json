@@ -1,13 +1,13 @@
 {
   "users": {
-    "_T": "ca.aquiletour.core.pages.queues.values.ObservableQueueMap",
+    "_C": "ObservableQueueMap",
     "value": {
       "4F5": {
-        "_T": "ca.aquiletour.core.pages.queues.values.Queue",
+        "_C": "Queue",
         "id": "4F5",
         "numberOfAnswersToDate":  100
       }
     }
   },
-  "_T": "ca.aquiletour.core.pages.users.UsersModel"
+  "_C": "UsersModel"
 }

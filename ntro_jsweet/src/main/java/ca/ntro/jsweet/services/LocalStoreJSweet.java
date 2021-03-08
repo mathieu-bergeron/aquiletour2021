@@ -2,8 +2,6 @@ package ca.ntro.jsweet.services;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
@@ -44,25 +42,19 @@ public class LocalStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	protected JsonLoader getJsonObject(DocumentPath documentPath) {
+	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
 		String fullId = fullId(documentPath);
 		
 		String jsonString = (String) localStorage.getItem(fullId);
 		
-		JsonObject jsonObject = null;
-		
-		if(jsonString != null) {
+		if(jsonString == null) {
 
-			jsonObject =  JsonParser.fromString(jsonString);
-			
-		}else {
-			
-			jsonObject = JsonParser.jsonObject();
+			jsonString = ModelStore.emptyModelString(documentPath);
 		}
 		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonObject);
+		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonString);
 
 		return jsonLoader;
 	}
@@ -71,10 +63,8 @@ public class LocalStoreJSweet extends ModelStore {
 
 
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
-
-		String jsonString = JsonParser.toString(jsonObject);
 
 		String fullId = fullId(documentPath);
 		

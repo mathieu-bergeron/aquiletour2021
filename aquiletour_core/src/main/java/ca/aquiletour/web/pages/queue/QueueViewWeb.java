@@ -20,7 +20,7 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 	public void appendAppointement(Appointment appointment, AppointmentView appointmentView) {
 		T.call(this);
 		
-		HtmlElement container = this.getRootElement().children("#appointment-list").get(0);
+		HtmlElement container = this.getRootElement().find("#appointment-list").get(0);
 		
 		MustNot.beNull(container);
 		
@@ -30,17 +30,33 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 	}
 
 	@Override
-	public void deleteAppointment(String appointmentId) {
+	public void deleteAppointment(int appointmentId) {
 		T.call(this);
 
+		HtmlElement container = this.getRootElement().find("#appointment-list").get(0);
+
+		String selector = "#appointment-" + appointmentId;
+
+		HtmlElement appointmentElement = container.find(selector).get(0);
+		
+		appointmentElement.remove();
+
+	}
+
+	@Override
+	public void insertAppointment(int appointmentId, Appointment appointment, AppointmentView appointmentView) {
+		// TODO Auto-generated method stub
+		//TODO cherche dans les childrens le bon appointment (apres index)
+		//TODO container.insertAfter 
 		HtmlElement container = this.getRootElement().children("#appointment-list").get(0);
 
 		String selector = "#appointment-" + appointmentId;
 
 		HtmlElement appointmentElement = container.children(selector).get(0);
 		
-		appointmentElement.remove();
-
+		AppointmentViewWeb appointmentViewWeb = (AppointmentViewWeb) appointmentView;
+		
+		container.appendElement(appointmentViewWeb.getRootElement());
 	}
 
 }

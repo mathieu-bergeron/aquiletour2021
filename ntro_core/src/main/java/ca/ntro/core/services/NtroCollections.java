@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -91,5 +92,90 @@ public abstract class NtroCollections {
 	}
 
 	protected abstract <V extends Object> Set<V> concurrentSetImpl(Set<V> elements);
+
+	protected abstract boolean containsEqualsImpl(Set<?> set, Object target);
+
+	public static boolean containsEquals(Set<?> set, Object target) {
+		boolean ifSetContains = false;
+		
+		try {
+			
+			ifSetContains = instance.containsEqualsImpl(set, target);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return ifSetContains;
+	}
+	
+	protected abstract boolean containsKeyExactImpl(Map<?, ?> map, Object key);
+
+	public static boolean containsKeyExact(Map<?, ?> map, Object key) {
+		boolean containsKey = false;
+		
+		try {
+			
+			containsKey = instance.containsKeyExactImpl(map, key);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return containsKey;
+	}
+
+	protected abstract <V extends Object> V getExactKeyImpl(Map<?, V> map, Object key);
+
+	public static <V extends Object> V getExactKey(Map<?, V> map, Object key) {
+		V value = null;
+		
+		try {
+			
+			value = instance.getExactKeyImpl(map, key);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return value;
+	}
+
+	protected abstract boolean listEqualsImpl(List<?> list1, List<?> list2);
+
+	public static boolean listEquals(List<?> list1, List<?> list2) {
+		boolean listEquals = false;
+		
+		try {
+			
+			listEquals = instance.listEqualsImpl(list1, list2);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return listEquals;
+	}
+
+	protected abstract boolean mapEqualsImpl(Map<?,?> map1, Map<?,?> map2);
+
+	public static boolean mapEquals(Map<?,?> map1, Map<?,?> map2) {
+		boolean mapEquals = false;
+		
+		try {
+			
+			mapEquals = instance.mapEqualsImpl(map1, map2);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return mapEquals;
+	}
 
 }
