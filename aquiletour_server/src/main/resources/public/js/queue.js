@@ -11,9 +11,16 @@ window.onload = function(){
         obj.closest("li").remove()
     }
 
-    $( function() {
-        $( "#appointment-list" ).sortable();
-        $( "#appointment-list" ).disableSelection();
+    $(function() {
+        $( "#appointment-list" ).sortable({
+            handle:'.handle',
+            update: function(event, ui){
+                window.location = "/moveId=&beforeId=";
+            }
+           
+        });
+
+        
     } );
 }
 

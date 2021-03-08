@@ -32,4 +32,10 @@ window.onload = function(){
       availableLink.style.textDecoration = "underline";
       availableLink.style.cursor = "hand";
     }
+
+    $(function() {
+      $( "#course-cards" ).sortable();
+    
+      
+    } );
 }
