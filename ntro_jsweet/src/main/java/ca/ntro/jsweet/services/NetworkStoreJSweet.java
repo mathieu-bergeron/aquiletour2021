@@ -16,6 +16,8 @@ import def.dom.Storage;
 
 import static def.dom.Globals.window;
 
+import static def.es6.Globals.fetch;
+
 public class NetworkStoreJSweet extends ModelStore {
 
 	// FIXME: replace by a server connection!!
@@ -70,7 +72,11 @@ public class NetworkStoreJSweet extends ModelStore {
 	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
-        throw new RuntimeException("TODO");
+		def.js.Object options = new def.js.Object();
+		options.$set("method","POST");
+		options.$set("body",jsonString);
+
+		fetch("/_B/" + fullId(documentPath), options);
 	}
 
 	@Override
