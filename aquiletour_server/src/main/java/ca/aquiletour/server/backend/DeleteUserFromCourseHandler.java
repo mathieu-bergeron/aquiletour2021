@@ -38,6 +38,7 @@ public class DeleteUserFromCourseHandler extends BackendMessageHandler<DeleteUse
 													   "admin",
 													   courseId);
 					queueModel.removeStudentFromClass(userId);
+					queueModel.removeAllAppointmentsOfStudent(userId);
 
 					queueModel.save();
 				}

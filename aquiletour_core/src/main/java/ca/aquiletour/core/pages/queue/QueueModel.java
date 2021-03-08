@@ -130,6 +130,15 @@ public class QueueModel extends NtroModel {
 		}
 	}
 	
+	public void removeAllAppointmentsOfStudent(String studentId) {
+		ObservableAppointmentList copy = this.appointments;
+		for (int i = 0; i < copy.size(); i++) {
+			if(copy.getItem(i).getStudentId().equals(studentId)) {//if appointment is owned by student
+				appointments.removeItem(copy.getItem(i));
+			}
+		}
+	}
+	
 	
 	
 	

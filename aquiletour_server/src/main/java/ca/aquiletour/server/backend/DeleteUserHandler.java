@@ -40,7 +40,7 @@ public class DeleteUserHandler extends BackendMessageHandler<DeleteUserMessage> 
 						QueueModel queueModel = modelStore.getModel(QueueModel.class, "admin",
 								courseSummary.getCourseId());
 						queueModel.deleteStudent(userId);
-
+						queueModel.removeAllAppointmentsOfStudent(userId);
 						queueModel.save();
 					}
 					dashboardModel.emptyCourses();
