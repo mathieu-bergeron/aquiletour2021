@@ -82,10 +82,12 @@ public class DashboardModel extends NtroModel {
 
 	}
 	
-	public void setTeacherAvailability(boolean availabilty) {
+	public void setTeacherAvailability(boolean availabilty, String courseId) {
 		for (int i = 0; i < courses.size(); i++) {
-			CourseSummary currentCourse = courses.item(i);
-			currentCourse.setIsQueueOpen(availabilty);
+			CourseSummary currentCourse = courses.getItem(i);
+			if(currentCourse.getCourseId().equals(courseId)) {
+				currentCourse.setIsQueueOpen(availabilty);
+			}
 		}
 	}
 }

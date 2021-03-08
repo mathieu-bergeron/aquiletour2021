@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
@@ -48,6 +49,17 @@ public class QueuesModel extends NtroModel {
 				queues.removeItem(queues.item(i));
 			}
 		}
+	}
+
+	public QueueSummary findQueueByQueueId(String queueId) {
+		QueueSummary queueRequested = null;
+		for (int i = 0; i < queues.size(); i++) {
+			QueueSummary currentCourse = queues.getItem(i);
+			if(currentCourse.getId().equals(queueId)) {
+				queueRequested = currentCourse;
+			}
+		}
+		return queueRequested;
 	}
 
 }
