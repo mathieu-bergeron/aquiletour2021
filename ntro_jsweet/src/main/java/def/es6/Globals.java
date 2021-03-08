@@ -34,6 +34,7 @@ public class Globals {
 	}
 
 	public native static Promise<FetchResponse> fetch(String path);
+	public native static Promise<FetchResponse> fetch(String path, Object request);
 
 	public native static void installSourceMap(String rawSourceMap);
 

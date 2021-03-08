@@ -11,6 +11,7 @@ import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -18,6 +19,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ModelHandler extends AbstractHandler {
@@ -78,6 +80,20 @@ public class ModelHandler extends AbstractHandler {
             MustNot.beNull(modelClazz);
         }
 
+        if (request.getMethod().equals("GET")) {
+            handleModelFetch(baseRequest, response, collectionName, fileName, modelClazz);
+        } else if (request.getMethod().equals("POST")) {
+            handleModelWrite(baseRequest, response, request);
+        } else {
+            Log.error("[ModelHandler] Invalid HTTP method '" + request.getMethod() + "'!");
+            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED_405);
+
+            baseRequest.setHandled(true);
+        }
+    }
+
+    private void handleModelFetch(Request baseRequest, HttpServletResponse response, String collectionName, String fileName, Class<? extends NtroModel> modelClazz) throws IOException {
+
         ModelLoader modelLoader = LocalStore.getLoader(modelClazz, "TODO", modelId);
         modelLoader.execute();
 
@@ -86,6 +102,23 @@ public class ModelHandler extends AbstractHandler {
 
         baseRequest.setHandled(true);
     }
+
+    // TODO Faire que ça sauvegarde vraiment le modèle ! Seulement pour tester
+    // TODO instancier + save ???
+    private void handleModelWrite(Request baseRequest, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        BufferedReader bodyText = request.getReader();
+
+        StringBuilder jsonText = new StringBuilder();
+        String ln;
+        while ((ln = bodyText.readLine()) != null) {
+            jsonText.append(ln);
+        }
+
+        System.out.println(jsonText);
+        response.setStatus(HttpStatus.IM_A_TEAPOT_418);
+        baseRequest.setHandled(true);
+    }
+
 
     @Override
     public String dumpSelf() {
