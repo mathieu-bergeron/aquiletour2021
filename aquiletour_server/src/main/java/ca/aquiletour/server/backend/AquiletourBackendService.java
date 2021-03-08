@@ -28,5 +28,6 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(DeleteUserFromCourseMessage.class, new DeleteUserFromCourseHandler());
 		addBackendMessageHandler(AddUserMessage.class, new AddUserHandler());
 		addBackendMessageHandler(DeleteUserMessage.class, new DeleteUserHandler());
+		addBackendMessageHandler(TeacherUsesQueueMessage.class, new TeacherUsesQueueHandler());
 	}
 }
