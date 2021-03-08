@@ -42,7 +42,6 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-
 		ModelStoreSync localStore = new ModelStoreSync(new LocalStoreFiles());
 		
 		BackendService aquiletourBackend = new AquiletourBackendService(localStore);

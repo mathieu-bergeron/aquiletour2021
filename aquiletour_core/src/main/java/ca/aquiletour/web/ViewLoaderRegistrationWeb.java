@@ -9,19 +9,27 @@ import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.AppointmentView;
 import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queue.student.StudentAppointmentView;
+import ca.aquiletour.core.pages.queue.student.StudentQueueView;
+import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
+import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.users.UserView;
 import ca.aquiletour.core.pages.users.UsersView;
-import ca.aquiletour.web.pages.dashboard.TeacherCourseSummaryViewWeb;
-import ca.aquiletour.web.pages.dashboard.StudentCourseSummaryViewWeb;
-import ca.aquiletour.web.pages.dashboard.StudentDashboardViewWeb;
-import ca.aquiletour.web.pages.dashboard.TeacherDashboardViewWeb;
+import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
+import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
+import ca.aquiletour.web.pages.queue.student.StudentAppointmentViewWeb;
+import ca.aquiletour.web.pages.queue.student.StudentQueueViewWeb;
+import ca.aquiletour.web.pages.queue.teacher.TeacherAppointmentViewWeb;
+import ca.aquiletour.web.pages.queue.teacher.TeacherQueueViewWeb;
 import ca.aquiletour.web.pages.queues.QueueSummaryViewWeb;
 import ca.aquiletour.web.pages.queues.QueuesViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
@@ -76,13 +84,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(StudentCourseSummaryViewWeb.class));
 
-		ViewLoaders.registerViewLoader(QueueView.class,
+		ViewLoaders.registerViewLoader(StudentQueueView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/queue/queue.html")
-			     	.setCssUrl("/views/queue/queue.css")
+				.setHtmlUrl("/views/queue/student_queue/queue.html")
+				.setCssUrl("/views/queue/student_queue/queue.css")
+				.setTranslationsUrl("/i18n/fr/string.json")
+				.setTargetClass(StudentQueueViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(TeacherQueueView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/queue/teacher_queue/queue.html")
+			     	.setCssUrl("/views/queue/teacher_queue/queue.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(QueueViewWeb.class));
+			     	.setTargetClass(TeacherQueueViewWeb.class));
 
 		ViewLoaders.registerViewLoader(QueuesView.class,
 				"fr"
@@ -100,13 +116,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(QueueSummaryViewWeb.class));
 
-		ViewLoaders.registerViewLoader(AppointmentView.class,
+		ViewLoaders.registerViewLoader(TeacherAppointmentView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/appointment/appointment.html")
-			     	.setCssUrl("/views/appointment/appointment.css")
+				.setHtmlUrl("/views/appointment/teacher_appointment/appointment.html")
+				.setCssUrl("/views/appointment/teacher_appointment/appointment.css")
+				.setTranslationsUrl("/i18n/fr/string.json")
+				.setTargetClass(TeacherAppointmentViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(StudentAppointmentView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/appointment/student_appointment/appointment.html")
+			     	.setCssUrl("/views/appointment/student_appointment/appointment.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(AppointmentViewWeb.class));
+			     	.setTargetClass(StudentAppointmentViewWeb.class));
 		
 		ViewLoaders.registerViewLoader(UsersView.class,
 				"fr"

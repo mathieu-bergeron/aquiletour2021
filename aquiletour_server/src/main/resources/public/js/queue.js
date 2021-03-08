@@ -13,7 +13,7 @@ window.onload = function(){
 
     $( function() {
         $( "#appointment-list" ).sortable();
-        $( "#appointment-list" ).disableSelection();
+//        $( "#appointment-list" ).disableSelection();
     } );
 }
 

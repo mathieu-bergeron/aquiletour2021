@@ -18,7 +18,6 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 
 	@Override
 	public void displayAppointement(Appointment appointment) {
-		T.call(this);
 
 		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
 		HtmlElement studentSurname = this.getRootElement().find("#studentSurname").get(0);
@@ -39,7 +38,4 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 	}
-
-
-
 }

@@ -9,7 +9,9 @@ import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboard
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
@@ -35,7 +37,7 @@ public class AquiletourRequestHandler {
 
 		}else if(path.startsWith("billetterie")) {
 			
-			sendQueueMessages(path.subPath(1), parameters);
+			sendQueueMessages(path.subPath(1), parameters, context.getUser());
 			
 		}else if(path.startsWith("usagers")) {
 			
@@ -100,19 +102,37 @@ public class AquiletourRequestHandler {
 	}
 		
 
-	private static void sendQueueMessages(Path path, Map<String, String[]> parameters) {
+	private static void sendQueueMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
 		if(path.size() >= 1) {//TODO 
 
 			String courseId = path.getName(0);
 			
-			ShowQueueMessage showQueueMessage = MessageFactory.getOutgoingMessage(ShowQueueMessage.class);
-			//teacher uses queue message (prof encore actif)
-			
-			showQueueMessage.setCourseId(courseId);
-			
-			showQueueMessage.sendMessage();
+			if(user instanceof Teacher) {
+
+				ShowTeacherQueueMessage showTeacherQueueMessage = MessageFactory.getOutgoingMessage(ShowTeacherQueueMessage.class);
+				showTeacherQueueMessage.setCourseId(courseId);
+				showTeacherQueueMessage.sendMessage();
+				//teacher uses queue message (prof encore actif) TODO
+				TeacherUsesQueueMessage teacherUsesQueueMessage = MessageFactory.getOutgoingMessage(TeacherUsesQueueMessage.class);
+				teacherUsesQueueMessage.setCourseId(courseId);
+				teacherUsesQueueMessage.setTeacher(user);
+				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
+
+				
+			}else if(user instanceof Student){
+				
+				ShowStudentQueueMessage showStudentQueueMessage = MessageFactory.getOutgoingMessage(ShowStudentQueueMessage.class);
+				showStudentQueueMessage.setCourseId(courseId);
+				showStudentQueueMessage.sendMessage();
+
+			}else {
+				
+				ShowLoginDialogMessage showLoginDialogMessage = MessageFactory.getOutgoingMessage(ShowLoginDialogMessage.class);
+				showLoginDialogMessage.sendMessage();
+				
+			}
 
 		}
 	}

@@ -1,7 +1,8 @@
-package ca.aquiletour.web.pages.dashboard;
+package ca.aquiletour.web.pages.dashboard.teacher;
 
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -24,6 +25,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement courseId = this.getRootElement().find("#courseId").get(0);
 		HtmlElement nbAppointment = this.getRootElement().find("#nbAppointment").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
+		HtmlElement deleteCourseLink = this.getRootElement().find("#deleteLink").get(0);
 		
 		
 		MustNot.beNull(title);
@@ -32,12 +34,12 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(makeAppointmentLink);
 
 
-		T.values(course.getTitle()); 
 		
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
-		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
+		makeAppointmentLink.setAttribute("href","/billetterie/" + course.getTitle() + "?makeAppointment");
+		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");
 	}
 
 

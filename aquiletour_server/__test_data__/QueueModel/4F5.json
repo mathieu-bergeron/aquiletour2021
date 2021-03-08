@@ -1,34 +1,31 @@
 {
   "appointments": {
-    "_C": "ObservableAppointmentMap",
-    "value": {
-      "0": {
+    "_C": "ObservableAppointmentList",
+    "value": [
+      {
         "studentId": "alice",
         "_C": "Appointment",
+        "appointmentId": "1",
         "studentSurname": "Awama",
-        "studentName": "Alice",
-        "id": "0"
+        "studentName": "Alice"
       },
-      "9": {
+      {
         "studentId": "alice",
         "_C": "Appointment",
+        "appointmentId": "2",
         "studentSurname": "Awama",
-        "studentName": "Alice",
-        "id": "9"
+        "studentName": "Alice"
       },
-      "10": {
+      {
         "studentId": "alice",
         "_C": "Appointment",
+        "appointmentId": "3",
         "studentSurname": "Awama",
-        "studentName": "Alice",
-        "id": "10"
+        "studentName": "Alice"
       }
-    }
+    ]
   },
-  "maxId": 10,
+  "maxId": 3,
   "_C": "QueueModel",
-  "studentIds": [
-    "bob",
-    "alice"
-  ]
+  "studentIds": []
 }

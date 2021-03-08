@@ -6,6 +6,6 @@ import ca.ntro.core.mvc.NtroView;
 public interface QueueView extends NtroView {
 
 	void appendAppointement(Appointment appointment, AppointmentView appointmentView);
-	void deleteAppointment(String appointmentId);
-
+	void deleteAppointment(int index);
+	void insertAppointment(int index ,Appointment appointment, AppointmentView appointmentView);
 }

@@ -1,7 +1,8 @@
-package ca.aquiletour.web.pages.dashboard;
+package ca.aquiletour.web.pages.dashboard.student;
 
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -18,7 +19,6 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
-		T.here();
 
 		HtmlElement title = this.getRootElement().find("#course-title").get(0);
 		HtmlElement courseId = this.getRootElement().find("#courseId").get(0);
@@ -32,7 +32,6 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(teacherAvailable);
 		
 
-		T.values(course.getTitle()); 
 		
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());

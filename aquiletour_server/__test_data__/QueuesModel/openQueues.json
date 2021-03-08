@@ -1,0 +1,13 @@
+{
+  "users": {
+    "_C": "ObservableQueueMap",
+    "value": {
+      "4F5": {
+        "_C": "Queue",
+        "id": "4F5",
+        "numberOfAnswersToDate":  100
+      }
+    }
+  },
+  "_C": "UsersModel"
+}
