@@ -81,7 +81,7 @@ public class ModelHandler extends AbstractHandler {
         }
 
         if (request.getMethod().equals("GET")) {
-            handleModelFetch(baseRequest, response, collectionName, fileName, modelClazz);
+            handleModelFetch(baseRequest, response, collectionName, modelId, modelClazz);
         } else if (request.getMethod().equals("POST")) {
             handleModelWrite(baseRequest, response, request);
         } else {
@@ -92,7 +92,7 @@ public class ModelHandler extends AbstractHandler {
         }
     }
 
-    private void handleModelFetch(Request baseRequest, HttpServletResponse response, String collectionName, String fileName, Class<? extends NtroModel> modelClazz) throws IOException {
+    private void handleModelFetch(Request baseRequest, HttpServletResponse response, String collectionName, String modelId, Class<? extends NtroModel> modelClazz) throws IOException {
 
         ModelLoader modelLoader = LocalStore.getLoader(modelClazz, "TODO", modelId);
         modelLoader.execute();
