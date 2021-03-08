@@ -54,7 +54,7 @@ public class QueuesModel extends NtroModel {
 	public QueueSummary findQueueByQueueId(String queueId) {
 		QueueSummary queueRequested = null;
 		for (int i = 0; i < queues.size(); i++) {
-			QueueSummary currentCourse = queues.getItem(i);
+			QueueSummary currentCourse = queues.item(i);
 			if(currentCourse.getId().equals(queueId)) {
 				queueRequested = currentCourse;
 			}
