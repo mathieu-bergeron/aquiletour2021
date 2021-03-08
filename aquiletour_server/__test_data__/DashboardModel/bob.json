@@ -11,9 +11,11 @@
         "courseId": "4F5"
       },
       {
-        "numberOfAppointments": 4,
+        "numberOfAppointments": 5,
         "_C": "CourseSummary",
-        "isQueueOpen": null,
+        "isQueueOpen": {
+          "_R": "/courses/value/0/isQueueOpen"
+        },
         "myAppointment": null,
         "title": "3C6",
         "courseId": "3C6"

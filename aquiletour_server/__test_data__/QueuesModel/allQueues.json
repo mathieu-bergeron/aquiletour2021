@@ -1,1 +1,29 @@
-{"_C":"QueuesModel"}
+{
+    "_C":"QueuesModel",
+    "queues":{
+        "_C":"ObservableQueueList",
+        "value":[
+            {
+                "_C":"QueueSummary",
+                "id":"3C6",
+                "teacherName":"Alice",
+                "teacherSurname":"Awama",
+                "numberOfAnswerToDate":10
+            },
+            {
+                "_C":"QueueSummary",
+                "id":"4F5",
+                "teacherName":"Alice",
+                "teacherSurname":"Awama",
+                "numberOfAnswerToDate":100
+            },
+            {
+                "_C":"QueueSummary",
+                "id":"ZD4",
+                "teacherName":"Alice",
+                "teacherSurname":"Awama",
+                "numberOfAnswerToDate":1000
+            }
+        ]
+    }
+}
