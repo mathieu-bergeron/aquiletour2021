@@ -53,7 +53,8 @@ task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
+    //jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm 
+    jvmArgs('-Dfile.encoding=UTF-8') 
     standardInput = System.in
 }
 
