@@ -18,7 +18,7 @@ import ca.ntro.core.system.trace.T;
  *
  * The properties of a Model must be:
  * - Java values: String, Double, List<String>, etc.
- * - User-defined classes that extend Value
+ * - User-defined classes that implements JsonSerializable
  *
  * @author mbergeron
  *
@@ -95,4 +95,7 @@ public abstract class NtroModel implements JsonSerializable {
 			}
 		}
 	}
+
+	public abstract void update(NtroModel newModel);
+
 }

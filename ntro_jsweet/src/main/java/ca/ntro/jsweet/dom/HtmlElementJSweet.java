@@ -123,4 +123,9 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String getValue() {
 		return jQueryElement.val().toString();
 	}
+
+	@Override
+	public void empty() {
+		jQueryElement.empty();
+	}
 }

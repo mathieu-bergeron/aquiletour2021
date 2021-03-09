@@ -41,7 +41,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	}
 
 	private String fullId(DocumentPath documentPath) {
-		return documentPath.getCollection() + "/" + documentPath.getId();
+		return documentPath.getCollection() + "/" + documentPath.getDocumentId();
 	}
 
 	@Override

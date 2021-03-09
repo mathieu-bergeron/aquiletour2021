@@ -55,6 +55,12 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void onClearItems() {
+				T.here();
+				view.clearCourses();
+			}
 		});
 	}
 	

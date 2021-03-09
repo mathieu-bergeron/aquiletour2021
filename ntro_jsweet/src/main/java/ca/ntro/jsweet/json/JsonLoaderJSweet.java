@@ -48,7 +48,7 @@ public class JsonLoaderJSweet extends JsonLoader {
     }
 
     private String fullId(DocumentPath documentPath) {
-        return documentPath.getCollection() + "/" + documentPath.getId();
+        return documentPath.getCollection() + "/" + documentPath.getDocumentId();
     }
 
     @Override

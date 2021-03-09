@@ -61,6 +61,12 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 
 				view.deleteAppointment(index);
 			}
+
+			@Override
+			public void onClearItems() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 }

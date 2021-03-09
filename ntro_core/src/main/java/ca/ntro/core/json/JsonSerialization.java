@@ -166,7 +166,7 @@ public class JsonSerialization {
 
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 
-				// FIXME: temporary messages DO NOT need to be a Task anymore
+				// FIXME TMP
 				//Log.fatalError("Unable to invoke getter " + getter.name(), e);
 				javaAttributeValue = null;
 			}

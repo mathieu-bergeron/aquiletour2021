@@ -36,7 +36,7 @@ public class BackendServiceJSweet extends BackendService {
 		webSocket.onmessage = new Function<MessageEvent, Object>() {
 			@Override
 			public Object apply(MessageEvent t) {
-				
+
 				M message = Ntro.jsonService().fromString(messageClass, t.data.toString());
 				handler.handle(message);
 				

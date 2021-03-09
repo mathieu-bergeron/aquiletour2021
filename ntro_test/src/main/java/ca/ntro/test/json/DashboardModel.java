@@ -88,4 +88,10 @@ public class DashboardModel extends NtroModel {
 			}
 		}
 	}
+
+	@Override
+	public void update(NtroModel newModel) {
+		T.call(this);
+		
+	}
 }

@@ -62,4 +62,9 @@ public class QueuesModel extends NtroModel {
 		return queueRequested;
 	}
 
+	@Override
+	public void update(NtroModel newModel) {
+		T.call(this);
+	}
+
 }

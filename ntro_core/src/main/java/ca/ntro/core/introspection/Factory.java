@@ -31,9 +31,8 @@ public class Factory {
 			instance = instanceType.newInstance();
 
 		} catch (InstantiationException | IllegalAccessException e) {
-
+			
 			Log.fatalError("FATAL cannot instantiate " + Ntro.introspector().getSimpleNameForClass(instanceType), e);
-
 		}
 
 		return instance;

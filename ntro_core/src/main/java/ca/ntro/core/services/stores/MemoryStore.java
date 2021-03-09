@@ -48,7 +48,7 @@ public class MemoryStore extends ModelStore {
 		T.call(this);
 		
 		//JsonObject result = values.get(documentPath);
-		String result = valuesById.get(documentPath.getId());
+		String result = valuesById.get(documentPath.getDocumentId());
 		
 		// XXX: creates a new JsonObject when null
 		if(result == null) {
@@ -82,7 +82,7 @@ public class MemoryStore extends ModelStore {
 	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 		values.put(documentPath, jsonString);
-		valuesById.put(documentPath.getId(), jsonString);
+		valuesById.put(documentPath.getDocumentId(), jsonString);
 	}
 
 	@Override

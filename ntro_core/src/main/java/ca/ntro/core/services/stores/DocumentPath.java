@@ -1,9 +1,12 @@
 package ca.ntro.core.services.stores;
 
-public class DocumentPath {
+import ca.ntro.core.json.JsonSerializable;
+
+public class DocumentPath implements JsonSerializable {
 	
 	private String collection;
 	private String documentId;
+
 
 	public DocumentPath(String collection, String firstPathName, String... pathRemainder) {
 		this.collection = collection;
@@ -14,20 +17,23 @@ public class DocumentPath {
 			this.documentId += "__" + pathRemainder[i];
 		}
 	}
-	
-	public DocumentPath(String collection, String documentId) {
-		this.collection = collection;
-		this.documentId = documentId;
-	}
 
 	public String getCollection() {
 		return collection;
 	}
 
-	public String getId() {
+	public String getDocumentId() {
 		return documentId;
 	}
-	
+
+	public void setDocumentId(String documentId) {
+		this.documentId = documentId;
+	}
+
+	public void setCollection(String collection) {
+		this.collection = collection;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

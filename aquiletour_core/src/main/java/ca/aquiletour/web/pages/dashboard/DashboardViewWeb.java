@@ -27,4 +27,14 @@ public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardV
 		container.appendElement(courseViewWeb.getRootElement());
 
 	}
+
+	@Override
+	public void clearCourses() {
+
+		HtmlElement container = this.getRootElement().find("#courses-container").get(0);
+		
+		MustNot.beNull(container);
+		
+		container.empty();
+	}
 }

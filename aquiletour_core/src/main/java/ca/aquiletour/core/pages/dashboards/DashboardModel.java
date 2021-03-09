@@ -90,4 +90,18 @@ public class DashboardModel extends NtroModel {
 			}
 		}
 	}
+	
+	
+	@Override
+	public void update(NtroModel newModel) {
+		T.call(this);
+
+		DashboardModel newDashboardModel  = (DashboardModel) newModel;
+		
+		courses.clearItems();
+
+		for(CourseSummary courseSummary : newDashboardModel.courses.getValue()) {
+			courses.addItem(courseSummary);
+		}
+	}
 }

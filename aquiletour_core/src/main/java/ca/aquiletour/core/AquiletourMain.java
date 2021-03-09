@@ -39,6 +39,9 @@ import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.services.stores.DocumentPath;
+import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
@@ -73,6 +76,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			@Override
 			public void handle(UpdateModelMessage message) {
 				System.out.println(message);
+				
+				NetworkStore.updateModel(message.getDocumentPath(), message.getModel());
 			}
 		});
 		
@@ -108,6 +113,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(NtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(AddCourseMessage.class);
 		Ntro.jsonService().registerSerializableClass(UpdateModelMessage.class);
+
+		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

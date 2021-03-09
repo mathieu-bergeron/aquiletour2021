@@ -141,4 +141,9 @@ public class HtmlElementJdk extends HtmlElement {
 		return jsoupElement.val();
 	}
 
+	@Override
+	public void empty() {
+		jsoupElement.empty();
+	}
+
 }

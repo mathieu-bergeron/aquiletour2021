@@ -47,7 +47,7 @@ public class LocalStoreNitrite extends ModelStore {
 		
 		addIndex(models);
 		
-		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()));
+		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
 		Document document  = cursor.firstOrDefault();
 		
 		String jsonString = null;
@@ -64,7 +64,7 @@ public class LocalStoreNitrite extends ModelStore {
 			jsonString = ModelStore.emptyModelString(documentPath);
 
 			document = new Document();
-			document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
+			document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
 			document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 
 			models.insert(document);
@@ -84,11 +84,11 @@ public class LocalStoreNitrite extends ModelStore {
 		
 		Document document = new Document();
 		
-		document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
+		document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
 		document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 		
 		
-		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()), document);
+		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document);
 		
 		db.commit();
 	}

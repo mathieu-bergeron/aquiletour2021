@@ -1,5 +1,8 @@
 package ca.ntro.core.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
@@ -12,6 +15,8 @@ public abstract class ModelStore {
 
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
+	
+	private Map<String, NtroModel> registeredModels = new HashMap<>();
 
 	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
@@ -48,5 +53,19 @@ public abstract class ModelStore {
 	public abstract void saveJsonString(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
+
+	public void registerModel(DocumentPath documentPath, NtroModel ntroModel) {
+		registeredModels.put(documentPath.toString(), ntroModel);
+	}
+
+	public void updateModel(DocumentPath documentPath, NtroModel newModel) {
+		System.out.println("updateModel: " + documentPath.toString());
+
+		NtroModel model = registeredModels.get(documentPath.toString());
+		
+		if(model != null) {
+			model.update(newModel);
+		}
+	}
 
 }

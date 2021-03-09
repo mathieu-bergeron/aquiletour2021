@@ -37,7 +37,7 @@ public class LocalStoreJSweet extends ModelStore {
 	
 	private String fullId(DocumentPath documentPath) {
 		
-		return documentPath.getCollection() + "_" + documentPath.getId();
+		return documentPath.getCollection() + "_" + documentPath.getDocumentId();
 		
 	}
 

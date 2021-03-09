@@ -58,15 +58,23 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 			listObserver.onItemUpdated(index, item);
 		}
 	}
+
+	public void clearItems() {
+		getValue().clear();
+		
+		for(ListObserver<I> listObserver : listObservers) {
+			listObserver.onClearItems();
+		}
+	}
 	
 	public void addItem(I item) {
 		T.call(this);
 		getValue().add(item);
 		
-//		for(ListObserver<I> listObserver : listObservers) {
-//			T.here();
-//			listObserver.onItemAdded(getValue().indexOf(item), item);
-//		}
+		for(ListObserver<I> listObserver : listObservers) {
+			T.here();
+			listObserver.onItemAdded(getValue().indexOf(item), item);
+		}
 	}
 
 	public void removeItem(I item) {
