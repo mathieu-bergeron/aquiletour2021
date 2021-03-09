@@ -21,14 +21,14 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 	public void displayAppointement(Appointment appointment) {
 		T.call(this);
 
-		HtmlElement studentId = this.getRootElement().children("#studentId").get(0);
-		HtmlElement studentSurname = this.getRootElement().children("#studentSurname").get(0);
-		HtmlElement studentName = this.getRootElement().children("#studentName").get(0);
+		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
+		HtmlElement studentSurname = this.getRootElement().find("#studentSurname").get(0);
+		HtmlElement studentName = this.getRootElement().find("#studentName").get(0);
 		HtmlElements ids = this.getRootElement().find(".appointmentId");
 		for(int i = 0; i < ids.size(); i++) {
 			HtmlElement id = ids.get(i);
-			id.appendHtml(appointment.getAppointmentId());
-			id.setAttribute("value", appointment.getAppointmentId());
+			id.appendHtml(appointment.getId());
+			id.setAttribute("value", appointment.getId());
 		}
 
 		MustNot.beNull(studentId);
@@ -38,7 +38,7 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 		studentSurname.appendHtml(appointment.getStudentSurname());
 		studentName.appendHtml(appointment.getStudentName());
 		
-		getRootElement().setAttribute("id", "appointment-" + appointment.getAppointmentId());
+		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 	}
 
 

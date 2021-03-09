@@ -20,10 +20,10 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
 
-		HtmlElement title = this.getRootElement().children("#course-title").get(0);
-		HtmlElement courseId = this.getRootElement().children("#courseId").get(0);
-		HtmlElement makeAppointmentLink = this.getRootElement().children("#availableLink").get(0);
-		HtmlElement teacherAvailable = this.getRootElement().children("#buttonAvailable").get(0);
+		HtmlElement title = this.getRootElement().find("#course-title").get(0);
+		HtmlElement courseId = this.getRootElement().find("#courseId").get(0);
+		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
+		HtmlElement teacherAvailable = this.getRootElement().find("#buttonAvailable").get(0);
 		
 		
 		MustNot.beNull(title);

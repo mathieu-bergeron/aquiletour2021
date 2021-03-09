@@ -23,11 +23,11 @@ public class UserViewWeb extends NtroViewWeb implements UserView {
 	public void displayUser(User user) {
 		T.call(this);
 
-		HtmlElement userId = this.getRootElement().children("#userId").get(0);
-		HtmlElement close = this.getRootElement().children("#close").get(0);
-		HtmlElement userEmail = this.getRootElement().children("#userEmail").get(0);
-		HtmlElement userPassword = this.getRootElement().children("#userPassword").get(0);
-		HtmlElement role = this.getRootElement().children("#role").get(0);
+		HtmlElement userId = this.getRootElement().find("#userId").get(0);
+		HtmlElement close = this.getRootElement().find("#close").get(0);
+		HtmlElement userEmail = this.getRootElement().find("#userEmail").get(0);
+		HtmlElement userPassword = this.getRootElement().find("#userPassword").get(0);
+		HtmlElement role = this.getRootElement().find("#role").get(0);
 
 		MustNot.beNull(userId);
 		MustNot.beNull(close);

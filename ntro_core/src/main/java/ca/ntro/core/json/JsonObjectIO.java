@@ -18,6 +18,16 @@ public abstract class JsonObjectIO implements Serializable {
 	// FIXME: would be better package-private if possible
 	public void loadFromJsonObject(JsonObject jsonObject) {
 		T.call(this);
+		
+		Map<String, Object> deserializedObjects = new HashMap<>();
+		
+		deserializedObjects.put("", this);
+		
+		loadFromJsonObject(deserializedObjects, "", jsonObject);
+	}
+
+	public void loadFromJsonObject(Map<String, Object> deserializedObjects, String valuePath, JsonObject jsonObject) {
+		T.call(this);
 
 		for(String fieldName : jsonObject.keySet()) {
 			
@@ -29,7 +39,22 @@ public abstract class JsonObjectIO implements Serializable {
 
 				try {
 
-					Object setterValue = Ntro.introspector().buildValueForSetter(setter, jsonValue);
+					Object setterValue;
+
+					if(isObjectReference(jsonValue)) {
+
+						String objectReference = getObjectReference(jsonValue);
+						
+						setterValue = deserializedObjects.get(objectReference);
+						
+						throw new RuntimeException("Cycle references not yet supported in JSON deserialization");
+						
+						
+					}else {
+						
+						setterValue = Ntro.introspector().buildValueForSetter(setter, jsonValue);
+						
+					}
 					
 					setter.invoke(this, setterValue);
 
@@ -41,12 +66,42 @@ public abstract class JsonObjectIO implements Serializable {
 		}
 	}
 	
+	private boolean isObjectReference(Object jsonValue) {
+		return getObjectReference(jsonValue) != null;
+	}
+
+	private String getObjectReference(Object jsonValue) {
+		String objectReference = null;
+		
+		if(Ntro.introspector().isMap(jsonValue)) {
+			
+			Map<String, Object> map = (Map<String, Object>) jsonValue;
+			
+			objectReference = (String) map.get("_I");
+		}
+		
+		return objectReference;
+	}
+	
+	
+	
 	public JsonObject toJsonObject() {
+		T.call(this);
+		
+		Map<Object, String> serializedObjects = new HashMap<>();
+		
+		serializedObjects.put(this, "");
+		
+		return toJsonObject(serializedObjects, "");
+	}
+
+	private JsonObject toJsonObject(Map<Object, String> serializedObjects, String valuePath) {
 		T.call(this);
 		
 		JsonObject jsonObject = JsonParser.jsonObject();
 
-		jsonObject.setTypeName(this.getClass().getName());
+		//jsonObject.setTypeName(Ntro.introspector().getSimpleNameForClass(this.getClass()));
+		jsonObject.setTypeName(Ntro.introspector().getFullNameForClass(this.getClass()));
 		
 		for(Method getter : Ntro.introspector().userDefinedGetters(this)) {
 			
@@ -64,10 +119,11 @@ public abstract class JsonObjectIO implements Serializable {
 
 			String fieldName = Ntro.introspector().fieldNameForGetter(getter);
 			
-			// TODO: go inside a Map or a List to look
-			//       for appointment-defined values (JsonObjectIO)
-			Object jsonValue = buildJsonValue(value);
+			String newValuePath = valuePath + "/"  + fieldName;
+
+			Object jsonValue = buildJsonValue(serializedObjects, newValuePath, value);
 			
+
 			jsonObject.put(fieldName, jsonValue);
 		}
 		
@@ -75,44 +131,63 @@ public abstract class JsonObjectIO implements Serializable {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private Object buildJsonValue(Object value) {
+	private Object buildJsonValue(Map<Object, String> serializedObjects, String valuePath, Object value) {
 		
 		Object jsonValue = value;
 
 		if(value instanceof JsonObjectIO) {
+			
+			if(serializedObjects.containsKey(value)) {
+				
+				Map<String, Object> reference = new HashMap<>();
+				reference.put("_I", serializedObjects.get(value));
+				jsonValue = reference;
 
-			jsonValue = ((JsonObjectIO) value).toJsonObject().toMap();
+			}else {
 
-		}else if(value instanceof Map) {
-			
-			HashMap result = new HashMap();
-			
-			Map map = (Map) value;
-			
-			Set keySet = map.keySet();
-			
-			for(Object key : keySet) {
-				
-				Object mapValue = map.get(key);
-				
-				Object jsonMapValue = buildJsonValue(mapValue);
-				
-				result.put(key, jsonMapValue);
+				serializedObjects.put(value, valuePath);
+				jsonValue = ((JsonObjectIO) value).toJsonObject(serializedObjects, valuePath).toMap();
 			}
-			
-			jsonValue = result;
-			
-		}else if(value instanceof List) {
-			
+
+		}else if(Ntro.introspector().isList(value)) {
 			List result = new ArrayList();
 			
 			List list = (List) value;
 			
-			for(Object item : list) {
+			for(int index = 0; index < list.size(); index++) {
 				
-				Object jsonItem = buildJsonValue(item);
+				Object item = list.get(index);
+				
+				Object jsonItem = buildJsonValue(serializedObjects, valuePath + "/" + index, item);
 				
 				result.add(jsonItem);
+			}
+			
+			jsonValue = result;
+
+		}else if(Ntro.introspector().isMap(value) && ((Map)value).size() > 0) {
+
+			Map<String, Object> map = null;
+			
+			try {
+
+				map = (Map<String, Object>) value;
+
+			}catch(ClassCastException e) {
+				
+				// JSWEET: will not throw in JS
+				Log.fatalError("Only Map<String, ?> are supported for serialization", e);
+			}
+			
+			Map<String, Object> result = new HashMap<>();
+			
+			for(String key : map.keySet()) {
+				
+				Object mapValue = map.get(key);
+				
+				Object jsonMapValue = buildJsonValue(serializedObjects, valuePath + "/" + key,  mapValue);
+				
+				result.put(key, jsonMapValue);
 			}
 			
 			jsonValue = result;

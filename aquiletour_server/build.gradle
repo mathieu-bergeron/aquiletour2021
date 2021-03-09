@@ -28,6 +28,15 @@ dependencies {
 
 }
 
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
+}
+
+
+
 tasks.test{
     dependsOn 'testServer'
     /*
@@ -39,11 +48,13 @@ tasks.test{
     }
 }
 
+
 task server (type:JavaExec) {
     dependsOn 'classes'
     main = 'ca.aquiletour.server.JavaMainServer'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
+    //jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm 
+    jvmArgs('-Dfile.encoding=UTF-8') 
     standardInput = System.in
 }
 

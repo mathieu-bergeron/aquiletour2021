@@ -17,9 +17,22 @@
 
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.models.users.AnonUser;
+import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.dashboards.DashboardModel;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
+import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.core.pages.queue.values.Appointment;
+import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
+import ca.aquiletour.core.pages.queues.QueuesModel;
+import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
+import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.users.UsersModel;
+import ca.aquiletour.core.pages.users.values.ObservableUserMap;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
@@ -40,11 +53,17 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// FIXME
 		Constants.LANG = "fr";
 		
-		NtroContext context = new NtroContext();
-		context.setUser(new AnonUser());
+		NtroContext<User> context = new NtroContext<>();
+		
+		// TODO: in JSweet, get user from Cookies
+		User devUser = new Teacher();
+		devUser.setId("alice");
+		devUser.setAuthToken("aliceToken");
+		context.setUser(devUser);
 		context.setLang(Constants.LANG);
 		
 		registerViewLoaders();
+		registerSerializableClasses();
 		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
@@ -53,6 +72,27 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		rootController.execute();
 
+	}
+	
+	public static void registerSerializableClasses() {
+		T.call(AquiletourMain.class);
+
+		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
+		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
+		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
+
+		Ntro.jsonService().registerSerializableClass(QueueModel.class);
+		Ntro.jsonService().registerSerializableClass(ObservableAppointmentList.class);
+		Ntro.jsonService().registerSerializableClass(Appointment.class);
+
+		Ntro.jsonService().registerSerializableClass(QueuesModel.class);
+		Ntro.jsonService().registerSerializableClass(ObservableQueueList.class);
+		Ntro.jsonService().registerSerializableClass(QueueSummary.class);
+
+		Ntro.jsonService().registerSerializableClass(UsersModel.class);
+		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
+		Ntro.jsonService().registerSerializableClass(Teacher.class);
+		Ntro.jsonService().registerSerializableClass(Student.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

@@ -22,14 +22,4 @@ public class ObservableQueueList extends ObservableList<QueueSummary> {
 	public ObservableQueueList(List<QueueSummary> value) {
 		super(value);
 	}
-
-	@Override
-	protected Class<?> getValueType() {
-		T.call(this);
-		// FIXME
-		return NtroModelValue.class;
-	}
-	
-	
-	
 }

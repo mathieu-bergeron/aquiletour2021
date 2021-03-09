@@ -1,24 +1,24 @@
 {
   "courses": {
-    "_T": "ca.aquiletour.core.pages.dashboards.values.ObservableCourseList",
+    "_C": "ObservableCourseList",
     "value": [
       {
-        "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "4F5",
-        "courseId": "4F5",
+        "numberOfAppointments": 2,
+        "_C": "CourseSummary",
         "isQueueOpen": true,
-        "numberOfAppointments": 0,
-        "myAppointment": 0
+        "myAppointment": null,
+        "title": "4F5",
+        "courseId": "4F5"
       },
       {
-        "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
+        "numberOfAppointments": 5,
+        "_C": "CourseSummary",
+        "isQueueOpen" : true,
+        "myAppointment": null,
         "title": "3C6",
-        "courseId": "3C6",
-        "isQueueOpen": true,
-        "numberOfAppointments": 0,
-        "myAppointment": 0
+        "courseId": "3C6"
       }
     ]
   },
-  "_T": "ca.aquiletour.core.pages.dashboards.DashboardModel"
+  "_C": "DashboardModel"
 }

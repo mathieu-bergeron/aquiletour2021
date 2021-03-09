@@ -37,7 +37,7 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 			@Override
 			public void onItemAdded(int index, CourseSummary item) {
 				T.call(this);
-				T.here();
+
 				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
 				courseView.displaySummary(item);
 				

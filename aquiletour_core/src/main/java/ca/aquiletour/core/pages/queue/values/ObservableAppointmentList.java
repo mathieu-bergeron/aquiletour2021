@@ -24,13 +24,4 @@ public class ObservableAppointmentList extends ObservableList<Appointment> {
 		T.call(this);
 	}
 
-	@Override
-	protected Class<?> getValueType() {
-		T.call(this);
-
-		return NtroModelValue.class;
-	}
-	
-	
-	
 }

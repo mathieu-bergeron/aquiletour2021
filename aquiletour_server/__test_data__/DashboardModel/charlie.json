@@ -1,9 +1,9 @@
 {
   "courses": {
-    "_T": "ca.aquiletour.core.pages.dashboards.values.ObservableCourseList",
+    "_C": "ObservableCourseList",
     "value": [
       {
-        "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
+        "_C": "CourseSummary",
         "title": "LZ3",
         "courseId": "LZ3",
         "isQueueOpen": true,
@@ -12,5 +12,5 @@
       }
     ]
   },
-  "_T": "ca.aquiletour.core.pages.dashboards.DashboardModel"
+  "_C": "DashboardModel"
 }

@@ -32,6 +32,18 @@ public abstract class LocalStore {
 		return modelLoader;
 	}
 
+	public static void saveJsonString(DocumentPath path, String jsonString) {
+		try {
+
+			instance.saveJsonString(path, jsonString);
+
+		}catch(NullPointerException e) {
+
+			Log.fatalError(Ntro.introspector().getSimpleNameForClass(LocalStore.class) + " must be initialized", e);
+
+		}
+	}
+
 	public static void close() {
 		T.call(LocalStore.class);
 

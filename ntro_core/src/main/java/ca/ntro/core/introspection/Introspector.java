@@ -19,19 +19,38 @@ package ca.ntro.core.introspection;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class Introspector {
+	
+	private Map<String, Class<?>> serializableClasses = new HashMap<>();
+	
+	public void registerSerializableClass(Class<?> _class) {
+		serializableClasses.put(getSimpleNameForClass(_class), _class);
+	}
 
-	private static Introspector instance;
+	public Class<?> serializableClass(String className) {
+		return serializableClasses.get(className);
+	}
 
 	public abstract boolean isClass(Object object);
 
-	public abstract MethodSignature methodSignature(Method method);
+	public abstract NtroClass ntroClassFromObject(Object object);
+	public abstract NtroClass ntroClassFromJavaClass(Class<?> _class);
+
+	public abstract boolean isMap(Object object);
+	public abstract boolean isList(Object object);
+
+	public abstract NtroMethod ntroMethod(Method method);
+
+	public MethodSignature methodSignature(Method method) {
+		return ntroMethod(method).signature();
+	}
 
 	public Method findMethodBySignature(Class<?> currentClass, MethodSignature methodSignature) {
 		T.call(Introspector.class);
@@ -40,9 +59,9 @@ public abstract class Introspector {
 
 		for(Method candidate : userDefinedMethodsFromClass(currentClass)) {
 
-			MethodSignature candidateSignature = methodSignature(candidate);
+			NtroMethod candidateMethod = ntroMethod(candidate);
 
-			if(candidateSignature.equals(methodSignature)) {
+			if(candidateMethod.hasSignature(methodSignature)) {
 
 				result = candidate;
 				break;
@@ -55,8 +74,7 @@ public abstract class Introspector {
 	public abstract Object buildValueForSetter(Method setter, Object rawValue);
 
 
-	public abstract Object buildValueForType(Class<?> type, Object rawValue);
-
+	public abstract Object castPrimitiveValue(Class<?> targetClass, Object primitiveValue);
 
 	public Method findMethodByName(Class<?> _class, String methodName) {
 		T.call(Introspector.class);
@@ -76,23 +94,30 @@ public abstract class Introspector {
 
 	public abstract String getSimpleNameForClass(Class<?> clazz);
 
+	public abstract String getFullNameForClass(Class<?> clazz);
+
 	public Class<?> getClassFromName(String className){
 		T.call(Introspector.class);
 
 		Class<? extends Object> _class = null;
+		
+		if(serializableClasses.containsKey(className)) {
 
-		try {
+			_class = serializableClasses.get(className);
 
-			_class = Class.forName(className);
+		}else {
+			try {
 
-		} catch (ClassNotFoundException e) {
+				_class = Class.forName(className);
 
-			Log.fatalError("Cannot find class " + className, e);
+			} catch (ClassNotFoundException e) {
 
+				Log.fatalError("Cannot find class " + className, e);
+
+			}
 		}
 
 		return _class;
-
 	}
 
 	private String setterName(String fieldName) {
@@ -222,4 +247,5 @@ public abstract class Introspector {
 
 		return allGetters;
 	}
+
 }

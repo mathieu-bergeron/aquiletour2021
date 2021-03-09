@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.properties.stored.simple.StoredProperty;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ValuePath;
@@ -22,15 +23,15 @@ import ca.ntro.core.system.trace.T;
  * @author mbergeron
  *
  */
-public abstract class NtroModel extends JsonObjectIO {
+public abstract class NtroModel implements JsonSerializable {
 
-	private String id;
+	private String modelId;
 	private ModelStore modelStore;
 
 	public void save() {
 		T.call(this);
 
-		modelStore.saveJsonObject(documentPath(), toJsonObject());
+		modelStore.saveJsonString(documentPath(), Ntro.jsonService().toString(this));
 	}
 
 	public void updateOnceFrom(ModelStore store, String modelId, UpdateListener listener) {
@@ -46,15 +47,15 @@ public abstract class NtroModel extends JsonObjectIO {
 
 
 	private DocumentPath documentPath() {
-		return new DocumentPath(Ntro.introspector().getSimpleNameForClass(getClass()), id);
+		return new DocumentPath(Ntro.introspector().getSimpleNameForClass(getClass()), modelId);
 	}
 
 	// XXX: cannot be protected as it should
 	//      not be used by subclasses
-	void setId(String id) {
+	void setModelId(String id) {
 		T.call(this);
 
-		this.id = id;
+		this.modelId = id;
 	}
 
 	void setOrigin(ModelStore origin) {
@@ -88,7 +89,7 @@ public abstract class NtroModel extends JsonObjectIO {
 
 			if(fieldValue instanceof StoreConnectable) {
 
-				ValuePath valuePath = ValuePath.collection(Ntro.introspector().getSimpleNameForClass(this.getClass())).documentId(id).field(fieldName);
+				ValuePath valuePath = ValuePath.collection(Ntro.introspector().getSimpleNameForClass(this.getClass())).documentId(modelId).field(fieldName);
 
 				((StoreConnectable) fieldValue).connectToStore(valuePath, modelStore);
 			}

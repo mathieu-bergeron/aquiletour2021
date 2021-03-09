@@ -22,10 +22,11 @@ import ca.ntro.core.__Ntro;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
+import ca.ntro.core.services.JsonService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.NtroCollections;
@@ -72,8 +73,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.__registerViewLoaderWeb(provideViewLoaderWebClass());
 		
-		
 		ValueFormatter.initialize(provideValueFormatter());
+
 		NtroCollections.initialize(provideNtroCollections());
 		
 		JsonParser.initialize(provideJsonParser());
@@ -84,7 +85,12 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.zzz_registerThreadService(provideThreadService());
 		Ntro.zzz_registerMessageServiceClass(provideMessageServiceClass());
 		Ntro.zzz_registerBackendService(provideBackendService());
+
+		Ntro.zzz_registerAssertService(provideAssertService());
+		Ntro.zzz_registerJsonService(provideJsonService());
 	}
+
+
 
 
 	protected abstract Logger provideLogger();
@@ -102,4 +108,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
 	protected abstract BackendService provideBackendService();
+	protected abstract AssertService provideAssertService();
+	protected abstract JsonService provideJsonService();
 }

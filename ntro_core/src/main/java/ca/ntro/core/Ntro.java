@@ -20,11 +20,14 @@ package ca.ntro.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.assertions.AssertExpression;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
+import ca.ntro.core.services.JsonService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.ResourceLoader;
@@ -34,18 +37,22 @@ import ca.ntro.threads.NtroThread;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
-	
+
 	private static Introspector introspector;
 	private static Logger logger;
 	private static AppCloser appCloser;
 	private static RegEx regEx;
 	private static ResourceLoader resourceLoader;
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
-	
+
 	private static Class<? extends MessageService> messageServiceClass;
 	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
 	private static ThreadService threadService;
 	private static BackendService backendService;
+	
+	private static AssertService assertService;
+
+	private static JsonService jsonService;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -112,7 +119,7 @@ public class Ntro {
 
 		return logger;
 	}
-	
+
 	public static AppCloser appCloser() {
 		__T.call(Ntro.class, "appCloser");
 
@@ -150,14 +157,14 @@ public class Ntro {
 	}
 
 	public static MessageService messageService() {
-		MessageService service = messageServices.get(threadService().currentThread());
-
-		if(service == null) {
-			service = Factory.newInstance(messageServiceClass);
-			messageServices.put(threadService().currentThread(), service);
-		}
-		
-		return service;
+//		MessageService service = messageServices.get(threadService().currentThread());
+//
+//		if(service == null) {
+//			service = Factory.newInstance(messageServiceClass);
+//			messageServices.put(threadService().currentThread(), service);
+//		}
+//
+		return Factory.newInstance(messageServiceClass);
 	}
 
 	public static void zzz_registerBackendService(BackendService backendService) {
@@ -166,5 +173,28 @@ public class Ntro {
 
 	public static BackendService backendService() {
 		return backendService;
+	}
+	
+	public static void verify(AssertExpression assertExpression) {
+		String failMessage = assertExpression.failMessage();
+		if(failMessage != null) {
+			assertService().fail(failMessage);
+		}
+	}
+
+	public static void zzz_registerAssertService(AssertService assertService) {
+		Ntro.assertService = assertService;
+	}
+	
+	public static AssertService assertService() {
+		return Ntro.assertService;
+	}
+
+	public static void zzz_registerJsonService(JsonService jsonService) {
+		Ntro.jsonService = jsonService;
+	}
+	
+	public static JsonService jsonService() {
+		return Ntro.jsonService;
 	}
 }

@@ -94,10 +94,11 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("title")[0];
 			String courseId = parameters.get("title")[0];
 
-			AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
+			AddCourseMessage addCourseMessage = new AddCourseMessage();
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, null, null, 0));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
+
 		} else if(parameters.containsKey("deleteCourse")) {
 			DeleteCourseMessage deleteCourseMessage = MessageFactory.getOutgoingMessage(DeleteCourseMessage.class);
 			

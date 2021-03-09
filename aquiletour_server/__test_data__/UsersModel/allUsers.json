@@ -1,9 +1,9 @@
 {
   "users": {
-    "_T": "ca.aquiletour.core.pages.users.values.ObservableUserMap",
+    "_C": "ObservableUserMap",
     "value": {
       "alice": {
-        "_T": "ca.aquiletour.core.models.users.Teacher",
+        "_C": "Teacher",
         "id": "alice",
         "authToken": "aliceToken",
         "name": "Alice",
@@ -12,7 +12,7 @@
         "userPassword": "alicePassword"
       },
       "bob": {
-        "_T": "ca.aquiletour.core.models.users.Student",
+        "_C": "Student",
         "id": "bob",
         "authToken": "bobToken",
         "name": "Bob",
@@ -22,7 +22,7 @@
         "userPassword": "bobPassword"
       },
       "charlie": {
-        "_T": "ca.aquiletour.core.models.users.Teacher",
+        "_C": "Teacher",
         "id": "charlie",
         "authToken": "charlieToken",
         "name": "Charlie",
@@ -32,5 +32,5 @@
       }
     }
   },
-  "_T": "ca.aquiletour.core.pages.users.UsersModel"
+  "_C": "UsersModel"
 }

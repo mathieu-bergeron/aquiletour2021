@@ -15,11 +15,5 @@ public class StoredBoolean extends StoredProperty<Boolean> {
 	}
 
 
-	@Override
-	protected Class<?> getValueType() {
-		T.call(this);
-		return Boolean.class;
-	}
-
 
 }

@@ -3,6 +3,7 @@ package ca.ntro.jdk.test;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.ntro.core.tasks.GraphTraceConnector;
@@ -10,6 +11,8 @@ import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.tasks.GraphWriterJdk;
+import ca.ntro.jdk.test.tasks.NtroTaskAsyncTest;
+import ca.ntro.jdk.test.tasks.TraceTester;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
+@Ignore
 public class NtroTaskTests {
 	
 	private static File graphDir = new File("__task_graphs__");
@@ -29,28 +33,12 @@ public class NtroTaskTests {
 	@BeforeClass
 	public static void initializeTaskDir() {
 		if(graphDir.exists()) {
-			deleteDir(graphDir);
+			Utils.deleteDir(graphDir);
 		}
 		
 		graphDir.mkdirs();
 	}
 
-	private static void deleteDir(File aDir) {
-		String[] fileNames = aDir.list();
-		
-		for(String fileName : fileNames) {
-
-			File file = new File(aDir, fileName);
-			
-			if(file.isDirectory()) {
-				deleteDir(file);
-			}else {
-				file.delete();
-			}
-		}
-		
-		aDir.delete();
-	}
 	
 	@Before
 	public void setUp() {

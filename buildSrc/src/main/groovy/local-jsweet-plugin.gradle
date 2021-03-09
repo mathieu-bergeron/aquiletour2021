@@ -43,12 +43,6 @@ dependencies {
     implementation group: 'org.jsweet', name: 'jsweet-core', version: "6"
 }
 
-configurations{
-    // XXX: not needed in runtime 
-    //      and conflicts with selenium and gson
-    testRuntime.exclude group: 'org.jsweet'
-    runtime.exclude group: 'org.jsweet' 
-}
 
 tasks.clean {
     doFirst {

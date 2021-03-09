@@ -52,7 +52,7 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 			public void handle(ActionEvent event) {
 				T.call(this);
 				
-				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText(), newSummaryText.getText(), false, newSummaryDate.getText(), 0));
+				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText()));
 				addCourseMessage.sendMessage();
 				
 				newCourseText.clear();

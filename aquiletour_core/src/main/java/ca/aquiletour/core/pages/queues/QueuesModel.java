@@ -33,7 +33,7 @@ public class QueuesModel extends NtroModel {
 		boolean alreadyExists = false;
 		if (queues != null) {
 			for (int i = 0; i < queues.size(); i++) {
-				if (queues.getItem(i).getId().equals(queue.getId())) {
+				if (queues.item(i).getId().equals(queue.getId())) {
 					alreadyExists = true;
 				}
 			}
@@ -45,8 +45,8 @@ public class QueuesModel extends NtroModel {
 	
 	public void deleteQueue(String queueId) {
 		for (int i = 0; i < queues.size(); i++) {
-			if (queues.getItem(i).getId().equals(queueId)) {
-				queues.removeItem(queues.getItem(i));
+			if (queues.item(i).getId().equals(queueId)) {
+				queues.removeItem(queues.item(i));
 			}
 		}
 	}
@@ -54,7 +54,7 @@ public class QueuesModel extends NtroModel {
 	public QueueSummary findQueueByQueueId(String queueId) {
 		QueueSummary queueRequested = null;
 		for (int i = 0; i < queues.size(); i++) {
-			QueueSummary currentCourse = queues.getItem(i);
+			QueueSummary currentCourse = queues.item(i);
 			if(currentCourse.getId().equals(queueId)) {
 				queueRequested = currentCourse;
 			}

@@ -23,7 +23,9 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.services.AppCloser;
+import ca.ntro.core.services.AssertService;
 import ca.ntro.core.services.BackendService;
+import ca.ntro.core.services.JsonService;
 import ca.ntro.core.services.Logger;
 import ca.ntro.core.services.MessageService;
 import ca.ntro.core.services.NtroCollections;
@@ -148,6 +150,16 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideBackendService");
 		
 		return new BackendServiceJdk();
+	}
+
+	@Override
+	protected AssertService provideAssertService() {
+		return new AssertServiceJdkDev();
+	}
+
+	@Override
+	protected JsonService provideJsonService() {
+		return new JsonServiceJdk();
 	}
 
 }

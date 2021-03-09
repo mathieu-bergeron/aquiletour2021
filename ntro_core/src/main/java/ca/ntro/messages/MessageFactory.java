@@ -6,6 +6,7 @@ import java.util.Map;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class MessageFactory {
@@ -22,8 +23,8 @@ public class MessageFactory {
 		M message = (M) messages.get(messageClass);
 
 		if(message == null) {
-			System.out.println(Ntro.introspector().getSimpleNameForClass(messageClass));
-			MustNot.beNull(message);
+			Log.warning("No message receptor for " + messageClass.getSimpleName());
+			message = Factory.newInstance(messageClass);
 		}
 
 		return message;

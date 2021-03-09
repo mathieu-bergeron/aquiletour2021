@@ -1,0 +1,8 @@
+{
+    "serializationOf":"a->b, a->c, b->d, c->d",
+    "NOTE":"node d gets assigned Id /left/left as the object graph is traversed in the alphabetical order of attributes (left < right)",
+    "/":{"_T":"Node","left":{"_Id":"/left"},"right":{"_Id":"/right"}},
+    "/left":{"_T":"Node","left":{"_Id":"/left/left"},"right":null},
+    "/right":{"_T":"Node","left":{"_Id":"/left/left"},"right":null},
+    "/left/left":{"_T":"Node","left":null,"right":null}
+}

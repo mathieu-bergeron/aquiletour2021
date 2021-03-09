@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonObject;
@@ -17,7 +19,7 @@ public class JsonLoaderFiles extends JsonLoader {
 
 	private DocumentPath documentPath;
 	private File modelFile;
-	private JsonObject jsonObject;
+	private String jsonString;
 	
 	public JsonLoaderFiles(DocumentPath documentPath, File modelFile) {
 		super();
@@ -28,8 +30,8 @@ public class JsonLoaderFiles extends JsonLoader {
 	}
 
 	@Override
-	public JsonObject getJsonObject() {
-		return jsonObject;
+	public String getJsonString() {
+		return jsonString;
 	}
 
 	@Override
@@ -44,32 +46,31 @@ public class JsonLoaderFiles extends JsonLoader {
 		if(modelFile.exists()) {
 			
 			try {
+				
+				List<String> lines = Files.readAllLines(modelFile.toPath());
+				
+				StringBuilder builder = new StringBuilder();
+				lines.forEach(l -> builder.append(l));
 
-				jsonObject = JsonParser.fromStream(new FileInputStream(modelFile));
+				jsonString = builder.toString();
 
-			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
 				
 				Log.fatalError("Cannot load " + modelFile.toString(), e);
 			}
 
-		}else {
-
-			// XXX: create document if none exists
-			jsonObject = JsonParser.jsonObject();
-
-			writeJsonFile(modelFile, jsonObject);
 		}
 
 		notifyTaskFinished();
 	}
 
-	private void writeJsonFile(File file, JsonObject jsonObject) {
+	private void writeJsonFile(File file, String jsonString) {
 		T.call(this);
 
 		try {
 
 			FileOutputStream out = new FileOutputStream(file);
-			out.write(JsonParser.toString(jsonObject).getBytes());
+			out.write(jsonString.getBytes());
 			out.close();
 
 		} catch (IOException e) {

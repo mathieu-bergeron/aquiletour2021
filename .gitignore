@@ -33,13 +33,20 @@ aquiletour_server/src/main/resources/public/js/aquiletour_jsweet
 aquiletour_server/src/main/resources/public/js/ntro_core  
 aquiletour_server/src/main/resources/public/js/ntro_jsweet
 
+ntro_test_server/src/main/resources/public/js/ntro_core  
+ntro_test_server/src/main/resources/public/js/ntro_jsweet
+ntro_test_server/src/main/resources/public/js/ntro_test
+ntro_test_server/src/main/resources/public/js/ntro_test_jsweet
+
 
 # Dev databases
 *.db
 __data__
 
 # Tests
+__json__
 jsonLimitations.json
+javaSerialization.bin
 build_*
 
 # MAC_OS

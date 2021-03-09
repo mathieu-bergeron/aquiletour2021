@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
@@ -31,7 +31,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			public void onEvent() {
 				T.call(this);
 				
-				ShowStudentDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
+				// FIXME: must check current user to send correct message
+				ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
 				showDashboardMessage.sendMessage();
 			}
 		});
@@ -50,7 +51,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		NtroViewWeb viewWeb = (NtroViewWeb) view;
 
-		HtmlElement container = this.getRootElement().children("#page-container").get(0);
+		HtmlElement container = this.getRootElement().find("#page-container").get(0);
 
 		MustNot.beNull(container);
 

@@ -47,7 +47,7 @@ public class QueueModel extends NtroModel {
 		
 		setMaxId(getMaxId() + 1);
 		String appointmentId = Integer.toString(getMaxId());
-		appointment.setAppointmentId(appointmentId);
+		appointment.setId(appointmentId);
 		appointments.addItem(appointment);;
 	}
 	
@@ -55,8 +55,8 @@ public class QueueModel extends NtroModel {
 		T.call(this);
 		if(getMaxId()>0)setMaxId(getMaxId() - 1);
 		for (int i = 0; i < appointments.size(); i++) {
-			if(appointments.getItem(i).getAppointmentId().equals(appointmentId)) {
-				appointments.removeItem(appointments.getItem(i));
+			if(appointments.item(i).getId().equals(appointmentId)) {
+				appointments.removeItem(appointments.item(i));
 			}
 		};
 	}
@@ -110,10 +110,10 @@ public class QueueModel extends NtroModel {
 		Appointment appointmentDestination = null;
 		Appointment appointmentDeparture = null;
 		for (int i = 0; i < appointments.size(); i++) {
-			Appointment currentAppointment = appointments.getItem(i);
-			if(currentAppointment.getAppointmentId().equals(appointmentDestinationId)) {
+			Appointment currentAppointment = appointments.item(i);
+			if(currentAppointment.getId().equals(appointmentDestinationId)) {
 				appointmentDestination = currentAppointment;
-			} else if (currentAppointment.getAppointmentId().equals(appointmentDepartureId)) {
+			} else if (currentAppointment.getId().equals(appointmentDepartureId)) {
 				appointmentDeparture = currentAppointment;
 			}
 		}
@@ -131,8 +131,8 @@ public class QueueModel extends NtroModel {
 	public void removeAllAppointmentsOfStudent(String studentId) {
 		ObservableAppointmentList copy = this.appointments;
 		for (int i = 0; i < copy.size(); i++) {
-			if(copy.getItem(i).getStudentId().equals(studentId)) {//if appointment is owned by student
-				appointments.removeItem(copy.getItem(i));
+			if(copy.item(i).getStudentId().equals(studentId)) {//if appointment is owned by student
+				appointments.removeItem(copy.item(i));
 			}
 		}
 	}

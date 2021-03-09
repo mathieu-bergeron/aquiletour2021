@@ -14,8 +14,4 @@ public class ObservableDouble extends ObservableProperty<Double> {
 		T.call(this);
 	}
 
-	@Override
-	protected Class<?> getValueType() {
-		return Double.class;
-	}
 }

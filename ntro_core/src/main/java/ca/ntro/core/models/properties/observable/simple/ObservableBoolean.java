@@ -14,8 +14,4 @@ public class ObservableBoolean extends ObservableProperty<Boolean> {
 		T.call(this);
 	}
 
-	@Override
-	protected Class<?> getValueType() {
-		return Boolean.class;
-	}
 }
