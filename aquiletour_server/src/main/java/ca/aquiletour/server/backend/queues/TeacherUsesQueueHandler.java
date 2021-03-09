@@ -1,4 +1,4 @@
-package ca.aquiletour.server.backend;
+package ca.aquiletour.server.backend.queues;
 
 import java.util.List;
 

@@ -12,6 +12,17 @@ import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserFromCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
+import ca.aquiletour.server.backend.dashboard.AddCourseHandler;
+import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
+import ca.aquiletour.server.backend.queue.AddAppointmentHandler;
+import ca.aquiletour.server.backend.queue.DeleteAppointmentHandler;
+import ca.aquiletour.server.backend.queue.MoveAppointmentHandler;
+import ca.aquiletour.server.backend.queues.TeacherUsesQueueHandler;
+import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
+import ca.aquiletour.server.backend.users.AddUserHandler;
+import ca.aquiletour.server.backend.users.AddUserToCourseHandler;
+import ca.aquiletour.server.backend.users.DeleteUserFromCourseHandler;
+import ca.aquiletour.server.backend.users.DeleteUserHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
 

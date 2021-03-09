@@ -1,12 +1,10 @@
-package ca.aquiletour.server.backend;
+package ca.aquiletour.server.backend.users;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.users.UsersModel;
-import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
@@ -14,28 +12,36 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 
-public class AddUserHandler extends BackendMessageHandler<AddUserMessage> {
+public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCourseMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, AddUserMessage message) {
+	public void handle(ModelStoreSync modelStore, AddUserToCourseMessage message) {
 		T.call(this);
 		
-		User user = message.getUser();
+		String userId = message.getUserId();
+		String courseId = message.getCourseId();
 		
 		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-				                                            user.getAuthToken(),
-				                                            user.getId());
+				                                            "admin",
+				                                            userId);
 		
-		if(dashboardModel != null) {		
+		if(dashboardModel != null) {
 			
+			CourseSummary newCourse = new CourseSummary();
+			newCourse.setTitle(courseId);
+			newCourse.setCourseId(courseId);
+			dashboardModel.addCourse(newCourse);
 			dashboardModel.save();
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
-					UsersModel usersModel = modelStore.getModel(UsersModel.class, "admin", "allUsers");
-					usersModel.addUser(user);
-					usersModel.save();
+					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
+													   "admin",
+													   courseId);
+					queueModel.addStudentToClass(userId);
+
+					queueModel.save();
 				}
 
 				@Override
