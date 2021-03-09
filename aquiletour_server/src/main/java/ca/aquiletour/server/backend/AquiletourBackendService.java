@@ -3,7 +3,10 @@ package ca.aquiletour.server.backend;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
@@ -29,5 +32,8 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(AddUserMessage.class, new AddUserHandler());
 		addBackendMessageHandler(DeleteUserMessage.class, new DeleteUserHandler());
 		addBackendMessageHandler(TeacherUsesQueueMessage.class, new TeacherUsesQueueHandler());
+		addBackendMessageHandler(DeleteCourseMessage.class, new DeleteCourseHandler());
+		addBackendMessageHandler(DeleteAppointmentMessage.class, new DeleteAppointmentHandler());
+		addBackendMessageHandler(MoveAppointmentMessage.class, new MoveAppointmentHandler());
 	}
 }

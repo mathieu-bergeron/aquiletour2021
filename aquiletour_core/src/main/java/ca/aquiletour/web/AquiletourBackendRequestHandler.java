@@ -100,12 +100,12 @@ public class AquiletourBackendRequestHandler {
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
 		} else if(parameters.containsKey("deleteCourse")) {
-			DeleteCourseMessage deleteCourseMessage = MessageFactory.getOutgoingMessage(DeleteCourseMessage.class);
+			DeleteCourseMessage deleteCourseMessage = new DeleteCourseMessage();
 			
 			String courseId = path.getName(0);
 			deleteCourseMessage.setCourseId(courseId);
 			deleteCourseMessage.setUser(user);
-			deleteCourseMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(deleteCourseMessage);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class AquiletourBackendRequestHandler {
 			int minute = rightNow.get(Calendar.MINUTE);
 			String time = hour + ":" + minute;
 			 */
-			AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
+			AddAppointmentMessage addAppointmentMessage = new AddAppointmentMessage();
 			Appointment newAppointment = new Appointment();
 			newAppointment.setStudentId(user.getId());
 			newAppointment.setStudentName(user.getName());
@@ -143,18 +143,17 @@ public class AquiletourBackendRequestHandler {
 			addAppointmentMessage.setAppointment(newAppointment);
 			addAppointmentMessage.setUser(user);
 			addAppointmentMessage.setCourseId(courseId);
-			
-			addAppointmentMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
 			
 		} else if(parameters.containsKey("deleteAppointment") && user instanceof Teacher){
 			
-			DeleteAppointmentMessage deleteAppointmentMessage = MessageFactory.getOutgoingMessage(DeleteAppointmentMessage.class);
+			DeleteAppointmentMessage deleteAppointmentMessage = new DeleteAppointmentMessage();
 			
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
 			deleteAppointmentMessage.setUser(user);
 			deleteAppointmentMessage.setCourseId(courseId);
-			deleteAppointmentMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
 			String departureId = parameters.get("move")[0];
 			String destinationId = parameters.get("before")[0];

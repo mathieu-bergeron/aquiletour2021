@@ -133,6 +133,7 @@ public class QueueModel extends NtroModel {
 		for (int i = 0; i < copy.size(); i++) {
 			if(copy.item(i).getStudentId().equals(studentId)) {//if appointment is owned by student
 				appointments.removeItem(copy.item(i));
+				setMaxId(getMaxId() - 1);;
 			}
 		}
 	}
