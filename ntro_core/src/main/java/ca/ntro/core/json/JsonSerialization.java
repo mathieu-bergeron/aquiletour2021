@@ -41,8 +41,6 @@ public class JsonSerialization {
 
 		}else {
 			
-			localHeap.put(javaValue, valuePath);
-
 			jsonValue = toJsonValueWhenNotInLocalHeap(javaValue, valuePath, localHeap);
 			
 		}
@@ -69,14 +67,20 @@ public class JsonSerialization {
 		NtroClass valueClass = Ntro.introspector().ntroClassFromObject(javaValue);
 
 		if(valueClass.ifImplements(JsonSerializable.class)) {
+
+			localHeap.put(javaValue, valuePath);
 			
 			jsonValue = toJsonValueFromSerializableObject((JsonSerializable) javaValue, valuePath, localHeap);
 		
 		} else if(javaValue instanceof List) {
+
+			localHeap.put(javaValue, valuePath);
 			
 			jsonValue = toJsonValueFromList((List<Object>) javaValue, valuePath, localHeap);
 
 		}else if(javaValue instanceof Map) {
+
+			localHeap.put(javaValue, valuePath);
 
 			jsonValue = toJsonValueFromMap((Map<String,Object>) javaValue, valuePath, localHeap);
 			
