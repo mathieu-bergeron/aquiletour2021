@@ -166,9 +166,7 @@ public class JsonSerialization {
 
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 
-				// FIXME TMP
-				//Log.fatalError("Unable to invoke getter " + getter.name(), e);
-				javaAttributeValue = null;
+				Log.fatalError("Unable to invoke getter " + getter.name(), e);
 			}
 			
 			javaMap.put(attributeName, javaAttributeValue);
