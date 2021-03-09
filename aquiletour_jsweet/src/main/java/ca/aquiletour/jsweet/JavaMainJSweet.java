@@ -40,6 +40,7 @@ public class JavaMainJSweet {
 		
 		BackendServiceJSweet backendServiceJSweet = new BackendServiceJSweet(Constants.WS_CONNECTION_STRING);
 		
+		
 		NtroJSweet.defaultInitializationTask(backendServiceJSweet)
 				  .setOptions(options)
 				  .addNextTask(new AquiletourMainJSweet())

@@ -33,7 +33,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				T.call(this);
 
 				AddCourseMessage addCourseMessage = new AddCourseMessage();
-				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue()));
+				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue(), addCourseTitleInput.getValue(),false,false,0));
 				Ntro.messageService().sendMessage(addCourseMessage);
 			}
 		});

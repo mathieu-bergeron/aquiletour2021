@@ -17,6 +17,7 @@
 
 package ca.aquiletour.core;
 
+import ca.aquiletour.core.messages.UpdateModelMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
@@ -40,6 +41,7 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 
 public abstract class AquiletourMain extends NtroTaskSync {
@@ -66,6 +68,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		
 		registerViewLoaders();
 		registerSerializableClasses();
+		
+		Ntro.backendService().handleMessageFromBackend(UpdateModelMessage.class, new MessageHandler<UpdateModelMessage>() {
+			@Override
+			public void handle(UpdateModelMessage message) {
+				System.out.println(message);
+			}
+		});
 		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
@@ -96,8 +105,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(Teacher.class);
 		Ntro.jsonService().registerSerializableClass(Student.class);
 
-		Ntro.jsonService().registerSerializableClass(AddCourseMessage.class);
 		Ntro.jsonService().registerSerializableClass(NtroMessage.class);
+		Ntro.jsonService().registerSerializableClass(AddCourseMessage.class);
+		Ntro.jsonService().registerSerializableClass(UpdateModelMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
