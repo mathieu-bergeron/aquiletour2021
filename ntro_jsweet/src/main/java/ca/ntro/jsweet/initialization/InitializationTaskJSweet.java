@@ -56,7 +56,17 @@ import ca.ntro.jsweet.services.ViewLoaderWebJSweet;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJSweet extends InitializationTask {
+	
+	private final BackendServiceJSweet backendServiceJSweet;
+	
+	public InitializationTaskJSweet(BackendServiceJSweet backendServiceJSweet) {
+		super();
+		T.call(this);
 
+		this.backendServiceJSweet = backendServiceJSweet;
+	}
+	
+	
 	@Override
 	protected StackAnalyzer provideStackAnalyzer() {
 		__T.call(this, "provideStackAnalyzer");
@@ -173,7 +183,7 @@ public class InitializationTaskJSweet extends InitializationTask {
 	protected BackendService provideBackendService() {
 		__T.call(this, "provideBackendService");
 
-		return new BackendServiceJSweet();
+		return backendServiceJSweet;
 	}
 
 	@Override

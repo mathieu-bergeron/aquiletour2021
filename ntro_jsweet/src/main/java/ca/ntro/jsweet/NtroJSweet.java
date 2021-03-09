@@ -22,11 +22,12 @@ import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.initialization.InitializationTaskJSweet;
+import ca.ntro.jsweet.services.BackendServiceJSweet;
 import ca.ntro.jsweet.services.NtroCollectionsJSweet;
 
 public class NtroJSweet {
 
-	public static NtroInitializationTask defaultInitializationTask() {
+	public static NtroInitializationTask defaultInitializationTask(BackendServiceJSweet backendServiceJSweet) {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");
 
 		NtroCollections.initialize(new NtroCollectionsJSweet());
@@ -34,7 +35,7 @@ public class NtroJSweet {
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
 		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
 		
-		InitializationTaskJSweet initJSweet = new InitializationTaskJSweet();
+		InitializationTaskJSweet initJSweet = new InitializationTaskJSweet(backendServiceJSweet);
 
 		// FIXME/TODO
 		//initJSweet.addNextTask(new LoadSourceMapTask("/js/tutoriel02/bundle.js.map"));

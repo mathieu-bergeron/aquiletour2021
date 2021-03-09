@@ -18,6 +18,7 @@
 package def.es6;
 
 import def.dom.Blob;
+import def.dom.EventListener;
 import def.js.Object;
 import def.js.Promise;
 import jsweet.lang.Interface;
@@ -32,6 +33,15 @@ public class Globals {
 		public native Promise<String> text();
 		public native Promise<Object> json();
 	}
+
+	/*
+	public static class WebSocket {
+		public EventListener onmessage;
+		public EventListener onopen;
+		public EventListener onclose;
+
+		public native void send(String message);
+	}*/
 
 	public native static Promise<FetchResponse> fetch(String path);
 	public native static Promise<FetchResponse> fetch(String path, Object request);

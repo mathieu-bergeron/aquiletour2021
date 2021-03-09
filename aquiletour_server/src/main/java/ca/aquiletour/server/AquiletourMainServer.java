@@ -19,6 +19,8 @@ package ca.aquiletour.server;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+
 import ca.aquiletour.server.http.ModelHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -27,6 +29,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.ResourceHandler;
+import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Constants;
 import ca.ntro.core.Ntro;
@@ -69,7 +72,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		e.printStackTrace(System.err);
 	}
 
-	private Server createServer(int port) {
+	private Server createServer(int port) throws ServletException {
 		T.call(this);
 
 		Server server = new Server(port);
@@ -82,6 +85,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 
 		handlers.addHandler(ModelHandler.createModelHandler("/_B", "/public"));
 		handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "/public"));
+		handlers.addHandler(WebSocketHandler.createWebSocketHandler("/_messages"));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 
         server.setHandler(handlers);
