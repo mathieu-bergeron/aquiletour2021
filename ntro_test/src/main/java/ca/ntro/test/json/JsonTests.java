@@ -24,6 +24,24 @@ public class JsonTests {
 		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
 		Ntro.jsonService().registerSerializableClass(Student.class);
 		Ntro.jsonService().registerSerializableClass(Teacher.class);
+
+		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
+		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
+		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
+	}
+
+	@Test
+	public void testDashboardModel() {
+		
+		String jsonString = "{\"courses\":{\"_C\":\"ObservableCourseList\",\"value\":[{\"numberOfAppointments\":2,\"_C\":\"CourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"4F5\",\"courseId\":\"4F5\"},{\"numberOfAppointments\":5,\"_C\":\"CourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"3C6\",\"courseId\":\"3C6\"}]},\"_C\":\"DashboardModel\"}";
+		
+		DashboardModel dashboardModel = Ntro.jsonService().fromString(DashboardModel.class, jsonString);
+
+		Ntro.verify(that(dashboardModel.getCourses().getValue().get(0).getCourseId()).isEqualTo("4F5"));
+		
+		String jsonString2 = Ntro.jsonService().toString(dashboardModel);
+
+		System.out.println(jsonString2);
 	}
 
 	@Test
