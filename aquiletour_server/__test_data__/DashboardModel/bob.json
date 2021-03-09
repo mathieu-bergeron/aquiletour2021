@@ -13,9 +13,7 @@
       {
         "numberOfAppointments": 5,
         "_C": "CourseSummary",
-        "isQueueOpen": {
-          "_R": "/courses/value/0/isQueueOpen"
-        },
+        "isQueueOpen" : true,
         "myAppointment": null,
         "title": "3C6",
         "courseId": "3C6"
