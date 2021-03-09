@@ -21,6 +21,7 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
@@ -39,6 +40,7 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.NtroMessage;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 
@@ -93,6 +95,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
 		Ntro.jsonService().registerSerializableClass(Teacher.class);
 		Ntro.jsonService().registerSerializableClass(Student.class);
+
+		Ntro.jsonService().registerSerializableClass(AddCourseMessage.class);
+		Ntro.jsonService().registerSerializableClass(NtroMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

@@ -20,12 +20,14 @@ public class BackendServiceJSweet extends BackendService {
 
 	@Override
 	public void sendMessageToBackend(NtroMessage message) {
+		T.call(this);
+
 		webSocket.send(Ntro.jsonService().toString(message));
 	}
 
 	@Override
 	public <M extends NtroMessage> void handleMessageFromBackend(Class<M> messageClass, MessageHandler<M> handler) {
-		// TODO Auto-generated method stub
+		T.call(this);
 		
 	}
 

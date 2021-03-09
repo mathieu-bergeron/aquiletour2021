@@ -5,6 +5,13 @@ import java.util.concurrent.CountDownLatch;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
+import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.ntro.core.Ntro;
+import ca.ntro.core.NtroUser;
+import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
+
 
 // from https://github.com/jetty-project/embedded-jetty-websocket-examples
 public class WebSocket extends WebSocketAdapter {
@@ -19,10 +26,23 @@ public class WebSocket extends WebSocketAdapter {
     }
 
     @Override
-    public void onWebSocketText(String message){
-        super.onWebSocketText(message);
+    public void onWebSocketText(String messageText){
+        super.onWebSocketText(messageText);
+        
+        NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
+        
+        if(message instanceof AddCourseMessage) {
+        	AddCourseMessage addCourseMessage = (AddCourseMessage) message;
+        	
+        	Teacher alice = new Teacher();
+        	alice.setId("alice");
+        	alice.setAuthToken("aliceToken");
+        	addCourseMessage.setUser(alice);
+        	
+        	Ntro.backendService().sendMessageToBackend(addCourseMessage);
+        }
 
-        System.out.println("Received TEXT message: " + message);
+
     }
 
     @Override

@@ -1,9 +1,10 @@
 package ca.ntro.messages;
 
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class NtroMessage extends NtroTaskAsync {
+public abstract class NtroMessage extends NtroTaskAsync implements JsonSerializable {
 	
 	public void sendMessage() {
 		T.call(this);
