@@ -1,10 +1,9 @@
 {
-    "_C":"QueuesModel",
-    "queues":{
-        "_C":"ObservableQueueList",
-        "value":[
-        ]
-    }
-
-
+  "_C": "QueuesModel",
+  "queues": {
+    "_C": "ObservableQueueList",
+    "value": [
+      null
+    ]
+  }
 }
