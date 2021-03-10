@@ -12,7 +12,7 @@ import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.json.JsonLoaderJSweet;
 import ca.ntro.messages.MessageHandler;
-import ca.ntro.messages.ntro_messages.UpdateModelNtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeOnModelValueNtroMessage;
 import def.dom.Event;
 import def.dom.EventListener;
 
@@ -24,10 +24,10 @@ public class NetworkStoreJSweet extends ModelStore {
 
 	public NetworkStoreJSweet() {
 		
-		Ntro.backendService().handleMessageFromBackend(UpdateModelNtroMessage.class, new MessageHandler<UpdateModelNtroMessage>(){
+		Ntro.backendService().handleMessageFromBackend(InvokeOnModelValueNtroMessage.class, new MessageHandler<InvokeOnModelValueNtroMessage>(){
 			@Override
-			public void handle(UpdateModelNtroMessage message) {
-				callOnModel(message.getValuePath(), message.getMethodName(), message.getArguments());
+			public void handle(InvokeOnModelValueNtroMessage message) {
+				invokeOnModelValue(message.getValuePath(), message.getMethodName(), message.getArgs());
 			}
 		});
 	}

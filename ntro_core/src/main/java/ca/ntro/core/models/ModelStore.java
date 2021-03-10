@@ -17,7 +17,7 @@ import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.UpdateModelNtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeOnModelValueNtroMessage;
 
 public abstract class ModelStore {
 
@@ -66,7 +66,7 @@ public abstract class ModelStore {
 		registeredModels.put(documentPath.toString(), ntroModel);
 	}
 
-	public void callOnModel(ValuePath valuePath, String methodName, List<Object> arguments) {
+	public void invokeOnModelValue(ValuePath valuePath, String methodName, List<Object> args) {
 
 		DocumentPath documentPath = valuePath.extractDocumentPath();
 		
@@ -78,7 +78,7 @@ public abstract class ModelStore {
 			NtroClass valueClass = Ntro.introspector().ntroClassFromObject(modelValue);
 			NtroMethod methodToCall = valueClass.findMethodByName(methodName);
 			try {
-				methodToCall.invoke(modelValue, arguments);
+				methodToCall.invoke(modelValue, args);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				Log.fatalError("Unable to invoke " + methodName + "on valuePath " + valuePath.toString(), e);
 			}

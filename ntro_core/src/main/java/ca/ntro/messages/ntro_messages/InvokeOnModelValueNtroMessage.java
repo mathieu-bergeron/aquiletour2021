@@ -5,11 +5,11 @@ import java.util.List;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.messages.NtroMessage;
 
-public class UpdateModelNtroMessage extends NtroMessage {
+public class InvokeOnModelValueNtroMessage extends NtroMessage {
 
 	private ValuePath valuePath;
 	private String methodName;
-	private List<Object> arguments;
+	private List<Object> args;
 	
 	public ValuePath getValuePath() {
 		return valuePath;
@@ -23,11 +23,11 @@ public class UpdateModelNtroMessage extends NtroMessage {
 	public void setMethodName(String methodName) {
 		this.methodName = methodName;
 	}
-	public List<Object> getArguments() {
-		return arguments;
+	public List<Object> getArgs() {
+		return args;
 	}
-	public void setArguments(List<Object> arguments) {
-		this.arguments = arguments;
+	public void setArgs(List<Object> args) {
+		this.args = args;
 	}
 	
 	
