@@ -26,12 +26,14 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement nbAppointment = this.getRootElement().find("#nbAppointment").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		HtmlElement deleteCourseLink = this.getRootElement().find("#deleteLink").get(0);
+		HtmlElement closeQueue = this.getRootElement().find("#closeQueue").get(0);
 		
 		
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(nbAppointment);
 		MustNot.beNull(makeAppointmentLink);
+		MustNot.beNull(closeQueue);
 
 
 		
@@ -40,6 +42,14 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
 		makeAppointmentLink.setAttribute("href","/billetterie/" + course.getTitle() + "?makeAppointment");
 		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");
+		if(course.getIsQueueOpen()) {
+			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle() + "?teacherClosesQueue");
+			closeQueue.appendHtml("CLOSE QUEUE");
+		} else {
+			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle());
+			closeQueue.appendHtml("OPEN QUEUE");
+
+		}
 	}
 
 
