@@ -17,7 +17,7 @@ import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.InvokeOnModelValueNtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 
 public abstract class ModelStore {
 
@@ -66,9 +66,10 @@ public abstract class ModelStore {
 		registeredModels.put(documentPath.toString(), ntroModel);
 	}
 
-	public void invokeOnModelValue(ValuePath valuePath, String methodName, List<Object> args) {
+	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
+		if(valuePath==null) return;
 
-		DocumentPath documentPath = valuePath.extractDocumentPath();
+		DocumentPath documentPath = valuePath.getDocumentPath();
 		
 		NtroModel model = registeredModels.get(documentPath.toString());
 		
@@ -85,6 +86,11 @@ public abstract class ModelStore {
 		}
 	}
 
+	public void onValueMethodInvoked(ValuePath valuePath, String string, Object item) {
+		
+	}
+
 	public abstract void registerThatUserObservesModel(NtroUser user, NtroModel model);
+
 
 }

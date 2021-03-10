@@ -1,14 +1,11 @@
 package ca.ntro.test.json;
 
-import java.util.ArrayList;
-
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class DashboardModel extends NtroModel {
-	private static final long serialVersionUID = -7945536015118582973L;
 
-	private ObservableCourseList courses = new ObservableCourseList(new ArrayList<>());
+	private ObservableCourseList courses = new ObservableCourseList();
 
 	@Override
 	public void initializeStoredValues() {
@@ -87,11 +84,5 @@ public class DashboardModel extends NtroModel {
 				currentCourse.setIsQueueOpen(availabilty);
 			}
 		}
-	}
-
-	@Override
-	public void update(NtroModel newModel) {
-		T.call(this);
-		
 	}
 }

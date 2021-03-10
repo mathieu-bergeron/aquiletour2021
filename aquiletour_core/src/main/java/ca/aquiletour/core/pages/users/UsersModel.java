@@ -48,10 +48,4 @@ public class UsersModel extends NtroModel {
 		
 		users.removeEntry(userId);
 	}
-
-	@Override
-	public void update(NtroModel newModel) {
-		T.call(this);
-	}
-
 }

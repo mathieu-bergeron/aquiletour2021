@@ -9,13 +9,11 @@ import ca.ntro.core.system.trace.T;
 
 public class ValuePath implements JsonSerializable {
 	
-	private String collection;
-	private String documentId;
+	private DocumentPath documentPath = new DocumentPath();
 	private List<String> fieldPath = new ArrayList<>();
 	
 	private ValuePath(String collection) {
-		this.collection = collection;
-		
+		documentPath.setCollection(collection);
 	}
 
 	public static ValuePath collection(String collection) {
@@ -25,7 +23,7 @@ public class ValuePath implements JsonSerializable {
 	
 	public ValuePath documentId(String documentId) {
 		T.call(this);
-		this.documentId = documentId;
+		documentPath.setDocumentId(documentId);
 		return this;
 	}
 	
@@ -39,9 +37,9 @@ public class ValuePath implements JsonSerializable {
 		return this;
 	}
 	
-	public DocumentPath extractDocumentPath() {
+	public DocumentPath getDocumentPath() {
 		T.call(this);
-		return new DocumentPath(collection, documentId);
+		return documentPath;
 	}
 
 	public void addFieldName(String fieldName) {
@@ -49,17 +47,4 @@ public class ValuePath implements JsonSerializable {
 		
 		this.fieldPath.add(fieldName);
 	}
-
-	public Object updateObject(JsonObject storedObject, Object value) {
-		T.call(this);
-		
-		return storedObject.updateValue(fieldPath, value);
-	}
-
-	public Object getValueFrom(JsonObject storedObject) {
-		T.call(this);
-
-		return storedObject.getValue(fieldPath);
-	}
-
 }

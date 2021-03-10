@@ -44,7 +44,7 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.InvokeOnModelValueNtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public abstract class InitializationTask extends NtroTaskSync {
@@ -99,7 +99,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(GetModelNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(SetModelNtroMessage.class);
-		Ntro.jsonService().registerSerializableClass(InvokeOnModelValueNtroMessage.class);
+		Ntro.jsonService().registerSerializableClass(InvokeValueMethodNtroMessage.class);
 
 		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
 		Ntro.jsonService().registerSerializableClass(ValuePath.class);

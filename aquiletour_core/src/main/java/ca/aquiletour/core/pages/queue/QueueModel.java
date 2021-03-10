@@ -6,13 +6,11 @@ import java.util.List;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.properties.observable.list.ObservableList;
 import ca.ntro.core.system.trace.T;
 
 public class QueueModel extends NtroModel {
 
-	private static final long serialVersionUID = 2545995167728311236L;
-	private ObservableAppointmentList appointments = new ObservableAppointmentList(new ArrayList<>());
+	private ObservableAppointmentList appointments = new ObservableAppointmentList();
 	private List<String> studentIds = new ArrayList<>();
 	private int maxId;
 
@@ -137,13 +135,6 @@ public class QueueModel extends NtroModel {
 			}
 		}
 	}
-	
-	@Override
-	public void update(NtroModel newModel) {
-		T.call(this);
-	}
-	
-	
 	
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.messages.NtroMessage;
 
-public class InvokeOnModelValueNtroMessage extends NtroMessage {
+public class InvokeValueMethodNtroMessage extends NtroMessage {
 
 	private ValuePath valuePath;
 	private String methodName;

@@ -11,7 +11,7 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.messages.MessageFactory;
-import ca.ntro.messages.ntro_messages.InvokeOnModelValueNtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 
 public class LocalStoreServer extends LocalStoreFiles {
 
@@ -25,7 +25,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 		System.out.println("registerThatUserObservesModel: " + user.getId() + " " + model.getClass().getSimpleName());
 		
 		
-		InvokeOnModelValueNtroMessage message = MessageFactory.createMessage(InvokeOnModelValueNtroMessage.class);
+		InvokeValueMethodNtroMessage message = MessageFactory.createMessage(InvokeValueMethodNtroMessage.class);
 
 		try {
 

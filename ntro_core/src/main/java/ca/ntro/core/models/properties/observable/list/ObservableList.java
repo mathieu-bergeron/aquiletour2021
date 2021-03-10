@@ -6,9 +6,12 @@ import java.util.List;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.models.ModelStore;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.models.properties.observable.simple.ObservableProperty;
 import ca.ntro.core.services.NtroCollections;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 
@@ -17,10 +20,13 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 	
 	private List<ListObserver<I>> listObservers = new ArrayList<>();
 	
-	public ObservableList(List<I> value) {
+	private ModelStore modelStore;
+	private ValuePath valuePath;
+	
+	public ObservableList() {
 		T.call(this);
 
-		setValue(NtroCollections.synchronizedList(value));
+		setValue(NtroCollections.synchronizedList(new ArrayList<>()));
 	}
 	
 	public int size() {
@@ -67,10 +73,16 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 		}
 	}
 	
+	
 	public void addItem(I item) {
 		T.call(this);
 		getValue().add(item);
 		
+		List<Object> args = new ArrayList<>();
+		args.add(item);
+
+		modelStore.onValueMethodInvoked(valuePath,"addItem",item);
+
 		for(ListObserver<I> listObserver : listObservers) {
 			T.here();
 			listObserver.onItemAdded(getValue().indexOf(item), item);

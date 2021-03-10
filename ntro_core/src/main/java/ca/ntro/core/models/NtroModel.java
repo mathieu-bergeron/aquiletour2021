@@ -4,11 +4,11 @@ package ca.ntro.core.models;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.json.JsonSerializable;
-import ca.ntro.core.models.properties.stored.simple.StoredProperty;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
@@ -96,6 +96,8 @@ public abstract class NtroModel implements JsonSerializable {
 		}
 	}
 
-	public abstract void update(NtroModel newModel);
+	public void onUpdate(String valueName, String methodName, List<Object> args) {
+
+	}
 
 }

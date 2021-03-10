@@ -74,7 +74,7 @@ public class MemoryStore extends ModelStore {
 	public <V extends Object> void setValue(ValuePath valuePath, V value) {
 		T.call(this);
 		
-		String document = values.get(valuePath.extractDocumentPath());
+		String document = values.get(valuePath.getDocumentPath());
 		
 		//valuePath.updateObject(document, value);
 	}
