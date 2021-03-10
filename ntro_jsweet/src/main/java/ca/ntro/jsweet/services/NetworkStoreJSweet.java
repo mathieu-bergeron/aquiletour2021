@@ -27,7 +27,7 @@ public class NetworkStoreJSweet extends ModelStore {
 		Ntro.backendService().handleMessageFromBackend(UpdateModelNtroMessage.class, new MessageHandler<UpdateModelNtroMessage>(){
 			@Override
 			public void handle(UpdateModelNtroMessage message) {
-				System.out.println(message);
+				callOnModel(message.getValuePath(), message.getMethodName(), message.getArguments());
 			}
 		});
 	}
@@ -35,18 +35,6 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		T.call(this);
-
-		// XXX: called only when the storage is modified OUTSIDE our tab
-		window.addEventListener("storage", new EventListener() {
-
-			@Override
-			public void $apply(Event evt) {
-				T.call(this);
-
-				updateListener.onExternalUpdate();
-			}
-		});
-
 	}
 
 	private String fullId(DocumentPath documentPath) {

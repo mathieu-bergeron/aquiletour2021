@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -246,6 +248,10 @@ public abstract class Introspector {
 		}
 
 		return allGetters;
+	}
+
+	public Object findByValuePath(NtroModel model, ValuePath valuePath) {
+		return null;
 	}
 
 }

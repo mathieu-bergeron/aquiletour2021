@@ -149,7 +149,9 @@ public class JsonDeserialization {
 				
 				try {
 
-					setter.invoke(javaObject, javaAttributeValue);
+					List<Object> args = new ArrayList<>();
+					args.add(javaAttributeValue);
+					setter.invoke(javaObject, args);
 
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 

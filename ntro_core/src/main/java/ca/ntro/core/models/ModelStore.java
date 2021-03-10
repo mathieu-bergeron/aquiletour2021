@@ -1,16 +1,23 @@
 package ca.ntro.core.models;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.NtroUser;
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.UpdateModelNtroMessage;
 
 public abstract class ModelStore {
 
@@ -59,13 +66,22 @@ public abstract class ModelStore {
 		registeredModels.put(documentPath.toString(), ntroModel);
 	}
 
-	public void updateModel(DocumentPath documentPath, NtroModel newModel) {
-		System.out.println("updateModel: " + documentPath.toString());
+	public void callOnModel(ValuePath valuePath, String methodName, List<Object> arguments) {
 
+		DocumentPath documentPath = valuePath.extractDocumentPath();
+		
 		NtroModel model = registeredModels.get(documentPath.toString());
 		
 		if(model != null) {
-			model.update(newModel);
+			
+			Object modelValue = Ntro.introspector().findByValuePath(model, valuePath);
+			NtroClass valueClass = Ntro.introspector().ntroClassFromObject(modelValue);
+			NtroMethod methodToCall = valueClass.findMethodByName(methodName);
+			try {
+				methodToCall.invoke(modelValue, arguments);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				Log.fatalError("Unable to invoke " + methodName + "on valuePath " + valuePath.toString(), e);
+			}
 		}
 	}
 

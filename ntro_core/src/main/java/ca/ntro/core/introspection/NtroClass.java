@@ -122,4 +122,17 @@ public abstract class NtroClass {
 		return setters;
 	}
 
+	public NtroMethod findMethodByName(String methodName) {
+		NtroMethod method = null;
+
+		for(NtroMethod candidate : userDefinedMethods()) {
+			if(candidate.name().equals(methodName)) {
+				method = candidate;
+				break;
+			}
+		}
+		
+		return method;
+	}
+
 }
