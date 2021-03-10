@@ -11,6 +11,8 @@ import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
@@ -100,12 +102,12 @@ public class AquiletourBackendRequestHandler {
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
 		} else if(parameters.containsKey("deleteCourse")) {
-			DeleteCourseMessage deleteCourseMessage = MessageFactory.getOutgoingMessage(DeleteCourseMessage.class);
+			DeleteCourseMessage deleteCourseMessage = new DeleteCourseMessage();
 			
 			String courseId = path.getName(0);
 			deleteCourseMessage.setCourseId(courseId);
 			deleteCourseMessage.setUser(user);
-			deleteCourseMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(deleteCourseMessage);
 		}
 	}
 
@@ -135,7 +137,7 @@ public class AquiletourBackendRequestHandler {
 			int minute = rightNow.get(Calendar.MINUTE);
 			String time = hour + ":" + minute;
 			 */
-			AddAppointmentMessage addAppointmentMessage = MessageFactory.getOutgoingMessage(AddAppointmentMessage.class);
+			AddAppointmentMessage addAppointmentMessage = new AddAppointmentMessage();
 			Appointment newAppointment = new Appointment();
 			newAppointment.setStudentId(user.getId());
 			newAppointment.setStudentName(user.getName());
@@ -143,18 +145,17 @@ public class AquiletourBackendRequestHandler {
 			addAppointmentMessage.setAppointment(newAppointment);
 			addAppointmentMessage.setUser(user);
 			addAppointmentMessage.setCourseId(courseId);
-			
-			addAppointmentMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
 			
 		} else if(parameters.containsKey("deleteAppointment") && user instanceof Teacher){
 			
-			DeleteAppointmentMessage deleteAppointmentMessage = MessageFactory.getOutgoingMessage(DeleteAppointmentMessage.class);
+			DeleteAppointmentMessage deleteAppointmentMessage = new DeleteAppointmentMessage();
 			
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
 			deleteAppointmentMessage.setUser(user);
 			deleteAppointmentMessage.setCourseId(courseId);
-			deleteAppointmentMessage.sendMessage();
+			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
 			String departureId = parameters.get("move")[0];
 			String destinationId = parameters.get("before")[0];
@@ -165,6 +166,11 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setUser(user);
 			moveAppointmentMessage.setCourseId(courseId);
 			//moveAppointmentMessage.sendMessage();
+		} else if(parameters.containsKey("teacherClosedQueue")&& user instanceof Teacher) {//localhost8080/billeterie/courseId?teacherClosedQueue
+			TeacherClosesQueueMessage teacherClosesQueueMessage = new TeacherClosesQueueMessage();
+			teacherClosesQueueMessage.setCourseId(courseId);
+			teacherClosesQueueMessage.setTeacher(user);
+			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
 		}
 	}
 

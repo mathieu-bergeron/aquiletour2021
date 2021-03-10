@@ -114,8 +114,8 @@ public class AquiletourRequestHandler {
 				ShowTeacherQueueMessage showTeacherQueueMessage = MessageFactory.getOutgoingMessage(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(courseId);
 				showTeacherQueueMessage.sendMessage();
-				//teacher uses queue message (prof encore actif) TODO
-				TeacherUsesQueueMessage teacherUsesQueueMessage = new TeacherUsesQueueMessage();//TODO crashes?
+				
+				TeacherUsesQueueMessage teacherUsesQueueMessage = new TeacherUsesQueueMessage();
 				teacherUsesQueueMessage.setCourseId(courseId);
 				teacherUsesQueueMessage.setTeacher(user);
 				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);

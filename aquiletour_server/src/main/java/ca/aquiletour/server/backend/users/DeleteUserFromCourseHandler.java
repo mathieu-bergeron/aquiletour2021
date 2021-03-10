@@ -1,4 +1,4 @@
-package ca.aquiletour.server.backend;
+package ca.aquiletour.server.backend.users;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;

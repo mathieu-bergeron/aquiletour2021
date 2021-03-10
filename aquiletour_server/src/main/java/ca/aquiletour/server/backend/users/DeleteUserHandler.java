@@ -1,4 +1,4 @@
-package ca.aquiletour.server.backend;
+package ca.aquiletour.server.backend.users;
 
 import java.util.List;
 
