@@ -8,6 +8,8 @@ import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.users.UsersView;
+import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
+import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -23,8 +25,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
+		HtmlElement usersLink = getRootElement().find("#users-link").get(0);
 
 		MustNot.beNull(dashboardLink);
+		MustNot.beNull(usersLink);
 
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -33,7 +37,17 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				
 				// FIXME: must check current user to send correct message
 				ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
-				showDashboardMessage.sendMessage();
+				Ntro.messageService().sendMessage(showDashboardMessage);
+			}
+		});
+		
+		usersLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+
+				ShowUsersMessage showUsersMessage = MessageFactory.createMessage(ShowUsersMessage.class);
+				Ntro.messageService().sendMessage(showUsersMessage);
 			}
 		});
 	}

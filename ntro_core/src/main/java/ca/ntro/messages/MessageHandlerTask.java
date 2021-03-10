@@ -27,9 +27,14 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 	}
 
 	public void triggerHandlerOnce() {
+		
+		// FIXME: as implemented below
+		//        there is an issue with two message
+		//        handlers one after the other
 		notifyTaskFinished();  // unblock the handler
 		execute();             // execute tasks that are now unblocked
-		resetTask();           // reblock the handler
+		resetNodeTransitive(); // reblock tasks that depend on this handler
 		execute();             // get ready for next trigger
+
 	}
 }
