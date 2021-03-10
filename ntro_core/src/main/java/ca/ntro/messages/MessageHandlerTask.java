@@ -25,4 +25,11 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void triggerHandlerOnce() {
+		notifyTaskFinished();  // unblock the handler
+		execute();             // execute tasks that are now unblocked
+		resetTask();           // reblock the handler
+		execute();             // get ready for next trigger
+	}
 }
