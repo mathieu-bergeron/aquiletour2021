@@ -58,7 +58,10 @@ public class MessageFactory {
 		T.call(MessageFactory.class);
 		
 		MessageHandlerTask handlerTask = new MessageHandlerTask();
+
 		handlerTask.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
+
+		Ntro.messageService().registerHandlerTask(messageClass, handlerTask);
 
 		return handlerTask;
 	}

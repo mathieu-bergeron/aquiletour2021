@@ -32,7 +32,7 @@ public abstract class MessageService {
 			@Override
 			public void handle(NtroMessage message) {
 				messageHandlerTask.setMessage(message);
-				messageHandlerTask.notifyExitTaskFinished();
+				messageHandlerTask.notifyTaskFinished();
 				messageHandlerTask.execute();
 				messageHandlerTask.resetTask(); // FIXME: or resetNodeTransitive?
 			}

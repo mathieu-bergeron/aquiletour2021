@@ -14,7 +14,7 @@ public abstract class NtroTaskAsync extends NtroTaskImpl {
 	
 	protected abstract void runTaskAsync();
 	
-	protected void notifyTaskFinished() {
+	public void notifyTaskFinished() {
 		notifyExitTaskFinished();
 	}
 

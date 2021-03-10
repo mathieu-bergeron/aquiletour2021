@@ -35,8 +35,6 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
 		ca.ntro.messages.MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
-
-		Ntro.messageService().registerHandlerTask(messageClass, messageHandlerTask);
 		
 		handler.getTask().addPreviousTask(messageHandlerTask);
 	}

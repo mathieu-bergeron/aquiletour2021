@@ -1,9 +1,8 @@
 package ca.ntro.messages;
 
-import ca.ntro.core.tasks.NtroTask;
-import ca.ntro.core.tasks.NtroTaskImpl;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskImpl {
+public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 	
 	private MSG message;
 	
@@ -16,25 +15,7 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskImpl {
 	}
 
 	@Override
-	protected void runEntryTaskAsync() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void runExitTaskAsync() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void onSomePreviousTaskFinished(String taskId, NtroTask previousTask) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void onSomeSubTaskFinished(String taskId, NtroTask subTask) {
+	protected void runTaskAsync() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -44,6 +25,4 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskImpl {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }
