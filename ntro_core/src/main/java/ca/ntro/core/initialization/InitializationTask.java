@@ -85,8 +85,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		JsonParser.initialize(provideJsonParser());
 		
-		LocalStore.initialize(provideLocalStore());
-		NetworkStore.initialize(provideNetworkStore());
 		
 		Ntro.zzz_registerThreadService(provideThreadService());
 		Ntro.zzz_registerMessageServiceClass(provideMessageServiceClass());
@@ -95,6 +93,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.zzz_registerAssertService(provideAssertService());
 		Ntro.zzz_registerJsonService(provideJsonService());
 		
+		LocalStore.initialize(provideLocalStore());
+		NetworkStore.initialize(provideNetworkStore());
 		
 		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(GetModelNtroMessage.class);
@@ -103,6 +103,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
 		Ntro.jsonService().registerSerializableClass(ValuePath.class);
+
 	}
 
 

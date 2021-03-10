@@ -1,9 +1,8 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
@@ -12,9 +11,10 @@ import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.json.JsonLoaderJSweet;
+import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.ntro_messages.UpdateModelNtroMessage;
 import def.dom.Event;
 import def.dom.EventListener;
-import def.dom.Storage;
 
 import static def.dom.Globals.window;
 
@@ -22,8 +22,15 @@ import static def.es6.Globals.fetch;
 
 public class NetworkStoreJSweet extends ModelStore {
 
-	// FIXME: replace by a server connection!!
-	Storage localStorage = window.localStorage;
+	public NetworkStoreJSweet() {
+		
+		Ntro.backendService().handleMessageFromBackend(UpdateModelNtroMessage.class, new MessageHandler<UpdateModelNtroMessage>(){
+			@Override
+			public void handle(UpdateModelNtroMessage message) {
+				System.out.println(message);
+			}
+		});
+	}
 
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {

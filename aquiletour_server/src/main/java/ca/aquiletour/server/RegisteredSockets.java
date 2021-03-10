@@ -32,7 +32,9 @@ public class RegisteredSockets {
 	public static void deregisterSocket(Session socket) {
 		for(Map.Entry<NtroUser, Set<Session>> entry : userSockets.entrySet()) {
 			boolean removed = entry.getValue().remove(socket);
-			System.out.println("deregistered socket for " + entry.getKey().getId());
+			if(removed) {
+				System.out.println("deregistered socket for " + entry.getKey().getId());
+			}
 		}
 	}
 

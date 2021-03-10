@@ -30,8 +30,6 @@ public class BackendServiceJSweet extends BackendService {
 
 				NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
 				
-				System.out.println("onmessage: " + t.data.toString());
-				
 				MessageHandler<?> handler = handlers.get(message.getClass());
 				
 				if(handler != null) {
