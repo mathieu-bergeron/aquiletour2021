@@ -7,42 +7,29 @@ import java.util.TimerTask;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.models.ModelStoreSync;
 
 public class QueueTimer {
 	static Timer timer = new Timer();
 	static boolean isTimerCurrentlyOngoing = false;
 
-	public static void startTimer(QueueModel queueModel, ModelStoreSync modelStore, String courseId) {
-		timer.schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				List<String> studentIds = queueModel.getStudentIds();
-				for (String studentId : studentIds) {
-					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-		                    "admin",
-		                    studentId);
-					if(dashboardModel != null) {
-						dashboardModel.setTeacherAvailability(false, courseId);
-						dashboardModel.save();
-					}
-				}
-				QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
-				openQueuesModel.deleteQueue(courseId);
-				openQueuesModel.save();
-			}
-		}, 5*60*1000);//5 minutes
+	public static void startTimer(TimerTask timerTask) {
+		isTimerCurrentlyOngoing = true;
+		timer = new Timer();
+		timer.schedule(timerTask , 5*60*1000);//5 minutes
 	}
 	
 	public static void cancelTimer() {
-		timer.cancel();
+		if(isTimerCurrentlyOngoing) {
+			timer.cancel();
+		}
+		isTimerCurrentlyOngoing = false;
 	}
 	
-	public static void restartTimer(QueueModel queueModel, ModelStoreSync modelStore, String courseId) {
+	public static void restartTimer(TimerTask timerTask) {
 		cancelTimer();
-		startTimer(queueModel, modelStore, courseId);
-		
+		startTimer(timerTask);
 	}
 	
 	public static boolean isTimerOngoing() {

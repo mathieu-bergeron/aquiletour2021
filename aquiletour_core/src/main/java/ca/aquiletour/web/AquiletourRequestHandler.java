@@ -115,11 +115,12 @@ public class AquiletourRequestHandler {
 				showTeacherQueueMessage.setCourseId(courseId);
 				showTeacherQueueMessage.sendMessage();
 				
-				TeacherUsesQueueMessage teacherUsesQueueMessage = new TeacherUsesQueueMessage();
-				teacherUsesQueueMessage.setCourseId(courseId);
-				teacherUsesQueueMessage.setTeacher(user);
-				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
-
+				if (!(parameters.containsKey("teacherClosesQueue"))) {
+					TeacherUsesQueueMessage teacherUsesQueueMessage = new TeacherUsesQueueMessage();
+					teacherUsesQueueMessage.setCourseId(courseId);
+					teacherUsesQueueMessage.setTeacher(user);
+					Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
+				}
 				
 			}else if(user instanceof Student){
 				

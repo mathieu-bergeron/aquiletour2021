@@ -14,8 +14,6 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 	@Override
 	protected void handle(QueueModel model, QueueView view, ViewLoader subViewLoader) {
 		T.call(this);
-		T.here();//TODO goes here
-		
 		model.getAppointments().observe(new ListObserver<Appointment>() {
 
 			@Override
