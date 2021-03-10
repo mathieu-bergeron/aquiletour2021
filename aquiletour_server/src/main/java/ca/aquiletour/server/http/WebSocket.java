@@ -69,8 +69,9 @@ public class WebSocket extends WebSocketAdapter {
     @Override
     public void onWebSocketClose(int statusCode, String reason){
         super.onWebSocketClose(statusCode, reason);
+        
+        RegisteredSockets.deregisterSocket(getSession());
 
-        System.out.println("Socket Closed: [" + statusCode + "] " + reason);
         closureLatch.countDown();
     }
 

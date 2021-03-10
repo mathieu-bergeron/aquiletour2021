@@ -30,8 +30,9 @@ public class RegisteredSockets {
 	}
 
 	public static void deregisterSocket(Session socket) {
-		for(Set<Session> sockets : userSockets.values()) {
-			sockets.remove(socket);
+		for(Map.Entry<NtroUser, Set<Session>> entry : userSockets.entrySet()) {
+			boolean removed = entry.getValue().remove(socket);
+			System.out.println("deregistered socket for " + entry.getKey().getId());
 		}
 	}
 
@@ -40,7 +41,9 @@ public class RegisteredSockets {
 		
 		if(sockets != null) {
 			for(Session socket : sockets) {
-				socket.getRemote().sendString(Ntro.jsonService().toString(message));
+				if(socket.isOpen()) {
+					socket.getRemote().sendString(Ntro.jsonService().toString(message));
+				}
 			}
 		}
 	}

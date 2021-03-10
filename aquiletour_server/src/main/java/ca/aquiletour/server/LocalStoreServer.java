@@ -1,6 +1,10 @@
 package ca.aquiletour.server;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.NtroModel;
@@ -17,7 +21,9 @@ public class LocalStoreServer extends LocalStoreFiles {
 		// We send a UpdateModelNtroMessage to every user that observes that
 		// model
 		
+			
 		System.out.println("registerThatUserObservesModel: " + user.getId() + " " + model.getClass().getSimpleName());
+		
 		
 		UpdateModelNtroMessage message = MessageFactory.createMessage(UpdateModelNtroMessage.class);
 
@@ -29,7 +35,5 @@ public class LocalStoreServer extends LocalStoreFiles {
 
 			Log.fatalError("Unable to send message to user " + user.getId(), e);
 		}
-		
-		
 	}
 }
