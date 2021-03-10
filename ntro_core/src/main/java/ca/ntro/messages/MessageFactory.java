@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.introspection.Factory;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -15,6 +15,24 @@ public class MessageFactory {
 
 	private static MessageHandlers handlers = new MessageHandlers();
 	private static MessageHandlerTasks tasks = new MessageHandlerTasks();
+	
+	private static NtroUser currentUser;
+
+	public static void registerCurrentUser(NtroUser currentUser) {
+		MessageFactory.currentUser = currentUser;
+	}
+
+	public static <MSG extends NtroMessage> MSG createMessage(Class<MSG> messageClass) {
+		T.call(MessageFactory.class);
+
+		MSG message = Factory.newInstance(messageClass);
+		
+		if(message instanceof NtroUserMessage) {
+			((NtroUserMessage) message).setUser(currentUser);
+		}
+
+		return message;
+	}
 
 	public static <M extends NtroMessage> M getOutgoingMessage(Class<M> messageClass) {
 		T.call(MessageFactory.class);
@@ -38,8 +56,11 @@ public class MessageFactory {
 
 	public static <M extends NtroMessage> MessageHandlerTask createMessageHandlerTask(Class<M> messageClass) {
 		T.call(MessageFactory.class);
+		
+		MessageHandlerTask handlerTask = new MessageHandlerTask();
+		handlerTask.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
 
-		return null;
+		return handlerTask;
 	}
 
 
@@ -59,4 +80,6 @@ public class MessageFactory {
 		
 		messages = new HashMap<>();
 	}
+
+
 }

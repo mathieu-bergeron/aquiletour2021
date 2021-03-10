@@ -151,8 +151,6 @@ public class DynamicHandler extends AbstractHandler {
 			Map<String, String[]> parameters = baseRequest.getParameterMap();
 			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
 		    
-			//backendTrace.addGraphWriter(new GraphTraceWriterJdk(new File("__backend_task_graphs__", path.toFileName())));
-
 			// Client controller executes after
 			// to make sure modifications to the
 			// models are loaded up

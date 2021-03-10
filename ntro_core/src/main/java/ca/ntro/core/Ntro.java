@@ -46,7 +46,7 @@ public class Ntro {
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
 
 	private static Class<? extends MessageService> messageServiceClass;
-	private static Map<NtroThread, MessageService> messageServices = new HashMap<>();
+	private static Map<String, MessageService> messageServices = new HashMap<>();
 	private static ThreadService threadService;
 	private static BackendService backendService;
 	
@@ -157,14 +157,14 @@ public class Ntro {
 	}
 
 	public static MessageService messageService() {
-//		MessageService service = messageServices.get(threadService().currentThread());
-//
-//		if(service == null) {
-//			service = Factory.newInstance(messageServiceClass);
-//			messageServices.put(threadService().currentThread(), service);
-//		}
-//
-		return Factory.newInstance(messageServiceClass);
+		MessageService service = messageServices.get(threadService().currentThread().getThreadId());
+
+		if(service == null) {
+			service = Factory.newInstance(messageServiceClass);
+			messageServices.put(threadService().currentThread().getThreadId(), service);
+		}
+
+		return service;
 	}
 
 	public static void zzz_registerBackendService(BackendService backendService) {

@@ -44,4 +44,9 @@ extends NtroTaskAsync {
 		
 	}
 
+	public MSG getMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

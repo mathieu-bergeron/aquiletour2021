@@ -7,17 +7,16 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
 import ca.aquiletour.core.messages.UpdateModelMessage;
-import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.core.Ntro;
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.LocalStore;
-import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
-
+import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 
 // from https://github.com/jetty-project/embedded-jetty-websocket-examples
 public class WebSocket extends WebSocketAdapter {
@@ -27,8 +26,6 @@ public class WebSocket extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(Session sess){
         super.onWebSocketConnect(sess);
-
-        System.out.println("Socket Connected: " + sess);
     }
 
     @Override
@@ -36,18 +33,20 @@ public class WebSocket extends WebSocketAdapter {
         super.onWebSocketText(messageText);
         
         NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
-        
-        if(message instanceof AddCourseMessage) {
+
+        if(message instanceof RegisterSocketNtroMessage) {
+        	
+        	RegisterSocketNtroMessage registerSocketSystemMessage = (RegisterSocketNtroMessage) message;
+        	RegisteredSockets.registerUserSocket(registerSocketSystemMessage.getUser(), getSession());
+
+        }else if(message instanceof AddCourseMessage) {
+
         	AddCourseMessage addCourseMessage = (AddCourseMessage) message;
-        	
-        	Teacher alice = new Teacher();
-        	alice.setId("alice");
-        	alice.setAuthToken("aliceToken");
-        	addCourseMessage.setUser(alice);
-        	
+        	User fromUser = addCourseMessage.getUser();
+
         	Ntro.backendService().sendMessageToBackend(addCourseMessage);
-        	
-        	ModelLoader modelLoader = LocalStore.getLoader(DashboardModel.class, alice.getAuthToken(), alice.getId());
+
+        	ModelLoader modelLoader = LocalStore.getLoader(DashboardModel.class, fromUser.getAuthToken(), fromUser.getId());
         	modelLoader.execute();
         	
         	DashboardModel dashboardModel = (DashboardModel) modelLoader.getModel();
@@ -55,7 +54,7 @@ public class WebSocket extends WebSocketAdapter {
 			if(dashboardModel != null) {
 				try {
 					
-					DocumentPath documentPath = new DocumentPath(Ntro.introspector().getSimpleNameForClass(DashboardModel.class), alice.getId());
+					DocumentPath documentPath = new DocumentPath(Ntro.introspector().getSimpleNameForClass(DashboardModel.class), fromUser.getId());
 					
 					UpdateModelMessage updateModelMessage = new UpdateModelMessage(documentPath, dashboardModel);
 					
@@ -67,8 +66,6 @@ public class WebSocket extends WebSocketAdapter {
 				}
 			}
         }
-
-
     }
 
     @Override

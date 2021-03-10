@@ -3,7 +3,17 @@ package ca.ntro.messages;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.NtroTaskImpl;
 
-public class MessageHandlerTask extends NtroTaskImpl {
+public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskImpl {
+	
+	private MSG message;
+	
+	public MSG getMessage() {
+		return message;
+	}
+
+	public void setMessage(MSG message) {
+		this.message = message;
+	}
 
 	@Override
 	protected void runEntryTaskAsync() {
@@ -34,5 +44,6 @@ public class MessageHandlerTask extends NtroTaskImpl {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

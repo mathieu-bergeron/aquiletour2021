@@ -17,19 +17,12 @@
 
 package ca.aquiletour.jsweet;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.jsweet.test.LinkedListNode;
-import ca.ntro.core.Ntro;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.NtroJSweet;
-import ca.ntro.jsweet.introspection.IntrospectorJSweet;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
-import ca.ntro.jsweet.services.JsonParserJSweet;
+import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 
 public class JavaMainJSweet {
 

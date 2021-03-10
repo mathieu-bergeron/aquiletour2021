@@ -79,7 +79,7 @@ public class AquiletourRequestHandler {
 		if(user instanceof Teacher) {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
-			showTeacherDashboardMessage.sendMessage();
+			Ntro.messageService().sendMessage(showTeacherDashboardMessage);
 			
 		}else if(user instanceof Student){
 			

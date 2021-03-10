@@ -27,7 +27,11 @@ public class NtroThreadJdk extends Thread implements NtroThread {
 		}
 		return false;
 	}
-	
+
+	@Override
+	public String getThreadId() {
+		return String.valueOf(javaThread.getId());
+	}
 
 	@Override
 	public void sendMessageToThread(NtroMessage message) {
@@ -40,6 +44,7 @@ public class NtroThreadJdk extends Thread implements NtroThread {
 		// TODO Auto-generated method stub
 		
 	}
+
 	
 
 }

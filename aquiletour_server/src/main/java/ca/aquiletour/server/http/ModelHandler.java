@@ -12,6 +12,8 @@ import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
+
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -72,6 +74,39 @@ public class ModelHandler extends AbstractHandler {
         String collectionName = uriParts[1];
         String modelId = uriParts[2];
 
+        if (request.getMethod().equals("POST")) {
+
+			StringBuilder builder = new StringBuilder();
+			BufferedReader reader = baseRequest.getReader();
+			String line;
+			while((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+			
+			String messageText = builder.toString();
+			
+			// This should be a NtroUserMessage
+			// either GetModelMessage
+			// or     SaveModelMessage
+			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
+
+			System.out.println(messageText);
+
+        }else {
+            Log.error("[ModelHandler] Invalid HTTP method '" + request.getMethod() + "'!");
+            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED_405);
+            baseRequest.setHandled(true);
+        }
+        
+        
+        // TODO: this should be a message
+        //       sent by post
+        //
+        // GetModelMessage()
+        //
+        // a NtroUserMessage that contains the User
+        // which contains userId and authToken
+
         System.out.println("Collection: " + collectionName + ", File: " + modelId);
 
         Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.jsonService().serializableClass(collectionName);
@@ -98,6 +133,17 @@ public class ModelHandler extends AbstractHandler {
         ModelLoader modelLoader = LocalStore.getLoader(modelClazz, "TODO", modelId);
         modelLoader.execute();
         
+        // A listener on that model for that user
+        // (to remove if the user disconnects)
+        //
+        // or rather:
+        // an observer for each Observable property of the model
+        // for each action of the observer, we send a RPC to
+        // each socket of that user asking to replicate the action
+        // e.g. onItemAdded -> send RPC asking to perform onItemAdded
+        //
+        // LocalStore.addListener(modelClazz, "TODO", modelId, user)
+        
         //System.out.println(Ntro.jsonService().toString(modelLoader.getModel()));
 
         response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
@@ -106,8 +152,6 @@ public class ModelHandler extends AbstractHandler {
         baseRequest.setHandled(true);
     }
 
-    // TODO Faire que ça sauvegarde vraiment le modèle ! Seulement pour tester
-    // TODO instancier + save ???
     private void handleModelWrite(Request baseRequest, HttpServletResponse response, HttpServletRequest request) throws IOException {
 
         String[] uriParts = uriParts(request.getRequestURI());

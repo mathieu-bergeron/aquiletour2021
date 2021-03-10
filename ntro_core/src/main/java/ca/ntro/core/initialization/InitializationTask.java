@@ -39,6 +39,7 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public abstract class InitializationTask extends NtroTaskSync {
@@ -88,6 +89,9 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		Ntro.zzz_registerAssertService(provideAssertService());
 		Ntro.zzz_registerJsonService(provideJsonService());
+		
+		
+		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
 	}
 
 

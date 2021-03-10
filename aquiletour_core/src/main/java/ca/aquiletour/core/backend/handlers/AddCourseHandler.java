@@ -1,10 +1,10 @@
 package ca.aquiletour.core.backend.handlers;
 
 import ca.aquiletour.core.backend.DashboardBackendController;
-import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.mvc.MessageHandler;
 import ca.ntro.core.system.trace.T;
 
@@ -14,7 +14,7 @@ public class AddCourseHandler extends MessageHandler<DashboardBackendController,
 	protected void handle(AddCourseMessage message) {
 		T.call(this);
 		
-		User fromUser = message.getUser();
+		NtroUser fromUser = message.getUser();
 		String courseId = message.getCourse().getTitle();
 		
 		DashboardModel dashboardModel = getController().getModel(DashboardModel.class, 

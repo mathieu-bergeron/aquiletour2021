@@ -44,8 +44,10 @@ import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 
@@ -59,19 +61,25 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		// FIXME
 		Constants.LANG = "fr";
-		
-		NtroContext<User> context = new NtroContext<>();
-		
+
 		// TODO: in JSweet, get user from Cookies
 		User devUser = new Teacher();
 		devUser.setId("alice");
 		devUser.setAuthToken("aliceToken");
+		
+		NtroContext<User> context = new NtroContext<>();
 		context.setUser(devUser);
 		context.setLang(Constants.LANG);
 		
 		registerViewLoaders();
 		registerSerializableClasses();
 		
+		MessageFactory.registerCurrentUser(devUser);
+		
+		RegisterSocketNtroMessage registerSocketNtroMessage = MessageFactory.createMessage(RegisterSocketNtroMessage.class);
+
+		Ntro.backendService().sendMessageToBackend(registerSocketNtroMessage);
+
 		Ntro.backendService().handleMessageFromBackend(UpdateModelMessage.class, new MessageHandler<UpdateModelMessage>() {
 			@Override
 			public void handle(UpdateModelMessage message) {
@@ -113,6 +121,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.jsonService().registerSerializableClass(NtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(AddCourseMessage.class);
 		Ntro.jsonService().registerSerializableClass(UpdateModelMessage.class);
+
 
 		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
 	}

@@ -5,6 +5,7 @@ import ca.ntro.messages.NtroMessage;
 
 public interface NtroThread {
 	
+	String getThreadId();
 	void sendMessageToThread(NtroMessage message);
 	<M extends NtroMessage> void handleMessageFromThread(Class<M> messageClass, MessageHandler<M> handler);
 

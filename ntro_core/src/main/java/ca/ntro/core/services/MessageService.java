@@ -6,12 +6,14 @@ import java.util.Map;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.threads.NtroThread;
 
 public abstract class MessageService {
 	
-	private Map<Class<? extends NtroMessage>, MessageHandler> handlers = new HashMap<>();
+	// FIXME: only one handler by message???
+	private Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
 	
 	public <M extends NtroMessage> void registerHandler(Class<M> messageClass, MessageHandler<M> handler) {
 		
@@ -24,20 +26,23 @@ public abstract class MessageService {
 		Ntro.backendService().handleMessageFromBackend(messageClass, handler);
 	}
 
-	public <M extends NtroMessage> void registerHandlerTask(Class<M> messageClass, NtroTask task) {
+	public void registerHandlerTask(Class<? extends NtroMessage> messageClass, MessageHandlerTask messageHandlerTask) {
+		// JSWEET: compilation error with <MSG extends NtroMessage>
 		handlers.put(messageClass, new MessageHandler() {
 			@Override
 			public void handle(NtroMessage message) {
-				task.notifyExitTaskFinished();
+				messageHandlerTask.setMessage(message);
+				messageHandlerTask.notifyExitTaskFinished();
+				messageHandlerTask.execute();
+				messageHandlerTask.resetTask(); // FIXME: or resetNodeTransitive?
 			}
 		});
 	}
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroMessage> void sendMessage(M message) {
-
 		if(handlers.containsKey(message.getClass())) {
-			
+
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
 			handler.handle(message);
 
