@@ -5,10 +5,10 @@ import ca.ntro.core.system.assertions.MustNot;
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
-
 
 
 class   ModelMessageHandlerTask<M   extends NtroModel, 
@@ -35,11 +35,11 @@ extends NtroTaskAsync {
 		MustNot.beNull(model);
 		
 		@SuppressWarnings("unchecked")
-		MSG message = (MSG) getPreviousTask(NtroMessage.class, messageId);
+		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
 
-		MustNot.beNull(message);
+		MustNot.beNull(messageHandler);
 
-		handler.handleImpl(model, message);
+		handler.handleImpl(model, (MSG) messageHandler.getMessage());
 		
 		notifyTaskFinished();
 	}

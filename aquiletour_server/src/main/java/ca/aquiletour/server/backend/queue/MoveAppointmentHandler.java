@@ -2,13 +2,12 @@ package ca.aquiletour.server.backend.queue;
 
 import java.util.List;
 
-import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
-import ca.ntro.core.mvc.MessageHandler;
+import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;

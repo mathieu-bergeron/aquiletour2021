@@ -3,6 +3,7 @@ package ca.ntro.core.mvc;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 
 public abstract class NtroController<AC extends NtroAbstractController> extends NtroAbstractController {
@@ -34,7 +35,7 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
-		ca.ntro.messages.MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
+		MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
 		
 		handler.getTask().addPreviousTask(messageHandlerTask);
 	}
@@ -50,9 +51,8 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
-		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
-		message.setTaskId(messageId);
+		MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
 
-		handler.getTask().addPreviousTask(message);
+		handler.getTask().addPreviousTask(messageHandlerTask);
 	}
 }

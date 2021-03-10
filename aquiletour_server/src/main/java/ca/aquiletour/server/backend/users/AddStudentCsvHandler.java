@@ -3,7 +3,6 @@ package ca.aquiletour.server.backend.users;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;

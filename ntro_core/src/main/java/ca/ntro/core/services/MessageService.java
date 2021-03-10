@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.MessageHandlerTask;
@@ -52,5 +53,11 @@ public abstract class MessageService {
 
 			Ntro.backendService().sendMessageToBackend(message);
 		}
+	}
+
+	public void reset() {
+		T.call(this);
+		
+		handlers = new HashMap<>();
 	}
 }

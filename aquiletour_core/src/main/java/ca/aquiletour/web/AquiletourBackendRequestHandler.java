@@ -159,7 +159,7 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
 			String departureId = parameters.get("move")[0];
 			String destinationId = parameters.get("before")[0];
-			MoveAppointmentMessage moveAppointmentMessage = MessageFactory.getOutgoingMessage(MoveAppointmentMessage.class);
+			MoveAppointmentMessage moveAppointmentMessage = MessageFactory.createMessage(MoveAppointmentMessage.class);
 			Appointment newAppointment = new Appointment();
 			moveAppointmentMessage.setappointmentDepartureId(departureId);
 			moveAppointmentMessage.setappointmentDestinationId(destinationId);
@@ -184,7 +184,7 @@ public class AquiletourBackendRequestHandler {
 			String password = parameters.get("password")[0];
 			T.here();
 			
-			AddUserMessage addUserMessage = MessageFactory.getOutgoingMessage(AddUserMessage.class);
+			AddUserMessage addUserMessage = MessageFactory.createMessage(AddUserMessage.class);
 			User newUser = new User();
 			newUser.setUserEmail(email);			
 			newUser.setUserPassword(password);	
@@ -196,7 +196,7 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("deleteUser")){
 
-			DeleteUserMessage deleteUserMessage = MessageFactory.getOutgoingMessage(DeleteUserMessage.class);
+			DeleteUserMessage deleteUserMessage = MessageFactory.createMessage(DeleteUserMessage.class);
 			
 			String userId = parameters.get("deleteUser")[0];
 			deleteUserMessage.setUserId(userId);

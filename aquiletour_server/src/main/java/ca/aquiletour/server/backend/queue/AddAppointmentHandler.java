@@ -2,7 +2,6 @@ package ca.aquiletour.server.backend.queue;
 
 import java.util.List;
 
-import ca.aquiletour.core.backend.QueueBackendController;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;

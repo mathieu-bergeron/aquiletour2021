@@ -36,7 +36,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				T.call(this);
 				
 				// FIXME: must check current user to send correct message
-				ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
+				ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
 				Ntro.messageService().sendMessage(showDashboardMessage);
 			}
 		});
