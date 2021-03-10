@@ -8,6 +8,9 @@ public class DocumentPath implements JsonSerializable {
 	private String documentId;
 
 
+	public DocumentPath() {
+	}
+
 	public DocumentPath(String collection, String firstPathName, String... pathRemainder) {
 		this.collection = collection;
 

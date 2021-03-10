@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
@@ -116,5 +118,10 @@ public class LocalStoreFiles extends ModelStore {
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+		// XXX: must be overriden
 	}
 }

@@ -3,6 +3,7 @@ package ca.ntro.core.models;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
@@ -67,5 +68,7 @@ public abstract class ModelStore {
 			model.update(newModel);
 		}
 	}
+
+	public abstract void registerThatUserObservesModel(NtroUser user, NtroModel model);
 
 }

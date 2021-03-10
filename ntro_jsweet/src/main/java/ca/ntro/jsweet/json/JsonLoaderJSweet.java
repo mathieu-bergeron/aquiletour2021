@@ -1,8 +1,11 @@
 package ca.ntro.jsweet.json;
 
+import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import def.es6.Globals;
 import def.js.Promise;
 
@@ -23,8 +26,17 @@ public class JsonLoaderJSweet extends JsonLoader {
     @Override
     protected void runTaskAsync() {
         T.call(this);
+        
+        GetModelNtroMessage message = MessageFactory.createMessage(GetModelNtroMessage.class);
+        message.setDocumentPath(documentPath);
+        
+        String messageText = Ntro.jsonService().toString(message);
 
-        fetch("/_B/" + fullId(documentPath)).then((Globals.FetchResponse response) -> {
+		def.js.Object options = new def.js.Object();
+		options.$set("method","POST");
+		options.$set("body",messageText);
+
+        fetch("/_B/", options).then((Globals.FetchResponse response) -> {
             if (response.ok) {
                 return response.text()
                         .then(text -> {

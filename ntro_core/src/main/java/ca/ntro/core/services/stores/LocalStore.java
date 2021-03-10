@@ -1,6 +1,7 @@
 package ca.ntro.core.services.stores;
 
 import ca.ntro.core.Ntro;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
@@ -69,5 +70,19 @@ public abstract class LocalStore {
 
 		}
 
+	}
+
+	public static void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+		T.call(LocalStore.class);
+
+		try {
+
+			instance.registerThatUserObservesModel(user, model);
+
+		}catch(NullPointerException e) {
+
+			Log.fatalError(Ntro.introspector().getSimpleNameForClass(LocalStore.class) + " must be initialized", e);
+
+		}
 	}
 }

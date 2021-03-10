@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ntro.core.json.JsonObject;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public class ValuePath {
+public class ValuePath implements JsonSerializable {
 	
 	private String collection;
 	private String documentId;
@@ -16,7 +17,7 @@ public class ValuePath {
 		this.collection = collection;
 		
 	}
-	
+
 	public static ValuePath collection(String collection) {
 		T.call(ValuePath.class);
 		return new ValuePath(collection);

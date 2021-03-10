@@ -1,9 +1,11 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
@@ -96,5 +98,10 @@ public class NetworkStoreJSweet extends ModelStore {
 	public <V> void setValue(ValuePath valuePath, V value) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+		
 	}
 }

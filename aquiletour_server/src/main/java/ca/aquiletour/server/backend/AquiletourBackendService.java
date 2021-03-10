@@ -25,15 +25,10 @@ import ca.aquiletour.server.backend.users.AddUserHandler;
 import ca.aquiletour.server.backend.users.AddUserToCourseHandler;
 import ca.aquiletour.server.backend.users.DeleteUserFromCourseHandler;
 import ca.aquiletour.server.backend.users.DeleteUserHandler;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
 
 public class AquiletourBackendService extends BackendServiceServer {
 	
-	public AquiletourBackendService(ModelStoreSync modelStore) {
-		super(modelStore);
-	}
-
 	@Override
 	protected void addBackendMessageHandlers() {
 

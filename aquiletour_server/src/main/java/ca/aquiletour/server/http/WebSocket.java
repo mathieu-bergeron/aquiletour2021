@@ -1,12 +1,10 @@
 package ca.aquiletour.server.http;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
-import ca.aquiletour.core.messages.UpdateModelMessage;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -51,20 +49,20 @@ public class WebSocket extends WebSocketAdapter {
         	
         	DashboardModel dashboardModel = (DashboardModel) modelLoader.getModel();
 
+        	/*
 			if(dashboardModel != null) {
 				try {
 					
 					DocumentPath documentPath = new DocumentPath(Ntro.introspector().getSimpleNameForClass(DashboardModel.class), fromUser.getId());
 					
 					UpdateModelMessage updateModelMessage = new UpdateModelMessage(documentPath, dashboardModel);
-					
 					this.getRemote().sendString(Ntro.jsonService().toString(updateModelMessage));
 					
 					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
         }
     }
 

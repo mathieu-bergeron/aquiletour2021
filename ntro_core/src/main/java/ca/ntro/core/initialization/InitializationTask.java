@@ -33,13 +33,18 @@ import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.ResourceLoader;
 import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.services.ValueFormatter;
+import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.services.stores.NetworkStore;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
+import ca.ntro.messages.ntro_messages.UpdateModelNtroMessage;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public abstract class InitializationTask extends NtroTaskSync {
@@ -92,6 +97,12 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		
 		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
+		Ntro.jsonService().registerSerializableClass(GetModelNtroMessage.class);
+		Ntro.jsonService().registerSerializableClass(SetModelNtroMessage.class);
+		Ntro.jsonService().registerSerializableClass(UpdateModelNtroMessage.class);
+
+		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
+		Ntro.jsonService().registerSerializableClass(ValuePath.class);
 	}
 
 

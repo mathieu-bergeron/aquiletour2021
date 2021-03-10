@@ -3,6 +3,7 @@ package ca.ntro.core.services.stores;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
@@ -98,5 +99,10 @@ public class MemoryStore extends ModelStore {
 		// XXX: nothing to do here.
 		// XXX: this is when some other program can modify the store
 		// XXX: for now, probably only for HTML5 LocalStorage
+	}
+
+	@Override
+	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+		// XXX: nothing to do here.
 	}
 }
