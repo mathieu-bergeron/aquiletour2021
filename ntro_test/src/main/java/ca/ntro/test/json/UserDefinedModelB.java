@@ -3,7 +3,7 @@ package ca.ntro.test.json;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class UsersModel extends NtroModel {
+public class UserDefinedModelB extends NtroModel {
 
 	private ObservableUserMap users = new ObservableUserMap();
 

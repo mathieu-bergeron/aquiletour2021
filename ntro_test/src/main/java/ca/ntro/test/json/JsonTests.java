@@ -20,12 +20,12 @@ public class JsonTests {
 		Ntro.jsonService().registerSerializableClass(ListItemB.class);
 		Ntro.jsonService().registerSerializableClass(LinkedListNode.class);
 
-		Ntro.jsonService().registerSerializableClass(UsersModel.class);
+		Ntro.jsonService().registerSerializableClass(UserDefinedModelB.class);
 		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
 		Ntro.jsonService().registerSerializableClass(Student.class);
 		Ntro.jsonService().registerSerializableClass(Teacher.class);
 
-		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
+		Ntro.jsonService().registerSerializableClass(UserDefinedModelA.class);
 		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
 		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
 	}
@@ -35,7 +35,7 @@ public class JsonTests {
 		
 		String jsonString = "{\"courses\":{\"_C\":\"ObservableCourseList\",\"value\":[{\"numberOfAppointments\":2,\"_C\":\"CourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"4F5\",\"courseId\":\"4F5\"},{\"numberOfAppointments\":5,\"_C\":\"CourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"3C6\",\"courseId\":\"3C6\"}]},\"_C\":\"DashboardModel\"}";
 		
-		DashboardModel dashboardModel = Ntro.jsonService().fromString(DashboardModel.class, jsonString);
+		UserDefinedModelA dashboardModel = Ntro.jsonService().fromString(UserDefinedModelA.class, jsonString);
 
 		Ntro.verify(that(dashboardModel.getCourses().getValue().get(0).getCourseId()).isEqualTo("4F5"));
 		
@@ -49,7 +49,7 @@ public class JsonTests {
 		
 		String jsonString = "{\"_C\":\"UsersModel\",\"users\":{\"_C\":\"ObservableUserMap\",\"value\":{\"bob\":{\"userPassword\":\"bobPassword\",\"_C\":\"Student\",\"surname\":\"Bérancourt\",\"authToken\":\"bobToken\",\"name\":\"Bob\",\"registrationId\":\"1234567\",\"userEmail\":\"bob.berancourt@test.ca\",\"id\":\"bob\"},\"alice\":{\"userPassword\":\"alicePassword\",\"_C\":\"Teacher\",\"surname\":\"Awama\",\"authToken\":\"aliceToken\",\"name\":\"Alice\",\"userEmail\":\"alice.awama@test.com\",\"id\":\"alice\"},\"charlie\":{\"userPassword\":\"charliePassword\",\"_C\":\"Teacher\",\"surname\":\"Ngo\",\"authToken\":\"charlieToken\",\"name\":\"Charlie\",\"userEmail\":\"charlie.ngo@test.org\",\"id\":\"charlie\"}}}}";
 		
-		UsersModel usersModel = Ntro.jsonService().fromString(UsersModel.class, jsonString);
+		UserDefinedModelB usersModel = Ntro.jsonService().fromString(UserDefinedModelB.class, jsonString);
 		
 		Ntro.verify(that(usersModel.getUsers().getValue().get("alice").getName()).isEqualTo("Alice"));
 		
