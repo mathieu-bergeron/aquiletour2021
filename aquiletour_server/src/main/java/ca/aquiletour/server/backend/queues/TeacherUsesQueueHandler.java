@@ -15,6 +15,7 @@ import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -52,7 +53,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 			                    studentId);
 						if(dashboardModel != null) {
 							dashboardModel.setTeacherAvailability(true, courseId);
-							dashboardModel.save();
+							LocalStore.save(dashboardModel);
 						}
 					}
 					QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
@@ -60,8 +61,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 					
 					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 					openQueuesModel.addQueueToList(queue);
-					openQueuesModel.save();
-					
+					LocalStore.save(openQueuesModel);
 				}
 
 				@Override

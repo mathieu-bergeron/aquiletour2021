@@ -45,7 +45,8 @@ public class JsonLoaderJSweet extends JsonLoader {
                             notifyTaskFinished();
                         })
                         .Catch((java.lang.Object error) -> {
-                            System.err.println("[NetworkStore] for " + documentPath.toString() + ", " + error.toString());
+                            System.err.println("[NetworkStore] for " + documentPath.toString() + ", " + error);
+                        	System.err.println(error);
                         });
             } else {
                 return Promise.reject("[NetworkStore] return code != 200");

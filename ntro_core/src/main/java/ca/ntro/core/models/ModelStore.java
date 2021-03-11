@@ -23,7 +23,8 @@ public abstract class ModelStore {
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
 	
-	private Map<String, NtroModel> registeredModels = new HashMap<>();
+	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
+	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
 
 	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
@@ -62,7 +63,8 @@ public abstract class ModelStore {
 	public abstract void close();
 
 	public void registerModel(DocumentPath documentPath, NtroModel ntroModel) {
-		registeredModels.put(documentPath.toString(), ntroModel);
+		localHeap.put(ntroModel, documentPath);
+		localHeapByPath.put(documentPath, ntroModel);
 	}
 
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
@@ -70,8 +72,10 @@ public abstract class ModelStore {
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
 		
-		NtroModel model = registeredModels.get(documentPath.toString());
+		NtroModel model = localHeapByPath.get(documentPath);
 		
+		System.out.println("invokeValueMethod");
+
 		if(model != null) {
 			
 			Object modelValue = Ntro.introspector().findByValuePath(model, valuePath);
@@ -96,10 +100,8 @@ public abstract class ModelStore {
 	public void save(NtroModel model) {
 		T.call(this);
 		
-		// find DocumentPath for model
-		// call saveJsonString
-		
+		DocumentPath documentPath = localHeap.get(model);
+
+		saveJsonString(documentPath, Ntro.jsonService().toString(model));
 	}
-
-
 }

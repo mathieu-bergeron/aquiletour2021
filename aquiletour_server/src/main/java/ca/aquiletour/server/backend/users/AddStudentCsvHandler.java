@@ -13,6 +13,7 @@ import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -54,10 +55,10 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 					newUser.setAuthToken(newUser.getName() + "Token");
 					newUser.setUserEmail(newUser.getName() + "." + newUser.getSurname() + "@test.ca");
 					newUser.setUserPassword(newUser.getName() + "password");
+
 					usersModel.addUser(newUser);
 					usersToAdd.add(newUser);
-					usersModel.save();
-					
+					LocalStore.save(usersModel);
 				}		
 			}
 			Ntro.threadService().executeLater(new NtroTaskSync() {
@@ -73,13 +74,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 						newCourse.setTitle(queueId);
 						newCourse.setCourseId(queueId);
 						dashboardModel.addCourse(newCourse);
-						dashboardModel.save();
+						LocalStore.save(dashboardModel);
 						
 						QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 								newUser.getAuthToken(),
 								queueId);
 						queueModel.addStudentToClass(newUser.getName());
-						queueModel.save();
+						LocalStore.save(queueModel);
 					}
 					
 				}

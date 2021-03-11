@@ -9,6 +9,7 @@ import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -28,14 +29,15 @@ public class AddUserHandler extends BackendMessageHandler<AddUserMessage> {
 		
 		if(dashboardModel != null) {		
 			
-			dashboardModel.save();
+			LocalStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
 					UsersModel usersModel = modelStore.getModel(UsersModel.class, "admin", "allUsers");
 					usersModel.addUser(user);
-					usersModel.save();
+					
+					LocalStore.save(usersModel);
 				}
 
 				@Override

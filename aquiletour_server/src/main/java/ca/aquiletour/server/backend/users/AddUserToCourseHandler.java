@@ -7,6 +7,7 @@ import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -31,7 +32,8 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 			newCourse.setTitle(courseId);
 			newCourse.setCourseId(courseId);
 			dashboardModel.addCourse(newCourse);
-			dashboardModel.save();
+			
+			LocalStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -41,7 +43,7 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 													   courseId);
 					queueModel.addStudentToClass(userId);
 
-					queueModel.save();
+					LocalStore.save(queueModel);
 				}
 
 				@Override

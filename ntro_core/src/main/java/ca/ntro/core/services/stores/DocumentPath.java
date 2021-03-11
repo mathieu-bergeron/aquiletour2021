@@ -7,10 +7,6 @@ public class DocumentPath implements JsonSerializable {
 	private String collection;
 	private String documentId;
 
-
-	public DocumentPath() {
-	}
-
 	public DocumentPath(String collection, String firstPathName, String... pathRemainder) {
 		this.collection = collection;
 
@@ -38,7 +34,9 @@ public class DocumentPath implements JsonSerializable {
 	}
 	
 	public DocumentPath clone() {
-		DocumentPath clone = new DocumentPath();
+		// JSWEET: adding a default constructor
+		//         leads to a invalid overload error
+		DocumentPath clone = new DocumentPath(null,null);
 		
 		clone.setCollection(collection);
 		clone.setDocumentId(documentId);
@@ -59,7 +57,7 @@ public class DocumentPath implements JsonSerializable {
 	}
 
 	public ValuePath toValuePath() {
-		return ValuePath.setCollection(getCollection()).setDocumentId(getDocumentId());
+		return ValuePath.forCollection(getCollection()).setDocumentId(getDocumentId());
 	}
 
 }

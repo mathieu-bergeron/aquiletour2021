@@ -13,10 +13,6 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.json.JsonLoaderJSweet;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
-import def.dom.Event;
-import def.dom.EventListener;
-
-import static def.dom.Globals.window;
 
 import static def.es6.Globals.fetch;
 
@@ -27,7 +23,6 @@ public class NetworkStoreJSweet extends ModelStore {
 		Ntro.backendService().handleMessageFromBackend(InvokeValueMethodNtroMessage.class, new MessageHandler<InvokeValueMethodNtroMessage>(){
 			@Override
 			public void handle(InvokeValueMethodNtroMessage message) {
-				System.out.println(message);
 				invokeValueMethod(message.getValuePath(), message.getMethodName(), message.getArgs());
 			}
 		});

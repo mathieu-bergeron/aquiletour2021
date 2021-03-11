@@ -3,13 +3,13 @@ package ca.ntro.core.services.stores;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
 public class ValuePath implements JsonSerializable {
 	
-	private DocumentPath documentPath = new DocumentPath();
+	// JSWEET: adding a default constructor to DocumentPath leads to invalid overload error
+	private DocumentPath documentPath = new DocumentPath(null,null);
 	private List<String> fieldPath = new ArrayList<>();
 
 	private ValuePath() {
@@ -19,7 +19,7 @@ public class ValuePath implements JsonSerializable {
 		documentPath.setCollection(collection);
 	}
 
-	public static ValuePath setCollection(String collection) {
+	public static ValuePath forCollection(String collection) {
 		T.call(ValuePath.class);
 		return new ValuePath(collection);
 	}

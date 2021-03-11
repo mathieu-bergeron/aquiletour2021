@@ -40,6 +40,12 @@ public class ModelFactory {
 			                                       ValuePath valuePath, 
 			                                       HashSet<Object> localHeap) {
 		T.call(ModelFactory.class);
+		
+		if(value == null) { 
+			System.out.println("initializeStoreConnections");
+			System.err.println(valuePath.toString());
+			return;
+		}
 
 		if(NtroCollections.setContainsExact(localHeap, value)) return;
 		

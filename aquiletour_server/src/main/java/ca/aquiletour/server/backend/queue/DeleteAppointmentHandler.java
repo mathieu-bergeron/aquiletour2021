@@ -8,6 +8,7 @@ import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.ControllerMessageHandler;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -30,7 +31,8 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 		if(queueModel != null) {
 			
 			queueModel.deleteAppointment(message.getAppointmentId());
-			queueModel.save();
+			LocalStore.save(queueModel);
+
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
@@ -45,7 +47,8 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 							if(requestingUser.getId().equals(studentId)) {
 								dashboardModel.updateMyAppointment(courseId, false);
 							}
-							dashboardModel.save();
+							
+							LocalStore.save(dashboardModel);
 						}
 					}
 				}

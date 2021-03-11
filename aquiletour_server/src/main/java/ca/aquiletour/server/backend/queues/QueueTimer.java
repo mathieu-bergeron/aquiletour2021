@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.jdk.models.ModelStoreSync;
 
 public class QueueTimer {
@@ -25,12 +26,12 @@ public class QueueTimer {
 		                    studentId);
 					if(dashboardModel != null) {
 						dashboardModel.setTeacherAvailability(false, courseId);
-						dashboardModel.save();
+						LocalStore.save(dashboardModel);
 					}
 				}
 				QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 				openQueuesModel.deleteQueue(courseId);
-				openQueuesModel.save();
+				LocalStore.save(openQueuesModel);
 			}
 		}, 5*60*1000);//5 minutes
 	}

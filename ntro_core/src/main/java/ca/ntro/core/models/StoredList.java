@@ -6,13 +6,14 @@ import java.util.List;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial")   
 public abstract class StoredList<I extends Object> extends StoredProperty<List<I>> {
 	
 	private List<ListObserver<I>> listObservers = new ArrayList<>();

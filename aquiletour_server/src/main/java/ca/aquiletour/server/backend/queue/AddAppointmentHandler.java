@@ -9,6 +9,7 @@ import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -31,7 +32,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 		if(queueModel != null) {
 			
 			queueModel.addAppointment(message.getAppointment());
-			queueModel.save();
+			LocalStore.save(queueModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -47,7 +48,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 							if(requestingUser.getId().equals(studentId)) {
 								dashboardModel.updateMyAppointment(courseId, true);
 							}
-							dashboardModel.save();
+							LocalStore.save(dashboardModel);
 						}
 					}
 				}

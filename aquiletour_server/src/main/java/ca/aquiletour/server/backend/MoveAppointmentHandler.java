@@ -4,6 +4,7 @@ package ca.aquiletour.server.backend;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
@@ -26,7 +27,7 @@ public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmen
 		
 		if(queueModel != null) {
 			queueModel.updateOrder(appointmentDestinationId, appointmentDepartureId);
-			queueModel.save();
+			LocalStore.save(queueModel);
 
 		}else {
 			

@@ -13,6 +13,7 @@ import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.ControllerMessageHandler;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -59,18 +60,21 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 								user.getAuthToken(),
 								user.getId());
 						dashboardModel.deleteCourseById(courseId);
-						dashboardModel.save();
+						LocalStore.save(dashboardModel);
 						queueModel.deleteStudent(user.getId());
 						queueModel.removeAllAppointmentsOfStudent(user.getId());
 					}
 
-					queueModel.save();
+					LocalStore.save(queueModel);
+
 					QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "allQueues");
 					allQueuesModel.deleteQueue(courseId);
-					allQueuesModel.save();
+
+					LocalStore.save(allQueuesModel);
 					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "openQueues");
+
 					openQueuesModel.deleteQueue(courseId);
-					openQueuesModel.save();
+					LocalStore.save(openQueuesModel);
 					
 				}
 			});

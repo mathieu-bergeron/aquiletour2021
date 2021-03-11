@@ -12,6 +12,7 @@ import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Ntro;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -29,7 +30,8 @@ public class DeleteUserHandler extends BackendMessageHandler<DeleteUserMessage> 
 
 		if (usersModel != null) {
 			usersModel.getUsers().removeEntry(userId);;
-			usersModel.save();
+			
+			LocalStore.save(usersModel);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -41,10 +43,10 @@ public class DeleteUserHandler extends BackendMessageHandler<DeleteUserMessage> 
 								courseSummary.getCourseId());
 						queueModel.deleteStudent(userId);
 						queueModel.removeAllAppointmentsOfStudent(userId);
-						queueModel.save();
+						LocalStore.save(queueModel);
 					}
 					dashboardModel.emptyCourses();
-					dashboardModel.save();
+					LocalStore.save(dashboardModel);
 				}
 
 				@Override
