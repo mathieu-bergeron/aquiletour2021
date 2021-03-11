@@ -18,11 +18,13 @@ public class QueueTimerCenter {
 	public static void startATimer(TimerTask timerTask, String queueId) {
 		QueueTimer queueTimer = findTimer(queueId);
 		if(queueTimer == null) {// if a timer with the queueId doesn't exist then create one else restart the timer back to 5min
+			T.here();
 			QueueTimer newQueueTimer = new QueueTimer();
 			newQueueTimer.setQueueId(queueId);
 			newQueueTimer.schedule(timerTask, 5 * 60 * 1000);// 5 minutes
 			queueTimers.add(newQueueTimer);
 		} else {
+			T.here();
 			restartTimer(timerTask, queueId, queueTimer);
 		}
 
@@ -30,7 +32,7 @@ public class QueueTimerCenter {
 
 	public static void endATimer(String queueId) {
 		QueueTimer queueTimer = findTimer(queueId);
-		if(queueTimer == null) {
+		if(queueTimer != null) {
 			queueTimer.endTimerEarly();
 			queueTimers.remove(queueTimer);
 		}

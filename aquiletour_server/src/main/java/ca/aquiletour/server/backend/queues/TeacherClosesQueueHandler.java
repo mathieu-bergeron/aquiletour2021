@@ -39,24 +39,24 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 			QueueTimerCenter.endATimer(courseId);
 			
 			
-			QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
-			openQueuesModel.deleteQueue(courseId);
-			openQueuesModel.save();
+//			QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
+//			openQueuesModel.deleteQueue(courseId);
+//			openQueuesModel.save();
 			
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
-					List<String> studentIds = queueModel.getStudentIds();
-					for (String studentId : studentIds) {
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-			                    "admin",
-			                    studentId);
-						if(dashboardModel != null) {
-							dashboardModel.setTeacherAvailability(false, courseId);
-							dashboardModel.save();
-						}
-					}					
+//					List<String> studentIds = queueModel.getStudentIds();
+//					for (String studentId : studentIds) {
+//						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
+//			                    "admin",
+//			                    studentId);
+//						if(dashboardModel != null) {
+//							dashboardModel.setTeacherAvailability(false, courseId);
+//							dashboardModel.save();
+//						}
+//					}					
 				}
 
 				@Override
