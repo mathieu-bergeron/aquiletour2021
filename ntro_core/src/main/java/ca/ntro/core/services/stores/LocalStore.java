@@ -60,12 +60,12 @@ public abstract class LocalStore {
 
 	}
 
-	public static void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+	public static void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
 		T.call(LocalStore.class);
 
 		try {
 
-			instance.registerThatUserObservesModel(user, model);
+			instance.registerThatUserObservesModel(user, documentPath, model);
 
 		}catch(NullPointerException e) {
 

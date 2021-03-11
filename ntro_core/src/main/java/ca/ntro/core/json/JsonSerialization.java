@@ -157,7 +157,7 @@ public class JsonSerialization {
 		
 		for(NtroMethod getter : getters) {
 			
-			String attributeName = getter.getterAttributeName();
+			String attributeName = getter.getterFieldName();
 			Object javaAttributeValue = null;
 
 			try {

@@ -1,21 +1,13 @@
 package ca.ntro.core.services.stores;
 
+import java.util.List;
+
 import ca.ntro.core.json.JsonSerializable;
 
 public class DocumentPath implements JsonSerializable {
 	
 	private String collection;
 	private String documentId;
-
-	public DocumentPath(String collection, String firstPathName, String... pathRemainder) {
-		this.collection = collection;
-
-		this.documentId = firstPathName;
-
-		for(int i = 0; i < pathRemainder.length; i++) {
-			this.documentId += "__" + pathRemainder[i];
-		}
-	}
 
 	public String getCollection() {
 		return collection;
@@ -34,10 +26,8 @@ public class DocumentPath implements JsonSerializable {
 	}
 	
 	public DocumentPath clone() {
-		// JSWEET: adding a default constructor
-		//         leads to a invalid overload error
-		DocumentPath clone = new DocumentPath(null,null);
-		
+		DocumentPath clone = new DocumentPath();
+
 		clone.setCollection(collection);
 		clone.setDocumentId(documentId);
 
@@ -58,6 +48,24 @@ public class DocumentPath implements JsonSerializable {
 
 	public ValuePath toValuePath() {
 		return ValuePath.forCollection(getCollection()).setDocumentId(getDocumentId());
+	}
+	
+	@Override
+	public int hashCode() {
+		return collection.hashCode() + documentId.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		if(other instanceof DocumentPath) {
+			DocumentPath otherPath = (DocumentPath) other;
+
+			return collection.equals(otherPath.collection)  
+					&& documentId.equals(otherPath.documentId);
+		}
+		return false;
 	}
 
 }

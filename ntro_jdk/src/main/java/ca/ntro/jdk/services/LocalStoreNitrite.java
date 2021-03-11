@@ -6,6 +6,8 @@ import org.dizitart.no2.NitriteCollection;
 
 import static org.dizitart.no2.filters.Filters.eq;
 
+import java.util.List;
+
 import org.dizitart.no2.Cursor;
 
 import ca.ntro.core.NtroUser;
@@ -129,9 +131,14 @@ public class LocalStoreNitrite extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// TODO Auto-generated method stub
 	}
 	
 

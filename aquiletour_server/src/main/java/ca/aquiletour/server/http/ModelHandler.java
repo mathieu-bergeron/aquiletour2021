@@ -112,7 +112,7 @@ public class ModelHandler extends AbstractHandler {
         
         NtroModel model = modelLoader.getModel();
         
-        LocalStore.registerThatUserObservesModel(user, model);
+        LocalStore.registerThatUserObservesModel(user, documentPath, model);
 
         response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
         response.flushBuffer();

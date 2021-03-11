@@ -117,7 +117,7 @@ public abstract class NtroClass {
 		return setters;
 	}
 
-	public NtroMethod findMethodByName(String methodName) {
+	public NtroMethod methodByName(String methodName) {
 		NtroMethod method = null;
 
 		for(NtroMethod candidate : userDefinedMethods()) {
@@ -127,6 +127,19 @@ public abstract class NtroClass {
 			}
 		}
 		
+		return method;
+	}
+
+	public NtroMethod getterByFieldName(String fieldName) {
+		NtroMethod method = null;
+
+		for(NtroMethod candidate : userDefinedMethods()) {
+			if(candidate.getterFieldName().equals(fieldName)) {
+				method = candidate;
+				break;
+			}
+		}
+
 		return method;
 	}
 

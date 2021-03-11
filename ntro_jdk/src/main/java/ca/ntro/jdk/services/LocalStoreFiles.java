@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
@@ -121,7 +122,12 @@ public class LocalStoreFiles extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
-		// XXX: must be overriden
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// XXX: must be overriden on the server
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// XXX: must be overriden on the server
 	}
 }

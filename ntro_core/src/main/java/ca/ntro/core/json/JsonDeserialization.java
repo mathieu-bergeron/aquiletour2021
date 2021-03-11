@@ -130,13 +130,13 @@ public class JsonDeserialization {
 		setters.sort(new Comparator<NtroMethod>() {
 			@Override
 			public int compare(NtroMethod o1, NtroMethod o2) {
-				return o1.setterAttributeName().compareTo(o2.setterAttributeName());
+				return o1.setterFieldName().compareTo(o2.setterFieldName());
 			}
 		});
 		
 		for(NtroMethod setter : setters) {
 			
-			String attributeName = setter.setterAttributeName();
+			String attributeName = setter.setterFieldName();
 			Object jsonAttributeValue = jsonMap.get(attributeName);
 			
 			if(jsonAttributeValue != null) {

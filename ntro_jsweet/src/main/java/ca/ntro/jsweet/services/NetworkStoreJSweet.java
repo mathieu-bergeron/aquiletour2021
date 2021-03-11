@@ -16,6 +16,8 @@ import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 
 import static def.es6.Globals.fetch;
 
+import java.util.List;
+
 public class NetworkStoreJSweet extends ModelStore {
 
 	public NetworkStoreJSweet() {
@@ -92,7 +94,12 @@ public class NetworkStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
-		
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// XXX: not supported
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// XXX: not supported
 	}
 }

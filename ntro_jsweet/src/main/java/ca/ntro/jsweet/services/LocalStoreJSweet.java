@@ -16,6 +16,8 @@ import def.dom.Storage;
 
 import static def.dom.Globals.window;
 
+import java.util.List;
+
 public class LocalStoreJSweet extends ModelStore {
 	
 	Storage localStorage = window.localStorage;
@@ -93,7 +95,12 @@ public class LocalStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// XXX: not supported
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
 }

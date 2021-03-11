@@ -41,11 +41,12 @@ public class ModelFactory {
 			                                       HashSet<Object> localHeap) {
 		T.call(ModelFactory.class);
 		
+		/*
 		if(value == null) { 
 			System.out.println("initializeStoreConnections");
 			System.err.println(valuePath.toString());
 			return;
-		}
+		}*/
 
 		if(NtroCollections.setContainsExact(localHeap, value)) return;
 		
@@ -98,7 +99,7 @@ public class ModelFactory {
 		
 		for(NtroMethod getter : getters) {
 			
-			String attributeName = getter.getterAttributeName();
+			String attributeName = getter.getterFieldName();
 			Object attributeValue = null;
 
 			try {

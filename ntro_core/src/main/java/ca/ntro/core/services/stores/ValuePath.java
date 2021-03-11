@@ -8,8 +8,7 @@ import ca.ntro.core.system.trace.T;
 
 public class ValuePath implements JsonSerializable {
 	
-	// JSWEET: adding a default constructor to DocumentPath leads to invalid overload error
-	private DocumentPath documentPath = new DocumentPath(null,null);
+	private DocumentPath documentPath = new DocumentPath();
 	private List<String> fieldPath = new ArrayList<>();
 
 	private ValuePath() {
@@ -30,6 +29,22 @@ public class ValuePath implements JsonSerializable {
 		return this;
 	}
 	
+	public String fieldName(int index) {
+		return fieldPath.get(0);
+	}
+
+	public ValuePath subPath(int index) {
+		ValuePath clone = new ValuePath();
+		clone.setDocumentPath(documentPath);
+
+		for(int i = index; i < fieldPath.size(); i++) {
+			clone.addFieldName(fieldPath.get(i));
+		}
+
+		return clone;
+	}
+	
+	/*
 	public ValuePath field(String... fieldPath) {
 		T.call(this);
 		
@@ -38,7 +53,7 @@ public class ValuePath implements JsonSerializable {
 		}
 
 		return this;
-	}
+	}*/
 	
 	public DocumentPath getDocumentPath() {
 		T.call(this);
@@ -55,13 +70,20 @@ public class ValuePath implements JsonSerializable {
 		
 		fieldPath.add(fieldName);
 	}
-
-	private void setFieldPath(List<String> fieldPath) {
-		T.call(this);
-
-		this.fieldPath = fieldPath;
+	
+	public int size() {
+		return fieldPath.size();
 	}
 	
+	
+	public List<String> getFieldPath() {
+		return fieldPath;
+	}
+
+	public void setFieldPath(List<String> fieldPath) {
+		this.fieldPath = fieldPath;
+	}
+
 	public ValuePath clone() {
 		
 		ValuePath clone = new ValuePath();

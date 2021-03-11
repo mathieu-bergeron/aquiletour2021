@@ -34,14 +34,14 @@ public abstract class NtroMethod {
 		return name().startsWith(GETTER_PREFIX) && name().length() > GETTER_PREFIX.length();
 	}
 
-	public String getterAttributeName() {
-		return attributeName(GETTER_PREFIX);
+	public String getterFieldName() {
+		return fieldName(GETTER_PREFIX);
 	}
 	
-	private String attributeName(String prefix) {
-		String capitalizedAttributeName = name().substring(prefix.length());
-		String firstLetter = capitalizedAttributeName.substring(0, 1).toLowerCase();
-		String remainder = capitalizedAttributeName.substring(1);
+	private String fieldName(String prefix) {
+		String capitalizedFieldName = name().substring(prefix.length());
+		String firstLetter = capitalizedFieldName.substring(0, 1).toLowerCase();
+		String remainder = capitalizedFieldName.substring(1);
 
 		return firstLetter + remainder;
 	}
@@ -50,8 +50,8 @@ public abstract class NtroMethod {
 		return name().startsWith(SETTER_PREFIX) && name().length() > SETTER_PREFIX.length();
 	}
 
-	public String setterAttributeName() {
-		return attributeName(SETTER_PREFIX);
+	public String setterFieldName() {
+		return fieldName(SETTER_PREFIX);
 	}
 
 

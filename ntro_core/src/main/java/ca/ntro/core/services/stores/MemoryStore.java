@@ -1,6 +1,7 @@
 package ca.ntro.core.services.stores;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ca.ntro.core.NtroUser;
@@ -102,7 +103,12 @@ public class MemoryStore extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// XXX: nothing to do here.
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: nothing to do here.
 	}
 }

@@ -2,38 +2,51 @@ package ca.aquiletour.server;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.services.stores.DocumentPath;
+import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 
 public class LocalStoreServer extends LocalStoreFiles {
+	
+	// FIXME: more than one user will observe!!!!!
+	private Map<DocumentPath, NtroUser> modelObservators = new HashMap<>();
+	
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, NtroModel model) {
-		// Every time an ObservableValue within the model is changed
-		// We send a UpdateModelNtroMessage to every user that observes that
-		// model
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		modelObservators.put(documentPath, user);
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+
+		NtroUser observatorUser = modelObservators.get(valuePath.getDocumentPath());
 		
+		if(observatorUser != null) {
 			
-		System.out.println("registerThatUserObservesModel: " + user.getId() + " " + model.getClass().getSimpleName());
-		
-		
-		InvokeValueMethodNtroMessage message = MessageFactory.createMessage(InvokeValueMethodNtroMessage.class);
+			System.out.println("invokeValueMethodMessage: " + valuePath.toString());
+			
+			InvokeValueMethodNtroMessage message = MessageFactory.createMessage(InvokeValueMethodNtroMessage.class);
+			message.setValuePath(valuePath);
+			message.setMethodName(methodName);
+			message.setArgs(args);
+			
+			try {
+				
+				RegisteredSockets.sendMessageToUserSockets(observatorUser, message);
 
-		try {
+			} catch (IOException e) {
 
-			RegisteredSockets.sendMessageToUserSockets(user, message);
-
-		} catch (IOException e) {
-
-			Log.fatalError("Unable to send message to user " + user.getId(), e);
+				Log.fatalError("Unable to send message to user " + observatorUser.getId(), e);
+			}
 		}
 	}
 }

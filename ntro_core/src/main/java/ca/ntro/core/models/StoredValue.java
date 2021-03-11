@@ -17,7 +17,6 @@ public abstract class StoredValue implements JsonSerializable {
 	//        and have "ModelWalker" in the models package
 	//        then JsonSerialization can use the ModelWalker
 	public void setValuePath(ValuePath valuePath) {
-		System.out.println(valuePath.toString());
 		this.valuePath = valuePath;
 	}
 
