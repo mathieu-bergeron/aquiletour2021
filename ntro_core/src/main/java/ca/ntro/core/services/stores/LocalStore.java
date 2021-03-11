@@ -73,4 +73,18 @@ public abstract class LocalStore {
 
 		}
 	}
+
+	public static void save(NtroModel model) {
+		T.call(LocalStore.class);
+
+		try {
+
+			instance.save(model);
+
+		}catch(NullPointerException e) {
+
+			Log.fatalError(Ntro.introspector().getSimpleNameForClass(LocalStore.class) + " must be initialized", e);
+
+		}
+	}
 }

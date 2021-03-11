@@ -8,7 +8,7 @@ import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class QueueModel extends NtroModel {
+public class QueueModel implements NtroModel {
 
 	private ObservableAppointmentList appointments = new ObservableAppointmentList();
 	private List<String> studentIds = new ArrayList<>();

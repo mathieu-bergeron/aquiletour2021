@@ -93,5 +93,13 @@ public abstract class ModelStore {
 
 	public abstract void registerThatUserObservesModel(NtroUser user, NtroModel model);
 
+	public void save(NtroModel model) {
+		T.call(this);
+		
+		// find DocumentPath for model
+		// call saveJsonString
+		
+	}
+
 
 }

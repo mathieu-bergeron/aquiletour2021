@@ -1,10 +1,9 @@
 package ca.ntro.test.json;
 
-import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class TestUsers extends NtroModel {
+public class TestUsers implements NtroModel {
 
 	private TestUserMap users = new TestUserMap();
 

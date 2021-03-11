@@ -5,7 +5,7 @@ import ca.aquiletour.core.pages.users.values.ObservableUserMap;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class UsersModel extends NtroModel {
+public class UsersModel implements NtroModel {
 
 	private ObservableUserMap users = new ObservableUserMap();
 	

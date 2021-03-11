@@ -4,9 +4,8 @@ package ca.aquiletour.core.pages.queues;
 import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.system.trace.T;
 
-public class QueuesModel extends NtroModel {
+public class QueuesModel implements NtroModel {
 
 	private ObservableQueueList queues = new ObservableQueueList();
 

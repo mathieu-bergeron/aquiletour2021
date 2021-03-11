@@ -6,7 +6,7 @@ import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardModel extends NtroModel {
+public class DashboardModel implements NtroModel {
 
 	// XXX: Must be initialized, otherwise we cannot properly install observers
 	private ObservableCourseList courses = new ObservableCourseList();

@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.users.messages;
 
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.core.mvc.ModelMessageHandler;
+import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 
 public class DeleteUserHandler extends ModelMessageHandler<UsersModel, DeleteUserMessage> {
@@ -11,6 +12,6 @@ public class DeleteUserHandler extends ModelMessageHandler<UsersModel, DeleteUse
 		T.call(this);
 		
 		model.deleteUser(message.getUserId());
-		model.save();
+		LocalStore.save(model);
 	}
 }

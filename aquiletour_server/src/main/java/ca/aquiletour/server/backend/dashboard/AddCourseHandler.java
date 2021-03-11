@@ -31,7 +31,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		if(dashboardModel != null) {
 			
 			dashboardModel.addCourse(message.getCourse());
-			dashboardModel.save();
+			modelStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -40,15 +40,15 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 													   fromUser.getAuthToken(),
 													   courseId);
 					queueModel.addStudentToClass(fromUser.getId());;//TODO the one who created the class is the teacher so maybe add teacherId to the model here
+					modelStore.save(queueModel);
 
-					queueModel.save();
 					QueuesModel queuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "allQueues");
 					QueueSummary queue = new QueueSummary();
 					queue.setId(courseId);
 					queue.setTeacherName(fromUser.getName());
 					queue.setTeacherSurname(fromUser.getSurname());
 					queuesModel.addQueueToList(queue);
-					queuesModel.save();
+					modelStore.save(queuesModel);
 				}
 
 				@Override

@@ -3,7 +3,7 @@ package ca.ntro.test.json;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class TestDashboard extends NtroModel {
+public class TestDashboard implements NtroModel {
 
 	private TestCourseList courses = new TestCourseList();
 

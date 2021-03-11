@@ -31,7 +31,7 @@ public class JsonTests {
 	}
 
 	@Test
-	public void testTestDashboard() {
+	public void testDashboardModel() {
 		
 		String jsonString = "{\"courses\":{\"_C\":\"TestCourseList\",\"value\":[{\"numberOfAppointments\":2,\"_C\":\"TestCourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"4F5\",\"courseId\":\"4F5\"},{\"numberOfAppointments\":5,\"_C\":\"TestCourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"3C6\",\"courseId\":\"3C6\"}]},\"_C\":\"TestDashboard\"}";
 		
@@ -45,7 +45,7 @@ public class JsonTests {
 	}
 
 	@Test
-	public void testTestUsers() {
+	public void testUsersModel() {
 		
 		String jsonString = "{\"_C\":\"TestUsers\",\"users\":{\"_C\":\"TestUserMap\",\"value\":{\"bob\":{\"userPassword\":\"bobPassword\",\"_C\":\"TestStudent\",\"surname\":\"Bérancourt\",\"authToken\":\"bobToken\",\"name\":\"Bob\",\"registrationId\":\"1234567\",\"userEmail\":\"bob.berancourt@test.ca\",\"id\":\"bob\"},\"alice\":{\"userPassword\":\"alicePassword\",\"_C\":\"TestTeacher\",\"surname\":\"Awama\",\"authToken\":\"aliceToken\",\"name\":\"Alice\",\"userEmail\":\"alice.awama@test.com\",\"id\":\"alice\"},\"charlie\":{\"userPassword\":\"charliePassword\",\"_C\":\"TestTeacher\",\"surname\":\"Ngo\",\"authToken\":\"charlieToken\",\"name\":\"Charlie\",\"userEmail\":\"charlie.ngo@test.org\",\"id\":\"charlie\"}}}}";
 		

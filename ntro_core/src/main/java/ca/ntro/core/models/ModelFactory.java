@@ -26,10 +26,6 @@ public class ModelFactory {
 		T.call(ModelFactory.class);
 		
 		NtroModel model = Ntro.jsonService().fromString(modelClass, jsonString);
-
-		model.setModelId(documentPath.getDocumentId());
-
-		model.setOrigin(modelStore);
 		
 		modelStore.registerModel(documentPath, model);
 
@@ -51,12 +47,9 @@ public class ModelFactory {
 		
 		NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
 
-		if(valueClass.ifExtends(StoredValue.class)) {
-
-			StoredValue storeConnectedValue = (StoredValue) value;
-
-			storeConnectedValue.setValuePath(valuePath);
-			storeConnectedValue.setModelStore(modelStore);
+		initializeThisValue(value, modelStore, valuePath, valueClass);
+		
+		if(valueClass.ifImplements(NtroModel.class) || valueClass.ifImplements(NtroModelValue.class)) {
 
 			initializeAttributes(value, modelStore, valuePath, localHeap);
 
@@ -67,6 +60,21 @@ public class ModelFactory {
 		}else if(value instanceof Map) {
 
 			initializeMapValues((Map<String,Object>) value, modelStore, valuePath, localHeap);
+		}
+	}
+
+	private static void initializeThisValue(Object value, 
+			                                ModelStore modelStore, 
+			                                ValuePath valuePath, 
+			                                NtroClass valueClass) {
+		T.call(ModelFactory.class);
+
+		if(valueClass.ifExtends(StoredValue.class)) {
+
+			StoredValue storeConnectedValue = (StoredValue) value;
+
+			storeConnectedValue.setValuePath(valuePath);
+			storeConnectedValue.setModelStore(modelStore);
 		}
 	}
 
