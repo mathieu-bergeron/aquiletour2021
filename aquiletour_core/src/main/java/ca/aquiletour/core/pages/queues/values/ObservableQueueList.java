@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.queues.values;
 
-import ca.ntro.core.models.ObservableList;
+import ca.ntro.core.models.StoredList;
 
-public class ObservableQueueList extends ObservableList<QueueSummary> {
+public class ObservableQueueList extends StoredList<QueueSummary> {
 }

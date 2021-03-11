@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.queue.values;
 
 
-import ca.ntro.core.models.ObservableList;
+import ca.ntro.core.models.StoredList;
 
-public class ObservableAppointmentList extends ObservableList<Appointment> {
+public class ObservableAppointmentList extends StoredList<Appointment> {
 
 }

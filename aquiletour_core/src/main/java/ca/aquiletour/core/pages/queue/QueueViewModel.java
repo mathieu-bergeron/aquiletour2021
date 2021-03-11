@@ -4,7 +4,7 @@ package ca.aquiletour.core.pages.queue;
 import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.ntro.core.models.ListObserver;
+import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;

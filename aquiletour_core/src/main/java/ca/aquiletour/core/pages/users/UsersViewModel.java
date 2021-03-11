@@ -4,7 +4,7 @@ package ca.aquiletour.core.pages.users;
 import java.util.Map;
 
 import ca.aquiletour.core.models.users.User;
-import ca.ntro.core.models.MapObserver;
+import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;

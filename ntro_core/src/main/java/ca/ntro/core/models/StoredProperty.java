@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.models.listeners.DeletionListener;
+import ca.ntro.core.models.listeners.ValueListener;
+import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.system.trace.T;
 
-public abstract class ObservableProperty<V extends Object> extends StoreConnectedValue implements JsonSerializable {
+public abstract class StoredProperty<V extends Object> extends StoreConnectedValue implements JsonSerializable {
 	
 	private V value;
 
@@ -14,11 +17,11 @@ public abstract class ObservableProperty<V extends Object> extends StoreConnecte
 	private DeletionListener<V> deletionListener;
 	private List<ValueObserver<V>> observers = new ArrayList<>();
 
-	public ObservableProperty() {
+	public StoredProperty() {
 		T.call(this);
 	}
 
-	public ObservableProperty(V value) {
+	public StoredProperty(V value) {
 		T.call(this);
 		
 		this.value = value;

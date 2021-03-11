@@ -1,4 +1,4 @@
-package ca.ntro.core.models;
+package ca.ntro.core.models.listeners;
 
 public interface ValueObserver<V extends Object> extends ValueListener<V>, DeletionListener<V> {
 	

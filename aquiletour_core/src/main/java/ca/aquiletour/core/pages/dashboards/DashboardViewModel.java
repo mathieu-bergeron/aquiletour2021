@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.dashboards;
 import java.util.List;
 
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.ntro.core.models.ListObserver;
+import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;

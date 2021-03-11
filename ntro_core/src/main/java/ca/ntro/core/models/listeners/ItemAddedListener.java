@@ -1,4 +1,4 @@
-package ca.ntro.core.models;
+package ca.ntro.core.models.listeners;
 
 public interface ItemAddedListener<I extends Object>{
 	

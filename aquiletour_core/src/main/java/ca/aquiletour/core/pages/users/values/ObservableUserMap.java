@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.aquiletour.core.models.users.User;
-import ca.ntro.core.models.ObservableMap;
+import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableUserMap extends ObservableMap<User> {
+public class ObservableUserMap extends StoredMap<User> {
 
 	public ObservableUserMap() {
 		super(new HashMap<>());

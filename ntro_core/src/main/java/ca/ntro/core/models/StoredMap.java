@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.system.trace.T;
 
-public abstract class ObservableMap<V extends Object> extends ObservableProperty<Map<String, V>> {
+public abstract class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
 
 	private List<MapObserver<V>> mapObservers = new ArrayList<>();
 
-	public ObservableMap(Map<String, V> value) {
+	public StoredMap(Map<String, V> value) {
 		super(value);
 		T.call(this);
 	}

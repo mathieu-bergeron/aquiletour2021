@@ -2,14 +2,14 @@ package ca.ntro.core.models;
 
 import ca.ntro.core.system.trace.T;
 
-public class ObservableDouble extends ObservableProperty<Double> {
+public class StoredBoolean extends StoredProperty<Boolean> {
 
-	public ObservableDouble() {
+	public StoredBoolean() {
 		super();
 		T.call(this);
 	}
 
-	public ObservableDouble(double value) {
+	public StoredBoolean(Boolean value) {
 		super(value);
 		T.call(this);
 	}

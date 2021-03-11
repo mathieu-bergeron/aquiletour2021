@@ -1,6 +1,6 @@
 package ca.ntro.test.json;
 
-import ca.ntro.core.models.ObservableList;
+import ca.ntro.core.models.StoredList;
 
-public class TestCourseList extends ObservableList<TestCourseSummary> {
+public class TestCourseList extends StoredList<TestCourseSummary> {
 }
