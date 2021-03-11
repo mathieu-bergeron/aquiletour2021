@@ -84,7 +84,9 @@ public abstract class ModelStore {
 		}
 	}
 
-	public void onValueMethodInvoked(ValuePath valuePath, String string, Object item) {
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		
+		System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
 		
 	}
 

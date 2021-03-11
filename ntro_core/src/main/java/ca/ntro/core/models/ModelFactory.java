@@ -48,16 +48,7 @@ public class ModelFactory {
 		if(NtroCollections.setContainsExact(localHeap, value)) return;
 		
 		localHeap.add(value);
-
-		initializeThisValue(value, modelStore, valuePath);
 		
-		initializeSubValues(value, modelStore, valuePath, localHeap);
-
-	}
-
-	private static void initializeThisValue(Object value, ModelStore modelStore, ValuePath valuePath) {
-		T.call(ModelFactory.class);
-
 		NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
 
 		if(valueClass.ifExtends(StoreConnectedValue.class)) {
@@ -66,27 +57,16 @@ public class ModelFactory {
 
 			storeConnectedValue.setValuePath(valuePath);
 			storeConnectedValue.setModelStore(modelStore);
-		}
-	}
 
-	@SuppressWarnings("unchecked")
-	private static void initializeSubValues(Object value, 
-			                                ModelStore modelStore, 
-			                                ValuePath valuePath,
-			                                HashSet<Object> localHeap) {
-		T.call(ModelFactory.class);
+			initializeAttributes(value, modelStore, valuePath, localHeap);
 
-		if(value instanceof List) {
+		}else if(value instanceof List) {
 
 			initializeListValues((List<Object>) value, modelStore, valuePath, localHeap);
 
 		}else if(value instanceof Map) {
 
 			initializeMapValues((Map<String,Object>) value, modelStore, valuePath, localHeap);
-			
-		}else {
-			
-			initializeAttributes(value, modelStore, valuePath, localHeap);
 		}
 	}
 

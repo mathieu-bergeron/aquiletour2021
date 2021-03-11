@@ -20,22 +20,22 @@ public class JsonTests {
 		Ntro.jsonService().registerSerializableClass(ListItemB.class);
 		Ntro.jsonService().registerSerializableClass(LinkedListNode.class);
 
-		Ntro.jsonService().registerSerializableClass(UserDefinedModelB.class);
-		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
-		Ntro.jsonService().registerSerializableClass(Student.class);
-		Ntro.jsonService().registerSerializableClass(Teacher.class);
+		Ntro.jsonService().registerSerializableClass(TestUsers.class);
+		Ntro.jsonService().registerSerializableClass(TestUserMap.class);
+		Ntro.jsonService().registerSerializableClass(TestStudent.class);
+		Ntro.jsonService().registerSerializableClass(TestTeacher.class);
 
-		Ntro.jsonService().registerSerializableClass(UserDefinedModelA.class);
-		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
-		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
+		Ntro.jsonService().registerSerializableClass(TestDashboard.class);
+		Ntro.jsonService().registerSerializableClass(TestCourseList.class);
+		Ntro.jsonService().registerSerializableClass(TestCourseSummary.class);
 	}
 
 	@Test
-	public void testDashboardModel() {
+	public void testTestDashboard() {
 		
-		String jsonString = "{\"courses\":{\"_C\":\"ObservableCourseList\",\"value\":[{\"numberOfAppointments\":2,\"_C\":\"CourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"4F5\",\"courseId\":\"4F5\"},{\"numberOfAppointments\":5,\"_C\":\"CourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"3C6\",\"courseId\":\"3C6\"}]},\"_C\":\"DashboardModel\"}";
+		String jsonString = "{\"courses\":{\"_C\":\"TestCourseList\",\"value\":[{\"numberOfAppointments\":2,\"_C\":\"TestCourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"4F5\",\"courseId\":\"4F5\"},{\"numberOfAppointments\":5,\"_C\":\"TestCourseSummary\",\"isQueueOpen\":true,\"myAppointment\":null,\"title\":\"3C6\",\"courseId\":\"3C6\"}]},\"_C\":\"TestDashboard\"}";
 		
-		UserDefinedModelA dashboardModel = Ntro.jsonService().fromString(UserDefinedModelA.class, jsonString);
+		TestDashboard dashboardModel = Ntro.jsonService().fromString(TestDashboard.class, jsonString);
 
 		Ntro.verify(that(dashboardModel.getCourses().item(0).getCourseId()).isEqualTo("4F5"));
 		
@@ -45,11 +45,11 @@ public class JsonTests {
 	}
 
 	@Test
-	public void testUsersModel() {
+	public void testTestUsers() {
 		
-		String jsonString = "{\"_C\":\"UsersModel\",\"users\":{\"_C\":\"ObservableUserMap\",\"value\":{\"bob\":{\"userPassword\":\"bobPassword\",\"_C\":\"Student\",\"surname\":\"Bérancourt\",\"authToken\":\"bobToken\",\"name\":\"Bob\",\"registrationId\":\"1234567\",\"userEmail\":\"bob.berancourt@test.ca\",\"id\":\"bob\"},\"alice\":{\"userPassword\":\"alicePassword\",\"_C\":\"Teacher\",\"surname\":\"Awama\",\"authToken\":\"aliceToken\",\"name\":\"Alice\",\"userEmail\":\"alice.awama@test.com\",\"id\":\"alice\"},\"charlie\":{\"userPassword\":\"charliePassword\",\"_C\":\"Teacher\",\"surname\":\"Ngo\",\"authToken\":\"charlieToken\",\"name\":\"Charlie\",\"userEmail\":\"charlie.ngo@test.org\",\"id\":\"charlie\"}}}}";
+		String jsonString = "{\"_C\":\"TestUsers\",\"users\":{\"_C\":\"TestUserMap\",\"value\":{\"bob\":{\"userPassword\":\"bobPassword\",\"_C\":\"TestStudent\",\"surname\":\"Bérancourt\",\"authToken\":\"bobToken\",\"name\":\"Bob\",\"registrationId\":\"1234567\",\"userEmail\":\"bob.berancourt@test.ca\",\"id\":\"bob\"},\"alice\":{\"userPassword\":\"alicePassword\",\"_C\":\"TestTeacher\",\"surname\":\"Awama\",\"authToken\":\"aliceToken\",\"name\":\"Alice\",\"userEmail\":\"alice.awama@test.com\",\"id\":\"alice\"},\"charlie\":{\"userPassword\":\"charliePassword\",\"_C\":\"TestTeacher\",\"surname\":\"Ngo\",\"authToken\":\"charlieToken\",\"name\":\"Charlie\",\"userEmail\":\"charlie.ngo@test.org\",\"id\":\"charlie\"}}}}";
 		
-		UserDefinedModelB usersModel = Ntro.jsonService().fromString(UserDefinedModelB.class, jsonString);
+		TestUsers usersModel = Ntro.jsonService().fromString(TestUsers.class, jsonString);
 		
 		Ntro.verify(that(usersModel.getUsers().valueOf("alice").getName()).isEqualTo("Alice"));
 		

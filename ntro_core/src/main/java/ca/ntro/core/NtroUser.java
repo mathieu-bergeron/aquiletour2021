@@ -1,9 +1,9 @@
 package ca.ntro.core;
 
-import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public class NtroUser extends NtroModelValue {
+public class NtroUser implements JsonSerializable {
 	
 	private String id;
 	private String authToken;

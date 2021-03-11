@@ -1,22 +1,22 @@
 package ca.ntro.test.json;
 
-import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public class CourseSummary extends NtroModelValue {
+public class TestCourseSummary implements JsonSerializable  {
 
-	private String title;
-	private String courseId;
-	private Boolean isQueueOpen;
-	private Boolean myAppointment;
+	private String title = "";
+	private String courseId = "";
+	private boolean isQueueOpen;
+	private boolean myAppointment;
 	private int numberOfAppointments;
 	
 
-	public CourseSummary() {
+	public TestCourseSummary() {
 		super();
 	}
 	
-	public CourseSummary(String title, String courseId, Boolean isQueueOpen, Boolean myAppointment, int numberOfAppointments) {
+	public TestCourseSummary(String title, String courseId, boolean isQueueOpen, boolean myAppointment, int numberOfAppointments) {
 		super();
 		T.call(this);
 		this.title = title;
@@ -27,7 +27,7 @@ public class CourseSummary extends NtroModelValue {
 	}
 
 	
-	public CourseSummary(String title) {
+	public TestCourseSummary(String title) {
 		this.title = title;
 	}
 

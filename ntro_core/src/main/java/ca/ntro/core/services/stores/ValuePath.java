@@ -66,8 +66,24 @@ public class ValuePath implements JsonSerializable {
 		
 		ValuePath clone = new ValuePath();
 		clone.setDocumentPath(documentPath);
-		clone.setFieldPath(fieldPath);
+		for(String fieldName : fieldPath) {
+			clone.addFieldName(fieldName);
+		}
 
 		return clone;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(documentPath.toString());
+		for(String fieldName : fieldPath) {
+			builder.append("/");
+			builder.append(fieldName);
+		}
+		
+		return builder.toString();
+	}
+	
 }

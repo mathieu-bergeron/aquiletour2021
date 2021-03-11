@@ -33,7 +33,10 @@ public abstract class ObservableProperty<V extends Object> extends StoreConnecte
 		return value;
 	}
 
-	void setValue(V value) {
+	// FIXME: this should be package-private
+	//        and have "ModelWalker" in the models package
+	//        then JsonSerialization can use the ModelWalker
+	public void setValue(V value) {
 		T.call(this);
 		
 		this.value = value;

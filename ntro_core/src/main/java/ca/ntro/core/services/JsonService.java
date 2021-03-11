@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonDeserialization;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.json.JsonSerialization;
 
 public abstract class JsonService {
@@ -12,7 +13,7 @@ public abstract class JsonService {
 	private boolean prettyPrinting = false;
 	private Map<String, Class<?>> serializableClasses = new HashMap<>();
 	
-	public void registerSerializableClass(Class<?> _class) {
+	public void registerSerializableClass(Class<? extends JsonSerializable> _class) {
 		serializableClasses.put(Ntro.introspector().getSimpleNameForClass(_class), _class);
 	}
 

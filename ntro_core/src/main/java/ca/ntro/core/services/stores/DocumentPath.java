@@ -36,6 +36,16 @@ public class DocumentPath implements JsonSerializable {
 	public void setCollection(String collection) {
 		this.collection = collection;
 	}
+	
+	public DocumentPath clone() {
+		DocumentPath clone = new DocumentPath();
+		
+		clone.setCollection(collection);
+		clone.setDocumentId(documentId);
+
+		return clone;
+	}
+
 
 	@Override
 	public String toString() {

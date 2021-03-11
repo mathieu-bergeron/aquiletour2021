@@ -1,13 +1,13 @@
 package ca.aquiletour.core.pages.queue.values;
 
-import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.json.JsonSerializable;
 
-public class Appointment extends NtroModelValue {
+public class Appointment implements JsonSerializable {
 	
-	private String id;
-	private String studentId;
-	private String studentName;
-	private String studentSurname;
+	private String id = "";
+	private String studentId = "";
+	private String studentName = "";
+	private String studentSurname = "";
 	//private User user;
 
 	public String getId() {

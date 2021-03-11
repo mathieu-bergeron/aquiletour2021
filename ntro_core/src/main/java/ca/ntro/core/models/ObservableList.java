@@ -16,9 +16,6 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 	
 	private List<ListObserver<I>> listObservers = new ArrayList<>();
 	
-	private ModelStore modelStore;
-	private ValuePath valuePath;
-	
 	public ObservableList() {
 		T.call(this);
 
@@ -76,8 +73,8 @@ public abstract class ObservableList<I extends Object> extends ObservablePropert
 		
 		List<Object> args = new ArrayList<>();
 		args.add(item);
-
-		modelStore.onValueMethodInvoked(valuePath,"addItem",item);
+		
+		modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
 
 		for(ListObserver<I> listObserver : listObservers) {
 			T.here();

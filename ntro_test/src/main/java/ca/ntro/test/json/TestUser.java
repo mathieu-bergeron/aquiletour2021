@@ -1,19 +1,20 @@
 package ca.ntro.test.json;
 
 import ca.ntro.core.NtroUser;
+import ca.ntro.core.json.JsonSerializable;
 
-public class User extends NtroUser {
+public class TestUser extends NtroUser {
 	
 	private String name;
 	private String surname;
 	private String userEmail;
 	private String userPassword;
 
-	public User() {
+	public TestUser() {
 		
 	}
 	
-	public User(String email, String password) {
+	public TestUser(String email, String password) {
 		this.userEmail = email;
 		this.userPassword = password;;
 		

@@ -3,16 +3,17 @@ package ca.ntro.test.json;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.ObservableMap;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableUserMap extends ObservableMap<User> {
+public class TestUserMap extends ObservableMap<TestUser> {
 
-	public ObservableUserMap() {
+	public TestUserMap() {
 		super(new HashMap<>());
 	}
 
-	public ObservableUserMap(Map<String, User> map) {
+	public TestUserMap(Map<String, TestUser> map) {
 		super(map);
 	}
 

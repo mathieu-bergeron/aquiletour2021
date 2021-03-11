@@ -8,19 +8,26 @@ public abstract class StoreConnectedValue {
 	private ModelStore modelStore;
 	
 	
-	ValuePath getValuePath() {
+	ValuePath valuePath() {
 		return valuePath;
 	}
 
-	void setValuePath(ValuePath valuePath) {
+	// FIXME: this should be package-private
+	//        and have "ModelWalker" in the models package
+	//        then JsonSerialization can use the ModelWalker
+	public void setValuePath(ValuePath valuePath) {
+		System.out.println(valuePath.toString());
 		this.valuePath = valuePath;
 	}
 
-	ModelStore getModelStore() {
+	ModelStore modelStore() {
 		return modelStore;
 	}
 
-	void setModelStore(ModelStore modelStore) {
+	// FIXME: this should be package-private
+	//        and have "ModelWalker" in the models package
+	//        then JsonSerialization can use the ModelWalker
+	public void setModelStore(ModelStore modelStore) {
 		this.modelStore = modelStore;
 	}
 }

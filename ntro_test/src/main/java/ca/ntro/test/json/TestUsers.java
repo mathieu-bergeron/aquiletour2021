@@ -1,19 +1,20 @@
 package ca.ntro.test.json;
 
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class UserDefinedModelB extends NtroModel {
+public class TestUsers extends NtroModel {
 
-	private ObservableUserMap users = new ObservableUserMap();
+	private TestUserMap users = new TestUserMap();
 
-	public ObservableUserMap getUsers() {
+	public TestUserMap getUsers() {
 		T.call(this);
 
 		return users;
 	}
 
-	public void setUsers(ObservableUserMap users) {
+	public void setUsers(TestUserMap users) {
 		T.call(this);
 
 		this.users = users;
@@ -25,7 +26,7 @@ public class UserDefinedModelB extends NtroModel {
 		return users.isUserValid(userId, authToken);
 	}
 
-	public void addUser(User user) {
+	public void addUser(TestUser user) {
 		T.call(this);
 
 		String userId = Integer.toString(users.size());

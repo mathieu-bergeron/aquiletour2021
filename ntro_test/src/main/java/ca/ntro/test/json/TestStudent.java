@@ -1,6 +1,7 @@
 package ca.ntro.test.json;
 
-public class Student extends User {
+
+public class TestStudent extends TestUser {
 	
 	private String registrationId;
 
