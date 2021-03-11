@@ -11,7 +11,7 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
+import ca.ntro.core.models.ValueListener;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.T;
 

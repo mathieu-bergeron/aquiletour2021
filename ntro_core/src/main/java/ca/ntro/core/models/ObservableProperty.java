@@ -1,4 +1,4 @@
-package ca.ntro.core.models.properties.observable.simple;
+package ca.ntro.core.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public abstract class ObservableProperty<V extends Object> implements JsonSerializable {
+public abstract class ObservableProperty<V extends Object> extends StoreConnectedValue implements JsonSerializable {
 	
 	private V value;
 
@@ -24,13 +24,16 @@ public abstract class ObservableProperty<V extends Object> implements JsonSerial
 		this.value = value;
 	}
 	
+	// FIXME: this should be package-private
+	//        and have "ModelWalker" in the models package
+	//        then JsonSerialization can use the ModelWalker
 	public V getValue() {
 		T.call(this);
 		
 		return value;
 	}
 
-	public void setValue(V value) {
+	void setValue(V value) {
 		T.call(this);
 		
 		this.value = value;

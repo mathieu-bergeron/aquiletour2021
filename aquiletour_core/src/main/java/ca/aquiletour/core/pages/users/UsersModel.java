@@ -1,8 +1,5 @@
 package ca.aquiletour.core.pages.users;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.users.values.ObservableUserMap;
 import ca.ntro.core.models.NtroModel;
@@ -11,12 +8,6 @@ import ca.ntro.core.system.trace.T;
 public class UsersModel extends NtroModel {
 
 	private ObservableUserMap users = new ObservableUserMap();
-
-	@Override
-	public void initializeStoredValues() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public ObservableUserMap getUsers() {
 		T.call(this);

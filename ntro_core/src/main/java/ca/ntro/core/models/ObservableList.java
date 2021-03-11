@@ -1,4 +1,4 @@
-package ca.ntro.core.models.properties.observable.list;
+package ca.ntro.core.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,6 @@ import java.util.List;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.properties.NtroModelValue;
-import ca.ntro.core.models.properties.observable.simple.ObservableProperty;
 import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.assertions.MustNot;

@@ -1,10 +1,9 @@
-package ca.ntro.core.models.properties.observable.map;
+package ca.ntro.core.models;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.models.properties.observable.simple.ObservableProperty;
 import ca.ntro.core.system.trace.T;
 
 public abstract class ObservableMap<V extends Object> extends ObservableProperty<Map<String, V>> {
@@ -28,6 +27,10 @@ public abstract class ObservableMap<V extends Object> extends ObservableProperty
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onEntryAdded(key, value);
 		}
+	}
+
+	public V valueOf(String key) {
+		return getValue().get(key);
 	}
 	
 	public void removeEntry(String key) {

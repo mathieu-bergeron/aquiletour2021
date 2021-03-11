@@ -1,8 +1,6 @@
-package ca.ntro.core.models.properties.observable.map;
+package ca.ntro.core.models;
 
 import java.util.Map;
-
-import ca.ntro.core.models.properties.observable.simple.ValueObserver;
 
 public interface MapObserver<V extends Object> extends ValueObserver<Map<String, V>> {
 	

@@ -1,4 +1,4 @@
-package ca.ntro.core.models.properties.observable.simple;
+package ca.ntro.core.models;
 
 public interface ValueListener<V extends Object> {
 	

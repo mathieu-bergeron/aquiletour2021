@@ -11,17 +11,20 @@ public class ValuePath implements JsonSerializable {
 	
 	private DocumentPath documentPath = new DocumentPath();
 	private List<String> fieldPath = new ArrayList<>();
+
+	private ValuePath() {
+	}
 	
 	private ValuePath(String collection) {
 		documentPath.setCollection(collection);
 	}
 
-	public static ValuePath collection(String collection) {
+	public static ValuePath setCollection(String collection) {
 		T.call(ValuePath.class);
 		return new ValuePath(collection);
 	}
 	
-	public ValuePath documentId(String documentId) {
+	public ValuePath setDocumentId(String documentId) {
 		T.call(this);
 		documentPath.setDocumentId(documentId);
 		return this;
@@ -42,9 +45,29 @@ public class ValuePath implements JsonSerializable {
 		return documentPath;
 	}
 
+	public void setDocumentPath(DocumentPath documentPath) {
+		T.call(this);
+		this.documentPath = documentPath;
+	}
+
 	public void addFieldName(String fieldName) {
 		T.call(this);
 		
-		this.fieldPath.add(fieldName);
+		fieldPath.add(fieldName);
+	}
+
+	private void setFieldPath(List<String> fieldPath) {
+		T.call(this);
+
+		this.fieldPath = fieldPath;
+	}
+	
+	public ValuePath clone() {
+		
+		ValuePath clone = new ValuePath();
+		clone.setDocumentPath(documentPath);
+		clone.setFieldPath(fieldPath);
+
+		return clone;
 	}
 }

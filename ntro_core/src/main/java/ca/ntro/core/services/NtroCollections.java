@@ -109,6 +109,23 @@ public abstract class NtroCollections {
 		
 		return ifSetContains;
 	}
+
+	protected abstract boolean setContainsExactImpl(Set<?> set, Object target);
+
+	public static boolean setContainsExact(Set<?> set, Object target) {
+		boolean ifSetContains = false;
+		
+		try {
+			
+			ifSetContains = instance.setContainsExactImpl(set, target);
+
+		}catch(NullPointerException e) {
+			
+			Log.fatalError(NtroCollections.class.getSimpleName() + " must be initialized");
+		}
+		
+		return ifSetContains;
+	}
 	
 	protected abstract boolean containsKeyExactImpl(Map<?, ?> map, Object key);
 

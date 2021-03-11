@@ -1,6 +1,5 @@
-package ca.ntro.core.models.properties.observable.simple;
+package ca.ntro.core.models;
 
-import ca.ntro.core.models.properties.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
 public class ObservableValue<M extends NtroModelValue> extends ObservableProperty<M> {

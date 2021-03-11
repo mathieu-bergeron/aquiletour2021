@@ -23,7 +23,7 @@ import ca.ntro.core.system.trace.T;
  * @author mbergeron
  *
  */
-public abstract class NtroModel implements JsonSerializable {
+public abstract class NtroModel extends StoreConnectedValue implements JsonSerializable {
 
 	private String modelId;
 	private ModelStore modelStore;
@@ -50,8 +50,6 @@ public abstract class NtroModel implements JsonSerializable {
 		return new DocumentPath(Ntro.introspector().getSimpleNameForClass(getClass()), modelId);
 	}
 
-	// XXX: cannot be protected as it should
-	//      not be used by subclasses
 	void setModelId(String id) {
 		T.call(this);
 
@@ -63,8 +61,6 @@ public abstract class NtroModel implements JsonSerializable {
 
 		this.modelStore = origin;
 	}
-
-	public abstract void initializeStoredValues();
 
 	public void connectStoredValues() {
 		T.call(this);
@@ -87,11 +83,11 @@ public abstract class NtroModel implements JsonSerializable {
 
 			}
 
-			if(fieldValue instanceof StoreConnectable) {
+			if(fieldValue instanceof StoreConnectedValue) {
 
-				ValuePath valuePath = ValuePath.collection(Ntro.introspector().getSimpleNameForClass(this.getClass())).documentId(modelId).field(fieldName);
+				ValuePath valuePath = ValuePath.setCollection(Ntro.introspector().getSimpleNameForClass(this.getClass())).setDocumentId(modelId).field(fieldName);
 
-				((StoreConnectable) fieldValue).connectToStore(valuePath, modelStore);
+				//((StoreConnectedValue) fieldValue).connectToStore(valuePath, modelStore);
 			}
 		}
 	}

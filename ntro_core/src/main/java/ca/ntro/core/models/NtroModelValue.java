@@ -1,4 +1,4 @@
-package ca.ntro.core.models.properties;
+package ca.ntro.core.models;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -6,8 +6,6 @@ import java.lang.reflect.Method;
 import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.json.JsonSerializable;
-import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.StoreConnectable;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -20,14 +18,8 @@ import ca.ntro.core.system.trace.T;
  * @author mbergeron
  *
  */
-public abstract class NtroModelValue implements JsonSerializable, StoreConnectable {
+public abstract class NtroModelValue extends StoreConnectedValue implements JsonSerializable {
 
-	@Override
-	public void connectToStore(ValuePath valuePath, ModelStore modelStore) {
-		T.call(this);
-
-		connectSubValues(valuePath, modelStore);
-	}
 
 	private void connectSubValues(ValuePath valuePath, ModelStore modelStore) {
 		T.call(this);
@@ -48,11 +40,11 @@ public abstract class NtroModelValue implements JsonSerializable, StoreConnectab
 				
 			}
 			
-			if(fieldValue instanceof StoreConnectable) {
+			if(fieldValue instanceof StoreConnectedValue) {
 				
 				valuePath.addFieldName(fieldName);
 				
-				((StoreConnectable) fieldValue).connectToStore(valuePath, modelStore);
+				//((StoreConnectable) fieldValue).connectToStore(valuePath, modelStore);
 			}
 		}
 	}

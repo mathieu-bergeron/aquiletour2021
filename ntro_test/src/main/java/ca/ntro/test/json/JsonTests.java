@@ -37,7 +37,7 @@ public class JsonTests {
 		
 		UserDefinedModelA dashboardModel = Ntro.jsonService().fromString(UserDefinedModelA.class, jsonString);
 
-		Ntro.verify(that(dashboardModel.getCourses().getValue().get(0).getCourseId()).isEqualTo("4F5"));
+		Ntro.verify(that(dashboardModel.getCourses().item(0).getCourseId()).isEqualTo("4F5"));
 		
 		String jsonString2 = Ntro.jsonService().toString(dashboardModel);
 
@@ -51,7 +51,7 @@ public class JsonTests {
 		
 		UserDefinedModelB usersModel = Ntro.jsonService().fromString(UserDefinedModelB.class, jsonString);
 		
-		Ntro.verify(that(usersModel.getUsers().getValue().get("alice").getName()).isEqualTo("Alice"));
+		Ntro.verify(that(usersModel.getUsers().valueOf("alice").getName()).isEqualTo("Alice"));
 		
 		String jsonString2 = Ntro.jsonService().toString(usersModel);
 

@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.queue.values;
 
-import ca.ntro.core.models.properties.NtroModelValue;
+import ca.ntro.core.models.NtroModelValue;
 
 public class Appointment extends NtroModelValue {
 	

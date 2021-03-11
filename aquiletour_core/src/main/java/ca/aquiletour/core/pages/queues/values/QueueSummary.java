@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.queues.values;
 
-import ca.ntro.core.models.properties.NtroModelValue;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
 public class QueueSummary extends NtroModelValue {

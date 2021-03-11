@@ -48,4 +48,8 @@ public class DocumentPath implements JsonSerializable {
 		return builder.toString();
 	}
 
+	public ValuePath toValuePath() {
+		return ValuePath.setCollection(getCollection()).setDocumentId(getDocumentId());
+	}
+
 }

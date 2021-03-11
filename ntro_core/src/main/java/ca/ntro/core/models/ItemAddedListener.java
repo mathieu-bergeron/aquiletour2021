@@ -1,4 +1,4 @@
-package ca.ntro.core.models.properties.observable.list;
+package ca.ntro.core.models;
 
 public interface ItemAddedListener<I extends Object>{
 	

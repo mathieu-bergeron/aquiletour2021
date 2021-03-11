@@ -7,12 +7,6 @@ public class UserDefinedModelB extends NtroModel {
 
 	private ObservableUserMap users = new ObservableUserMap();
 
-	@Override
-	public void initializeStoredValues() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public ObservableUserMap getUsers() {
 		T.call(this);
 

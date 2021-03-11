@@ -10,11 +10,6 @@ public class QueuesModel extends NtroModel {
 
 	private ObservableQueueList queues = new ObservableQueueList();
 
-	@Override
-	public void initializeStoredValues() {
-		T.call(this);
-	}
-
 	public ObservableQueueList getQueues() {
 		return queues;
 	}

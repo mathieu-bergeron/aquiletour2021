@@ -7,9 +7,6 @@ public class UserDefinedModelA extends NtroModel {
 
 	private ObservableCourseList courses = new ObservableCourseList();
 
-	@Override
-	public void initializeStoredValues() {
-	}
 	public void emptyCourses() {
 		ObservableCourseList newList = courses;
 		for (int i = 0; i < newList.size(); i++) {

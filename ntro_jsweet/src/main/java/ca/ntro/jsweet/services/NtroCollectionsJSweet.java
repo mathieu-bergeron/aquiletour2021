@@ -129,4 +129,9 @@ public class NtroCollectionsJSweet extends NtroCollections {
 		return ifEquals;
 	}
 
+	@Override
+	protected boolean setContainsExactImpl(Set<?> set, Object target) {
+		return set.contains(target);
+	}
+
 }

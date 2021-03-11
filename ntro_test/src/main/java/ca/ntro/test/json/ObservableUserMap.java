@@ -3,8 +3,7 @@ package ca.ntro.test.json;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.models.properties.NtroModelValue;
-import ca.ntro.core.models.properties.observable.map.ObservableMap;
+import ca.ntro.core.models.ObservableMap;
 import ca.ntro.core.system.trace.T;
 
 public class ObservableUserMap extends ObservableMap<User> {
@@ -18,7 +17,9 @@ public class ObservableUserMap extends ObservableMap<User> {
 	}
 
 	public boolean isUserValid(String userId, String authToken) {
-		return getValue().get(userId).isValid(authToken);
+		T.call(this);
+
+		return valueOf(userId).isValid(authToken);
 	}
 
 }

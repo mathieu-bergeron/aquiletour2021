@@ -7,27 +7,9 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class DashboardModel extends NtroModel {
-	private static final long serialVersionUID = -7945536015118582973L;
 
 	// XXX: Must be initialized, otherwise we cannot properly install observers
 	private ObservableCourseList courses = new ObservableCourseList();
-
-	@Override
-	public void initializeStoredValues() {
-		
-		/* Par introspection:
-		 *  parcourir le graphe d'objet (avec un localHeap pour éviter les cycles, comme pour JsonSerialization)
-		 *  prendre en note le valuePath de chaque objets du graphe
-		 *  Log.fatalError si un getter retourne un objet null (car alors on peut pas continuer à explorer)
-		 *  
-		 *  pour chaque valeur qui implante Observable (ou NtroModelValue?):
-		 *  + appeler setValuePath() et setOrigin() 
-		 *  + comme ça le NtroModelValue est prêt à appeler le modelStore en cas de update
-		 *  
-		 * 
-		 */
-		
-	}
 
 	public void emptyCourses() {
 		ObservableCourseList newList = courses;

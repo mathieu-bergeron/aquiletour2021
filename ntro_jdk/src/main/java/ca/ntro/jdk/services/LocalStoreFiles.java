@@ -15,7 +15,7 @@ import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
+import ca.ntro.core.models.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;

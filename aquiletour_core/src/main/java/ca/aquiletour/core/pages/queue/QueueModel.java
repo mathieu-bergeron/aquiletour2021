@@ -14,11 +14,6 @@ public class QueueModel extends NtroModel {
 	private List<String> studentIds = new ArrayList<>();
 	private int maxId;
 
-	@Override
-	public void initializeStoredValues() {
-		T.call(this);
-	}
-	
 	public void removeStudentFromClass(String studentId) {
 		T.call(this);
 		for (int i = 0; i < studentIds.size(); i++) {

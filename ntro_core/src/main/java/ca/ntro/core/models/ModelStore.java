@@ -11,13 +11,11 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
 import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.services.stores.ExternalUpdateListener;
 import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 
 public abstract class ModelStore {
 

@@ -32,14 +32,7 @@ public class ModelLoader extends NtroTaskAsync {
 		String jsonString = jsonLoader.getJsonString();
 		DocumentPath documentPath = jsonLoader.getDocumentPath();
 		
-		//System.out.println(jsonString);
-		model = Ntro.jsonService().fromString(modelClass, jsonString);
-
-		model.setModelId(documentPath.getDocumentId());
-
-		model.setOrigin(modelStore);
-		
-		modelStore.registerModel(documentPath, model);
+		model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
 		
 		notifyTaskFinished();
 	}

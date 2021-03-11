@@ -6,7 +6,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.UserView;
-import ca.ntro.core.models.properties.observable.list.ListObserver;
+import ca.ntro.core.models.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.ViewLoader;
