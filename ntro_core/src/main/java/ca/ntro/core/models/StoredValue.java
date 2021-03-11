@@ -1,8 +1,9 @@
 package ca.ntro.core.models;
 
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.services.stores.ValuePath;
 
-public abstract class StoreConnectedValue {
+public abstract class StoredValue implements JsonSerializable {
 	
 	private ValuePath valuePath;
 	private ModelStore modelStore;

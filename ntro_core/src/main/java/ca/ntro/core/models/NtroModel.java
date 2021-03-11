@@ -1,13 +1,10 @@
 package ca.ntro.core.models;
 
-
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import ca.ntro.core.Ntro;
-import ca.ntro.core.json.JsonObjectIO;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.listeners.UpdateListener;
 import ca.ntro.core.services.stores.DocumentPath;
@@ -15,16 +12,7 @@ import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-/**
- *
- * The properties of a Model must be:
- * - Java values: String, Double, List<String>, etc.
- * - User-defined classes that implements JsonSerializable
- *
- * @author mbergeron
- *
- */
-public abstract class NtroModel extends StoreConnectedValue implements JsonSerializable {
+public abstract class NtroModel extends StoredValue implements JsonSerializable {
 
 	private String modelId;
 	private ModelStore modelStore;
@@ -84,7 +72,7 @@ public abstract class NtroModel extends StoreConnectedValue implements JsonSeria
 
 			}
 
-			if(fieldValue instanceof StoreConnectedValue) {
+			if(fieldValue instanceof StoredValue) {
 
 				ValuePath valuePath = ValuePath.setCollection(Ntro.introspector().getSimpleNameForClass(this.getClass())).setDocumentId(modelId).field(fieldName);
 

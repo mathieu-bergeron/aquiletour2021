@@ -51,9 +51,9 @@ public class ModelFactory {
 		
 		NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
 
-		if(valueClass.ifExtends(StoreConnectedValue.class)) {
+		if(valueClass.ifExtends(StoredValue.class)) {
 
-			StoreConnectedValue storeConnectedValue = (StoreConnectedValue) value;
+			StoredValue storeConnectedValue = (StoredValue) value;
 
 			storeConnectedValue.setValuePath(valuePath);
 			storeConnectedValue.setModelStore(modelStore);

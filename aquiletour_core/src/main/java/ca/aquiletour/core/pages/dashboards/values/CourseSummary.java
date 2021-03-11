@@ -1,9 +1,9 @@
 package ca.aquiletour.core.pages.dashboards.values;
 
-import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class CourseSummary implements JsonSerializable {
+public class CourseSummary extends NtroModelValue {
 
 	private String title = "";
 	private String courseId = "";
