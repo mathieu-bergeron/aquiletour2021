@@ -36,7 +36,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 		
 		if(queueModel != null) {
 			
-			QueueTimer.cancelTimer();
+			QueueTimerCenter.endATimer(courseId);
 			
 			
 			QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");

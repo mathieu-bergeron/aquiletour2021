@@ -37,15 +37,8 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 			
 			TimerTask timerTask = setQueueClosedTimerTask(courseId, queueModel, modelStore);
 
-			if (QueueTimer.isTimerOngoing()) {
+			QueueTimerCenter.startATimer(timerTask, courseId);
 
-				QueueTimer.restartTimer(timerTask);
-
-			} else {
-
-				QueueTimer.startTimer(timerTask);
-
-			}
 			QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
 			openQueuesModel.addQueueToList(queue);
 			openQueuesModel.save();

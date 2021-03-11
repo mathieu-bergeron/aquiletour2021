@@ -37,24 +37,8 @@ public class AquiletourBackendRequestHandler {
 			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
 
 		}else if(path.startsWith("csv")) {
-			if(parameters.containsKey("queueId")) {// /csv?queueId=3C6
-				
-				String queueId = parameters.get("queueId")[0];
 			
-				AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
-				addStudentCsvMessage.setQueueId(queueId);
-				addStudentCsvMessage.setUser(context.getUser());
-				
-				ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");
-				loadCsv.execute();
-	
-				addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
-				
-				System.out.println(loadCsv.getResourceAsString());
-				
-				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
-			}
-			
+			sendCsvMessages(path.subPath(1), parameters, context.getUser());
 
 		} else if(path.startsWith("billetteries")) {
 			
@@ -77,7 +61,28 @@ public class AquiletourBackendRequestHandler {
 			sendHomeMessages(path.subPath(1), parameters);
 		}
 	}
+	
+	private static void sendCsvMessages(Path path, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourBackendRequestHandler.class);
+		if(parameters.containsKey("queueId")) {// /csv?queueId=3C6
+			
+			String queueId = parameters.get("queueId")[0];
+		
+			AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
+			addStudentCsvMessage.setQueueId(queueId);
+			addStudentCsvMessage.setUser(user);
+			
+			ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");//TODO comment savoir quel fichier ouvrir?
+			loadCsv.execute();
 
+			addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
+			
+			System.out.println(loadCsv.getResourceAsString());
+			
+			Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+		}
+		
+	}
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
@@ -97,7 +102,7 @@ public class AquiletourBackendRequestHandler {
 			String courseId = parameters.get("title")[0];
 
 			AddCourseMessage addCourseMessage = new AddCourseMessage();
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, false, null, 0));
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, false, false, 0));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
