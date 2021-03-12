@@ -75,6 +75,11 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 			@Override
 			public void run() {
 				T.here();
+				DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+				T.values(queueModel.getTeacherId());
+				dashboardModelTeacher.updateNbAppointmentOfCourse(courseId, 0);
+				dashboardModelTeacher.setTeacherAvailability(false, courseId);
+				dashboardModelTeacher.save();
 				List<String> studentIds = queueModel.getStudentIds();
 				for (String studentId : studentIds) {
 					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);

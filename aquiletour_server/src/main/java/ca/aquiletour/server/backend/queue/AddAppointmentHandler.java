@@ -32,7 +32,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 				requestingUser.getId());
 
 		
-		if(queueModel != null && !dashboardModel.doesStudentAlreadyHaveAppointment(courseId)) {
+		if(queueModel != null && !dashboardModel.doesStudentAlreadyHaveAppointment(courseId) && !(queueModel.getTeacherId().equals(requestingUser.getId()))) {
 			
 			queueModel.addAppointment(message.getAppointment());
 			queueModel.save();
