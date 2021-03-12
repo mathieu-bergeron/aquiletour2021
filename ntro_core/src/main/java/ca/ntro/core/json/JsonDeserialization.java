@@ -121,6 +121,10 @@ public class JsonDeserialization {
 		Class<?> targetClass = Ntro.jsonService().serializableClass(targetClassSimpleName);
 		NtroClass ntroClass = Ntro.introspector().ntroClassFromJavaClass(targetClass);
 		
+		if(targetClass == null) {
+			Log.fatalError("Unknown JsonSerializable: " + targetClassSimpleName);
+		}
+		
 		Object javaObject = Factory.newInstance(targetClass);
 		
 		localHeap.put(valuePath, javaObject);

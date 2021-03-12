@@ -17,6 +17,7 @@
 
 package ca.ntro.services;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
@@ -48,6 +49,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 	}
 
 	private void performInitialization() {
+
+
 		Introspector introspector = provideIntrospector();
 		T.__registerIntrospector(introspector);
 		Ntro.__registerIntrospector(introspector);
@@ -80,6 +83,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		Ntro.zzz_registerAssertService(provideAssertService());
 		Ntro.zzz_registerJsonService(provideJsonService());
+
+		registerSerializableClasses();
 		
 		LocalStore.initialize(provideLocalStore());
 		NetworkStore.initialize(provideNetworkStore());
@@ -87,10 +92,12 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.registerUserService(provideUserService());
 		
 		
-		registerSerializableClasses();
 	}
 
 	private void registerSerializableClasses() {
+
+		Ntro.jsonService().registerSerializableClass(NtroUser.class);
+
 		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(GetModelNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(SetModelNtroMessage.class);
