@@ -40,7 +40,7 @@ public class BackendServiceJSweet extends BackendService {
 		
 		webSocket.onopen = t -> {
 
-			// FIXME: there is no garentee that MessageFactory.registerUser has been called
+			// FIXME: there is no guarantee  that MessageFactory.registerUser has been called
 			//        we must use initialization tasks
 			RegisterSocketNtroMessage registerSocketNtroMessage = MessageFactory.createMessage(RegisterSocketNtroMessage.class);
 
@@ -53,7 +53,7 @@ public class BackendServiceJSweet extends BackendService {
 	@Override
 	public void sendMessageToBackend(NtroMessage message) {
 		T.call(this);
-
+		
 		webSocket.send(Ntro.jsonService().toString(message));
 	}
 

@@ -73,7 +73,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		
 		registerViewLoaders();
 		registerSerializableClasses();
-		
+
+
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
