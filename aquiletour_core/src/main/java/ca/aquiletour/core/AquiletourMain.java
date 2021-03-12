@@ -70,8 +70,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		
 		registerViewLoaders();
 		registerSerializableClasses();
-		
-		MessageFactory.registerCurrentUser(devUser);
+
 
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
