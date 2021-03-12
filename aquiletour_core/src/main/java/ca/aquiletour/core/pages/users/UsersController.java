@@ -9,7 +9,7 @@ import ca.aquiletour.core.pages.users.messages.ShowUsersHandler;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.NetworkStore;
+import ca.ntro.stores.NetworkStore;
 
 public class UsersController extends NtroController<RootController> {
 

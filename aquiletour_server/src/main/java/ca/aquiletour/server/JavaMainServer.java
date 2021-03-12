@@ -17,14 +17,9 @@
 
 package ca.aquiletour.server;
 
-
-import java.io.File;
-
 import ca.aquiletour.server.backend.AquiletourBackendService;
-import ca.ntro.core.services.BackendService;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.models.ModelStoreSync;
-import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 
 public class JavaMainServer {
@@ -32,11 +27,9 @@ public class JavaMainServer {
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		ModelStoreSync localStore = new ModelStoreSync(new LocalStoreFiles());
+		ModelStore localStore = new LocalStoreServer();
 		
-		BackendService aquiletourBackend = new AquiletourBackendService(localStore);
-
-		NtroWebserver.defaultInitializationTask(aquiletourBackend)
+		NtroWebserver.defaultInitializationTask(AquiletourBackendService.class, localStore)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();

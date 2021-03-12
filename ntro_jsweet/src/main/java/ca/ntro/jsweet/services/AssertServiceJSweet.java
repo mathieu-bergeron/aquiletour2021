@@ -1,6 +1,6 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.services.AssertService;
+import ca.ntro.services.AssertService;
 
 public class AssertServiceJSweet extends AssertService {
 

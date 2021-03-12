@@ -1,20 +1,16 @@
 package ca.aquiletour.core.pages.dashboards;
 
-import java.util.ArrayList;
 
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardModel extends NtroModel {
-	private static final long serialVersionUID = -7945536015118582973L;
+public class DashboardModel implements NtroModel {
 
-	private ObservableCourseList courses = new ObservableCourseList(new ArrayList<>());
+	// XXX: Must be initialized, otherwise we cannot properly install observers
+	private ObservableCourseList courses = new ObservableCourseList();
 
-	@Override
-	public void initializeStoredValues() {
-	}
 	public void emptyCourses() {
 		ObservableCourseList newList = courses;
 		for (int i = 0; i < newList.size(); i++) {

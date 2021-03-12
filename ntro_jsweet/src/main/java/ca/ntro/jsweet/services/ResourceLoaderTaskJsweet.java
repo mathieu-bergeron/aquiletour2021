@@ -19,7 +19,7 @@ package ca.ntro.jsweet.services;
 
 import java.util.function.Consumer;
 
-import ca.ntro.core.services.ResourceLoaderTask;
+import ca.ntro.services.ResourceLoaderTask;
 import def.es6.Globals;
 import def.es6.Globals.FetchResponse;
 

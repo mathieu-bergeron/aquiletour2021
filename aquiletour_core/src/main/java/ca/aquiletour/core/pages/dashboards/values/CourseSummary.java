@@ -1,14 +1,14 @@
 package ca.aquiletour.core.pages.dashboards.values;
 
-import ca.ntro.core.models.properties.NtroModelValue;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class CourseSummary extends NtroModelValue {
+public class CourseSummary implements NtroModelValue {
 
-	private String title;
-	private String courseId;
-	private Boolean isQueueOpen;
-	private Boolean myAppointment;
+	private String title = "";
+	private String courseId = "";
+	private boolean isQueueOpen;
+	private boolean myAppointment;
 	private int numberOfAppointments;
 	
 
@@ -16,7 +16,7 @@ public class CourseSummary extends NtroModelValue {
 		super();
 	}
 	
-	public CourseSummary(String title, String courseId, Boolean isQueueOpen, Boolean myAppointment, int numberOfAppointments) {
+	public CourseSummary(String title, String courseId, boolean isQueueOpen,  boolean myAppointment, int numberOfAppointments) {
 		super();
 		T.call(this);
 		this.title = title;

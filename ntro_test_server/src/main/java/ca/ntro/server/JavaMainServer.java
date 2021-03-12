@@ -17,23 +17,23 @@
 
 package ca.ntro.server;
 
-import ca.ntro.core.services.BackendService;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 import ca.ntro.server.backend.BackendServiceTest;
+import ca.ntro.services.BackendService;
 
 public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		ModelStoreSync localStore = new ModelStoreSync(new LocalStoreFiles());
+		ModelStore localStore = new LocalStoreFiles();
 		
-		BackendService aquiletourBackend = new BackendServiceTest(localStore);
-
-		NtroWebserver.defaultInitializationTask(aquiletourBackend)
+		NtroWebserver.defaultInitializationTask(BackendServiceTest.class, localStore)
 		             .setOptions(args)
 		             .addNextTask(new NtroServerMain())
 		             .execute();

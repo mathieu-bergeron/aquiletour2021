@@ -1,47 +1,42 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ExternalUpdateListener;
-import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.json.JsonLoaderJSweet;
-import def.dom.Event;
-import def.dom.EventListener;
-import def.dom.Storage;
-
-import static def.dom.Globals.window;
+import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ExternalUpdateListener;
+import ca.ntro.stores.ValuePath;
 
 import static def.es6.Globals.fetch;
 
+import java.util.List;
+
 public class NetworkStoreJSweet extends ModelStore {
 
-	// FIXME: replace by a server connection!!
-	Storage localStorage = window.localStorage;
+	public NetworkStoreJSweet() {
+		
+		Ntro.backendService().handleMessageFromBackend(InvokeValueMethodNtroMessage.class, new MessageHandler<InvokeValueMethodNtroMessage>(){
+			@Override
+			public void handle(InvokeValueMethodNtroMessage message) {
+				invokeValueMethod(message.getValuePath(), message.getMethodName(), message.getArgs());
+			}
+		});
+	}
 
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		T.call(this);
-
-		// XXX: called only when the storage is modified OUTSIDE our tab
-		window.addEventListener("storage", new EventListener() {
-
-			@Override
-			public void $apply(Event evt) {
-				T.call(this);
-
-				updateListener.onExternalUpdate();
-			}
-		});
-
 	}
 
 	private String fullId(DocumentPath documentPath) {
-		return documentPath.getCollection() + "/" + documentPath.getId();
+		return documentPath.getCollection() + "/" + documentPath.getDocumentId();
 	}
 
 	@Override
@@ -96,5 +91,15 @@ public class NetworkStoreJSweet extends ModelStore {
 	public <V> void setValue(ValuePath valuePath, V value) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// XXX: not supported
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// XXX: not supported
 	}
 }

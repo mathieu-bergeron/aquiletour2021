@@ -17,7 +17,6 @@
 
 package ca.aquiletour.server.http;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -32,9 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.backend.RootBackendController;
 import ca.aquiletour.core.models.users.AnonUser;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.RootController;
@@ -43,19 +42,15 @@ import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.mvc.BackendControllerFactory;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
-import ca.ntro.jdk.services.LocalStoreFiles;
-import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
-import ca.ntro.jdk.tasks.GraphWriterJdk;
 import ca.ntro.jdk.web.NtroWindowServer;
-import ca.ntro.messages.MessageFactory;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.LocalStore;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -136,22 +131,10 @@ public class DynamicHandler extends AbstractHandler {
 		
 		if(!ifJsOnly) {
 
-			// FIXME: a proper implementation of NtroMessage
-			//        should not require a reset
-			MessageFactory.reset();
-
-			// FIXME: in NtroServer.getLocalStore();
-			LocalStoreFiles backendStore = new LocalStoreFiles();
-
-		    RootBackendController rootBackendController =  BackendControllerFactory.createBackendRootController(RootBackendController.class, backendStore);
-		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
-		    
-		    GraphTraceConnector backendTrace = rootBackendController.execute();
-
 			Map<String, String[]> parameters = baseRequest.getParameterMap();
 			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
-		    
-			//backendTrace.addGraphWriter(new GraphTraceWriterJdk(new File("__backend_task_graphs__", path.toFileName())));
+
+		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
 
 			// Client controller executes after
 			// to make sure modifications to the
@@ -162,9 +145,10 @@ public class DynamicHandler extends AbstractHandler {
 
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
 
-			//rootBackendController.getTask().destroy();
 			//rootController.getTask().destroy();
-
+			
+			// XXX: prepare for next request
+			Ntro.messageService().reset();
 		}
 		
 		//System.out.println(rootController.getTask().toString());
@@ -178,65 +162,33 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private boolean authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
+	private void authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		boolean isUserLoggedIn = false;
-
 		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
 		usersLoader.execute();
 		UsersModel usersModel = (UsersModel) usersLoader.getModel();
 		
-		if(baseRequest.getParameter("userId") != null 
-				&& baseRequest.getParameter("authToken") != null) {
+		User user = null;
+		
+		if(baseRequest.getParameter("userId") != null) {
 			
 			String userId = baseRequest.getParameter("userId");
-			String authToken  = baseRequest.getParameter("authToken");
+			user = usersModel.getUsers().valueOf(userId);
 			
-			User user = usersModel.getUsers().getValue().get(userId);
-
-			if(user != null) {
-
-				isUserLoggedIn = user.isValid(authToken);
-				
-				if(isUserLoggedIn) {
-					setCookie(response, "userId", userId);
-					setCookie(response, "authToken", authToken);
-					context.setUser(user);
-				}
+			if(user == null) {
+				user = new AnonUser();
 			}
-
-		} else if(hasCookie(baseRequest, "userId") 
-				&& hasCookie(baseRequest, "authToken")) {
 			
-			String userId = getCookie(baseRequest, "userId");
-			String authToken = getCookie(baseRequest, "authToken");
+			setCookie(response, "user", Ntro.jsonService().toString(user));
 
-			User user = usersModel.getUsers().getValue().get(userId);
+		} else if(hasCookie(baseRequest, "user")) {
 
-			if(user != null) {
-
-				isUserLoggedIn = user.isValid(authToken);
-				
-				if(isUserLoggedIn) {
-					context.setUser(user);
-				}else {
-					eraseCookie(response, "userId");
-					eraseCookie(response, "authToken");
-				}
-			}
+			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
+			user = Ntro.jsonService().fromString(User.class, userString);
 		}
 
-		if(!isUserLoggedIn){
-
-		    User defaultUser = new AnonUser();
-
-		    context.setUser(defaultUser);
-
-			isUserLoggedIn = true;
-		}
-
-		return isUserLoggedIn;
+		context.setUser(user);
 	}
 
 
@@ -326,7 +278,11 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCookie(HttpServletResponse response, String name, String value) {
 		T.call(this);
 		
-		Cookie cookie = new Cookie(name, value);
+		String trimmedValue = value.replace(" ", "");
+
+		String urlEncodedString = UrlEncoded.encodeString(trimmedValue);
+		
+		Cookie cookie = new Cookie(name, urlEncodedString);
 
 		response.addCookie(cookie);
 	}

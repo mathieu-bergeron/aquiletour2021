@@ -17,10 +17,10 @@
 
 package ca.ntro.core.system.assertions;
 
-import ca.ntro.core.__Ntro;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.stack.StackFrame;
+import ca.ntro.services.__Ntro;
 
 public class MustNot {
 	

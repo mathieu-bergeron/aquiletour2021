@@ -1,6 +1,6 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.services.JsonService;
+import ca.ntro.services.JsonService;
 import def.js.JSON;
 
 public class JsonServiceJSweet extends JsonService {

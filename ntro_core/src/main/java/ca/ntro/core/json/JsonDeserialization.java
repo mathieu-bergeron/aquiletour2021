@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.system.log.Log;
+import ca.ntro.services.Ntro;
 import def.js.JSON;
 
 public class JsonDeserialization {
@@ -118,8 +118,12 @@ public class JsonDeserialization {
 			                                             Map<String, Object> localHeap) {
 
 		String targetClassSimpleName = (String) jsonMap.get(Constants.JSON_CLASS_KEY);
-		Class<?> targetClass = Ntro.jsonService().serializableClass(targetClassSimpleName);
+		Class<?> targetClass = Ntro.serializableClass(targetClassSimpleName);
 		NtroClass ntroClass = Ntro.introspector().ntroClassFromJavaClass(targetClass);
+		
+		if(targetClass == null) {
+			Log.fatalError("Unknown JsonSerializable: " + targetClassSimpleName);
+		}
 		
 		Object javaObject = Factory.newInstance(targetClass);
 		
@@ -130,13 +134,13 @@ public class JsonDeserialization {
 		setters.sort(new Comparator<NtroMethod>() {
 			@Override
 			public int compare(NtroMethod o1, NtroMethod o2) {
-				return o1.setterAttributeName().compareTo(o2.setterAttributeName());
+				return o1.setterFieldName().compareTo(o2.setterFieldName());
 			}
 		});
 		
 		for(NtroMethod setter : setters) {
 			
-			String attributeName = setter.setterAttributeName();
+			String attributeName = setter.setterFieldName();
 			Object jsonAttributeValue = jsonMap.get(attributeName);
 			
 			if(jsonAttributeValue != null) {
@@ -149,7 +153,9 @@ public class JsonDeserialization {
 				
 				try {
 
-					setter.invoke(javaObject, javaAttributeValue);
+					List<Object> args = new ArrayList<>();
+					args.add(javaAttributeValue);
+					setter.invoke(javaObject, args);
 
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 

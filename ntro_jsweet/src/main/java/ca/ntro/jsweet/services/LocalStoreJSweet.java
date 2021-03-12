@@ -1,18 +1,22 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ExternalUpdateListener;
-import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ExternalUpdateListener;
+import ca.ntro.stores.ValuePath;
 import def.dom.Event;
 import def.dom.EventListener;
 import def.dom.Storage;
 
 import static def.dom.Globals.window;
+
+import java.util.List;
 
 public class LocalStoreJSweet extends ModelStore {
 	
@@ -37,7 +41,7 @@ public class LocalStoreJSweet extends ModelStore {
 	
 	private String fullId(DocumentPath documentPath) {
 		
-		return documentPath.getCollection() + "_" + documentPath.getId();
+		return documentPath.getCollection() + "_" + documentPath.getDocumentId();
 		
 	}
 
@@ -88,5 +92,15 @@ public class LocalStoreJSweet extends ModelStore {
 	public <V> void setValue(ValuePath valuePath, V value) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// XXX: not supported
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// XXX: not supported
 	}
 }

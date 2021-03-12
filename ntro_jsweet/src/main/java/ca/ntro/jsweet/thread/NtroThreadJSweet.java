@@ -24,4 +24,9 @@ public class NtroThreadJSweet implements NtroThread {
 		
 	}
 
+	@Override
+	public String getThreadId() {
+		return String.valueOf(threadId);
+	}
+
 }

@@ -6,7 +6,6 @@ import org.junit.Ignore;
 import ca.ntro.jdk.NtroJdk;
 import ca.ntro.test.introspector.IntrospectorTests;
 
-@Ignore
 public class InspectorTestsJdk extends IntrospectorTests {
 	
 	@BeforeClass

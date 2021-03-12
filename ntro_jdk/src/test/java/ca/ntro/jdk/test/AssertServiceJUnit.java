@@ -1,6 +1,6 @@
 package ca.ntro.jdk.test;
 
-import ca.ntro.core.services.AssertService;
+import ca.ntro.services.AssertService;
 
 public class AssertServiceJUnit extends AssertService {
 

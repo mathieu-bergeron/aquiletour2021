@@ -9,6 +9,7 @@ import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 
@@ -31,9 +32,9 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 			public void onEvent() {
 				T.call(this);
 
-				AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue()));
-				addCourseMessage.sendMessage();
+				AddCourseMessage addCourseMessage = MessageFactory.createMessage(AddCourseMessage.class);
+				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.getValue(), addCourseTitleInput.getValue(),false,false,0));
+				Ntro.messageService().sendMessage(addCourseMessage);
 			}
 		});
 

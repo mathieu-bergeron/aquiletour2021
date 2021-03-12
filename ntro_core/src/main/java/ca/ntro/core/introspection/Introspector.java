@@ -17,6 +17,7 @@
 
 package ca.ntro.core.introspection;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.ValuePath;
 
 public abstract class Introspector {
 	
@@ -248,4 +250,30 @@ public abstract class Introspector {
 		return allGetters;
 	}
 
+	public Object findByValuePath(Object object, ValuePath valuePath) {
+		if(valuePath == null || valuePath.size() == 0) return null;
+		
+		Object result = null;
+
+		NtroClass ntroClass = ntroClassFromObject(object);
+		
+		String fieldName = valuePath.fieldName(0);
+
+		NtroMethod getter = ntroClass.getterByFieldName(fieldName);
+		
+		if(getter != null) {
+			try {
+				result = getter.invoke(object);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				Log.fatalError("Cannot invoke getter " + getter.name(), e);
+			}
+		}
+		
+		if(valuePath.size() > 1) {
+			ValuePath remainder = valuePath.subPath(1);
+			result = findByValuePath(result, remainder);
+		}
+		
+		return result;
+	}
 }

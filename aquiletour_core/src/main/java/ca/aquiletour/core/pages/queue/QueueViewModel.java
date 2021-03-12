@@ -4,7 +4,7 @@ package ca.aquiletour.core.pages.queue;
 import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.ntro.core.models.properties.observable.list.ListObserver;
+import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -60,6 +60,12 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				T.call(this);
 
 				view.deleteAppointment(index);
+			}
+
+			@Override
+			public void onClearItems() {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}

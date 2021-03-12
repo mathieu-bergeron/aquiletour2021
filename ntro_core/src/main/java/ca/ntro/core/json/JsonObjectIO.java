@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public abstract class JsonObjectIO implements Serializable {
 	

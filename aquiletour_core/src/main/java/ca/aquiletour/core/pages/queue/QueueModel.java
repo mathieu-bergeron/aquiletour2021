@@ -6,21 +6,14 @@ import java.util.List;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.properties.observable.list.ObservableList;
 import ca.ntro.core.system.trace.T;
 
-public class QueueModel extends NtroModel {
+public class QueueModel implements NtroModel {
 
-	private static final long serialVersionUID = 2545995167728311236L;
-	private ObservableAppointmentList appointments = new ObservableAppointmentList(new ArrayList<>());
+	private ObservableAppointmentList appointments = new ObservableAppointmentList();
 	private List<String> studentIds = new ArrayList<>();
 	private int maxId;
 
-	@Override
-	public void initializeStoredValues() {
-		T.call(this);
-	}
-	
 	public void removeStudentFromClass(String studentId) {
 		T.call(this);
 		for (int i = 0; i < studentIds.size(); i++) {
@@ -133,12 +126,10 @@ public class QueueModel extends NtroModel {
 		for (int i = 0; i < copy.size(); i++) {
 			if(copy.item(i).getStudentId().equals(studentId)) {//if appointment is owned by student
 				appointments.removeItem(copy.item(i));
+				setMaxId(getMaxId() - 1);;
 			}
 		}
 	}
-	
-	
-	
 	
 
 }

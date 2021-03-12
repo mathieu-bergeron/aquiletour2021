@@ -4,11 +4,12 @@ import ca.ntro.core.NtroUser;
 
 public class User extends NtroUser {
 	
-	private String name;
-	private String surname;
-	private String userEmail;
-	private String userPassword;
-	private String phoneNumber;	
+	private String name = "";
+	private String surname = "";
+	private String userEmail = "";
+	private String userPassword = "";
+	private String phoneNumber = "";	
+
 	public User() {
 		
 	}

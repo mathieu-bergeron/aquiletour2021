@@ -23,10 +23,10 @@ import java.math.BigInteger;
 import java.util.Formatter;
 import java.util.List;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.ValueFormatter;
 
 public class ValueFormatterJdk extends ValueFormatter {
 

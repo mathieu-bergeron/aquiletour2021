@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
-import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.log.Log;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroCollections;
 
 public class JsonSerialization {
 
@@ -157,7 +157,7 @@ public class JsonSerialization {
 		
 		for(NtroMethod getter : getters) {
 			
-			String attributeName = getter.getterAttributeName();
+			String attributeName = getter.getterFieldName();
 			Object javaAttributeValue = null;
 
 			try {

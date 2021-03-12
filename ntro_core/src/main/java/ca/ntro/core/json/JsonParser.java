@@ -6,10 +6,10 @@ import java.util.Map;
 
 import com.google.javascript.jscomp.Es6ExtractClasses;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public abstract class JsonParser {
 

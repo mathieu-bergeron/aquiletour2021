@@ -3,11 +3,10 @@ package ca.aquiletour.core.pages.queue.values;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.models.properties.NtroModelValue;
-import ca.ntro.core.models.properties.observable.map.ObservableMap;
+import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableAppointmentMap extends ObservableMap<Appointment> {
+public class ObservableAppointmentMap extends StoredMap<Appointment> {
 
 	public ObservableAppointmentMap() {
 		super(new HashMap<>());

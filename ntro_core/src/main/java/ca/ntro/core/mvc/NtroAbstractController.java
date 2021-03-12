@@ -1,6 +1,5 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.assertions.MustNot;
@@ -10,7 +9,9 @@ import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
@@ -20,7 +21,7 @@ import static ca.ntro.core.mvc.Constants.VIEW_MODEL_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_HANDLER_TASK_ID;
 
 
-abstract class NtroAbstractController extends AnyController implements TaskWrapper {
+public abstract class NtroAbstractController  implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
 	private NtroTask initTasks = new ContainerTask();
@@ -109,31 +110,16 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 		getTask().addSubTask(viewLoader);
 	}
 
-	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageHandler<?,?> handler) {
-		T.call(this);
-
-		NtroTask message = MessageFactory.getIncomingMessage(messageClass);
-		
-		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
-		message.setTaskId(messageId);
-		handler.setMessageId(messageId);
-		
-		handler.setController(this);
-
-		handler.getTask().addPreviousTask(message);
-	}
-
 	protected void addModelMessageHandler(Class<? extends NtroMessage> messageClass, ModelMessageHandler<?,?> handler) {
 		T.call(this);
 
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 
-		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
-		message.setTaskId(messageId);
+		MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
 
 		handler.setMessageId(messageId);
 
-		handler.getTask().addPreviousTask(message);
+		handler.getTask().addPreviousTask(messageHandlerTask);
 
 		addPreviousTaskTo(handler.getTask(), ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}

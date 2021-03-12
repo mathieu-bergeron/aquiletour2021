@@ -1,12 +1,9 @@
 package ca.ntro.core.models;
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.stores.DocumentPath;
 
 public class ModelLoader extends NtroTaskAsync {
 	
@@ -32,12 +29,7 @@ public class ModelLoader extends NtroTaskAsync {
 		String jsonString = jsonLoader.getJsonString();
 		DocumentPath documentPath = jsonLoader.getDocumentPath();
 		
-		//System.out.println(jsonString);
-		model = Ntro.jsonService().fromString(modelClass, jsonString);
-
-		model.setOrigin(modelStore);
-		
-		model.setModelId(documentPath.getId());
+		model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
 		
 		notifyTaskFinished();
 	}

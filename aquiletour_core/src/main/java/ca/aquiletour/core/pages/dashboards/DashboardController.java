@@ -3,8 +3,8 @@ package ca.aquiletour.core.pages.dashboards;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.NetworkStore;
 
 public abstract class DashboardController extends NtroController<RootController> {
 

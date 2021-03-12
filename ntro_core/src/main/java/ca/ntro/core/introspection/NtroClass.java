@@ -1,14 +1,11 @@
 package ca.ntro.core.introspection;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.services.NtroCollections;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroCollections;
 
 public abstract class NtroClass {
 
@@ -52,11 +49,9 @@ public abstract class NtroClass {
 		if(other == null) return false;
 		if(other == this) return true;
 		if(other instanceof NtroClass) {
-			NtroClass otherClassSignature = (NtroClass) other;
-			
-			return _class.equals(otherClassSignature._class);
+			NtroClass otherNtroClass = (NtroClass) other;
+			return _class.equals(otherNtroClass._class);
 		}
-
 		return false;
 	}
 	
@@ -120,6 +115,32 @@ public abstract class NtroClass {
 		}
 
 		return setters;
+	}
+
+	public NtroMethod methodByName(String methodName) {
+		NtroMethod method = null;
+
+		for(NtroMethod candidate : userDefinedMethods()) {
+			if(candidate.name().equals(methodName)) {
+				method = candidate;
+				break;
+			}
+		}
+		
+		return method;
+	}
+
+	public NtroMethod getterByFieldName(String fieldName) {
+		NtroMethod method = null;
+
+		for(NtroMethod candidate : userDefinedMethods()) {
+			if(candidate.getterFieldName().equals(fieldName)) {
+				method = candidate;
+				break;
+			}
+		}
+
+		return method;
 	}
 
 }

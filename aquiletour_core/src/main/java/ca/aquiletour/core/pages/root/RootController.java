@@ -29,6 +29,7 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class RootController extends NtroRootController {
 
@@ -52,7 +53,8 @@ public class RootController extends NtroRootController {
 
 		addWindowViewHandler(new RootViewHandler());
 		
-		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
+		// FIXME: could be in main. Not specific to Controller
+		Ntro.messageService().registerHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 
 	@Override

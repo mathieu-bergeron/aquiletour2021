@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ca.ntro.core.services.NtroCollections;
+import ca.ntro.services.NtroCollections;
 
 public class NtroCollectionsJdk extends NtroCollections {
 
@@ -47,10 +47,6 @@ public class NtroCollectionsJdk extends NtroCollections {
 		return concurrentSet;
 	}
 
-	@Override
-	protected boolean containsEqualsImpl(Set<?> set, Object target) {
-		return set.contains(target);
-	}
 
 	@Override
 	protected boolean containsKeyExactImpl(Map<?, ?> map, Object key) {
@@ -88,5 +84,24 @@ public class NtroCollectionsJdk extends NtroCollections {
 	@Override
 	protected boolean mapEqualsImpl(Map<?, ?> map1, Map<?, ?> map2) {
 		return map1.equals(map2);
+	}
+
+	@Override
+	protected boolean setContainsExactImpl(Set<?> set, Object target) {
+		boolean setContains = false;
+		
+		for(Object element : set) {
+			if(element == target) {
+				setContains = true;
+				break;
+			}
+		}
+		
+		return setContains;
+	}
+
+	@Override
+	protected boolean containsEqualsImpl(Set<?> set, Object target) {
+		return set.contains(target);
 	}
 }

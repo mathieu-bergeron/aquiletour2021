@@ -6,7 +6,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.UserView;
-import ca.ntro.core.models.properties.observable.list.ListObserver;
+import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.ViewLoader;
@@ -56,6 +56,12 @@ public class QueuesViewModel extends ModelViewSubViewHandler<QueuesModel, Queues
 			
 			@Override
 			public void onValueChanged(List<QueueSummary> oldValue, List<QueueSummary> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onClearItems() {
 				// TODO Auto-generated method stub
 				
 			}

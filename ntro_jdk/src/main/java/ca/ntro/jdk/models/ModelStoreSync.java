@@ -4,6 +4,7 @@ import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.trace.T;
 
 public class ModelStoreSync {
 
@@ -23,5 +24,11 @@ public class ModelStoreSync {
 		MustNot.beNull(model);
 
 		return model;
+	}
+
+	public void save(NtroModel model) {
+		T.call(this);
+
+		modelStore.save(model);
 	}
 }

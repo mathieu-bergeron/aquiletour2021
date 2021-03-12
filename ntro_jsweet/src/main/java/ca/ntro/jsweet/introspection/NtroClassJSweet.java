@@ -73,6 +73,13 @@ public class NtroClassJSweet extends NtroClass {
 			}
 		}
 
+		/* JSWEET: superInterfaces already listed?
+		for(NtroClass superClass : allSuperclasses()) {
+			for(NtroClass superInterface : superClass.allInterfaces()) {
+				allInterfaces.add(superInterface);
+			}
+		}*/
+
 		return allInterfaces;
 	}
 	

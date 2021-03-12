@@ -6,18 +6,22 @@ import org.dizitart.no2.NitriteCollection;
 
 import static org.dizitart.no2.filters.Filters.eq;
 
+import java.util.List;
+
 import org.dizitart.no2.Cursor;
 
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ExternalUpdateListener;
-import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ExternalUpdateListener;
+import ca.ntro.stores.ValuePath;
 
 public class LocalStoreNitrite extends ModelStore {
 	
@@ -47,7 +51,7 @@ public class LocalStoreNitrite extends ModelStore {
 		
 		addIndex(models);
 		
-		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()));
+		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
 		Document document  = cursor.firstOrDefault();
 		
 		String jsonString = null;
@@ -64,7 +68,7 @@ public class LocalStoreNitrite extends ModelStore {
 			jsonString = ModelStore.emptyModelString(documentPath);
 
 			document = new Document();
-			document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
+			document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
 			document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 
 			models.insert(document);
@@ -84,11 +88,11 @@ public class LocalStoreNitrite extends ModelStore {
 		
 		Document document = new Document();
 		
-		document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
+		document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
 		document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 		
 		
-		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()), document);
+		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document);
 		
 		db.commit();
 	}
@@ -124,6 +128,17 @@ public class LocalStoreNitrite extends ModelStore {
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// TODO Auto-generated method stub
 	}
 	
 

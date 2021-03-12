@@ -21,6 +21,7 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
@@ -32,13 +33,19 @@ import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.values.ObservableUserMap;
-import ca.ntro.core.Ntro;
-import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroInitializationTask;
+import ca.ntro.stores.NetworkStore;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 
@@ -52,19 +59,16 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		// FIXME
 		Constants.LANG = "fr";
+
+		User currentUser = (User) Ntro.userService().currentUser();
 		
 		NtroContext<User> context = new NtroContext<>();
-		
-		// TODO: in JSweet, get user from Cookies
-		User devUser = new Teacher();
-		devUser.setId("alice");
-		devUser.setAuthToken("aliceToken");
-		context.setUser(devUser);
+		context.setUser(currentUser);
 		context.setLang(Constants.LANG);
-		
+
 		registerViewLoaders();
-		registerSerializableClasses();
 		
+
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
@@ -77,22 +81,26 @@ public abstract class AquiletourMain extends NtroTaskSync {
 	public static void registerSerializableClasses() {
 		T.call(AquiletourMain.class);
 
-		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
-		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
+		Ntro.registerSerializableClass(DashboardModel.class);
+		Ntro.registerSerializableClass(ObservableCourseList.class);
+		Ntro.registerSerializableClass(CourseSummary.class);
 
-		Ntro.jsonService().registerSerializableClass(QueueModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableAppointmentList.class);
-		Ntro.jsonService().registerSerializableClass(Appointment.class);
+		Ntro.registerSerializableClass(QueueModel.class);
+		Ntro.registerSerializableClass(ObservableAppointmentList.class);
+		Ntro.registerSerializableClass(Appointment.class);
 
-		Ntro.jsonService().registerSerializableClass(QueuesModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableQueueList.class);
-		Ntro.jsonService().registerSerializableClass(QueueSummary.class);
+		Ntro.registerSerializableClass(QueuesModel.class);
+		Ntro.registerSerializableClass(ObservableQueueList.class);
+		Ntro.registerSerializableClass(QueueSummary.class);
 
-		Ntro.jsonService().registerSerializableClass(UsersModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
-		Ntro.jsonService().registerSerializableClass(Teacher.class);
-		Ntro.jsonService().registerSerializableClass(Student.class);
+		Ntro.registerSerializableClass(UsersModel.class);
+		Ntro.registerSerializableClass(ObservableUserMap.class);
+		Ntro.registerSerializableClass(User.class);
+		Ntro.registerSerializableClass(Teacher.class);
+		Ntro.registerSerializableClass(Student.class);
+
+		Ntro.registerSerializableClass(NtroMessage.class);
+		Ntro.registerSerializableClass(AddCourseMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
