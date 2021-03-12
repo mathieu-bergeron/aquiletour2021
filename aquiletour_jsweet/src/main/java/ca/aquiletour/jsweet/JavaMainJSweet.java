@@ -18,11 +18,9 @@
 package ca.aquiletour.jsweet;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.users.Teacher;
-import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
-import ca.ntro.messages.MessageFactory;
+import ca.ntro.jsweet.services.NtroJSweet;
 
 public class JavaMainJSweet {
 
@@ -30,15 +28,6 @@ public class JavaMainJSweet {
 		__T.call(JavaMainJSweet.class,"main");
 
 		String[] options = new String[] {"--traceLevel","APP"};
-		
-		
-		User devUser = new Teacher();
-		devUser.setId("alice");
-		devUser.setAuthToken("aliceToken");
-		
-		// FIXME: this must occur before 
-		//        opening the webSocket
-		MessageFactory.registerCurrentUser(devUser);
 		
 		BackendServiceJSweet backendServiceJSweet = new BackendServiceJSweet(Constants.WS_CONNECTION_STRING);
 		
