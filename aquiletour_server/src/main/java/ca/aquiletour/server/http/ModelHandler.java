@@ -52,10 +52,6 @@ public class ModelHandler extends AbstractHandler {
 
         T.call(this);
 
-        Ntro.introspector().registerSerializableClass(UsersModel.class);
-        Ntro.introspector().registerSerializableClass(DashboardModel.class);
-        Ntro.introspector().registerSerializableClass(QueuesModel.class);
-
         this.modelsUrlPrefix = modelsUrlPrefix;
         this.publicFilesPrefix = publicFilesPrefix;
     }
@@ -105,7 +101,7 @@ public class ModelHandler extends AbstractHandler {
 		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
-		Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.jsonService().serializableClass(documentPath.getCollection());
+		Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
 		
         ModelLoader modelLoader = LocalStore.getLoader(modelClazz, user.getAuthToken(), documentPath.getDocumentId());
         modelLoader.execute();

@@ -16,18 +16,18 @@ import static ca.ntro.assertions.Factory.that;
 public class JsonTests {
 
 	public static void registerSerializableClasses() {
-		Ntro.jsonService().registerSerializableClass(ListItemA.class);
-		Ntro.jsonService().registerSerializableClass(ListItemB.class);
-		Ntro.jsonService().registerSerializableClass(LinkedListNode.class);
+		Ntro.registerSerializableClass(ListItemA.class);
+		Ntro.registerSerializableClass(ListItemB.class);
+		Ntro.registerSerializableClass(LinkedListNode.class);
 
-		Ntro.jsonService().registerSerializableClass(TestUsers.class);
-		Ntro.jsonService().registerSerializableClass(TestUserMap.class);
-		Ntro.jsonService().registerSerializableClass(TestStudent.class);
-		Ntro.jsonService().registerSerializableClass(TestTeacher.class);
+		Ntro.registerSerializableClass(TestUsers.class);
+		Ntro.registerSerializableClass(TestUserMap.class);
+		Ntro.registerSerializableClass(TestStudent.class);
+		Ntro.registerSerializableClass(TestTeacher.class);
 
-		Ntro.jsonService().registerSerializableClass(TestDashboard.class);
-		Ntro.jsonService().registerSerializableClass(TestCourseList.class);
-		Ntro.jsonService().registerSerializableClass(TestCourseSummary.class);
+		Ntro.registerSerializableClass(TestDashboard.class);
+		Ntro.registerSerializableClass(TestCourseList.class);
+		Ntro.registerSerializableClass(TestCourseSummary.class);
 	}
 
 	@Test

@@ -60,20 +60,14 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// FIXME
 		Constants.LANG = "fr";
 
-		// TODO: in JSweet, get user from Cookies
-		NtroUser currentUser = Ntro.userService().currentUser();
-		
-		User devUser = new Teacher();
-		devUser.setId(currentUser.getId());
-		devUser.setAuthToken(currentUser.getAuthToken());
+		User currentUser = (User) Ntro.userService().currentUser();
 		
 		NtroContext<User> context = new NtroContext<>();
-		context.setUser(devUser);
+		context.setUser(currentUser);
 		context.setLang(Constants.LANG);
-		
-		registerViewLoaders();
-		registerSerializableClasses();
 
+		registerViewLoaders();
+		
 
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
@@ -87,25 +81,26 @@ public abstract class AquiletourMain extends NtroTaskSync {
 	public static void registerSerializableClasses() {
 		T.call(AquiletourMain.class);
 
-		Ntro.jsonService().registerSerializableClass(DashboardModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableCourseList.class);
-		Ntro.jsonService().registerSerializableClass(CourseSummary.class);
+		Ntro.registerSerializableClass(DashboardModel.class);
+		Ntro.registerSerializableClass(ObservableCourseList.class);
+		Ntro.registerSerializableClass(CourseSummary.class);
 
-		Ntro.jsonService().registerSerializableClass(QueueModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableAppointmentList.class);
-		Ntro.jsonService().registerSerializableClass(Appointment.class);
+		Ntro.registerSerializableClass(QueueModel.class);
+		Ntro.registerSerializableClass(ObservableAppointmentList.class);
+		Ntro.registerSerializableClass(Appointment.class);
 
-		Ntro.jsonService().registerSerializableClass(QueuesModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableQueueList.class);
-		Ntro.jsonService().registerSerializableClass(QueueSummary.class);
+		Ntro.registerSerializableClass(QueuesModel.class);
+		Ntro.registerSerializableClass(ObservableQueueList.class);
+		Ntro.registerSerializableClass(QueueSummary.class);
 
-		Ntro.jsonService().registerSerializableClass(UsersModel.class);
-		Ntro.jsonService().registerSerializableClass(ObservableUserMap.class);
-		Ntro.jsonService().registerSerializableClass(Teacher.class);
-		Ntro.jsonService().registerSerializableClass(Student.class);
+		Ntro.registerSerializableClass(UsersModel.class);
+		Ntro.registerSerializableClass(ObservableUserMap.class);
+		Ntro.registerSerializableClass(User.class);
+		Ntro.registerSerializableClass(Teacher.class);
+		Ntro.registerSerializableClass(Student.class);
 
-		Ntro.jsonService().registerSerializableClass(NtroMessage.class);
-		Ntro.jsonService().registerSerializableClass(AddCourseMessage.class);
+		Ntro.registerSerializableClass(NtroMessage.class);
+		Ntro.registerSerializableClass(AddCourseMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

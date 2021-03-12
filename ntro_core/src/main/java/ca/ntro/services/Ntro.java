@@ -23,12 +23,24 @@ import java.util.Map;
 import ca.ntro.assertions.AssertExpression;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.threads.NtroThread;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
+
+	private static Map<String, Class<?>> serializableClasses = new HashMap<>();
+	
+	public static void registerSerializableClass(Class<? extends JsonSerializable> _class) {
+		// FIXME: we'd like to user Ntro.introspector().getSimpleNameForClass ...
+		//        but it is NOT registered yet
+		serializableClasses.put(_class.getSimpleName(), _class);
+	}
+
+	public static Class<?> serializableClass(String simpleName) {
+		return serializableClasses.get(simpleName);
+	}
 
 	private static Introspector introspector;
 	private static Logger logger;

@@ -118,7 +118,7 @@ public class JsonDeserialization {
 			                                             Map<String, Object> localHeap) {
 
 		String targetClassSimpleName = (String) jsonMap.get(Constants.JSON_CLASS_KEY);
-		Class<?> targetClass = Ntro.jsonService().serializableClass(targetClassSimpleName);
+		Class<?> targetClass = Ntro.serializableClass(targetClassSimpleName);
 		NtroClass ntroClass = Ntro.introspector().ntroClassFromJavaClass(targetClass);
 		
 		if(targetClass == null) {

@@ -36,6 +36,9 @@ public class Globals {
 	public native static Promise<FetchResponse> fetch(String path);
 	public native static Promise<FetchResponse> fetch(String path, Object request);
 
+	public native static String decodeURI(String string);
+	public native static String encodeURI(String string);
+
 	public native static void installSourceMap(String rawSourceMap);
 
 	public static JsCookies Cookies;
@@ -45,5 +48,7 @@ public class Globals {
 		public abstract String get(String name);
 		public abstract String set(String name, String value, def.js.Object options);
 	}
+	
+	
 
 }

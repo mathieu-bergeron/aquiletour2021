@@ -10,15 +10,7 @@ import ca.ntro.core.json.JsonSerialization;
 public abstract class JsonService {
 	
 	private boolean prettyPrinting = false;
-	private Map<String, Class<?>> serializableClasses = new HashMap<>();
-	
-	public void registerSerializableClass(Class<? extends JsonSerializable> _class) {
-		serializableClasses.put(Ntro.introspector().getSimpleNameForClass(_class), _class);
-	}
 
-	public Class<?> serializableClass(String simpleName) {
-		return serializableClasses.get(simpleName);
-	}
 	
 	public void setPrettyPrinting(boolean prettyPrinting) {
 		this.prettyPrinting = prettyPrinting;

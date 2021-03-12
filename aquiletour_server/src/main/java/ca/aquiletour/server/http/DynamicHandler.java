@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.AnonUser;
@@ -161,65 +162,33 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private boolean authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
+	private void authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		boolean isUserLoggedIn = false;
-
 		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
 		usersLoader.execute();
 		UsersModel usersModel = (UsersModel) usersLoader.getModel();
 		
-		if(baseRequest.getParameter("userId") != null 
-				&& baseRequest.getParameter("authToken") != null) {
+		User user = null;
+		
+		if(baseRequest.getParameter("userId") != null) {
 			
 			String userId = baseRequest.getParameter("userId");
-			String authToken  = baseRequest.getParameter("authToken");
+			user = usersModel.getUsers().valueOf(userId);
 			
-			User user = usersModel.getUsers().getValue().get(userId);
-
-			if(user != null) {
-
-				isUserLoggedIn = user.isValid(authToken);
-				
-				if(isUserLoggedIn) {
-					setCookie(response, "userId", userId);
-					setCookie(response, "authToken", authToken);
-					context.setUser(user);
-				}
+			if(user == null) {
+				user = new AnonUser();
 			}
-
-		} else if(hasCookie(baseRequest, "userId") 
-				&& hasCookie(baseRequest, "authToken")) {
 			
-			String userId = getCookie(baseRequest, "userId");
-			String authToken = getCookie(baseRequest, "authToken");
+			setCookie(response, "user", Ntro.jsonService().toString(user));
 
-			User user = usersModel.getUsers().getValue().get(userId);
+		} else if(hasCookie(baseRequest, "user")) {
 
-			if(user != null) {
-
-				isUserLoggedIn = user.isValid(authToken);
-				
-				if(isUserLoggedIn) {
-					context.setUser(user);
-				}else {
-					eraseCookie(response, "userId");
-					eraseCookie(response, "authToken");
-				}
-			}
+			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
+			user = Ntro.jsonService().fromString(User.class, userString);
 		}
 
-		if(!isUserLoggedIn){
-
-		    User defaultUser = new AnonUser();
-
-		    context.setUser(defaultUser);
-
-			isUserLoggedIn = true;
-		}
-
-		return isUserLoggedIn;
+		context.setUser(user);
 	}
 
 
@@ -309,7 +278,11 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCookie(HttpServletResponse response, String name, String value) {
 		T.call(this);
 		
-		Cookie cookie = new Cookie(name, value);
+		String trimmedValue = value.replace(" ", "");
+
+		String urlEncodedString = UrlEncoded.encodeString(trimmedValue);
+		
+		Cookie cookie = new Cookie(name, urlEncodedString);
 
 		response.addCookie(cookie);
 	}

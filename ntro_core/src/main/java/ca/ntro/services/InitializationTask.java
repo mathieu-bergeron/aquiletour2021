@@ -96,18 +96,16 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 	private void registerSerializableClasses() {
 
-		Ntro.jsonService().registerSerializableClass(NtroUser.class);
+		Ntro.registerSerializableClass(NtroUser.class);
 
-		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
-		Ntro.jsonService().registerSerializableClass(GetModelNtroMessage.class);
-		Ntro.jsonService().registerSerializableClass(SetModelNtroMessage.class);
-		Ntro.jsonService().registerSerializableClass(InvokeValueMethodNtroMessage.class);
+		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
+		Ntro.registerSerializableClass(GetModelNtroMessage.class);
+		Ntro.registerSerializableClass(SetModelNtroMessage.class);
+		Ntro.registerSerializableClass(InvokeValueMethodNtroMessage.class);
 
-		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
-		Ntro.jsonService().registerSerializableClass(ValuePath.class);
+		Ntro.registerSerializableClass(DocumentPath.class);
+		Ntro.registerSerializableClass(ValuePath.class);
 	}
-
-
 
 
 	protected abstract Logger provideLogger();
