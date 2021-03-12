@@ -2,14 +2,14 @@ package ca.ntro.jsweet.services;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import ca.ntro.core.Ntro;
 import ca.ntro.core.services.BackendService;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
-import def.dom.MessageEvent;
+import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import def.dom.WebSocket;
 
 public class BackendServiceJSweet extends BackendService {
@@ -24,21 +24,29 @@ public class BackendServiceJSweet extends BackendService {
 		
 		webSocket = new WebSocket(connectionString);
 
-		webSocket.onmessage = new Function<MessageEvent, Object>() {
-			@Override
-			public Object apply(MessageEvent t) {
+		webSocket.onmessage = t -> {
 
-				NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
+			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
+			
+			MessageHandler<?> handler = handlers.get(message.getClass());
+			
+			if(handler != null) {
 				
-				MessageHandler<?> handler = handlers.get(message.getClass());
-				
-				if(handler != null) {
-					
-					handler.handleUntyped(message);
-				}
-
-				return null;
+				handler.handleUntyped(message);
 			}
+
+			return null;
+		};
+		
+		webSocket.onopen = t -> {
+
+			// FIXME: there is no garentee that MessageFactory.registerUser has been called
+			//        we must use initialization tasks
+			RegisterSocketNtroMessage registerSocketNtroMessage = MessageFactory.createMessage(RegisterSocketNtroMessage.class);
+
+			sendMessageToBackend(registerSocketNtroMessage);
+			
+			return null;
 		};
 	}
 

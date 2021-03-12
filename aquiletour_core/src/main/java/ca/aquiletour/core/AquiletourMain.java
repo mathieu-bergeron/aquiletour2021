@@ -72,10 +72,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		registerSerializableClasses();
 		
 		MessageFactory.registerCurrentUser(devUser);
-		
-		RegisterSocketNtroMessage registerSocketNtroMessage = MessageFactory.createMessage(RegisterSocketNtroMessage.class);
-
-		Ntro.backendService().sendMessageToBackend(registerSocketNtroMessage);
 
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
