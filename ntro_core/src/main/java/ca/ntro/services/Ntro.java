@@ -209,6 +209,4 @@ public class Ntro {
 	public static UserService userService() {
 		return Ntro.userService;
 	}
-	
-	
 }
