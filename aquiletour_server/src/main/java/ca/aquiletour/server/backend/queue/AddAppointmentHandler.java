@@ -27,12 +27,17 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 				requestingUser.getAuthToken(),
 				courseId);
+		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
+				requestingUser.getAuthToken(),
+				requestingUser.getId());
 
 		
-		if(queueModel != null) {
+		if(queueModel != null && !dashboardModel.doesStudentAlreadyHaveAppointment(courseId)) {
 			
 			queueModel.addAppointment(message.getAppointment());
 			queueModel.save();
+			dashboardModel.updateMyAppointment(courseId, true);
+			dashboardModel.save();
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -45,9 +50,6 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 			                    studentId);
 						if(dashboardModel != null) {
 							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
-							if(requestingUser.getId().equals(studentId)) {
-								dashboardModel.updateMyAppointment(courseId, true);
-							}
 							dashboardModel.save();
 						}
 					}

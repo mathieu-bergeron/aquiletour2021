@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.queue;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.ntro.core.models.NtroModel;
@@ -50,7 +51,7 @@ public class QueueModel extends NtroModel {
 		appointment.setId(appointmentId);
 		appointments.addItem(appointment);;
 	}
-	
+
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
 		if(getMaxId()>0)setMaxId(getMaxId() - 1);
@@ -138,6 +139,18 @@ public class QueueModel extends NtroModel {
 		}
 	}
 	
+	public String receiveStudentIdOfAppointment(String appointmentId) {
+		String studentId = null;
+		for (int i = 0; i < appointments.size(); i++) {
+			Appointment appointment = appointments.item(i);
+			if (appointment.getId().equals(appointmentId)) {
+				studentId = appointment.getStudentId();
+			}
+		}
+		return studentId;
+		
+		
+	}
 	
 	
 	

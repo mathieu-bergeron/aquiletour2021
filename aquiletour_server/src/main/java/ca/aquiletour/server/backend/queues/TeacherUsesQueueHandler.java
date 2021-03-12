@@ -50,6 +50,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 					for (String studentId : studentIds) {
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 						if (dashboardModel != null) {
+							T.here();
 							dashboardModel.setTeacherAvailability(true, courseId);
 							dashboardModel.save();
 						}
@@ -73,13 +74,19 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 		TimerTask timerTask = new TimerTask() { // do that after timer is over
 			@Override
 			public void run() {
+				T.here();
 				List<String> studentIds = queueModel.getStudentIds();
 				for (String studentId : studentIds) {
 					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 					if (dashboardModel != null) {
 						dashboardModel.setTeacherAvailability(false, courseId);
+						dashboardModel.updateMyAppointment(courseId, false);
+						dashboardModel.updateNbAppointmentOfCourse(courseId, 0);
 						dashboardModel.save();
+						queueModel.removeAllAppointmentsOfStudent(studentId);
+						queueModel.save();
 					}
+					
 				}
 				QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 				openQueuesModel.deleteQueue(courseId);

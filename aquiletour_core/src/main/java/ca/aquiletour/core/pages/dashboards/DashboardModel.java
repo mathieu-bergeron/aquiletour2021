@@ -79,6 +79,18 @@ public class DashboardModel extends NtroModel {
 				currentCourse.setMyAppointment(state);
 			}
 		}
+		
+	}
+	
+	public boolean doesStudentAlreadyHaveAppointment(String courseId) {
+		boolean myAppointment = false;
+		for (int i = 0; i < courses.size(); i++) {
+			CourseSummary currentCourse = courses.item(i);
+			if (currentCourse.getTitle().equals(courseId)) {
+				myAppointment = currentCourse.getMyAppointment();
+			}
+		}
+		return myAppointment;
 
 	}
 	
