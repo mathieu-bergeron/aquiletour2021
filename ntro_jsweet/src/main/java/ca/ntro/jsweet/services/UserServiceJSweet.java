@@ -1,8 +1,8 @@
 package ca.ntro.jsweet.services;
 
 import ca.ntro.core.NtroUser;
-import ca.ntro.jsweet.Globals.Cookies;
 import ca.ntro.services.UserService;
+import static def.es6.Globals.Cookies;
 
 public class UserServiceJSweet extends UserService {
 
@@ -11,6 +11,9 @@ public class UserServiceJSweet extends UserService {
 		
 		String userId = Cookies.get("userId");
 		String authToken = Cookies.get("authToken");
+		
+		System.out.println("userId: " + userId);
+		System.out.println("authToken: " + authToken);
 		
 		NtroUser user = new NtroUser();
 		user.setId(userId);

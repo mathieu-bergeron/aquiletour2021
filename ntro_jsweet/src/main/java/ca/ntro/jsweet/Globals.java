@@ -24,8 +24,4 @@ public class Globals {
 	// notifyTaskFinished() is called from Javascript, see tutoriel02/webapp/index.html
 	public static OnLoadTask onLoadTask = new OnLoadTask();
 
-	public static abstract class Cookies {
-		public static native String get(String name);
-		public static native String set(String name, String value, def.js.Object options);
-	}
 }
