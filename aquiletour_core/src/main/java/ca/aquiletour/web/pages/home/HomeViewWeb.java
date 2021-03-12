@@ -13,8 +13,8 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class HomeViewWeb extends NtroViewWeb implements HomeView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

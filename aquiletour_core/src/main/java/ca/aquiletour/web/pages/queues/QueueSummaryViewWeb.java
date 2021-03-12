@@ -10,9 +10,9 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

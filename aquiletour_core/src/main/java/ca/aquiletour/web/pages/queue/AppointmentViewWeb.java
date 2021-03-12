@@ -11,9 +11,9 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		studentId.appendHtml(appointment.getStudentId());
 		studentSurname.appendHtml(appointment.getStudentSurname());
 		studentName.appendHtml(appointment.getStudentName());
-		
+
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 	}
 }

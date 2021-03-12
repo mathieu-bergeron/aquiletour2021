@@ -8,22 +8,22 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardView {
-	
+
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 
 	}
-	
+
 	@Override
 	public void appendCourse(CourseSummaryView courseView) {
 		T.call(this);
 
 		HtmlElement container = this.getRootElement().find("#courses-container").get(0);
-		
+
 		MustNot.beNull(container);
-		
+
 		CourseSummaryViewWeb courseViewWeb = (CourseSummaryViewWeb) courseView;
-		
+
 		container.appendElement(courseViewWeb.getRootElement());
 
 	}

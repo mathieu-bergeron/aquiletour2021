@@ -12,8 +12,8 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class LoginViewWeb extends NtroViewWeb implements LoginView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

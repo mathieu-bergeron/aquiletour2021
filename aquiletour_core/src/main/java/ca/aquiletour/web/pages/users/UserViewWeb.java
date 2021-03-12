@@ -14,9 +14,9 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class UserViewWeb extends NtroViewWeb implements UserView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -43,12 +43,12 @@ public class UserViewWeb extends NtroViewWeb implements UserView {
 		} else if (user instanceof SuperUser) {
 			role.appendHtml("SuperUser");
 		}//TODO might be a better way to do this
-		
+
 		userId.appendHtml(user.getId());
 		userEmail.appendHtml(user.getUserEmail());
 		userPassword.appendHtml(user.getUserPassword());
 		close.setAttribute("href", "/usagers?deleteUser=" + user.getId());
-		
+
 		getRootElement().setAttribute("id", "user-" + user.getId());
 	}
 

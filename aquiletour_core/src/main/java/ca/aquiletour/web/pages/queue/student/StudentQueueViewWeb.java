@@ -13,9 +13,9 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class StudentQueueViewWeb extends QueueViewWeb implements QueueView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

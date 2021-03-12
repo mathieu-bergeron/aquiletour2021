@@ -11,22 +11,22 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class UsersViewWeb extends NtroViewWeb implements UsersView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void appendUser(User user, UserView userView) {
 		T.call(this);
 		T.here();
-		
+
 		HtmlElement container = this.getRootElement().find("#showUsers-container").get(0);
-		
+
 		MustNot.beNull(container);
-		
+
 		UserViewWeb userViewWeb = (UserViewWeb) userView;
-		
+
 		container.appendElement(userViewWeb.getRootElement());
 	}
 
@@ -39,7 +39,7 @@ public class UsersViewWeb extends NtroViewWeb implements UsersView {
 		String selector = "#user-" + userId;
 
 		HtmlElement userElement = container.find(selector).get(0);
-		
+
 		userElement.remove();
 
 	}

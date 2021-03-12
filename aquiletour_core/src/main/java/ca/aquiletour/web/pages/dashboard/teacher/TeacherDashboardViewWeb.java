@@ -1,7 +1,5 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
@@ -14,9 +12,8 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
-
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		super.initialize();
 		T.call(this);
 

@@ -10,9 +10,9 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
 
 	@Override
-	public void initialize() {
+	public void initializeWebView() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		HtmlElement myAppointment = this.getRootElement().find("#myAppointment").get(0);
 		HtmlElement isQueueOpen = this.getRootElement().find("#isQueueOpen").get(0);
-		
+
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(nbAppointment);
@@ -33,5 +33,6 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		MustNot.beNull(myAppointment);
 		MustNot.beNull(isQueueOpen);
 	}
+
 
 }
