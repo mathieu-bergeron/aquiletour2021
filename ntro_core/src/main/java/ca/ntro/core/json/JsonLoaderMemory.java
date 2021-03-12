@@ -1,7 +1,7 @@
 package ca.ntro.core.json;
 
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.DocumentPath;
 
 public class JsonLoaderMemory extends JsonLoader {
 	

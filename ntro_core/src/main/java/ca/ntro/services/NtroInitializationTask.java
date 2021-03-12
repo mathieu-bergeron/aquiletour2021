@@ -15,14 +15,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.services;
+package ca.ntro.services;
 
-public abstract class Logger {
+import java.util.HashMap;
+import java.util.Map;
 
-	public void text(String text) {
-		System.out.println(text);
+import ca.ntro.core.tasks.ContainerTask;
+
+public class NtroInitializationTask extends ContainerTask {
+	
+	private Map<String, String> options = new HashMap<>();
+	
+	public String getOption(String key) {
+		return options.get(key);
 	}
 	
-	public abstract void value(Object value);
+	public NtroInitializationTask setOptions(String[] options) {
 
+		// TODO: parse options!
+		
+		return this;
+	}
 }

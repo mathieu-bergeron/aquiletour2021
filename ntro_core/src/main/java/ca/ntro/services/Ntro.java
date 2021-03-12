@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core;
+package ca.ntro.services;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,14 +24,6 @@ import ca.ntro.assertions.AssertExpression;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.regex.RegEx;
-import ca.ntro.core.services.AppCloser;
-import ca.ntro.core.services.AssertService;
-import ca.ntro.core.services.BackendService;
-import ca.ntro.core.services.JsonService;
-import ca.ntro.core.services.Logger;
-import ca.ntro.core.services.MessageService;
-import ca.ntro.core.services.ResourceLoader;
-import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.threads.NtroThread;
 import ca.ntro.web.mvc.ViewLoaderWeb;
@@ -51,8 +43,8 @@ public class Ntro {
 	private static BackendService backendService;
 	
 	private static AssertService assertService;
-
 	private static JsonService jsonService;
+	private static UserService userService;
 
 	// FIXME: zzz is to "hide" the public method in auto-completion lists
 	//        can we make this package-private?
@@ -197,4 +189,14 @@ public class Ntro {
 	public static JsonService jsonService() {
 		return Ntro.jsonService;
 	}
+
+	static void registerUserService(UserService userService) {
+		Ntro.userService = userService;
+	}
+
+	public static UserService userService() {
+		return Ntro.userService;
+	}
+	
+	
 }

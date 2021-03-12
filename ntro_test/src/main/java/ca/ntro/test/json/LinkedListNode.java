@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.services.Ntro;
 
 public class LinkedListNode implements JsonSerializable {
 	

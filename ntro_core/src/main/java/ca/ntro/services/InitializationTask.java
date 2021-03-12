@@ -15,28 +15,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.initialization;
+package ca.ntro.services;
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.__Ntro;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
-import ca.ntro.core.services.AppCloser;
-import ca.ntro.core.services.AssertService;
-import ca.ntro.core.services.BackendService;
-import ca.ntro.core.services.JsonService;
-import ca.ntro.core.services.Logger;
-import ca.ntro.core.services.MessageService;
-import ca.ntro.core.services.NtroCollections;
-import ca.ntro.core.services.ResourceLoader;
-import ca.ntro.core.services.ThreadService;
-import ca.ntro.core.services.ValueFormatter;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.LocalStore;
-import ca.ntro.core.services.stores.NetworkStore;
-import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
@@ -44,6 +28,10 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.LocalStore;
+import ca.ntro.stores.NetworkStore;
+import ca.ntro.stores.ValuePath;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
@@ -96,6 +84,13 @@ public abstract class InitializationTask extends NtroTaskSync {
 		LocalStore.initialize(provideLocalStore());
 		NetworkStore.initialize(provideNetworkStore());
 		
+		Ntro.registerUserService(provideUserService());
+		
+		
+		registerSerializableClasses();
+	}
+
+	private void registerSerializableClasses() {
 		Ntro.jsonService().registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(GetModelNtroMessage.class);
 		Ntro.jsonService().registerSerializableClass(SetModelNtroMessage.class);
@@ -103,7 +98,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		Ntro.jsonService().registerSerializableClass(DocumentPath.class);
 		Ntro.jsonService().registerSerializableClass(ValuePath.class);
-
 	}
 
 
@@ -126,4 +120,5 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract BackendService provideBackendService();
 	protected abstract AssertService provideAssertService();
 	protected abstract JsonService provideJsonService();
+	protected abstract UserService provideUserService();
 }

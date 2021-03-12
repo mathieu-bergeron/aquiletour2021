@@ -1,4 +1,4 @@
-package ca.ntro.core.services;
+package ca.ntro.services;
 
 import java.util.Set;
 

@@ -1,9 +1,9 @@
 package ca.ntro.javafx;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;

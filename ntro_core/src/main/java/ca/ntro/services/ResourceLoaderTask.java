@@ -15,11 +15,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.services;
+package ca.ntro.services;
 
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public abstract class ResourceLoader {
+public abstract class ResourceLoaderTask extends NtroTaskAsync {
 	
-	public abstract ResourceLoaderTask loadResourceTask(String resourcePath);
+	private String resourcePath;
+
+	public ResourceLoaderTask(String resourcePath) {
+		this.resourcePath = resourcePath;
+	}
+	
+	protected String getResourcePath() {
+		return resourcePath;
+	}
+	
+	public abstract String getResourceAsString();
 
 }

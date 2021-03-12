@@ -3,13 +3,13 @@ package ca.ntro.jsweet.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.services.BackendService;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.services.BackendService;
+import ca.ntro.services.Ntro;
 import def.dom.WebSocket;
 
 public class BackendServiceJSweet extends BackendService {

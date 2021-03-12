@@ -33,18 +33,19 @@ import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.values.ObservableUserMap;
-import ca.ntro.core.Ntro;
-import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroInitializationTask;
+import ca.ntro.stores.NetworkStore;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 
@@ -60,9 +61,11 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Constants.LANG = "fr";
 
 		// TODO: in JSweet, get user from Cookies
+		NtroUser currentUser = Ntro.userService().currentUser();
+		
 		User devUser = new Teacher();
-		devUser.setId("alice");
-		devUser.setAuthToken("aliceToken");
+		devUser.setId(currentUser.getId());
+		devUser.setAuthToken(currentUser.getAuthToken());
 		
 		NtroContext<User> context = new NtroContext<>();
 		context.setUser(devUser);
@@ -71,8 +74,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		registerViewLoaders();
 		registerSerializableClasses();
 		
-		MessageFactory.registerCurrentUser(devUser);
-
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings

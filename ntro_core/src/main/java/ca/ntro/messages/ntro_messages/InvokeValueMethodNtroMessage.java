@@ -2,8 +2,8 @@ package ca.ntro.messages.ntro_messages;
 
 import java.util.List;
 
-import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.stores.ValuePath;
 
 public class InvokeValueMethodNtroMessage extends NtroMessage {
 

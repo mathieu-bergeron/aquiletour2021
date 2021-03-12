@@ -1,9 +1,8 @@
-package ca.ntro.core.services;
+package ca.ntro.services;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonDeserialization;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.json.JsonSerialization;

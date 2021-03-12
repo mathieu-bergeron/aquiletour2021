@@ -17,26 +17,27 @@
 
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.initialization.InitializationTask;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
-import ca.ntro.core.services.AppCloser;
-import ca.ntro.core.services.AssertService;
-import ca.ntro.core.services.BackendService;
-import ca.ntro.core.services.JsonService;
-import ca.ntro.core.services.Logger;
-import ca.ntro.core.services.MessageService;
-import ca.ntro.core.services.NtroCollections;
-import ca.ntro.core.services.ResourceLoader;
-import ca.ntro.core.services.ThreadService;
-import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.regex.RegExJdk;
 import ca.ntro.jdk.web.ViewLoaderWebJdk;
+import ca.ntro.services.AppCloser;
+import ca.ntro.services.AssertService;
+import ca.ntro.services.BackendService;
+import ca.ntro.services.InitializationTask;
+import ca.ntro.services.JsonService;
+import ca.ntro.services.Logger;
+import ca.ntro.services.MessageService;
+import ca.ntro.services.NtroCollections;
+import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.ThreadService;
+import ca.ntro.services.UserService;
+import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJdk extends InitializationTask {
@@ -160,6 +161,11 @@ public class InitializationTaskJdk extends InitializationTask {
 	@Override
 	protected JsonService provideJsonService() {
 		return new JsonServiceJdk();
+	}
+
+	@Override
+	protected UserService provideUserService() {
+		return new UserServiceJdk();
 	}
 
 }

@@ -1,9 +1,9 @@
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.JsonService;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import ca.ntro.services.JsonService;
 
 public class JsonServiceJdk extends JsonService {
 

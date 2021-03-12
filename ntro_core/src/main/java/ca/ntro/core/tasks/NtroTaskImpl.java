@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
+import ca.ntro.services.NtroCollections;
 
 public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 

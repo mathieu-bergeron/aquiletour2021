@@ -8,14 +8,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
-import ca.ntro.core.services.NtroCollections;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroCollections;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ValuePath;
 
 public class ModelFactory {
 

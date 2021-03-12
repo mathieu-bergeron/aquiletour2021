@@ -7,12 +7,12 @@ import java.util.Map;
 
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ValuePath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ValuePath;
 
 public class LocalStoreServer extends LocalStoreFiles {
 	

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class MessageReceptors {
 

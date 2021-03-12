@@ -11,9 +11,9 @@ import java.util.List;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.DocumentPath;
 
 public class JsonLoaderFiles extends JsonLoader {
 

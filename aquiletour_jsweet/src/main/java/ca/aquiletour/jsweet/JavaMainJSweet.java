@@ -20,8 +20,8 @@ package ca.aquiletour.jsweet;
 import ca.aquiletour.core.Constants;
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jsweet.NtroJSweet;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
+import ca.ntro.jsweet.services.NtroJSweet;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 
 public class JavaMainJSweet {
@@ -32,7 +32,6 @@ public class JavaMainJSweet {
 		String[] options = new String[] {"--traceLevel","APP"};
 		
 		BackendServiceJSweet backendServiceJSweet = new BackendServiceJSweet(Constants.WS_CONNECTION_STRING);
-		
 		
 		NtroJSweet.defaultInitializationTask(backendServiceJSweet)
 				  .setOptions(options)

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.core.services.NtroCollections;
+import ca.ntro.services.NtroCollections;
 
 
 public class NtroCollectionsJSweet extends NtroCollections {

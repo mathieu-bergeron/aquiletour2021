@@ -15,15 +15,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.jsweet;
+package ca.ntro.jsweet.services;
 
 import ca.ntro.core.Constants;
-import ca.ntro.core.initialization.NtroInitializationTask;
-import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jsweet.initialization.InitializationTaskJSweet;
-import ca.ntro.jsweet.services.BackendServiceJSweet;
-import ca.ntro.jsweet.services.NtroCollectionsJSweet;
+import ca.ntro.jsweet.Globals;
+import ca.ntro.services.NtroCollections;
+import ca.ntro.services.NtroInitializationTask;
 
 public class NtroJSweet {
 

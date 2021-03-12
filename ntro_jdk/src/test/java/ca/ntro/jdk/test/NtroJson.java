@@ -16,7 +16,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.jdk.NtroJdk;
@@ -25,6 +24,7 @@ import ca.ntro.jdk.test.json.ListItem;
 import ca.ntro.jdk.test.json.ListItemA;
 import ca.ntro.jdk.test.json.ListItemB;
 import ca.ntro.jdk.test.json.MyList;
+import ca.ntro.services.Ntro;
 
 @Ignore
 public class NtroJson {

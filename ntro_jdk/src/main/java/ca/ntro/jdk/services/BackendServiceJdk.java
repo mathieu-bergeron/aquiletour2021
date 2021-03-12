@@ -1,8 +1,8 @@
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.BackendService;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.BackendService;
 
 public class BackendServiceJdk extends BackendService {
 

@@ -6,12 +6,12 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
-import ca.ntro.core.Ntro;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.LocalStore;
 
 public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCourseMessage> {
 

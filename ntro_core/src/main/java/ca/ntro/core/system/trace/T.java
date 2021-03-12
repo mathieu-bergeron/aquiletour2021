@@ -18,9 +18,9 @@
 package ca.ntro.core.system.trace;
 
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.services.Logger;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.stack.StackFrame;
+import ca.ntro.services.Logger;
 
 public class T {
 	

@@ -15,20 +15,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.jsweet.initialization;
+package ca.ntro.services;
 
-import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.core.system.stack.StackAnalyzer;
+import ca.ntro.core.system.trace.__T;
 
-public class OnLoadTask extends NtroTaskAsync {
+public class __Ntro {
+	
+	private static StackAnalyzer stackAnalyzer;
+	
+	public static void registerStackAnalyzer(StackAnalyzer stackAnalyzer) {
+		__T.call(__Ntro.class, "registerStackAnalyzer");
 
-
-	@Override
-	public void runTaskAsync() {
-		// XXX: notifyTaskFinished() is called from Javascript
+		__Ntro.stackAnalyzer = stackAnalyzer;
 	}
 
-	@Override
-	public void onFailure(Exception e) {
+	public static StackAnalyzer stackAnalyzer() {
+		__T.call(__Ntro.class, "stackAnalyzer");
+		
+		return stackAnalyzer;
 	}
 
 }

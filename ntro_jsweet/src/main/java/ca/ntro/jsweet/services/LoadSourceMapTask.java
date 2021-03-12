@@ -15,10 +15,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.services;
+package ca.ntro.jsweet.services;
 
-public abstract class AppCloser {
+import ca.ntro.core.tasks.NtroTaskSync;
+import def.es6.Globals;
 
-	public abstract void close();
+public class LoadSourceMapTask extends NtroTaskSync {
+
+	public LoadSourceMapTask(String path) {
+
+		addSubTask(new ResourceLoaderTaskJsweet(path), "Loader");
+
+	}
+
+	@Override
+	protected void runTask() {
+
+		String sourceMap = getSubTask(ResourceLoaderTaskJsweet.class, "Loader").getResourceAsString();
+
+		Globals.installSourceMap(sourceMap);
+	}
+
+	@Override
+	protected void onFailure(Exception e) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

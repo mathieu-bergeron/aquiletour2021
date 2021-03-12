@@ -24,12 +24,12 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.ntro.core.Constants;
-import ca.ntro.core.Ntro;
-import ca.ntro.core.initialization.NtroInitializationTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.server.http.DynamicHandler;
 import ca.ntro.server.http.ResourceHandler;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroInitializationTask;
 
 public class NtroServerMain extends NtroTaskAsync {
 

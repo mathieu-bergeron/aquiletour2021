@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.eclipse.jetty.websocket.api.Session;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.NtroUser;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 
 public class RegisteredSockets {
 	

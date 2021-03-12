@@ -9,12 +9,12 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.ntro.core.Ntro;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.LocalStore;
 
 // from https://github.com/jetty-project/embedded-jetty-websocket-examples
 public class WebSocket extends WebSocketAdapter {

@@ -5,8 +5,8 @@ import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
-import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.NetworkStore;
 
 public class ShowStudentQueueHandler extends ControllerMessageHandler<QueueController, QueueView, ShowStudentQueueMessage> {
 	

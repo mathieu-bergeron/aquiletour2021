@@ -1,4 +1,4 @@
-package ca.ntro.core.services.stores;
+package ca.ntro.stores;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +13,8 @@ import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
-import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.NtroCollections;
 
 public class MemoryStore extends ModelStore {
 	

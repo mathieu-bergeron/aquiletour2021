@@ -1,6 +1,6 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.services.MessageService;
+import ca.ntro.services.MessageService;
 
 public class MessageServiceJSweet extends MessageService {
 

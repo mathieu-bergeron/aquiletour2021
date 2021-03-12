@@ -15,13 +15,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.services;
+package ca.ntro.services;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;

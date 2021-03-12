@@ -1,11 +1,11 @@
 package ca.ntro.jsweet.json;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.DocumentPath;
 import def.es6.Globals;
 import def.js.Promise;
 

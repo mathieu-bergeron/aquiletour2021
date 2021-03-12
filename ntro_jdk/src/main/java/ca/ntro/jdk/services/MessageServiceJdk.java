@@ -1,6 +1,6 @@
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.MessageService;
+import ca.ntro.services.MessageService;
 
 public class MessageServiceJdk extends MessageService {
 

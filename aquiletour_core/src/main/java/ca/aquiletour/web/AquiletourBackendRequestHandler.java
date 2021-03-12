@@ -17,12 +17,12 @@ import ca.aquiletour.core.pages.users.messages.AddUserMessage;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserFromCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
-import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.ResourceLoaderTask;
 
 public class AquiletourBackendRequestHandler {
 	

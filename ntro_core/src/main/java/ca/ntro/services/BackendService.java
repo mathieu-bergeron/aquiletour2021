@@ -1,4 +1,4 @@
-package ca.ntro.core.services;
+package ca.ntro.services;
 
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;

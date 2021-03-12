@@ -4,10 +4,10 @@ package ca.aquiletour.server.backend.queue;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.stores.LocalStore;
 
 public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmentMessage> {
 

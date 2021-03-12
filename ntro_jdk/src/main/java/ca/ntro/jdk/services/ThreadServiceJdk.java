@@ -3,10 +3,10 @@ package ca.ntro.jdk.services;
 import java.util.HashSet;
 import java.util.Set;
 
-import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jdk.thread.NtroThreadJdk;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.ThreadService;
 import ca.ntro.threads.NtroThread;
 
 public class ThreadServiceJdk extends ThreadService {

@@ -1,12 +1,12 @@
-package ca.ntro.core.services.stores;
+package ca.ntro.stores;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public abstract class LocalStore {
 

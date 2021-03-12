@@ -2,7 +2,7 @@ package ca.ntro.test.json;
 
 import org.junit.Test;
 
-import ca.ntro.core.Ntro;
+import ca.ntro.services.Ntro;
 
 import java.util.ArrayList;
 import java.util.HashMap;

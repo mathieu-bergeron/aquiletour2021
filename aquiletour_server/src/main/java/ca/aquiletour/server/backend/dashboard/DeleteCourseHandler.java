@@ -11,13 +11,13 @@ import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.UsersModel;
-import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.ControllerMessageHandler;
-import ca.ntro.core.services.stores.LocalStore;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.LocalStore;
 
 public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessage> {
 

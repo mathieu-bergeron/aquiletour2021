@@ -1,6 +1,5 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.assertions.MustNot;
@@ -12,6 +11,7 @@ import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;

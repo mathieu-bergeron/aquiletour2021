@@ -15,32 +15,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.jsweet.initialization;
+package ca.ntro.jsweet.services;
 
-import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.jsweet.services.ResourceLoaderTaskJsweet;
-import def.es6.Globals;
+import ca.ntro.core.tasks.NtroTaskAsync;
 
-public class LoadSourceMapTask extends NtroTaskSync {
+public class OnLoadTask extends NtroTaskAsync {
 
-	public LoadSourceMapTask(String path) {
 
-		addSubTask(new ResourceLoaderTaskJsweet(path), "Loader");
-
+	@Override
+	public void runTaskAsync() {
+		// XXX: notifyTaskFinished() is called from Javascript
 	}
 
 	@Override
-	protected void runTask() {
-
-		String sourceMap = getSubTask(ResourceLoaderTaskJsweet.class, "Loader").getResourceAsString();
-
-		Globals.installSourceMap(sourceMap);
-	}
-
-	@Override
-	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-
+	public void onFailure(Exception e) {
 	}
 
 }

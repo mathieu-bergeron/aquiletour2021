@@ -1,7 +1,7 @@
 package ca.ntro.jsweet.test;
 
-import ca.ntro.jsweet.NtroJSweet;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
+import ca.ntro.jsweet.services.NtroJSweet;
 
 public class JavaMainTest {
 	

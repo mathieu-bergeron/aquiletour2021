@@ -35,9 +35,9 @@ import ca.aquiletour.web.pages.queues.QueuesViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
 import ca.aquiletour.web.pages.users.UserViewWeb;
 import ca.aquiletour.web.pages.users.UsersViewWeb;
-import ca.ntro.core.Ntro;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class ViewLoaderRegistrationWeb {
 	

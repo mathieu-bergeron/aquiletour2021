@@ -17,9 +17,9 @@
 
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.Logger;
-import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.services.Logger;
+import ca.ntro.services.ValueFormatter;
 
 public class LoggerJdk extends Logger {
 

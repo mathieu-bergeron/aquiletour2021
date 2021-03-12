@@ -1,10 +1,10 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 
 public abstract class NtroController<AC extends NtroAbstractController> extends NtroAbstractController {
 

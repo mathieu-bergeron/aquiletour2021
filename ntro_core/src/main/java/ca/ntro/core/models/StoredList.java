@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ntro.core.models.listeners.ListObserver;
-import ca.ntro.core.services.NtroCollections;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.NtroCollections;
 
 @SuppressWarnings("serial")   
 public class StoredList<I extends Object> extends StoredProperty<List<I>> {          //implements NtroModelValue {

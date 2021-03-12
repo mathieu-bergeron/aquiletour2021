@@ -1,7 +1,7 @@
 package ca.ntro.assertions;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.services.Ntro;
 
 public class IsInstanceOfExpression extends SimpleAssertExpression {
 	

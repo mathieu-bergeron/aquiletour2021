@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ca.ntro.core.services.NtroCollections;
+import ca.ntro.services.NtroCollections;
 
 public class NtroCollectionsJdk extends NtroCollections {
 

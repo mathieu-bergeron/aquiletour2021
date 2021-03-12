@@ -3,11 +3,11 @@ package ca.ntro.jsweet.services;
 import java.util.HashSet;
 import java.util.Set;
 
-import ca.ntro.core.services.ThreadService;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jsweet.thread.NtroThreadJSweet;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.ThreadService;
 import ca.ntro.threads.NtroThread;
 
 public class ThreadServiceJSweet extends ThreadService {

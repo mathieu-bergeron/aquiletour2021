@@ -17,7 +17,7 @@
 
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.services.ValueFormatter;
+import ca.ntro.services.ValueFormatter;
 
 public class ValueFormatterJSweet extends ValueFormatter {
 

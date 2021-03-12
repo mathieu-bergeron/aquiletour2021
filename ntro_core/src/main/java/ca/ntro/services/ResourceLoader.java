@@ -15,25 +15,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core.initialization;
+package ca.ntro.services;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import ca.ntro.core.tasks.ContainerTask;
-
-public class NtroInitializationTask extends ContainerTask {
+public abstract class ResourceLoader {
 	
-	private Map<String, String> options = new HashMap<>();
-	
-	public String getOption(String key) {
-		return options.get(key);
-	}
-	
-	public NtroInitializationTask setOptions(String[] options) {
+	public abstract ResourceLoaderTask loadResourceTask(String resourcePath);
 
-		// TODO: parse options!
-		
-		return this;
-	}
 }

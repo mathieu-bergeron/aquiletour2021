@@ -1,18 +1,11 @@
 package ca.ntro.messages;
 
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class MessageFactory {
-
-	private static NtroUser currentUser;
-
-	public static void registerCurrentUser(NtroUser currentUser) {
-		MessageFactory.currentUser = currentUser;
-	}
 
 	public static <MSG extends NtroMessage> MSG createMessage(Class<MSG> messageClass) {
 		T.call(MessageFactory.class);
@@ -20,7 +13,7 @@ public class MessageFactory {
 		MSG message = Factory.newInstance(messageClass);
 		
 		if(message instanceof NtroUserMessage) {
-			((NtroUserMessage) message).setUser(currentUser);
+			((NtroUserMessage) message).setUser(Ntro.userService().currentUser());
 		}
 
 		return message;

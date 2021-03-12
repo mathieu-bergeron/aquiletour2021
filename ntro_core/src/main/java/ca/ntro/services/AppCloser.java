@@ -15,25 +15,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with aquiletour.  If not, see <https://www.gnu.org/licenses/>
 
-package ca.ntro.core;
+package ca.ntro.services;
 
-import ca.ntro.core.system.stack.StackAnalyzer;
-import ca.ntro.core.system.trace.__T;
+public abstract class AppCloser {
 
-public class __Ntro {
-	
-	private static StackAnalyzer stackAnalyzer;
-	
-	public static void registerStackAnalyzer(StackAnalyzer stackAnalyzer) {
-		__T.call(__Ntro.class, "registerStackAnalyzer");
-
-		__Ntro.stackAnalyzer = stackAnalyzer;
-	}
-
-	public static StackAnalyzer stackAnalyzer() {
-		__T.call(__Ntro.class, "stackAnalyzer");
-		
-		return stackAnalyzer;
-	}
+	public abstract void close();
 
 }
