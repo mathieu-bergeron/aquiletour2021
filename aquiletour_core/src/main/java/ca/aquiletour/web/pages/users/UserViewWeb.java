@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.users.SuperUser;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.users.UserView;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -14,7 +15,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class UserViewWeb extends NtroViewWeb implements UserView {
 
 	@Override
-	public void initialize() {
+	public void initialize(NtroContext<?> context) {
 		// TODO Auto-generated method stub
 		
 	}

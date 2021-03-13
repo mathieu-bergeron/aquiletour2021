@@ -12,11 +12,11 @@ public abstract class DashboardController extends NtroController<RootController>
 	protected void onCreate() {
 		T.call(this);
 
-		setViewLoader(viewClass(), currentContext().getLang());
+		setViewLoader(viewClass(), currentContext().lang());
 		
 		setModelLoader(NetworkStore.getLoader(DashboardModel.class, 
-				                              currentContext().getUser().getAuthToken(),
-				                              currentContext().getUser().getId()));
+				                              currentContext().user().getAuthToken(),
+				                              currentContext().user().getId()));
 
 		installParentViewMessageHandler();
 		

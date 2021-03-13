@@ -29,7 +29,7 @@ public class AquiletourRequestHandler {
 		
 		if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
+			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
 		}else if(path.startsWith("billetteries")) {
 			
@@ -37,7 +37,7 @@ public class AquiletourRequestHandler {
 
 		}else if(path.startsWith("billetterie")) {
 			
-			sendQueueMessages(path.subPath(1), parameters, context.getUser());
+			sendQueueMessages(path.subPath(1), parameters, context.user());
 			
 		}else if(path.startsWith("usagers")) {
 			

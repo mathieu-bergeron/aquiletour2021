@@ -15,7 +15,7 @@ public abstract class QueueController extends NtroController<RootController> {
 		// empty model loader until the ShowQueue message
 		setModelLoader(new EmptyModelLoader());
 
-		setViewLoader(viewClass(), currentContext().getLang());
+		setViewLoader(viewClass(), currentContext().lang());
 
 		installParentViewMessageHandler();
 
@@ -32,8 +32,8 @@ public abstract class QueueController extends NtroController<RootController> {
 //		 TODO: we can automatize this!
 //				      simply reset the tasks with the new lang
 				if(!previousContext.hasSameLang(currentContext())) {
-					setViewLoader(viewClass(), currentContext().getLang());
-					addSubViewLoader(AppointmentView.class, currentContext().getLang());
+					setViewLoader(viewClass(), currentContext().lang());
+					addSubViewLoader(AppointmentView.class, currentContext().lang());
 				}
 		
 	}

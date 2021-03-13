@@ -21,13 +21,19 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 
 public abstract class ViewLoader extends NtroTaskAsync implements Cloneable {
+	
+	private NtroContext<?> context;
+	
+	public void registerContext(NtroContext<?> context) {
+		this.context = context;
+	}
 
 	public NtroView createView(){
 		T.call(this);
 		
 		NtroView view = createViewImpl();
 		
-		view.initialize();
+		view.initialize(context);
 		
 		return view;
 	}

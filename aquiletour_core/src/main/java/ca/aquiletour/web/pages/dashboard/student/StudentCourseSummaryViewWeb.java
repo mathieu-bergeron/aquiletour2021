@@ -3,6 +3,7 @@ package ca.aquiletour.web.pages.dashboard.student;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -11,8 +12,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements StudentCourseSummaryView {
 
 	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
+	public void initialize(NtroContext<?> context) {
 		
 	}
 

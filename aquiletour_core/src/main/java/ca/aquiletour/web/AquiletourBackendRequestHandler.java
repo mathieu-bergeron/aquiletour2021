@@ -32,7 +32,7 @@ public class AquiletourBackendRequestHandler {
 		
 		if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters, context.getUser());
+			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
 		}else if(path.startsWith("csv")) {
 			if(parameters.containsKey("queueId")) {// /csv?queueId=3C6
@@ -41,7 +41,7 @@ public class AquiletourBackendRequestHandler {
 			
 				AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
 				addStudentCsvMessage.setQueueId(queueId);
-				addStudentCsvMessage.setUser(context.getUser());
+				addStudentCsvMessage.setUser(context.user());
 				
 				ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");
 				loadCsv.execute();
@@ -60,7 +60,7 @@ public class AquiletourBackendRequestHandler {
 
 		}else if(path.startsWith("billetterie")) {
 			
-			sendQueueMessages(path.subPath(1), parameters , context.getUser());
+			sendQueueMessages(path.subPath(1), parameters , context.user());
 			
 		}else if(path.startsWith("usagers")) {
 			

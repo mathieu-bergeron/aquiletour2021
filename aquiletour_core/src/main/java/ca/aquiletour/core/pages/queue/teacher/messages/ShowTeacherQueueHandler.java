@@ -18,7 +18,7 @@ public class ShowTeacherQueueHandler extends ControllerMessageHandler<QueueContr
 		
 		String courseId = message.getCourseId();
 
-		String authToken = currentController.currentContext().getUser().getAuthToken();
+		String authToken = currentController.currentContext().user().getAuthToken();
 		
 		currentController.setModelLoader(NetworkStore.getLoader(QueueModel.class, authToken, courseId));
 		

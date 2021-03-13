@@ -7,16 +7,16 @@ public class NtroContext<U extends NtroUser>{
 	private String lang;
 	private U user;
 	
-	public String getLang() {
+	public String lang() {
 		return lang;
 	}
-	public void setLang(String lang) {
+	public void registerLang(String lang) {
 		this.lang = lang;
 	}
-	public U getUser() {
+	public U user() {
 		return user;
 	}
-	public void setUser(U user) {
+	public void registerUser(U user) {
 		this.user = user;
 	}
 

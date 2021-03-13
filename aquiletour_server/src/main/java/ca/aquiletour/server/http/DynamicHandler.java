@@ -124,7 +124,7 @@ public class DynamicHandler extends AbstractHandler {
 		System.err.println("");
 		
 		NtroContext<User> context = new NtroContext<>();
-		context.setLang(Constants.LANG); // TODO
+		context.registerLang(Constants.LANG); // TODO
 
 		authenticateUsersAddCookiesSetContext(context, baseRequest, response);
 
@@ -200,9 +200,13 @@ public class DynamicHandler extends AbstractHandler {
 
 			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
 			user = Ntro.jsonService().fromString(User.class, userString);
+
+		}else {
+
+			user = new AnonUser();
 		}
 
-		context.setUser(user);
+		context.registerUser(user);
 	}
 
 

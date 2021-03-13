@@ -1,11 +1,10 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
@@ -15,10 +14,9 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
-
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initialize(NtroContext<?> context) {
+		super.initialize(context);
 		T.call(this);
 
 		HtmlElement addCourseButton = getRootElement().find("#add-course-submit-button").get(0);

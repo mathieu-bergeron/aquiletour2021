@@ -1,6 +1,9 @@
 package ca.aquiletour.web.pages.root;
 
+import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -9,6 +12,7 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -21,7 +25,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
-	public void initialize() {
+	public void initialize(NtroContext<?> context) {
 		T.call(this);
 
 		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
@@ -35,12 +39,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			public void onEvent() {
 				T.call(this);
 				
-				// FIXME: must check current user to send correct message
-				ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
-				Ntro.messageService().sendMessage(showDashboardMessage);
+				if(context.user() instanceof Teacher) {
+					ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
+					Ntro.messageService().sendMessage(showDashboardMessage);
+				}else{
+					ShowStudentDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowStudentDashboardMessage.class);
+					Ntro.messageService().sendMessage(showDashboardMessage);
+				}
 			}
 		});
-		
+
 		usersLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {

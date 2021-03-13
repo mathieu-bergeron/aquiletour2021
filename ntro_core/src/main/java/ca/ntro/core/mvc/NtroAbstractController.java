@@ -127,9 +127,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	protected void setViewLoader(ViewLoader viewLoader) {
 		T.call(this);
 
-		// FIXME: it should be ok to reuse a viewLoader at DONE
-		//        it simply means the files are already loaded
-		//viewLoader.resetTask();
+		viewLoader.registerContext(context);
 		
 		ViewLoader currentViewLoader = initTasks.getSubTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
 

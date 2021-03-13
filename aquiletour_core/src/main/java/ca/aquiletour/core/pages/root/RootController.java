@@ -37,7 +37,7 @@ public class RootController extends NtroRootController {
 	protected void onCreate() {
 		T.call(this);
 		
-		setViewLoader(RootView.class, currentContext().getLang());
+		setViewLoader(RootView.class, currentContext().lang());
 
 		addSubController(StudentDashboardController.class, "mescours");
 		addSubController(TeacherDashboardController.class, "mescours");

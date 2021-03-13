@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.queues;
 
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -10,8 +11,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView {
 
 	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
+	public void initialize(NtroContext<?> context) {
 		
 	}
 

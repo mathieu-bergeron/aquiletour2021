@@ -18,6 +18,12 @@ public class UserServiceJSweet extends UserService {
 			String userString = decodeURI(urlEncodedUserString);
 			user = Ntro.jsonService().fromString(NtroUser.class, userString);
 		}
+		
+		if(user == null) {
+			user = new NtroUser();
+			user.setId("__anon");
+			user.setAuthToken("__anonToken");
+		}
 
 		return user;
 	}
