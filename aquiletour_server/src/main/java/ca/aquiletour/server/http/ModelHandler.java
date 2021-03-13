@@ -107,6 +107,9 @@ public class ModelHandler extends AbstractHandler {
         
         NtroModel model = modelLoader.getModel();
         
+        // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
+        // NOTE:  we do not need to connect that model to the store
+        //        only models in the backend
         Ntro.modelStore().registerThatUserObservesModel(user, documentPath, model);
 
         response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
