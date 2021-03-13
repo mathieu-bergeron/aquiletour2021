@@ -94,15 +94,16 @@ public class ModelHandler extends AbstractHandler {
         }
     }
 
+	@SuppressWarnings("unchecked")
 	private void handleGetModelMessage(Request baseRequest, HttpServletResponse response,
 			GetModelNtroMessage getModelNtroMessage) throws IOException {
 
 		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
-		Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
+		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
 		
-        ModelLoader modelLoader = Ntro.modelStore().getLoader(modelClazz, user.getAuthToken(), documentPath.getDocumentId());
+        ModelLoader modelLoader = Ntro.modelStore().getLoader(modelClass, user.getAuthToken(), documentPath.getDocumentId());
         modelLoader.execute();
         
         NtroModel model = modelLoader.getModel();
@@ -111,6 +112,8 @@ public class ModelHandler extends AbstractHandler {
         // NOTE:  we do not need to connect that model to the store
         //        only models in the backend
         Ntro.modelStore().registerThatUserObservesModel(user, documentPath, model);
+        // ??
+        // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 
         response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
         response.flushBuffer();
