@@ -17,7 +17,6 @@
 
 package ca.aquiletour.server.http;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
