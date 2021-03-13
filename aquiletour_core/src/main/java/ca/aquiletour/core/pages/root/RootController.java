@@ -58,7 +58,7 @@ public class RootController extends NtroRootController {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 		
 	}

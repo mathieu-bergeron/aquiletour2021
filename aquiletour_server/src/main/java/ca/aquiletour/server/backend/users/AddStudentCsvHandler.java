@@ -17,7 +17,6 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMessage> {
 
@@ -58,7 +57,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 					usersModel.addUser(newUser);
 					usersToAdd.add(newUser);
-					LocalStore.save(usersModel);
+					modelStore.save(usersModel);
 				}		
 			}
 			Ntro.threadService().executeLater(new NtroTaskSync() {
@@ -74,13 +73,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 						newCourse.setTitle(queueId);
 						newCourse.setCourseId(queueId);
 						dashboardModel.addCourse(newCourse);
-						LocalStore.save(dashboardModel);
+						modelStore.save(dashboardModel);
 						
 						QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 								newUser.getAuthToken(),
 								queueId);
 						queueModel.addStudentToClass(newUser.getName());
-						LocalStore.save(queueModel);
+						modelStore.save(queueModel);
 					}
 					
 				}

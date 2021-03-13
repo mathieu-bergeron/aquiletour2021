@@ -4,7 +4,6 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.stores.NetworkStore;
 
 public abstract class DashboardController extends NtroController<RootController> {
 
@@ -14,9 +13,9 @@ public abstract class DashboardController extends NtroController<RootController>
 
 		setViewLoader(viewClass(), currentContext().lang());
 		
-		setModelLoader(NetworkStore.getLoader(DashboardModel.class, 
-				                              currentContext().user().getAuthToken(),
-				                              currentContext().user().getId()));
+		setModelLoader(DashboardModel.class, 
+				       currentContext().user().getAuthToken(),
+				       currentContext().user().getId());
 
 		installParentViewMessageHandler();
 		
@@ -29,7 +28,7 @@ public abstract class DashboardController extends NtroController<RootController>
 	
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 		
 	}

@@ -13,7 +13,6 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class AddUserHandler extends BackendMessageHandler<AddUserMessage> {
 
@@ -29,7 +28,7 @@ public class AddUserHandler extends BackendMessageHandler<AddUserMessage> {
 		
 		if(dashboardModel != null) {		
 			
-			LocalStore.save(dashboardModel);
+			modelStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -37,7 +36,7 @@ public class AddUserHandler extends BackendMessageHandler<AddUserMessage> {
 					UsersModel usersModel = modelStore.getModel(UsersModel.class, "admin", "allUsers");
 					usersModel.addUser(user);
 					
-					LocalStore.save(usersModel);
+					modelStore.save(usersModel);
 				}
 
 				@Override

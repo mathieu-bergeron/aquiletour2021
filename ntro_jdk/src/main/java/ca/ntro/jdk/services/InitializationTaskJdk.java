@@ -19,7 +19,6 @@ package ca.ntro.jdk.services;
 
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
@@ -33,7 +32,8 @@ import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.ModelStore;
+import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
@@ -79,13 +79,6 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected NtroCollections provideNtroCollections() {
-		T.call(this);
-
-		return new NtroCollectionsJdk();
-	}
-
-	@Override
 	protected Logger provideLogger() {
 		__T.call(InitializationTaskJdk.class, "provideLogger");
 
@@ -111,25 +104,6 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideJsonParser");
 
 		return new JsonParserJdk();
-	}
-
-	@Override
-	protected ModelStore provideLocalStore() {
-		__T.call(InitializationTaskJdk.class, "provideLocalStore");
-		
-		//return new LocalStoreNitrite();
-		
-		// FIXME: for tests we cannot use Nitrite as it does not support multiple connexions
-		//        (we need one for the server and one for tests)
-		return new LocalStoreFiles();
-	}
-
-	@Override
-	protected ModelStore provideNetworkStore() {
-		__T.call(InitializationTaskJdk.class, "provideNetworkStore");
-
-		// FIXME: only for the server!
-		return new LocalStoreFiles();
 	}
 
 	@Override
@@ -166,6 +140,16 @@ public class InitializationTaskJdk extends InitializationTask {
 	@Override
 	protected UserService provideUserService() {
 		return new UserServiceJdk();
+	}
+
+	@Override
+	protected Class<? extends ModelStore> provideModelStoreClass() {
+		return LocalStoreFiles.class;
+	}
+
+	@Override
+	protected CollectionsService provideCollectionsService() {
+		return new CollectionsServiceJdk();
 	}
 
 }

@@ -23,14 +23,18 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 
 	public void triggerHandlerOnce() {
 		/* FIXME: as implemented below
-		 * I think there is an issue with two message
+		 * I think there is an issue with three
 		 * handlers one after the other
 		 * 
-		 * if A --> B --> C
+		 * if A -->    B    -->    C     --> D
+		 *    WAIT    WAIT         DONE
 		 * 
-		 * if B is ready before A
-		 * do we incorrectly reset it and
-		 * loose the fact that it was ready??
+		 * if A is triggered
+		 * we block on B
+		 * then reset B,C,D
+		 * 
+		 * and we loose the fact that
+		 * C was DONE before A got triggered
 		 * 
 		 */
 

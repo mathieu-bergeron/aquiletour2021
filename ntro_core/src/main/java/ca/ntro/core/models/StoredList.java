@@ -5,7 +5,7 @@ import java.util.List;
 
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.Ntro;
 
 @SuppressWarnings("serial")   
 public class StoredList<I extends Object> extends StoredProperty<List<I>> {          //implements NtroModelValue {
@@ -16,7 +16,7 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 	public StoredList() {
 		T.call(this);
 
-		setValue(NtroCollections.synchronizedList(new ArrayList<>()));
+		setValue(Ntro.collections().synchronizedList(new ArrayList<>()));
 	}
 	
 	public int size() {

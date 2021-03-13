@@ -13,7 +13,6 @@ import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.stores.LocalStore;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;
@@ -93,22 +92,31 @@ public class ModelHandler extends AbstractHandler {
             response.setStatus(HttpStatus.METHOD_NOT_ALLOWED_405);
             baseRequest.setHandled(true);
         }
+
+        // XXX: prepare for next request
+        Ntro.reset();
     }
 
+	@SuppressWarnings("unchecked")
 	private void handleGetModelMessage(Request baseRequest, HttpServletResponse response,
 			GetModelNtroMessage getModelNtroMessage) throws IOException {
 
 		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
-		Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
+		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
 		
-        ModelLoader modelLoader = LocalStore.getLoader(modelClazz, user.getAuthToken(), documentPath.getDocumentId());
+        ModelLoader modelLoader = Ntro.modelStore().getLoader(modelClass, user.getAuthToken(), documentPath.getDocumentId());
         modelLoader.execute();
         
         NtroModel model = modelLoader.getModel();
         
-        LocalStore.registerThatUserObservesModel(user, documentPath, model);
+        // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
+        // NOTE:  we do not need to connect that model to the store
+        //        only models in the backend
+        Ntro.modelStore().registerThatUserObservesModel(user, documentPath, model);
+        // ??
+        // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 
         response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
         response.flushBuffer();
@@ -130,10 +138,9 @@ public class ModelHandler extends AbstractHandler {
 			SetModelNtroMessage setModelNtroMessage) throws IOException {
 
 		DocumentPath documentPath = setModelNtroMessage.getDocumentPath();
-		NtroUser user = setModelNtroMessage.getUser();
 		NtroModel model = setModelNtroMessage.getModel();
 
-        LocalStore.saveJsonString(documentPath, Ntro.jsonService().toString(model));
+        Ntro.modelStore().saveJsonString(documentPath, Ntro.jsonService().toString(model));
 
         response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);

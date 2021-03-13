@@ -26,7 +26,7 @@ public abstract class QueueController extends NtroController<RootController> {
 	
 	
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 		
 //		 TODO: we can automatize this!
@@ -43,5 +43,6 @@ public abstract class QueueController extends NtroController<RootController> {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

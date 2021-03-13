@@ -23,7 +23,6 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.jsweet.introspection.IntrospectorJSweet;
@@ -35,7 +34,8 @@ import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.ModelStore;
+import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
@@ -101,15 +101,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 		return new ValueFormatterJSweet();
 	}
 
-
-	@Override
-	protected NtroCollections provideNtroCollections() {
-		__T.call(this, "provideNtroCollections");
-
-		return new NtroCollectionsJSweet();
-	}
-
-
 	@Override
 	protected ResourceLoader provideResourceLoader() {
 		__T.call(this, "provideResourceLoader");
@@ -132,23 +123,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 		
 		return new JsonParserJSweet();
 	}
-
-
-	@Override
-	protected ModelStore provideLocalStore() {
-		__T.call(this, "provideLocalStore");
-
-		return new LocalStoreJSweet();
-	}
-
-
-	@Override
-	protected ModelStore provideNetworkStore() {
-		__T.call(this, "provideNetworkStore");
-
-		return new NetworkStoreJSweet();
-	}
-
 
 	@Override
 	protected ThreadService provideThreadService() {
@@ -188,5 +162,17 @@ public class InitializationTaskJSweet extends InitializationTask {
 	@Override
 	protected UserService provideUserService() {
 		return new UserServiceJSweet();
+	}
+
+
+	@Override
+	protected Class<? extends ModelStore> provideModelStoreClass() {
+		return NetworkStoreJSweet.class;
+	}
+
+
+	@Override
+	protected CollectionsService provideCollectionsService() {
+		return new CollectionsServiceJSweet();
 	}
 }

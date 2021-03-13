@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.CollectionsService;
 
 
-public class NtroCollectionsJSweet extends NtroCollections {
+public class CollectionsServiceJSweet extends CollectionsService {
 
 	@Override
-	public <I> List<I> synchronizedListImpl(List<I> elements) {
+	public <I> List<I> synchronizedList(List<I> elements) {
 		// XXX: no need for a synchronized list in single-threaded Javascript
 		List<I> list = new ArrayList<>();
 		for(I item : elements) {
@@ -40,7 +40,7 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	public <K, V> Map<K, V> concurrentMapImpl(Map<K, V> elements) {
+	public <K, V> Map<K, V> concurrentMap(Map<K, V> elements) {
 		// XXX: no need for a concurrent map in single-threaded Javascript
 		Map<K,V> map = new HashMap<>();
 		for(Map.Entry<K,V> entry : elements.entrySet()) {
@@ -50,7 +50,7 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	protected <V> Set<V> concurrentSetImpl(Set<V> elements) {
+	public <V> Set<V> concurrentSet(Set<V> elements) {
 		// XXX: no need for a concurrent set in single-threaded Javascript
 		Set<V> set = new HashSet<>();
 		for(V value : elements) {
@@ -60,7 +60,7 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	protected boolean containsEqualsImpl(Set<?> set, Object target) {
+	public boolean containsEquals(Set<?> set, Object target) {
 		boolean ifSetContains = false;
 
 		for(Object candidate : set) {
@@ -74,17 +74,17 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	protected boolean containsKeyExactImpl(Map<?, ?> map, Object key) {
+	public boolean containsKeyExact(Map<?, ?> map, Object key) {
 		return map.containsKey(key);
 	}
 
 	@Override
-	protected <V> V getExactKeyImpl(Map<?, V> map, Object key) {
+	public <V> V getExactKey(Map<?, V> map, Object key) {
 		return map.get(key);
 	}
 
 	@Override
-	protected boolean listEqualsImpl(List<?> list1, List<?> list2) {
+	public boolean listEquals(List<?> list1, List<?> list2) {
 		if(list1.size() != list2.size()) return false;
 		
 		boolean ifEquals = true;
@@ -93,9 +93,9 @@ public class NtroCollectionsJSweet extends NtroCollections {
 			Object item1 = list1.get(i);
 			Object item2 = list1.get(i);
 			if(item1 instanceof List) {
-				ifEquals = listEqualsImpl((List<?>)item1, (List<?>)item2);
+				ifEquals = listEquals((List<?>)item1, (List<?>)item2);
 			}else if(item1 instanceof Map) {
-				ifEquals = mapEqualsImpl((Map<?,?>)item1, (Map<?,?>)item2);
+				ifEquals = mapEquals((Map<?,?>)item1, (Map<?,?>)item2);
 			}else if(item1 == null){
 				ifEquals = (item2 == null);
 			}else {
@@ -107,7 +107,7 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	protected boolean mapEqualsImpl(Map<?, ?> map1, Map<?, ?> map2) {
+	public boolean mapEquals(Map<?, ?> map1, Map<?, ?> map2) {
 		if(map1.size() != map2.size()) return false;
 
 		boolean ifEquals = true;
@@ -116,9 +116,9 @@ public class NtroCollectionsJSweet extends NtroCollections {
 			Object item1 = entry.getValue();
 			Object item2 = map1.get(entry.getKey());
 			if(item1 instanceof List) {
-				ifEquals = listEqualsImpl((List<?>)item1, (List<?>)item2);
+				ifEquals = listEquals((List<?>)item1, (List<?>)item2);
 			}else if(item1 instanceof Map) {
-				ifEquals = mapEqualsImpl((Map<?,?>)item1, (Map<?,?>)item2);
+				ifEquals = mapEquals((Map<?,?>)item1, (Map<?,?>)item2);
 			}else if(item1 == null){
 				ifEquals = (item2 == null);
 			}else {
@@ -130,7 +130,7 @@ public class NtroCollectionsJSweet extends NtroCollections {
 	}
 
 	@Override
-	protected boolean setContainsExactImpl(Set<?> set, Object target) {
+	public boolean setContainsExact(Set<?> set, Object target) {
 		return set.contains(target);
 	}
 

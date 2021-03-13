@@ -12,7 +12,6 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class DeleteUserFromCourseHandler extends BackendMessageHandler<DeleteUserFromCourseMessage> {
 
@@ -30,7 +29,7 @@ public class DeleteUserFromCourseHandler extends BackendMessageHandler<DeleteUse
 		if(dashboardModel != null) {
 			
 			dashboardModel.deleteCourseById(courseId);;
-			LocalStore.save(dashboardModel);
+			modelStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -41,7 +40,7 @@ public class DeleteUserFromCourseHandler extends BackendMessageHandler<DeleteUse
 					queueModel.removeStudentFromClass(userId);
 					queueModel.removeAllAppointmentsOfStudent(userId);
 					
-					LocalStore.save(queueModel);
+					modelStore.save(queueModel);
 				}
 
 				@Override

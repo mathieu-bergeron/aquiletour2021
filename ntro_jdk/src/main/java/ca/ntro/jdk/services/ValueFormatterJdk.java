@@ -23,7 +23,6 @@ import java.math.BigInteger;
 import java.util.Formatter;
 import java.util.List;
 
-import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.ValueFormatter;
@@ -31,7 +30,7 @@ import ca.ntro.services.ValueFormatter;
 public class ValueFormatterJdk extends ValueFormatter {
 
 	@Override
-	public void formatImpl(StringBuilder builder, boolean isHtml, Object... values) {
+	protected void formatImpl(StringBuilder builder, boolean isHtml, Object... values) {
 		T.call(this);
 
 		if(values.length > 0) {

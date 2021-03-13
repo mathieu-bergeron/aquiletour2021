@@ -19,7 +19,6 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQueueMessage> {
 
@@ -53,7 +52,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 			                    studentId);
 						if(dashboardModel != null) {
 							dashboardModel.setTeacherAvailability(true, courseId);
-							LocalStore.save(dashboardModel);
+							modelStore.save(dashboardModel);
 						}
 					}
 					QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
@@ -61,7 +60,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 					
 					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 					openQueuesModel.addQueueToList(queue);
-					LocalStore.save(openQueuesModel);
+					modelStore.save(openQueuesModel);
 				}
 
 				@Override

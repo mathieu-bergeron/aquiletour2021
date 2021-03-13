@@ -2,6 +2,7 @@ package ca.ntro.core.mvc;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
@@ -25,11 +26,11 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
 	private NtroTask initTasks = new ContainerTask();
-	private NtroContext context;
+	private NtroContext<?> context;
 	private Path path;
 	
 	protected abstract void onCreate();
-	protected abstract void onChangeContext(NtroContext previousContext);
+	protected abstract void onChangeContext(NtroContext<?> previousContext);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -39,19 +40,8 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		initTasks.setTaskId("InitTasks");
 		
 		mainTask.addSubTask(initTasks);
-
-		//addDefaultTasks();
 	}
 
-	private void addDefaultTasks() {
-		T.call(this);
-		
-		// XXX: should add EmptyModelLoder
-		//      only when needed
-
-		//setModelLoader(new EmptyModelLoader());
-		setViewLoader(new EmptyViewLoader());
-	}
 	@Override
 	public NtroTask getTask() {
 		T.call(this);
@@ -262,6 +252,12 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		NtroView view = initTasks.getSubTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
 
 		return view;
+	}
+
+	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, String modelId) {
+		T.call(this);
+
+		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelId));
 	}
 
 }

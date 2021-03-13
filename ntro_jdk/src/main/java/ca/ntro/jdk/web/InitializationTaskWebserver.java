@@ -1,11 +1,11 @@
 package ca.ntro.jdk.web;
 
 import ca.ntro.core.introspection.Factory;
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.InitializationTaskJdk;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.ModelStore;
 
 public class InitializationTaskWebserver extends InitializationTaskJdk {
 	
@@ -15,13 +15,6 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 	public InitializationTaskWebserver(Class<? extends BackendServiceServer> backendServiceClass, ModelStore localStore) {
 		this.backendServiceClass = backendServiceClass;
 		this.localStore = localStore;
-	}
-
-	@Override
-	protected ModelStore provideLocalStore() {
-		__T.call(InitializationTaskJdk.class, "provideLocalStore");
-		
-		return localStore;
 	}
 
 	@Override

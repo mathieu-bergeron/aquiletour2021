@@ -6,7 +6,6 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.stores.NetworkStore;
 
 public class QueuesController extends NtroController<RootController> {
 
@@ -16,7 +15,7 @@ public class QueuesController extends NtroController<RootController> {
 
 		setViewLoader(QueuesView.class, "fr");
 		
-		setModelLoader(NetworkStore.getLoader(QueuesModel.class, "admin", "openQueues"));
+		setModelLoader(QueuesModel.class, "admin", "openQueues");
 		
 		addParentViewMessageHandler(ShowQueuesMessage.class, new ShowQueuesHandler());
 		addSubViewLoader(QueueSummaryView.class, currentContext().lang());
@@ -26,7 +25,7 @@ public class QueuesController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 	}
 

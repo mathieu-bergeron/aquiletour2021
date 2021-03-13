@@ -14,7 +14,7 @@ public class ActivityController extends NtroController<CourseController>{
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		// TODO Auto-generated method stub
 		
 	}

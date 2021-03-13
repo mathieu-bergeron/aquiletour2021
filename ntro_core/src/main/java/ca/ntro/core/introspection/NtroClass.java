@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import ca.ntro.services.Ntro;
-import ca.ntro.services.NtroCollections;
 
 public abstract class NtroClass {
 
@@ -25,14 +24,14 @@ public abstract class NtroClass {
 	public abstract String name();
 
 	public boolean ifImplements(Class<?> interfaceClass) {
-		return NtroCollections.containsEquals(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
+		return Ntro.collections().containsEquals(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
 	}
 
 	public abstract Set<NtroClass> allInterfaces();
 	public abstract Set<NtroClass> allSuperclasses();
 
 	public boolean ifExtends(Class<?> superClass) {
-		return NtroCollections.containsEquals(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
+		return Ntro.collections().containsEquals(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
 	}
 
 	public boolean ifInstanceOf(Class<?> classOrInterface) {

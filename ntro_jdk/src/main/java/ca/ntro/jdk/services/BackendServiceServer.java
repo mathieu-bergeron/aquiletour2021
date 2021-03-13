@@ -3,7 +3,6 @@ package ca.ntro.jdk.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.messages.BackendMessageHandler;
@@ -11,6 +10,7 @@ import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.ModelStore;
 
 public abstract class BackendServiceServer extends BackendService {
 

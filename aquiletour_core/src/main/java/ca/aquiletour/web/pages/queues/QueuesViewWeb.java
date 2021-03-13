@@ -13,6 +13,7 @@ public class QueuesViewWeb extends NtroViewWeb implements QueuesView {
 
 	@Override
 	public void initialize(NtroContext<?> context) {
+
 	}
 
 	@Override

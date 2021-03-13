@@ -12,7 +12,6 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppointmentMessage> {
 
@@ -31,7 +30,7 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 		if(queueModel != null) {
 			
 			queueModel.deleteAppointment(message.getAppointmentId());
-			LocalStore.save(queueModel);
+			modelStore.save(queueModel);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -48,7 +47,7 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 								dashboardModel.updateMyAppointment(courseId, false);
 							}
 							
-							LocalStore.save(dashboardModel);
+							Ntro.modelStore().save(dashboardModel);
 						}
 					}
 				}

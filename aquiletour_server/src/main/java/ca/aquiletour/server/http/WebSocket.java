@@ -13,8 +13,6 @@ import ca.ntro.core.models.ModelLoader;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.DocumentPath;
-import ca.ntro.stores.LocalStore;
 
 // from https://github.com/jetty-project/embedded-jetty-websocket-examples
 public class WebSocket extends WebSocketAdapter {
@@ -44,7 +42,7 @@ public class WebSocket extends WebSocketAdapter {
 
         	Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
-        	ModelLoader modelLoader = LocalStore.getLoader(DashboardModel.class, fromUser.getAuthToken(), fromUser.getId());
+        	ModelLoader modelLoader = Ntro.modelStore().getLoader(DashboardModel.class, fromUser.getAuthToken(), fromUser.getId());
         	modelLoader.execute();
         	
         	DashboardModel dashboardModel = (DashboardModel) modelLoader.getModel();

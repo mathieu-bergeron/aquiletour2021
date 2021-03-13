@@ -11,7 +11,6 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.services.Ntro;
-import ca.ntro.services.NtroCollections;
 
 public class JsonSerialization {
 
@@ -33,9 +32,9 @@ public class JsonSerialization {
 			
 			jsonValue = null;
 			
-		} else if(NtroCollections.containsKeyExact(localHeap, javaValue)) {
+		} else if(Ntro.collections().containsKeyExact(localHeap, javaValue)) {
 
-			String referencePath = NtroCollections.getExactKey(localHeap, javaValue);
+			String referencePath = Ntro.collections().getExactKey(localHeap, javaValue);
 
 			jsonValue = jsonReferenceObject(referencePath);
 
