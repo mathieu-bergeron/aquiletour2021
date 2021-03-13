@@ -26,7 +26,7 @@ import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 import ca.ntro.services.BackendService;
-import ca.ntro.stores.LocalStore;
+import ca.ntro.services.Ntro;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -82,7 +82,7 @@ public class BackendTests {
 		
 		// XXX: assuming that modelLoader is actually Sync
 		//      will not work in JSweet
-		ModelLoader modelLoader = LocalStore.getLoader(QueueModel.class, "bobToken", "bob");
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(QueueModel.class, "bobToken", "bob");
 		modelLoader.execute();
 		
 		QueueModel queue = (QueueModel) modelLoader.getModel();

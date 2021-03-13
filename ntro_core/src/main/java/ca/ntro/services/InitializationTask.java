@@ -30,8 +30,6 @@ import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.stores.LocalStore;
-import ca.ntro.stores.NetworkStore;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.web.mvc.ViewLoaderWeb;
@@ -85,9 +83,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 		registerSerializableClasses();
 		
-		LocalStore.initialize(provideLocalStore());
-		NetworkStore.initialize(provideNetworkStore());
-		
 		Ntro.registerUserService(provideUserService());
 		
 		Ntro.registerModelStoreClass(provideModelStoreClass());
@@ -118,8 +113,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract ResourceLoader provideResourceLoader();
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 	protected abstract JsonParser provideJsonParser();
-	protected abstract ModelStore provideLocalStore();
-	protected abstract ModelStore provideNetworkStore();
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
 	protected abstract BackendService provideBackendService();

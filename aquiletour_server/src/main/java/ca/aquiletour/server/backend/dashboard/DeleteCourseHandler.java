@@ -17,7 +17,6 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessage> {
 
@@ -60,21 +59,21 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 								user.getAuthToken(),
 								user.getId());
 						dashboardModel.deleteCourseById(courseId);
-						LocalStore.save(dashboardModel);
+						Ntro.modelStore().save(dashboardModel);
 						queueModel.deleteStudent(user.getId());
 						queueModel.removeAllAppointmentsOfStudent(user.getId());
 					}
 
-					LocalStore.save(queueModel);
+					modelStore.save(queueModel);
 
 					QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "allQueues");
 					allQueuesModel.deleteQueue(courseId);
 
-					LocalStore.save(allQueuesModel);
+					modelStore.save(allQueuesModel);
 					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "openQueues");
 
 					openQueuesModel.deleteQueue(courseId);
-					LocalStore.save(openQueuesModel);
+					modelStore.save(openQueuesModel);
 					
 				}
 			});

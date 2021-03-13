@@ -28,7 +28,7 @@ public abstract class ModelStore {
 	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
 	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
 
-	public <M extends NtroModel> ModelLoader getLoaderImpl(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
+	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
 
 		ModelLoader modelLoader = new ModelLoader(this);

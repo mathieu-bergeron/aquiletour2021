@@ -133,23 +133,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 		return new JsonParserJSweet();
 	}
 
-
-	@Override
-	protected ModelStore provideLocalStore() {
-		__T.call(this, "provideLocalStore");
-
-		return new LocalStoreJSweet();
-	}
-
-
-	@Override
-	protected ModelStore provideNetworkStore() {
-		__T.call(this, "provideNetworkStore");
-
-		return new NetworkStoreJSweet();
-	}
-
-
 	@Override
 	protected ThreadService provideThreadService() {
 		__T.call(this, "provideThreadService");

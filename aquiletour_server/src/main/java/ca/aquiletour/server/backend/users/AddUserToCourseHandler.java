@@ -11,7 +11,6 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.messages.BackendMessageHandler;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCourseMessage> {
 
@@ -33,7 +32,7 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 			newCourse.setCourseId(courseId);
 			dashboardModel.addCourse(newCourse);
 			
-			LocalStore.save(dashboardModel);
+			modelStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -43,7 +42,7 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 													   courseId);
 					queueModel.addStudentToClass(userId);
 
-					LocalStore.save(queueModel);
+					modelStore.save(queueModel);
 				}
 
 				@Override

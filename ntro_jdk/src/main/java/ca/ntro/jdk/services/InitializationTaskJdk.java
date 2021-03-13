@@ -114,25 +114,6 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected ModelStore provideLocalStore() {
-		__T.call(InitializationTaskJdk.class, "provideLocalStore");
-		
-		//return new LocalStoreNitrite();
-		
-		// FIXME: for tests we cannot use Nitrite as it does not support multiple connexions
-		//        (we need one for the server and one for tests)
-		return new LocalStoreFiles();
-	}
-
-	@Override
-	protected ModelStore provideNetworkStore() {
-		__T.call(InitializationTaskJdk.class, "provideNetworkStore");
-
-		// FIXME: only for the server!
-		return new LocalStoreFiles();
-	}
-
-	@Override
 	protected ThreadService provideThreadService() {
 		__T.call(InitializationTaskJdk.class, "provideThreadService");
 		

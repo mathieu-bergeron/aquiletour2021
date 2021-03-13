@@ -13,7 +13,6 @@ import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.stores.LocalStore;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;
@@ -103,12 +102,12 @@ public class ModelHandler extends AbstractHandler {
 
 		Class<? extends NtroModel> modelClazz = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
 		
-        ModelLoader modelLoader = LocalStore.getLoader(modelClazz, user.getAuthToken(), documentPath.getDocumentId());
+        ModelLoader modelLoader = Ntro.modelStore().getLoader(modelClazz, user.getAuthToken(), documentPath.getDocumentId());
         modelLoader.execute();
         
         NtroModel model = modelLoader.getModel();
         
-        LocalStore.registerThatUserObservesModel(user, documentPath, model);
+        Ntro.modelStore().registerThatUserObservesModel(user, documentPath, model);
 
         response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
         response.flushBuffer();
@@ -133,7 +132,7 @@ public class ModelHandler extends AbstractHandler {
 		NtroUser user = setModelNtroMessage.getUser();
 		NtroModel model = setModelNtroMessage.getModel();
 
-        LocalStore.saveJsonString(documentPath, Ntro.jsonService().toString(model));
+        Ntro.modelStore().saveJsonString(documentPath, Ntro.jsonService().toString(model));
 
         response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);

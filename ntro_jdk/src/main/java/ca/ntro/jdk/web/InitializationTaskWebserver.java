@@ -18,13 +18,6 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 	}
 
 	@Override
-	protected ModelStore provideLocalStore() {
-		__T.call(InitializationTaskJdk.class, "provideLocalStore");
-		
-		return localStore;
-	}
-
-	@Override
 	protected BackendService provideBackendService() {
 		__T.call(InitializationTaskWebserver.class, "provideBackendService");
 		

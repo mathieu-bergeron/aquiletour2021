@@ -54,7 +54,6 @@ import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.LocalStore;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -178,7 +177,7 @@ public class DynamicHandler extends AbstractHandler {
 	private void authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		ModelLoader usersLoader = LocalStore.getLoader(UsersModel.class, "TODO", "allUsers");
+		ModelLoader usersLoader = Ntro.modelStore().getLoader(UsersModel.class, "TODO", "allUsers");
 		usersLoader.execute();
 		UsersModel usersModel = (UsersModel) usersLoader.getModel();
 		
