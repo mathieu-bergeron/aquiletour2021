@@ -7,7 +7,7 @@ import java.util.TimerTask;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
-import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class QueueTimer {

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
@@ -57,5 +58,11 @@ public abstract class MessageService {
 		T.call(this);
 		
 		handlers = new HashMap<>();
+	}
+
+	public <M extends NtroMessage> void sendMessage(Class<M> messageClass) {
+		M message = MessageFactory.createMessage(messageClass);
+		
+		sendMessage(message);
 	}
 }

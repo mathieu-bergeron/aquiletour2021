@@ -8,10 +8,10 @@ import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.jdk.messages.BackendMessageHandler;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentMessage> {

@@ -6,11 +6,11 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
+import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.jdk.messages.BackendMessageHandler;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppointmentMessage> {

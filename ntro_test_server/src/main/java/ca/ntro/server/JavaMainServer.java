@@ -17,11 +17,11 @@
 
 package ca.ntro.server;
 
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
-import ca.ntro.jdk.web.NtroWebserver;
+import ca.ntro.jdk.web.NtroWebServer;
 import ca.ntro.server.backend.BackendServiceTest;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.ModelStore;
@@ -33,7 +33,7 @@ public class JavaMainServer {
 		
 		ModelStore localStore = new LocalStoreFiles();
 		
-		NtroWebserver.defaultInitializationTask(BackendServiceTest.class, localStore)
+		NtroWebServer.defaultInitializationTask(BackendServiceTest.class, localStore)
 		             .setOptions(args)
 		             .addNextTask(new NtroServerMain())
 		             .execute();

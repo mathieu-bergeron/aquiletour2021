@@ -18,10 +18,10 @@ public class VertxServer {
 			
 			/* TODO
 			 * 
-			 *  /_resources/path : servir fichier statique (selon le path)
-			 *  /_httpmessages   : messages reçu par le body d'un POST
-			 *  /_socketmessages : messages reçu via une connexion SockJS
-			 *  /                : démarrer une App et répondre en HTML
+			 *  /_resources/path  : servir fichier statique (selon le path)
+			 *  /_messages/http   : messages reçu par le body d'un POST
+			 *  /_messages/sockjs : messages reçu via une connexion SockJS
+			 *  /                 : démarrer une App et répondre en HTML
 			 *  
 			 *  Pour les deux réceptions de messages
 			 *  + Envoyer le message au Backend
