@@ -17,7 +17,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import ca.ntro.core.system.log.Log;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.CollectionsService;
+import ca.ntro.services.Ntro;
 
 public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 
@@ -27,9 +28,9 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	private TaskState state = INIT;
 	private GraphTraceImpl trace;
 	
-	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
-	private Map<String, NtroTask> subTasks = NtroCollections.concurrentMap(new HashMap<>());
-	private Map<String, NtroTask> nextTasks = NtroCollections.concurrentMap(new HashMap<>());
+	private Map<String, NtroTask> previousTasks = Ntro.collections().concurrentMap(new HashMap<>());
+	private Map<String, NtroTask> subTasks = Ntro.collections().concurrentMap(new HashMap<>());
+	private Map<String, NtroTask> nextTasks = Ntro.collections().concurrentMap(new HashMap<>());
 
 	protected abstract void runEntryTaskAsync();
 	protected abstract void runExitTaskAsync();

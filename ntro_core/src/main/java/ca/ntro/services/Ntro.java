@@ -392,6 +392,50 @@ public class Ntro {
 	
 	
 	
+	/* <CollectionsService> */
+
+	private static CollectionsService collectionsService;
+
+	public static void registerCollectionsService(CollectionsService collectionsService) {
+		__T.call(Ntro.class, "registerCollectionsService");
+
+		Ntro.collectionsService = collectionsService;
+	}
+
+	public static CollectionsService collections() {
+		__T.call(Ntro.class, "collections");
+
+		return Ntro.collectionsService;
+	}
+
+	/* </CollectionsService> */
+	
+	
+	
+	
+	
+	/* <ValueFormatter> */
+
+	private static ValueFormatter valueFormatter;
+
+	static void registerValueFormatter(ValueFormatter valueFormatter) {
+		__T.call(Ntro.class, "registerValueFormatter");
+
+		Ntro.valueFormatter = valueFormatter;
+	}
+
+	public static ValueFormatter valueFormatter() {
+		__T.call(Ntro.class, "valueFormatter");
+
+		return Ntro.valueFormatter;
+	}
+
+	/* </ValueFormatter> */
+	
+	
+	
+	
+	
 	/* <reset> */
 
 	public static void reset() {

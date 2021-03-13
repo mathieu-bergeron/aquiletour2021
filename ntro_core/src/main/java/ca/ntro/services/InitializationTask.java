@@ -66,13 +66,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.registerViewLoaderWebClass(provideViewLoaderWebClass());
 		
-		ValueFormatter.initialize(provideValueFormatter());
-
-		NtroCollections.initialize(provideNtroCollections());
-		
-		JsonParser.initialize(provideJsonParser());
-		
-		
 		Ntro.registerThreadService(provideThreadService());
 		Ntro.registerMessageServiceClass(provideMessageServiceClass());
 		Ntro.registerBackendService(provideBackendService());
@@ -86,7 +79,29 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.registerModelStoreClass(provideModelStoreClass());
 		
+		Ntro.registerCollectionsService(provideCollectionsService());
+		
+		Ntro.registerValueFormatter(provideValueFormatter());
 	}
+
+
+	protected abstract Logger provideLogger();
+	protected abstract AppCloser provideAppCloser();
+	protected abstract RegEx provideRegEx();
+	protected abstract StackAnalyzer provideStackAnalyzer();
+	protected abstract Introspector provideIntrospector();
+	protected abstract ResourceLoader provideResourceLoader();
+	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
+	protected abstract JsonParser provideJsonParser();
+	protected abstract ThreadService provideThreadService();
+	protected abstract Class<? extends MessageService> provideMessageServiceClass();
+	protected abstract BackendService provideBackendService();
+	protected abstract AssertService provideAssertService();
+	protected abstract JsonService provideJsonService();
+	protected abstract UserService provideUserService();
+	protected abstract Class<? extends ModelStore> provideModelStoreClass();
+	protected abstract CollectionsService provideCollectionsService();
+	protected abstract ValueFormatter provideValueFormatter();
 
 	private void registerSerializableClasses() {
 
@@ -100,23 +115,4 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.registerSerializableClass(DocumentPath.class);
 		Ntro.registerSerializableClass(ValuePath.class);
 	}
-
-
-	protected abstract Logger provideLogger();
-	protected abstract AppCloser provideAppCloser();
-	protected abstract RegEx provideRegEx();
-	protected abstract StackAnalyzer provideStackAnalyzer();
-	protected abstract Introspector provideIntrospector();
-	protected abstract ValueFormatter provideValueFormatter();
-	protected abstract NtroCollections provideNtroCollections();
-	protected abstract ResourceLoader provideResourceLoader();
-	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
-	protected abstract JsonParser provideJsonParser();
-	protected abstract ThreadService provideThreadService();
-	protected abstract Class<? extends MessageService> provideMessageServiceClass();
-	protected abstract BackendService provideBackendService();
-	protected abstract AssertService provideAssertService();
-	protected abstract JsonService provideJsonService();
-	protected abstract UserService provideUserService();
-	protected abstract Class<? extends ModelStore> provideModelStoreClass();
 }

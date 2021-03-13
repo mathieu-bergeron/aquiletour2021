@@ -17,22 +17,25 @@
 
 package ca.ntro.services;
 
-import ca.ntro.core.system.trace.T;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public abstract class ValueFormatter {
 
-	private static boolean isHtml = false;
+public abstract class CollectionsService {
 
-	public static void setIsHtml(boolean isHtml){
-		T.call(ValueFormatter.class);
+	public abstract <I extends Object> List<I> synchronizedList(List<I> elements);
+	public abstract <K extends Object, V extends Object> Map<K,V> concurrentMap(Map<K,V> elements);
+	public abstract <V extends Object> Set<V> concurrentSet(Set<V> elements);
 
-		ValueFormatter.isHtml = isHtml;
-	}
+	public abstract boolean containsEquals(Set<?> set, Object target);
+	public abstract boolean setContainsExact(Set<?> set, Object target);
 
-	protected abstract void formatImpl(StringBuilder builder, boolean isHtml, Object... values);
+	public abstract boolean containsKeyExact(Map<?, ?> map, Object key);
+	public abstract <V extends Object> V getExactKey(Map<?, V> map, Object key);
 
-	public void format(StringBuilder builder, Object... values) {
-		formatImpl(builder, isHtml, values);
-	}
+	public abstract boolean listEquals(List<?> list1, List<?> list2);
+	public abstract boolean mapEquals(Map<?,?> map1, Map<?,?> map2);
+
 
 }

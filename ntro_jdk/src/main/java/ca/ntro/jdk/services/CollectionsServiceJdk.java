@@ -24,24 +24,24 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.CollectionsService;
 
-public class NtroCollectionsJdk extends NtroCollections {
+public class CollectionsServiceJdk extends CollectionsService {
 
 	@Override
-	public <I extends Object> List<I> synchronizedListImpl(List<I> elements) {
+	public <I extends Object> List<I> synchronizedList(List<I> elements) {
 		return Collections.synchronizedList(elements);
 	}
 
 	@Override
-	public <K extends Object, V extends Object> Map<K, V> concurrentMapImpl(Map<K, V> elements) {
+	public <K extends Object, V extends Object> Map<K, V> concurrentMap(Map<K, V> elements) {
 		Map<K,V> concurrentHashMap = new ConcurrentHashMap<K,V>();
 		concurrentHashMap.putAll(elements);
 		return concurrentHashMap;
 	}
 
 	@Override
-	protected <V extends Object> Set<V> concurrentSetImpl(Set<V> elements) {
+	public <V extends Object> Set<V> concurrentSet(Set<V> elements) {
 		Set<V> concurrentSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
 		concurrentSet.addAll(elements);
 		return concurrentSet;
@@ -49,7 +49,7 @@ public class NtroCollectionsJdk extends NtroCollections {
 
 
 	@Override
-	protected boolean containsKeyExactImpl(Map<?, ?> map, Object key) {
+	public boolean containsKeyExact(Map<?, ?> map, Object key) {
 		boolean containsKey = false;
 		
 		for(Object candidateKey : map.keySet()) {
@@ -63,7 +63,7 @@ public class NtroCollectionsJdk extends NtroCollections {
 	}
 
 	@Override
-	protected <V> V getExactKeyImpl(Map<?, V> map, Object key) {
+	public <V> V getExactKey(Map<?, V> map, Object key) {
 		V value = null;
 
 		for(Entry<?, V> entry : map.entrySet()) {
@@ -77,17 +77,17 @@ public class NtroCollectionsJdk extends NtroCollections {
 	}
 
 	@Override
-	protected boolean listEqualsImpl(List<?> list1, List<?> list2) {
+	public boolean listEquals(List<?> list1, List<?> list2) {
 		return list1.equals(list2);
 	}
 
 	@Override
-	protected boolean mapEqualsImpl(Map<?, ?> map1, Map<?, ?> map2) {
+	public boolean mapEquals(Map<?, ?> map1, Map<?, ?> map2) {
 		return map1.equals(map2);
 	}
 
 	@Override
-	protected boolean setContainsExactImpl(Set<?> set, Object target) {
+	public boolean setContainsExact(Set<?> set, Object target) {
 		boolean setContains = false;
 		
 		for(Object element : set) {
@@ -101,7 +101,7 @@ public class NtroCollectionsJdk extends NtroCollections {
 	}
 
 	@Override
-	protected boolean containsEqualsImpl(Set<?> set, Object target) {
+	public boolean containsEquals(Set<?> set, Object target) {
 		return set.contains(target);
 	}
 }

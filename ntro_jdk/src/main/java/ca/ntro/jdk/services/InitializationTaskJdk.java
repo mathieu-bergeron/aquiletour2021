@@ -33,7 +33,7 @@ import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
@@ -76,13 +76,6 @@ public class InitializationTaskJdk extends InitializationTask {
 		T.call(this);
 		
 		return new ValueFormatterJdk();
-	}
-
-	@Override
-	protected NtroCollections provideNtroCollections() {
-		T.call(this);
-
-		return new NtroCollectionsJdk();
 	}
 
 	@Override
@@ -152,6 +145,11 @@ public class InitializationTaskJdk extends InitializationTask {
 	@Override
 	protected Class<? extends ModelStore> provideModelStoreClass() {
 		return LocalStoreFiles.class;
+	}
+
+	@Override
+	protected CollectionsService provideCollectionsService() {
+		return new CollectionsServiceJdk();
 	}
 
 }

@@ -35,7 +35,7 @@ import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
@@ -100,15 +100,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 		
 		return new ValueFormatterJSweet();
 	}
-
-
-	@Override
-	protected NtroCollections provideNtroCollections() {
-		__T.call(this, "provideNtroCollections");
-
-		return new NtroCollectionsJSweet();
-	}
-
 
 	@Override
 	protected ResourceLoader provideResourceLoader() {
@@ -177,5 +168,11 @@ public class InitializationTaskJSweet extends InitializationTask {
 	@Override
 	protected Class<? extends ModelStore> provideModelStoreClass() {
 		return NetworkStoreJSweet.class;
+	}
+
+
+	@Override
+	protected CollectionsService provideCollectionsService() {
+		return new CollectionsServiceJSweet();
 	}
 }

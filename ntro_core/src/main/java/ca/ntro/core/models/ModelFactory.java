@@ -14,7 +14,6 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
-import ca.ntro.services.NtroCollections;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 
@@ -49,7 +48,7 @@ public class ModelFactory {
 			return;
 		}*/
 
-		if(NtroCollections.setContainsExact(localHeap, value)) return;
+		if(Ntro.collections().setContainsExact(localHeap, value)) return;
 		
 		localHeap.add(value);
 		

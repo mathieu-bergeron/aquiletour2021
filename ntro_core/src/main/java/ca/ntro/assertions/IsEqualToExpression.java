@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import ca.ntro.core.system.log.Log;
-import ca.ntro.services.NtroCollections;
+import ca.ntro.services.CollectionsService;
+import ca.ntro.services.Ntro;
 
 public class IsEqualToExpression extends AssertExpression {
 	
@@ -24,11 +25,11 @@ public class IsEqualToExpression extends AssertExpression {
 		if(thisValue == otherValue) return false;
 		
 		if(thisValue instanceof List) {
-			return !NtroCollections.listEquals((List<?>)thisValue, (List<?>)otherValue);
+			return !Ntro.collections().listEquals((List<?>)thisValue, (List<?>)otherValue);
 		}
 		
 		if(thisValue instanceof Map) {
-			return !NtroCollections.mapEquals((Map<?,?>)thisValue, (Map<?,?>)otherValue);
+			return !Ntro.collections().mapEquals((Map<?,?>)thisValue, (Map<?,?>)otherValue);
 		}
 		
 		return !thisValue.equals(otherValue);
