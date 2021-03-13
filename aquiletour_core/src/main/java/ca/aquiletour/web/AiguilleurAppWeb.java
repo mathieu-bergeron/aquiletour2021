@@ -1,5 +1,7 @@
 package ca.aquiletour.web;
 
+import java.util.Map;
+
 import ca.aquiletour.core.AiguilleurApp;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
@@ -72,7 +74,10 @@ public class AiguilleurAppWeb extends AiguilleurApp implements NtroAppWeb {
 		// Manual router
 		registrar.registerRouter(new NtroRouter<User>() {
 			@Override
-			public void route(Path path, NtroContext<User> context) {
+			public void route(Path path, 
+					          Map<String,String[]> parameters, 
+					          NtroContext<User> context) {
+
 				if(path.startsWith("mescours")
 						&& context.user() instanceof Teacher) {
 					
@@ -83,6 +88,7 @@ public class AiguilleurAppWeb extends AiguilleurApp implements NtroAppWeb {
 					
 					Ntro.messageService().sendMessage(ShowStudentDashboardMessage.class);
 				}
+				
 				
 			}
 		});
