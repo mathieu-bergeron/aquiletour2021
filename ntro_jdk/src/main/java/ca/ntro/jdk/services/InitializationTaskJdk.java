@@ -168,4 +168,9 @@ public class InitializationTaskJdk extends InitializationTask {
 		return new UserServiceJdk();
 	}
 
+	@Override
+	protected Class<? extends ModelStore> provideModelStoreClass() {
+		return LocalStoreFiles.class;
+	}
+
 }

@@ -23,7 +23,7 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 
 	public void triggerHandlerOnce() {
 		/* FIXME: as implemented below
-		 * There is an issue with three
+		 * I think there is an issue with three
 		 * handlers one after the other
 		 * 
 		 * if A -->    B    -->    C     --> D
@@ -35,6 +35,7 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 		 * 
 		 * and we loose the fact that
 		 * C was DONE before A got triggered
+		 * 
 		 */
 
 		notifyTaskFinished();  // unblock the handler

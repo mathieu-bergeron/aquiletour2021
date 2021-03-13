@@ -17,7 +17,7 @@ public class HomeController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		// TODO Auto-generated method stub
 		
 	}

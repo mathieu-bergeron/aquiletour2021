@@ -24,84 +24,21 @@ import ca.ntro.assertions.AssertExpression;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
-
-	private static Map<String, Class<?>> serializableClasses = new HashMap<>();
 	
-	public static void registerSerializableClass(Class<? extends JsonSerializable> _class) {
-		// FIXME: we'd like to user Ntro.introspector().getSimpleNameForClass ...
-		//        but it is NOT registered yet
-		serializableClasses.put(_class.getSimpleName(), _class);
-	}
+	/* <RegEx> */
 
-	public static Class<?> serializableClass(String simpleName) {
-		return serializableClasses.get(simpleName);
-	}
-
-	private static Introspector introspector;
-	private static Logger logger;
-	private static AppCloser appCloser;
 	private static RegEx regEx;
-	private static ResourceLoader resourceLoader;
-	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
 
-	private static Class<? extends MessageService> messageServiceClass;
-	private static Map<String, MessageService> messageServices = new HashMap<>();
-	private static ThreadService threadService;
-	private static BackendService backendService;
-	
-	private static AssertService assertService;
-	private static JsonService jsonService;
-	private static UserService userService;
-
-	// FIXME: zzz is to "hide" the public method in auto-completion lists
-	//        can we make this package-private?
-	public static void zzz_registerResourceLoader(ResourceLoader resourceLoader) {
-		Ntro.resourceLoader = resourceLoader;
-	}
-
-	public static void __registerIntrospector(Introspector introspector) {
-		//System.out.println("#T.call (Ntro.java) >> Ntro.__registerIntrospector");
-
-		Ntro.introspector = introspector;
-	}
-
-	public static void __registerViewLoaderWeb(Class<? extends ViewLoaderWeb> viewLoaderWeb) {
-		//System.out.println("#T.call (Ntro.java) >> Ntro.__registerIntrospector");
-
-		Ntro.viewLoaderWebClass = viewLoaderWeb;
-	}
-
-	public static void __registerLogger(Logger logger) {
-		__T.call(Ntro.class, "registerLogger");
-
-		Ntro.logger = logger;
-	}
-
-	public static void __registerAppCloser(AppCloser appCloser) {
-		__T.call(Ntro.class, "registerAppCloser");
-
-		Ntro.appCloser = appCloser;
-	}
-
-	public static void __registerRegEx(RegEx regEx) {
+	static void registerRegEx(RegEx regEx) {
 		__T.call(Ntro.class, "registerRegEx");
 
 		Ntro.regEx = regEx;
-	}
-
-	public static Introspector introspector() {
-		__T.call(Ntro.class, "introspector");
-
-		if(introspector == null) {
-			System.err.println("#FATAL | Introspector not registered");
-		}
-
-		return introspector;
 	}
 
 	public static RegEx regEx() {
@@ -114,6 +51,72 @@ public class Ntro {
 		return regEx;
 	}
 
+	/* </RegEx> */
+	
+	
+	
+	
+	
+	/* <Introspector> */
+
+	private static Introspector introspector;
+
+	static void registerIntrospector(Introspector introspector) {
+		__T.call(Ntro.class, "registerIntrospector");
+
+		Ntro.introspector = introspector;
+	}
+
+	public static Introspector introspector() {
+		__T.call(Ntro.class, "introspector");
+
+		if(introspector == null) {
+			System.err.println("#FATAL | Introspector not registered");
+		}
+
+		return introspector;
+	}
+
+	/* </Introspector> */
+	
+	
+	
+	
+	
+	/* <Serializable classes> */
+
+	private static Map<String, Class<?>> serializableClasses = new HashMap<>();
+	
+	public static void registerSerializableClass(Class<? extends JsonSerializable> _class) {
+		__T.call(Ntro.class, "registerSerializableClass");
+
+		// FIXME: we'd like to user Ntro.introspector().getSimpleNameForClass ...
+		//        but it is NOT registered yet
+		serializableClasses.put(_class.getSimpleName(), _class);
+	}
+
+	public static Class<?> serializableClass(String simpleName) {
+		__T.call(Ntro.class, "serializableClass");
+
+		return serializableClasses.get(simpleName);
+	}
+
+	/* </Serializable classes> */
+	
+	
+	
+	
+	
+	/* <Logger> */
+
+	private static Logger logger;
+
+	static void registerLogger(Logger logger) {
+		__T.call(Ntro.class, "registerLogger");
+
+		Ntro.logger = logger;
+	}
+
 	public static Logger logger() {
 		__T.call(Ntro.class, "logger");
 
@@ -122,6 +125,22 @@ public class Ntro {
 		}
 
 		return logger;
+	}
+
+	/* </Logger> */
+	
+	
+	
+	
+	
+	/* <AppCloser> */
+	
+	private static AppCloser appCloser;
+
+	static void registerAppCloser(AppCloser appCloser) {
+		__T.call(Ntro.class, "registerAppCloser");
+
+		Ntro.appCloser = appCloser;
 	}
 
 	public static AppCloser appCloser() {
@@ -134,6 +153,21 @@ public class Ntro {
 		return appCloser;
 	}
 
+	/* </AppCloser> */
+	
+	
+	
+	
+	
+	/* <ResourceLoader> */
+	
+	private static ResourceLoader resourceLoader;
+
+	static void registerResourceLoader(ResourceLoader resourceLoader) {
+		__T.call(Ntro.class, "registerResourceLoader");
+		Ntro.resourceLoader = resourceLoader;
+	}
+
 	public static ResourceLoader resourceLoader() {
 		__T.call(Ntro.class, "resourceLoader");
 
@@ -144,23 +178,70 @@ public class Ntro {
 		return resourceLoader;
 	}
 
+	/* </ResourceLoader> */
+	
+	
+	
+	
+	
+	/* <ViewLoaderWeb> */
+
+	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
+
+	static void registerViewLoaderWebClass(Class<? extends ViewLoaderWeb> viewLoaderWebClass) {
+		__T.call(Ntro.class, "registerViewLoaderWebClass");
+
+		Ntro.viewLoaderWebClass = viewLoaderWebClass;
+	}
+
 	public static ViewLoaderWeb viewLoaderWeb() {
+		__T.call(Ntro.class, "viewLoaderWeb");
+
 		return Factory.newInstance(viewLoaderWebClass);
 	}
 
-	public static void zzz_registerThreadService(ThreadService threadService) {
+	/* </ViewLoaderWeb> */
+	
+	
+	
+	
+	
+	/* <ThreadService> */
+	
+	private static ThreadService threadService;
+
+	static void registerThreadService(ThreadService threadService) {
+		__T.call(Ntro.class, "registerThreadService");
+
 		Ntro.threadService = threadService;
 	}
 
 	public static ThreadService threadService() {
+		__T.call(Ntro.class, "threadService");
+
 		return threadService;
 	}
 
-	public static void zzz_registerMessageServiceClass(Class<? extends MessageService> messageServiceClass) {
+	/* </ThreadService> */
+	
+	
+	
+	
+	
+	/* <MessageService> */
+
+	private static Class<? extends MessageService> messageServiceClass;
+	private static Map<String, MessageService> messageServices = new HashMap<>();
+
+	static void registerMessageServiceClass(Class<? extends MessageService> messageServiceClass) {
+		__T.call(Ntro.class, "registerMessageServiceClass");
+
 		Ntro.messageServiceClass = messageServiceClass;
 	}
 
 	public static MessageService messageService() {
+		__T.call(Ntro.class, "messageService");
+
 		MessageService service = messageServices.get(threadService().currentThread().getThreadId());
 
 		if(service == null) {
@@ -171,42 +252,142 @@ public class Ntro {
 		return service;
 	}
 
-	public static void zzz_registerBackendService(BackendService backendService) {
+	/* </MessageService> */
+	
+	
+	
+	
+	
+	/* <ModelStore> */
+
+	private static Class<? extends ModelStore> modelStoreClass;
+	private static Map<String, ModelStore> modelStores = new HashMap<>();
+
+	static void registerModelStoreClass(Class<? extends ModelStore> modelStoreClass) {
+		__T.call(Ntro.class, "registerModelStoreClass");
+
+		Ntro.modelStoreClass = modelStoreClass;
+	}
+
+	public static ModelStore modelStore() {
+		__T.call(Ntro.class, "modelStore");
+
+		ModelStore modelStore = modelStores.get(threadService().currentThread().getThreadId());
+
+		if(modelStore == null) {
+			modelStore = Factory.newInstance(modelStoreClass);
+			modelStores.put(threadService().currentThread().getThreadId(), modelStore);
+		}
+
+		return modelStore;
+	}
+
+	/* </ModelStore> */
+	
+	
+	
+	
+	
+	/* <BackendService> */
+
+	private static BackendService backendService;
+
+	static void registerBackendService(BackendService backendService) {
+		__T.call(Ntro.class, "registerBackendService");
+
 		Ntro.backendService = backendService;
 	}
 
 	public static BackendService backendService() {
+		__T.call(Ntro.class, "backendService");
+
 		return backendService;
 	}
+
+	/* </BackendService> */
+	
+	
+	
+	
+	
+	/* <AssertService> */
+
+	private static AssertService assertService;
+
+	static void registerAssertService(AssertService assertService) {
+		__T.call(Ntro.class, "registerAssertService");
+
+		Ntro.assertService = assertService;
+	}
+	
+	public static AssertService assertService() {
+		__T.call(Ntro.class, "assertService");
+
+		return Ntro.assertService;
+	}
+
+	/* </AssertService> */
+	
+	
+	
+	
+	
+	/* <Verify> */
 	
 	public static void verify(AssertExpression assertExpression) {
+		__T.call(Ntro.class, "verify");
+
 		String failMessage = assertExpression.failMessage();
 		if(failMessage != null) {
 			assertService().fail(failMessage);
 		}
 	}
 
-	public static void zzz_registerAssertService(AssertService assertService) {
-		Ntro.assertService = assertService;
-	}
+	/* </Verify> */
 	
-	public static AssertService assertService() {
-		return Ntro.assertService;
-	}
+	
+	
+	
+	
+	/* <JsonService> */
 
-	public static void zzz_registerJsonService(JsonService jsonService) {
+	private static JsonService jsonService;
+
+	static void registerJsonService(JsonService jsonService) {
+		__T.call(Ntro.class, "registerJsonService");
+
 		Ntro.jsonService = jsonService;
 	}
 	
 	public static JsonService jsonService() {
+		__T.call(Ntro.class, "jsonService");
+
 		return Ntro.jsonService;
 	}
 
+	/* </JsonService> */
+	
+	
+	
+	
+	
+	/* <UserService> */
+
+	private static UserService userService;
+
 	static void registerUserService(UserService userService) {
+		__T.call(Ntro.class, "registerUserService");
+
 		Ntro.userService = userService;
 	}
 
 	public static UserService userService() {
+		__T.call(Ntro.class, "userService");
+
 		return Ntro.userService;
 	}
+
+	/* </UserService> */
+	
+	
 }

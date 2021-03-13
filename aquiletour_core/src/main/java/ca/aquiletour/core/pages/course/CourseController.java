@@ -14,7 +14,7 @@ public class CourseController extends NtroController<DashboardController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 		
 	}

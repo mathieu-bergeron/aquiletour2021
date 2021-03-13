@@ -50,25 +50,24 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 	private void performInitialization() {
 
-
 		Introspector introspector = provideIntrospector();
 		T.__registerIntrospector(introspector);
-		Ntro.__registerIntrospector(introspector);
+		Ntro.registerIntrospector(introspector);
 
 		Logger logger = provideLogger();
 		T.__registerLogger(logger);
-		Ntro.__registerLogger(logger);
+		Ntro.registerLogger(logger);
 		
-		Ntro.__registerAppCloser(provideAppCloser());
-		Ntro.__registerRegEx(provideRegEx());
+		Ntro.registerAppCloser(provideAppCloser());
+		Ntro.registerRegEx(provideRegEx());
 
 		StackAnalyzer stackAnalyzer = provideStackAnalyzer();
 		T.__registerStackAnalyzer(stackAnalyzer);
 		__Ntro.registerStackAnalyzer(stackAnalyzer);
 
-		Ntro.zzz_registerResourceLoader(provideResourceLoader());
+		Ntro.registerResourceLoader(provideResourceLoader());
 		
-		Ntro.__registerViewLoaderWeb(provideViewLoaderWebClass());
+		Ntro.registerViewLoaderWebClass(provideViewLoaderWebClass());
 		
 		ValueFormatter.initialize(provideValueFormatter());
 
@@ -77,12 +76,12 @@ public abstract class InitializationTask extends NtroTaskSync {
 		JsonParser.initialize(provideJsonParser());
 		
 		
-		Ntro.zzz_registerThreadService(provideThreadService());
-		Ntro.zzz_registerMessageServiceClass(provideMessageServiceClass());
-		Ntro.zzz_registerBackendService(provideBackendService());
+		Ntro.registerThreadService(provideThreadService());
+		Ntro.registerMessageServiceClass(provideMessageServiceClass());
+		Ntro.registerBackendService(provideBackendService());
 
-		Ntro.zzz_registerAssertService(provideAssertService());
-		Ntro.zzz_registerJsonService(provideJsonService());
+		Ntro.registerAssertService(provideAssertService());
+		Ntro.registerJsonService(provideJsonService());
 
 		registerSerializableClasses();
 		
@@ -91,6 +90,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.registerUserService(provideUserService());
 		
+		Ntro.registerModelStoreClass(provideModelStoreClass());
 		
 	}
 
@@ -126,4 +126,5 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract AssertService provideAssertService();
 	protected abstract JsonService provideJsonService();
 	protected abstract UserService provideUserService();
+	protected abstract Class<? extends ModelStore> provideModelStoreClass();
 }

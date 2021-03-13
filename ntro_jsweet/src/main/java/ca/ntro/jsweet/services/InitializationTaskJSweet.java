@@ -189,4 +189,10 @@ public class InitializationTaskJSweet extends InitializationTask {
 	protected UserService provideUserService() {
 		return new UserServiceJSweet();
 	}
+
+
+	@Override
+	protected Class<? extends ModelStore> provideModelStoreClass() {
+		return NetworkStoreJSweet.class;
+	}
 }

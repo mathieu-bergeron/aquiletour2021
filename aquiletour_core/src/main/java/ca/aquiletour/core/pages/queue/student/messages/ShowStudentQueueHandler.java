@@ -6,7 +6,6 @@ import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.stores.NetworkStore;
 
 public class ShowStudentQueueHandler extends ControllerMessageHandler<QueueController, QueueView, ShowStudentQueueMessage> {
 	
@@ -18,7 +17,7 @@ public class ShowStudentQueueHandler extends ControllerMessageHandler<QueueContr
 
 		String authToken = currentController.currentContext().user().getAuthToken();
 		
-		currentController.setModelLoader(NetworkStore.getLoader(QueueModel.class, authToken, courseId));
+		currentController.setModelLoader(QueueModel.class, authToken, courseId);
 		
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		

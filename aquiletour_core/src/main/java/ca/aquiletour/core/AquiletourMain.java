@@ -33,19 +33,14 @@ import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.values.ObservableUserMap;
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.messages.MessageFactory;
-import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
-import ca.ntro.stores.NetworkStore;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 
@@ -54,7 +49,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 	@Override
 	protected void runTask() {
 		T.call(this);
-
+		
 		Constants.LANG = getPreviousTask(NtroInitializationTask.class, "initializationTask").getOption("lang");
 
 		// FIXME
