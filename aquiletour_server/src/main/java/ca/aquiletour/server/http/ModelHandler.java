@@ -3,6 +3,7 @@ package ca.aquiletour.server.http;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.users.UsersModel;
+import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
@@ -114,7 +115,7 @@ public class ModelHandler extends AbstractHandler {
         // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
         // NOTE:  we do not need to connect that model to the store
         //        only models in the backend
-        Ntro.modelStore().registerThatUserObservesModel(user, documentPath, model);
+        RegisteredSockets.registerThatUserObservesModel(user, documentPath);
         // ??
         // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 

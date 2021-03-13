@@ -11,9 +11,12 @@ import org.eclipse.jetty.websocket.api.Session;
 import ca.ntro.core.NtroUser;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
+import ca.ntro.stores.DocumentPath;
 
 public class RegisteredSockets {
-	
+
+	// FIXME: more than one user will observe!!!!!
+	private static Map<DocumentPath, NtroUser> modelObservators = new HashMap<>();
 	private static Map<NtroUser, Set<Session>> userSockets = new HashMap<>();
 	
 	public static void registerUserSocket(NtroUser user, Session socket) {
@@ -48,5 +51,13 @@ public class RegisteredSockets {
 				}
 			}
 		}
+	}
+
+	public static void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath) {
+		modelObservators.put(documentPath, user);
+	}
+	
+	public static NtroUser getUserThatObservesModel(DocumentPath documentPath) {
+		return modelObservators.get(documentPath);
 	}
 }
