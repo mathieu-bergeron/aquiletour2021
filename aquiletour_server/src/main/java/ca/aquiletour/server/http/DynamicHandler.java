@@ -17,6 +17,7 @@
 
 package ca.aquiletour.server.http;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -36,8 +37,10 @@ import org.eclipse.jetty.util.UrlEncoded;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.AnonUser;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.users.UsersModel;
+import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
@@ -48,7 +51,9 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
+import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.web.NtroWindowServer;
+import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.LocalStore;
 
@@ -134,7 +139,12 @@ public class DynamicHandler extends AbstractHandler {
 			Map<String, String[]> parameters = baseRequest.getParameterMap();
 			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
 
+			// DEBUG
+		    //RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
+
+		    // NORMAL
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
+
 
 			// Client controller executes after
 			// to make sure modifications to the
@@ -144,6 +154,10 @@ public class DynamicHandler extends AbstractHandler {
 			//trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
 
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
+
+			// DEBUG
+			//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
+			//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
 
 			//rootController.getTask().destroy();
 			

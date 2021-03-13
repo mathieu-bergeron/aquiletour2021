@@ -10,7 +10,7 @@ public class ShowUsersHandler extends ParentViewMessageHandler<RootView, UsersVi
 	@Override
 	protected void handle(RootView parentView, UsersView currentView, ShowUsersMessage message) {
 		T.call(this);
-		
+
 		parentView.showUsers(currentView);
 		
 	}

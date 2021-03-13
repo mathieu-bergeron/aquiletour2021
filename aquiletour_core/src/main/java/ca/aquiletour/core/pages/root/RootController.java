@@ -43,7 +43,7 @@ public class RootController extends NtroRootController {
 		addSubController(TeacherDashboardController.class, "mescours");
 
 		addSubController(QueuesController.class, "billetteries");
-		
+	
 		addSubController(TeacherQueueController.class, "billetterie");
 		addSubController(StudentQueueController.class, "billetterie");
 

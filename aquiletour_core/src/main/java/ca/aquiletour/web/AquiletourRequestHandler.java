@@ -74,6 +74,7 @@ public class AquiletourRequestHandler {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
 			Ntro.messageService().sendMessage(showTeacherDashboardMessage);
+
 			
 		}else if(user instanceof Student){
 			
@@ -86,6 +87,7 @@ public class AquiletourRequestHandler {
 			Ntro.messageService().sendMessage(showLoginDialogMessage);
 			
 		}
+
 	}
 
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {

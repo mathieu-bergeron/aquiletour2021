@@ -1,6 +1,7 @@
 package ca.ntro.messages;
 
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.core.tasks.TaskState;
 
 public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 	
@@ -27,14 +28,13 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 	}
 
 	public void triggerHandlerOnce() {
-		System.out.println("triggerHandlerOnce");
-		
 		// FIXME: as implemented below
 		//        there is an issue with two message
 		//        handlers one after the other
 		notifyTaskFinished();  // unblock the handler
-		execute();             // execute tasks that are now unblocked
-		resetNodeTransitive(); // reblock tasks that depend on this handler
+		execute();             // execute tasks that are now unbloc 
+		                       // reblock tasks that depend on this handlerked
+		resetNodeTransitive(TaskState.WAITING_FOR_PREVIOUS_TASKS);
 		execute();             // get ready for next trigger
 
 	}

@@ -12,7 +12,7 @@ public class ShowTeacherDashboardHandler extends ParentViewMessageHandler<RootVi
 	protected void handle(RootView parentView, 
 			              TeacherDashboardView currentView, 
 			              ShowTeacherDashboardMessage message) {
-		
+
 		parentView.showDashboard(currentView);
 	}
 
