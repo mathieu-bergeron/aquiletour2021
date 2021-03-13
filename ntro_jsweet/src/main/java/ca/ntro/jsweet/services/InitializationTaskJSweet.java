@@ -21,21 +21,14 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.regex.RegEx;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
-import ca.ntro.jsweet.introspection.IntrospectorJSweet;
-import ca.ntro.jsweet.regex.RegExJSweet;
-import ca.ntro.services.AppCloser;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
-import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
-import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
@@ -62,36 +55,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 	}
 
 
-	@Override
-	protected Introspector provideIntrospector() {
-		T.call(this);
-
-		return new IntrospectorJSweet();
-	}
-
-
-	@Override
-	protected Logger provideLogger() {
-		__T.call(this, "provideLogger");
-
-		return new LoggerJSweet();
-	}
-
-
-	@Override
-	protected AppCloser provideAppCloser() {
-		__T.call(this, "provideAppCloser");
-
-		return new AppCloserJSweet();
-	}
-
-
-	@Override
-	protected RegEx provideRegEx() {
-		__T.call(this, "provideRegEx");
-		
-		return new RegExJSweet();
-	}
 
 
 	@Override
@@ -171,8 +134,4 @@ public class InitializationTaskJSweet extends InitializationTask {
 	}
 
 
-	@Override
-	protected CollectionsService provideCollectionsService() {
-		return new CollectionsServiceJSweet();
-	}
 }

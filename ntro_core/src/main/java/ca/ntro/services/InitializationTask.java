@@ -17,20 +17,11 @@
 
 package ca.ntro.services;
 
-import ca.ntro.core.NtroUser;
-import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
-import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
-import ca.ntro.stores.DocumentPath;
-import ca.ntro.stores.ValuePath;
-import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public abstract class InitializationTask extends NtroTaskSync {
@@ -47,17 +38,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 
 	private void performInitialization() {
 
-		Introspector introspector = provideIntrospector();
-		T.__registerIntrospector(introspector);
-		Ntro.registerIntrospector(introspector);
-
-		Logger logger = provideLogger();
-		T.__registerLogger(logger);
-		Ntro.registerLogger(logger);
-		
-		Ntro.registerAppCloser(provideAppCloser());
-		Ntro.registerRegEx(provideRegEx());
-
 		StackAnalyzer stackAnalyzer = provideStackAnalyzer();
 		T.__registerStackAnalyzer(stackAnalyzer);
 		__Ntro.registerStackAnalyzer(stackAnalyzer);
@@ -73,23 +53,16 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.registerAssertService(provideAssertService());
 		Ntro.registerJsonService(provideJsonService());
 
-		registerSerializableClasses();
 		
 		Ntro.registerUserService(provideUserService());
 		
 		Ntro.registerModelStoreClass(provideModelStoreClass());
 		
-		Ntro.registerCollectionsService(provideCollectionsService());
 		
 		Ntro.registerValueFormatter(provideValueFormatter());
 	}
 
-
-	protected abstract Logger provideLogger();
-	protected abstract AppCloser provideAppCloser();
-	protected abstract RegEx provideRegEx();
 	protected abstract StackAnalyzer provideStackAnalyzer();
-	protected abstract Introspector provideIntrospector();
 	protected abstract ResourceLoader provideResourceLoader();
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
 	protected abstract JsonParser provideJsonParser();
@@ -100,19 +73,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract JsonService provideJsonService();
 	protected abstract UserService provideUserService();
 	protected abstract Class<? extends ModelStore> provideModelStoreClass();
-	protected abstract CollectionsService provideCollectionsService();
 	protected abstract ValueFormatter provideValueFormatter();
 
-	private void registerSerializableClasses() {
-
-		Ntro.registerSerializableClass(NtroUser.class);
-
-		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
-		Ntro.registerSerializableClass(GetModelNtroMessage.class);
-		Ntro.registerSerializableClass(SetModelNtroMessage.class);
-		Ntro.registerSerializableClass(InvokeValueMethodNtroMessage.class);
-
-		Ntro.registerSerializableClass(DocumentPath.class);
-		Ntro.registerSerializableClass(ValuePath.class);
-	}
 }

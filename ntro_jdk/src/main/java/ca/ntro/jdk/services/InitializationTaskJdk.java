@@ -42,19 +42,6 @@ import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJdk extends InitializationTask {
 
-	@Override
-	protected AppCloser provideAppCloser() {
-		__T.call(this, "provideAppCloser");
-
-		return new AppCloserJdk();
-	}
-
-	@Override
-	protected RegEx provideRegEx() {
-		__T.call(this, "provideRegEx");
-
-		return new RegExJdk();
-	}
 
 
 	@Override
@@ -64,12 +51,6 @@ public class InitializationTaskJdk extends InitializationTask {
 		return new StackAnalyzerJdk();
 	}
 
-	@Override
-	protected Introspector provideIntrospector() {
-		T.call(this);
-		
-		return new IntrospectorJdk();
-	}
 
 	@Override
 	protected ValueFormatter provideValueFormatter() {
@@ -78,12 +59,6 @@ public class InitializationTaskJdk extends InitializationTask {
 		return new ValueFormatterJdk();
 	}
 
-	@Override
-	protected Logger provideLogger() {
-		__T.call(InitializationTaskJdk.class, "provideLogger");
-
-		return new LoggerJdk();
-	}
 
 	@Override
 	protected ResourceLoader provideResourceLoader() {
@@ -147,9 +122,5 @@ public class InitializationTaskJdk extends InitializationTask {
 		return LocalStoreFiles.class;
 	}
 
-	@Override
-	protected CollectionsService provideCollectionsService() {
-		return new CollectionsServiceJdk();
-	}
 
 }

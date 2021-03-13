@@ -20,8 +20,6 @@ package ca.ntro.jsweet.services;
 import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.Globals;
-import ca.ntro.services.CollectionsService;
-import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
 public class NtroJSweet {
@@ -29,8 +27,8 @@ public class NtroJSweet {
 	public static NtroInitializationTask defaultInitializationTask(BackendServiceJSweet backendServiceJSweet) {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");
 
-		// FIXME: collections must be initialized before creating a task
-		Ntro.registerCollectionsService(new CollectionsServiceJSweet());
+		EarlyInitializationJSweet earlyInitialization = new EarlyInitializationJSweet();
+		earlyInitialization.performInitialization();
 		
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
 		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
