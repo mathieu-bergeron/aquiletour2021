@@ -47,5 +47,4 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(DocumentPath.class);
 		Ntro.registerSerializableClass(ValuePath.class);
 	}
-
 }
