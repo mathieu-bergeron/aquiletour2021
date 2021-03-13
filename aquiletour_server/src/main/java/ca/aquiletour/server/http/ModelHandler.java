@@ -92,6 +92,9 @@ public class ModelHandler extends AbstractHandler {
             response.setStatus(HttpStatus.METHOD_NOT_ALLOWED_405);
             baseRequest.setHandled(true);
         }
+
+        // XXX: prepare for next request
+        Ntro.reset();
     }
 
 	@SuppressWarnings("unchecked")
@@ -135,7 +138,6 @@ public class ModelHandler extends AbstractHandler {
 			SetModelNtroMessage setModelNtroMessage) throws IOException {
 
 		DocumentPath documentPath = setModelNtroMessage.getDocumentPath();
-		NtroUser user = setModelNtroMessage.getUser();
 		NtroModel model = setModelNtroMessage.getModel();
 
         Ntro.modelStore().saveJsonString(documentPath, Ntro.jsonService().toString(model));
