@@ -27,6 +27,7 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 	}
 
 	public void triggerHandlerOnce() {
+		System.out.println("triggerHandlerOnce");
 		
 		// FIXME: as implemented below
 		//        there is an issue with two message
