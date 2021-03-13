@@ -17,7 +17,6 @@
 
 package ca.ntro.server;
 
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
@@ -25,6 +24,7 @@ import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 import ca.ntro.server.backend.BackendServiceTest;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.ModelStore;
 
 public class JavaMainServer {
 	

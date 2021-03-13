@@ -1,6 +1,7 @@
 package ca.ntro.core.models;
 
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.services.ModelStore;
 import ca.ntro.stores.ValuePath;
 
 public abstract class StoredValue implements NtroModelValue, JsonSerializable {

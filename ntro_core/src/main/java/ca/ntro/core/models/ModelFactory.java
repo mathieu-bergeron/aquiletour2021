@@ -12,6 +12,7 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroCollections;
 import ca.ntro.stores.DocumentPath;

@@ -53,7 +53,7 @@ public abstract class MessageService {
 		}
 	}
 
-	public void reset() {
+	void reset() {
 		T.call(this);
 		
 		handlers = new HashMap<>();

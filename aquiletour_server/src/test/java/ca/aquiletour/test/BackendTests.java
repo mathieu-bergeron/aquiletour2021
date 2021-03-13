@@ -20,12 +20,12 @@ import org.junit.runners.JUnit4;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 
 import org.eclipse.jetty.client.HttpClient;

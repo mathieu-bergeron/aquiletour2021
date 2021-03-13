@@ -24,7 +24,6 @@ import ca.ntro.assertions.AssertExpression;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.web.mvc.ViewLoaderWeb;
@@ -390,4 +389,16 @@ public class Ntro {
 	/* </UserService> */
 	
 	
+	
+	
+	
+	/* <reset> */
+
+	public static void reset() {
+		messageService().reset();
+		modelStore().reset();
+	}
+
+	/* </reset> */
+
 }

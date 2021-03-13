@@ -160,7 +160,7 @@ public class DynamicHandler extends AbstractHandler {
 			//rootController.getTask().destroy();
 			
 			// XXX: prepare for next request
-			Ntro.messageService().reset();
+			Ntro.reset();
 		}
 		
 		//System.out.println(rootController.getTask().toString());

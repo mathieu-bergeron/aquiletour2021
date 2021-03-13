@@ -1,4 +1,4 @@
-package ca.ntro.core.models;
+package ca.ntro.services;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,11 +11,12 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
+import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
@@ -114,5 +115,10 @@ public abstract class ModelStore {
 		DocumentPath documentPath = localHeap.get(model);
 
 		saveJsonString(documentPath, Ntro.jsonService().toString(model));
+	}
+	
+	void reset() {
+		localHeap = new HashMap<>();
+		localHeapByPath = new HashMap<>();
 	}
 }

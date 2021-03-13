@@ -19,7 +19,6 @@ package ca.ntro.jdk.services;
 
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
@@ -33,6 +32,7 @@ import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
+import ca.ntro.services.ModelStore;
 import ca.ntro.services.NtroCollections;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.ThreadService;
