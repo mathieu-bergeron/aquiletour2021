@@ -2,7 +2,7 @@ package ca.aquiletour.server;
 
 import java.util.Map;
 
-import ca.aquiletour.core.AiguilleurApp;
+import ca.aquiletour.core.AiguilleurBackend;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -29,13 +29,13 @@ import ca.aquiletour.server.backend.users.AddUserToCourseHandler;
 import ca.aquiletour.server.backend.users.DeleteUserFromCourseHandler;
 import ca.aquiletour.server.backend.users.DeleteUserHandler;
 import ca.ntro.HandlerRegistrar;
-import ca.ntro.NtroBackend;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.web.NtroBackendWeb;
 import ca.ntro.web.NtroRouter;
 import ca.ntro.web.RouterRegistrar;
 
-public class AiguilleurBackend extends AiguilleurApp implements NtroBackend {
+public class AiguilleurBackendWeb extends AiguilleurBackend implements NtroBackendWeb {
 
 	@Override
 	public void registerHandlers(HandlerRegistrar registrar) {
