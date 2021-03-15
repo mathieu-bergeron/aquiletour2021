@@ -1,7 +1,5 @@
 package ca.ntro.jsweet.dom;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.BiFunction;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -136,5 +134,10 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void empty() {
 		jQueryElement.empty();
+	}
+
+	@Override
+	public void html(String htmlString) {
+		jQueryElement.append($.parseHTML(htmlString));
 	}
 }

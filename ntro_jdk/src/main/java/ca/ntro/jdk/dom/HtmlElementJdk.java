@@ -146,4 +146,10 @@ public class HtmlElementJdk extends HtmlElement {
 		jsoupElement.empty();
 	}
 
+	@Override
+	public void html(String htmlString) {
+		jsoupElement.html(htmlString);
+		
+	}
+
 }

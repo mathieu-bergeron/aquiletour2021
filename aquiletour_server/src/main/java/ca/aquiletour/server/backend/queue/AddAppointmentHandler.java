@@ -37,9 +37,11 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
 						int nbAppointment = queueModel.getAppointments().size();
+
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
 			                    "admin",
 			                    studentId);
+
 						if(dashboardModel != null) {
 							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
 							if(requestingUser.getId().equals(studentId)) {

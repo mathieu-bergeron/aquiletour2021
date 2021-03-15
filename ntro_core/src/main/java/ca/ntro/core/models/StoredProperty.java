@@ -62,6 +62,10 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 		V oldValue = value;
 		value = newValue;
 		
+		List<Object> args = new ArrayList<>();
+		args.add(newValue);
+		modelStore().onValueMethodInvoked(valuePath(),"set",args);
+		
 		for(ValueObserver<V> observer : observers) {
 			observer.onValueChanged(oldValue, newValue);
 		}

@@ -41,6 +41,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
+
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
 		makeAppointmentLink.setAttribute("href","/billetterie/" + course.getTitle() + "?makeAppointment");
 		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");

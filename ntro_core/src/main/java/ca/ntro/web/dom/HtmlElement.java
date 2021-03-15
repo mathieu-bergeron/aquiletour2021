@@ -32,6 +32,7 @@ public abstract class HtmlElement {
 	public abstract void empty();
 	public abstract void remove();
 	public abstract void value(String value);
+	public abstract void html(String htmlString);
 	public abstract String getValue();
 
 }
