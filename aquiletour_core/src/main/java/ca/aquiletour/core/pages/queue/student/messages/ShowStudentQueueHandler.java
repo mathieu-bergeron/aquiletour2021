@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.queue.student.messages;
 import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.QueueView;
-import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.AiguilleurRootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
 
@@ -19,7 +19,7 @@ public class ShowStudentQueueHandler extends ControllerMessageHandler<QueueContr
 		
 		currentController.setModelLoader(QueueModel.class, authToken, courseId);
 		
-		RootView rootView = (RootView) currentController.getParentController().getView();
+		AiguilleurRootView rootView = (AiguilleurRootView) currentController.getParentController().getView();
 		
 		rootView.showQueue(currentView);
 	}

@@ -1,15 +1,15 @@
 package ca.aquiletour.core.pages.login;
 
-import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.AiguilleurRootView;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 
-public class ShowLoginHandler extends ParentViewMessageHandler<RootView,
+public class ShowLoginHandler extends ParentViewMessageHandler<AiguilleurRootView,
                                                                   LoginView,
                                                                   ShowLoginMessage> {
 
 	@Override
-	protected void handle(RootView parentView, 
+	protected void handle(AiguilleurRootView parentView, 
 			              LoginView currentView, 
 			              ShowLoginMessage message) {
 		T.call(this);

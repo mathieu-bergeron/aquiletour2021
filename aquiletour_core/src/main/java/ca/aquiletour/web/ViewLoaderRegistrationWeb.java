@@ -15,7 +15,7 @@ import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
-import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.AiguilleurRootView;
 import ca.aquiletour.core.pages.users.UserView;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
@@ -44,7 +44,7 @@ public class ViewLoaderRegistrationWeb {
 	public static void registerViewLoaders() {
 		T.call(ViewLoaderRegistrationWeb.class);
 		
-		ViewLoaders.registerViewLoader(RootView.class,
+		ViewLoaders.registerViewLoader(AiguilleurRootView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/root/root.html")

@@ -2,7 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.AiguilleurApp;
+import ca.aquiletour.core.AiguilleurFrontend;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
@@ -26,7 +26,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
-import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.AiguilleurRootView;
 import ca.aquiletour.core.pages.users.UserView;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
@@ -48,13 +48,12 @@ import ca.aquiletour.web.pages.users.UsersViewWeb;
 import ca.ntro.web.RouterRegistrar;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
-import ca.ntro.web.NtroAppWeb;
+import ca.ntro.web.NtroFrontendWeb;
 import ca.ntro.web.NtroRouter;
 import ca.ntro.web.ViewRegistrarWeb;
 
-public class AiguilleurAppWeb extends AiguilleurApp implements NtroAppWeb {
+public class AiguilleurFrontendWeb extends AiguilleurFrontend implements NtroFrontendWeb {
 
 	@Override
 	public void registerRouters(RouterRegistrar registrar) {
@@ -108,7 +107,7 @@ public class AiguilleurAppWeb extends AiguilleurApp implements NtroAppWeb {
 	@Override
 	public void registerViews(ViewRegistrarWeb registrar) {
 		
-		registrar.registerView(RootView.class,
+		registrar.registerView(AiguilleurRootView.class,
 				               "fr",
 			     	           "/views/root/root.html",
 			     	           "/views/root/root.css",

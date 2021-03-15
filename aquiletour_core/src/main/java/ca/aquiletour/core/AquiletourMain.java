@@ -30,7 +30,7 @@ import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
-import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.AiguilleurRootController;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.values.ObservableUserMap;
 import ca.ntro.core.mvc.ControllerFactory;
@@ -67,7 +67,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);  
+		AiguilleurRootController rootController = ControllerFactory.createRootController(AiguilleurRootController.class, "*", getWindow(), context);  
 
 		rootController.execute();
 

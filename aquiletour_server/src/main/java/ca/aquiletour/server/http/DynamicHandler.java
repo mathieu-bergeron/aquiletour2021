@@ -37,7 +37,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.AnonUser;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
-import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.AiguilleurRootController;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
@@ -141,7 +141,7 @@ public class DynamicHandler extends AbstractHandler {
 		    //RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
 
 		    // NORMAL
-		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
+		    AiguilleurRootController rootController =  ControllerFactory.createRootController(AiguilleurRootController.class, path, newWindow, context);
 
 
 			// Client controller executes after

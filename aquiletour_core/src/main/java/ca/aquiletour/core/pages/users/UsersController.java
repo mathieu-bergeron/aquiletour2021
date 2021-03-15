@@ -1,12 +1,12 @@
 package ca.aquiletour.core.pages.users;
 
-import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.AiguilleurRootController;
 import ca.aquiletour.core.pages.users.messages.ShowUsersHandler;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 
-public class UsersController extends NtroController<RootController> {
+public class UsersController extends NtroController<AiguilleurRootController> {
 
 	@Override
 	protected void onCreate() {

@@ -7,14 +7,18 @@ import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.EarlyInitializationJdk;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.NtroInitializationTask;
-import ca.ntro.web.NtroAppWeb;
+import ca.ntro.web.NtroFrontendWeb;
 
 public class NtroWebServer {
 
-	public static void launchServer(Class<? extends NtroBackend> backendClass, 
-			                           Class<? extends NtroAppWeb> appClass, 
-			                           String[] args) {
+	public static void launchBackend(Class<? extends NtroBackend> backendClass, 
+			                         String[] args) {
 
+	}
+
+	public static void launchApp(Class<? extends NtroBackend> backendClass, 
+			                     Class<? extends NtroFrontendWeb> appClass, 
+			                     String[] args) {
 	}
 
 	public static NtroInitializationTask defaultInitializationTask(Class<? extends BackendServiceServer> backendServiceClass, ModelStore localStore) {

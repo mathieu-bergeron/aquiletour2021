@@ -31,13 +31,13 @@ import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class RootController extends NtroRootController {
+public class AiguilleurRootController extends NtroRootController {
 
 	@Override
 	protected void onCreate() {
 		T.call(this);
 		
-		setViewLoader(RootView.class, currentContext().lang());
+		setViewLoader(AiguilleurRootView.class, currentContext().lang());
 
 		addSubController(StudentDashboardController.class, "mescours");
 		addSubController(TeacherDashboardController.class, "mescours");

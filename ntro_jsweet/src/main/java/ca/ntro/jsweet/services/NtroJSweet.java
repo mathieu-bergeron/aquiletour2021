@@ -17,17 +17,27 @@
 
 package ca.ntro.jsweet.services;
 
+import ca.ntro.NtroBackend;
 import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.Globals;
 import ca.ntro.services.NtroInitializationTask;
-import ca.ntro.web.NtroAppWeb;
+import ca.ntro.web.NtroFrontendWeb;
 
 public class NtroJSweet {
-	
-	public static void launchApp(Class<? extends NtroAppWeb> appClass, String[] args) {
+
+	public static void launchFrontend(Class<? extends NtroFrontendWeb> frontendClass, 
+			                          String[] args) {
 
 	}
+
+	public static void launchApp(Class<? extends NtroBackend> backendClass, 
+		                      	 Class<? extends NtroFrontendWeb> appClass, 
+		                      	 String[] args) {
+
+	}
+
+	
 
 	public static NtroInitializationTask defaultInitializationTask(BackendServiceJSweet backendServiceJSweet) {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");

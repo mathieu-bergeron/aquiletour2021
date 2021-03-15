@@ -1,15 +1,15 @@
 package ca.aquiletour.core.pages.home;
 
-import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.AiguilleurRootView;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 
-public class ShowHomeHandler extends ParentViewMessageHandler<RootView,
+public class ShowHomeHandler extends ParentViewMessageHandler<AiguilleurRootView,
                                                                   HomeView,
                                                                   ShowHomeMessage> {
 
 	@Override
-	protected void handle(RootView parentView, 
+	protected void handle(AiguilleurRootView parentView, 
 			              HomeView currentView, 
 			              ShowHomeMessage message) {
 		T.call(this);

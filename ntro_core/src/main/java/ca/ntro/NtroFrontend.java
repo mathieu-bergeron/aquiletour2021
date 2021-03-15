@@ -1,9 +1,9 @@
 package ca.ntro;
 
-public interface NtroApp {
+public interface NtroFrontend {
 	
 	void registerModels(ModelRegistrar registrar);
 	void registerMessages(MessageRegistrar registrar);
-	void registerControllers(ControllerRegistrar registar);
+	void registerRootController(RootControllerRegistrar registar);
 
 }

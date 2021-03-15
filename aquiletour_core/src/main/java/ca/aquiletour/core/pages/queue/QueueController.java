@@ -1,12 +1,12 @@
 package ca.aquiletour.core.pages.queue;
 
-import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.AiguilleurRootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public abstract class QueueController extends NtroController<RootController> {
+public abstract class QueueController extends NtroController<AiguilleurRootController> {
 
 	@Override
 	protected void onCreate() {

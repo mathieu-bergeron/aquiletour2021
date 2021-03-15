@@ -8,7 +8,7 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboard
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
-import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.AiguilleurRootView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
@@ -22,7 +22,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class RootViewWeb extends NtroViewWeb implements RootView {
+public class RootViewWeb extends NtroViewWeb implements AiguilleurRootView {
 
 	@Override
 	public void initialize(NtroContext<?> context) {

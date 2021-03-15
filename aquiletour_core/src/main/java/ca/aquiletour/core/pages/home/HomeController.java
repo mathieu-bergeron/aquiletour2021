@@ -1,11 +1,11 @@
 package ca.aquiletour.core.pages.home;
 
-import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.AiguilleurRootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public class HomeController extends NtroController<RootController> {
+public class HomeController extends NtroController<AiguilleurRootController> {
 
 	@Override
 	protected void onCreate() {

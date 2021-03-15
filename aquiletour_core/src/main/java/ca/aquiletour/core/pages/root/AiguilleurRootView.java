@@ -8,7 +8,7 @@ import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.ntro.core.mvc.NtroView;
 
-public interface RootView extends NtroView {
+public interface AiguilleurRootView extends NtroView {
 	
 	void showDashboard(DashboardView dashboardView);
 	void showQueue(QueueView queueView);
