@@ -21,6 +21,11 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	}
 
 	@Override
+	public void displayStatus(boolean myAppointment, boolean teacherAvailable) {
+		
+	}
+
+	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
 		T.here();
@@ -59,6 +64,8 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 			}
 		});
 	}
+
+
 
 
 }

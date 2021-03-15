@@ -17,13 +17,10 @@
 
 package ca.ntro.server;
 
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebServer;
 import ca.ntro.server.backend.BackendServiceTest;
-import ca.ntro.services.BackendService;
 import ca.ntro.services.ModelStore;
 
 public class JavaMainServer {

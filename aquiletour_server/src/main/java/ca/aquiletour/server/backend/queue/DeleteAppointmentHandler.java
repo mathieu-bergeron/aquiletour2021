@@ -34,23 +34,21 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
+					// XXX: must get a fresh copy of the modelStore (it is thread specific)
+					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+					
 					List<String> studentIds = queueModel.getStudentIds();
-					for (String studentId : studentIds) {
-						int nbAppointment = queueModel.getAppointments().size();
+					int nbAppointment = queueModel.getAppointments().size();
 
-						// XXX: cannot use modelStore in executeLater
-						//      must use Ntro.modelStore()
-						ModelLoader modelLoader = Ntro.modelStore().getLoader(DashboardModel.class, "admin", studentId);
-						modelLoader.execute();
-						DashboardModel dashboardModel = (DashboardModel) modelLoader.getModel();
+					for (String studentId : studentIds) {
+
+						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 
 						if(dashboardModel != null) {
 							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
-							if(requestingUser.getId().equals(studentId)) {
-								dashboardModel.updateMyAppointment(courseId, false);
-							}
+							dashboardModel.updateMyAppointment(courseId, false);
 							
-							Ntro.modelStore().save(dashboardModel);
+							modelStore.save(dashboardModel);
 						}
 					}
 				}

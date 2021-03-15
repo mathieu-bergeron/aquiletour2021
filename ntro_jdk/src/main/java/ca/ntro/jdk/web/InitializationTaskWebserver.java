@@ -1,6 +1,5 @@
 package ca.ntro.jdk.web;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.InitializationTaskJdk;
@@ -28,5 +27,10 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 		
 		return service;
 		
+	}
+
+	@Override
+	protected Class<? extends ModelStore> provideModelStoreClass() {
+		return localStore.getClass();
 	}
 }

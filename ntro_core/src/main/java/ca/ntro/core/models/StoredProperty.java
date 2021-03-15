@@ -58,10 +58,12 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 
 	public void set(V newValue) {
 		T.call(this);
+		
+		System.out.println("set " + newValue);
 
 		V oldValue = value;
 		value = newValue;
-		
+
 		List<Object> args = new ArrayList<>();
 		args.add(newValue);
 		modelStore().onValueMethodInvoked(valuePath(),"set",args);

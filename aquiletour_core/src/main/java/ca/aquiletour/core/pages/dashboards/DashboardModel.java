@@ -71,7 +71,7 @@ public class DashboardModel implements NtroModel {
 	public void updateMyAppointment(String courseId, Boolean state) {
 		for (int i = 0; i < courses.size(); i++) {
 			CourseSummary currentCourse = courses.item(i);
-			if (currentCourse.getTitle().equals(courseId)) {
+			if (currentCourse.getCourseId().equals(courseId)) {
 				currentCourse.updateMyAppointment(state);
 			}
 		}

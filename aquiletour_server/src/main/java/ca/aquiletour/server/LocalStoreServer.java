@@ -2,7 +2,6 @@ package ca.aquiletour.server;
 
 import java.util.List;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.stores.ValuePath;

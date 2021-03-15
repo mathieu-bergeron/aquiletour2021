@@ -7,6 +7,7 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
@@ -34,19 +35,18 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
+					// XXX: must get a fresh copy of the modelStore (it is thread specific)
+					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
 						int nbAppointment = queueModel.getAppointments().size();
-
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-			                    "admin",
-			                    studentId);
+						
+						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 
 						if(dashboardModel != null) {
 							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
-							if(requestingUser.getId().equals(studentId)) {
-								dashboardModel.updateMyAppointment(courseId, true);
-							}
+							dashboardModel.updateMyAppointment(courseId, true);
 							modelStore.save(dashboardModel);
 						}
 					}

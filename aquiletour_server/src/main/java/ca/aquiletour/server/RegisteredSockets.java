@@ -71,6 +71,12 @@ public class RegisteredSockets {
 	public static void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		T.call(RegisteredSockets.class);
 		
+		if(args.size() > 0) {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+		}else {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+		}
+		
 		Set<NtroUser> observers = modelObservators.get(valuePath.getDocumentPath());
 
 		if(observers != null) {

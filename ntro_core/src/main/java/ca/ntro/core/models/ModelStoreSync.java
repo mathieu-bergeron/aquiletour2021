@@ -14,6 +14,7 @@ public class ModelStoreSync {
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+
 		ModelLoader loader = modelStore.getLoader(modelClass, authToken, firstPathName, pathRemainder);
 		loader.execute();
 		
