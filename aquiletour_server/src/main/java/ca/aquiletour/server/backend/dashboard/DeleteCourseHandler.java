@@ -48,7 +48,7 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 				
 				@Override
 				protected void runTaskAsync() {
-					ArrayList<User> usersList = new ArrayList<User>();
+					ArrayList<User> usersList = new ArrayList<User>();//TODO studentsId are in queueModel
 					Map<String,User> usersMap = (Map<String, User>) usersModel.getUsers().getValue();;
 					for (Map.Entry<String, User> entry : usersMap.entrySet()) {
 						usersList.add(entry.getValue());
