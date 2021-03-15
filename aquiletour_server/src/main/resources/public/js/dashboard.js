@@ -34,7 +34,9 @@ window.onload = function(){
     }
 
     $(function() {
-      $( "#course-cards" ).sortable();
+      $( "#course-cards" ).sortable({
+          handle:'.handle'
+      });
     
       
     } );

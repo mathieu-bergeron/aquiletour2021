@@ -1,20 +1,28 @@
 <script defer type="text/javascript" src="/_R/js/home.js"></script>
 
-<div style="background-image: url('/_R/img/home.png');"></div>
-
-
-
   <div class="modal" id="myModal">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content home-modal">
           <div class="modal-header">
             <h4 class="modal-title">Modal title</h4>    
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <button type="button" id="btn-close" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
           </div><div class="container"></div>
-          <div class="modal-body">
-            Êtes-vous étudiant ou prof?
-            <a data-toggle="modal" href="#myModal2" data-dismiss="modal" class="btn btn-primary">Prof</a>
-            <a data-toggle="modal" href="#myModal3" data-dismiss="modal" class="btn btn-primary">Étudiant</a>
+          <div class="modal-body home-mBody">
+            <div id="role-container" class="role-container">
+              <a role="button" id="roleStudent">Étudiant</a>
+              <a role="button" id="roleTeacher">Employé</a>
+            </div>
+            <div class="login-container">
+              <form action="/usagers" method="post" class="login-form">
+                    <label id="userRole" for="email">No de DA</label><br/>
+                    <input class="userInput" name="email"></input><br/>
+                    <label for="Password">Password</label><br/>
+                    <input class="userInput" name="password"></input><br/>
+                    <button>Log in</button>
+                </form>
+            </div>
+            <!--<a data-toggle="modal" href="#myModal2" data-dismiss="modal" class="btn btn-primary">Prof</a>
+            <a data-toggle="modal" href="#myModal3" data-dismiss="modal" class="btn btn-primary">Étudiant</a>-->
           </div>
           <div class="modal-footer">
             <a href="#" data-dismiss="modal" class="btn">Close</a>
@@ -97,6 +105,51 @@
     </a>
   </div>
 
+  <script>
+    $("#roleStudent").css('background-color', '#63999C');
+
+    $("a").click(function(){
+      if (this.id == 'roleStudent') {
+
+        $(this).css('background-color', '#63999C');
+        $("#roleTeacher").css('background-color', '');
+        $("#userRole").text('No de DA');
+
+        history.pushState({
+          id: 'homepage'
+        }, 'Home', window.location.pathname + "?connectRole=Student");
+
+      } else if (this.id == 'roleTeacher') {
+
+        $(this).css('background-color', '#63999C');
+        $("#roleStudent").css('background-color', '');
+        $("#userRole").text('No d\'employe');
+
+        history.pushState({
+          id: 'homepage'
+        }, 'Home', window.location.pathname + "?connectRole=Teacher");
+      }
+    });
+
+    $("#btn-close").click(function(){
+      history.pushState({
+          id: 'homepage'
+        }, 'Home', window.location.pathname);
+    })
+    
+    
+    //$("#role-container a").click(function(event){
+    //    $("a").css('background-color','');
+    //    $(this).css('background-color', '#63999C');
+
+    //    if ($("#roleStudent").css('background-color') == '#63999C') {
+    //      $("#connectRole").text("No de DA");
+    //    } else {
+    //      $("#connecRole").text("No d'employé");
+    //    }
+                                  
+    //});
+  </script>
   <!--<footer class="site-footer bg-dark">
     <div class="container">
         <div class="row">
