@@ -38,7 +38,7 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 					studentId);
 			
 			dashboardModel.updateMyAppointment(courseId, false);
-			modelStore.svae(dashboardModel);
+			modelStore.save(dashboardModel);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override

@@ -37,7 +37,6 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 
 			dashboardModel.updateMyAppointment(courseId, true);
 			modelStore.save(dashboardModel);
-			dashboardModel.save();
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override

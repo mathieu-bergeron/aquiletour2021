@@ -41,7 +41,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 
 			QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
 			openQueuesModel.addQueueToList(queue);
-			openQueuesModel.save();
+			modelStore.save(openQueuesModel);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -83,10 +83,13 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 			public void run() {
 				T.here();
 				DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+
 				T.values(queueModel.getTeacherId());
+
 				dashboardModelTeacher.updateNbAppointmentOfCourse(courseId, 0);
 				dashboardModelTeacher.setTeacherAvailability(false, courseId);
-				dashboardModelTeacher.save();
+				modelStore.save(dashboardModelTeacher);
+
 				List<String> studentIds = queueModel.getStudentIds();
 				for (String studentId : studentIds) {
 					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
@@ -94,15 +97,16 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 						dashboardModel.setTeacherAvailability(false, courseId);
 						dashboardModel.updateMyAppointment(courseId, false);
 						dashboardModel.updateNbAppointmentOfCourse(courseId, 0);
-						dashboardModel.save();
+						modelStore.save(dashboardModel);
+
 						queueModel.removeAllAppointmentsOfStudent(studentId);
-						queueModel.save();
+						modelStore.save(queueModel);
 					}
 					
 				}
 				QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 				openQueuesModel.deleteQueue(courseId);
-				openQueuesModel.save();
+				modelStore.save(openQueuesModel);
 			}
 		};
 		return timerTask;

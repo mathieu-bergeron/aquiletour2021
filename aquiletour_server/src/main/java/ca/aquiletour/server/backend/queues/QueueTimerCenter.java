@@ -10,7 +10,6 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.jdk.models.ModelStoreSync;
 
 public class QueueTimerCenter {
 	private static ArrayList<QueueTimer> queueTimers = new ArrayList<QueueTimer>();

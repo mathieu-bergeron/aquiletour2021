@@ -35,7 +35,7 @@ public class AquiletourBackendRequestHandler {
 
 		}else if(path.startsWith("csv")) {
 			
-			sendCsvMessages(path.subPath(1), parameters, context.getUser());
+			sendCsvMessages(path.subPath(1), parameters, context.user());
 
 		} else if(path.startsWith("billetteries")) {
 			
@@ -100,11 +100,7 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("title")[0];
 			String courseId = parameters.get("title")[0];
 
-<<<<<<< HEAD
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-=======
-			AddCourseMessage addCourseMessage = new AddCourseMessage();
->>>>>>> marwane
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, false, false, 0));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);

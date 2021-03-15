@@ -68,7 +68,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 			}
 		});
 
-		if(course.getIsQueueOpen()) {
+		if(course.getIsQueueOpen().getValue()) {
 			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle() + "?teacherClosesQueue");
 			closeQueue.appendHtml("CLOSE QUEUE");
 		} else {

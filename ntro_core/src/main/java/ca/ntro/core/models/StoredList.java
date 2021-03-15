@@ -58,8 +58,6 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 	public void clearItems() {
 		getValue().clear();
 		
-		System.out.println("size after clear: " + getValue().size());
-
 		List<Object> args = new ArrayList<>();
 
 		modelStore().onValueMethodInvoked(valuePath(),"clearItems",args);
