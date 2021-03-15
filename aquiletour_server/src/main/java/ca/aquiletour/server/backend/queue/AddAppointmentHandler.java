@@ -43,19 +43,20 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 				protected void runTask() {
 					// XXX: must get a fresh copy of the modelStore (it is thread specific)
 					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
-
+					int nbAppointment = queueModel.getAppointments().size();
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
-						int nbAppointment = queueModel.getAppointments().size();
-						
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
+						DashboardModel dashboardModelStudent = modelStore.getModel(DashboardModel.class, "admin", studentId);
 
-						if(dashboardModel != null) {
-							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
-							dashboardModel.updateMyAppointment(courseId, true);
-							modelStore.save(dashboardModel);
+						if(dashboardModelStudent != null) {
+							dashboardModelStudent.updateNbAppointmentOfCourse(courseId, nbAppointment);
+							dashboardModelStudent.updateMyAppointment(courseId, true);
+							modelStore.save(dashboardModelStudent);
 						}
 					}
+					DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+					dashboardModelTeacher.updateNbAppointmentOfCourse(courseId, nbAppointment);
+					modelStore.save(dashboardModelTeacher);
 				}
 
 				@Override

@@ -35,40 +35,38 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		HtmlElement deleteCourseLink = this.getRootElement().find("#deleteLink").get(0);
 		HtmlElement closeQueue = this.getRootElement().find("#closeQueue").get(0);
-		
+
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(nbAppointment);
 		MustNot.beNull(makeAppointmentLink);
 		MustNot.beNull(closeQueue);
 
-
-
 		title.appendHtml(course.getTitle());
-		//courseId.appendHtml(course.getCourseId());
+		// courseId.appendHtml(course.getCourseId());
 
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
-		makeAppointmentLink.setAttribute("href","/billetterie/" + course.getTitle() + "?makeAppointment");
+		makeAppointmentLink.setAttribute("href", "/billetterie/" + course.getTitle() + "?makeAppointment");
 		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");
 
 		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
-				
+
 				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(course.getCourseId());
 
 				Ntro.messages().send(showTeacherQueueMessage);
-				
+
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				// FIXME
 				teacherUsesQueueMessage.setCourseId("3C6");
-				teacherUsesQueueMessage.setTeacher((User)Ntro.userService().currentUser());
+				teacherUsesQueueMessage.setTeacher((User) Ntro.userService().currentUser());
 				Ntro.messages().send(teacherUsesQueueMessage);
 			}
 		});
 
-		if(course.getIsQueueOpen().getValue()) {
+		if (course.getIsQueueOpen().getValue()) {
 			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle() + "?teacherClosesQueue");
 			closeQueue.appendHtml("CLOSE QUEUE");
 		} else {

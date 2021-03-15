@@ -26,7 +26,7 @@
     ]
   },
   "maxId": 156,
-  "teacherId": "",
+  "teacherId": "alice",
   "_C": "QueueModel",
   "studentIds": [
     "bob"

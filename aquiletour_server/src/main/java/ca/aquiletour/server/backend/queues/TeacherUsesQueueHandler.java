@@ -34,7 +34,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 		QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 
 		if (queueModel != null && allQueuesModel != null && openQueuesModel != null) {
-			
+
 			TimerTask timerTask = setQueueClosedTimerTask(courseId, queueModel, modelStore);
 
 			QueueTimerCenter.startATimer(timerTask, courseId);
@@ -48,17 +48,22 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 				protected void runTask() {
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
-						if (dashboardModel != null) {
+						DashboardModel dashboardModelStudent = modelStore.getModel(DashboardModel.class, "admin",
+								studentId);
+						if (dashboardModelStudent != null) {
 							T.here();
-							dashboardModel.setTeacherAvailability(true, courseId);
-							modelStore.save(dashboardModel);
+							dashboardModelStudent.setTeacherAvailability(true, courseId);
+							modelStore.save(dashboardModelStudent);
 						}
 					}
+					DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin",
+							queueModel.getTeacherId());
+					dashboardModelTeacher.setTeacherAvailability(true, courseId);
+					modelStore.save(dashboardModelTeacher);
 
 					QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
 					QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
-					
+
 					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 					openQueuesModel.addQueueToList(queue);
 					modelStore.save(openQueuesModel);
@@ -81,10 +86,12 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 		TimerTask timerTask = new TimerTask() { // do that after timer is over
 			@Override
 			public void run() {
-				T.here();
-				DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+				
+				queueModel.clearQueue();
+				modelStore.save(queueModel);
 
-				T.values(queueModel.getTeacherId());
+				DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin",
+						queueModel.getTeacherId());
 
 				dashboardModelTeacher.updateNbAppointmentOfCourse(courseId, 0);
 				dashboardModelTeacher.setTeacherAvailability(false, courseId);
@@ -92,17 +99,14 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 
 				List<String> studentIds = queueModel.getStudentIds();
 				for (String studentId : studentIds) {
-					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
-					if (dashboardModel != null) {
-						dashboardModel.setTeacherAvailability(false, courseId);
-						dashboardModel.updateMyAppointment(courseId, false);
-						dashboardModel.updateNbAppointmentOfCourse(courseId, 0);
-						modelStore.save(dashboardModel);
-
-						queueModel.removeAllAppointmentsOfStudent(studentId);
-						modelStore.save(queueModel);
+					DashboardModel dashboardModelStudent = modelStore.getModel(DashboardModel.class, "admin", studentId);
+					if (dashboardModelStudent != null) {
+						dashboardModelStudent.setTeacherAvailability(false, courseId);
+						dashboardModelStudent.updateMyAppointment(courseId, false);
+						dashboardModelStudent.updateNbAppointmentOfCourse(courseId, 0);
+						modelStore.save(dashboardModelStudent);
 					}
-					
+
 				}
 				QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 				openQueuesModel.deleteQueue(courseId);
