@@ -15,10 +15,9 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements StudentCourseSummaryView {
 
-	@Override
-	public void initialize(NtroContext<?> context) {
-		
-	}
+	public void initializeWebView() {
+		// TODO Auto-generated method stub
+    }
 
 	@Override
 	public void displayStatus(boolean doesStudentHaveAppointment, boolean isTeacherAvailable) {
@@ -35,6 +34,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 			teacherAvailable.html("Prof non-disponible");
 		}
 		
+
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement title = this.getRootElement().find("#course-title").get(0);
 		HtmlElement courseId = this.getRootElement().find("#courseId").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
-		
+
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(makeAppointmentLink);

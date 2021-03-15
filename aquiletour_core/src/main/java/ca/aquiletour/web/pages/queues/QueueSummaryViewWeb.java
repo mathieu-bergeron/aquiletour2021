@@ -11,8 +11,8 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		
+	public void initializeViewWeb(NtroContext<?> context) {
+
 	}
 
 	@Override

@@ -24,7 +24,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
 		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
@@ -37,7 +37,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				
 				if(context.user() instanceof Teacher) {
 					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
@@ -62,8 +61,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showDashboard(DashboardView dashboardView) {
 		T.call(this);
-		
-		
+
+
 		showSubView(dashboardView);
 	}
 
@@ -92,7 +91,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showUsers(UsersView usersView) {
 		T.call(this);
-		
+
 		showSubView(usersView);
 
 	}
@@ -100,9 +99,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showLogin(LoginView loginView) {
 		T.call(this);
-		
+
 		showSubView(loginView);
-		
+
 	}
 
 	@Override
