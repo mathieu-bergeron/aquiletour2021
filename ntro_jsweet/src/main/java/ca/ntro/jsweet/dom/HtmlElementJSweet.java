@@ -82,8 +82,16 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public HtmlElements find(String cssQuery) {
 		T.call(this);
-
-		return new HtmlElementsJSweet(jQueryElement.find(cssQuery));
+		
+		JQuery foundElements = jQueryElement.find(cssQuery);
+		
+		HtmlElementsJSweet result = null;
+		
+		if(foundElements.length > 0) {
+			result = new HtmlElementsJSweet(foundElements);
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -138,6 +146,18 @@ public class HtmlElementJSweet extends HtmlElement {
 
 	@Override
 	public void html(String htmlString) {
-		jQueryElement.append($.parseHTML(htmlString));
+
+		// XXX: this would remove listeners
+		//jQueryElement.html("");
+		jQueryElement.get(0).innerHTML = "";
+		
+		for(Object newElement : $.parseHTML(htmlString)) {
+			jQueryElement.append(newElement);
+		}
+	}
+
+	@Override
+	public String html() {
+		return jQueryElement.html();
 	}
 }

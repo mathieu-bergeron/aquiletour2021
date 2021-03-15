@@ -40,8 +40,7 @@ import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
-public class InitializationTaskJdk extends InitializationTask {
-
+public class InitializationTaskJdk extends InitializationTask { 
 
 
 	@Override

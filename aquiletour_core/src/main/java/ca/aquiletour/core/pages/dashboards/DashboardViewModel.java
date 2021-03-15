@@ -49,11 +49,11 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 					
 					@Override
 					public void onValue(Boolean value) {
+						courseView.displayStatus(value, item.getIsQueueOpen());
 					}
 					
 					@Override
 					public void onValueChanged(Boolean oldValue, Boolean value) {
-						System.out.println("onValueChanged: " + value);
 						courseView.displayStatus(value, item.getIsQueueOpen());
 					}
 				});

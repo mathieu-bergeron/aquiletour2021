@@ -149,7 +149,11 @@ public class HtmlElementJdk extends HtmlElement {
 	@Override
 	public void html(String htmlString) {
 		jsoupElement.html(htmlString);
-		
+	}
+
+	@Override
+	public String html() {
+		return jsoupElement.html();
 	}
 
 }

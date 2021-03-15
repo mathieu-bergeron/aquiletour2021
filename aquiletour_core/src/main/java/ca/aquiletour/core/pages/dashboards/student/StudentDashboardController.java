@@ -19,7 +19,7 @@ public class StudentDashboardController extends DashboardController {
 	@Override
 	protected void installParentViewMessageHandler() {
 		T.call(this);
-
+		
 		addParentViewMessageHandler(ShowStudentDashboardMessage.class, new ShowStudentDashboardHandler());
 		
 		addSubViewLoader(StudentCourseSummaryView.class, currentContext().lang());

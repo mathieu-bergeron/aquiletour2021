@@ -61,12 +61,6 @@ public abstract class MessageService {
 		handlers = new HashMap<>();
 	}
 
-	public <M extends NtroMessage> void send(Class<M> messageClass) {
-		M message = create(messageClass);
-		
-		send(message);
-	}
-
 	public <MSG extends NtroMessage> MSG create(Class<MSG> messageClass) {
 		T.call(this);
 

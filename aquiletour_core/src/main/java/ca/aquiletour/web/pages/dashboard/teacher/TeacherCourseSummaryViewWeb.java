@@ -1,8 +1,10 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -22,7 +24,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 	@Override
 	public void displayStatus(boolean myAppointment, boolean teacherAvailable) {
-		
 	}
 
 	@Override
@@ -61,6 +62,12 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				showTeacherQueueMessage.setCourseId(course.getCourseId());
 
 				Ntro.messages().send(showTeacherQueueMessage);
+				
+				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
+				// FIXME
+				teacherUsesQueueMessage.setCourseId("3C6");
+				teacherUsesQueueMessage.setTeacher((User)Ntro.userService().currentUser());
+				Ntro.messages().send(teacherUsesQueueMessage);
 			}
 		});
 	}

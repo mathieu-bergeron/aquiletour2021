@@ -22,11 +22,11 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 	@Override
 	public void displayStatus(boolean doesStudentHaveAppointment, boolean isTeacherAvailable) {
-
+		
 		HtmlElement teacherAvailable = this.getRootElement().find("#buttonAvailable").get(0);
 
 		MustNot.beNull(teacherAvailable);
-		
+
 		if(doesStudentHaveAppointment) {
 			teacherAvailable.html("J'ai déjà un rendez-vous");
 		}else if(isTeacherAvailable) {
@@ -34,6 +34,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		}else {
 			teacherAvailable.html("Prof non-disponible");
 		}
+		
 	}
 
 	@Override
@@ -44,12 +45,9 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement courseId = this.getRootElement().find("#courseId").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		
-		
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(makeAppointmentLink);
-		
-
 		
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
