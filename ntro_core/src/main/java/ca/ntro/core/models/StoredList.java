@@ -74,15 +74,12 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
 
 		for(ListObserver<I> listObserver : listObservers) {
-			T.here();
 			listObserver.onItemAdded(getValue().indexOf(item), item);
 		}
 	}
 
 	public void removeItem(I item) {
 		T.call(this);
-		
-		T.here();
 		
 		int index = Ntro.collections().indexOfEquals(getValue(), item);
 

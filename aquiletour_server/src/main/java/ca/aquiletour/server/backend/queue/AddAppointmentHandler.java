@@ -20,9 +20,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 
 		User requestingUser = message.getUser();
 		String courseId = message.getCourseId();
-		
-		T.values(courseId);
-		
+
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 				requestingUser.getAuthToken(),
 				courseId);

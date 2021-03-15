@@ -46,8 +46,9 @@ public class QueueModel implements NtroModel {
 	
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
-		T.here();
-		if(getMaxId()>0)setMaxId(getMaxId() - 1);
+
+		//if(getMaxId()>0)setMaxId(getMaxId() - 1);
+		
 		for (int i = 0; i < appointments.size(); i++) {
 			if(appointments.item(i).getId().equals(appointmentId)) {
 				appointments.removeItem(appointments.item(i));
