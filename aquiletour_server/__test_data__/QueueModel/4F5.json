@@ -15,10 +15,17 @@
         "studentSurname": "Awama",
         "studentName": "Alice",
         "id": "15"
+      },
+      {
+        "studentId": "bob",
+        "_C": "Appointment",
+        "studentSurname": "Bérancourt",
+        "studentName": "Bob",
+        "id": "16"
       }
     ]
   },
-  "maxId": 15,
+  "maxId": 16,
   "_C": "QueueModel",
   "studentIds": [
     "bob",

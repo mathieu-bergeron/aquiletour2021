@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
@@ -42,7 +41,7 @@ public class BackendServiceJSweet extends BackendService {
 
 			// FIXME: there is no guarantee  that MessageFactory.registerUser has been called
 			//        we must use initialization tasks
-			RegisterSocketNtroMessage registerSocketNtroMessage = MessageFactory.createMessage(RegisterSocketNtroMessage.class);
+			RegisterSocketNtroMessage registerSocketNtroMessage = Ntro.messages().create(RegisterSocketNtroMessage.class);
 
 			sendMessageToBackend(registerSocketNtroMessage);
 			

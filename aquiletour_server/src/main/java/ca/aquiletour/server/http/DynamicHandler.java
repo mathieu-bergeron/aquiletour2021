@@ -52,7 +52,6 @@ import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
 import ca.ntro.jdk.web.NtroWindowServer;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
 
 public class DynamicHandler extends AbstractHandler {
@@ -113,13 +112,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		System.out.println("");
 		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-
-		System.err.println("");
-		System.err.println("");
-		System.err.println("");
-		System.err.println("");
+		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
 		
 		NtroContext<User> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO

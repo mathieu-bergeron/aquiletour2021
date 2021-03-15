@@ -1,10 +1,8 @@
 package ca.aquiletour.core.pages.dashboards.teacher;
 
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.ntro.core.mvc.NtroView;
+import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 
-public interface TeacherCourseSummaryView extends NtroView {
+public interface TeacherCourseSummaryView extends CourseSummaryView {
 	
-	void displaySummary(CourseSummary course);
 
 }

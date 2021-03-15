@@ -23,7 +23,7 @@ import ca.ntro.jsweet.Globals;
 import ca.ntro.services.NtroInitializationTask;
 
 public class NtroJSweet {
-
+	
 	public static NtroInitializationTask defaultInitializationTask(BackendServiceJSweet backendServiceJSweet) {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");
 

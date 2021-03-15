@@ -22,7 +22,7 @@ import ca.ntro.services.Ntro;
 
 public class Factory {
 
-	public static <O extends Object> O newInstance(Class<O> instanceType) {
+	public <O extends Object> O newInstance(Class<O> instanceType) {
 
 		O instance = null;
 

@@ -20,10 +20,10 @@ import org.junit.runners.JUnit4;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
-import ca.ntro.jdk.web.NtroWebserver;
+import ca.ntro.jdk.web.NtroWebServer;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
@@ -47,7 +47,7 @@ public class BackendTests {
 		ModelStore localStore = new LocalStoreFiles();
 		
 
-		NtroWebserver.defaultInitializationTask(AquiletourBackendService.class, localStore)
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, localStore)
 		             .execute();
 	}
 	

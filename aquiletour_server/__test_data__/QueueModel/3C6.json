@@ -7,39 +7,32 @@
         "_C": "Appointment",
         "studentSurname": "Bérancourt",
         "studentName": "Bob",
-        "id": "3"
+        "id": "99"
       },
       {
         "studentId": "bob",
         "_C": "Appointment",
         "studentSurname": "Bérancourt",
         "studentName": "Bob",
-        "id": "4"
+        "id": "100"
       },
       {
         "studentId": "bob",
         "_C": "Appointment",
         "studentSurname": "Bérancourt",
         "studentName": "Bob",
-        "id": "5"
+        "id": "102"
       },
       {
-        "studentId": "alice",
+        "studentId": "bob",
         "_C": "Appointment",
-        "studentSurname": "Awama",
-        "studentName": "Alice",
-        "id": "6"
-      },
-      {
-        "studentId": "alice",
-        "_C": "Appointment",
-        "studentSurname": "Awama",
-        "studentName": "Alice",
-        "id": "7"
+        "studentSurname": "Bérancourt",
+        "studentName": "Bob",
+        "id": "104"
       }
     ]
   },
-  "maxId": 7,
+  "maxId": 104,
   "_C": "QueueModel",
   "studentIds": [
     "bob"

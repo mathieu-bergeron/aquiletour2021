@@ -35,32 +35,9 @@ public class WebSocket extends WebSocketAdapter {
         	RegisterSocketNtroMessage registerSocketSystemMessage = (RegisterSocketNtroMessage) message;
         	RegisteredSockets.registerUserSocket(registerSocketSystemMessage.getUser(), getSession());
 
-        }else if(message instanceof AddCourseMessage) {
+        }else{
 
-        	AddCourseMessage addCourseMessage = (AddCourseMessage) message;
-        	User fromUser = addCourseMessage.getUser();
-
-        	Ntro.backendService().sendMessageToBackend(addCourseMessage);
-
-        	ModelLoader modelLoader = Ntro.modelStore().getLoader(DashboardModel.class, fromUser.getAuthToken(), fromUser.getId());
-        	modelLoader.execute();
-        	
-        	DashboardModel dashboardModel = (DashboardModel) modelLoader.getModel();
-
-        	/*
-			if(dashboardModel != null) {
-				try {
-					
-					DocumentPath documentPath = new DocumentPath(Ntro.introspector().getSimpleNameForClass(DashboardModel.class), fromUser.getId());
-					
-					UpdateModelMessage updateModelMessage = new UpdateModelMessage(documentPath, dashboardModel);
-					this.getRemote().sendString(Ntro.jsonService().toString(updateModelMessage));
-					
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}*/
+        	Ntro.backendService().sendMessageToBackend(message);
         }
     }
 

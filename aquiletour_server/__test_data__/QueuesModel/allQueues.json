@@ -1,29 +1,29 @@
 {
-    "_C":"QueuesModel",
-    "queues":{
-        "_C":"ObservableQueueList",
-        "value":[
-            {
-                "_C":"QueueSummary",
-                "id":"3C6",
-                "teacherName":"Alice",
-                "teacherSurname":"Awama",
-                "numberOfAnswerToDate":10
-            },
-            {
-                "_C":"QueueSummary",
-                "id":"4F5",
-                "teacherName":"Alice",
-                "teacherSurname":"Awama",
-                "numberOfAnswerToDate":100
-            },
-            {
-                "_C":"QueueSummary",
-                "id":"ZD4",
-                "teacherName":"Alice",
-                "teacherSurname":"Awama",
-                "numberOfAnswerToDate":1000
-            }
-        ]
-    }
+  "_C": "QueuesModel",
+  "queues": {
+    "_C": "ObservableQueueList",
+    "value": [
+      {
+        "_C": "QueueSummary",
+        "teacherName": "Alice",
+        "teacherSurname": "Awama",
+        "id": "3C6",
+        "numberOfAnswersToDate": 0
+      },
+      {
+        "_C": "QueueSummary",
+        "teacherName": "Alice",
+        "teacherSurname": "Awama",
+        "id": "4F5",
+        "numberOfAnswersToDate": 0
+      },
+      {
+        "_C": "QueueSummary",
+        "teacherName": "Alice",
+        "teacherSurname": "Awama",
+        "id": "ZD4",
+        "numberOfAnswersToDate": 0
+      }
+    ]
+  }
 }

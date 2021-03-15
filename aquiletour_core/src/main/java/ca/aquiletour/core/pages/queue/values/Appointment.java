@@ -35,6 +35,17 @@ public class Appointment implements JsonSerializable {
 		this.studentSurname = studentSurname;
 	}
 	
-
-	
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		if(other instanceof Appointment) {
+			Appointment otherAppointment = (Appointment) other;
+			
+			return (id != null && id.equals(otherAppointment.id))
+					|| id == otherAppointment.id;
+		}
+		
+		return false;
+	}
 }

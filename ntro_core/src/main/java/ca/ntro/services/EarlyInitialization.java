@@ -2,6 +2,13 @@ package ca.ntro.services;
 
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.introspection.Introspector;
+import ca.ntro.core.models.StoredBoolean;
+import ca.ntro.core.models.StoredDouble;
+import ca.ntro.core.models.StoredInteger;
+import ca.ntro.core.models.StoredList;
+import ca.ntro.core.models.StoredMap;
+import ca.ntro.core.models.StoredProperty;
+import ca.ntro.core.models.StoredString;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
@@ -46,5 +53,13 @@ public abstract class EarlyInitialization {
 
 		Ntro.registerSerializableClass(DocumentPath.class);
 		Ntro.registerSerializableClass(ValuePath.class);
+
+		Ntro.registerSerializableClass(StoredBoolean.class);
+		Ntro.registerSerializableClass(StoredString.class);
+		Ntro.registerSerializableClass(StoredDouble.class);
+		Ntro.registerSerializableClass(StoredInteger.class);
+		Ntro.registerSerializableClass(StoredProperty.class);
+		Ntro.registerSerializableClass(StoredList.class);
+		Ntro.registerSerializableClass(StoredMap.class);
 	}
 }

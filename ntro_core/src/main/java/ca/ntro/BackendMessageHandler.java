@@ -1,6 +1,6 @@
-package ca.ntro.jdk.messages;
+package ca.ntro;
 
-import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.messages.NtroMessage;
 
 public abstract class BackendMessageHandler<M extends NtroMessage> {

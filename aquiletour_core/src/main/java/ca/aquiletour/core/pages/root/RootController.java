@@ -17,11 +17,11 @@
 
 package ca.aquiletour.core.pages.root;
 
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
-import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.queue.student.StudentQueueController;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueController;
 import ca.aquiletour.core.pages.queues.QueuesController;
@@ -38,9 +38,13 @@ public class RootController extends NtroRootController {
 		T.call(this);
 		
 		setViewLoader(RootView.class, currentContext().lang());
-
-		addSubController(StudentDashboardController.class, "mescours");
-		addSubController(TeacherDashboardController.class, "mescours");
+		
+		// FIXME: this means we cannot switch user w/o reloading
+		if(currentContext().user() instanceof Teacher) {
+			addSubController(TeacherDashboardController.class, "mescours");
+		}else {
+			addSubController(StudentDashboardController.class, "mescours");
+		}
 
 		addSubController(QueuesController.class, "billetteries");
 	
@@ -54,7 +58,7 @@ public class RootController extends NtroRootController {
 		addWindowViewHandler(new RootViewHandler());
 		
 		// FIXME: could be in main. Not specific to Controller
-		Ntro.messageService().registerHandler(QuitMessage.class, new QuitMessageHandler());
+		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 
 	@Override

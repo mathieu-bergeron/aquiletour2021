@@ -20,7 +20,6 @@ import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.ResourceLoaderTask;
 
@@ -94,7 +93,7 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("title")[0];
 			String courseId = parameters.get("title")[0];
 
-			AddCourseMessage addCourseMessage = MessageFactory.createMessage(AddCourseMessage.class);
+			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, false, false, 0));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
@@ -157,7 +156,7 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
 			String departureId = parameters.get("move")[0];
 			String destinationId = parameters.get("before")[0];
-			MoveAppointmentMessage moveAppointmentMessage = MessageFactory.createMessage(MoveAppointmentMessage.class);
+			MoveAppointmentMessage moveAppointmentMessage = Ntro.messages().create(MoveAppointmentMessage.class);
 			Appointment newAppointment = new Appointment();
 			moveAppointmentMessage.setappointmentDepartureId(departureId);
 			moveAppointmentMessage.setappointmentDestinationId(destinationId);
@@ -182,7 +181,7 @@ public class AquiletourBackendRequestHandler {
 			String password = parameters.get("password")[0];
 			T.here();
 			
-			AddUserMessage addUserMessage = MessageFactory.createMessage(AddUserMessage.class);
+			AddUserMessage addUserMessage = Ntro.messages().create(AddUserMessage.class);
 			User newUser = new User();
 			newUser.setUserEmail(email);			
 			newUser.setUserPassword(password);	
@@ -194,7 +193,7 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("deleteUser")){
 
-			DeleteUserMessage deleteUserMessage = MessageFactory.createMessage(DeleteUserMessage.class);
+			DeleteUserMessage deleteUserMessage = Ntro.messages().create(DeleteUserMessage.class);
 			
 			String userId = parameters.get("deleteUser")[0];
 			deleteUserMessage.setUserId(userId);

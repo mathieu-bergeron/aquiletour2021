@@ -58,6 +58,12 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 	public void clearItems() {
 		getValue().clear();
 		
+		System.out.println("size after clear: " + getValue().size());
+
+		List<Object> args = new ArrayList<>();
+
+		modelStore().onValueMethodInvoked(valuePath(),"clearItems",args);
+
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onClearItems();
 		}
@@ -74,7 +80,6 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
 
 		for(ListObserver<I> listObserver : listObservers) {
-			T.here();
 			listObserver.onItemAdded(getValue().indexOf(item), item);
 		}
 	}
@@ -82,9 +87,14 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 	public void removeItem(I item) {
 		T.call(this);
 		
-		int index = getValue().lastIndexOf(item);
-		
+		int index = Ntro.collections().indexOfEquals(getValue(), item);
+
 		getValue().remove(index);
+		
+		List<Object> args = new ArrayList<>();
+		args.add(item);
+
+		modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemRemoved(index, item);

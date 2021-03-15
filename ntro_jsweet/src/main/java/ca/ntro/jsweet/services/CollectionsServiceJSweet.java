@@ -134,4 +134,17 @@ public class CollectionsServiceJSweet extends CollectionsService {
 		return set.contains(target);
 	}
 
+	@Override
+	public int indexOfEquals(List<?> list, Object target) {
+		int index = -1;
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).equals(target)) {
+				index = i;
+				break;
+			}
+		}
+
+		return index;
+	}
+
 }

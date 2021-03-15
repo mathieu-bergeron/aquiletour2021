@@ -16,7 +16,7 @@ public class QueuesViewModel extends ModelViewSubViewHandler<QueuesModel, Queues
 
 	@Override
 	protected void handle(QueuesModel model, QueuesView view, ViewLoader subViewLoader) {
-		// TODO Auto-generated method stub
+		
 		model.getQueues().observe(new ListObserver<QueueSummary>() {
 			
 			@Override
@@ -62,8 +62,6 @@ public class QueuesViewModel extends ModelViewSubViewHandler<QueuesModel, Queues
 
 			@Override
 			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}

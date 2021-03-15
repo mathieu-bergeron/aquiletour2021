@@ -18,7 +18,6 @@ import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
 
 public class AquiletourRequestHandler {
@@ -56,15 +55,15 @@ public class AquiletourRequestHandler {
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowHomeMessage showHomeMessage = MessageFactory.createMessage(ShowHomeMessage.class);
-		Ntro.messageService().sendMessage(showHomeMessage);
+		ShowHomeMessage showHomeMessage = Ntro.messages().create(ShowHomeMessage.class);
+		Ntro.messages().send(showHomeMessage);
 	}
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowLoginMessage showLoginMessage = MessageFactory.createMessage(ShowLoginMessage.class);
-		Ntro.messageService().sendMessage(showLoginMessage);
+		ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+		Ntro.messages().send(showLoginMessage);
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
@@ -72,19 +71,19 @@ public class AquiletourRequestHandler {
 		
 		if(user instanceof Teacher) {
 
-			ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
-			Ntro.messageService().sendMessage(showTeacherDashboardMessage);
+			ShowTeacherDashboardMessage showTeacherDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
+			Ntro.messages().send(showTeacherDashboardMessage);
 
 			
 		}else if(user instanceof Student){
 			
-			ShowStudentDashboardMessage showStudentDashboardMessage = MessageFactory.createMessage(ShowStudentDashboardMessage.class);
-			Ntro.messageService().sendMessage(showStudentDashboardMessage);
+			ShowStudentDashboardMessage showStudentDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+			Ntro.messages().send(showStudentDashboardMessage);
 
 		}else {
 			
-			ShowLoginDialogMessage showLoginDialogMessage = MessageFactory.createMessage(ShowLoginDialogMessage.class);
-			Ntro.messageService().sendMessage(showLoginDialogMessage);
+			ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
+			Ntro.messages().send(showLoginDialogMessage);
 			
 		}
 
@@ -93,8 +92,8 @@ public class AquiletourRequestHandler {
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowQueuesMessage showQueuesMessage = MessageFactory.createMessage(ShowQueuesMessage.class);
-		Ntro.messageService().sendMessage(showQueuesMessage);
+		ShowQueuesMessage showQueuesMessage = Ntro.messages().create(ShowQueuesMessage.class);
+		Ntro.messages().send(showQueuesMessage);
 	}
 		
 
@@ -107,11 +106,11 @@ public class AquiletourRequestHandler {
 			
 			if(user instanceof Teacher) {
 
-				ShowTeacherQueueMessage showTeacherQueueMessage = MessageFactory.createMessage(ShowTeacherQueueMessage.class);
+				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(courseId);
-				Ntro.messageService().sendMessage(showTeacherQueueMessage);
+				Ntro.messages().send(showTeacherQueueMessage);
 				
-				TeacherUsesQueueMessage teacherUsesQueueMessage = MessageFactory.createMessage(TeacherUsesQueueMessage.class);
+				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				teacherUsesQueueMessage.setCourseId(courseId);
 				teacherUsesQueueMessage.setTeacher(user);
 				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
@@ -119,14 +118,14 @@ public class AquiletourRequestHandler {
 				
 			}else if(user instanceof Student){
 				
-				ShowStudentQueueMessage showStudentQueueMessage = MessageFactory.createMessage(ShowStudentQueueMessage.class);
+				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
 				showStudentQueueMessage.setCourseId(courseId);
-				Ntro.messageService().sendMessage(showStudentQueueMessage);
+				Ntro.messages().send(showStudentQueueMessage);
 
 			}else {
 				
-				ShowLoginDialogMessage showLoginDialogMessage = MessageFactory.createMessage(ShowLoginDialogMessage.class);
-				Ntro.messageService().sendMessage(showLoginDialogMessage);
+				ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
+				Ntro.messages().send(showLoginDialogMessage);
 			}
 
 		}
@@ -135,8 +134,8 @@ public class AquiletourRequestHandler {
 	private static void sendUsersMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowUsersMessage showUsersMessage = MessageFactory.createMessage(ShowUsersMessage.class);
-		Ntro.messageService().sendMessage(showUsersMessage);
+		ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
+		Ntro.messages().send(showUsersMessage);
 	}
 
 }

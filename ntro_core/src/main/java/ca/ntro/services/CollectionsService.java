@@ -37,5 +37,6 @@ public abstract class CollectionsService {
 	public abstract boolean listEquals(List<?> list1, List<?> list2);
 	public abstract boolean mapEquals(Map<?,?> map1, Map<?,?> map2);
 
+	public abstract int indexOfEquals(List<?> list, Object target);
 
 }

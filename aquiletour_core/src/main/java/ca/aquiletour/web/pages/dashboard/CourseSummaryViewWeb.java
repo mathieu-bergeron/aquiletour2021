@@ -8,7 +8,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
+public abstract class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
 
 	@Override
 	public void initialize(NtroContext<?> context) {
@@ -33,5 +33,6 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		MustNot.beNull(myAppointment);
 		MustNot.beNull(isQueueOpen);
 	}
+
 
 }
