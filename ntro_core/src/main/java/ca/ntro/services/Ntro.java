@@ -29,6 +29,22 @@ import ca.ntro.core.system.trace.__T;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
+
+	/* <Factory> */
+
+	private static Factory factory = new Factory();
+
+	public static Factory factory() {
+		__T.call(Ntro.class, "factory");
+
+		return factory;
+	}
+
+	/* </Factory> */
+	
+	
+	
+	
 	
 	/* <RegEx> */
 
@@ -196,7 +212,7 @@ public class Ntro {
 	public static ViewLoaderWeb viewLoaderWeb() {
 		__T.call(Ntro.class, "viewLoaderWeb");
 
-		return Factory.newInstance(viewLoaderWebClass);
+		return Ntro.factory().newInstance(viewLoaderWebClass);
 	}
 
 	/* </ViewLoaderWeb> */
@@ -238,13 +254,13 @@ public class Ntro {
 		Ntro.messageServiceClass = messageServiceClass;
 	}
 
-	public static MessageService messageService() {
+	public static MessageService messages() {
 		__T.call(Ntro.class, "messageService");
 
 		MessageService service = messageServices.get(threadService().currentThread().getThreadId());
 
 		if(service == null) {
-			service = Factory.newInstance(messageServiceClass);
+			service = Ntro.factory().newInstance(messageServiceClass);
 			messageServices.put(threadService().currentThread().getThreadId(), service);
 		}
 
@@ -274,7 +290,7 @@ public class Ntro {
 		ModelStore modelStore = modelStores.get(threadService().currentThread().getThreadId());
 
 		if(modelStore == null) {
-			modelStore = Factory.newInstance(modelStoreClass);
+			modelStore = Ntro.factory().newInstance(modelStoreClass);
 			modelStores.put(threadService().currentThread().getThreadId(), modelStore);
 		}
 
@@ -439,7 +455,7 @@ public class Ntro {
 	/* <reset> */
 
 	public static void reset() {
-		messageService().reset();
+		messages().reset();
 		modelStore().reset();
 	}
 

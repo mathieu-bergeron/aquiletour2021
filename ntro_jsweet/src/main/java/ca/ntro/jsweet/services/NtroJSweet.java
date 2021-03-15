@@ -21,14 +21,9 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.Globals;
 import ca.ntro.services.NtroInitializationTask;
-import ca.ntro.web.NtroAppWeb;
 
 public class NtroJSweet {
 	
-	public static void launchApp(Class<? extends NtroAppWeb> appClass, String[] args) {
-
-	}
-
 	public static NtroInitializationTask defaultInitializationTask(BackendServiceJSweet backendServiceJSweet) {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");
 

@@ -54,7 +54,7 @@ public class RootController extends NtroRootController {
 		addWindowViewHandler(new RootViewHandler());
 		
 		// FIXME: could be in main. Not specific to Controller
-		Ntro.messageService().registerHandler(QuitMessage.class, new QuitMessageHandler());
+		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 
 	@Override

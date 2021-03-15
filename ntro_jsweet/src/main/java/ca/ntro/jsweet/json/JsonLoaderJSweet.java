@@ -2,7 +2,6 @@ package ca.ntro.jsweet.json;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -27,7 +26,7 @@ public class JsonLoaderJSweet extends JsonLoader {
     protected void runTaskAsync() {
         T.call(this);
         
-        GetModelNtroMessage message = MessageFactory.createMessage(GetModelNtroMessage.class);
+        GetModelNtroMessage message = Ntro.messages().create(GetModelNtroMessage.class);
         message.setDocumentPath(documentPath);
         
         String messageText = Ntro.jsonService().toString(message);

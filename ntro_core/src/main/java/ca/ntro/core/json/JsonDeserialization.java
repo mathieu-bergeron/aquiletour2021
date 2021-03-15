@@ -125,7 +125,7 @@ public class JsonDeserialization {
 			Log.fatalError("Unknown JsonSerializable: " + targetClassSimpleName);
 		}
 		
-		Object javaObject = Factory.newInstance(targetClass);
+		Object javaObject = Ntro.factory().newInstance(targetClass);
 		
 		localHeap.put(valuePath, javaObject);
 

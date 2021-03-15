@@ -123,7 +123,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		MustNot.beNull(html);
 
-		NtroViewWeb view = Factory.newInstance(viewClass);
+		NtroViewWeb view = Ntro.factory().newInstance(viewClass);
 
 		HtmlElement rootElement = parseHtml(html);
 

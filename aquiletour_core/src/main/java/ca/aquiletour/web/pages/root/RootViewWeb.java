@@ -16,7 +16,6 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
@@ -40,11 +39,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				T.call(this);
 				
 				if(context.user() instanceof Teacher) {
-					ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
-					Ntro.messageService().sendMessage(showDashboardMessage);
+					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
+					Ntro.messages().sendMessage(showDashboardMessage);
 				}else{
-					ShowStudentDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowStudentDashboardMessage.class);
-					Ntro.messageService().sendMessage(showDashboardMessage);
+					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+					Ntro.messages().sendMessage(showDashboardMessage);
 				}
 			}
 		});
@@ -54,8 +53,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			public void onEvent() {
 				T.call(this);
 
-				ShowUsersMessage showUsersMessage = MessageFactory.createMessage(ShowUsersMessage.class);
-				Ntro.messageService().sendMessage(showUsersMessage);
+				ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
+				Ntro.messages().sendMessage(showUsersMessage);
 			}
 		});
 	}

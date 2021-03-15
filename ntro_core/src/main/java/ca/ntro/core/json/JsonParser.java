@@ -145,7 +145,7 @@ public abstract class JsonParser {
 
 		Class<?> typeClass = Ntro.introspector().getClassFromName(typeName);
 
-		Object userDefinedObject = Factory.newInstance(typeClass);
+		Object userDefinedObject = Ntro.factory().newInstance(typeClass);
 
 		try {
 

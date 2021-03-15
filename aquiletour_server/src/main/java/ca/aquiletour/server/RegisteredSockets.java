@@ -3,20 +3,24 @@ package ca.aquiletour.server;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jetty.websocket.api.Session;
 
 import ca.ntro.core.NtroUser;
+import ca.ntro.core.system.log.Log;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ValuePath;
 
 public class RegisteredSockets {
 
-	// FIXME: more than one user will observe!!!!!
-	private static Map<DocumentPath, NtroUser> modelObservators = new HashMap<>();
+	private static Map<DocumentPath, Set<NtroUser>> modelObservators = new HashMap<>();
 	private static Map<NtroUser, Set<Session>> userSockets = new HashMap<>();
 	
 	public static void registerUserSocket(NtroUser user, Session socket) {
@@ -54,10 +58,39 @@ public class RegisteredSockets {
 	}
 
 	public static void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath) {
-		modelObservators.put(documentPath, user);
+		Set<NtroUser> observators = modelObservators.get(documentPath);
+		
+		if(observators == null) {
+			observators = new HashSet<>();
+			modelObservators.put(documentPath, observators);
+		}
+		
+		observators.add(user);
 	}
 	
-	public static NtroUser getUserThatObservesModel(DocumentPath documentPath) {
-		return modelObservators.get(documentPath);
+	public static void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		T.call(RegisteredSockets.class);
+		
+		Set<NtroUser> observers = modelObservators.get(valuePath.getDocumentPath());
+
+		if(observers != null) {
+
+			for(NtroUser observer : observers) {
+
+				InvokeValueMethodNtroMessage message = Ntro.messages().create(InvokeValueMethodNtroMessage.class);
+				message.setValuePath(valuePath);
+				message.setMethodName(methodName);
+				message.setArgs(args);
+				
+				try {
+					
+					RegisteredSockets.sendMessageToUserSockets(observer, message);
+
+				} catch (IOException e) {
+
+					Log.fatalError("Unable to send message to user " + observer.getId(), e);
+				}
+			}
+		}
 	}
 }
