@@ -17,15 +17,15 @@
         "courseId": "4F5"
       },
       {
-        "numberOfAppointments": 4,
+        "numberOfAppointments": 1,
         "_C": "CourseSummary",
         "isQueueOpen": {
           "_C": "StoredBoolean",
-          "value": false
+          "value": true
         },
         "myAppointment": {
           "_C": "StoredBoolean",
-          "value": false
+          "value": true
         },
         "title": "3C6",
         "courseId": "3C6"
