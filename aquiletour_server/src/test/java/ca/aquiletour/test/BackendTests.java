@@ -18,9 +18,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.services.stores.LocalStore;
+import ca.ntro.jdk.models.ModelStoreSync;
+import ca.ntro.jdk.services.BackendServiceServer;
+import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebserver;
+import ca.ntro.services.BackendService;
+import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -38,7 +44,10 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		NtroWebserver.defaultInitializationTask()
+		ModelStore localStore = new LocalStoreFiles();
+		
+
+		NtroWebserver.defaultInitializationTask(AquiletourBackendService.class, localStore)
 		             .execute();
 	}
 	
@@ -73,7 +82,7 @@ public class BackendTests {
 		
 		// XXX: assuming that modelLoader is actually Sync
 		//      will not work in JSweet
-		ModelLoader modelLoader = LocalStore.getLoader(QueueModel.class, "bobToken", "bob");
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(QueueModel.class, "bobToken", "bob");
 		modelLoader.execute();
 		
 		QueueModel queue = (QueueModel) modelLoader.getModel();

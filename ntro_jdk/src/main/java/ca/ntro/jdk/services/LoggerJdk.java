@@ -17,9 +17,10 @@
 
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.Logger;
-import ca.ntro.core.services.ValueFormatter;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.services.Logger;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.ValueFormatter;
 
 public class LoggerJdk extends Logger {
 
@@ -29,7 +30,7 @@ public class LoggerJdk extends Logger {
 		
 		StringBuilder builder = new StringBuilder();
 		
-		ValueFormatter.format(builder, value);
+		Ntro.valueFormatter().format(builder, value);
 		
 		System.out.println(builder.toString());
 	}

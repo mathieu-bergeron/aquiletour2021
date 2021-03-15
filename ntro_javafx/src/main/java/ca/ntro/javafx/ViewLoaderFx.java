@@ -126,7 +126,7 @@ public class ViewLoaderFx extends ViewLoader {
 		
 		NtroViewFx view = loader.getController();
 		
-		view.setParent(parent);
+		view.registerParent(parent);
 		
 		return view;
 	}

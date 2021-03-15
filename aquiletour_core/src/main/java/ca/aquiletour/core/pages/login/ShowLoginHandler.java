@@ -14,6 +14,7 @@ public class ShowLoginHandler extends ParentViewMessageHandler<RootView,
 			              ShowLoginMessage message) {
 		T.call(this);
 		
+		
 		// FIXME: parentView needs to be the one installed in
 		//        the parent controller. We cannot do viewLoader.createView()
 

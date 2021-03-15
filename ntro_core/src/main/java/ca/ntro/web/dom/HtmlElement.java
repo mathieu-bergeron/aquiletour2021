@@ -6,10 +6,18 @@ public abstract class HtmlElement {
 
 	public abstract void appendHtml(String html);
 	public abstract void appendElement(HtmlElement element);
+	public abstract void insertBefore(HtmlElement element);
+	public abstract void insertAfter(HtmlElement element);
 	public abstract void text(String newText);
+
 	public abstract void addEventListener(String event, HtmlEventListener listener);
+
 	public abstract HtmlElements children(String cssQuery);
 	public abstract HtmlElements find(String cssQuery);
+
+	public abstract String id();
+
+	public abstract String getAttribute(String name);
 	public abstract void setAttribute(String name, String value);
 
 	public void clearChildren() {
@@ -21,6 +29,7 @@ public abstract class HtmlElement {
 		}
 	}
 
+	public abstract void empty();
 	public abstract void remove();
 	public abstract void value(String value);
 	public abstract String getValue();

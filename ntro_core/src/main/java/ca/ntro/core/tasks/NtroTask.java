@@ -26,7 +26,7 @@ public interface NtroTask {
 	void notifyEntryTaskFinished();
 	void notifyExitTaskFinished();
 
-	void resetTask();
+	void resetTask(TaskState state);
 	
 	TaskGraph asGraph();
 	Node asNode();

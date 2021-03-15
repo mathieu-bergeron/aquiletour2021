@@ -5,22 +5,15 @@ import ca.aquiletour.core.pages.users.values.ObservableUserMap;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class UsersModel extends NtroModel {
+public class UsersModel implements NtroModel {
 
 	private ObservableUserMap users = new ObservableUserMap();
-
-	@Override
-	public void initializeStoredValues() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	public ObservableUserMap getUsers() {
 		T.call(this);
 
 		return users;
 	}
-
 	public void setUsers(ObservableUserMap users) {
 		T.call(this);
 
@@ -35,7 +28,7 @@ public class UsersModel extends NtroModel {
 
 	public void addUser(User user) {
 		T.call(this);
-
+		T.here();
 		String userId = Integer.toString(users.size());
 		user.setId(userId);
 		users.addEntry(userId, user);
@@ -46,5 +39,4 @@ public class UsersModel extends NtroModel {
 		
 		users.removeEntry(userId);
 	}
-
 }

@@ -59,6 +59,20 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
+	public void insertBefore(HtmlElement element) {
+		T.call(this);
+
+		jQueryElement.before(((HtmlElementJSweet) element).jQueryElement);
+	}
+
+	@Override
+	public void insertAfter(HtmlElement element) {
+		T.call(this);
+
+		jQueryElement.after(((HtmlElementJSweet) element).jQueryElement);
+	}
+
+	@Override
 	public HtmlElements children(String cssQuery) {
 		T.call(this);
 
@@ -70,6 +84,20 @@ public class HtmlElementJSweet extends HtmlElement {
 		T.call(this);
 
 		return new HtmlElementsJSweet(jQueryElement.find(cssQuery));
+	}
+
+	@Override
+	public String id() {
+		T.call(this);
+
+		return this.getAttribute("id");
+	}
+
+	@Override
+	public String getAttribute(String name) {
+		T.call(this);
+
+		return jQueryElement.attr(name);
 	}
 
 	@Override
@@ -94,5 +122,10 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public String getValue() {
 		return jQueryElement.val().toString();
+	}
+
+	@Override
+	public void empty() {
+		jQueryElement.empty();
 	}
 }

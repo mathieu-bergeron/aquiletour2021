@@ -17,7 +17,7 @@
 
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.services.Logger;
+import ca.ntro.services.Logger;
 
 public class LoggerJSweet extends Logger {
 

@@ -24,7 +24,7 @@ public class GraphTraceImpl implements GraphTrace, GraphTraceConnector {
 	@Override
 	public boolean append(GraphDescription graph, TaskStateDescription task) {
 		// TMP
-		if(task.getState() == TaskState.DONE || graphs.size() == 0) {} else {return false;}
+		//if(task.getState() == TaskState.DONE || graphs.size() == 0) {} else {return false;}
 		
 		boolean cycleDetected = false;
 

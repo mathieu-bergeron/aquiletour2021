@@ -1,17 +1,12 @@
 package ca.ntro.core;
 
-import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public class NtroUser extends NtroModel {
+public class NtroUser implements JsonSerializable {
 	
 	private String id;
 	private String authToken;
-
-	@Override
-	public void initializeStoredValues() {
-		
-	}
 
 	public String getId() {
 		return id;
@@ -41,4 +36,23 @@ public class NtroUser extends NtroModel {
 		
 		return isValid;
 	}
+	
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if(other == null) return false;
+		if(other == this) return true;
+		if(other instanceof NtroUser) {
+			NtroUser otherUser = (NtroUser) other;
+			
+			return id.equals(otherUser.id);
+		}
+		
+		return false;
+	}
+
 }

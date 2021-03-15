@@ -1,29 +1,19 @@
 package ca.ntro.messages;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.introspection.Factory;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class MessageFactory {
 
-	private static Map<Class<? extends NtroMessage>, NtroMessage> messages = new HashMap<>();
-
-	private static MessageHandlers handlers = new MessageHandlers();
-	private static MessageHandlerTasks tasks = new MessageHandlerTasks();
-
-	public static <M extends NtroMessage> M getOutgoingMessage(Class<M> messageClass) {
+	public static <MSG extends NtroMessage> MSG createMessage(Class<MSG> messageClass) {
 		T.call(MessageFactory.class);
 
-		// FIXME: this assumes that getIncomingMessage is called before
-		M message = (M) messages.get(messageClass);
-
-		if(message == null) {
-			System.out.println(Ntro.introspector().getSimpleNameForClass(messageClass));
-			MustNot.beNull(message);
+		MSG message = Factory.newInstance(messageClass);
+		
+		if(message instanceof NtroUserMessage) {
+			((NtroUserMessage) message).setUser(Ntro.userService().currentUser());
 		}
 
 		return message;
@@ -37,25 +27,13 @@ public class MessageFactory {
 
 	public static <M extends NtroMessage> MessageHandlerTask createMessageHandlerTask(Class<M> messageClass) {
 		T.call(MessageFactory.class);
-
-		return null;
-	}
-
-
-	public static <M extends NtroMessage> M getIncomingMessage(Class<M> messageClass) {
-		T.call(MessageFactory.class);
-
-		M message = Factory.newInstance(messageClass);
-
-		messages.put(messageClass, message);
-
-		return message;
-	}
-
-
-	public static void reset() {
-		T.call(MessageFactory.class);
 		
-		messages = new HashMap<>();
+		MessageHandlerTask handlerTask = new MessageHandlerTask();
+
+		handlerTask.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
+
+		Ntro.messageService().registerHandlerTask(messageClass, handlerTask);
+
+		return handlerTask;
 	}
 }

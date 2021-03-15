@@ -3,6 +3,7 @@ package ca.aquiletour.web.pages.users;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.users.UserView;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -11,7 +12,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class UsersViewWeb extends NtroViewWeb implements UsersView {
 
 	@Override
-	public void initialize() {
+	public void initialize(NtroContext<?> context) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -21,7 +22,7 @@ public class UsersViewWeb extends NtroViewWeb implements UsersView {
 		T.call(this);
 		T.here();
 		
-		HtmlElement container = this.getRootElement().children("#showUsers-container").get(0);
+		HtmlElement container = this.getRootElement().find("#showUsers-container").get(0);
 		
 		MustNot.beNull(container);
 		
@@ -34,11 +35,11 @@ public class UsersViewWeb extends NtroViewWeb implements UsersView {
 	public void deleteUser(String userId) {
 		T.call(this);
 
-		HtmlElement container = this.getRootElement().children("#showUsers-container").get(0);
+		HtmlElement container = this.getRootElement().find("#showUsers-container").get(0);
 
 		String selector = "#user-" + userId;
 
-		HtmlElement userElement = container.children(selector).get(0);
+		HtmlElement userElement = container.find(selector).get(0);
 		
 		userElement.remove();
 

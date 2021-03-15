@@ -1,23 +1,26 @@
 package ca.ntro.jsweet.services;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import ca.ntro.core.services.ThreadService;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.tasks.NtroTask;
+import ca.ntro.jsweet.thread.NtroThreadJSweet;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.ThreadService;
 import ca.ntro.threads.NtroThread;
 
 public class ThreadServiceJSweet extends ThreadService {
-
+	
+	private long ROOT_THREAD_ID = 0;
+	
 	@Override
 	public NtroThread currentThread() {
-		// TODO Auto-generated method stub
-		return null;
+		return new NtroThreadJSweet(ROOT_THREAD_ID);
 	}
 
 	@Override
 	public boolean hasParentThread() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -35,14 +38,13 @@ public class ThreadServiceJSweet extends ThreadService {
 
 	@Override
 	public Set<NtroThread> subThreads() {
-		// TODO Auto-generated method stub
-		return null;
+		// FIXME
+		return new HashSet<>();
 	}
 
 	@Override
 	public void executeLater(NtroTask task) {
-		// TODO Auto-generated method stub
-		
+		Log.warning("threadService().executeLater not supported in JSweet");
 	}
 
 }

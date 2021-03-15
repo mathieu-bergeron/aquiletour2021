@@ -17,12 +17,11 @@
 
 package ca.ntro.jsweet;
 
-import ca.ntro.jsweet.initialization.OnLoadTask;
+import ca.ntro.jsweet.services.OnLoadTask;
 
 public class Globals {
 	
 	// notifyTaskFinished() is called from Javascript, see tutoriel02/webapp/index.html
 	public static OnLoadTask onLoadTask = new OnLoadTask();
-	
 
 }

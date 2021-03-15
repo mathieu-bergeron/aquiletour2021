@@ -1,21 +1,19 @@
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.BackendService;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.BackendService;
 
 public class BackendServiceJdk extends BackendService {
 
 	@Override
 	public void sendMessageToBackend(NtroMessage message) {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("TODO");
 	}
 
 	@Override
 	public <M extends NtroMessage> void handleMessageFromBackend(Class<M> messageClass, MessageHandler<M> handler) {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("TODO");
 	}
 
 }

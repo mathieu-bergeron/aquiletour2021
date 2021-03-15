@@ -1,18 +1,18 @@
 package ca.ntro.core.json;
 
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.stores.DocumentPath;
 
 public class JsonLoaderMemory extends JsonLoader {
 	
-	private JsonObject jsonObject;
+	private String jsonString;
 	private DocumentPath documentPath;
 	
-	public JsonLoaderMemory(DocumentPath documentPath, JsonObject jsonObject) {
+	public JsonLoaderMemory(DocumentPath documentPath, String jsonString) {
 		super();
 		T.call(this);
 		
-		this.jsonObject = jsonObject;
+		this.jsonString = jsonString;
 		this.documentPath = documentPath;
 	}
 
@@ -30,10 +30,10 @@ public class JsonLoaderMemory extends JsonLoader {
 	}
 
 	@Override
-	public JsonObject getJsonObject() {
+	public String getJsonString() {
 		T.call(this);
 		
-		return jsonObject;
+		return jsonString;
 	}
 
 	@Override
@@ -42,6 +42,4 @@ public class JsonLoaderMemory extends JsonLoader {
 
 		return documentPath;
 	}
-
-
 }

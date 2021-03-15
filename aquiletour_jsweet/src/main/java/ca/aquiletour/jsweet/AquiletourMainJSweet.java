@@ -11,7 +11,7 @@ public class AquiletourMainJSweet extends AquiletourMain {
 	@Override
 	protected void registerViewLoaders() {
 		T.call(this);
-
+		
 		ViewLoaderRegistrationWeb.registerViewLoaders();
 	}
 

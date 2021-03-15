@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.aquiletour.core.models.users.User;
-import ca.ntro.core.models.properties.NtroModelValue;
-import ca.ntro.core.models.properties.observable.map.ObservableMap;
+import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableUserMap extends ObservableMap<User> {
+public class ObservableUserMap extends StoredMap<User> implements NtroModelValue {
+	                                                                // JSWEET FIXME: should already implement via StoredList
 
 	public ObservableUserMap() {
 		super(new HashMap<>());
@@ -18,15 +19,10 @@ public class ObservableUserMap extends ObservableMap<User> {
 		super(map);
 	}
 
-	@Override
-	protected Class<?> getValueType() {
+	public boolean isUserValid(String userId, String authToken) {
 		T.call(this);
 
-		return NtroModelValue.class;
-	}
-
-	public boolean isUserValid(String userId, String authToken) {
-		return getValue().get(userId).isValid(authToken);
+		return valueOf(userId).isValid(authToken);
 	}
 
 }

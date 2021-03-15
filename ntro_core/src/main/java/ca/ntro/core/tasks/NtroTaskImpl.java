@@ -16,23 +16,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import ca.ntro.core.services.NtroCollections;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
+import ca.ntro.services.CollectionsService;
+import ca.ntro.services.Ntro;
 
 public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 
-	private static Map<String, Integer> classIds = new HashMap<>();
-	
 	private String taskId;
 	private NtroTaskImpl parentTask;
 	
 	private TaskState state = INIT;
 	private GraphTraceImpl trace;
 	
-	private Map<String, NtroTask> previousTasks = NtroCollections.concurrentMap(new HashMap<>());
-	private Map<String, NtroTask> subTasks = NtroCollections.concurrentMap(new HashMap<>());
-	private Map<String, NtroTask> nextTasks = NtroCollections.concurrentMap(new HashMap<>());
+	private Map<String, NtroTask> previousTasks = Ntro.collections().concurrentMap(new HashMap<>());
+	private Map<String, NtroTask> subTasks = Ntro.collections().concurrentMap(new HashMap<>());
+	private Map<String, NtroTask> nextTasks = Ntro.collections().concurrentMap(new HashMap<>());
 
 	protected abstract void runEntryTaskAsync();
 	protected abstract void runExitTaskAsync();
@@ -56,10 +54,11 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	@Override
 	public String getLabel() {
 		// TMP
+		/*
 		String state = "WAIT";
 		if(this.state == DONE) {
 			state = this.state.name();
-		}
+		}*/
 
 		return taskId + "\n" + state;
 	}
@@ -673,18 +672,18 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 
 	@Override
 	public void resetGraph() {
-		forEachStartNode(sn -> sn.resetNodeTransitive());
+		forEachStartNode(sn -> sn.resetNodeTransitive(INIT));
 	}
 
 	@Override
-	public void resetNodeTransitive() {
-		asTask().resetTask();
-		forEachReachableNodeTransitive(n -> n.asTask().resetTask());
+	public void resetNodeTransitive(TaskState state) {
+		asTask().resetTask(state);
+		forEachReachableNodeTransitive(n -> n.asTask().resetTask(state));
 	}
 
 	@Override
-	public void resetTask() {
-		state = INIT;
+	public void resetTask(TaskState state) {
+		this.state = state;
 	}
 
 	@Override
@@ -696,7 +695,7 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 		boolean shouldExecuteReplacement = (state != INIT);
 		GraphTraceImpl trace = this.trace;
 
-		replacementTask.resetTask();
+		replacementTask.resetTask(INIT);
 
 		deleteSubTasksTransitive();
 

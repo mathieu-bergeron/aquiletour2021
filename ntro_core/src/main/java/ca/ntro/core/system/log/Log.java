@@ -17,10 +17,10 @@
 
 package ca.ntro.core.system.log;
 
-import ca.ntro.core.Ntro;
-import ca.ntro.core.__Ntro;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.stack.StackFrame;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.__Ntro;
 
 public class Log {
 
@@ -31,9 +31,8 @@ public class Log {
 	public static void error(String... messages) {
 
 	}
-	
-	public static void fatalError(String message, Exception... causedBy) {
-		int currentDepth = 1;
+
+	public static void fatalErrorAtDepth(String message, int currentDepth, Exception... causedBy) {
 		
 		StackAnalyzer stackAnalyzer = __Ntro.stackAnalyzer();
 		
@@ -68,6 +67,11 @@ public class Log {
 
 			Ntro.appCloser().close();
 		}
+
+	}
+	
+	public static void fatalError(String message, Exception... causedBy) {
+		fatalErrorAtDepth(message, 1, causedBy);
 	}
 
 }

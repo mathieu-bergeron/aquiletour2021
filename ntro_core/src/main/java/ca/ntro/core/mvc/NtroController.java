@@ -1,9 +1,10 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 
 public abstract class NtroController<AC extends NtroAbstractController> extends NtroAbstractController {
 
@@ -34,18 +35,9 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
-		NtroMessage messageReceptor = MessageFactory.getIncomingMessage(messageClass);
+		MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
 		
-		Ntro.messageService().registerHandlerTask(messageClass, messageReceptor);
-		
-		//MessageHandlerTask messageReceptorTask = MessageFactory.createMessageHandlerTask(messageClass);
-
-		messageReceptor.setTaskId(messageId);
-
-		// FIXME: we don't really need this
-		//getTask().addSubTask(message);
-
-		handler.getTask().addPreviousTask(messageReceptor);
+		handler.getTask().addPreviousTask(messageHandlerTask);
 	}
 
 	protected void addControllerMessageHandler(Class<? extends NtroMessage> messageClass, ControllerMessageHandler<?,?,?> handler) {
@@ -59,9 +51,8 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
-		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
-		message.setTaskId(messageId);
+		MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
 
-		handler.getTask().addPreviousTask(message);
+		handler.getTask().addPreviousTask(messageHandlerTask);
 	}
 }

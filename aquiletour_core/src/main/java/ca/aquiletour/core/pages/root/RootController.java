@@ -22,11 +22,14 @@ import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.queue.QueueController;
+import ca.aquiletour.core.pages.queue.student.StudentQueueController;
+import ca.aquiletour.core.pages.queue.teacher.TeacherQueueController;
 import ca.aquiletour.core.pages.queues.QueuesController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class RootController extends NtroRootController {
 
@@ -34,13 +37,15 @@ public class RootController extends NtroRootController {
 	protected void onCreate() {
 		T.call(this);
 		
-		setViewLoader(RootView.class, currentContext().getLang());
+		setViewLoader(RootView.class, currentContext().lang());
 
 		addSubController(StudentDashboardController.class, "mescours");
 		addSubController(TeacherDashboardController.class, "mescours");
 
 		addSubController(QueuesController.class, "billetteries");
-		addSubController(QueueController.class, "billetterie");
+	
+		addSubController(TeacherQueueController.class, "billetterie");
+		addSubController(StudentQueueController.class, "billetterie");
 
 		addSubController(UsersController.class, "usagers");
 		addSubController(LoginController.class, "connexion");
@@ -48,11 +53,12 @@ public class RootController extends NtroRootController {
 
 		addWindowViewHandler(new RootViewHandler());
 		
-		addMessageHandler(QuitMessage.class, new QuitMessageHandler());
+		// FIXME: could be in main. Not specific to Controller
+		Ntro.messageService().registerHandler(QuitMessage.class, new QuitMessageHandler());
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 		
 	}

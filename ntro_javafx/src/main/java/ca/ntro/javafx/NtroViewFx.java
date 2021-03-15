@@ -10,7 +10,7 @@ public abstract class NtroViewFx implements NtroView, Initializable {
 	
 	private Parent parent;
 	
-	void setParent(Parent parent) {
+	void registerParent(Parent parent) {
 		T.call(this);
 		
 		this.parent = parent;
@@ -22,7 +22,7 @@ public abstract class NtroViewFx implements NtroView, Initializable {
 		return new Scene(parent, width, height);
 	}
 
-	public Parent getParent() {
+	public Parent parent() {
 		return parent;
 	}
 

@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.dashboards;
 import java.util.List;
 
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.ntro.core.models.properties.observable.list.ListObserver;
+import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -37,7 +37,7 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 			@Override
 			public void onItemAdded(int index, CourseSummary item) {
 				T.call(this);
-				
+
 				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
 				courseView.displaySummary(item);
 				
@@ -54,6 +54,12 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 			public void onItemRemoved(int index, CourseSummary item) {
 				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			public void onClearItems() {
+				T.here();
+				view.clearCourses();
 			}
 		});
 	}

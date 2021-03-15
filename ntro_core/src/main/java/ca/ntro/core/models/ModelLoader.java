@@ -1,11 +1,10 @@
 package ca.ntro.core.models;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.services.ModelStore;
+import ca.ntro.stores.DocumentPath;
 
 public class ModelLoader extends NtroTaskAsync {
 	
@@ -28,16 +27,10 @@ public class ModelLoader extends NtroTaskAsync {
 		//JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
 		JsonLoader jsonLoader = (JsonLoader) getSubTask(JsonLoader.class, "JsonLoader");
 		
-		JsonObject jsonObject = jsonLoader.getJsonObject();
+		String jsonString = jsonLoader.getJsonString();
 		DocumentPath documentPath = jsonLoader.getDocumentPath();
 		
-		model = Factory.newInstance(modelClass);
-
-		model.setOrigin(modelStore);
-		
-		model.loadFromJsonObject(jsonObject);
-		
-		model.setId(documentPath.getId());
+		model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
 		
 		notifyTaskFinished();
 	}
