@@ -66,8 +66,7 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 
 		MustNot.beNull(container);
 		
-		container.clearChildren();
-		
+		container.empty();
 	}
 
 }

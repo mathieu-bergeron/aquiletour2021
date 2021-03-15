@@ -51,6 +51,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 							courseId);
 					
 					queueModel.clearQueue();
+					modelStore.save(queueModel);
 					
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
