@@ -6,5 +6,6 @@ import ca.ntro.core.mvc.NtroView;
 public interface CourseSummaryView extends NtroView {
 	
 	void displaySummary(CourseSummary course);
+	void displayStatus(boolean myAppointment, boolean teacherAvailable);
 
 }

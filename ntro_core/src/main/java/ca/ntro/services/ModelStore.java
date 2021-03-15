@@ -81,17 +81,16 @@ public abstract class ModelStore {
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
+		System.out.println("invokeValueMethod " + valuePath);
+
 		DocumentPath documentPath = valuePath.getDocumentPath();
 
 		NtroModel model = localHeapByPath.get(documentPath);
 		MustNot.beNull(model);
 
 		if(model != null) {
-
 			
 			Object value = Ntro.introspector().findByValuePath(model, valuePath);
-
-			System.out.println("invokeValueMethod " + valuePath + " " + value);
 			
 			if(value != null) {
 				NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);

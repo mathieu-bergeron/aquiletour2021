@@ -13,8 +13,8 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class StudentAppointmentViewWeb extends AppointmentViewWeb implements AppointmentView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		
+	public void initializeViewWeb(NtroContext<?> context) {
+
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class StudentAppointmentViewWeb extends AppointmentViewWeb implements App
 		studentId.appendHtml(appointment.getStudentId());
 		studentSurname.appendHtml(appointment.getStudentSurname());
 		studentName.appendHtml(appointment.getStudentName());
-		
+
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 	}
 

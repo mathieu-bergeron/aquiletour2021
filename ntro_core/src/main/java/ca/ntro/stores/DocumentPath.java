@@ -1,8 +1,7 @@
 package ca.ntro.stores;
 
-import java.util.List;
-
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.system.assertions.MustNot;
 
 public class DocumentPath implements JsonSerializable {
 	
@@ -52,7 +51,18 @@ public class DocumentPath implements JsonSerializable {
 	
 	@Override
 	public int hashCode() {
-		return collection.hashCode() + documentId.hashCode();
+		//MustNot.beNull(collection);
+		//MustNot.beNull(documentId);
+		
+		int code = 0;
+		if(collection != null) {
+			code += collection.hashCode();
+		}
+		if(documentId != null) {
+			code += documentId.hashCode();
+		}
+
+		return code;
 	}
 	
 	@Override
@@ -61,9 +71,14 @@ public class DocumentPath implements JsonSerializable {
 		if(other == this) return true;
 		if(other instanceof DocumentPath) {
 			DocumentPath otherPath = (DocumentPath) other;
-
-			return collection.equals(otherPath.collection)  
-					&& documentId.equals(otherPath.documentId);
+			
+			if(collection == null && otherPath.collection != null) return false;
+			if(documentId == null && otherPath.documentId != null) return false;
+			
+			if(collection != null && !(collection.equals(otherPath.collection))) return false;
+			if(documentId != null && !(documentId.equals(otherPath.documentId))) return false;
+			
+			return true;
 		}
 		return false;
 	}

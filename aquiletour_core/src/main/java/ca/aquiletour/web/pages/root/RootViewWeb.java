@@ -16,7 +16,6 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
@@ -25,7 +24,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
 		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
@@ -38,13 +37,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				
 				if(context.user() instanceof Teacher) {
-					ShowTeacherDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowTeacherDashboardMessage.class);
-					Ntro.messageService().sendMessage(showDashboardMessage);
+					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
+					Ntro.messages().send(showDashboardMessage);
 				}else{
-					ShowStudentDashboardMessage showDashboardMessage = MessageFactory.createMessage(ShowStudentDashboardMessage.class);
-					Ntro.messageService().sendMessage(showDashboardMessage);
+					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+					Ntro.messages().send(showDashboardMessage);
 				}
 			}
 		});
@@ -54,8 +52,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			public void onEvent() {
 				T.call(this);
 
-				ShowUsersMessage showUsersMessage = MessageFactory.createMessage(ShowUsersMessage.class);
-				Ntro.messageService().sendMessage(showUsersMessage);
+				ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
+				Ntro.messages().send(showUsersMessage);
 			}
 		});
 	}
@@ -63,8 +61,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showDashboard(DashboardView dashboardView) {
 		T.call(this);
-		
-		
+
+
 		showSubView(dashboardView);
 	}
 
@@ -93,7 +91,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showUsers(UsersView usersView) {
 		T.call(this);
-		
+
 		showSubView(usersView);
 
 	}
@@ -101,9 +99,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showLogin(LoginView loginView) {
 		T.call(this);
-		
+
 		showSubView(loginView);
-		
+
 	}
 
 	@Override

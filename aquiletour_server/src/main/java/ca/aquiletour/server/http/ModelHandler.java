@@ -1,8 +1,5 @@
 package ca.aquiletour.server.http;
 
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.queues.QueuesModel;
-import ca.aquiletour.core.pages.users.UsersModel;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
@@ -119,7 +116,7 @@ public class ModelHandler extends AbstractHandler {
         // ??
         // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 
-        response.getWriter().print(Ntro.jsonService().toString(modelLoader.getModel()));
+        response.getOutputStream().write(Ntro.jsonService().toString(modelLoader.getModel()).getBytes());
         response.flushBuffer();
 
         baseRequest.setHandled(true);

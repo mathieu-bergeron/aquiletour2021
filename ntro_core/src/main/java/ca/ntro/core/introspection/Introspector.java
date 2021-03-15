@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.stores.ValuePath;
@@ -258,7 +260,36 @@ public abstract class Introspector {
 		NtroClass ntroClass = ntroClassFromObject(object);
 		
 		String fieldName = valuePath.fieldName(0);
+		
+		if(ntroClass.ifImplements(NtroModel.class)
+				|| ntroClass.ifImplements(NtroModelValue.class)) {
+			
+			result = getFieldValue(object, ntroClass, fieldName);
 
+		}else if(object instanceof List) {
+			
+			result = getListValue(object, fieldName);
+			
+		}else if(object instanceof Map) {
+
+			result = getMapValue(object, fieldName);
+		}
+		
+		if(valuePath.size() > 1) {
+			ValuePath remainder = valuePath.subPath(1);
+			result = findByValuePath(result, remainder);
+		}
+		
+		return result;
+	}
+
+
+	private Object getFieldValue(Object object, 
+			                     NtroClass ntroClass, 
+			                     String fieldName) {
+
+		Object result = null;
+		
 		NtroMethod getter = ntroClass.getterByFieldName(fieldName);
 		
 		if(getter != null) {
@@ -269,11 +300,19 @@ public abstract class Introspector {
 			}
 		}
 		
-		if(valuePath.size() > 1) {
-			ValuePath remainder = valuePath.subPath(1);
-			result = findByValuePath(result, remainder);
-		}
-		
 		return result;
 	}
+
+	private Object getListValue(Object object, String indexString) {
+		List<Object> list = (List<Object>) object;
+		int index = Integer.parseInt(indexString);
+		return list.get(index);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Object getMapValue(Object object, String key) {
+		Map<String, Object> map = (Map<String, Object>) object;
+		return map.get(key);
+	}
+
 }

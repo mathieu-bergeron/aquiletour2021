@@ -34,7 +34,7 @@ public abstract class NtroWindowWeb extends NtroWindow {
 
 		HtmlElement body = getDocument().select("body").get(0);
 
-		body.setAttribute("current-path", path.toString());
+		//body.setAttribute("current-path", path.toString());
 	}
 
 

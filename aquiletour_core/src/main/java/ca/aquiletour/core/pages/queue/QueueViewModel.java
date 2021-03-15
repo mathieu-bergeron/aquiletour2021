@@ -14,7 +14,8 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 	@Override
 	protected void handle(QueueModel model, QueueView view, ViewLoader subViewLoader) {
 		T.call(this);
-		T.here();//TODO goes here
+		
+		view.clearQueue();
 		
 		model.getAppointments().observe(new ListObserver<Appointment>() {
 
@@ -58,14 +59,15 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 			public void onItemRemoved(int index, Appointment item) {
 				// TODO Auto-generated method stub
 				T.call(this);
+				
+				System.out.println("onItemRemoved " + index);
 
-				view.deleteAppointment(index);
+				view.deleteAppointment(item.getId());
 			}
 
 			@Override
 			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
+				view.clearQueue();
 			}
 		});
 	}

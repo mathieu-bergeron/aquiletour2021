@@ -1,16 +1,24 @@
 package ca.ntro.jdk.web;
 
+import ca.ntro.NtroBackend;
 import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.EarlyInitializationJdk;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.NtroInitializationTask;
+import ca.ntro.web.NtroAppWeb;
 
-public class NtroWebserver {
+public class NtroWebServer {
+
+	public static void launchServer(Class<? extends NtroBackend> backendClass, 
+			                           Class<? extends NtroAppWeb> appClass, 
+			                           String[] args) {
+
+	}
 
 	public static NtroInitializationTask defaultInitializationTask(Class<? extends BackendServiceServer> backendServiceClass, ModelStore localStore) {
-		__T.call(NtroWebserver.class, "defaultInitializationTask");
+		__T.call(NtroWebServer.class, "defaultInitializationTask");
 
 		EarlyInitializationJdk earlyInitialization = new EarlyInitializationJdk();
 		earlyInitialization.performInitialization();

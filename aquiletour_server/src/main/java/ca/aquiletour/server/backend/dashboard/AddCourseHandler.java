@@ -6,10 +6,10 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
+import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.jdk.messages.BackendMessageHandler;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
@@ -36,7 +36,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 													   fromUser.getAuthToken(),
 													   courseId);
-					queueModel.addStudentToClass(fromUser.getId());;//TODO the one who created the class is the teacher so maybe add teacherId to the model here
+					queueModel.setTeacherId(fromUser.getId());//TODO is the teacher always the person who creates the queue
 					modelStore.save(queueModel);
 
 					QueuesModel queuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "allQueues");

@@ -1,7 +1,5 @@
-package ca.ntro.jdk.models;
+package ca.ntro.core.models;
 
-import ca.ntro.core.models.ModelLoader;
-import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.ModelStore;
@@ -16,6 +14,7 @@ public class ModelStoreSync {
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+
 		ModelLoader loader = modelStore.getLoader(modelClass, authToken, firstPathName, pathRemainder);
 		loader.execute();
 		

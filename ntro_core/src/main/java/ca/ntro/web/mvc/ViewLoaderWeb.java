@@ -17,11 +17,9 @@
 
 package ca.ntro.web.mvc;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.ResourceLoaderTask;
 import ca.ntro.web.dom.HtmlElement;
@@ -123,7 +121,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 
 		MustNot.beNull(html);
 
-		NtroViewWeb view = Factory.newInstance(viewClass);
+		NtroViewWeb view = Ntro.factory().newInstance(viewClass);
 
 		HtmlElement rootElement = parseHtml(html);
 

@@ -1,15 +1,13 @@
 package ca.aquiletour.server.backend.users;
 
-import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
+import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.jdk.messages.BackendMessageHandler;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCourseMessage> {
@@ -32,6 +30,8 @@ public class AddUserToCourseHandler extends BackendMessageHandler<AddUserToCours
 			newCourse.setCourseId(courseId);
 			dashboardModel.addCourse(newCourse);
 			
+			dashboardModel.setTeacherAvailability(false, courseId);
+			dashboardModel.updateMyAppointment(courseId, false);
 			modelStore.save(dashboardModel);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {

@@ -11,11 +11,11 @@ import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.UsersModel;
+import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
-import ca.ntro.jdk.messages.BackendMessageHandler;
-import ca.ntro.jdk.models.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessage> {
@@ -48,7 +48,7 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 				
 				@Override
 				protected void runTaskAsync() {
-					ArrayList<User> usersList = new ArrayList<User>();
+					ArrayList<User> usersList = new ArrayList<User>();//TODO studentsId are in queueModel
 					Map<String,User> usersMap = (Map<String, User>) usersModel.getUsers().getValue();;
 					for (Map.Entry<String, User> entry : usersMap.entrySet()) {
 						usersList.add(entry.getValue());

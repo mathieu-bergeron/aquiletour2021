@@ -3,10 +3,12 @@ package ca.ntro.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 import ca.ntro.threads.NtroThread;
 
 public abstract class MessageService {
@@ -37,7 +39,7 @@ public abstract class MessageService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <M extends NtroMessage> void sendMessage(M message) {
+	public <M extends NtroMessage> void send(M message) {
 		if(handlers.containsKey(message.getClass())) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
@@ -57,5 +59,35 @@ public abstract class MessageService {
 		T.call(this);
 		
 		handlers = new HashMap<>();
+	}
+
+	public <MSG extends NtroMessage> MSG create(Class<MSG> messageClass) {
+		T.call(this);
+
+		MSG message = Ntro.factory().newInstance(messageClass);
+		
+		if(message instanceof NtroUserMessage) {
+			((NtroUserMessage) message).setUser(Ntro.userService().currentUser());
+		}
+
+		return message;
+	}
+
+	public <M extends NtroMessage> MessageHandler<M> createMessageHandler(Class<M> messageClass, Class<MessageHandler<M>> handlerClass) {
+		T.call(this);
+
+		return null;
+	}
+
+	public  <M extends NtroMessage> MessageHandlerTask createMessageHandlerTask(Class<M> messageClass) {
+		T.call(this);
+		
+		MessageHandlerTask handlerTask = new MessageHandlerTask();
+
+		handlerTask.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
+
+		Ntro.messages().registerHandlerTask(messageClass, handlerTask);
+
+		return handlerTask;
 	}
 }

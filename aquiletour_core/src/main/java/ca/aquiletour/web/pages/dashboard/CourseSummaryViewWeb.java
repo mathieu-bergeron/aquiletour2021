@@ -8,11 +8,10 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
+public abstract class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		
+	public void initializeViewWeb(NtroContext<?> context) {
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		HtmlElement myAppointment = this.getRootElement().find("#myAppointment").get(0);
 		HtmlElement isQueueOpen = this.getRootElement().find("#isQueueOpen").get(0);
-		
+
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(nbAppointment);
@@ -33,5 +32,6 @@ public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryVi
 		MustNot.beNull(myAppointment);
 		MustNot.beNull(isQueueOpen);
 	}
+
 
 }

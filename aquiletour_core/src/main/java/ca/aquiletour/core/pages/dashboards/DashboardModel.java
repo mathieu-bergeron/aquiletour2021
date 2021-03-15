@@ -71,10 +71,22 @@ public class DashboardModel implements NtroModel {
 	public void updateMyAppointment(String courseId, Boolean state) {
 		for (int i = 0; i < courses.size(); i++) {
 			CourseSummary currentCourse = courses.item(i);
-			if (currentCourse.getTitle().equals(courseId)) {
-				currentCourse.setMyAppointment(state);
+			if (currentCourse.getCourseId().equals(courseId)) {
+				currentCourse.updateMyAppointment(state);
 			}
 		}
+		
+	}
+	
+	public boolean doesStudentAlreadyHaveAppointment(String courseId) {
+		boolean myAppointment = false;
+		for (int i = 0; i < courses.size(); i++) {
+			CourseSummary currentCourse = courses.item(i);
+			if (currentCourse.getTitle().equals(courseId)) {
+				myAppointment = currentCourse.getMyAppointment().getValue();
+			}
+		}
+		return myAppointment;
 
 	}
 	
@@ -82,7 +94,7 @@ public class DashboardModel implements NtroModel {
 		for (int i = 0; i < courses.size(); i++) {
 			CourseSummary currentCourse = courses.item(i);
 			if(currentCourse.getCourseId().equals(courseId)) {
-				currentCourse.setIsQueueOpen(availabilty);
+				currentCourse.updateQueueOpen(availabilty);
 			}
 		}
 	}

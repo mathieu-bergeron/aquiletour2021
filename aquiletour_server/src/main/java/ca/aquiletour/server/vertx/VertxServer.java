@@ -11,21 +11,39 @@ public class VertxServer {
 		
 		Vertx vertx = Vertx.vertx();
 		
+		
 		HttpServer server = vertx.createHttpServer();
 
 		server.requestHandler(request -> {
 			
 			/* TODO
 			 * 
-			 *  /_resources/path : servir fichier statique (selon le path)
-			 *  /_messages       : répondre à un message (message dans le body POST)
-			 *  /                : démarrer une App et répondre en HTML
+			 *  /_resources/path  : servir fichier statique (selon le path)
+			 *  /_messages/http   : messages reçu par le body d'un POST
+			 *  /_messages/sockjs : messages reçu via une connexion SockJS
+			 *  /                 : démarrer une App et répondre en HTML
 			 *  
+			 *  Pour les deux réceptions de messages
+			 *  + Envoyer le message au Backend
+			 *  + Flusher la file de messages de l'usager
+			 *    -- via la réponse HTTP
+			 *    -- ou via le socket
+			 *    
 			 *  Chaque session a:
 			 *  + Une file de messages. Quand on répond à un message, on flush la file de messages
 			 *  
 			 *  En plus un usager peut avoir des sockets
 			 *  + Quand on répond à un message, on flush une copie de la file sur tout les sockets de l'usager
+			 *  
+			 *  
+			 *  ID de session et ID de lastLogin
+			 *  
+			 *  https://neilmadden.blog/2018/08/30/moving-away-from-uuids/
+			 *  
+			 *  20-byte SecureRandom encodé en base64
+			 *  
+			 *  
+			 *  
 			 * 
 			 */
 			

@@ -9,7 +9,6 @@ import ca.ntro.core.tasks.ContainerTask;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
-import ca.ntro.messages.MessageFactory;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
@@ -105,7 +104,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 
-		MessageHandlerTask messageHandlerTask = MessageFactory.createMessageHandlerTask(messageClass);
+		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 
 		handler.setMessageId(messageId);
 
