@@ -82,9 +82,16 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 	public void removeItem(I item) {
 		T.call(this);
 		
-		int index = getValue().lastIndexOf(item);
+		T.here();
 		
+		int index = Ntro.collections().indexOfEquals(getValue(), item);
+
 		getValue().remove(index);
+		
+		List<Object> args = new ArrayList<>();
+		args.add(item);
+
+		modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemRemoved(index, item);

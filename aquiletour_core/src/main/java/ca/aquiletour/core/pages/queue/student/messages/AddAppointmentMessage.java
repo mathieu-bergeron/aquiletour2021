@@ -1,17 +1,15 @@
 package ca.aquiletour.core.pages.queue.student.messages;
 
-import java.util.Queue;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 
-public class AddAppointmentMessage extends NtroMessage {
+public class AddAppointmentMessage extends NtroUserMessage<User> {
 
 	private Appointment appointment;
-	private User user;
 	private String courseId;
 
 	public void setAppointment(Appointment appointment) {
@@ -24,14 +22,6 @@ public class AddAppointmentMessage extends NtroMessage {
 		T.call(this);
 		
 		return appointment;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-	
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 	public String getCourseId() {

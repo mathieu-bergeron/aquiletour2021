@@ -7,8 +7,8 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStoreSync;
-import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.services.Ntro;
@@ -25,7 +25,6 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 				requestingUser.getAuthToken(),
 				courseId);
-
 		
 		if(queueModel != null) {
 			
@@ -38,9 +37,13 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
 						int nbAppointment = queueModel.getAppointments().size();
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-			                    "admin",
-			                    studentId);
+
+						// XXX: cannot use modelStore in executeLater
+						//      must use Ntro.modelStore()
+						ModelLoader modelLoader = Ntro.modelStore().getLoader(DashboardModel.class, "admin", studentId);
+						modelLoader.execute();
+						DashboardModel dashboardModel = (DashboardModel) modelLoader.getModel();
+
 						if(dashboardModel != null) {
 							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
 							if(requestingUser.getId().equals(studentId)) {

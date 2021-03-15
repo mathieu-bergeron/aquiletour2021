@@ -55,23 +55,19 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
-				
-				User user = (User) Ntro.userService().currentUser();
-
 				AddAppointmentMessage  addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
-				addAppointmentMessage.setUser(user);
-				addAppointmentMessage.setCourseId(course.getCourseId());
-				
+
+				User user = addAppointmentMessage.getUser();
+
 				Appointment appointment = new Appointment();
 				appointment.setStudentId(user.getId());
 				appointment.setStudentName(user.getName());
 				appointment.setStudentSurname(user.getSurname());
 				
 				addAppointmentMessage.setAppointment(appointment);
+				addAppointmentMessage.setCourseId(course.getCourseId());
 
 				Ntro.messages().send(addAppointmentMessage);
-				
-				System.out.println("addAppointment");
 			}
 		});
 	}
