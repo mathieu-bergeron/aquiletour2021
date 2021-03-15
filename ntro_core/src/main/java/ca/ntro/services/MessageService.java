@@ -39,7 +39,7 @@ public abstract class MessageService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <M extends NtroMessage> void sendMessage(M message) {
+	public <M extends NtroMessage> void send(M message) {
 		if(handlers.containsKey(message.getClass())) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
@@ -61,10 +61,10 @@ public abstract class MessageService {
 		handlers = new HashMap<>();
 	}
 
-	public <M extends NtroMessage> void sendMessage(Class<M> messageClass) {
+	public <M extends NtroMessage> void send(Class<M> messageClass) {
 		M message = create(messageClass);
 		
-		sendMessage(message);
+		send(message);
 	}
 
 	public <MSG extends NtroMessage> MSG create(Class<MSG> messageClass) {

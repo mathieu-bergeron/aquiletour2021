@@ -60,4 +60,15 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 		container.appendElement(appointmentViewWeb.getRootElement());
 	}
 
+	@Override
+	public void clearQueue() {
+
+		HtmlElement container = this.getRootElement().find("#appointment-list").get(0);
+
+		MustNot.beNull(container);
+		
+		container.clearChildren();
+		
+	}
+
 }

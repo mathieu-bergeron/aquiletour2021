@@ -1,12 +1,17 @@
 package ca.aquiletour.web.pages.dashboard.student;
 
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements StudentCourseSummaryView {
@@ -44,7 +49,31 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				teacherAvailable.appendHtml("prof non-disponible");
 			}
 		}
+
 		makeAppointmentLink.setAttribute("href","billetterie/" + course.getTitle() + "?makeAppointment");
+		
+		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				
+				User user = (User) Ntro.userService().currentUser();
+
+				AddAppointmentMessage  addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
+				addAppointmentMessage.setUser(user);
+				addAppointmentMessage.setCourseId(course.getCourseId());
+				
+				Appointment appointment = new Appointment();
+				appointment.setStudentId(user.getId());
+				appointment.setStudentName(user.getName());
+				appointment.setStudentSurname(user.getSurname());
+				
+				addAppointmentMessage.setAppointment(appointment);
+
+				Ntro.messages().send(addAppointmentMessage);
+				
+				System.out.println("addAppointment");
+			}
+		});
 	}
 
 }

@@ -1,4 +1,4 @@
-// Copyright (C) (2020) (Mathieu Bergeron) (mathieu.bergeron@cmontmorency.qc.ca)
+// Copyright (C) (2020) (Mathieu Bergeron) (mathieu.bergeron@cmontmorency.qc.ca)/
 //
 // This file is part of tutoriels4f5
 //
@@ -52,6 +52,7 @@ public class StackAnalyzerJSweet extends StackAnalyzer {
 		String stackLine = stackLines[finalStackOffset];
 
 		String filePrefix = window.location.origin;
+		
 		String fileName = stackLine.split("@")[1].replace(filePrefix, "").split(":")[0];
 
 		String methodName = stackLine.split("@")[0];

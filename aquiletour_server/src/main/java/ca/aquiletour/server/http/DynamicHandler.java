@@ -112,13 +112,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		System.out.println("");
 		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-
-		System.err.println("");
-		System.err.println("");
-		System.err.println("");
-		System.err.println("");
+		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
 		
 		NtroContext<User> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO

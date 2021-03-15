@@ -8,4 +8,5 @@ public interface QueueView extends NtroView {
 	void appendAppointement(Appointment appointment, AppointmentView appointmentView);
 	void deleteAppointment(int index);
 	void insertAppointment(int index ,Appointment appointment, AppointmentView appointmentView);
+	void clearQueue();
 }

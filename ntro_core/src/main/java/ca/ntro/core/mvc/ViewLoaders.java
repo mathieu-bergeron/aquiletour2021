@@ -57,6 +57,5 @@ public class ViewLoaders {
 		}
 		
 		return (ViewLoader) viewLoader.clone();
-		//return viewLoader;
 	}
 }

@@ -4,8 +4,6 @@ import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.ntro.BackendMessageHandler;
@@ -19,7 +17,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	@Override
 	public void handle(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
-		
+
 		User requestingUser = message.getUser();
 		String courseId = message.getCourseId();
 		

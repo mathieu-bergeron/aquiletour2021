@@ -40,10 +40,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				
 				if(context.user() instanceof Teacher) {
 					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
-					Ntro.messages().sendMessage(showDashboardMessage);
+					Ntro.messages().send(showDashboardMessage);
 				}else{
 					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
-					Ntro.messages().sendMessage(showDashboardMessage);
+					Ntro.messages().send(showDashboardMessage);
 				}
 			}
 		});
@@ -54,7 +54,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				T.call(this);
 
 				ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
-				Ntro.messages().sendMessage(showUsersMessage);
+				Ntro.messages().send(showUsersMessage);
 			}
 		});
 	}

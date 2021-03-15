@@ -13,7 +13,7 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 	@Override
 	protected void handle(DashboardModel model, DashboardView view, ViewLoader subViewLoader) {
 		T.call(this);
-
+		
 		model.getCourses().observe(new ListObserver<CourseSummary>() {
 
 			@Override

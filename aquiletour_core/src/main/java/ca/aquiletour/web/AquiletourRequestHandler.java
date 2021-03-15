@@ -56,14 +56,14 @@ public class AquiletourRequestHandler {
 		T.call(AquiletourRequestHandler.class);
 
 		ShowHomeMessage showHomeMessage = Ntro.messages().create(ShowHomeMessage.class);
-		Ntro.messages().sendMessage(showHomeMessage);
+		Ntro.messages().send(showHomeMessage);
 	}
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
 		ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
-		Ntro.messages().sendMessage(showLoginMessage);
+		Ntro.messages().send(showLoginMessage);
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
@@ -72,18 +72,18 @@ public class AquiletourRequestHandler {
 		if(user instanceof Teacher) {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
-			Ntro.messages().sendMessage(showTeacherDashboardMessage);
+			Ntro.messages().send(showTeacherDashboardMessage);
 
 			
 		}else if(user instanceof Student){
 			
 			ShowStudentDashboardMessage showStudentDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
-			Ntro.messages().sendMessage(showStudentDashboardMessage);
+			Ntro.messages().send(showStudentDashboardMessage);
 
 		}else {
 			
 			ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
-			Ntro.messages().sendMessage(showLoginDialogMessage);
+			Ntro.messages().send(showLoginDialogMessage);
 			
 		}
 
@@ -93,7 +93,7 @@ public class AquiletourRequestHandler {
 		T.call(AquiletourRequestHandler.class);
 
 		ShowQueuesMessage showQueuesMessage = Ntro.messages().create(ShowQueuesMessage.class);
-		Ntro.messages().sendMessage(showQueuesMessage);
+		Ntro.messages().send(showQueuesMessage);
 	}
 		
 
@@ -108,7 +108,7 @@ public class AquiletourRequestHandler {
 
 				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(courseId);
-				Ntro.messages().sendMessage(showTeacherQueueMessage);
+				Ntro.messages().send(showTeacherQueueMessage);
 				
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				teacherUsesQueueMessage.setCourseId(courseId);
@@ -120,12 +120,12 @@ public class AquiletourRequestHandler {
 				
 				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
 				showStudentQueueMessage.setCourseId(courseId);
-				Ntro.messages().sendMessage(showStudentQueueMessage);
+				Ntro.messages().send(showStudentQueueMessage);
 
 			}else {
 				
 				ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
-				Ntro.messages().sendMessage(showLoginDialogMessage);
+				Ntro.messages().send(showLoginDialogMessage);
 			}
 
 		}
@@ -135,7 +135,7 @@ public class AquiletourRequestHandler {
 		T.call(AquiletourRequestHandler.class);
 
 		ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
-		Ntro.messages().sendMessage(showUsersMessage);
+		Ntro.messages().send(showUsersMessage);
 	}
 
 }

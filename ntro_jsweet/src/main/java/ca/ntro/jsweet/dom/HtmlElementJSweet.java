@@ -1,10 +1,13 @@
 package ca.ntro.jsweet.dom;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
+import def.dom.Element;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
@@ -14,7 +17,7 @@ import static def.jquery.Globals.$;
 public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
-
+	
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
 	}
@@ -29,7 +32,6 @@ public class HtmlElementJSweet extends HtmlElement {
 		T.call(this);
 
 		jQueryElement.on(event, new BiFunction<JQueryEventObject, Object, Object>() {
-
 			@Override
 			public Object apply(JQueryEventObject t, Object u) {
 				T.call(this);
@@ -43,7 +45,7 @@ public class HtmlElementJSweet extends HtmlElement {
 			}
 		});
 	}
-
+	
 	@Override
 	public void appendHtml(String html) {
 		T.call(this);
@@ -110,8 +112,15 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void remove() {
 		T.call(this);
+		
+		// XXX: the DOM method does not remove event listeners
+		//      (unless the element is garbage collected, which
+		//       it won't be as our jQueryElement as a reference to it)
+		Element domElement = jQueryElement.get(0);
+		domElement.remove();
 
-		jQueryElement.remove();
+		// XXX: jQuery.remove also removes event listeners
+		//jQueryElement.remove();
 	}
 
 	@Override
