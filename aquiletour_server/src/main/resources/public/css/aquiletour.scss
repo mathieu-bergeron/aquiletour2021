@@ -84,13 +84,15 @@
 }
 
 .queue-settings {
-  float: right;
+ float: right;
+  
 }
 
 .list-group-item {
   word-break: break-all;
   text-align: left;
-  height: 4rem;
+  height: auto;
+  
 }
 
 //NAVBAR

@@ -91,7 +91,7 @@
 .list-group-item {
   word-break: break-all;
   text-align: left;
-  height: 4rem;
+  height: auto;
 }
 
 .navbar-brand {
