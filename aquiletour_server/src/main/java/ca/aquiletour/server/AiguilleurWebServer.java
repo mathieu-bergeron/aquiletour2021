@@ -6,7 +6,7 @@ public class AiguilleurWebServer {
 
 	public static void main(String[] args) {
 
-		NtroWebServer.launchServer(AiguilleurBackendWeb.class, AiguilleurAppWeb.class, args);
+		NtroWebServer.launchServer(AiguilleurBackend.class, AiguilleurAppWeb.class, args);
 	}
 
 }

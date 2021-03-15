@@ -3,6 +3,7 @@ package ca.aquiletour.web;
 import java.util.Map;
 
 import ca.aquiletour.core.AiguilleurApp;
+import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
@@ -87,9 +88,19 @@ public class AiguilleurAppWeb extends AiguilleurApp implements NtroAppWeb {
 						&& context.user() instanceof Student) {
 					
 					Ntro.messageService().sendMessage(ShowStudentDashboardMessage.class);
+
+				} else if(path.startsWith("csv")) {
+					if(parameters.containsKey("queueId")) {
+
+						String queueId = parameters.get("queueId")[0];
+					
+						AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
+						addStudentCsvMessage.setQueueId(queueId);
+						addStudentCsvMessage.setUser(context.user());
+						
+						// [...]
+					}
 				}
-				
-				
 			}
 		});
 	}

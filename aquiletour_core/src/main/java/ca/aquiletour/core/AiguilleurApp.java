@@ -1,6 +1,7 @@
 package ca.aquiletour.core;
 
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.ControllerRegistrar;
 import ca.ntro.MessageRegistrar;
 import ca.ntro.ModelRegistrar;
@@ -18,7 +19,9 @@ public abstract class AiguilleurApp implements NtroApp {
 
 	@Override
 	public void registerControllers(ControllerRegistrar registrar) {
-		registrar.registerRootController(RootController.class);
+
+		registrar.registerRootView(RootView.class);
+
 	}
 
 }

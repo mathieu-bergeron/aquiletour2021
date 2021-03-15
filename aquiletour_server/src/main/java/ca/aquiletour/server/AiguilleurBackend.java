@@ -2,7 +2,6 @@ package ca.aquiletour.server;
 
 import java.util.Map;
 
-import ca.aquiletour.core.AiguilleurBackend;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -29,13 +28,9 @@ import ca.aquiletour.server.backend.users.AddUserToCourseHandler;
 import ca.aquiletour.server.backend.users.DeleteUserFromCourseHandler;
 import ca.aquiletour.server.backend.users.DeleteUserHandler;
 import ca.ntro.HandlerRegistrar;
-import ca.ntro.core.Path;
-import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.web.NtroBackendWeb;
-import ca.ntro.web.NtroRouter;
-import ca.ntro.web.RouterRegistrar;
+import ca.ntro.NtroBackend;
 
-public class AiguilleurBackendWeb extends AiguilleurBackend implements NtroBackendWeb {
+public class AiguilleurBackend implements NtroBackend {
 
 	@Override
 	public void registerHandlers(HandlerRegistrar registrar) {
@@ -52,33 +47,5 @@ public class AiguilleurBackendWeb extends AiguilleurBackend implements NtroBacke
 		registrar.registerHandler(DeleteAppointmentMessage.class,    DeleteAppointmentHandler.class);
 		registrar.registerHandler(MoveAppointmentMessage.class,      MoveAppointmentHandler.class);
 		registrar.registerHandler(TeacherClosesQueueMessage.class,   TeacherClosesQueueHandler.class);
-	}
-
-	@Override
-	public void registerRouters(RouterRegistrar registrar) {
-		
-		registrar.registerRouter(new NtroRouter<User>() {
-			@Override
-			public void route(Path path, 
-					          Map<String, String[]> parameters, 
-					          NtroContext<User> context) {
-
-				if(path.startsWith("csv")) {
-					if(parameters.containsKey("queueId")) {
-
-						String queueId = parameters.get("queueId")[0];
-					
-						AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
-						addStudentCsvMessage.setQueueId(queueId);
-						addStudentCsvMessage.setUser(context.user());
-						
-						// [...]
-
-					}
-				}
-
-				// [...]
-			}
-		});
 	}
 }
