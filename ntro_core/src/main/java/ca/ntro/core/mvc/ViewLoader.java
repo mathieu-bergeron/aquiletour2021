@@ -33,7 +33,7 @@ public abstract class ViewLoader extends NtroTaskAsync implements Cloneable {
 		
 		NtroView view = createViewImpl();
 		
-		view.initialize(context);
+		view.initializeView(context);
 		
 		return view;
 	}

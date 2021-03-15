@@ -11,8 +11,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public abstract class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		
+	public void initializeViewWeb(NtroContext<?> context) {
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public abstract class CourseSummaryViewWeb extends NtroViewWeb implements Course
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		HtmlElement myAppointment = this.getRootElement().find("#myAppointment").get(0);
 		HtmlElement isQueueOpen = this.getRootElement().find("#isQueueOpen").get(0);
-		
+
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(nbAppointment);

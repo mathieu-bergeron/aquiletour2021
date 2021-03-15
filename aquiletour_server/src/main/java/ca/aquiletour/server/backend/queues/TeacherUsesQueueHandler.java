@@ -25,42 +25,44 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 	@Override
 	public void handle(ModelStoreSync modelStore, TeacherUsesQueueMessage message) {
 		T.call(this);
-		
+
 		Teacher teacher = (Teacher) message.getTeacher();
 		String courseId = message.getCourseId();
-		
-		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-				teacher.getAuthToken(),
-				courseId);
-		
-		if(queueModel != null) {
+
+		QueueModel queueModel = modelStore.getModel(QueueModel.class, teacher.getAuthToken(), courseId);
+		QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
+		QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
+
+		if (queueModel != null && allQueuesModel != null && openQueuesModel != null) {
 			
-			if(QueueTimer.isTimerOngoing()) {
-				QueueTimer.restartTimer(queueModel, modelStore, courseId);
-			}else {
-				QueueTimer.startTimer(queueModel, modelStore, courseId);
-			}
-			
-			
+			TimerTask timerTask = setQueueClosedTimerTask(courseId, queueModel, modelStore);
+
+			QueueTimerCenter.startATimer(timerTask, courseId);
+
+			QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
+			openQueuesModel.addQueueToList(queue);
+			modelStore.save(openQueuesModel);
+
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-			                    "admin",
-			                    studentId);
-						if(dashboardModel != null) {
+						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
+						if (dashboardModel != null) {
+							T.here();
 							dashboardModel.setTeacherAvailability(true, courseId);
 							modelStore.save(dashboardModel);
 						}
 					}
+
 					QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
 					QueueSummary queue = allQueuesModel.findQueueByQueueId(courseId);
 					
 					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 					openQueuesModel.addQueueToList(queue);
 					modelStore.save(openQueuesModel);
+
 				}
 
 				@Override
@@ -68,10 +70,45 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 				}
 			});
 
-		}else {
-			
+		} else {
+
 			// TODO: error handling
-			
+
 		}
+	}
+
+	private TimerTask setQueueClosedTimerTask(String courseId, QueueModel queueModel, ModelStoreSync modelStore) {
+		TimerTask timerTask = new TimerTask() { // do that after timer is over
+			@Override
+			public void run() {
+				T.here();
+				DashboardModel dashboardModelTeacher = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+
+				T.values(queueModel.getTeacherId());
+
+				dashboardModelTeacher.updateNbAppointmentOfCourse(courseId, 0);
+				dashboardModelTeacher.setTeacherAvailability(false, courseId);
+				modelStore.save(dashboardModelTeacher);
+
+				List<String> studentIds = queueModel.getStudentIds();
+				for (String studentId : studentIds) {
+					DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
+					if (dashboardModel != null) {
+						dashboardModel.setTeacherAvailability(false, courseId);
+						dashboardModel.updateMyAppointment(courseId, false);
+						dashboardModel.updateNbAppointmentOfCourse(courseId, 0);
+						modelStore.save(dashboardModel);
+
+						queueModel.removeAllAppointmentsOfStudent(studentId);
+						modelStore.save(queueModel);
+					}
+					
+				}
+				QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
+				openQueuesModel.deleteQueue(courseId);
+				modelStore.save(openQueuesModel);
+			}
+		};
+		return timerTask;
 	}
 }

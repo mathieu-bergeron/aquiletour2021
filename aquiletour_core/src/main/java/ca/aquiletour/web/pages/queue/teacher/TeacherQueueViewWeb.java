@@ -11,11 +11,13 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
+import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.web.pages.queue.QueueViewWeb;
 
 public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?> context) {
 
 		HtmlElement closeQueueButton = getRootElement().find("#close-queue-button").get(0);
 		

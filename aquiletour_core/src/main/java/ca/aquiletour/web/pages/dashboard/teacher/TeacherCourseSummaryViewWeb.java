@@ -17,9 +17,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		// TODO Auto-generated method stub
-		
+	public void initializeViewWeb(NtroContext<?> context) {
 	}
 
 	@Override
@@ -36,15 +34,16 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		HtmlElement nbAppointment = this.getRootElement().find("#nbAppointment").get(0);
 		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		HtmlElement deleteCourseLink = this.getRootElement().find("#deleteLink").get(0);
-		
+		HtmlElement closeQueue = this.getRootElement().find("#closeQueue").get(0);
 		
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
 		MustNot.beNull(nbAppointment);
 		MustNot.beNull(makeAppointmentLink);
+		MustNot.beNull(closeQueue);
 
 
-		
+
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
 
@@ -52,8 +51,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		makeAppointmentLink.setAttribute("href","/billetterie/" + course.getTitle() + "?makeAppointment");
 		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");
 
-		// FIXME: the browser will remove the event listener
-		//        when the element is removed from DOM
 		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -70,9 +67,14 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				Ntro.messages().send(teacherUsesQueueMessage);
 			}
 		});
+
+		if(course.getIsQueueOpen().getValue()) {
+			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle() + "?teacherClosesQueue");
+			closeQueue.appendHtml("CLOSE QUEUE");
+		} else {
+			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle());
+			closeQueue.appendHtml("OPEN QUEUE");
+
+		}
 	}
-
-
-
-
 }

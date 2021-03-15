@@ -21,6 +21,7 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 		
 		User requestingUser = message.getUser();
 		String courseId = message.getCourseId();
+		String appointmentId = message.getAppointmentId();
 		
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 				requestingUser.getAuthToken(),
@@ -30,6 +31,14 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 			
 			queueModel.deleteAppointment(message.getAppointmentId());
 			modelStore.save(queueModel);
+
+			String studentId = queueModel.receiveStudentIdOfAppointment(appointmentId);
+			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
+					"admin",
+					studentId);
+			
+			dashboardModel.updateMyAppointment(courseId, false);
+			modelStore.save(dashboardModel);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -47,7 +56,6 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 						if(dashboardModel != null) {
 							dashboardModel.updateNbAppointmentOfCourse(courseId, nbAppointment);
 							dashboardModel.updateMyAppointment(courseId, false);
-							
 							modelStore.save(dashboardModel);
 						}
 					}

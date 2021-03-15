@@ -12,21 +12,19 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class QueueViewWeb extends NtroViewWeb implements QueueView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		// TODO Auto-generated method stub
-		
+	public void initializeViewWeb(NtroContext<?> context) {
 	}
-	
+
 	@Override
 	public void appendAppointement(Appointment appointment, AppointmentView appointmentView) {
 		T.call(this);
-		
+
 		HtmlElement container = this.getRootElement().find("#appointment-list").get(0);
-		
+
 		MustNot.beNull(container);
-		
+
 		AppointmentViewWeb appointmentViewWeb = (AppointmentViewWeb) appointmentView;
-		
+
 		container.appendElement(appointmentViewWeb.getRootElement());
 	}
 
@@ -47,16 +45,16 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 	public void insertAppointment(int appointmentId, Appointment appointment, AppointmentView appointmentView) {
 		// TODO Auto-generated method stub
 		//TODO cherche dans les childrens le bon appointment (apres index)
-		//TODO container.insertAfter 
+		//TODO container.insertAfter
 		HtmlElement container = this.getRootElement().children("#appointment-list").get(0);
 
 		String selector = "#appointment-" + appointmentId;
 
 		HtmlElement appointmentElement = container.children(selector).get(0);
-		
+
 		AppointmentViewWeb appointmentViewWeb = (AppointmentViewWeb) appointmentView;
-		
-		container.appendElement(appointmentViewWeb.getRootElement());
+
+		//container.insertAfter(appointmentViewWeb, appointmentElement);
 	}
 
 	@Override

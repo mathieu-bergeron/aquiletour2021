@@ -22,7 +22,7 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.services.Ntro;
 
 public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClosesQueueMessage> {
-
+	
 	@Override
 	public void handle(ModelStoreSync modelStore, TeacherClosesQueueMessage message) {
 		T.call(this);
@@ -36,8 +36,12 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 		
 		if(queueModel != null) {
 			
-			//TODO cancel timer
-			QueueTimer.cancelTimer();
+			QueueTimerCenter.endATimer(courseId);
+			
+			
+//			QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
+//			openQueuesModel.deleteQueue(courseId);
+//			openQueuesModel.save();
 			
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {

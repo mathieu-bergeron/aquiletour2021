@@ -14,8 +14,8 @@ import ca.ntro.web.dom.HtmlEventListener;
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
 	@Override
-	public void initialize(NtroContext<?> context) {
-		super.initialize(context);
+	public void initializeViewWeb(NtroContext<?> context) {
+		super.initializeViewWeb(context);
 		T.call(this);
 
 		HtmlElement addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
