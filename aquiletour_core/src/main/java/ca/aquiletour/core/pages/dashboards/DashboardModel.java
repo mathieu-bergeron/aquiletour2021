@@ -82,7 +82,7 @@ public class DashboardModel implements NtroModel {
 		for (int i = 0; i < courses.size(); i++) {
 			CourseSummary currentCourse = courses.item(i);
 			if(currentCourse.getCourseId().equals(courseId)) {
-				currentCourse.setIsQueueOpen(availabilty);
+				currentCourse.updateQueueOpen(availabilty);
 			}
 		}
 	}

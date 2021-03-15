@@ -43,12 +43,22 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
+					// XXX: must get a fresh copy of the modelStore (it is thread specific)
+					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+
+					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
+							teacher.getAuthToken(),
+							courseId);
+					
+					queueModel.clearQueue();
+					
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
 			                    "admin",
 			                    studentId);
 						if(dashboardModel != null) {
+							dashboardModel.updateMyAppointment(courseId, false);
 							dashboardModel.setTeacherAvailability(false, courseId);
 							modelStore.save(dashboardModel);
 						}

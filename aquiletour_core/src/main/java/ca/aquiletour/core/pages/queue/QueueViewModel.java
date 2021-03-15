@@ -67,8 +67,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 
 			@Override
 			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
+				view.clearQueue();
 			}
 		});
 	}

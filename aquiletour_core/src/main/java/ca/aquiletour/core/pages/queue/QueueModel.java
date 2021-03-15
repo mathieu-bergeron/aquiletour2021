@@ -132,6 +132,10 @@ public class QueueModel implements NtroModel {
 			}
 		}
 	}
+
+	public void clearQueue() {
+		appointments.clearItems();
+	}
 	
 
 }

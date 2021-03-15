@@ -1,0 +1,36 @@
+{
+  "courses": {
+    "_C": "ObservableCourseList",
+    "value": [
+      {
+        "numberOfAppointments": 3,
+        "_C": "CourseSummary",
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "myAppointment": {
+          "_C": "StoredBoolean",
+          "value": true
+        },
+        "title": "4F5",
+        "courseId": "4F5"
+      },
+      {
+        "numberOfAppointments": 4,
+        "_C": "CourseSummary",
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "myAppointment": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "title": "3C6",
+        "courseId": "3C6"
+      }
+    ]
+  },
+  "_C": "DashboardModel"
+}

@@ -8,7 +8,7 @@ public class CourseSummary implements NtroModelValue {
 
 	private String title = "";
 	private String courseId = "";
-	private boolean isQueueOpen;
+	private StoredBoolean isQueueOpen = new StoredBoolean();
 	private StoredBoolean myAppointment = new StoredBoolean();
 	private int numberOfAppointments;
 	
@@ -22,7 +22,7 @@ public class CourseSummary implements NtroModelValue {
 		T.call(this);
 		this.title = title;
 		this.courseId = courseId;
-		this.isQueueOpen = isQueueOpen;
+		this.isQueueOpen = new StoredBoolean(isQueueOpen);
 		this.myAppointment = new StoredBoolean(myAppointment);
 		this.numberOfAppointments = numberOfAppointments;
 	}
@@ -48,11 +48,11 @@ public class CourseSummary implements NtroModelValue {
 		this.courseId = courseId;
 	}
 
-	public Boolean getIsQueueOpen() {
+	public StoredBoolean getIsQueueOpen() {
 		return isQueueOpen;
 	}
 
-	public void setIsQueueOpen(Boolean isQueueOpen) {
+	public void setIsQueueOpen(StoredBoolean isQueueOpen) {
 		this.isQueueOpen = isQueueOpen;
 	}
 
@@ -74,6 +74,10 @@ public class CourseSummary implements NtroModelValue {
 
 	public void updateMyAppointment(Boolean newValue) {
 		this.myAppointment.set(newValue);
+	}
+
+	public void updateQueueOpen(boolean availabilty) {
+		this.isQueueOpen.set(availabilty);
 	}
 	
 	

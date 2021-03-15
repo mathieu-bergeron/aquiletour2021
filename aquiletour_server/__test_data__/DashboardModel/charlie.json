@@ -1,0 +1,19 @@
+{
+  "courses": {
+    "_C": "ObservableCourseList",
+    "value": [
+      {
+        "_C": "CourseSummary",
+        "title": "LZ3",
+        "courseId": "LZ3",
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "numberOfAppointments": 0,
+        "myAppointment": {"_C":"StoredBoolean", "value":false}
+      }
+    ]
+  },
+  "_C": "DashboardModel"
+}

@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.queue.teacher;
 
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
@@ -32,6 +33,8 @@ public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 				teacherClosesQueueMessage.setCourseId("3C6");
 				teacherClosesQueueMessage.setTeacher((User) context.user());
 				Ntro.messages().send(teacherClosesQueueMessage);
+				
+				Ntro.messages().send(Ntro.messages().create(ShowTeacherDashboardMessage.class));
 			}
 		});
 	}

@@ -15,6 +15,7 @@ public class QueueTimer {
 	static boolean isTimerCurrentlyOngoing = false;
 
 	public static void startTimer(QueueModel queueModel, ModelStoreSync modelStore, String courseId) {
+		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			
 			@Override
