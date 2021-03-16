@@ -1,8 +1,10 @@
 package ca.aquiletour.web;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
@@ -61,32 +63,37 @@ public class AquiletourRequestHandler {
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
-
+		
 		ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+		
+		if(parameters.containsKey("message")) {
+			showLoginMessage.setMessageToUser(parameters.get("message")[0]);
+		}
+
 		Ntro.messages().send(showLoginMessage);
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
+
 		if(user instanceof Teacher) {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
 			Ntro.messages().send(showTeacherDashboardMessage);
 
 			
-		}else if(user instanceof Student){
+		}else if(user instanceof Student || user instanceof StudentGuest){
 			
 			ShowStudentDashboardMessage showStudentDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
 			Ntro.messages().send(showStudentDashboardMessage);
 
 		}else {
 			
-			ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
-			Ntro.messages().send(showLoginDialogMessage);
-			
+			Map<String, String[]> newParams = new HashMap<>();
+			newParams.put("message", new String[] {"SVP vous connecter afin de voir vos cours"});
+			sendLoginMessages(path, newParams);
 		}
-
 	}
 
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {

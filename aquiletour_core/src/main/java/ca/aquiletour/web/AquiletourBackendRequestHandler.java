@@ -3,6 +3,8 @@ package ca.aquiletour.web;
 import java.util.Map;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
+import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -29,7 +31,19 @@ public class AquiletourBackendRequestHandler {
 	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(path.startsWith("mescours")) {
+		if(parameters.containsKey("userId")) {
+			
+			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
+			userInitiatesLoginMessage.setUserId(parameters.get("userId")[0]);
+			Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
+
+		} else if(parameters.containsKey("loginCode")) {
+			
+			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
+			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
+			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
+
+		} else if(path.startsWith("mescours")) {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 

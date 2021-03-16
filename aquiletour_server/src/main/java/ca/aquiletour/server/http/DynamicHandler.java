@@ -36,6 +36,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
@@ -49,6 +50,7 @@ import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.jdk.web.NtroWindowServer;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.Session;
@@ -128,9 +130,9 @@ public class DynamicHandler extends AbstractHandler {
 			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
 
 			// DEBUG
-		    //RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
+		    // RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
 
-		    // NORMAL
+			// NORMAL
 		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
 
 
@@ -140,6 +142,26 @@ public class DynamicHandler extends AbstractHandler {
 			GraphTraceConnector trace = rootController.execute();
 
 			//trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
+			
+			// FIXME: there must be a better way to redirect to login
+			if(!path.startsWith("connexion")) {
+				Ntro.messages().registerHandler(ShowLoginMessage.class, new MessageHandler<ShowLoginMessage>() {
+					@Override
+					public void handle(ShowLoginMessage message) {
+						T.call(this);
+						
+						String messageToUser = message.getMessageToUser();
+						
+						// XXX: on the server, ShowLoginMessage is a redirect to /connexion?message=""
+						String redirectUrl = "/connexion?message=" + UrlEncoded.encodeString(messageToUser);
+						try {
+							response.sendRedirect(redirectUrl);
+							baseRequest.setHandled(true);
+						} catch (IOException e) {
+						}
+					}
+				});
+			}
 
 			AquiletourRequestHandler.sendMessages(context, path, parameters);
 
@@ -158,9 +180,11 @@ public class DynamicHandler extends AbstractHandler {
 		// XXX the entire taskGraph is not really async
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
-		response.setContentType("text/html; charset=utf-8");
-		response.setStatus(HttpServletResponse.SC_OK);
-		writeResponse(newWindow, baseRequest, out);
+		if(!baseRequest.isHandled()) {
+			response.setContentType("text/html; charset=utf-8");
+			response.setStatus(HttpServletResponse.SC_OK);
+			writeResponse(newWindow, baseRequest, out);
+		}
 	}
 
 

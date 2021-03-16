@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
@@ -10,6 +11,7 @@ import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.login.LoginView;
+import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.mvc.NtroContext;
@@ -40,9 +42,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				if(context.user() instanceof Teacher) {
 					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
-				}else{
+				}else if(context.user() instanceof Student || context.user() instanceof StudentGuest){
 					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
+				}else {
+					ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+					showLoginMessage.setMessageToUser("SVP vous connecter pour voir vos cours");
+					Ntro.messages().send(showLoginMessage);
 				}
 			}
 		});
