@@ -1,7 +1,7 @@
 package ca.ntro.test.json;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.users.NtroUser;
 
 public class TestUser extends NtroUser {
 	

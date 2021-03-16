@@ -1,7 +1,6 @@
 package ca.aquiletour.server.http;
 
 import ca.aquiletour.server.RegisteredSockets;
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
@@ -11,6 +10,7 @@ import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
+import ca.ntro.users.NtroUser;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;

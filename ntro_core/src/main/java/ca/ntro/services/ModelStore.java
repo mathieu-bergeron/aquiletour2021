@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
@@ -20,6 +19,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 public abstract class ModelStore {
 
@@ -112,8 +112,19 @@ public abstract class ModelStore {
 		T.call(this);
 		
 		DocumentPath documentPath = localHeap.get(model);
+		
+		if(documentPath == null) {
 
-		saveJsonString(documentPath, Ntro.jsonService().toString(model));
+			Log.warning("Model was already saved and removed from memory: " + model);
+
+		}else {
+			
+			saveJsonString(documentPath, Ntro.jsonService().toString(model));
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(model);
+			localHeapByPath.remove(documentPath);
+		}
 	}
 	
 	void reset() {

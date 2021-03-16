@@ -1,6 +1,6 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.NtroUser;
+import ca.ntro.users.NtroUser;
 
 public class NtroContext<U extends NtroUser>{
 	

@@ -182,17 +182,13 @@ public class AquiletourBackendRequestHandler {
 	private static void sendUsersMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("email") 
-		&& parameters.containsKey("password")) {
+		if(parameters.containsKey("email")) {
 			
 			String email = parameters.get("email")[0];
-			String password = parameters.get("password")[0];
-			T.here();
 			
 			AddUserMessage addUserMessage = Ntro.messages().create(AddUserMessage.class);
 			User newUser = new User();
 			newUser.setUserEmail(email);			
-			newUser.setUserPassword(password);	
 			newUser.setName("test");
 			newUser.setAuthToken("test");
 			newUser.setId(email);
@@ -209,9 +205,9 @@ public class AquiletourBackendRequestHandler {
 			Ntro.backendService().sendMessageToBackend(deleteUserMessage);
 
 		} else if(parameters.containsKey("addUser")) { // /usagers?addUser=Id&to=IdDuCours
-			T.here();
+
 			AddUserToCourseMessage addUserToCourseMessage = new AddUserToCourseMessage();
-			T.here();
+
 			String userId = parameters.get("addUser")[0];
 			String courseId = parameters.get("to")[0];
 			 
@@ -222,9 +218,8 @@ public class AquiletourBackendRequestHandler {
 			 
 			
 		}else if(parameters.containsKey("removeUser")) { // /usagers?removeUser=Id&from=IdDuCours
-			T.here();
+
 			DeleteUserFromCourseMessage deleteUserFromCourseMessage = new DeleteUserFromCourseMessage();
-			T.here();
 			String userId = parameters.get("removeUser")[0];
 			String courseId = parameters.get("from")[0];
 			 

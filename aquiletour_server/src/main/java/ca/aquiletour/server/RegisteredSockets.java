@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.eclipse.jetty.websocket.api.Session;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
@@ -17,6 +16,7 @@ import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 public class RegisteredSockets {
 

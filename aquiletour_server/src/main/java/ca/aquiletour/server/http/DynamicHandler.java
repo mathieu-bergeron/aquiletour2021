@@ -34,12 +34,9 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.users.AnonUser;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.users.UsersModel;
-import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
@@ -50,9 +47,11 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
-import ca.ntro.jdk.tasks.GraphTraceWriterJdk;
+import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
+import ca.ntro.users.Session;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -114,10 +113,8 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
 		
-		NtroContext<User> context = new NtroContext<>();
+		NtroContext<User> context = authenticateUser(baseRequest, response);
 		context.registerLang(Constants.LANG); // TODO
-
-		authenticateUsersAddCookiesSetContext(context, baseRequest, response);
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		
@@ -167,40 +164,124 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private void authenticateUsersAddCookiesSetContext(NtroContext<User> context, Request baseRequest, HttpServletResponse response) {
+	private NtroContext<User> authenticateUser(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		ModelLoader usersLoader = Ntro.modelStore().getLoader(UsersModel.class, "TODO", "allUsers");
-		usersLoader.execute();
-		UsersModel usersModel = (UsersModel) usersLoader.getModel();
-		
+		NtroContext<User> context = new NtroContext<>();
+
 		User user = null;
+		Session session = getSessionFromCookies(baseRequest, response);
 		
-		if(baseRequest.getParameter("userId") != null) {
-			
-			String userId = baseRequest.getParameter("userId");
-			user = usersModel.getUsers().valueOf(userId);
-			
-			if(user == null) {
-				user = new AnonUser();
-			}
-			
-			setCookie(response, "user", Ntro.jsonService().toString(user));
+		if(session != null) {
 
-		} else if(hasCookie(baseRequest, "user")) {
-
-			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
-			user = Ntro.jsonService().fromString(User.class, userString);
-
+			user = updateExistingSession(response, session);
+			
 		}else {
 
-			user = new AnonUser();
+			user = createGuestSession(response);
 		}
 
 		context.registerUser(user);
+
+		return context;
 	}
 
+	private Session getSessionFromCookies(Request baseRequest, HttpServletResponse response) {
+		T.call(this);
 
+		Session session = null;
+
+		if(hasCookie(baseRequest, "user")) {
+
+			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
+			User userRequest = Ntro.jsonService().fromString(User.class, userString);
+
+			session = getStoredSession(userRequest.getAuthToken());
+		}
+		
+		return session;
+	}
+	
+	private User updateExistingSession(HttpServletResponse response, Session session) {
+		T.call(this);
+
+		session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
+		
+		User sessionUser = (User) session.getUser();
+		User actualUser = null;
+		
+		if(sessionUser instanceof Guest) {
+
+			actualUser = sessionUser;
+
+		}else {
+
+			actualUser = updateSessionWithActualUser(response, session, sessionUser);
+		}
+		
+		return actualUser;
+	}
+
+	private User updateSessionWithActualUser(HttpServletResponse response, Session session, User sessionUser) {
+		T.call(this);
+
+		User actualUser;
+		String userId = sessionUser.getId();
+
+		ModelLoader loader = Ntro.modelStore().getLoader(User.class, "TODO", userId);
+		loader.execute();
+		actualUser = (User) loader.getModel();
+		
+		sessionUser.copyPublicInformation(actualUser);
+
+		session.setUser(sessionUser);
+
+		Ntro.modelStore().save(session);
+
+		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
+
+		return actualUser;
+	}
+
+	private Session getStoredSession(String authToken) {
+		T.call(this);
+
+		ModelLoader loader = Ntro.modelStore().getLoader(Session.class, "TODO", authToken);
+		loader.execute();
+		Session session = (Session) loader.getModel();
+		
+		if(!session.getUser().getAuthToken().equals(authToken)) {
+
+			session = null;
+		}
+
+		return session;
+	}
+
+	private User createGuestSession(HttpServletResponse response) {
+		T.call(this);
+		
+		User user = new Guest();
+		
+		String authToken = SecureRandomString.generate();
+		
+		user.setId(authToken);
+		user.setAuthToken(authToken);
+
+		ModelLoader loader = Ntro.modelStore().getLoader(Session.class, "TODO", authToken);
+		loader.execute();
+		Session session = (Session) loader.getModel();
+
+		session.setUser(user);
+		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
+		
+		setCookie(response, "user", Ntro.jsonService().toString(user));
+
+		Ntro.modelStore().save(session);
+			
+		return user;
+	}
+	
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		

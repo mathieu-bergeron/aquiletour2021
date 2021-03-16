@@ -1,6 +1,5 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
@@ -13,6 +12,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 import static def.es6.Globals.fetch;
 

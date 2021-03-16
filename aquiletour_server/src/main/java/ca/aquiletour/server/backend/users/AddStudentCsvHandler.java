@@ -46,14 +46,12 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 					String[] cutBySeparator = line.split(";");
 					newUser.setName(cutBySeparator[0]);//FamilleA
 					newUser.setSurname(cutBySeparator[1]);//PrenomA
-					newUser.setRegistrationId(cutBySeparator[2]);//DA
+					newUser.setId(cutBySeparator[2]);//DA
 					newUser.setProgramId(cutBySeparator[3]);//program number
-					newUser.setId(newUser.getSurname());
 //					newUser.setName(cutBySeparator[4]);//?
 					newUser.setPhoneNumber(cutBySeparator[5]);//phone
 					newUser.setAuthToken(newUser.getName() + "Token");
 					newUser.setUserEmail(newUser.getName() + "." + newUser.getSurname() + "@test.ca");
-					newUser.setUserPassword(newUser.getName() + "password");
 
 					usersModel.addUser(newUser);
 					usersToAdd.add(newUser);

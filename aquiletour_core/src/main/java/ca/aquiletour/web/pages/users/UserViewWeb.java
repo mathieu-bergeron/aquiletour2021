@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.users;
 
-import ca.aquiletour.core.models.users.AnonUser;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.SuperUser;
 import ca.aquiletour.core.models.users.Teacher;
@@ -9,6 +8,7 @@ import ca.aquiletour.core.pages.users.UserView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.users.NtroUser;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -37,7 +37,7 @@ public class UserViewWeb extends NtroViewWeb implements UserView {
 			role.appendHtml("Student");
 		} else if (user instanceof Teacher) {
 			role.appendHtml("Teacher");
-		} else if (user instanceof AnonUser) {
+		} else if (user instanceof NtroUser) {
 			role.appendHtml("AnonUser");
 		} else if (user instanceof SuperUser) {
 			role.appendHtml("SuperUser");
@@ -45,7 +45,6 @@ public class UserViewWeb extends NtroViewWeb implements UserView {
 
 		userId.appendHtml(user.getId());
 		userEmail.appendHtml(user.getUserEmail());
-		userPassword.appendHtml(user.getUserPassword());
 		close.setAttribute("href", "/usagers?deleteUser=" + user.getId());
 
 		getRootElement().setAttribute("id", "user-" + user.getId());

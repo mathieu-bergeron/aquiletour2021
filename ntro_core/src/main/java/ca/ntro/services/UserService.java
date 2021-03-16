@@ -1,6 +1,6 @@
 package ca.ntro.services;
 
-import ca.ntro.core.NtroUser;
+import ca.ntro.users.NtroUser;
 
 public abstract class UserService {
 	
