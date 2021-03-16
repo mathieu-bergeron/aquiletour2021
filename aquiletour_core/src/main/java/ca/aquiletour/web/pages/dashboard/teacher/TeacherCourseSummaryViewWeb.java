@@ -46,13 +46,13 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		// courseId.appendHtml(course.getCourseId());
 
 		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
-		makeAppointmentLink.setAttribute("href", "/billetterie/" + course.getTitle() + "?makeAppointment");
+		makeAppointmentLink.setAttribute("href", "/billetterie/" + course.getTitle());
 		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");
 
 		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
-
+				T.here();
 				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(course.getCourseId());
 
