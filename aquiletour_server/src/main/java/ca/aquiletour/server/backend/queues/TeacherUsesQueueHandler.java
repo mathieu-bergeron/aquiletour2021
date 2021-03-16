@@ -25,8 +25,9 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 	@Override
 	public void handle(ModelStoreSync modelStore, TeacherUsesQueueMessage message) {
 		T.call(this);
-
-		Teacher teacher = (Teacher) message.getTeacher();
+		T.values("here backend teacherUsesQueue");
+		T.values(message.getUser());
+		User teacher = message.getUser();
 		String courseId = message.getCourseId();
 
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, teacher.getAuthToken(), courseId);

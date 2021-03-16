@@ -54,4 +54,12 @@ public class QueueTimerCenter {
 		return queueTimer;
 	}
 
+	public static void stopAllOperations() {
+		for (int i = 0; i < queueTimers.size(); i++) {
+			QueueTimer queueTimer = queueTimers.get(i);
+			queueTimer.endTimerEarly();
+		}
+		
+	}
+
 }

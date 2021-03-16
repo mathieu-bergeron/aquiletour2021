@@ -27,6 +27,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.server.backend.queues.QueueTimerCenter;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
@@ -107,6 +108,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
         System.in.read();
 
         server.stop();
+        QueueTimerCenter.stopAllOperations();
 
         server.join();
 	}

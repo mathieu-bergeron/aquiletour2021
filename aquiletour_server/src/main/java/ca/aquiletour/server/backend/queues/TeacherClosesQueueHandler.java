@@ -16,6 +16,7 @@ import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.ntro.BackendMessageHandler;
+import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
@@ -27,7 +28,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 	public void handle(ModelStoreSync modelStore, TeacherClosesQueueMessage message) {
 		T.call(this);
 		
-		Teacher teacher = (Teacher) message.getTeacher();
+		User teacher = message.getUser();
 		String courseId = message.getCourseId();
 		
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
@@ -47,30 +48,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
-					// XXX: must get a fresh copy of the modelStore (it is thread specific)
-					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
-
-					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-							teacher.getAuthToken(),
-							courseId);
 					
-					queueModel.clearQueue();
-					modelStore.save(queueModel);
-					
-					List<String> studentIds = queueModel.getStudentIds();
-					for (String studentId : studentIds) {
-						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-			                    "admin",
-			                    studentId);
-						if(dashboardModel != null) {
-							dashboardModel.updateMyAppointment(courseId, false);
-							dashboardModel.setTeacherAvailability(false, courseId);
-							modelStore.save(dashboardModel);
-						}
-					}
-					QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
-					openQueuesModel.deleteQueue(courseId);
-					modelStore.save(openQueuesModel);
 				}
 
 				@Override

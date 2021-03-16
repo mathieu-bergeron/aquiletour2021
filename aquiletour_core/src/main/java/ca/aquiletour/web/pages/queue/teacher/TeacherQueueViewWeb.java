@@ -33,12 +33,12 @@ public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 				TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
 				// FIXME
 				teacherClosesQueueMessage.setCourseId("3C6");
-				teacherClosesQueueMessage.setTeacher((User) context.user());
 				Ntro.messages().send(teacherClosesQueueMessage);
 				
 				Ntro.messages().send(Ntro.messages().create(ShowTeacherDashboardMessage.class));
 			}
 		});
+		
 	}
 
 }

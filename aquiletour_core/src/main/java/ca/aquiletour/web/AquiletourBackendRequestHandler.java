@@ -171,9 +171,8 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setCourseId(courseId);
 			//moveAppointmentMessage.sendMessage();
 		} else if(parameters.containsKey("teacherClosesQueue")&& user instanceof Teacher) {//localhost8080/billeterie/courseId?teacherClosesQueue
-			TeacherClosesQueueMessage teacherClosesQueueMessage = new TeacherClosesQueueMessage();
+			TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
 			teacherClosesQueueMessage.setCourseId(courseId);
-			teacherClosesQueueMessage.setTeacher(user);
 			T.here();
 			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
 		}

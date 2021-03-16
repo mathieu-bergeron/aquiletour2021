@@ -54,7 +54,7 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 
 		AppointmentViewWeb appointmentViewWeb = (AppointmentViewWeb) appointmentView;
 
-		//container.insertAfter(appointmentViewWeb, appointmentElement);
+		appointmentElement.insertAfter(appointmentViewWeb.getRootElement());
 	}
 
 	@Override

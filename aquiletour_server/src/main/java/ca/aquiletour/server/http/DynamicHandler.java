@@ -198,6 +198,7 @@ public class DynamicHandler extends AbstractHandler {
 		}
 
 		context.registerUser(user);
+		Ntro.userService().registerCurrentUser(user);
 	}
 
 
