@@ -5,10 +5,13 @@ import time
 import os
 import uvicorn
 import sqlite3
+import mysql.connector
 import json
+import api
 
 app = FastAPI()
-hookConn = None
+fast_lite_conn = None
+fast_maria_conn = None
 # @app.get("/")
 # def read_root():
 #    return {"Hello": "World"}
@@ -20,17 +23,58 @@ hookConn = None
 #    print(await request.json())
 #    return {"item_id": item_id, "q": q}
 
-@app.post("/_GH")
-async def read_hook(request: Request, response: Response):
-    global hookConn
-    if hookConn is None:
+@app.post("/_git_api")
+async def read_api(request: Request, response: Response):
+    global fast_maria_conn
+    if fast_maria_conn is None:
+        maria_cnf_FD = open('db_conf.json')
+        maria_cnf = json.load(maria_cnf_FD)
+        maria_cnf_FD.close()
         try:
-            hookConn = sqlite3.connect('data/git_tasks.db')
+            fast_maria_conn = mysql.connector.connect(host=maria_cnf['host'],user=maria_cnf['user'],
+                password=maria_cnf['password'],database='git_info')
+        except mysql.connector.Error as e:
+            print('Database Error, Exiting server')
+            print(e)
+            fast_maria_conn = None
+    api_req = await request.json()
+    # hasattr, getattr
+    if '_C' in api_req and api_req['_C'] == 'RegisterGitRepo':
+        if not 'groupId' in api_req:
+            api_req['groupId'] = None
+        if not 'exercisePath' in api_req:
+            api_req['exercisePath'] = None
+        if fast_maria_conn:
+            try:
+                maria_cur = fast_maria_conn.cursor()
+                maria_cur.execute('''INSERT INTO depot 
+                    VALUES (%s,%s,%s,%s,%s,%s)''',
+                    (api_req['repoUrl'],api_req['semesterId'],api_req['courseId'],api_req['groupId'],api_req['studentId'],api_req['exercisePath']))
+                fast_maria_conn.commit()
+            except mysql.connector.errors.IntegrityError:
+                print('Duplicate depot')
+                return Response(status_code = status.HTTP_304_NOT_MODIFIED)
+#  {
+#      "_C":"RegisterGitRepo",
+#      "repoUrl":"https://github.com/patate/atelier.git",
+#      "semesterId":"H2021",
+#      "studentId":"1234567",
+#      "courseId":"3C6",
+#      "groupId":"01",
+#      "exercisePath":"/etape1/atelier",
+#  }
+
+@app.post("/_git_hook")
+async def read_hook(request: Request, response: Response):
+    global fast_lite_conn
+    if fast_lite_conn is None:
+        try:
+            fast_lite_conn = sqlite3.connect('data/git_tasks.db')
         except sqlite3.Error as e:
             print('Database Error, Exiting server')
             print(e)
-            hookConn = None
-    if hookConn:
+            fast_lite_conn = None
+    if fast_lite_conn:
         hook = await request.json()
         # Process Hook
 #        print(hook)
@@ -47,12 +91,15 @@ async def read_hook(request: Request, response: Response):
                 'remoteUrl' in hook['resource']['repository']:      # AZURE
                 req['depot'] = hook['resource']['repository']['remoteUrl']
         # Add to DB
-        cur = hookConn.cursor()
-        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-            VALUES (?,DateTime('now','localtime'),?)''',
-            (5,json.dumps(req)))
-        cur.close()
-        hookConn.commit()
+        if req['depot']:
+            cur = fast_lite_conn.cursor()
+            cur.execute('''INSERT INTO tasks(priority,req_date,request) 
+                VALUES (?,DateTime('now','localtime'),?)''',
+                (5,json.dumps(req)))
+            cur.close()
+            fast_lite_conn.commit()
+        else:
+            print('INVALID HOOK')
 #        print(request)
     else:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -64,17 +111,18 @@ async def read_hook(request: Request, response: Response):
 # def cleanup():
 
 def pull_depot():
-    dummyData = [
-        ['H21','420ZF5',2,2055573,'https://gitlab.com/LeducNic/coursmo.git'],
-        ['A20','420ZC6',1,2044473,'https://github.com/LeducNic/TestZF5.git'],
-        ['H21','420ZF5',2,1933325,'https://dev.azure.com/nleduc/TestZC6/_git/TestZC6'],
-        ['H21','420ZF5',1,1822273,'https://github.com/LeducNic/TestZF52.git'],
-        ['H21','420C65',2,1788895,'https://gitlab.com/LeducNic/coursmo2.git']
-    ]
+    maria_cnf_FD = open('db_conf.json')
+    maria_cnf = json.load(maria_cnf_FD)
+    maria_cnf_FD.close()
+
     conn = None
+    conn2 = None
     try:
         conn = sqlite3.connect('data/git_tasks.db')
+        conn2 = mysql.connector.connect(host=maria_cnf['host'],user=maria_cnf['user'],
+            password=maria_cnf['password'],database='git_info')
         cur = conn.cursor()
+        cur2 = conn2.cursor()
         while True:
             cur.execute('SELECT * FROM tasks WHERE ans_date IS NULL \
                 ORDER BY priority,req_date')
@@ -87,20 +135,17 @@ def pull_depot():
                     request = json.loads(row[3])
                 # If hook, find depot in student DB
                     if 'type' in request and request['type'] == 'hook':
-                        recordIter = iter(dummyData)
-                        record = next(recordIter, None)
-                        while record is not None and record[4] != request['depot']:
-                            record = next(recordIter, None)
+                        cur2.execute('SELECT * FROM depot WHERE url_depot=%s',(request['depot'],))
+                        record = cur2.fetchone()
+                        print(record)
                         if record:
-                            print(record)
-                            depotDir = request['depot'].split('/')
+                            depotDir = record[0].split('/')
                             depotDir = depotDir[len(depotDir)-1].replace('.git','')
-                            print(depotDir)
-                            
+                            print(depotDir)                            
                         else:
-                            print('DEPOT NOT FOUND: ' + request['depot'])
+                            print('DEPOT NOT FOUND: ' + str(request['depot']))
                     else:
-                        print('INVALID REQUEST TYPE: ' + request)
+                        print('INVALID REQUEST TYPE: ' + str(request))
                 #   Not there... Error
                 # Fetch / Clone depot
                 #   Not possible ... Error
@@ -194,9 +239,25 @@ if __name__=="__main__":
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
 #            VALUES (5,DateTime('now','localtime'),"req5")''')
         conn.commit()
+        conn2 = mysql.connector.connect(user='root',password='test',database='git_info')
+        cur2= conn2.cursor()
+        cur2.execute('DELETE FROM depot')
+        conn2.commit()
+        cur2.execute('''INSERT INTO depot 
+            VALUES ('https://gitlab.com/LeducNic/coursmo.git','H21','420ZF5',2,2055573, null)''')
+        cur2.execute('''INSERT INTO depot 
+            VALUES ('https://github.com/LeducNic/TestZF5.git','A20','420ZC6',1,2044473, null)''')
+        cur2.execute('''INSERT INTO depot 
+            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','H21','420ZF5',2,1933325, null)''')
+        cur2.execute('''INSERT INTO depot 
+            VALUES ('https://github.com/LeducNic/TestZF52.git','H21','420ZF5',1,1822273, null)''')
+#        cur2.execute('''INSERT INTO depot 
+#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','H21','420C65',2,1788895, null)''')
+        conn2.commit()
 # TEST DATA - End
         conn.close()
         conn = None
+        api.my_print.process()
     # Start other process with a Queue
         p = Process(target=pull_depot)
         p.start()
