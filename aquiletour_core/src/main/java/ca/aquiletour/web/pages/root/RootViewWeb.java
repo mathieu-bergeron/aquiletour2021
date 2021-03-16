@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.root;
 
+import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
@@ -39,17 +40,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				if(context.user() instanceof Teacher) {
-					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
-					Ntro.messages().send(showDashboardMessage);
-				}else if(context.user() instanceof Student || context.user() instanceof StudentGuest){
-					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
-					Ntro.messages().send(showDashboardMessage);
-				}else {
-					ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
-					showLoginMessage.setMessageToUser("SVP vous connecter pour voir vos cours");
-					Ntro.messages().send(showLoginMessage);
-				}
+
+				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
 			}
 		});
 

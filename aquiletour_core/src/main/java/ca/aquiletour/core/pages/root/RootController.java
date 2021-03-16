@@ -17,11 +17,17 @@
 
 package ca.aquiletour.core.pages.root;
 
+import ca.aquiletour.core.messages.ShowDashboardMessage;
+import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
+import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.student.StudentQueueController;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueController;
 import ca.aquiletour.core.pages.queues.QueuesController;
@@ -29,6 +35,7 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
 
 public class RootController extends NtroRootController {
@@ -59,6 +66,31 @@ public class RootController extends NtroRootController {
 		
 		// FIXME: could be in main. Not specific to Controller
 		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());
+		
+		Ntro.messages().registerHandler(ShowDashboardMessage.class, new MessageHandler<ShowDashboardMessage>() {
+			@Override
+			public void handle(ShowDashboardMessage message) {
+				T.call(this);
+
+				if(currentContext().user() instanceof Teacher) {
+
+					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
+					Ntro.messages().send(showDashboardMessage);
+
+				}else if(currentContext().user() instanceof Student || currentContext().user() instanceof StudentGuest){
+
+					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+					Ntro.messages().send(showDashboardMessage);
+
+				}else {
+
+					ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+					showLoginMessage.setMessageToUser("SVP vous connecter pour voir vos cours");
+					Ntro.messages().send(showLoginMessage);
+
+				}
+			}
+		});
 	}
 
 	@Override
