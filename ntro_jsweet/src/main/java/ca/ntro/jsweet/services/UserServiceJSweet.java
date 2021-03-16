@@ -1,10 +1,12 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.UserService;
+import ca.ntro.users.NtroUser;
+
 import static def.es6.Globals.Cookies;
 import static def.es6.Globals.decodeURI;
+import static def.es6.Globals.encodeURI;
 
 public class UserServiceJSweet extends UserService {
 
@@ -21,11 +23,23 @@ public class UserServiceJSweet extends UserService {
 		
 		if(user == null) {
 			user = new NtroUser();
-			user.setId("__anon");
-			user.setAuthToken("__anonToken");
+			user.setId("__ntro");
+			user.setAuthToken("__ntro");
 		}
 
 		return user;
+	}
+
+	@Override
+	public void registerCurrentUser(NtroUser user) {
+		super.registerCurrentUser(user);
+		
+		String userString = Ntro.jsonService().toString(user);
+		userString = userString.replace(" ", "");
+
+		String urlEncodedUserString = encodeURI(userString);
+		
+		Cookies.set("user", urlEncodedUserString, null);
 	}
 
 }

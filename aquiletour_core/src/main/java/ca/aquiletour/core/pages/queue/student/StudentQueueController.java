@@ -24,7 +24,7 @@ public  class StudentQueueController extends QueueController {
 		T.call(this);
 		
 		addControllerMessageHandler(ShowStudentQueueMessage.class, new ShowStudentQueueHandler());
-		addSubViewLoader(StudentAppointmentView.class, currentContext().lang());
+		addSubViewLoader(StudentAppointmentView.class, context().lang());
 		
 		addModelViewSubViewHandler(StudentAppointmentView.class, new QueueViewModel()); //TODO doesn't do anything
 	}

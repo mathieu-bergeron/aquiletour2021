@@ -5,7 +5,16 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
+import ca.ntro.web.dom.HtmlFileListener;
 import def.dom.Element;
+import def.dom.Event;
+import def.dom.EventListener;
+import def.dom.File;
+import def.dom.FileList;
+import def.dom.FileReader;
+import def.dom.FormData;
+import def.dom.HTMLElement;
+import def.dom.HTMLInputElement;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
@@ -42,6 +51,13 @@ public class HtmlElementJSweet extends HtmlElement {
 				return null;
 			}
 		});
+	}
+
+	@Override
+	public void removeListeners() {
+		T.call(this);
+		
+		jQueryElement.off();
 	}
 	
 	@Override
@@ -135,7 +151,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public String getValue() {
+	public String value() {
 		return jQueryElement.val().toString();
 	}
 
@@ -150,9 +166,16 @@ public class HtmlElementJSweet extends HtmlElement {
 		// XXX: this would remove listeners
 		//jQueryElement.html("");
 		jQueryElement.get(0).innerHTML = "";
-		
-		for(Object newElement : $.parseHTML(htmlString)) {
-			jQueryElement.append(newElement);
+
+		if(htmlString != null) {
+
+			Object[] elementsToAppend = $.parseHTML(htmlString);
+
+			if(elementsToAppend != null) {
+				for(Object newElement : $.parseHTML(htmlString)) {
+					jQueryElement.append(newElement);
+				}
+			}
 		}
 	}
 
@@ -160,4 +183,39 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String html() {
 		return jQueryElement.html();
 	}
+
+	@Override
+	public void show() {
+		jQueryElement.show();
+	}
+
+	@Override
+	public void hide() {
+		jQueryElement.hide();
+	}
+
+	@Override
+	public HtmlElement newElement(String html) {
+		return new HtmlElementJSweet($(html));
+	}
+
+	@Override
+	public void readFileFromInput(HtmlFileListener listener) {
+		
+		HTMLInputElement input = (HTMLInputElement) jQueryElement.get(0);
+		FileList fileList = input.files;
+		File firstFile = fileList.$get(0);
+		
+		FileReader fileReader = new FileReader();
+		
+		fileReader.addEventListener("load", new EventListener() {
+			@Override
+			public void $apply(Event evt) {
+				listener.onReady(fileReader.result.toString());
+			}
+		});
+
+		fileReader.readAsText(firstFile);
+	}
+
 }

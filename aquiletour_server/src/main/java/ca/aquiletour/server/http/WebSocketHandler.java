@@ -21,13 +21,17 @@ public class WebSocketHandler extends ServletContextHandler {
             {
                 // Configure default max size
                 nativeWebSocketConfiguration.getPolicy().setMaxTextMessageBufferSize(65535);
-
+                
                 // Add websockets
                 nativeWebSocketConfiguration.addMapping("/*", WebSocket.class);
+                
+                //nativeWebSocketConfiguration.setStopTimeout(10*60*1000); // 10 minutes
             });
 
         // Add generic filter that will accept WebSocket upgrade.
         WebSocketUpgradeFilter.configure(handler);
+        
+        
 		
 		return handler;
 	}

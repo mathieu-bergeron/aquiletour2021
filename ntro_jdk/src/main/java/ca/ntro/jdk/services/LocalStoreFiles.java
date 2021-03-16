@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
@@ -23,6 +22,7 @@ import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 public class LocalStoreFiles extends ModelStore {
 	
@@ -104,6 +104,11 @@ public class LocalStoreFiles extends ModelStore {
 	}
 
 	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		return getModelFile(documentPath).exists();
+	}
+
+	@Override
 	public void addValueListener(ValuePath valuePath, ValueListener valueListener) {
 		// TODO Auto-generated method stub
 		
@@ -130,4 +135,5 @@ public class LocalStoreFiles extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: must be overriden on the server
 	}
+
 }

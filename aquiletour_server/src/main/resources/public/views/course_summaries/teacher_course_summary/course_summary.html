@@ -4,9 +4,20 @@
     </div>
     <div class='card-body text'>
         <h5 class='card-title' id="courseId"></h5>
-         <a id='deleteLink' href='/mescours?deleteCourseSummary'>DELETE</a>
-        <div class='card-footer bg-transparent border' id="nbAppointment"></div>
+        <span>Nombre d'étudiants: <span id="number-of-students"></span></span>
+        <form action="" method="post" enctype="multipart/form-data">
+            <label for="csvFile">Ajouter des étudiants (.csv)</label>
+              <input type="file" name="csvFile" id="csv-file-input"/>
+              <input type="hidden" name="queueId" value="3C6" id="csv-file-queue-id"/>
+              <input type="submit" id="csv-file-submit"/>
+        </form>
+
+        <div class='card-footer bg-transparent border' id="nbAppointment">
+        <a id='deleteLink' href='/mescours?deleteCourseSummary'>DELETE</a>
         <a id='closeQueue' href=''></a>
+
+
+        </div>
     </div>
     
 </div>

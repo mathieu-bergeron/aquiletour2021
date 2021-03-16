@@ -123,8 +123,8 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 
 	@Override
-	protected UserService provideUserService() {
-		return new UserServiceJSweet();
+	protected Class<? extends UserService> provideUserServiceClass() {
+		return UserServiceJSweet.class;
 	}
 
 

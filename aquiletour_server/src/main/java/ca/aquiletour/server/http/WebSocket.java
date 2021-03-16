@@ -5,11 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
-import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.ntro.core.models.ModelLoader;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.services.Ntro;
@@ -22,6 +18,8 @@ public class WebSocket extends WebSocketAdapter {
     @Override
     public void onWebSocketConnect(Session sess){
         super.onWebSocketConnect(sess);
+        
+        sess.setIdleTimeout(10*60*1000); // 10 minutes
     }
 
     @Override

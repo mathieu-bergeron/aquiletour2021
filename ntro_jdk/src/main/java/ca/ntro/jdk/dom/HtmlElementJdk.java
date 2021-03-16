@@ -8,6 +8,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
+import ca.ntro.web.dom.HtmlFileListener;
 
 
 public class HtmlElementJdk extends HtmlElement {
@@ -24,9 +25,14 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
+	public void removeListeners() {
+		T.call(this);
+		// XXX: event listeners ignored on server
+	}
+
+	@Override
 	public void addEventListener(String event, HtmlEventListener listener) {
 		T.call(this);
-
 		// XXX: event listeners ignored on server
 	}
 
@@ -137,7 +143,7 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public String getValue() {
+	public String value() {
 		return jsoupElement.val();
 	}
 
@@ -155,5 +161,28 @@ public class HtmlElementJdk extends HtmlElement {
 	public String html() {
 		return jsoupElement.html();
 	}
+
+	@Override
+	public void show() {
+		jsoupElement.removeClass("ntro-hidden");
+		jsoupElement.addClass("ntro-visible");
+	}
+
+	@Override
+	public void hide() {
+		jsoupElement.removeClass("ntro-visible");
+		jsoupElement.addClass("ntro-hidden");
+	}
+
+	@Override
+	public HtmlElement newElement(String html) {
+		return new HtmlElementJdk(new Element(html));
+	}
+
+	@Override
+	public void readFileFromInput(HtmlFileListener listener) {
+		// XXX: not supported on the server
+	}
+
 
 }

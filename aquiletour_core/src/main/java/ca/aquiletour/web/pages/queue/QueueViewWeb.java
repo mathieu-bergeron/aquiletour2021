@@ -67,4 +67,8 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 		container.empty();
 	}
 
+	@Override
+	public void initializeCloseQueueButton(String courseId) {
+	}
+
 }

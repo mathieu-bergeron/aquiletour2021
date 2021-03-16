@@ -9,7 +9,7 @@ import ca.ntro.core.mvc.NtroController;
 public class UsersController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 
 		setViewLoader(UsersView.class, "fr");
 		
@@ -23,7 +23,7 @@ public class UsersController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		// TODO Auto-generated method stub
 		
 	}

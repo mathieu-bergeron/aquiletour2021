@@ -8,14 +8,12 @@ import ca.ntro.core.system.trace.T;
 public abstract class DashboardController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 
-		setViewLoader(viewClass(), currentContext().lang());
+		setViewLoader(viewClass(), context.lang());
 		
-		setModelLoader(DashboardModel.class, 
-				       currentContext().user().getAuthToken(),
-				       currentContext().user().getId());
+		requestModel(context);
 
 		installParentViewMessageHandler();
 		
@@ -28,9 +26,20 @@ public abstract class DashboardController extends NtroController<RootController>
 	
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
+		((DashboardView) getView()).clearCourses();
+
+		requestModel(context);
+	}
+
+	private void requestModel(NtroContext<?> context) {
+		T.call(this);
+
+		setModelLoader(DashboardModel.class, 
+					   context.user().getAuthToken(),
+					   context.user().getId());
 	}
 
 	@Override
@@ -38,6 +47,4 @@ public abstract class DashboardController extends NtroController<RootController>
 		T.call(this);
 
 	}
-
-
 }

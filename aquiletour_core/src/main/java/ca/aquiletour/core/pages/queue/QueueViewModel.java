@@ -17,6 +17,8 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 		
 		view.clearQueue();
 		
+		view.initializeCloseQueueButton(model.getCourseId());
+
 		model.getAppointments().observe(new ListObserver<Appointment>() {
 
 			@Override

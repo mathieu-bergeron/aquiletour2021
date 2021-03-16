@@ -14,6 +14,7 @@ public class QueueModel implements NtroModel {
 	private List<String> studentIds = new ArrayList<>();
 	private int maxId;
 	private String teacherId = "";
+	private String courseId = "";
 
 	public void removeStudentFromClass(String studentId) {
 		T.call(this);
@@ -159,4 +160,11 @@ public class QueueModel implements NtroModel {
 		appointments.clearItems();
 	}
 
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
 }
