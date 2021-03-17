@@ -125,6 +125,8 @@ public class DynamicHandler extends AbstractHandler {
 		NtroWindowServer newWindow = newWindow(ifJsOnly, path);
 		
 		if(!ifJsOnly) {
+			
+			Ntro.userService().registerCurrentUser(context.user());
 
 			Map<String, String[]> parameters = baseRequest.getParameterMap();
 			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);

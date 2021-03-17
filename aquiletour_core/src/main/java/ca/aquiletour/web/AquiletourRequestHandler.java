@@ -118,9 +118,8 @@ public class AquiletourRequestHandler {
 				Ntro.messages().send(showTeacherQueueMessage);
 				
 				if (!(parameters.containsKey("teacherClosesQueue"))) {
-					TeacherUsesQueueMessage teacherUsesQueueMessage = new TeacherUsesQueueMessage();
+					TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 					teacherUsesQueueMessage.setCourseId(courseId);
-					teacherUsesQueueMessage.setTeacher(user);
 					Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
 				}
 				

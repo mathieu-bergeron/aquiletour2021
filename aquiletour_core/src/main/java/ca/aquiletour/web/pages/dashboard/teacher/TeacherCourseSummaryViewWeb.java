@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
-import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
@@ -12,7 +11,6 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
-import ca.ntro.web.mvc.NtroViewWeb;
 
 public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
 
@@ -42,8 +40,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(makeAppointmentLink);
 		MustNot.beNull(closeQueue);
 
-
-
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
 
@@ -61,18 +57,16 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				Ntro.messages().send(showTeacherQueueMessage);
 				
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-				// FIXME
-				teacherUsesQueueMessage.setCourseId("3C6");
-				teacherUsesQueueMessage.setTeacher((User)Ntro.userService().currentUser());
+				teacherUsesQueueMessage.setCourseId(course.getCourseId());
 				Ntro.messages().send(teacherUsesQueueMessage);
 			}
 		});
 
 		if(course.getIsQueueOpen().getValue()) {
-			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle() + "?teacherClosesQueue");
+			closeQueue.setAttribute("href", "/billetterie/" + course.getCourseId() + "?teacherClosesQueue");
 			closeQueue.appendHtml("CLOSE QUEUE");
 		} else {
-			closeQueue.setAttribute("href", "/billetterie/" + course.getTitle());
+			closeQueue.setAttribute("href", "/billetterie/" + course.getCourseId());
 			closeQueue.appendHtml("OPEN QUEUE");
 
 		}

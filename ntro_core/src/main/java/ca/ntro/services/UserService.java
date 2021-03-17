@@ -9,8 +9,8 @@ public abstract class UserService {
 	public NtroUser currentUser() {
 		if(user == null) {
 			user = new NtroUser();
-			user.setId("__anon");
-			user.setAuthToken("__anonToken");
+			user.setId("__ntro");
+			user.setAuthToken("__ntro");
 		}
 
 		return user;

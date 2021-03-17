@@ -26,6 +26,7 @@
     ]
   },
   "maxId": 16,
+  "courseId": "4F5",
   "_C": "QueueModel",
   "studentIds": [
     "bob",

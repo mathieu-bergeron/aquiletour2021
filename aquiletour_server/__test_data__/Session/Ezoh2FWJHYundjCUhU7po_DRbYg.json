@@ -1,0 +1,13 @@
+{
+  "_C": "Session",
+  "user": {
+    "phoneNumber": "",
+    "_C": "Guest",
+    "surname": "",
+    "authToken": "Ezoh2FWJHYundjCUhU7po_DRbYg",
+    "name": "Visiteur",
+    "userEmail": "",
+    "id": "Ezoh2FWJHYundjCUhU7po_DRbYg"
+  },
+  "timeToLiveMiliseconds": 30000
+}

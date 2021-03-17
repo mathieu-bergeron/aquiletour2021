@@ -1,36 +1,36 @@
 {
+  "_C": "UsersModel",
   "users": {
     "_C": "ObservableUserMap",
     "value": {
-      "alice": {
-        "_C": "Teacher",
-        "id": "alice",
-        "authToken": "aliceToken",
-        "name": "Alice",
-        "surname": "Awama",
-        "userEmail": "alice.awama@test.com",
-        "userPassword": "alicePassword"
-      },
       "bob": {
+        "phoneNumber": "",
         "_C": "Student",
-        "id": "bob",
+        "surname": "Bérancourt",
         "authToken": "bobToken",
         "name": "Bob",
-        "surname": "Bérancourt",
-        "registrationId" : "1234567",
         "userEmail": "bob.berancourt@test.ca",
-        "userPassword": "bobPassword"
+        "id": "1234567",
+        "programId": ""
+      },
+      "alice": {
+        "phoneNumber": "",
+        "_C": "Teacher",
+        "surname": "Awama",
+        "authToken": "aliceToken",
+        "name": "Alice",
+        "userEmail": "alice.awama@test.com",
+        "id": "alice"
       },
       "charlie": {
+        "phoneNumber": "",
         "_C": "Teacher",
-        "id": "charlie",
+        "surname": "Ngo",
         "authToken": "charlieToken",
         "name": "Charlie",
-        "surname": "Ngo",
         "userEmail": "charlie.ngo@test.org",
-        "userPassword": "charliePassword"
+        "id": "charlie"
       }
     }
-  },
-  "_C": "UsersModel"
+  }
 }
