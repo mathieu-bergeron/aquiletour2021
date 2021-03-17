@@ -20,7 +20,6 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		User userToRegister = null;
 
-
 		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
