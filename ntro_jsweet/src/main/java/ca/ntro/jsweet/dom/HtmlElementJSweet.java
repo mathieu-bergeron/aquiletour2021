@@ -43,6 +43,13 @@ public class HtmlElementJSweet extends HtmlElement {
 			}
 		});
 	}
+
+	@Override
+	public void removeListeners() {
+		T.call(this);
+		
+		jQueryElement.off();
+	}
 	
 	@Override
 	public void appendHtml(String html) {
@@ -177,4 +184,5 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void hide() {
 		jQueryElement.hide();
 	}
+
 }

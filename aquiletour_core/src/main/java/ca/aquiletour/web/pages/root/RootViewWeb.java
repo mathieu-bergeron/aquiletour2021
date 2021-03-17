@@ -39,6 +39,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(usersLink);
 		MustNot.beNull(loginLink);
 
+		dashboardLink.removeListeners();
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -47,7 +48,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
 			}
 		});
-
+		
+		usersLink.removeListeners();
 		usersLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -82,6 +84,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginLink.html(linkText);
 		}
 		
+		loginLink.removeListeners();
 		loginLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {

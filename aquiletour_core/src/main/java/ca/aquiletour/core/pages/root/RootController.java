@@ -37,6 +37,7 @@ import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 public class RootController extends NtroRootController {
 

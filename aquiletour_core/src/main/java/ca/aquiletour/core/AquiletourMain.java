@@ -87,6 +87,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			@Override
 			public void handle(SetUserNtroMessage message) {
 				Ntro.userService().registerCurrentUser(message.getUser());
+				rootController.changeUser(message.getUser());
 			}
 		});
 	}

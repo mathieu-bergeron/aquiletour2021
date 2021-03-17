@@ -12,11 +12,15 @@ import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_MODEL_TASK_ID;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static ca.ntro.core.mvc.Constants.VIEW_HANDLER_TASK_ID;
 
@@ -27,6 +31,8 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	private NtroTask initTasks = new ContainerTask();
 	private NtroContext<?> context;
 	private Path path;
+	
+	private List<NtroAbstractController> subControllers = new ArrayList<>();
 	
 	protected abstract void onCreate();
 	protected abstract void onChangeContext(NtroContext<?> previousContext);
@@ -79,7 +85,8 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 			
 			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
 			initTasks.addNextTask(subController.getTask());
-
+			
+			subControllers.add(subController);
 		}
 	}
 
@@ -257,6 +264,17 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		T.call(this);
 
 		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelId));
+	}
+
+	public void changeUser(NtroUser user) {
+		
+		context.registerUser(user);
+		
+		getView().initializeView(context);
+
+		for(NtroAbstractController subController : subControllers) {
+			subController.changeUser(user);
+		}
 	}
 
 }

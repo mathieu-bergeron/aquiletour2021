@@ -1,6 +1,7 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.users.NtroUser;
 
 public abstract class NtroRootController extends NtroAbstractController {
 	
@@ -26,4 +27,6 @@ public abstract class NtroRootController extends NtroAbstractController {
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 	}
+
+
 }

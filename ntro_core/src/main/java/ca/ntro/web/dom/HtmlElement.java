@@ -10,6 +10,7 @@ public abstract class HtmlElement {
 	public abstract void insertAfter(HtmlElement element);
 	public abstract void text(String newText);
 
+	public abstract void removeListeners();
 	public abstract void addEventListener(String event, HtmlEventListener listener);
 
 	public abstract HtmlElements children(String cssQuery);
