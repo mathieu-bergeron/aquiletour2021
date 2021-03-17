@@ -7,7 +7,6 @@ public class Session implements NtroModel {
 	private NtroUser user = new NtroUser();
 	private long timeToLiveMiliseconds = 1000 * 60 * 1;         // TMP: 1 minute by default
 	
-	
 	public NtroUser getUser() {
 		return user;
 	}

@@ -69,8 +69,6 @@ public class QueueViewWeb extends NtroViewWeb implements QueueView {
 
 	@Override
 	public void initializeCloseQueueButton(String courseId) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

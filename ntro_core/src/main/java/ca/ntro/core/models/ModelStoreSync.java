@@ -30,4 +30,10 @@ public class ModelStoreSync {
 
 		modelStore.save(model);
 	}
+
+	public void replace(NtroModel existingModel, NtroModel newModel) {
+		T.call(this);
+
+		modelStore.replace(existingModel, newModel);
+	}
 }

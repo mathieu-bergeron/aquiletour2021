@@ -46,8 +46,25 @@ public class User extends NtroUser {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public void copyPublicInformation(User privateUser) {
-		setName(privateUser.getName());
-		setSurname(privateUser.getSurname());
+	public void copyPublicInfomation(User user) {
+		setName(user.getName());
+		setSurname(user.getSurname());
 	}
+
+	public User toSessionUser() {
+		User sessionUser = new User();
+
+		copySessionOnlyInfo(sessionUser);
+
+		return sessionUser;
+	}
+
+	protected void copySessionOnlyInfo(User sessionUser) {
+		sessionUser.setId(getId());
+		sessionUser.setAuthToken(getAuthToken());
+		sessionUser.setName(getName());
+		sessionUser.setSurname(getSurname());
+	}
+	
+	
 }

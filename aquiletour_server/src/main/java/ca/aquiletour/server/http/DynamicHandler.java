@@ -34,6 +34,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
@@ -52,7 +53,6 @@ import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroUser;
 import ca.ntro.users.Session;
 
 public class DynamicHandler extends AbstractHandler {
@@ -114,67 +114,24 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("");
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
-		
-		NtroContext<User> context = authenticateUser(baseRequest, response);
-		context.registerLang(Constants.LANG); // TODO
+
+		// This will register a Ntro.userService().currentUser()
+		// (possibly a Guest)
+		sendLoginMessagesAccordingToCookies(baseRequest);
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
+		Map<String, String[]> parameters = baseRequest.getParameterMap();
+		AquiletourBackendRequestHandler.sendMessages(path, parameters);
+
+		// currentUser() might have changed after backend messages (e.g. after a UserInitiatesLogin message)
+		setUserCookie(response);
 		
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
-		NtroWindowServer newWindow = newWindow(ifJsOnly, path);
+		NtroWindowServer window = newWindow(ifJsOnly, path);
 		
 		if(!ifJsOnly) {
-			
-			Ntro.userService().registerCurrentUser(context.user());
-
-			Map<String, String[]> parameters = baseRequest.getParameterMap();
-			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
-
-			// DEBUG
-		    // RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
-
-			// NORMAL
-		    RootController rootController =  ControllerFactory.createRootController(RootController.class, path, newWindow, context);
-
-
-			// Client controller executes after
-			// to make sure modifications to the
-			// models are loaded up
-			GraphTraceConnector trace = rootController.execute();
-
-			//trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
-			
-			// FIXME: there must be a better way to redirect to login
-			if(!path.startsWith("connexion")) {
-				Ntro.messages().registerHandler(ShowLoginMessage.class, new MessageHandler<ShowLoginMessage>() {
-					@Override
-					public void handle(ShowLoginMessage message) {
-						T.call(this);
-						
-						String messageToUser = message.getMessageToUser();
-						
-						// XXX: on the server, ShowLoginMessage is a redirect to /connexion?message=""
-						String redirectUrl = "/connexion?message=" + UrlEncoded.encodeString(messageToUser);
-						try {
-							response.sendRedirect(redirectUrl);
-							baseRequest.setHandled(true);
-						} catch (IOException e) {
-						}
-					}
-				});
-			}
-
-			AquiletourRequestHandler.sendMessages(context, path, parameters);
-
-			// DEBUG
-			//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
-			//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
-
-			//rootController.getTask().destroy();
-			
-			// XXX: prepare for next request
-			Ntro.reset();
+			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
 		
 		//System.out.println(rootController.getTask().toString());
@@ -185,127 +142,94 @@ public class DynamicHandler extends AbstractHandler {
 		if(!baseRequest.isHandled()) {
 			response.setContentType("text/html; charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
-			writeResponse(newWindow, baseRequest, out);
+			writeResponse(window, baseRequest, out);
 		}
 	}
 
-
-	private NtroContext<User> authenticateUser(Request baseRequest, HttpServletResponse response) {
-		T.call(this);
-		
-		NtroContext<User> context = new NtroContext<>();
-
-		User user = null;
-		Session session = getSessionFromCookies(baseRequest, response);
-		
-		if(session != null) {
-
-			user = updateExistingSession(response, session);
-			
-		}else {
-
-			user = createGuestSession(response);
-		}
-
-		context.registerUser(user);
-
-		return context;
-	}
-
-	private Session getSessionFromCookies(Request baseRequest, HttpServletResponse response) {
+	private void sendLoginMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
 
-		Session session = null;
+		AuthenticateSessionUserMessage authenticateSessionUserMessage = Ntro.messages().create(AuthenticateSessionUserMessage.class);
 
 		if(hasCookie(baseRequest, "user")) {
 
 			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
-			User userRequest = Ntro.jsonService().fromString(User.class, userString);
-
-			session = getStoredSession(userRequest.getAuthToken());
-		}
-		
-		return session;
-	}
-	
-	private User updateExistingSession(HttpServletResponse response, Session session) {
-		T.call(this);
-
-		session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
-		
-		User sessionUser = (User) session.getUser();
-		User actualUser = null;
-		
-		if(sessionUser instanceof Guest) {
-
-			actualUser = sessionUser;
-
-		}else {
-
-			actualUser = updateSessionWithActualUser(response, session, sessionUser);
-		}
-		
-		return actualUser;
-	}
-
-	private User updateSessionWithActualUser(HttpServletResponse response, Session session, User sessionUser) {
-		T.call(this);
-
-		User actualUser;
-		String userId = sessionUser.getId();
-
-		ModelLoader loader = Ntro.modelStore().getLoader(User.class, "TODO", userId);
-		loader.execute();
-		actualUser = (User) loader.getModel();
-		
-		sessionUser.copyPublicInformation(actualUser);
-
-		session.setUser(sessionUser);
-
-		Ntro.modelStore().save(session);
-
-		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
-
-		return actualUser;
-	}
-
-	private Session getStoredSession(String authToken) {
-		T.call(this);
-
-		ModelLoader loader = Ntro.modelStore().getLoader(Session.class, "TODO", authToken);
-		loader.execute();
-		Session session = (Session) loader.getModel();
-		
-		if(!session.getUser().getAuthToken().equals(authToken)) {
-
-			session = null;
-		}
-
-		return session;
-	}
-
-	private User createGuestSession(HttpServletResponse response) {
-		T.call(this);
-		
-		User user = new Guest();
-		
-		String authToken = SecureRandomString.generate();
-		
-		user.setId(authToken);
-		user.setAuthToken(authToken);
-
-		ModelLoader loader = Ntro.modelStore().getLoader(Session.class, "TODO", authToken);
-		loader.execute();
-		Session session = (Session) loader.getModel();
-
-		session.setUser(user);
-		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
-		
-		setCookie(response, "user", Ntro.jsonService().toString(user));
-
-		Ntro.modelStore().save(session);
+			User sessionUser = Ntro.jsonService().fromString(User.class, userString);
 			
-		return user;
+			authenticateSessionUserMessage.setSessionUser(sessionUser);
+
+		}
+
+		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
+	}
+
+	private void executeFrontendOnServer(Request baseRequest, 
+			                             HttpServletResponse response, 
+			                             Path path,
+			                             Map<String, String[]> parameters,
+			                             NtroWindowServer window) {
+
+		NtroContext<User> context = new NtroContext<>();
+		context.registerLang(Constants.LANG); // TODO
+		context.registerUser((User) Ntro.userService().currentUser());
+		
+		T.values(Ntro.userService().currentUser());
+
+		// DEBUG
+		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
+
+		// NORMAL
+		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, window, context);
+
+
+		// Client controller executes after
+		// to make sure modifications to the
+		// models are loaded up
+		GraphTraceConnector trace = rootController.execute();
+
+		//trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
+		
+		// FIXME: there must be a better way to redirect to login
+		if(!path.startsWith("connexion")) {
+			Ntro.messages().registerHandler(ShowLoginMessage.class, new MessageHandler<ShowLoginMessage>() {
+				@Override
+				public void handle(ShowLoginMessage message) {
+					T.call(this);
+					
+					String messageToUser = message.getMessageToUser();
+					
+					// XXX: on the server, ShowLoginMessage is a redirect to /connexion?message=""
+					String redirectUrl = "/connexion?message=" + UrlEncoded.encodeString(messageToUser);
+					try {
+						response.sendRedirect(redirectUrl);
+						baseRequest.setHandled(true);
+					} catch (IOException e) {
+					}
+				}
+			});
+		}
+
+		AquiletourRequestHandler.sendMessages(context, path, parameters);
+
+		// DEBUG
+		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
+		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
+
+		//rootController.getTask().destroy();
+		
+		// XXX: prepare for next request
+		Ntro.reset();
+	}
+
+
+	private void setUserCookie(HttpServletResponse response) {
+		T.call(this);
+		
+		T.values(Ntro.userService().currentUser());
+
+		User currentUser = (User) Ntro.userService().currentUser();
+		User sessionUser = currentUser.toSessionUser();
+		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
 	}
 	
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {

@@ -20,21 +20,19 @@ import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserFromCourseMessage;
 import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Path;
-import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.ResourceLoaderTask;
 
 public class AquiletourBackendRequestHandler {
 	
-	
-	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(parameters.containsKey("userId")) {
 			
 			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
-			userInitiatesLoginMessage.setUserId(parameters.get("userId")[0]);
+			userInitiatesLoginMessage.setProvidedId(parameters.get("userId")[0]);
 			Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
 
 		} else if(parameters.containsKey("loginCode")) {
@@ -45,11 +43,11 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters, context.user());
+			sendDashboardMessages(path.subPath(1), parameters, (User) Ntro.userService().currentUser());
 
 		}else if(path.startsWith("csv")) {
 			
-			sendCsvMessages(path.subPath(1), parameters, context.user());
+			sendCsvMessages(path.subPath(1), parameters, (User) Ntro.userService().currentUser());
 
 		} else if(path.startsWith("billetteries")) {
 			
@@ -57,7 +55,7 @@ public class AquiletourBackendRequestHandler {
 
 		}else if(path.startsWith("billetterie")) {
 			
-			sendQueueMessages(path.subPath(1), parameters , context.user());
+			sendQueueMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
 			
 		}else if(path.startsWith("usagers")) {
 			

@@ -13,10 +13,30 @@ public class Student extends User {
 	}
 
 	@Override
-	public void copyPublicInformation(User otherUser) {
-		super.copyPublicInformation(otherUser);
+	public void copyPublicInfomation(User otherUser) {
+		super.copyPublicInfomation(otherUser);
 
-		setProgramId(((Student)otherUser).getProgramId());
+		if(otherUser instanceof Student) {
+			setProgramId(((Student)otherUser).getProgramId());
+		}
+	}
+
+	@Override
+	public User toSessionUser() {
+		Student sessionUser = new Student();
+		
+		copySessionOnlyInfo(sessionUser);
+		
+		return sessionUser;
+	}
+
+	@Override
+	protected void copySessionOnlyInfo(User sessionUser) {
+		super.copySessionOnlyInfo(sessionUser);
+		
+		if(sessionUser instanceof Student) {
+			((Student)sessionUser).setProgramId(getProgramId());
+		}
 	}
 	
 }

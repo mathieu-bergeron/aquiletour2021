@@ -126,9 +126,27 @@ public abstract class ModelStore {
 			localHeapByPath.remove(documentPath);
 		}
 	}
+
+	public void replace(NtroModel existingModel, NtroModel newModel) {
+		DocumentPath documentPath = localHeap.get(existingModel);
+		
+		if(documentPath == null) {
+
+			Log.warning("Model was already saved and removed from memory: " + existingModel);
+
+		}else {
+			
+			saveJsonString(documentPath, Ntro.jsonService().toString(newModel));
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(existingModel);
+			localHeapByPath.remove(documentPath);
+		}
+	}
 	
 	void reset() {
 		localHeap = new HashMap<>();
 		localHeapByPath = new HashMap<>();
 	}
+
 }

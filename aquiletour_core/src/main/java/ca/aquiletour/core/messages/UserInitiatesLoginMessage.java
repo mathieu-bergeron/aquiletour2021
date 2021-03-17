@@ -1,16 +1,17 @@
 package ca.aquiletour.core.messages;
 
-import ca.ntro.messages.NtroMessage;
+import ca.aquiletour.core.models.users.User;
+import ca.ntro.messages.NtroUserMessage;
 
-public class UserInitiatesLoginMessage extends NtroMessage {
+public class UserInitiatesLoginMessage extends NtroUserMessage<User> {
 	
-	private String userId;
+	private String providedId;
 
-	public String getUserId() {
-		return userId;
+	public String getProvidedId() {
+		return providedId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setProvidedId(String providedId) {
+		this.providedId = providedId;
 	}
 }
