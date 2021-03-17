@@ -31,7 +31,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 			public void onEvent() {
 				T.call(this);
 				
-				String userId = loginInputStep1.getValue();
+				String userId = loginInputStep1.value();
 				System.out.println("userId: " + userId);
 
 				UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
@@ -45,7 +45,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 			public void onEvent() {
 				T.call(this);
 
-				String loginCode = loginInputStep2.getValue();
+				String loginCode = loginInputStep2.value();
 				System.out.println("loginCode: " + loginCode);
 				
 				UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);

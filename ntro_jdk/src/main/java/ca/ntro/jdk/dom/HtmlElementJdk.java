@@ -137,7 +137,7 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public String getValue() {
+	public String value() {
 		return jsoupElement.val();
 	}
 

@@ -8,8 +8,6 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
@@ -88,7 +86,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				Ntro.messages().send(Ntro.messages().create(ShowLoginMessage.class));
+				ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+				showLoginMessage.setMessageToUser("");
+				Ntro.messages().send(showLoginMessage);
 			}
 		});
 	}

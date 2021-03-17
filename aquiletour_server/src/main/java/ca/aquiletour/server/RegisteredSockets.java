@@ -20,6 +20,10 @@ import ca.ntro.users.NtroUser;
 
 public class RegisteredSockets {
 
+	// FIXME: much simple if every Session registers a Socket (by authToken)
+	//        then no need to change socket on login (the session authToken is specific to the browser, not the user)
+	//        still we need to change authToken if user changes
+
 	private static Map<DocumentPath, Set<NtroUser>> modelObservators = new HashMap<>();
 	private static Map<NtroUser, Set<Session>> userSockets = new HashMap<>();
 	
