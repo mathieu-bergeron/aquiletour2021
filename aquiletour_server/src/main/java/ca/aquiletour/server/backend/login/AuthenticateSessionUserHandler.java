@@ -2,6 +2,8 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.models.users.Guest;
+import ca.aquiletour.core.models.users.StudentGuest;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -59,7 +61,9 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 		User sessionUser = (User) session.getUser();
 		User actualUser = null;
 		
-		if(sessionUser instanceof Guest) {
+		if(sessionUser instanceof Guest 
+				|| sessionUser instanceof TeacherGuest 
+				|| sessionUser instanceof StudentGuest) {
 
 			actualUser = sessionUser;
 
