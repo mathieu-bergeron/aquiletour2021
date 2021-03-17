@@ -77,7 +77,7 @@ public class RootController extends NtroRootController {
 					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
 
-				}else if(currentContext().user() instanceof Student || currentContext().user() instanceof StudentGuest){
+				}else if(currentContext().user() instanceof Student){
 
 					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
@@ -85,7 +85,7 @@ public class RootController extends NtroRootController {
 				}else {
 
 					ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
-					showLoginMessage.setMessageToUser("SVP vous connecter pour voir vos cours");
+					showLoginMessage.setMessageToUser("SVP entrer votre DA pour voir vos cours");
 					Ntro.messages().send(showLoginMessage);
 
 				}

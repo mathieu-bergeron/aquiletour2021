@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.models.users.StudentGuest;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -22,24 +23,54 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		if(session != null) {
 
-			User existingUser = modelStore.getModel(User.class, "TODO", providedId);
-			
-			userToRegister = new StudentGuest();
+			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, providedId, session);
 
-			userToRegister.copyPublicInfomation(existingUser);
-			
-			userToRegister.setId(providedId);
-			
-			userToRegister.setAuthToken(authToken);
-			
-			modelStore.replace(existingUser, userToRegister);
-			
 		}else {
 			
 			userToRegister = user;
 		}
 
 		Ntro.userService().registerCurrentUser(userToRegister);
+	}
+
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, Session session) {
+
+		User userToRegister;
+
+		User existingUser = modelStore.getModel(User.class, "TODO", providedId);
+		
+		if(isStudentId(providedId)) {
+			
+			userToRegister = new StudentGuest();
+			
+		}else {
+
+			userToRegister = new TeacherGuest();
+			
+		}
+
+		userToRegister.copyPublicInfomation(existingUser);
+		
+		userToRegister.setId(providedId);
+		
+		userToRegister.setAuthToken(authToken);
+		
+		modelStore.replace(existingUser, userToRegister);
+		
+		session.setUser(userToRegister.toSessionUser());
+		
+		modelStore.save(session);
+		return userToRegister;
+	}
+
+	private boolean isStudentId(String providedId) {
+		boolean isStudentId = false;
+
+		if(providedId.matches("^\\d{7}$")) {
+			isStudentId = true;
+		}
+
+		return isStudentId;
 	}
 
 

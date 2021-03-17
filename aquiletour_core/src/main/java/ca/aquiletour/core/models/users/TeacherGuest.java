@@ -1,10 +1,10 @@
 package ca.aquiletour.core.models.users;
 
-public class StudentGuest extends Student {
+public class TeacherGuest extends Teacher {
 
 	@Override
 	public User toSessionUser() {
-		StudentGuest sessionUser = new StudentGuest();
+		TeacherGuest sessionUser = new TeacherGuest();
 		
 		copySessionOnlyInfo(sessionUser);
 		

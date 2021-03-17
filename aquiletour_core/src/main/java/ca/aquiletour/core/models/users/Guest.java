@@ -11,4 +11,13 @@ public class Guest extends User {
 		setName("Visiteur");
 	}
 
+	@Override
+	public User toSessionUser() {
+		Guest sessionUser = new Guest();
+		
+		copySessionOnlyInfo(sessionUser);
+		
+		return sessionUser;
+	}
+
 }

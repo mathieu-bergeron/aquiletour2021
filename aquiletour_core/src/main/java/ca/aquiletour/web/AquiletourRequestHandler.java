@@ -83,7 +83,7 @@ public class AquiletourRequestHandler {
 			Ntro.messages().send(showTeacherDashboardMessage);
 
 			
-		}else if(user instanceof Student || user instanceof StudentGuest){
+		}else if(user instanceof Student){
 			
 			ShowStudentDashboardMessage showStudentDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
 			Ntro.messages().send(showStudentDashboardMessage);
@@ -91,7 +91,7 @@ public class AquiletourRequestHandler {
 		}else {
 			
 			Map<String, String[]> newParams = new HashMap<>();
-			newParams.put("message", new String[] {"SVP vous connecter afin de voir vos cours"});
+			newParams.put("message", new String[] {"SVP entrer votre DA pour voir vos cours"});
 			sendLoginMessages(path, newParams);
 		}
 	}

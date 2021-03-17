@@ -35,8 +35,6 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 			user = createGuestSession(modelStore);
 		}
 
-		T.values(user);
-
 		Ntro.userService().registerCurrentUser(user);
 	}
 
@@ -83,7 +81,7 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 		
 		sessionUser.copyPublicInfomation(actualUser);
 
-		session.setUser(sessionUser);
+		session.setUser(actualUser.toSessionUser());
 
 		modelStore.save(session);
 

@@ -173,8 +173,6 @@ public class DynamicHandler extends AbstractHandler {
 		context.registerLang(Constants.LANG); // TODO
 		context.registerUser((User) Ntro.userService().currentUser());
 		
-		T.values(Ntro.userService().currentUser());
-
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
 
@@ -225,8 +223,6 @@ public class DynamicHandler extends AbstractHandler {
 	private void setUserCookie(HttpServletResponse response) {
 		T.call(this);
 		
-		T.values(Ntro.userService().currentUser());
-
 		User currentUser = (User) Ntro.userService().currentUser();
 		User sessionUser = currentUser.toSessionUser();
 		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
