@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.git.GitView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -16,5 +17,6 @@ public interface RootView extends NtroView {
 	void showLogin(LoginView loginView);
 	void showQueues(QueuesView currentView);
 	void showHome(HomeView homeView);
+	void showGit(GitView gitView);
 
 }

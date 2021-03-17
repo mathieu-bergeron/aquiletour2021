@@ -20,6 +20,7 @@ package ca.aquiletour.core.pages.root;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
+import ca.aquiletour.core.pages.git.GitController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.queue.student.StudentQueueController;
@@ -54,6 +55,7 @@ public class RootController extends NtroRootController {
 		addSubController(UsersController.class, "usagers");
 		addSubController(LoginController.class, "connexion");
 		addSubController(HomeController.class, "accueil");
+		addSubController(GitController.class, "progressiongit");
 
 		addWindowViewHandler(new RootViewHandler());
 		

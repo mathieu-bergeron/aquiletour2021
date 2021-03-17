@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
+import ca.aquiletour.core.pages.git.GitView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.AppointmentView;
@@ -22,6 +23,7 @@ import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
+import ca.aquiletour.web.pages.git.GitViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
@@ -163,6 +165,14 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/home/home.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(HomeViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(GitView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/git/git_progression.html")
+			     	.setCssUrl("/views/git/git_progression.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(GitViewWeb.class));
 
 	}
 }

@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.git.ShowGitMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
@@ -47,9 +48,21 @@ public class AquiletourRequestHandler {
 			sendLoginMessages(path.subPath(1), parameters);
 			
 		} else if(path.startsWith("accueil")) {
-
+			
 			sendHomeMessages(path.subPath(1), parameters);
+			
+		} else if(path.startsWith("progressiongit")) {
+
+			sendGitMessages(path.subPath(1), parameters);
 		}
+	}
+
+	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
+
+		ShowGitMessage showGitMessage = Ntro.messages().create(ShowGitMessage.class);
+		Ntro.messages().send(showGitMessage);
+		
 	}
 
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
