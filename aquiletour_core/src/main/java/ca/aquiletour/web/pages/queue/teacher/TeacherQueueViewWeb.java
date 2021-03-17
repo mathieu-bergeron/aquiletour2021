@@ -18,6 +18,7 @@ public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 		
 		MustNot.beNull(closeQueueButton);
 
+		closeQueueButton.removeListeners();
 		closeQueueButton.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {

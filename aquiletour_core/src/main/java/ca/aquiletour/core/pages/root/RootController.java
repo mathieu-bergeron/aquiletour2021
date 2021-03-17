@@ -47,12 +47,9 @@ public class RootController extends NtroRootController {
 		
 		setViewLoader(RootView.class, currentContext().lang());
 		
-		// FIXME: this means we cannot switch user w/o reloading
-		if(currentContext().user() instanceof Teacher) {
-			addSubController(TeacherDashboardController.class, "mescours");
-		}else {
-			addSubController(StudentDashboardController.class, "mescours");
-		}
+		// FIXME: bogue?
+		addSubController(TeacherDashboardController.class, "mescours");
+		addSubController(StudentDashboardController.class, "mescours");
 
 		addSubController(QueuesController.class, "billetteries");
 	
