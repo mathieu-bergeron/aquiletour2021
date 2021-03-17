@@ -17,6 +17,8 @@
 
 package ca.aquiletour.core;
 
+import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -112,6 +114,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(DeleteAppointmentMessage.class);
 		Ntro.registerSerializableClass(TeacherClosesQueueMessage.class);
 		Ntro.registerSerializableClass(TeacherUsesQueueMessage.class);
+		Ntro.registerSerializableClass(UserInitiatesLoginMessage.class);
+		Ntro.registerSerializableClass(UserSendsLoginCodeMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
