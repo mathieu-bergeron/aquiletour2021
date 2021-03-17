@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.root;
 
 import ca.aquiletour.core.messages.ShowDashboardMessage;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
@@ -58,8 +59,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(showUsersMessage);
 			}
 		});
-		
-		if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
+
+
+		if(context.user() instanceof Guest) {
+			User user = (User) context.user();
+			String userName = user.getName();
+
+			String linkText = userName + " (se connecter)";
+			loginLink.html(linkText);
+
+		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
 			User user = (User) context.user();
 			String userName = user.getName();
 			
@@ -71,7 +80,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			User user = (User) context.user();
 			String userName = user.getName() + " " + user.getSurname();
 			
-			String linkText = userName + " (se déconneter)";
+			String linkText = userName + " (se déconnecter)";
 			loginLink.html(linkText);
 		}
 		
