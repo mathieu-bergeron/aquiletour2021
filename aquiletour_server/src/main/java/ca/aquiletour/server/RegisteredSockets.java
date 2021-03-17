@@ -48,16 +48,20 @@ public class RegisteredSockets {
 		}
 	}
 
-	public static void sendMessageToUser(NtroUser user, NtroMessage message) throws IOException {
+	public static void sendMessageToUser(NtroUser user, NtroMessage message) {
 		sendMessageToUser(user.getAuthToken(), message);
 	}
 
-	public static void sendMessageToUser(String authToken, NtroMessage message) throws IOException {
+	public static void sendMessageToUser(String authToken, NtroMessage message) {
 		Session socket = sockets.get(authToken);
 
 		if(socket != null) {
 			if(socket.isOpen()) {
-				socket.getRemote().sendString(Ntro.jsonService().toString(message));
+				try {
+					socket.getRemote().sendString(Ntro.jsonService().toString(message));
+				} catch (IOException e) {
+					Log.error("Unable to send message to user: " + authToken);
+				}
 			}
 		}
 	}
@@ -92,15 +96,8 @@ public class RegisteredSockets {
 				message.setValuePath(valuePath);
 				message.setMethodName(methodName);
 				message.setArgs(args);
-				
-				try {
-					
-					RegisteredSockets.sendMessageToUser(authToken, message);
 
-				} catch (IOException e) {
-
-					Log.fatalError("Unable to send message to user " + authToken, e);
-				}
+				RegisteredSockets.sendMessageToUser(authToken, message);
 			}
 		}
 	}

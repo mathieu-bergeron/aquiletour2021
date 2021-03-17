@@ -48,7 +48,9 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
@@ -80,7 +82,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);  
 
 		rootController.execute();
-
+		
+		Ntro.backendService().handleMessageFromBackend(SetUserNtroMessage.class, new MessageHandler<SetUserNtroMessage>() {
+			@Override
+			public void handle(SetUserNtroMessage message) {
+				Ntro.userService().registerCurrentUser(message.getUser());
+			}
+		});
 	}
 	
 	public static void registerSerializableClasses() {

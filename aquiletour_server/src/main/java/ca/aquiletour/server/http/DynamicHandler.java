@@ -295,7 +295,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		for(Cookie cookie : baseRequest.getCookies()) {
 			if(cookie.getName().equals(name)) {
-				return cookie.getValue();
+				return UrlEncoded.decodeString(cookie.getValue());
 			}
 		}
 		

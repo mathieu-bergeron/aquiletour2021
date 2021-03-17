@@ -4,9 +4,11 @@ import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.Session;
 
@@ -14,7 +16,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 	@Override
 	public void handle(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
-		
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
@@ -35,6 +36,10 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}
 
 		Ntro.userService().registerCurrentUser(userToRegister);
+		
+		SetUserNtroMessage setUserNtroMessage = Ntro.messages().create(SetUserNtroMessage.class);
+		setUserNtroMessage.setUser(userToRegister);
+		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 	}
 
 	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, Session session) {
