@@ -267,6 +267,8 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	}
 
 	public void changeUser(NtroUser user) {
+
+		onChangeContext(context);
 		
 		context.registerUser(user);
 		

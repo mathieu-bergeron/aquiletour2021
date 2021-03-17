@@ -31,6 +31,11 @@ public abstract class DashboardController extends NtroController<RootController>
 	protected void onChangeContext(NtroContext<?> previousContext) {
 		T.call(this);
 		
+		((DashboardView) getView()).clearCourses();
+		
+		setModelLoader(DashboardModel.class, 
+				       currentContext().user().getAuthToken(),
+				       currentContext().user().getId());
 	}
 
 	@Override
