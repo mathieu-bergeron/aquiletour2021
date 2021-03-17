@@ -1,0 +1,14 @@
+{
+  "_C": "Session",
+  "user": {
+    "phoneNumber": "",
+    "_C": "StudentGuest",
+    "surname": "",
+    "authToken": "90zY3aG_H9BRzBePcSJuFiEhL2E",
+    "name": "1234567",
+    "userEmail": "",
+    "id": "1234567",
+    "programId": ""
+  },
+  "timeToLiveMiliseconds": 120000
+}

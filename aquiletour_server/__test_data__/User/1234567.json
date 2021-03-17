@@ -1,10 +1,10 @@
 {
-    "phoneNumber": "",
-    "_C": "Student",
-    "surname": "Bérancourt",
-    "authToken": "",
-    "name": "Bob",
-    "userEmail": "eborgner@gmail.com",
-    "id": "1234567",
-    "programId": ""
+  "phoneNumber": "",
+  "_C": "StudentGuest",
+  "surname": "",
+  "authToken": "QVO2eOyxWx5TCoNnxsz4sxElQyg",
+  "name": "1234567",
+  "userEmail": "",
+  "id": "1234567",
+  "programId": ""
 }

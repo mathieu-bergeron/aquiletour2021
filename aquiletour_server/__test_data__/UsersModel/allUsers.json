@@ -10,7 +10,7 @@
         "authToken": "bobToken",
         "name": "Bob",
         "userEmail": "bob.berancourt@test.ca",
-        "id": "bob",
+        "id": "1234567",
         "programId": ""
       },
       "alice": {
