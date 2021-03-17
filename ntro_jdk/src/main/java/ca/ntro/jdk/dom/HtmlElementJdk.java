@@ -156,4 +156,16 @@ public class HtmlElementJdk extends HtmlElement {
 		return jsoupElement.html();
 	}
 
+	@Override
+	public void show() {
+		jsoupElement.removeClass("ntro-hidden");
+		jsoupElement.addClass("ntro-visible");
+	}
+
+	@Override
+	public void hide() {
+		jsoupElement.removeClass("ntro-visible");
+		jsoupElement.addClass("ntro-hidden");
+	}
+
 }

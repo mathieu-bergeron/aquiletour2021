@@ -4,7 +4,7 @@ import ca.ntro.messages.NtroMessage;
 
 public class ShowLoginMessage extends NtroMessage {
 	
-	private String messageToUser = "";
+	private String messageToUser;
 
 	public String getMessageToUser() {
 		return messageToUser;

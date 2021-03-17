@@ -1,8 +1,8 @@
 package ca.aquiletour.core.messages;
 
-import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 
-public class UserSendsLoginCodeMessage extends NtroMessage {
+public class UserSendsLoginCodeMessage extends NtroUserMessage {
 	
 	private String loginCode;
 

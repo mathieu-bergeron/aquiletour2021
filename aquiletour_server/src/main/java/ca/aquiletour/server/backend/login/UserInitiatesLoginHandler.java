@@ -55,8 +55,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		userToRegister.setAuthToken(authToken);
 		
-		modelStore.replace(existingUser, userToRegister);
-		
 		session.setUser(userToRegister.toSessionUser());
 		
 		modelStore.save(session);

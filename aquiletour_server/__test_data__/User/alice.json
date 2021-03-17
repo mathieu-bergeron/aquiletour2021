@@ -1,9 +1,9 @@
 {
-  "phoneNumber": "",
-  "_C": "TeacherGuest",
-  "surname": "",
-  "authToken": "QVO2eOyxWx5TCoNnxsz4sxElQyg",
-  "name": "alice",
-  "userEmail": "",
-  "id": "alice"
+    "phoneNumber": "",
+    "_C": "Teacher",
+    "surname": "Awama",
+    "authToken": "",
+    "name": "Alice",
+    "userEmail": "alice.awama@test.com",
+    "id": "alice"
 }

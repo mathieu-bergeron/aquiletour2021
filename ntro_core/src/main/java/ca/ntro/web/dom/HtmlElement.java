@@ -35,5 +35,8 @@ public abstract class HtmlElement {
 	public abstract String html();
 	public abstract void html(String htmlString);
 	public abstract String getValue();
+	
+	public abstract void show();
+	public abstract void hide();
 
 }

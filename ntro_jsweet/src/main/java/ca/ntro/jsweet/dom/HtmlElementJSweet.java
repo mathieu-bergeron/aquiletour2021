@@ -160,4 +160,14 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String html() {
 		return jQueryElement.html();
 	}
+
+	@Override
+	public void show() {
+		jQueryElement.show();
+	}
+
+	@Override
+	public void hide() {
+		jQueryElement.hide();
+	}
 }
