@@ -112,7 +112,7 @@ public class ModelHandler extends AbstractHandler {
         // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
         // NOTE:  we do not need to connect that model to the store
         //        only models in the backend
-        RegisteredSockets.registerThatUserObservesModel(user, documentPath);
+        RegisteredSockets.registerModelObserver(user, documentPath);
         // ??
         // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 

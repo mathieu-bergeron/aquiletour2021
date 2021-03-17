@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -20,56 +24,53 @@ import ca.ntro.users.NtroUser;
 
 public class RegisteredSockets {
 
-	// FIXME: much simple if every Session registers a Socket (by authToken)
-	//        then no need to change socket on login (the session authToken is specific to the browser, not the user)
-	//        still we need to change authToken if user changes
 
-	private static Map<DocumentPath, Set<NtroUser>> modelObservators = new HashMap<>();
-	private static Map<NtroUser, Set<Session>> userSockets = new HashMap<>();
+	// For each model, the sessions we need to update when the model changes
+	// (a session is represented by its authToken)
+	private static Map<DocumentPath, Set<String>> modelObservers = new HashMap<>();
+
+	// The socket of each session, if it exists
+	// (a session is represented by its authToken)
+	// (the Session type here is a jetty WebSocket)
+	private static BiMap<String, Session> sockets = HashBiMap.create();
 	
 	public static void registerUserSocket(NtroUser user, Session socket) {
-		Set<Session> sockets = userSockets.get(user);
+		sockets.put(user.getAuthToken(), socket);
 		
-		if(sockets == null) {
-			sockets = new HashSet<>();
-			userSockets.put(user, sockets);
-		}
-
-		sockets.add(socket);
-		
-		System.out.println("registered user socket for " + user.getId());
+		System.out.println("registered user socket for " + user.getId() + " " + user.getAuthToken());
 	}
 
 	public static void deregisterSocket(Session socket) {
-		for(Map.Entry<NtroUser, Set<Session>> entry : userSockets.entrySet()) {
-			boolean removed = entry.getValue().remove(socket);
-			if(removed) {
-				System.out.println("deregistered socket for " + entry.getKey().getId());
+		String authToken = sockets.inverse().get(socket);
+		Session removed = sockets.remove(authToken);
+		if(removed != null) {
+			System.out.println("deregistered socket for " + authToken);
+		}
+	}
+
+	public static void sendMessageToUser(NtroUser user, NtroMessage message) throws IOException {
+		sendMessageToUser(user.getAuthToken(), message);
+	}
+
+	public static void sendMessageToUser(String authToken, NtroMessage message) throws IOException {
+		Session socket = sockets.get(authToken);
+
+		if(socket != null) {
+			if(socket.isOpen()) {
+				socket.getRemote().sendString(Ntro.jsonService().toString(message));
 			}
 		}
 	}
 
-	public static void sendMessageToUserSockets(NtroUser user, NtroMessage message) throws IOException {
-		Set<Session> sockets = userSockets.get(user);
+	public static void registerModelObserver(NtroUser user, DocumentPath documentPath) {
+		Set<String> observers = modelObservers.get(documentPath);
 		
-		if(sockets != null) {
-			for(Session socket : sockets) {
-				if(socket.isOpen()) {
-					socket.getRemote().sendString(Ntro.jsonService().toString(message));
-				}
-			}
+		if(observers == null) {
+			observers = new HashSet<>();
+			modelObservers.put(documentPath, observers);
 		}
-	}
 
-	public static void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath) {
-		Set<NtroUser> observators = modelObservators.get(documentPath);
-		
-		if(observators == null) {
-			observators = new HashSet<>();
-			modelObservators.put(documentPath, observators);
-		}
-		
-		observators.add(user);
+		observers.add(user.getAuthToken());
 	}
 	
 	public static void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
@@ -81,11 +82,11 @@ public class RegisteredSockets {
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
 		}
 		
-		Set<NtroUser> observers = modelObservators.get(valuePath.getDocumentPath());
+		Set<String> observers = (Set<String>) modelObservers.get(valuePath.getDocumentPath());
 
 		if(observers != null) {
 
-			for(NtroUser observer : observers) {
+			for(String authToken : observers) {
 
 				InvokeValueMethodNtroMessage message = Ntro.messages().create(InvokeValueMethodNtroMessage.class);
 				message.setValuePath(valuePath);
@@ -94,11 +95,11 @@ public class RegisteredSockets {
 				
 				try {
 					
-					RegisteredSockets.sendMessageToUserSockets(observer, message);
+					RegisteredSockets.sendMessageToUser(authToken, message);
 
 				} catch (IOException e) {
 
-					Log.fatalError("Unable to send message to user " + observer.getId(), e);
+					Log.fatalError("Unable to send message to user " + authToken, e);
 				}
 			}
 		}

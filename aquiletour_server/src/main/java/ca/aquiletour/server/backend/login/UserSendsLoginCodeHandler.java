@@ -41,6 +41,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		User sessionUser = existingUser.toSessionUser();
 		
 		sessionUser.setAuthToken(authToken);
+		existingUser.setAuthToken(authToken);
 		
 		session.setUser(sessionUser);
 		modelStore.save(session);
