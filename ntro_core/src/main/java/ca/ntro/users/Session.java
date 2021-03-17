@@ -5,6 +5,7 @@ import ca.ntro.core.models.NtroModel;
 public class Session implements NtroModel {
 	
 	private NtroUser user = new NtroUser();
+	private String loginCode = "";
 	private long timeToLiveMiliseconds = 1000 * 60 * 1;         // TMP: 1 minute by default
 	
 	public NtroUser getUser() {
@@ -18,5 +19,11 @@ public class Session implements NtroModel {
 	}
 	public void setTimeToLiveMiliseconds(long timeToLiveMiliseconds) {
 		this.timeToLiveMiliseconds = timeToLiveMiliseconds;
+	}
+	public String getLoginCode() {
+		return loginCode;
+	}
+	public void setLoginCode(String loginCode) {
+		this.loginCode = loginCode;
 	}
 }

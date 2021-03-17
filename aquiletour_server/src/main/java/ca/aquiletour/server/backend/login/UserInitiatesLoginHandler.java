@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.Session;
 
@@ -13,11 +14,14 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 	@Override
 	public void handle(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+		
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
 		String providedId = message.getProvidedId();
 		User userToRegister = null;
+
+		T.values("providedId", providedId);
 		
 		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
 		

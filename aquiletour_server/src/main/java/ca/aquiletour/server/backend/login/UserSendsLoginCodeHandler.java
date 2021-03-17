@@ -4,6 +4,7 @@ import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.Session;
 
@@ -15,7 +16,10 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
 
+		T.values("loginCode", loginCode);
+
 		User userToRegister = null;
+
 
 		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
 		
