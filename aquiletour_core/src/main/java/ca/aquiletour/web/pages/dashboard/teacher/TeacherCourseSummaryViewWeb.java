@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
+import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
@@ -11,8 +12,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
-import def.dom.FileList;
-import def.dom.FormData;
+import ca.ntro.web.dom.HtmlFileListener;
 
 public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
 
@@ -58,15 +58,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private void addListeners(NtroContext<?> context) {
 		T.call(this);
 		
-		csvFileSubmit.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				
-				// see: https://stackoverflow.com/questions/5587973/javascript-upload-file
-				// and: https://web.dev/read-files/
-				FormData formData = new FormData();
-			}
-		});
 	}
 
 	@Override
@@ -76,8 +67,11 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
+
+		csvFileSubmit.addEventListener("click", new CsvSubmitListener(course.getCourseId(), csvFileInput));
 		
 		numberOfStudents.html(String.valueOf(course.getNumberOfAppointments()));
+
 
 		title.appendHtml(course.getTitle());
 		//courseId.appendHtml(course.getCourseId());
@@ -109,5 +103,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 			closeQueue.appendHtml("OPEN QUEUE");
 
 		}
+
 	}
 }

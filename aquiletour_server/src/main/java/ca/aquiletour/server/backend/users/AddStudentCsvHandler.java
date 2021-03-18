@@ -22,10 +22,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		T.call(this);
 		
 		String csvString = message.getCsvString();
+		
+		System.out.println(csvString);
+		
+		
 		String queueId = message.getQueueId();
 		User fromUser = message.getUser();
-		//T.values(csvString);
-		//parse csv: trouver le bon fichier qui commence avec le queueId, chercher: (prenom;nom;DA9chiffres;numeroProgramme6characters;phoneNumber;;;;;
+
 		UsersModel usersModel = modelStore.getModel(UsersModel.class, 
                 "adminToken",
                 "allUsers");
