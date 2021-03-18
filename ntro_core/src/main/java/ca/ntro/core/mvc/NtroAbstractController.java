@@ -278,6 +278,16 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		for(NtroAbstractController subController : subControllers) {
 			subController.changeUser(user);
 		}
+
+		if(this instanceof NtroRootController) {
+			reExecuteAfterContextChange();
+		}
+	}
+
+	public void reExecuteAfterContextChange() {
+		T.call(this);
+		
+		getTask().execute();
 	}
 
 }

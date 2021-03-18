@@ -21,6 +21,7 @@ import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
@@ -37,19 +38,22 @@ import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroUser;
 
 public class RootController extends NtroRootController {
-
+	
+	// FIXME: ugly, but modelStore does not support
+	//        two models of the same kind
+	private boolean ifDashboardControllerAlreadyAdded = false;
+	
 	@Override
 	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 		
 		setViewLoader(RootView.class, context.lang());
 		
-		// FIXME: bogue?
-		addSubController(TeacherDashboardController.class, "mescours");
-		addSubController(StudentDashboardController.class, "mescours");
+		// FIXME: modelStore does not support
+		//        two models of the same kind (or with the same DocumentPath)
+		addStudentOrTeacherSubController(context);
 
 		addSubController(QueuesController.class, "billetteries");
 	
@@ -98,6 +102,33 @@ public class RootController extends NtroRootController {
 		RootView view = (RootView) getView();
 
 		view.adjustLoginLinkText(context);
+		
+		addStudentOrTeacherSubController(context);
+	}
+
+	private void addStudentOrTeacherSubController(NtroContext<?> context) {
+		T.call(this);
+		
+		if(ifDashboardControllerAlreadyAdded) return;
+
+		if(context.user() instanceof Teacher
+				|| context.user() instanceof TeacherGuest) {
+			
+			System.out.println("addTeacherSubController");
+			
+			addSubController(TeacherDashboardController.class, "mescours");
+			
+			ifDashboardControllerAlreadyAdded = true;
+			
+		}else if(context.user() instanceof Student
+				|| context.user() instanceof StudentGuest){
+
+			System.out.println("addStudentSubController");
+
+			addSubController(StudentDashboardController.class, "mescours");
+
+			ifDashboardControllerAlreadyAdded = true;
+		}
 	}
 
 	@Override

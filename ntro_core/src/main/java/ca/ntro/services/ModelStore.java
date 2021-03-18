@@ -1,7 +1,6 @@
 package ca.ntro.services;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,7 +100,11 @@ public abstract class ModelStore {
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
-		System.out.println("invokeValueMethod " + valuePath);
+		if(args.size() > 0) {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+		}else {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+		}
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
 
