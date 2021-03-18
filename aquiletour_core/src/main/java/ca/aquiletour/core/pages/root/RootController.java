@@ -21,6 +21,7 @@ import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
@@ -40,6 +41,9 @@ import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroUser;
 
 public class RootController extends NtroRootController {
+	
+	// FIXME: this is ugly
+	private boolean dashboardSubControllerAlreadyAdded = false;
 
 	@Override
 	protected void onCreate(NtroContext<?> context) {
@@ -47,9 +51,7 @@ public class RootController extends NtroRootController {
 		
 		setViewLoader(RootView.class, context.lang());
 		
-		// FIXME: bogue?
-		addSubController(TeacherDashboardController.class, "mescours");
-		addSubController(StudentDashboardController.class, "mescours");
+		addStudentOrTeacherSubController(context);
 
 		addSubController(QueuesController.class, "billetteries");
 	
@@ -98,6 +100,32 @@ public class RootController extends NtroRootController {
 		RootView view = (RootView) getView();
 
 		view.adjustLoginLinkText(context);
+		
+		addStudentOrTeacherSubController(context);
+	}
+
+	private void addStudentOrTeacherSubController(NtroContext<?> context) {
+		if(dashboardSubControllerAlreadyAdded) return;
+		
+		// FIXME: otherwise the DashboardViewModel seems
+		//        to apply modifications to the wrong view
+		//        (or at least a view not inserted in the DOM)
+		if(context.user() instanceof Teacher
+				|| context.user() instanceof TeacherGuest) {
+			
+			System.out.println("addTeacherSubController");
+			
+			addSubController(TeacherDashboardController.class, "mescours");
+			dashboardSubControllerAlreadyAdded = true;
+			
+		}else if(context.user() instanceof Student
+				|| context.user() instanceof StudentGuest){
+
+			System.out.println("addStudentSubController");
+
+			addSubController(StudentDashboardController.class, "mescours");
+			dashboardSubControllerAlreadyAdded = true;
+		}
 	}
 
 	@Override

@@ -13,6 +13,7 @@ public abstract class DashboardController extends NtroController<RootController>
 
 		setViewLoader(viewClass(), context.lang());
 		
+		// FIXME: when requestModel is called twice, we have a problem
 		requestModel(context);
 
 		installParentViewMessageHandler();
@@ -29,13 +30,14 @@ public abstract class DashboardController extends NtroController<RootController>
 	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
-		((DashboardView) getView()).clearCourses();
-
+		System.out.println("DashboardController.onChangeContext");
+		
 		requestModel(context);
 	}
 
 	private void requestModel(NtroContext<?> context) {
 		T.call(this);
+		
 
 		setModelLoader(DashboardModel.class, 
 					   context.user().getAuthToken(),
