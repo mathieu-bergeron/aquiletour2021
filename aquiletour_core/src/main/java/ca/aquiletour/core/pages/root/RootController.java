@@ -42,9 +42,6 @@ import ca.ntro.users.NtroUser;
 
 public class RootController extends NtroRootController {
 	
-	// FIXME: this is ugly
-	private boolean dashboardSubControllerAlreadyAdded = false;
-
 	@Override
 	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
@@ -105,18 +102,14 @@ public class RootController extends NtroRootController {
 	}
 
 	private void addStudentOrTeacherSubController(NtroContext<?> context) {
-		if(dashboardSubControllerAlreadyAdded) return;
-		
-		// FIXME: otherwise the DashboardViewModel seems
-		//        to apply modifications to the wrong view
-		//        (or at least a view not inserted in the DOM)
+		T.call(this);
+
 		if(context.user() instanceof Teacher
 				|| context.user() instanceof TeacherGuest) {
 			
 			System.out.println("addTeacherSubController");
 			
 			addSubController(TeacherDashboardController.class, "mescours");
-			dashboardSubControllerAlreadyAdded = true;
 			
 		}else if(context.user() instanceof Student
 				|| context.user() instanceof StudentGuest){
@@ -124,7 +117,6 @@ public class RootController extends NtroRootController {
 			System.out.println("addStudentSubController");
 
 			addSubController(StudentDashboardController.class, "mescours");
-			dashboardSubControllerAlreadyAdded = true;
 		}
 	}
 
