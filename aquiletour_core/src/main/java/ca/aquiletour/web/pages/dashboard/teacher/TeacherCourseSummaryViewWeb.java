@@ -11,6 +11,8 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
+import def.dom.FileList;
+import def.dom.FormData;
 
 public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
 
@@ -21,6 +23,9 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private HtmlElement makeAppointmentLink;
 	private HtmlElement deleteCourseLink;
 	private HtmlElement closeQueue;
+	private HtmlElement csvFileInput;
+	private HtmlElement csvFileSubmit;
+	private HtmlElement csvFileQueueId;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -33,6 +38,9 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
 		deleteCourseLink = this.getRootElement().find("#deleteLink").get(0);
 		closeQueue = this.getRootElement().find("#closeQueue").get(0);
+		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
+		csvFileSubmit = this.getRootElement().find("#csv-file-submit").get(0);
+		csvFileQueueId = this.getRootElement().find("#csv-file-queue-id").get(0);
 		
 		MustNot.beNull(title);
 		MustNot.beNull(courseId);
@@ -40,6 +48,25 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(numberOfStudents);
 		MustNot.beNull(makeAppointmentLink);
 		MustNot.beNull(closeQueue);
+		MustNot.beNull(csvFileInput);
+		MustNot.beNull(csvFileSubmit);
+		MustNot.beNull(csvFileQueueId);
+		
+		addListeners(context);
+	}
+
+	private void addListeners(NtroContext<?> context) {
+		T.call(this);
+		
+		csvFileSubmit.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				
+				// see: https://stackoverflow.com/questions/5587973/javascript-upload-file
+				// and: https://web.dev/read-files/
+				FormData formData = new FormData();
+			}
+		});
 	}
 
 	@Override

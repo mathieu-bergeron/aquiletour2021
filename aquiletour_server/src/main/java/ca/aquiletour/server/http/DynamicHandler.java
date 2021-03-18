@@ -160,18 +160,19 @@ public class DynamicHandler extends AbstractHandler {
 
 	private void sendCsvMessage(Request baseRequest) throws IOException {
 		if(Ntro.userService().currentUser() instanceof Teacher) {
-
+			
+			String queueId = baseRequest.getParameter("queueId");
 			Part filePart = null;
 			try {
 				filePart = baseRequest.getPart("csvFile");
 			} catch (IOException | ServletException e) {}
 
-			if(filePart != null) {
+			if(queueId != null && filePart != null) {
 				String fileContent = readPart(filePart);
-				
 				
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
 				addStudentCsvMessage.setCsvString(fileContent);
+				addStudentCsvMessage.setQueueId(queueId);
 				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
 			}
 		}
