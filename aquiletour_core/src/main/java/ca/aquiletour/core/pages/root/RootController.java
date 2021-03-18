@@ -38,9 +38,12 @@ import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroUser;
 
 public class RootController extends NtroRootController {
+	
+	// FIXME: ugly, but modelStore does not support
+	//        two models of the same kind
+	private boolean ifDashboardControllerAlreadyAdded = false;
 	
 	@Override
 	protected void onCreate(NtroContext<?> context) {
@@ -48,6 +51,8 @@ public class RootController extends NtroRootController {
 		
 		setViewLoader(RootView.class, context.lang());
 		
+		// FIXME: modelStore does not support
+		//        two models of the same kind (or with the same DocumentPath)
 		addStudentOrTeacherSubController(context);
 
 		addSubController(QueuesController.class, "billetteries");
@@ -103,6 +108,8 @@ public class RootController extends NtroRootController {
 
 	private void addStudentOrTeacherSubController(NtroContext<?> context) {
 		T.call(this);
+		
+		if(ifDashboardControllerAlreadyAdded) return;
 
 		if(context.user() instanceof Teacher
 				|| context.user() instanceof TeacherGuest) {
@@ -111,12 +118,16 @@ public class RootController extends NtroRootController {
 			
 			addSubController(TeacherDashboardController.class, "mescours");
 			
+			ifDashboardControllerAlreadyAdded = true;
+			
 		}else if(context.user() instanceof Student
 				|| context.user() instanceof StudentGuest){
 
 			System.out.println("addStudentSubController");
 
 			addSubController(StudentDashboardController.class, "mescours");
+
+			ifDashboardControllerAlreadyAdded = true;
 		}
 	}
 
