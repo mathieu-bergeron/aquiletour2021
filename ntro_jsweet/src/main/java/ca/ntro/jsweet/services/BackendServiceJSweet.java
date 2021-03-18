@@ -1,6 +1,7 @@
 package ca.ntro.jsweet.services;
 
 import java.util.HashMap;
+
 import java.util.Map;
 
 import ca.ntro.core.system.trace.__T;
@@ -9,7 +10,9 @@ import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
+import def.dom.Document;
 import def.dom.WebSocket;
+import static def.dom.Globals.window;
 
 public class BackendServiceJSweet extends BackendService {
 	
@@ -17,10 +20,12 @@ public class BackendServiceJSweet extends BackendService {
 	
 	private final Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
 	
-	public BackendServiceJSweet(String connectionString) {
+	public BackendServiceJSweet(String connectionPath) {
 		super();
 		__T.call(this, "<init>");
 		
+		String connectionString = "ws://" + window.location.host + connectionPath;
+
 		webSocket = new WebSocket(connectionString);
 
 		webSocket.onmessage = t -> {
