@@ -49,9 +49,7 @@ public class LocalStoreJSweet extends ModelStore {
 	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
-		String fullId = fullId(documentPath);
-		
-		String jsonString = (String) localStorage.getItem(fullId);
+		String jsonString = getJsonString(documentPath);
 		
 		if(jsonString == null) {
 
@@ -63,6 +61,17 @@ public class LocalStoreJSweet extends ModelStore {
 		return jsonLoader;
 	}
 
+	private String getJsonString(DocumentPath documentPath) {
+		String fullId = fullId(documentPath);
+		
+		String jsonString = (String) localStorage.getItem(fullId);
+		return jsonString;
+	}
+
+	@Override
+	protected boolean ifModelExists(DocumentPath documentPath) {
+		return getJsonString(documentPath) != null;
+	}
 
 
 
@@ -103,4 +112,5 @@ public class LocalStoreJSweet extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
+
 }

@@ -3,7 +3,7 @@
     "_C": "ObservableCourseList",
     "value": [
       {
-        "numberOfAppointments": 3,
+        "numberOfAppointments": 0,
         "_C": "CourseSummary",
         "isQueueOpen": {
           "_C": "StoredBoolean",
@@ -11,7 +11,7 @@
         },
         "myAppointment": {
           "_C": "StoredBoolean",
-          "value": true
+          "value": false
         },
         "title": "4F5",
         "courseId": "4F5"

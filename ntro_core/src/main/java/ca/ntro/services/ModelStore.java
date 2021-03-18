@@ -28,21 +28,25 @@ public abstract class ModelStore {
 	
 	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
 	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
+	
+	protected abstract boolean ifModelExists(DocumentPath documentPath);
+	
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+		T.call(this);
+
+		String documentId = documentId(firstPathName, pathRemainder);
+		DocumentPath documentPath = documentPath(modelClass, documentId);
+
+		return ifModelExists(documentPath);
+	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
 
 		ModelLoader modelLoader = new ModelLoader(this);
 		
-		String documentId = firstPathName;
-		for(String additionalSegment : pathRemainder) {
-			documentId += "__" + additionalSegment;
-		}
-		
-		DocumentPath documentPath = new DocumentPath();
-
-		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(modelClass));
-		documentPath.setDocumentId(documentId);
+		String documentId = documentId(firstPathName, pathRemainder);
+		DocumentPath documentPath = documentPath(modelClass, documentId);
 		
 		JsonLoader jsonLoader = getJsonLoader(documentPath);
 		jsonLoader.setTaskId("JsonLoader");
@@ -53,6 +57,22 @@ public abstract class ModelStore {
 		modelLoader.addSubTask(jsonLoader);
 
 		return modelLoader;
+	}
+
+	private <M extends NtroModel> DocumentPath documentPath(Class<M> modelClass, String documentId) {
+		DocumentPath documentPath = new DocumentPath();
+
+		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(modelClass));
+		documentPath.setDocumentId(documentId);
+		return documentPath;
+	}
+
+	private String documentId(String firstPathName, String... pathRemainder) {
+		String documentId = firstPathName;
+		for(String additionalSegment : pathRemainder) {
+			documentId += "__" + additionalSegment;
+		}
+		return documentId;
 	}
 	
 	public static String emptyModelString(DocumentPath documentPath) {

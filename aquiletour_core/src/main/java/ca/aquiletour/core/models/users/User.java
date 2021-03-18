@@ -6,7 +6,7 @@ public class User extends NtroUser {
 	
 	private String name = "";
 	private String surname = "";
-	private String userEmail = "";
+	private String email = "";
 	private String phoneNumber = "";	
 
 	public User() {
@@ -14,7 +14,7 @@ public class User extends NtroUser {
 	}
 	
 	public User(String email) {
-		this.userEmail = email;
+		this.email = email;
 	}
 
 	public String getName() {
@@ -30,12 +30,12 @@ public class User extends NtroUser {
 		this.surname = surname;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPhoneNumber() {
@@ -49,6 +49,7 @@ public class User extends NtroUser {
 	public void copyPublicInfomation(User user) {
 		setName(user.getName());
 		setSurname(user.getSurname());
+		setEmail(user.getEmail());
 	}
 
 	public User toSessionUser() {
@@ -64,6 +65,7 @@ public class User extends NtroUser {
 		sessionUser.setAuthToken(getAuthToken());
 		sessionUser.setName(getName());
 		sessionUser.setSurname(getSurname());
+		sessionUser.setEmail(getEmail());
 	}
 	
 	

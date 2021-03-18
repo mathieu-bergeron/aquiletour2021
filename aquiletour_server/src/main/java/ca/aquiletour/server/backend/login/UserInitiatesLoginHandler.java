@@ -48,8 +48,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, Session session) {
 
 		User userToRegister;
-
-		User existingUser = modelStore.getModel(User.class, "TODO", providedId);
 		
 		if(isStudentId(providedId)) {
 			
@@ -60,27 +58,36 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			userToRegister = new TeacherGuest();
 		}
 
-		userToRegister.copyPublicInfomation(existingUser);
-		
+		if(modelStore.ifModelExists(User.class, "TODO", providedId)) {
+
+			User existingUser = modelStore.getModel(User.class, "TODO", providedId);
+			userToRegister.copyPublicInfomation(existingUser);
+
+		}else {
+
+			userToRegister.setName(providedId);
+			userToRegister.setEmail(providedId + "@cmontmorency.qc.ca");
+		}
+
 		userToRegister.setId(providedId);
 		userToRegister.setAuthToken(authToken);
 		
 		String loginCode = SecureRandomString.generateLoginCode();
-		
+
 		Ntro.threadService().executeLater(new NtroTaskSync() {
 			@Override
 			protected void runTask() {
 				T.call(this);
 
-				T.values(loginCode, existingUser.getName(), existingUser.getUserEmail());
-				//TestEmail.sendCode(loginCode, existingUser.getName(), existingUser.getUserEmail());
+				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
 			}
 
 			@Override
 			protected void onFailure(Exception e) {
 			}
 		});
-		
+
 		session.setUser(userToRegister.toSessionUser());
 		session.setLoginCode(loginCode.replace(" ", ""));
 		modelStore.save(session);

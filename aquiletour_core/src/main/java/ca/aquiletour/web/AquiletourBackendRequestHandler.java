@@ -205,7 +205,7 @@ public class AquiletourBackendRequestHandler {
 			
 			AddUserMessage addUserMessage = Ntro.messages().create(AddUserMessage.class);
 			User newUser = new User();
-			newUser.setUserEmail(email);			
+			newUser.setEmail(email);			
 			newUser.setName("test");
 			newUser.setAuthToken("test");
 			newUser.setId(email);

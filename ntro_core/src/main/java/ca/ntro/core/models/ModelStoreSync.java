@@ -3,6 +3,7 @@ package ca.ntro.core.models;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.ModelStore;
+import ca.ntro.stores.DocumentPath;
 
 public class ModelStoreSync {
 
@@ -10,6 +11,12 @@ public class ModelStoreSync {
 	
 	public ModelStoreSync(ModelStore modelStore) {
 		this.modelStore = modelStore;
+	}
+
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+		T.call(this);
+
+		return modelStore.ifModelExists(modelClass, authToken, firstPathName, pathRemainder);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -29,6 +36,12 @@ public class ModelStoreSync {
 		T.call(this);
 
 		modelStore.save(model);
+	}
+
+	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+		T.call(this);
+
+		modelStore.saveJsonString(documentPath, jsonString);
 	}
 
 	public void replace(NtroModel existingModel, NtroModel newModel) {

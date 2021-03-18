@@ -42,17 +42,28 @@ public class LocalStoreNitrite extends ModelStore {
 
 		db.close();
 	}
+
+	@Override
+	protected boolean ifModelExists(DocumentPath documentPath) {
+		NitriteCollection models = db.getCollection(documentPath.getCollection());
+
+		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
+		Document document  = cursor.firstOrDefault();
+		
+		return document != null;
+	}
 	
 	@Override
 	public JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
-		
+
 		addIndex(models);
-		
+
 		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
 		Document document  = cursor.firstOrDefault();
+
 		
 		String jsonString = null;
 		
@@ -140,6 +151,7 @@ public class LocalStoreNitrite extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// TODO Auto-generated method stub
 	}
+
 	
 
 }

@@ -46,6 +46,12 @@ public class NetworkStoreJSweet extends ModelStore {
 		return new JsonLoaderJSweet(documentPath);
 	}
 
+	@Override
+	protected boolean ifModelExists(DocumentPath documentPath) {
+		// XXX: always false. Cannot be known synchronously
+		return false;
+	}
+
     /*
 	// JSWEET: does not compile
 	// Object jsObject = Lang.await(fetchJsonObject(documentPath));
@@ -102,4 +108,5 @@ public class NetworkStoreJSweet extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
+
 }

@@ -327,6 +327,7 @@ public class DynamicHandler extends AbstractHandler {
 		T.call(this);
 		
 		Cookie cookie = new Cookie(name, "");
+		cookie.setPath("/");
 		cookie.setMaxAge(0);
 
 		response.addCookie(cookie);
@@ -340,6 +341,7 @@ public class DynamicHandler extends AbstractHandler {
 		String urlEncodedString = UrlEncoded.encodeString(trimmedValue);
 		
 		Cookie cookie = new Cookie(name, urlEncodedString);
+		cookie.setPath("/");
 
 		response.addCookie(cookie);
 	}

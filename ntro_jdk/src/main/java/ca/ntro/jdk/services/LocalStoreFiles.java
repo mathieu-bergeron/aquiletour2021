@@ -104,6 +104,11 @@ public class LocalStoreFiles extends ModelStore {
 	}
 
 	@Override
+	protected boolean ifModelExists(DocumentPath documentPath) {
+		return getModelFile(documentPath).exists();
+	}
+
+	@Override
 	public void addValueListener(ValuePath valuePath, ValueListener valueListener) {
 		// TODO Auto-generated method stub
 		
@@ -130,4 +135,5 @@ public class LocalStoreFiles extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: must be overriden on the server
 	}
+
 }

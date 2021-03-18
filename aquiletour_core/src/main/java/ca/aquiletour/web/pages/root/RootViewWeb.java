@@ -96,7 +96,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
 
-			String linkText = "SVP valider que vous êtes bien " + userName;
+			String linkText = "Valider " + user.getEmail();
 			loginLink.html(linkText);
 
 		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {

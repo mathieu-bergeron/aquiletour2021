@@ -44,11 +44,11 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 	public static Session getStoredSession(ModelStoreSync modelStore, String authToken) {
 		T.call(AuthenticateSessionUserHandler.class);
 
-		Session session = modelStore.getModel(Session.class, "TODO", authToken);
+		Session session = null;
 		
-		if(!session.getUser().getAuthToken().equals(authToken)) {
-
-			session = null;
+		if(modelStore.ifModelExists(Session.class, "TODO", authToken)) {
+			
+			session = modelStore.getModel(Session.class, "TODO", authToken);
 		}
 
 		return session;
@@ -79,17 +79,19 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 	private User updateSessionWithActualUser(ModelStoreSync modelStore, Session session, User oldSessionUser) {
 		T.call(this);
 
-		User actualUser;
-		User sessionUser;
+		User actualUser = oldSessionUser;
 
-		actualUser = modelStore.getModel(User.class, "TODO", oldSessionUser.getId());
-		
-		sessionUser = actualUser.toSessionUser();
-		sessionUser.setAuthToken(oldSessionUser.getAuthToken());
-		session.setUser(sessionUser);
-		modelStore.save(session);
-		
-		actualUser.setAuthToken(sessionUser.getAuthToken());
+		if(modelStore.ifModelExists(User.class, "TODO", oldSessionUser.getId())) {
+
+			actualUser = modelStore.getModel(User.class, "TODO", oldSessionUser.getId());
+			
+			User sessionUser = actualUser.toSessionUser();
+			sessionUser.setAuthToken(oldSessionUser.getAuthToken());
+			session.setUser(sessionUser);
+			modelStore.save(session);
+			
+			actualUser.setAuthToken(sessionUser.getAuthToken());
+		}
 
 		return actualUser;
 	}

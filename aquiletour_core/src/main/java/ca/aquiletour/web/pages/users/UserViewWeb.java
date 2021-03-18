@@ -44,7 +44,7 @@ public class UserViewWeb extends NtroViewWeb implements UserView {
 		}//TODO might be a better way to do this
 
 		userId.appendHtml(user.getId());
-		userEmail.appendHtml(user.getUserEmail());
+		userEmail.appendHtml(user.getEmail());
 		close.setAttribute("href", "/usagers?deleteUser=" + user.getId());
 
 		getRootElement().setAttribute("id", "user-" + user.getId());
