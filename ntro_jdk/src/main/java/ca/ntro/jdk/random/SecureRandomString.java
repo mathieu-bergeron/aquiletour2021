@@ -13,4 +13,16 @@ public class SecureRandomString {
 		random.nextBytes(buffer);
 		return encoder.encodeToString(buffer);
 	}
+
+	public static String generateLoginCode() {
+		String code = "";
+		for(int i = 0; i < 3; i++) {
+			code += random.nextInt(10);
+		}
+		code += " ";
+		for(int i = 0; i < 3; i++) {
+			code += random.nextInt(10);
+		}
+		return code;
+	}
 }

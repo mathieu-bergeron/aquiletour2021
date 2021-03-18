@@ -5,9 +5,12 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.email.TestEmail;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.Session;
@@ -55,7 +58,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}else {
 
 			userToRegister = new TeacherGuest();
-			
 		}
 
 		userToRegister.copyPublicInfomation(existingUser);
@@ -63,7 +65,24 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		userToRegister.setId(providedId);
 		userToRegister.setAuthToken(authToken);
 		
+		String loginCode = SecureRandomString.generateLoginCode();
+		
+		Ntro.threadService().executeLater(new NtroTaskSync() {
+			@Override
+			protected void runTask() {
+				T.call(this);
+
+				T.values(loginCode, existingUser.getName(), existingUser.getUserEmail());
+				//TestEmail.sendCode(loginCode, existingUser.getName(), existingUser.getUserEmail());
+			}
+
+			@Override
+			protected void onFailure(Exception e) {
+			}
+		});
+		
 		session.setUser(userToRegister.toSessionUser());
+		session.setLoginCode(loginCode.replace(" ", ""));
 		modelStore.save(session);
 
 		return userToRegister;

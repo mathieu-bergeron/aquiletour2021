@@ -14,17 +14,16 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 	@Override
 	public void handle(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
-		String loginCode = message.getLoginCode();
+		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
-
-		T.values("loginCode", loginCode);
 
 		User userToRegister = null;
 
 		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
 		
-		if(session != null) {
+		if(session != null 
+				&& session.getLoginCode().equals(loginCode)) {
 			
 			userToRegister = registerStudentOrTeacher(modelStore, authToken,  userId, session);
 			
