@@ -17,8 +17,14 @@
 
 package ca.aquiletour.core;
 
+import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
+import ca.aquiletour.core.models.users.SuperUser;
 import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -42,7 +48,9 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
@@ -74,7 +82,14 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);  
 
 		rootController.execute();
-
+		
+		Ntro.backendService().handleMessageFromBackend(SetUserNtroMessage.class, new MessageHandler<SetUserNtroMessage>() {
+			@Override
+			public void handle(SetUserNtroMessage message) {
+				Ntro.userService().registerCurrentUser(message.getUser());
+				rootController.changeUser(message.getUser());
+			}
+		});
 	}
 	
 	public static void registerSerializableClasses() {
@@ -96,7 +111,11 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableUserMap.class);
 		Ntro.registerSerializableClass(User.class);
 		Ntro.registerSerializableClass(Teacher.class);
+		Ntro.registerSerializableClass(TeacherGuest.class);
 		Ntro.registerSerializableClass(Student.class);
+		Ntro.registerSerializableClass(StudentGuest.class);
+		Ntro.registerSerializableClass(SuperUser.class);
+		Ntro.registerSerializableClass(Guest.class);
 
 		Ntro.registerSerializableClass(NtroMessage.class);
 		Ntro.registerSerializableClass(AddCourseMessage.class);
@@ -104,6 +123,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(DeleteAppointmentMessage.class);
 		Ntro.registerSerializableClass(TeacherClosesQueueMessage.class);
 		Ntro.registerSerializableClass(TeacherUsesQueueMessage.class);
+		Ntro.registerSerializableClass(UserInitiatesLoginMessage.class);
+		Ntro.registerSerializableClass(UserSendsLoginCodeMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

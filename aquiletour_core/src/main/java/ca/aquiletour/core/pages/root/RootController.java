@@ -17,11 +17,17 @@
 
 package ca.aquiletour.core.pages.root;
 
+import ca.aquiletour.core.messages.ShowDashboardMessage;
+import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
+import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.student.StudentQueueController;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueController;
 import ca.aquiletour.core.pages.queues.QueuesController;
@@ -29,22 +35,21 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 public class RootController extends NtroRootController {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 		
-		setViewLoader(RootView.class, currentContext().lang());
+		setViewLoader(RootView.class, context.lang());
 		
-		// FIXME: this means we cannot switch user w/o reloading
-		if(currentContext().user() instanceof Teacher) {
-			addSubController(TeacherDashboardController.class, "mescours");
-		}else {
-			addSubController(StudentDashboardController.class, "mescours");
-		}
+		// FIXME: bogue?
+		addSubController(TeacherDashboardController.class, "mescours");
+		addSubController(StudentDashboardController.class, "mescours");
 
 		addSubController(QueuesController.class, "billetteries");
 	
@@ -59,12 +64,40 @@ public class RootController extends NtroRootController {
 		
 		// FIXME: could be in main. Not specific to Controller
 		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());
+		
+		Ntro.messages().registerHandler(ShowDashboardMessage.class, new MessageHandler<ShowDashboardMessage>() {
+			@Override
+			public void handle(ShowDashboardMessage message) {
+				T.call(this);
+
+				if(context().user() instanceof Teacher) {
+
+					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
+					Ntro.messages().send(showDashboardMessage);
+
+				}else if(context().user() instanceof Student){
+
+					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+					Ntro.messages().send(showDashboardMessage);
+
+				}else {
+
+					ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+					showLoginMessage.setMessageToUser("SVP entrer votre DA pour voir vos cours");
+					Ntro.messages().send(showLoginMessage);
+
+				}
+			}
+		});
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
+		RootView view = (RootView) getView();
+
+		view.adjustLoginLinkText(context);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import ca.ntro.core.system.trace.T;
 public class QueuesController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 
 		setViewLoader(QueuesView.class, "fr");
@@ -18,14 +18,14 @@ public class QueuesController extends NtroController<RootController> {
 		setModelLoader(QueuesModel.class, "admin", "openQueues");
 		
 		addParentViewMessageHandler(ShowQueuesMessage.class, new ShowQueuesHandler());
-		addSubViewLoader(QueueSummaryView.class, currentContext().lang());
+		addSubViewLoader(QueueSummaryView.class, context().lang());
 		addModelViewSubViewHandler(QueueSummaryView.class, new QueuesViewModel());
 		
 		// TODO
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 	}
 

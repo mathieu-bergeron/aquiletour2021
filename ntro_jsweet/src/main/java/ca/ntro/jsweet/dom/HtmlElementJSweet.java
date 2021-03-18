@@ -43,6 +43,13 @@ public class HtmlElementJSweet extends HtmlElement {
 			}
 		});
 	}
+
+	@Override
+	public void removeListeners() {
+		T.call(this);
+		
+		jQueryElement.off();
+	}
 	
 	@Override
 	public void appendHtml(String html) {
@@ -135,7 +142,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public String getValue() {
+	public String value() {
 		return jQueryElement.val().toString();
 	}
 
@@ -150,9 +157,16 @@ public class HtmlElementJSweet extends HtmlElement {
 		// XXX: this would remove listeners
 		//jQueryElement.html("");
 		jQueryElement.get(0).innerHTML = "";
-		
-		for(Object newElement : $.parseHTML(htmlString)) {
-			jQueryElement.append(newElement);
+
+		if(htmlString != null) {
+
+			Object[] elementsToAppend = $.parseHTML(htmlString);
+
+			if(elementsToAppend != null) {
+				for(Object newElement : $.parseHTML(htmlString)) {
+					jQueryElement.append(newElement);
+				}
+			}
 		}
 	}
 
@@ -160,4 +174,20 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String html() {
 		return jQueryElement.html();
 	}
+
+	@Override
+	public void show() {
+		jQueryElement.show();
+	}
+
+	@Override
+	public void hide() {
+		jQueryElement.hide();
+	}
+
+	@Override
+	public HtmlElement newElement(String html) {
+		return new HtmlElementJSweet($(html));
+	}
+
 }

@@ -1,10 +1,10 @@
 package ca.ntro.messages.ntro_messages;
 
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.messages.NtroUserMessage;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.stores.DocumentPath;
 
-public class SetModelNtroMessage extends NtroUserMessage {
+public class SetModelNtroMessage extends NtroMessage {
 	
 	private DocumentPath documentPath;
 	private NtroModel model;

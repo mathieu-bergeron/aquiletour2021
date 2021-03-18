@@ -1,8 +1,12 @@
 package ca.aquiletour.web;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import ca.aquiletour.core.messages.UserLogsOutMessage;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
@@ -49,6 +53,10 @@ public class AquiletourRequestHandler {
 		} else if(path.startsWith("accueil")) {
 
 			sendHomeMessages(path.subPath(1), parameters);
+
+		} else if(path.startsWith("deconnexion")) {
+
+			Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
 		}
 	}
 
@@ -61,14 +69,20 @@ public class AquiletourRequestHandler {
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
-
+		
 		ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+		
+		if(parameters.containsKey("message")) {
+			showLoginMessage.setMessageToUser(parameters.get("message")[0]);
+		}
+
 		Ntro.messages().send(showLoginMessage);
 	}
 
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
+
 		if(user instanceof Teacher) {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
@@ -82,11 +96,10 @@ public class AquiletourRequestHandler {
 
 		}else {
 			
-			ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
-			Ntro.messages().send(showLoginDialogMessage);
-			
+			Map<String, String[]> newParams = new HashMap<>();
+			newParams.put("message", new String[] {"SVP entrer votre DA pour voir vos cours"});
+			sendLoginMessages(path, newParams);
 		}
-
 	}
 
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
@@ -111,9 +124,8 @@ public class AquiletourRequestHandler {
 				Ntro.messages().send(showTeacherQueueMessage);
 				
 				if (!(parameters.containsKey("teacherClosesQueue"))) {
-					TeacherUsesQueueMessage teacherUsesQueueMessage = new TeacherUsesQueueMessage();
+					TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 					teacherUsesQueueMessage.setCourseId(courseId);
-					teacherUsesQueueMessage.setTeacher(user);
 					Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
 				}
 				

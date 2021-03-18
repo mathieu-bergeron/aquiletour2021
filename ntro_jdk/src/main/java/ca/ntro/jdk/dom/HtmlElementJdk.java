@@ -24,9 +24,14 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
+	public void removeListeners() {
+		T.call(this);
+		// XXX: event listeners ignored on server
+	}
+
+	@Override
 	public void addEventListener(String event, HtmlEventListener listener) {
 		T.call(this);
-
 		// XXX: event listeners ignored on server
 	}
 
@@ -137,7 +142,7 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public String getValue() {
+	public String value() {
 		return jsoupElement.val();
 	}
 
@@ -155,5 +160,23 @@ public class HtmlElementJdk extends HtmlElement {
 	public String html() {
 		return jsoupElement.html();
 	}
+
+	@Override
+	public void show() {
+		jsoupElement.removeClass("ntro-hidden");
+		jsoupElement.addClass("ntro-visible");
+	}
+
+	@Override
+	public void hide() {
+		jsoupElement.removeClass("ntro-visible");
+		jsoupElement.addClass("ntro-hidden");
+	}
+
+	@Override
+	public HtmlElement newElement(String html) {
+		return new HtmlElementJdk(new Element(html));
+	}
+
 
 }

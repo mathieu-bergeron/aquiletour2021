@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.dizitart.no2.Cursor;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
@@ -22,6 +21,7 @@ import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 public class LocalStoreNitrite extends ModelStore {
 	
@@ -42,17 +42,28 @@ public class LocalStoreNitrite extends ModelStore {
 
 		db.close();
 	}
+
+	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		NitriteCollection models = db.getCollection(documentPath.getCollection());
+
+		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
+		Document document  = cursor.firstOrDefault();
+		
+		return document != null;
+	}
 	
 	@Override
 	public JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
-		
+
 		addIndex(models);
-		
+
 		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
 		Document document  = cursor.firstOrDefault();
+
 		
 		String jsonString = null;
 		
@@ -140,6 +151,7 @@ public class LocalStoreNitrite extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// TODO Auto-generated method stub
 	}
+
 	
 
 }

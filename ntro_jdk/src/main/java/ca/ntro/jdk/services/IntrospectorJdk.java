@@ -345,7 +345,7 @@ public class IntrospectorJdk extends Introspector {
 		}else if(targetClass.equals(Long.class) || targetClass.equals(long.class)) {
 
 			Double resultDouble = Double.parseDouble(primitiveValue.toString());
-			result = targetClass.cast(Math.round(resultDouble));
+			result = Math.round(resultDouble);
 
 		}else if(targetClass.equals(Character.class) || targetClass.equals(char.class)) {
 			

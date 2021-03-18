@@ -1,15 +1,19 @@
 package ca.aquiletour.web.pages.root;
 
+import ca.aquiletour.core.messages.ShowDashboardMessage;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.TeacherGuest;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.login.LoginView;
+import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.mvc.NtroContext;
@@ -23,30 +27,40 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
+	private HtmlElement dashboardLink;
+	private HtmlElement usersLink;
+	private HtmlElement loginLink;
+
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
-		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
-		HtmlElement usersLink = getRootElement().find("#users-link").get(0);
+		dashboardLink = getRootElement().find("#dashboard-link").get(0);
+		usersLink = getRootElement().find("#users-link").get(0);
+		loginLink = getRootElement().find("#login-link").get(0);
 
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(usersLink);
+		MustNot.beNull(loginLink);
+
+		addListeners();
+
+		adjustLoginLinkText(context);
+
+	}
+
+	private void addListeners() {
+		T.call(this);
 
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				if(context.user() instanceof Teacher) {
-					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
-					Ntro.messages().send(showDashboardMessage);
-				}else{
-					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
-					Ntro.messages().send(showDashboardMessage);
-				}
+
+				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
 			}
 		});
-
+		
 		usersLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -56,7 +70,47 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(showUsersMessage);
 			}
 		});
+
+		loginLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+				ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
+				showLoginMessage.setMessageToUser("");
+				Ntro.messages().send(showLoginMessage);
+			}
+		});
 	}
+
+	@Override
+	public void adjustLoginLinkText(NtroContext<?> context) {
+		T.call(this);
+
+		User user = (User) context.user();
+		String userName = user.getName();
+
+		if(context.user() instanceof Guest) {
+
+			String linkText = userName + " (se connecter)";
+			loginLink.html(linkText);
+
+		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
+
+			String linkText = "Valider " + user.getEmail();
+			loginLink.html(linkText);
+
+		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
+			userName += " " + user.getSurname();
+			
+			loginLink.html(userName + " (se déconnecter)");
+			loginLink.removeListeners();
+			loginLink.setAttribute("href", "/deconnexion");
+
+			//HtmlElement nameElement = loginLink.newElement("<span class=\"nav-link\">" + userName + "&nbsp;</span>");
+			//loginLink.insertBefore(nameElement);
+		}
+	}
+
 
 	@Override
 	public void showDashboard(DashboardView dashboardView) {

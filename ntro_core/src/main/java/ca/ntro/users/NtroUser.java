@@ -1,12 +1,12 @@
-package ca.ntro.core;
+package ca.ntro.users;
 
-import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class NtroUser implements JsonSerializable {
+public class NtroUser implements NtroModel {
 	
-	private String id;
-	private String authToken;
+	private String id = "";
+	private String authToken = "";
 
 	public String getId() {
 		return id;
@@ -36,7 +36,7 @@ public class NtroUser implements JsonSerializable {
 		
 		return isValid;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return id.hashCode();
@@ -54,5 +54,4 @@ public class NtroUser implements JsonSerializable {
 		
 		return false;
 	}
-
 }

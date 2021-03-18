@@ -9,13 +9,13 @@ import ca.ntro.core.system.trace.T;
 public abstract class QueueController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 
 		// empty model loader until the ShowQueue message
 		setModelLoader(new EmptyModelLoader());
 
-		setViewLoader(viewClass(), currentContext().lang());
+		setViewLoader(viewClass(), context().lang());
 
 		installParentViewMessageHandler();
 
@@ -26,14 +26,14 @@ public abstract class QueueController extends NtroController<RootController> {
 	
 	
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
 //		 TODO: we can automatize this!
 //				      simply reset the tasks with the new lang
-				if(!previousContext.hasSameLang(currentContext())) {
-					setViewLoader(viewClass(), currentContext().lang());
-					addSubViewLoader(AppointmentView.class, currentContext().lang());
+				if(!previousContext.hasSameLang(context())) {
+					setViewLoader(viewClass(), context().lang());
+					addSubViewLoader(AppointmentView.class, context().lang());
 				}
 		
 	}
