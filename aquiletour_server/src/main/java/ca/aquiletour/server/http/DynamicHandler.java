@@ -38,6 +38,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Teacher;
@@ -134,19 +135,8 @@ public class DynamicHandler extends AbstractHandler {
 
 		// currentUser might have changed
 		setUserCookie(response);
-		
-		if(Ntro.userService().currentUser() instanceof Teacher) {
 
-			Part filePart = null;
-			try {
-				filePart = baseRequest.getPart("csvFile");
-			} catch (IOException | ServletException e) {}
-
-			if(filePart != null) {
-				String fileContent = readPart(filePart);
-				System.out.println(fileContent);
-			}
-		}
+		sendCsvMessage(baseRequest);
 
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
@@ -165,6 +155,25 @@ public class DynamicHandler extends AbstractHandler {
 			response.setContentType("text/html; charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
 			writeResponse(window, baseRequest, out);
+		}
+	}
+
+	private void sendCsvMessage(Request baseRequest) throws IOException {
+		if(Ntro.userService().currentUser() instanceof Teacher) {
+
+			Part filePart = null;
+			try {
+				filePart = baseRequest.getPart("csvFile");
+			} catch (IOException | ServletException e) {}
+
+			if(filePart != null) {
+				String fileContent = readPart(filePart);
+				
+				
+				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
+				addStudentCsvMessage.setCsvString(fileContent);
+				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+			}
 		}
 	}
 
