@@ -101,9 +101,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
 			userName += " " + user.getSurname();
+			
+			loginLink.html(userName + " (se déconnecter)");
+			loginLink.removeListeners();
+			loginLink.setAttribute("href", "/deconnexion");
 
-			String linkText = userName + " (se déconnecter)";
-			loginLink.html(linkText);
+			//HtmlElement nameElement = loginLink.newElement("<span class=\"nav-link\">" + userName + "&nbsp;</span>");
+			//loginLink.insertBefore(nameElement);
 		}
 	}
 

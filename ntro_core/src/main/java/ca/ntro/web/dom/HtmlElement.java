@@ -4,6 +4,8 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class HtmlElement {
 
+	public abstract HtmlElement newElement(String html);
+
 	public abstract void appendHtml(String html);
 	public abstract void appendElement(HtmlElement element);
 	public abstract void insertBefore(HtmlElement element);

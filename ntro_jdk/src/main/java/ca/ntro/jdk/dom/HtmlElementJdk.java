@@ -173,5 +173,10 @@ public class HtmlElementJdk extends HtmlElement {
 		jsoupElement.addClass("ntro-hidden");
 	}
 
+	@Override
+	public HtmlElement newElement(String html) {
+		return new HtmlElementJdk(new Element(html));
+	}
+
 
 }

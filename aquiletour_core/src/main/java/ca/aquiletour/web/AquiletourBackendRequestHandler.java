@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
@@ -28,7 +29,7 @@ public class AquiletourBackendRequestHandler {
 	
 	public static void sendMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
-		
+
 		if(parameters.containsKey("userId")) {
 			
 			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
@@ -40,6 +41,10 @@ public class AquiletourBackendRequestHandler {
 			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
 			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
 			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
+
+		} else if(path.startsWith("deconnexion")) {
+
+			Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserLogsOutMessage.class));
 
 		} else if(path.startsWith("mescours")) {
 

@@ -3,6 +3,8 @@ package ca.aquiletour.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.aquiletour.core.messages.UserLogsOutMessage;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
@@ -51,6 +53,10 @@ public class AquiletourRequestHandler {
 		} else if(path.startsWith("accueil")) {
 
 			sendHomeMessages(path.subPath(1), parameters);
+
+		} else if(path.startsWith("deconnexion")) {
+
+			Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
 		}
 	}
 

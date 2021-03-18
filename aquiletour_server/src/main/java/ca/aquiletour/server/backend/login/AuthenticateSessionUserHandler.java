@@ -11,6 +11,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.Session;
+import jsweet.util.StringTypes.ol;
 
 public class AuthenticateSessionUserHandler extends BackendMessageHandler<AuthenticateSessionUserMessage> {
 
@@ -75,25 +76,26 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 		return actualUser;
 	}
 
-	private User updateSessionWithActualUser(ModelStoreSync modelStore, Session session, User sessionUser) {
+	private User updateSessionWithActualUser(ModelStoreSync modelStore, Session session, User oldSessionUser) {
 		T.call(this);
 
 		User actualUser;
-		String userId = sessionUser.getId();
+		User sessionUser;
 
-		actualUser = modelStore.getModel(User.class, "TODO", userId);
+		actualUser = modelStore.getModel(User.class, "TODO", oldSessionUser.getId());
 		
-		sessionUser.copyPublicInfomation(actualUser);
-
-		session.setUser(actualUser.toSessionUser());
-
+		sessionUser = actualUser.toSessionUser();
+		sessionUser.setAuthToken(oldSessionUser.getAuthToken());
+		session.setUser(sessionUser);
 		modelStore.save(session);
+		
+		actualUser.setAuthToken(sessionUser.getAuthToken());
 
 		return actualUser;
 	}
 
-	private User createGuestSession(ModelStoreSync modelStore) {
-		T.call(this);
+	public static User createGuestSession(ModelStoreSync modelStore) {
+		T.call(AuthenticateSessionUserHandler.class);
 		
 		User user = new Guest();
 		

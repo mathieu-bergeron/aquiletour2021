@@ -185,4 +185,9 @@ public class HtmlElementJSweet extends HtmlElement {
 		jQueryElement.hide();
 	}
 
+	@Override
+	public HtmlElement newElement(String html) {
+		return new HtmlElementJSweet($(html));
+	}
+
 }

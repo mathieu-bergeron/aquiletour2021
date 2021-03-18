@@ -37,6 +37,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
@@ -123,9 +124,9 @@ public class DynamicHandler extends AbstractHandler {
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 		AquiletourBackendRequestHandler.sendMessages(path, parameters);
 
-		// currentUser() might have changed after backend messages (e.g. after a UserInitiatesLogin message)
+		// currentUser might have changed
 		setUserCookie(response);
-		
+
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
 		NtroWindowServer window = newWindow(ifJsOnly, path);
@@ -168,6 +169,9 @@ public class DynamicHandler extends AbstractHandler {
 			                             Path path,
 			                             Map<String, String[]> parameters,
 			                             NtroWindowServer window) {
+		
+		
+		handleRedirections(baseRequest, response, path);
 
 		NtroContext<User> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
@@ -179,14 +183,26 @@ public class DynamicHandler extends AbstractHandler {
 		// NORMAL
 		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, window, context);
 
-
 		// Client controller executes after
 		// to make sure modifications to the
 		// models are loaded up
 		GraphTraceConnector trace = rootController.execute();
 
 		//trace.addGraphWriter(new GraphTraceWriterJdk(new File("__task_graphs__", path.toFileName())));
+
+		AquiletourRequestHandler.sendMessages(context, path, parameters);
+
+		// DEBUG
+		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
+		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
+
+		//rootController.getTask().destroy();
 		
+		// XXX: prepare for next request
+		Ntro.reset();
+	}
+
+	private void handleRedirections(Request baseRequest, HttpServletResponse response, Path path) {
 		// FIXME: there must be a better way to redirect to login
 		if(!path.startsWith("connexion")) {
 			Ntro.messages().registerHandler(ShowLoginMessage.class, new MessageHandler<ShowLoginMessage>() {
@@ -207,16 +223,21 @@ public class DynamicHandler extends AbstractHandler {
 			});
 		}
 
-		AquiletourRequestHandler.sendMessages(context, path, parameters);
-
-		// DEBUG
-		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
-		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
-
-		//rootController.getTask().destroy();
-		
-		// XXX: prepare for next request
-		Ntro.reset();
+		// FIXME: we need a better way to handle redirects
+		if(!path.startsWith("accueil")) {
+			Ntro.messages().registerHandler(ShowHomeMessage.class, new MessageHandler<ShowHomeMessage>() {
+				@Override
+				public void handle(ShowHomeMessage message) {
+					T.call(this);
+					String redirectUrl = "/accueil";
+					try {
+						response.sendRedirect(redirectUrl);
+						baseRequest.setHandled(true);
+					} catch (IOException e) {
+					}
+				}
+			});
+		}
 	}
 
 
