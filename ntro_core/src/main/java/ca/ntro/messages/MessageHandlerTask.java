@@ -39,8 +39,8 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 		 */
 
 		notifyTaskFinished();  // unblock the handler
-		execute();             // execute tasks that are now unbloc 
-		                       // reblock tasks that depend on this handlerked
+		execute();             // execute tasks that are now unblocked
+		                       // reblock tasks that depend on this handler
 		resetNodeTransitive(TaskState.WAITING_FOR_PREVIOUS_TASKS);
 		execute();             // get ready for next trigger
 

@@ -1,11 +1,13 @@
 package ca.aquiletour.core.pages.dashboards;
 
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
 public abstract class DashboardController extends NtroController<RootController> {
+	
 
 	@Override
 	protected void onCreate(NtroContext<?> context) {
@@ -29,13 +31,15 @@ public abstract class DashboardController extends NtroController<RootController>
 	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
-		((DashboardView) getView()).clearCourses();
-
-		requestModel(context);
+		System.out.println("onContextChange");
+		
+		//requestModel(context);
 	}
 
 	private void requestModel(NtroContext<?> context) {
 		T.call(this);
+
+		System.out.println("requestModel");
 
 		setModelLoader(DashboardModel.class, 
 					   context.user().getAuthToken(),
