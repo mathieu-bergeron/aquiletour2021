@@ -47,7 +47,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	protected boolean ifModelExists(DocumentPath documentPath) {
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
 		// XXX: always false. Cannot be known synchronously
 		return false;
 	}

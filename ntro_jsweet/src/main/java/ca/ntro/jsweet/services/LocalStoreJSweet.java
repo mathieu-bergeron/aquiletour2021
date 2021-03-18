@@ -69,7 +69,7 @@ public class LocalStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	protected boolean ifModelExists(DocumentPath documentPath) {
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
 		return getJsonString(documentPath) != null;
 	}
 

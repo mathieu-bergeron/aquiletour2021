@@ -104,7 +104,7 @@ public class LocalStoreFiles extends ModelStore {
 	}
 
 	@Override
-	protected boolean ifModelExists(DocumentPath documentPath) {
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
 		return getModelFile(documentPath).exists();
 	}
 

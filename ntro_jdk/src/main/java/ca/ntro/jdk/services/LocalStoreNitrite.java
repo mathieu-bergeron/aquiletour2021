@@ -44,7 +44,7 @@ public class LocalStoreNitrite extends ModelStore {
 	}
 
 	@Override
-	protected boolean ifModelExists(DocumentPath documentPath) {
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
 
 		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));

@@ -29,7 +29,7 @@ public abstract class ModelStore {
 	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
 	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
 	
-	protected abstract boolean ifModelExists(DocumentPath documentPath);
+	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
 	
 	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String firstPathName, String... pathRemainder) {
 		T.call(this);
@@ -37,7 +37,7 @@ public abstract class ModelStore {
 		String documentId = documentId(firstPathName, pathRemainder);
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 
-		return ifModelExists(documentPath);
+		return ifModelExistsImpl(documentPath);
 	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
