@@ -34,8 +34,8 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	
 	private List<NtroAbstractController> subControllers = new ArrayList<>();
 	
-	protected abstract void onCreate();
-	protected abstract void onChangeContext(NtroContext<?> previousContext);
+	protected abstract void onCreate(NtroContext<?> context);
+	protected abstract void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -71,7 +71,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		this.path = path;
 	}
 	
-	public NtroContext currentContext() {
+	public NtroContext context() {
 		T.call(this);
 		
 		return context;
@@ -267,12 +267,13 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	}
 
 	public void changeUser(NtroUser user) {
+		
+		// FIXME: clone context
+		NtroContext<?> oldContext = context;
 
-		onChangeContext(context);
-		
 		context.registerUser(user);
-		
-		getView().initializeView(context);
+
+		onChangeContext(oldContext, context);
 
 		for(NtroAbstractController subController : subControllers) {
 			subController.changeUser(user);

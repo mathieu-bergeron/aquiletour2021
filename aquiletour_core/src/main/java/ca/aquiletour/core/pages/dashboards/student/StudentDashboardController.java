@@ -22,7 +22,7 @@ public class StudentDashboardController extends DashboardController {
 		
 		addParentViewMessageHandler(ShowStudentDashboardMessage.class, new ShowStudentDashboardHandler());
 		
-		addSubViewLoader(StudentCourseSummaryView.class, currentContext().lang());
+		addSubViewLoader(StudentCourseSummaryView.class, context().lang());
 		
 		addModelViewSubViewHandler(StudentCourseSummaryView.class, new DashboardViewModel());
 	}

@@ -6,6 +6,7 @@ import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.users.UsersView;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 
 public interface RootView extends NtroView {
@@ -16,5 +17,6 @@ public interface RootView extends NtroView {
 	void showLogin(LoginView loginView);
 	void showQueues(QueuesView currentView);
 	void showHome(HomeView homeView);
+	void adjustLoginLinkText(NtroContext<?> context);
 
 }

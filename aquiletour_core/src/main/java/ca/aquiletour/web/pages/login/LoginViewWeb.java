@@ -16,24 +16,42 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class LoginViewWeb extends NtroViewWeb implements LoginView {
 
+	private HtmlElement loginButtonStep1;
+	private HtmlElement loginButtonStep2;
+	private HtmlElement loginInputStep1;
+	private HtmlElement loginInputStep2;
+	private HtmlElement loginFormStep1;
+	private HtmlElement loginFormStep2;
+	private HtmlElement loginMessage;
+
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
+		T.call(this);
 
-		HtmlElement loginButtonStep1 = getRootElement().find("#login-button-step1").get(0);
-		HtmlElement loginButtonStep2 = getRootElement().find("#login-button-step2").get(0);
-		HtmlElement loginInputStep1 = getRootElement().find("#login-input-step1").get(0);
-		HtmlElement loginInputStep2 = getRootElement().find("#login-input-step2").get(0);
-		HtmlElement loginFormStep1 = getRootElement().find("#login-step1").get(0);
-		HtmlElement loginFormStep2 = getRootElement().find("#login-step2").get(0);
-
+		loginButtonStep1 = getRootElement().find("#login-button-step1").get(0);
+		loginButtonStep2 = getRootElement().find("#login-button-step2").get(0);
+		loginInputStep1 = getRootElement().find("#login-input-step1").get(0);
+		loginInputStep2 = getRootElement().find("#login-input-step2").get(0);
+		loginFormStep1 = getRootElement().find("#login-step1").get(0);
+		loginFormStep2 = getRootElement().find("#login-step2").get(0);
+	    loginMessage = getRootElement().find("#login-message").get(0);
+		
 		MustNot.beNull(loginButtonStep1);
 		MustNot.beNull(loginButtonStep2);
 		MustNot.beNull(loginInputStep1);
 		MustNot.beNull(loginInputStep2);
 		MustNot.beNull(loginFormStep1);
 		MustNot.beNull(loginFormStep2);
+		MustNot.beNull(loginMessage);
 		
-		loginButtonStep1.removeListeners();
+		addListeners();
+
+		selectLoginStep(context);
+	}
+
+	private void addListeners() {
+		T.call(this);
+
 		loginButtonStep1.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -48,7 +66,6 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 			}
 		});
 
-		loginButtonStep2.removeListeners();
 		loginButtonStep2.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -62,32 +79,64 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 				Ntro.messages().send(userSendsLoginCodeMessage);
 			}
 		});
-		
-		if(Ntro.userService().currentUser() instanceof Guest) {
+	}
 
-			loginFormStep1.show();
-			loginFormStep2.hide();
+	// FIXME: we would prefer that logic in the controller
+	@Override
+	public void selectLoginStep(NtroContext<?> context) {
+		T.call(this);
 
-		}else if(Ntro.userService().currentUser() instanceof TeacherGuest
-				|| Ntro.userService().currentUser() instanceof StudentGuest) {
-
-			loginFormStep1.hide();
-			loginFormStep2.show();
+		if(context.user() instanceof Guest) {
+			
+			displayStep1();
+			
+		}else if(context.user() instanceof TeacherGuest
+				|| context.user() instanceof StudentGuest) {
+			
+			displayStep2();
 
 		}else {
 
-			loginFormStep1.hide();
-			loginFormStep2.hide();
+			hideSteps();
 		}
 	}
 
 	@Override
 	public void displayLoginMessage(String message) {
-		
-		HtmlElement loginMessage = getRootElement().find("#login-message").get(0);
-		
-		MustNot.beNull(loginMessage);
+		T.call(this);
 
 		loginMessage.html(message);
+		loginMessage.show();
+	}
+
+	@Override
+	public void hideLoginMessage() {
+		T.call(this);
+
+		loginMessage.hide();
+	}
+
+	@Override
+	public void displayStep1() {
+		T.call(this);
+
+		loginFormStep1.show();
+		loginFormStep2.hide();
+	}
+
+	@Override
+	public void displayStep2() {
+		T.call(this);
+
+		loginFormStep1.hide();
+		loginFormStep2.show();
+	}
+
+	@Override
+	public void hideSteps() {
+		T.call(this);
+
+		loginFormStep1.hide();
+		loginFormStep2.hide();
 	}
 }

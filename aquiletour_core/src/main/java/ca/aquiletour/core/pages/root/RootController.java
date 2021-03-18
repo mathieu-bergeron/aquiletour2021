@@ -42,10 +42,10 @@ import ca.ntro.users.NtroUser;
 public class RootController extends NtroRootController {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 		
-		setViewLoader(RootView.class, currentContext().lang());
+		setViewLoader(RootView.class, context.lang());
 		
 		// FIXME: bogue?
 		addSubController(TeacherDashboardController.class, "mescours");
@@ -70,12 +70,12 @@ public class RootController extends NtroRootController {
 			public void handle(ShowDashboardMessage message) {
 				T.call(this);
 
-				if(currentContext().user() instanceof Teacher) {
+				if(context().user() instanceof Teacher) {
 
 					ShowTeacherDashboardMessage showDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
 
-				}else if(currentContext().user() instanceof Student){
+				}else if(context().user() instanceof Student){
 
 					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
 					Ntro.messages().send(showDashboardMessage);
@@ -92,9 +92,12 @@ public class RootController extends NtroRootController {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
+		RootView view = (RootView) getView();
+
+		view.adjustLoginLinkText(context);
 	}
 
 	@Override

@@ -27,19 +27,31 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
+	private HtmlElement dashboardLink;
+	private HtmlElement usersLink;
+	private HtmlElement loginLink;
+
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
-		HtmlElement dashboardLink = getRootElement().find("#dashboard-link").get(0);
-		HtmlElement usersLink = getRootElement().find("#users-link").get(0);
-		HtmlElement loginLink = getRootElement().find("#login-link").get(0);
+		dashboardLink = getRootElement().find("#dashboard-link").get(0);
+		usersLink = getRootElement().find("#users-link").get(0);
+		loginLink = getRootElement().find("#login-link").get(0);
 
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(usersLink);
 		MustNot.beNull(loginLink);
 
-		dashboardLink.removeListeners();
+		addListeners();
+
+		adjustLoginLinkText(context);
+
+	}
+
+	private void addListeners() {
+		T.call(this);
+
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -49,7 +61,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 		
-		usersLink.removeListeners();
 		usersLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -60,31 +71,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-
-		if(context.user() instanceof Guest) {
-			User user = (User) context.user();
-			String userName = user.getName();
-
-			String linkText = userName + " (se connecter)";
-			loginLink.html(linkText);
-
-		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
-			User user = (User) context.user();
-			String userName = user.getName();
-			
-			String linkText = "SVP valider que vous êtes bien " + userName;
-			loginLink.html(linkText);
-
-		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
-
-			User user = (User) context.user();
-			String userName = user.getName() + " " + user.getSurname();
-			
-			String linkText = userName + " (se déconnecter)";
-			loginLink.html(linkText);
-		}
-		
-		loginLink.removeListeners();
 		loginLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -95,6 +81,32 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 	}
+
+	@Override
+	public void adjustLoginLinkText(NtroContext<?> context) {
+		T.call(this);
+
+		User user = (User) context.user();
+		String userName = user.getName();
+
+		if(context.user() instanceof Guest) {
+
+			String linkText = userName + " (se connecter)";
+			loginLink.html(linkText);
+
+		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
+
+			String linkText = "SVP valider que vous êtes bien " + userName;
+			loginLink.html(linkText);
+
+		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
+			userName += " " + user.getSurname();
+
+			String linkText = userName + " (se déconnecter)";
+			loginLink.html(linkText);
+		}
+	}
+
 
 	@Override
 	public void showDashboard(DashboardView dashboardView) {

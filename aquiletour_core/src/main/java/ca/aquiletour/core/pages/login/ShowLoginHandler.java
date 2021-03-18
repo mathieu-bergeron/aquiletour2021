@@ -17,9 +17,15 @@ public class ShowLoginHandler extends ParentViewMessageHandler<RootView,
 		String messageToUser = message.getMessageToUser();
 
 		if(messageToUser != null) {
-			currentView.displayLoginMessage(messageToUser);
-		}
 
+			currentView.displayLoginMessage(messageToUser);
+
+		}else {
+
+			currentView.hideLoginMessage();
+
+		}
+		
 		parentView.showLogin(currentView);
 	}
 }
