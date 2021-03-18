@@ -17,16 +17,20 @@
 
 package ca.aquiletour.server.http;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.Scanner;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -34,8 +38,10 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.models.users.Guest;
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
@@ -101,7 +107,10 @@ public class DynamicHandler extends AbstractHandler {
 			    throws IOException, ServletException {
 		
 		T.call(this);
-		
+
+		if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {
+			  baseRequest.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, new MultipartConfigElement("/"));
+		}
 
 		OutputStream out = response.getOutputStream();
 		serveView(baseRequest, response, out);
@@ -115,7 +124,7 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("");
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
-
+		
 		// This will register a Ntro.userService().currentUser()
 		// (possibly a Guest)
 		sendLoginMessagesAccordingToCookies(baseRequest);
@@ -126,6 +135,8 @@ public class DynamicHandler extends AbstractHandler {
 
 		// currentUser might have changed
 		setUserCookie(response);
+
+		sendCsvMessage(baseRequest);
 
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
@@ -145,6 +156,39 @@ public class DynamicHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_OK);
 			writeResponse(window, baseRequest, out);
 		}
+	}
+
+	private void sendCsvMessage(Request baseRequest) throws IOException {
+		if(Ntro.userService().currentUser() instanceof Teacher) {
+			
+			String queueId = baseRequest.getParameter("queueId");
+			Part filePart = null;
+			try {
+				filePart = baseRequest.getPart("csvFile");
+			} catch (IOException | ServletException e) {}
+
+			if(queueId != null && filePart != null) {
+				String fileContent = readPart(filePart);
+				
+				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
+				addStudentCsvMessage.setCsvString(fileContent);
+				addStudentCsvMessage.setQueueId(queueId);
+				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+			}
+		}
+	}
+
+	private String readPart(Part part) throws IOException {
+		StringBuilder builder = new StringBuilder();
+		InputStream inputStream = part.getInputStream();
+		Scanner scanner = new Scanner(inputStream);
+		while(scanner.hasNextLine()) {
+			builder.append(scanner.nextLine());
+			builder.append(System.lineSeparator());
+		}
+		scanner.close();
+
+		return builder.toString();
 	}
 
 	private void sendLoginMessagesAccordingToCookies(Request baseRequest) {
