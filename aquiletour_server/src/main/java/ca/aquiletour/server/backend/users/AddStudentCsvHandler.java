@@ -1,16 +1,13 @@
 package ca.aquiletour.server.backend.users;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -25,16 +22,19 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		T.call(this);
 		
 		String csvString = message.getCsvString();
+		
+		System.out.println(csvString);
+		
+		
 		String queueId = message.getQueueId();
 		User fromUser = message.getUser();
-		//T.values(csvString);
-		//parse csv: trouver le bon fichier qui commence avec le queueId, chercher: (prenom;nom;DA9chiffres;numeroProgramme6characters;phoneNumber;;;;;
+
 		UsersModel usersModel = modelStore.getModel(UsersModel.class, 
                 "adminToken",
                 "allUsers");
 		ArrayList<Student> usersToAdd = new ArrayList<Student>();
 		if(usersModel != null) {
-			String[] cutByLine = csvString.split("\\r?\\n");// cut by each line
+			String[] cutByLine = csvString.split(System.lineSeparator());// cut by each line
 			
 			for (int i = 0; i < cutByLine.length; i++) {
 				String line = cutByLine[i];
@@ -55,9 +55,11 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 					usersModel.addUser(newUser);
 					usersToAdd.add(newUser);
-					modelStore.save(usersModel);
 				}		
 			}
+
+			modelStore.save(usersModel);
+
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {

@@ -8,6 +8,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
+import ca.ntro.web.dom.HtmlFileListener;
 
 
 public class HtmlElementJdk extends HtmlElement {
@@ -176,6 +177,11 @@ public class HtmlElementJdk extends HtmlElement {
 	@Override
 	public HtmlElement newElement(String html) {
 		return new HtmlElementJdk(new Element(html));
+	}
+
+	@Override
+	public void readFileFromInput(HtmlFileListener listener) {
+		// XXX: not supported on the server
 	}
 
 
