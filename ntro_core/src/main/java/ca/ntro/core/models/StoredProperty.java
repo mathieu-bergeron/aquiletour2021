@@ -3,7 +3,6 @@ package ca.ntro.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.listeners.DeletionListener;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.models.listeners.ValueObserver;

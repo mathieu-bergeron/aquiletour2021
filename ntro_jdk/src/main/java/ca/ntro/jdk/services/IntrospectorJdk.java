@@ -340,7 +340,7 @@ public class IntrospectorJdk extends Introspector {
 
 			Double resultDouble = Double.parseDouble(primitiveValue.toString());
 			Long resultLong = Math.round(resultDouble);
-			result = resultLong.intValue();
+			result = Integer.parseInt(resultLong.toString());
 
 		}else if(targetClass.equals(Long.class) || targetClass.equals(long.class)) {
 
