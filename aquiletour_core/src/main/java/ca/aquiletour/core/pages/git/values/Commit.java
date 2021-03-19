@@ -1,16 +1,19 @@
 package ca.aquiletour.core.pages.git.values;
 
+import java.lang.reflect.Array;
+
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.system.trace.T;
 
 public class Commit implements NtroModelValue {
 	
-	String commitMessage, timeStamp, exercisePath;
+	String commitMessage= "";
+	String timeStamp= "";
+	String exercisePath= "";
+	String id= "";
 	int estimatedEffort;
-	String[] modifiedFiles;
-
-	
+	//String[] modifiedFiles = new String[0];
 
 	public String getCommitMessage() {
 		return commitMessage;
@@ -36,14 +39,6 @@ public class Commit implements NtroModelValue {
 		this.estimatedEffort = estimatedEffort;
 	}
 
-	public String[] getModifiedFiles() {
-		return modifiedFiles;
-	}
-
-	public void setModifiedFiles(String[] modifiedFiles) {
-		this.modifiedFiles = modifiedFiles;
-	}
-
 	public String getExercisePath() {
 		return exercisePath;
 	}
@@ -52,4 +47,23 @@ public class Commit implements NtroModelValue {
 		this.exercisePath = exercisePath;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+//	public String[] getModifiedFiles() {
+//		return modifiedFiles;
+//	}
+//
+//	public void setModifiedFiles(String[] modifiedFiles) {
+//		this.modifiedFiles = modifiedFiles;
+//	}
+//	
+	
+
+	
 }

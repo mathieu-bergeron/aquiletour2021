@@ -1,21 +1,15 @@
-package ca.aquiletour.core.pages.git;
+package ca.aquiletour.core.pages.git.late_students;
 
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.system.trace.T;
 
-public class RegisterGitRepo implements NtroModel {
+public class LateStudentsModel implements NtroModel {
 	
-	String repoUrl, semesterId, studentId, courseId, groupId, exercisePath;
+	String semesterId, deadline, groupId, exercisePath;
+	String[] studentIds;
 
-	public String getRepoUrl() {
-		return repoUrl;
-	}
-
-	public void setRepoUrl(String repoUrl) {
-		this.repoUrl = repoUrl;
-	}
 
 	public String getSemesterId() {
 		return semesterId;
@@ -23,22 +17,6 @@ public class RegisterGitRepo implements NtroModel {
 
 	public void setSemesterId(String semesterId) {
 		this.semesterId = semesterId;
-	}
-
-	public String getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
-
-	public String getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
 	}
 
 	public String getGroupId() {
@@ -56,5 +34,23 @@ public class RegisterGitRepo implements NtroModel {
 	public void setExercisePath(String exercisePath) {
 		this.exercisePath = exercisePath;
 	}
+
+	public String getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
+	}
+
+	public String[] getStudentIds() {
+		return studentIds;
+	}
+
+	public void setStudentIds(String[] studentIds) {
+		this.studentIds = studentIds;
+	}
+	
+	
 
 }

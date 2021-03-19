@@ -24,6 +24,10 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
+import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.values.Commit;
+import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
@@ -104,6 +108,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(DeleteAppointmentMessage.class);
 		Ntro.registerSerializableClass(TeacherClosesQueueMessage.class);
 		Ntro.registerSerializableClass(TeacherUsesQueueMessage.class);
+		
+		Ntro.registerSerializableClass(CommitListModel.class);
+		Ntro.registerSerializableClass(ObservableCommitList.class);
+		Ntro.registerSerializableClass(Commit.class);
+		
+		
+		
 	}
 	
 	protected abstract NtroWindow getWindow();

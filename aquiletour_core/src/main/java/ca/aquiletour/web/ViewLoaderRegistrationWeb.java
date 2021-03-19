@@ -1,15 +1,13 @@
 package ca.aquiletour.web;
 
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
-import ca.aquiletour.core.pages.git.GitView;
+import ca.aquiletour.core.pages.git.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
-import ca.aquiletour.core.pages.queue.AppointmentView;
-import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queue.student.StudentAppointmentView;
 import ca.aquiletour.core.pages.queue.student.StudentQueueView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
@@ -23,11 +21,10 @@ import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
-import ca.aquiletour.web.pages.git.GitViewWeb;
+import ca.aquiletour.web.pages.git.CommitListViewWeb;
+import ca.aquiletour.web.pages.git.CommitViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
-import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
-import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.aquiletour.web.pages.queue.student.StudentAppointmentViewWeb;
 import ca.aquiletour.web.pages.queue.student.StudentQueueViewWeb;
 import ca.aquiletour.web.pages.queue.teacher.TeacherAppointmentViewWeb;
@@ -166,13 +163,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(HomeViewWeb.class));
 		
-		ViewLoaders.registerViewLoader(GitView.class,
+		ViewLoaders.registerViewLoader(CommitListView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/git/git_progression.html")
-			     	.setCssUrl("/views/git/git_progression.css")
+			     	.setHtmlUrl("/views/commitList/git_progression_commit_list.html")
+			     	.setCssUrl("/views/commitList/git_progression_commit_list.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(GitViewWeb.class));
+			     	.setTargetClass(CommitListViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(CommitView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/commit/git_progression_commit.html")
+			     	.setCssUrl("/views/commit/git_progression_commit.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CommitViewWeb.class));
 
 	}
 }
