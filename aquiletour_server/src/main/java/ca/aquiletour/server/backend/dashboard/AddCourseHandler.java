@@ -3,7 +3,6 @@ package ca.aquiletour.server.backend.dashboard;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -23,11 +22,12 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 				                                            teacher.getId());
 
 		if(dashboardModel != null) {
+
 			dashboardModel.addCourse(message.getCourse());
 			modelStore.save(dashboardModel);
-		}
 
+			Ntro.threadService().executeLater(new AddCourseBackgroundTask(teacher, courseId));
+		}
 		
-		Ntro.threadService().executeLater(new AddCourseBackgroundTask(teacher, courseId));
 	}
 }

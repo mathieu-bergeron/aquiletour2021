@@ -17,6 +17,7 @@ public class DeleteCourseBackgroundTask extends NtroTaskSync {
 	private String courseId;
 	
 	public DeleteCourseBackgroundTask(User teacher, String courseId) {
+		this.teacher = teacher;
 		this.courseId = courseId;
 	}
 	

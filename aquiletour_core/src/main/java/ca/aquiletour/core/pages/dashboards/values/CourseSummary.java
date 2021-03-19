@@ -15,6 +15,7 @@ public class CourseSummary implements NtroModelValue {
 
 	public CourseSummary() {
 		super();
+		T.call(this);
 	}
 
 	public CourseSummary(String title, String courseId, boolean isQueueOpen,  boolean myAppointment, int numberOfStudents) {

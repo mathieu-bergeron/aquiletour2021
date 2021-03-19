@@ -16,6 +16,7 @@ public class AddCourseBackgroundTask extends NtroTaskSync {
 	private String courseId;
 	
 	public AddCourseBackgroundTask(User teacher, String courseId) {
+		this.teacher = teacher;
 		this.courseId = courseId;
 	}
 
@@ -47,6 +48,8 @@ public class AddCourseBackgroundTask extends NtroTaskSync {
 	    queueSummary.setId(courseId);
 	    queueSummary.setTeacherName(teacher.getName());
 	    queueSummary.setTeacherSurname(teacher.getSurname());
+	    
+	    allQueues.addQueueToList(queueSummary);
 		
 		modelStore.save(allQueues);
 	}

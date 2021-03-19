@@ -5,7 +5,7 @@ import ca.ntro.core.system.trace.T;
 public class StoredBoolean extends StoredProperty<Boolean> {
 
 	public StoredBoolean() {
-		super();
+		super(false);
 		T.call(this);
 	}
 

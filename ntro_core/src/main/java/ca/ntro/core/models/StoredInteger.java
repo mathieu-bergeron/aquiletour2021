@@ -6,7 +6,7 @@ import ca.ntro.services.Ntro;
 public class StoredInteger extends StoredProperty<Integer> {
 
 	public StoredInteger() {
-		super();
+		super(0);
 		T.call(this);
 	}
 

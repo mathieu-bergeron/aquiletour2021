@@ -23,8 +23,9 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 		
 		if(teacherDashboard != null) {
 			teacherDashboard.deleteCourseById(courseId);
+
+			Ntro.threadService().executeLater(new DeleteCourseBackgroundTask(teacher, courseId));
 		}
 
-		Ntro.threadService().executeLater(new DeleteCourseBackgroundTask(teacher, courseId));
 	}
 }

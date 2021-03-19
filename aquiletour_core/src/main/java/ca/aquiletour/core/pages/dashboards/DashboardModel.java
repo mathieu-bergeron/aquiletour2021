@@ -98,4 +98,15 @@ public class DashboardModel implements NtroModel {
 			}
 		}
 	}
+
+	public CourseSummary findCourseById(String courseId) {
+		CourseSummary course = null;
+		for(CourseSummary candidate : courses.getValue()) {
+			if(candidate.getCourseId().equals(courseId)) {
+				course = candidate;
+				break;
+			}
+		}
+		return course;
+	}
 }
