@@ -36,7 +36,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		numberOfStudents = this.getRootElement().find("#number-of-students").get(0);
 		deleteQueue = this.getRootElement().find("#delete-queue-link").get(0);
 		closeQueue = this.getRootElement().find("#close-queue-link").get(0);
-		openQueue = this.getRootElement().find("#close-queue-link").get(0);
+		openQueue = this.getRootElement().find("#open-queue-link").get(0);
 		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
 		csvFileSubmit = this.getRootElement().find("#csv-file-submit").get(0);
 		csvFileQueueId = this.getRootElement().find("#csv-file-queue-id").get(0);
@@ -62,7 +62,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	}
 
 	@Override
-	public void displayStatus(boolean myAppointment, boolean teacherAvailable) {
+	public void displayStatus(String QueueId, boolean myAppointment, boolean teacherAvailable) {
 	}
 
 	@Override
@@ -105,14 +105,15 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private void adjustOpenCloseLinks(CourseSummary course) {
 		T.call(this);
 
+		closeQueue.setAttribute("href", closeQueueHref + course.getCourseId());
+		openQueue.setAttribute("href", openQueueHref + course.getCourseId());
+
 		if(course.getIsQueueOpen().getValue()) {
 			openQueue.hide();
 			closeQueue.show();
-			closeQueue.setAttribute("href", closeQueueHref + course.getCourseId());
 		} else {
 			closeQueue.hide();
 			openQueue.show();
-			openQueue.setAttribute("href", openQueueHref + course.getCourseId());
 		}
 	}
 

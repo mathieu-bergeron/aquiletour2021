@@ -41,18 +41,18 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	}
 
 	@Override
-	public void displayStatus(boolean doesStudentHaveAppointment, boolean isTeacherAvailable) {
+	public void displayStatus(String queueId, boolean doesStudentHaveAppointment, boolean isTeacherAvailable) {
 		T.call(this);
 		
 		if(doesStudentHaveAppointment) {
-			queueStatus.html("J'ai déjà un rendez-vous");
+			queueStatus.html("<a href='/billetteries/"+queueId+"'>J'ai déjà un rendez-vous</a>");
 			makeAppointmentLink.hide();
 		}else if(isTeacherAvailable) {
 			queueStatus.html("Prof disponible");
-			makeAppointmentLink.hide();
+			makeAppointmentLink.show();
 		}else {
 			queueStatus.html("Prof non-disponible");
-			makeAppointmentLink.show();
+			makeAppointmentLink.hide();
 		}
 	}
 
