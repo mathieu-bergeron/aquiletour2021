@@ -69,7 +69,6 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 						courseView.displayStatus(item.getCourseId(), item.getMyAppointment().getValue(), value);
 					}
 
-
 					@Override
 					public void onValueChanged(Boolean oldValue, Boolean value) {
 						courseView.displayStatus(item.getCourseId(), item.getMyAppointment().getValue(), value);

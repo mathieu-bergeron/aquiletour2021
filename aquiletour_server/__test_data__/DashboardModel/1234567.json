@@ -3,7 +3,10 @@
     "_C": "ObservableCourseList",
     "value": [
       {
-        "numberOfAppointments": 0,
+        "numberOfStudents": {
+          "_C": "StoredInteger",
+          "value": 1
+        },
         "_C": "CourseSummary",
         "isQueueOpen": {
           "_C": "StoredBoolean",
@@ -17,15 +20,18 @@
         "courseId": "4F5"
       },
       {
-        "numberOfAppointments": 1,
+        "numberOfStudents": {
+          "_C": "StoredInteger",
+          "value": 1
+        },
         "_C": "CourseSummary",
         "isQueueOpen": {
           "_C": "StoredBoolean",
-          "value": true
+          "value": false
         },
         "myAppointment": {
           "_C": "StoredBoolean",
-          "value": true
+          "value": false
         },
         "title": "3C6",
         "courseId": "3C6"
