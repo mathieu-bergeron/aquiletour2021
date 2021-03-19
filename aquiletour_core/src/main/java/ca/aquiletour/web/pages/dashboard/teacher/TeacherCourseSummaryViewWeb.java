@@ -86,7 +86,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private void displayQueueInfo(CourseSummary course) {
 		T.call(this);
 
-		numberOfStudents.html(String.valueOf(course.getNumberOfAppointments()));
+		numberOfStudents.html(String.valueOf(course.getNumberOfStudents()));
 		title.appendHtml(course.getTitle());
 	}
 
