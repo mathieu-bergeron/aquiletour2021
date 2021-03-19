@@ -88,7 +88,7 @@ public abstract class ModelStore {
 
 	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
 
-	public abstract void saveJsonString(DocumentPath documentPath, String jsonString);
+	public abstract void saveDocument(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
 
@@ -142,7 +142,7 @@ public abstract class ModelStore {
 
 		}else {
 			
-			saveJsonString(documentPath, Ntro.jsonService().toString(model));
+			saveDocument(documentPath, Ntro.jsonService().toString(model));
 
 			// JSWEET: will the work correctly? (removing by reference)
 			localHeap.remove(model);
@@ -159,7 +159,7 @@ public abstract class ModelStore {
 
 		}else {
 			
-			saveJsonString(documentPath, Ntro.jsonService().toString(newModel));
+			saveDocument(documentPath, Ntro.jsonService().toString(newModel));
 
 			// JSWEET: will the work correctly? (removing by reference)
 			localHeap.remove(existingModel);
@@ -172,4 +172,23 @@ public abstract class ModelStore {
 		localHeapByPath = new HashMap<>();
 	}
 
+	public void delete(NtroModel model) {
+		DocumentPath documentPath = localHeap.get(model);
+		
+		if(documentPath == null) {
+
+			Log.warning("Model was already saved and removed from memory: " + model);
+
+		}else {
+			
+			deleteDocument(documentPath);
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(model);
+			localHeapByPath.remove(documentPath);
+		}
+		
+	}
+
+	protected abstract void deleteDocument(DocumentPath documentPath);
 }

@@ -76,7 +76,7 @@ public class LocalStoreJSweet extends ModelStore {
 
 
 	@Override
-	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		String fullId = fullId(documentPath);
@@ -111,6 +111,13 @@ public class LocalStoreJSweet extends ModelStore {
 	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
+	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		String fullId = fullId(documentPath);
+		
+		localStorage.removeItem(fullId);
 	}
 
 }

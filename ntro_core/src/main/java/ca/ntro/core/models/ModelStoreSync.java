@@ -41,12 +41,18 @@ public class ModelStoreSync {
 	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
-		modelStore.saveJsonString(documentPath, jsonString);
+		modelStore.saveDocument(documentPath, jsonString);
 	}
 
 	public void replace(NtroModel existingModel, NtroModel newModel) {
 		T.call(this);
 
 		modelStore.replace(existingModel, newModel);
+	}
+
+	public void delete(NtroModel model) {
+		T.call(this);
+
+		modelStore.delete(model);
 	}
 }

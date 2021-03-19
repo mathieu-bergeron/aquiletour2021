@@ -18,6 +18,7 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 	private String queueId;
 	
 	public TeacherUsesQueueBackgroundTask(User teacher, String queueId) {
+		this.teacher = teacher;
 		this.queueId = queueId;
 	}
 

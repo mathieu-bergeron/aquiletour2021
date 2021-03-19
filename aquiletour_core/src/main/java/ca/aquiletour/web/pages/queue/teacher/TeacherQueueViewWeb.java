@@ -4,6 +4,7 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboard
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -12,14 +13,30 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 
+	private HtmlElement closeQueue;
+
+	private String closeQueueHref;
+
+	@Override
+	public void initializeViewWeb(NtroContext<?> context) {
+		super.initializeViewWeb(context);
+		T.call(this);
+
+		closeQueue = this.getRootElement().find("#close-queue-button").get(0);
+
+		MustNot.beNull(closeQueue);
+		
+		closeQueueHref = closeQueue.getAttribute("href");
+	}
+	
+	
 	@Override
 	public void initializeCloseQueueButton(String courseId) {
-		HtmlElement closeQueueButton = getRootElement().find("#close-queue-button").get(0);
-		
-		MustNot.beNull(closeQueueButton);
+		T.call(this);
 
-		closeQueueButton.removeListeners();
-		closeQueueButton.addEventListener("click", new HtmlEventListener() {
+		closeQueue.setAttribute("href", closeQueueHref + courseId);
+
+		closeQueue.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);

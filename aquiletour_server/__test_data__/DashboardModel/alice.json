@@ -1,6 +1,7 @@
 {
   "courses": {
     "_C": "ObservableCourseList",
-    "value": [],
+    "value": []
+  },
   "_C": "DashboardModel"
 }

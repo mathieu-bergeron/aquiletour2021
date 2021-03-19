@@ -92,7 +92,7 @@ public class LocalStoreNitrite extends ModelStore {
 
 
 	@Override
-	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
@@ -150,6 +150,11 @@ public class LocalStoreNitrite extends ModelStore {
 	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		throw new RuntimeException("TODO");
 	}
 
 	
