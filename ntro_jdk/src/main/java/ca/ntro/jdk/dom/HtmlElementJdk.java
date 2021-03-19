@@ -164,14 +164,30 @@ public class HtmlElementJdk extends HtmlElement {
 
 	@Override
 	public void show() {
-		jsoupElement.removeClass("ntro-hidden");
-		jsoupElement.addClass("ntro-visible");
+		String styleString = getStyleString();
+		
+		if(!styleString.contains("display:none;")){
+			styleString += "display:none;";
+		}
+		
+		jsoupElement.attr("style", styleString);
 	}
 
 	@Override
 	public void hide() {
-		jsoupElement.removeClass("ntro-visible");
-		jsoupElement.addClass("ntro-hidden");
+		String styleString = getStyleString();
+
+		styleString = styleString.replace("display:none;", "");
+
+		jsoupElement.attr("style", styleString);
+	}
+
+	private String getStyleString() {
+		String styleString = jsoupElement.attr("style");
+		if(styleString == null) {
+			styleString = "";
+		}
+		return styleString;
 	}
 
 	@Override
