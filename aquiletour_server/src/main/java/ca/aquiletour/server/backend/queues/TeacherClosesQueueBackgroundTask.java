@@ -70,6 +70,7 @@ public class TeacherClosesQueueBackgroundTask extends NtroTaskSync {
 
 		QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
 		openQueuesModel.deleteQueue(queueId);
+		modelStore.save(openQueuesModel);
 	}
 
 	@Override

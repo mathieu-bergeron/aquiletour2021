@@ -76,6 +76,7 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 
 		if(existingSummary != null) {
 			openQueuesModel.addQueueToList(existingSummary);
+			modelStore.save(openQueuesModel);
 		}else {
 			Log.warning("Queue " + queueId + " not found in allQueues");
 		}
