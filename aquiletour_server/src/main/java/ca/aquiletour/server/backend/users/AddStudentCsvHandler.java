@@ -8,7 +8,6 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -29,9 +28,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		String queueId = message.getQueueId();
 		User fromUser = message.getUser();
 
-		UsersModel usersModel = modelStore.getModel(UsersModel.class, 
-                "adminToken",
-                "allUsers");
+		Object usersModel = new Object() {};
+
 		ArrayList<Student> usersToAdd = new ArrayList<Student>();
 		if(usersModel != null) {
 			String[] cutByLine = csvString.split(System.lineSeparator());// cut by each line
@@ -53,12 +51,9 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 					newUser.setAuthToken(newUser.getName() + "Token");
 					newUser.setEmail(newUser.getName() + "." + newUser.getSurname() + "@test.ca");
 
-					usersModel.addUser(newUser);
 					usersToAdd.add(newUser);
 				}		
 			}
-
-			modelStore.save(usersModel);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override

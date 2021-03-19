@@ -16,8 +16,6 @@ import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.users.UserView;
-import ca.aquiletour.core.pages.users.UsersView;
 import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
@@ -33,8 +31,6 @@ import ca.aquiletour.web.pages.queue.teacher.TeacherQueueViewWeb;
 import ca.aquiletour.web.pages.queues.QueueSummaryViewWeb;
 import ca.aquiletour.web.pages.queues.QueuesViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
-import ca.aquiletour.web.pages.users.UserViewWeb;
-import ca.aquiletour.web.pages.users.UsersViewWeb;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -131,23 +127,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/appointment/student_appointment/appointment.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(StudentAppointmentViewWeb.class));
-		
-		ViewLoaders.registerViewLoader(UsersView.class,
-				"fr"
-				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/users/users.html")
-			     	.setCssUrl("/views/users/users.css")
-			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(UsersViewWeb.class));
 
-		ViewLoaders.registerViewLoader(UserView.class,
-				"fr"
-				, Ntro.viewLoaderWeb()
-				.setHtmlUrl("/views/user/user.html")
-				.setCssUrl("/views/user/user.css")
-				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(UserViewWeb.class));
-		
 		ViewLoaders.registerViewLoader(LoginView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()

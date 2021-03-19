@@ -2,8 +2,6 @@ package ca.aquiletour.core.pages.queues.messages;
 
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.users.UsersView;
-import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 

@@ -10,7 +10,6 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
-import ca.aquiletour.core.pages.users.UsersModel;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerMessageHandler;
@@ -27,12 +26,11 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 		User fromUser = message.getUser();
 		String courseId = message.getCourseId();
 		
-		UsersModel usersModel = modelStore.getModel(UsersModel.class, 
-                "admin",
-                "allUsers");
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
 				fromUser.getAuthToken(),
 				courseId);
+		
+		Object usersModel = new Object() {};
 		
 		if(usersModel != null) {
 			
@@ -49,10 +47,6 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 				@Override
 				protected void runTaskAsync() {
 					ArrayList<User> usersList = new ArrayList<User>();//TODO studentsId are in queueModel
-					Map<String,User> usersMap = (Map<String, User>) usersModel.getUsers().getValue();;
-					for (Map.Entry<String, User> entry : usersMap.entrySet()) {
-						usersList.add(entry.getValue());
-					}
 					for (User user : usersList) {
 						T.values(user.getId());
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 

@@ -33,7 +33,6 @@ import ca.aquiletour.core.pages.queue.student.StudentQueueController;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueController;
 import ca.aquiletour.core.pages.queues.QueuesController;
 import ca.ntro.core.mvc.NtroContext;
-import ca.aquiletour.core.pages.users.UsersController;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
@@ -60,7 +59,6 @@ public class RootController extends NtroRootController {
 		addSubController(TeacherQueueController.class, "billetterie");
 		addSubController(StudentQueueController.class, "billetterie");
 
-		addSubController(UsersController.class, "usagers");
 		addSubController(LoginController.class, "connexion");
 		addSubController(HomeController.class, "accueil");
 
