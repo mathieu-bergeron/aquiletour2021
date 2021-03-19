@@ -1,59 +1,6 @@
 {
   "courses": {
     "_C": "ObservableCourseList",
-    "value": [
-      {
-        "numberOfStudents": {
-          "_C": "StoredInteger",
-          "value": 1
-        },
-        "_C": "CourseSummary",
-        "isQueueOpen": {
-          "_C": "StoredBoolean",
-          "value": false
-        },
-        "myAppointment": {
-          "_C": "StoredBoolean",
-          "value": false
-        },
-        "title": "4F5",
-        "courseId": "4F5"
-      },
-      {
-        "numberOfStudents": {
-          "_C": "StoredInteger",
-          "value": 1
-        },
-        "_C": "CourseSummary",
-        "isQueueOpen": {
-          "_C": "StoredBoolean",
-          "value": false
-        },
-        "myAppointment": {
-          "_C": "StoredBoolean",
-          "value": true
-        },
-        "title": "3C6",
-        "courseId": "3C6"
-      },
-      {
-        "numberOfStudents": {
-          "_C": "StoredInteger",
-          "value": 1
-        },
-        "_C": "CourseSummary",
-        "isQueueOpen": {
-          "_C": "StoredBoolean",
-          "value": false
-        },
-        "myAppointment": {
-          "_C": "StoredBoolean",
-          "value": true
-        },
-        "title": "ZD4",
-        "courseId": "ZD4"
-      }
-    ]
-  },
+    "value": [],
   "_C": "DashboardModel"
 }

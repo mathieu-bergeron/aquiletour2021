@@ -45,7 +45,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		T.call(this);
 		
 		if(doesStudentHaveAppointment) {
-			queueStatus.html("<a href='/billetteries/"+queueId+"'>J'ai déjà un rendez-vous</a>");
+			queueStatus.html("<a href='/billetterie/"+queueId+"'>J'ai déjà un rendez-vous</a>");
 			makeAppointmentLink.hide();
 		}else if(isTeacherAvailable) {
 			queueStatus.html("Prof disponible");
