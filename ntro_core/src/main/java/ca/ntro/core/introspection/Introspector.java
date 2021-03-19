@@ -30,10 +30,12 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.stores.ValuePath;
 
+import static def.dom.Globals.console;
+
 public abstract class Introspector {
-	
+
 	private Map<String, Class<?>> serializableClasses = new HashMap<>();
-	
+
 	public void registerSerializableClass(Class<?> _class) {
 		serializableClasses.put(getSimpleNameForClass(_class), _class);
 	}
@@ -104,7 +106,9 @@ public abstract class Introspector {
 		T.call(Introspector.class);
 
 		Class<? extends Object> _class = null;
-		
+
+		console.warn(serializableClasses);
+
 		if(serializableClasses.containsKey(className)) {
 
 			_class = serializableClasses.get(className);
@@ -254,44 +258,44 @@ public abstract class Introspector {
 
 	public Object findByValuePath(Object object, ValuePath valuePath) {
 		if(valuePath == null || valuePath.size() == 0) return null;
-		
+
 		Object result = null;
 
 		NtroClass ntroClass = ntroClassFromObject(object);
-		
+
 		String fieldName = valuePath.fieldName(0);
-		
+
 		if(ntroClass.ifImplements(NtroModel.class)
 				|| ntroClass.ifImplements(NtroModelValue.class)) {
-			
+
 			result = getFieldValue(object, ntroClass, fieldName);
 
 		}else if(object instanceof List) {
-			
+
 			result = getListValue(object, fieldName);
-			
+
 		}else if(object instanceof Map) {
 
 			result = getMapValue(object, fieldName);
 		}
-		
+
 		if(valuePath.size() > 1) {
 			ValuePath remainder = valuePath.subPath(1);
 			result = findByValuePath(result, remainder);
 		}
-		
+
 		return result;
 	}
 
 
-	private Object getFieldValue(Object object, 
-			                     NtroClass ntroClass, 
+	private Object getFieldValue(Object object,
+			                     NtroClass ntroClass,
 			                     String fieldName) {
 
 		Object result = null;
-		
+
 		NtroMethod getter = ntroClass.getterByFieldName(fieldName);
-		
+
 		if(getter != null) {
 			try {
 				result = getter.invoke(object);
@@ -299,7 +303,7 @@ public abstract class Introspector {
 				Log.fatalError("Cannot invoke getter " + getter.name(), e);
 			}
 		}
-		
+
 		return result;
 	}
 

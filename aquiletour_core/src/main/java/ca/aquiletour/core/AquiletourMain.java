@@ -18,6 +18,7 @@
 package ca.aquiletour.core;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
+import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
@@ -81,28 +82,30 @@ public abstract class AquiletourMain extends NtroTaskSync {
 	@Override
 	protected void runTask() {
 		T.call(this);
-		
+
 		Constants.LANG = getPreviousTask(NtroInitializationTask.class, "initializationTask").getOption("lang");
 
 		// FIXME
 		Constants.LANG = "fr";
 
 		User currentUser = (User) Ntro.userService().user();
-		
+
 		NtroContext<User> context = new NtroContext<>();
 		context.registerUser(currentUser);
 		context.registerLang(Constants.LANG);
 
 		registerViewLoaders();
-		
+
 
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);  
+		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);
 
 		rootController.execute();
-		
+
+		Ntro.introspector().registerSerializableClass(ShowDashboardMessage.class);
+
 		Ntro.backendService().handleMessageFromBackend(SetUserNtroMessage.class, new MessageHandler<SetUserNtroMessage>() {
 			@Override
 			public void handle(SetUserNtroMessage message) {
@@ -111,7 +114,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			}
 		});
 	}
-	
+
 	public static void registerSerializableClasses() {
 		T.call(AquiletourMain.class);
 
@@ -167,9 +170,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(GetCommitsForPath.class);
 
 	}
-	
+
 	protected abstract NtroWindow getWindow();
-	
+
 
 	@Override
 	protected void onFailure(Exception e) {

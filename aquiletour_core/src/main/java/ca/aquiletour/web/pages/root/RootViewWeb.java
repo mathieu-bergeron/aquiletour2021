@@ -31,7 +31,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private HtmlElement homeLink;
-	private HtmlElement dashboardLink;
+//	private HtmlElement dashboardLink;
 	private HtmlElement coursesLink;
 	private HtmlElement groupsLink;
 	private HtmlElement queuesLink;
@@ -42,12 +42,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		homeLink = getRootElement().find("#home-link").get(0);
-		dashboardLink = getRootElement().find("#dashboard-link").get(0);
+//		dashboardLink = getRootElement().find("#dashboard-link").get(0);
 		queuesLink = getRootElement().find("#queues-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
 
 		MustNot.beNull(homeLink);
-		MustNot.beNull(dashboardLink);
+//		MustNot.beNull(dashboardLink);
 		MustNot.beNull(queuesLink);
 		MustNot.beNull(loginLink);
 
@@ -58,7 +58,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private void initializeLinks() {
 		T.call(this);
-		
+
 		homeLink.setAttribute("href", "/" + Constants.HOME_URL_SEGMENT);
 
 		homeLink.addEventListener("click", new HtmlEventListener() {
@@ -68,22 +68,22 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
 			}
 		});
-		
-		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT 
+
+		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT
 				                               + "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
 				                               + "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 
-		dashboardLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-
-				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
-			}
-		});
-
+//		dashboardLink.addEventListener("click", new HtmlEventListener() {
+//			@Override
+//			public void onEvent() {
+//				T.call(this);
+//
+//				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
+//			}
+//		});
+//
 		queuesLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
-		
+
 		queuesLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
@@ -124,7 +124,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
 			userName += " " + user.getSurname();
-			
+
 			loginLink.html(userName + " (se déconnecter)");
 			loginLink.removeListeners();
 			loginLink.setAttribute("href", "/deconnexion");
@@ -183,14 +183,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showHome(HomeView homeView) {
 		T.call(this);
-		
+
 		showSubView(homeView);
 	}
 
 	@Override
 	public void showGit(CommitListView commitListView) {
 		T.call(this);
-		
+
 		showSubView(commitListView);
 	}
 
