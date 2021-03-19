@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
+import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -36,9 +37,9 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 	private void updateStudentDashboards(ModelStoreSync modelStore) {
 		T.call(this);
 
-		if(modelStore.ifModelExists(QueueModel.class, teacher.getAuthToken(), queueId)) {
+		if(modelStore.ifModelExists(QueueModel.class, "TODO", queueId)) {
 			
-			QueueModel queueModel = modelStore.getModel(QueueModel.class, "admin", queueId);
+			QueueModel queueModel = modelStore.getModel(QueueModel.class, "TODO", queueId);
 			List<String> studentIds = queueModel.getStudentIds();
 			for (String studentId : studentIds) {
 
@@ -53,10 +54,10 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 	private void updateStudentDashboard(ModelStoreSync modelStore, String studentId) {
 		T.call(this);
 
-		if(modelStore.ifModelExists(DashboardModel.class, "admin", studentId)) {
+		if(modelStore.ifModelExists(DashboardModel.class, "TODO", studentId)) {
 			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 
-			dashboardModel.setTeacherAvailability(false, queueId);
+			dashboardModel.setTeacherAvailability(true, queueId);
 			modelStore.save(dashboardModel);
 
 		}else {
@@ -68,8 +69,16 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 	private void updateOpenQueues(ModelStoreSync modelStore) {
 		T.call(this);
 
+		QueuesModel allQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
 		QueuesModel openQueuesModel = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
-		openQueuesModel.deleteQueue(queueId);
+
+		QueueSummary existingSummary = allQueuesModel.findQueueByQueueId(queueId);
+
+		if(existingSummary != null) {
+			openQueuesModel.addQueueToList(existingSummary);
+		}else {
+			Log.warning("Queue " + queueId + " not found in allQueues");
+		}
 	}
 
 	@Override
