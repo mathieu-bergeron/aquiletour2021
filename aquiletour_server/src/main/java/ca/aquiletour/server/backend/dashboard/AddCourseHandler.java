@@ -27,12 +27,6 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 			modelStore.save(dashboardModel);
 		}
 
-		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-										   teacher.getAuthToken(),
-										   courseId);
-		queueModel.setTeacherId(teacher.getId());
-		queueModel.setCourseId(courseId);
-		modelStore.save(queueModel);
 		
 		Ntro.threadService().executeLater(new AddCourseBackgroundTask(teacher, courseId));
 	}

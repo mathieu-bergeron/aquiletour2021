@@ -26,14 +26,16 @@ public class AddCourseBackgroundTask extends NtroTaskSync {
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				teacher.getAuthToken(),
-				courseId);
+										   teacher.getAuthToken(),
+										   courseId);
 		
 		if(queue != null) {
+			queue.setTeacherId(teacher.getId());
+			queue.setCourseId(courseId);
+			modelStore.save(queue);
 
 			updateQueueStores(modelStore, queue);
 		}
-		
 	}
 
 	private void updateQueueStores(ModelStoreSync modelStore, QueueModel newQueue) {
@@ -42,18 +44,15 @@ public class AddCourseBackgroundTask extends NtroTaskSync {
 		QueuesModel allQueues = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
 		
 		QueueSummary queueSummary = new QueueSummary();
-
-		
-		
+	    queueSummary.setId(courseId);
+	    queueSummary.setTeacherName(teacher.getName());
+	    queueSummary.setTeacherSurname(teacher.getSurname());
 		
 		modelStore.save(allQueues);
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-		
 	}
-
 
 }
