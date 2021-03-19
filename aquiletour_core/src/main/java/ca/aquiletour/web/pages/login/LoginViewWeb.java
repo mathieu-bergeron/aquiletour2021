@@ -28,20 +28,24 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
-		loginButtonStep1 = getRootElement().find("#login-button-step1").get(0);
-		loginButtonStep2 = getRootElement().find("#login-button-step2").get(0);
+		loginFormStep1 = getRootElement().find("#login-form-step1").get(0);
 		loginInputStep1 = getRootElement().find("#login-input-step1").get(0);
+		loginButtonStep1 = getRootElement().find("#login-button-step1").get(0);
+
+		loginFormStep2 = getRootElement().find("#login-form-step2").get(0);
 		loginInputStep2 = getRootElement().find("#login-input-step2").get(0);
-		loginFormStep1 = getRootElement().find("#login-step1").get(0);
-		loginFormStep2 = getRootElement().find("#login-step2").get(0);
+		loginButtonStep2 = getRootElement().find("#login-button-step2").get(0);
+
 	    loginMessage = getRootElement().find("#login-message").get(0);
 		
-		MustNot.beNull(loginButtonStep1);
-		MustNot.beNull(loginButtonStep2);
-		MustNot.beNull(loginInputStep1);
-		MustNot.beNull(loginInputStep2);
 		MustNot.beNull(loginFormStep1);
+		MustNot.beNull(loginInputStep1);
+		MustNot.beNull(loginButtonStep1);
+
 		MustNot.beNull(loginFormStep2);
+		MustNot.beNull(loginInputStep2);
+		MustNot.beNull(loginButtonStep2);
+
 		MustNot.beNull(loginMessage);
 		
 		addListeners();
