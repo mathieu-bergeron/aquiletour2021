@@ -25,7 +25,7 @@
         },
         "myAppointment": {
           "_C": "StoredBoolean",
-          "value": false
+          "value": true
         },
         "title": "3C6",
         "courseId": "3C6"
@@ -39,7 +39,7 @@
         },
         "myAppointment": {
           "_C": "StoredBoolean",
-          "value": false
+          "value": true
         },
         "title": "ZD4",
         "courseId": "ZD4"
