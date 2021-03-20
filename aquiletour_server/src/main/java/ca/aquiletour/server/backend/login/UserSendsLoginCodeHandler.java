@@ -18,7 +18,7 @@ import ca.ntro.users.Session;
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
@@ -82,6 +82,11 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		modelStore.save(session);
 
 		return existingUser;
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
+		T.call(this);
 	}
 
 }

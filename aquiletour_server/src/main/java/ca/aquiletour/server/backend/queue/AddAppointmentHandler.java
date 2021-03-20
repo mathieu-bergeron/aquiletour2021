@@ -16,7 +16,7 @@ import ca.ntro.services.Ntro;
 public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, AddAppointmentMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
 
 		User student = message.getUser();
@@ -78,5 +78,10 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 			
 			// TODO: error handling
 		}
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, AddAppointmentMessage message) {
+		T.call(this);
 	}
 }

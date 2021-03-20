@@ -22,8 +22,8 @@ import ca.aquiletour.server.backend.login.UserLogsOutHandler;
 import ca.aquiletour.server.backend.queue.AddAppointmentHandler;
 import ca.aquiletour.server.backend.queue.DeleteAppointmentHandler;
 import ca.aquiletour.server.backend.queue.MoveAppointmentHandler;
-import ca.aquiletour.server.backend.queues.TeacherClosesQueueHandler;
-import ca.aquiletour.server.backend.queues.TeacherUsesQueueHandler;
+import ca.aquiletour.server.backend.queue.TeacherClosesQueueHandler;
+import ca.aquiletour.server.backend.queue.TeacherUsesQueueHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
 

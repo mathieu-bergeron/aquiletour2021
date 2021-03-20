@@ -7,10 +7,12 @@ import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 
 public abstract class BackendServiceServer extends BackendService {
 
@@ -45,7 +47,22 @@ public abstract class BackendServiceServer extends BackendService {
 
 		}else {
 			
-			handler.handle(modelStore, message);
+			handler.handleNow(modelStore, message);
+			
+			Ntro.threadService().executeLater(new NtroTaskSync() {
+				@Override
+				protected void runTask() {
+					T.call(this);
+					
+					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+					
+					handler.handleLater(modelStore, message);
+				}
+
+				@Override
+				protected void onFailure(Exception e) {
+				}
+			});
 		}
 	}
 

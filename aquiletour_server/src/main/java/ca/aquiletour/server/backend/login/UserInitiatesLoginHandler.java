@@ -18,7 +18,7 @@ import ca.ntro.users.Session;
 public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiatesLoginMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
@@ -103,6 +103,11 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}
 
 		return isStudentId;
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+		T.call(this);
 	}
 
 

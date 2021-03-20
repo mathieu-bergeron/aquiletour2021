@@ -16,7 +16,7 @@ import jsweet.util.StringTypes.ol;
 public class AuthenticateSessionUserHandler extends BackendMessageHandler<AuthenticateSessionUserMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, AuthenticateSessionUserMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AuthenticateSessionUserMessage message) {
 
 		User sessionUser = null;
 		User user = null;
@@ -114,6 +114,11 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 		modelStore.save(session);
 			
 		return user;
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, AuthenticateSessionUserMessage message) {
+		T.call(this);
 	}
 
 }
