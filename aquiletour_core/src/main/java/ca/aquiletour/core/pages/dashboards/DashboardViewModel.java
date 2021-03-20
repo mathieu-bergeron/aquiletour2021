@@ -41,7 +41,7 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 
 				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
 				courseView.displaySummary(item);
-
+				
 				item.getMyAppointment().observe(new ValueObserver<Boolean>() {
 					@Override
 					public void onDeleted(Boolean lastValue) {

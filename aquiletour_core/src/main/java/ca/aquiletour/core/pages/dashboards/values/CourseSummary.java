@@ -12,20 +12,19 @@ public class CourseSummary implements NtroModelValue {
 	private StoredBoolean isQueueOpen = new StoredBoolean();
 	private StoredBoolean myAppointment = new StoredBoolean();
 	private StoredInteger numberOfStudents = new StoredInteger();
+	private StoredInteger numberOfAppointments = new StoredInteger();
 
 	public CourseSummary() {
 		super();
 		T.call(this);
 	}
 
-	public CourseSummary(String title, String courseId, boolean isQueueOpen,  boolean myAppointment, int numberOfStudents) {
+	public CourseSummary(String title, String courseId) {
 		super();
 		T.call(this);
+
 		this.title = title;
 		this.courseId = courseId;
-		this.isQueueOpen = new StoredBoolean(isQueueOpen);
-		this.myAppointment = new StoredBoolean(myAppointment);
-		this.numberOfStudents = new StoredInteger(numberOfStudents);
 	}
 	
 	public CourseSummary(String title) {
@@ -82,5 +81,17 @@ public class CourseSummary implements NtroModelValue {
 
 	public void updateNumberOfStudents(int numberOfStudents) {
 		this.numberOfStudents.set(numberOfStudents);
+	}
+
+	public StoredInteger getNumberOfAppointments() {
+		return numberOfAppointments;
+	}
+
+	public void setNumberOfAppointments(StoredInteger numberOfAppointments) {
+		this.numberOfAppointments = numberOfAppointments;
+	}
+	
+	public void updateNumberOfAppointments(int numberOfAppointments) {
+		this.numberOfAppointments.set(numberOfAppointments);
 	}
 }

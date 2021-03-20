@@ -47,6 +47,11 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 					
 					List<String> studentIds = queueModel.getStudentIds();
 					int nbAppointment = queueModel.getAppointments().size();
+					
+					DashboardModel teacherDashboard = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+					teacherDashboard.updateNbAppointmentOfCourse(courseId, nbAppointment);
+					modelStore.save(teacherDashboard);
+					
 
 					for (String studentId : studentIds) {
 

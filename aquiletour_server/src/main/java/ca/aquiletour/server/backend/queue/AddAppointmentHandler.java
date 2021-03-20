@@ -50,9 +50,13 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 					// XXX: must get a fresh copy of the modelStore (it is thread specific)
 					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 
+					int nbAppointment = queueModel.getAppointments().size();
+					DashboardModel teacherDashboard = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
+					teacherDashboard.updateNbAppointmentOfCourse(courseId, nbAppointment);
+					modelStore.save(teacherDashboard);
+
 					List<String> studentIds = queueModel.getStudentIds();
 					for (String studentId : studentIds) {
-						int nbAppointment = queueModel.getAppointments().size();
 						
 						DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 

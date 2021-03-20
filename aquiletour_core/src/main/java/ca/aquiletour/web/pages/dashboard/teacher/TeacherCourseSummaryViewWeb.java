@@ -17,6 +17,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 	private HtmlElement title;
 	private HtmlElement numberOfStudents;
+	private HtmlElement numberOfAppointments;
 	private HtmlElement deleteQueue;
 	private HtmlElement closeQueue;
 	private HtmlElement csvFileInput;
@@ -33,6 +34,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 		title = this.getRootElement().find("#course-title-link").get(0);
 		numberOfStudents = this.getRootElement().find("#number-of-students").get(0);
+		numberOfAppointments = this.getRootElement().find("#number-of-appointments").get(0);
 		deleteQueue = this.getRootElement().find("#delete-queue-link").get(0);
 		closeQueue = this.getRootElement().find("#close-queue-link").get(0);
 		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
@@ -41,6 +43,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		
 		MustNot.beNull(title);
 		MustNot.beNull(numberOfStudents);
+		MustNot.beNull(numberOfAppointments);
 		MustNot.beNull(closeQueue);
 		MustNot.beNull(csvFileInput);
 		MustNot.beNull(csvFileSubmit);
@@ -83,8 +86,9 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private void displayQueueInfo(CourseSummary course) {
 		T.call(this);
 
-		numberOfStudents.html(String.valueOf(course.getNumberOfStudents().getValue()));
 		title.appendHtml(course.getTitle());
+		numberOfAppointments.html(String.valueOf(course.getNumberOfAppointments().getValue()));
+		numberOfStudents.html(String.valueOf(course.getNumberOfStudents().getValue()));
 	}
 
 	private void installQueueActions(CourseSummary course) {
