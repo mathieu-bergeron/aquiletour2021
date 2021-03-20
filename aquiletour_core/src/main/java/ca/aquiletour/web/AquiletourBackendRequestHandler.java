@@ -75,22 +75,30 @@ public class AquiletourBackendRequestHandler {
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("title")) {
+		if(parameters.containsKey("addQueue")) {
 
-			String courseTitle = parameters.get("title")[0];
-			String courseId = parameters.get("title")[0];
+			String courseTitle = parameters.get("addQueue")[0];
+			String courseId = courseTitle; // FIXME we need a real ID
 
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, false, false, 0));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
-		} else if(parameters.containsKey("deleteCourse")) {
-			DeleteCourseMessage deleteCourseMessage = new DeleteCourseMessage();
+		} else if(parameters.containsKey("closeQueue")) {
+
+			TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
 			
-			String courseId = path.getName(0);
+			String courseId = parameters.get("closeQueue")[0];
+			teacherClosesQueueMessage.setCourseId(courseId);
+			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
+
+		} else if(parameters.containsKey("deleteQueue")) {
+
+			DeleteCourseMessage deleteCourseMessage = Ntro.messages().create(DeleteCourseMessage.class);
+			
+			String courseId = parameters.get("deleteQueue")[0];
 			deleteCourseMessage.setCourseId(courseId);
-			deleteCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(deleteCourseMessage);
 		}
 	}
@@ -150,12 +158,6 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setUser(user);
 			moveAppointmentMessage.setCourseId(courseId);
 			//moveAppointmentMessage.sendMessage();
-		} else if(parameters.containsKey("teacherClosesQueue")&& user instanceof Teacher) {//localhost8080/billeterie/courseId?teacherClosesQueue
-			TeacherClosesQueueMessage teacherClosesQueueMessage = new TeacherClosesQueueMessage();
-			teacherClosesQueueMessage.setCourseId(courseId);
-			teacherClosesQueueMessage.setTeacher(user);
-			T.here();
-			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
 		}
 	}
 }

@@ -32,6 +32,24 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 		updateOpenQueues(modelStore);
 		
 		updateStudentDashboards(modelStore);
+
+		updateTeacherDashboard(modelStore);
+	}
+
+	private void updateTeacherDashboard(ModelStoreSync modelStore) {
+		T.call(this);
+
+		if(modelStore.ifModelExists(DashboardModel.class, "TODO", teacher.getId())) {
+
+			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", teacher.getId());
+
+			dashboardModel.setTeacherAvailability(true, queueId);
+			modelStore.save(dashboardModel);
+
+		}else {
+			
+			Log.warning("Dashboard not found for " + teacher.getId());
+		}
 	}
 
 	private void updateStudentDashboards(ModelStoreSync modelStore) {

@@ -54,8 +54,8 @@ public class ViewLoaderRegistrationWeb {
 		ViewLoaders.registerViewLoader(StudentDashboardView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/dashboard/student/student_dashboard.html")
-			     	.setCssUrl("/views/dashboard/student/student_dashboard.css")
+			     	.setHtmlUrl("/views/dashboard/student/dashboard.html")
+			     	.setCssUrl("/views/dashboard/student/dashboard.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(StudentDashboardViewWeb.class));
 
