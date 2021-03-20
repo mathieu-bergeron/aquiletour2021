@@ -12,13 +12,14 @@ import def.dom.EventListener;
 import def.dom.File;
 import def.dom.FileList;
 import def.dom.FileReader;
-import def.dom.FormData;
-import def.dom.HTMLElement;
+import def.dom.Globals;
 import def.dom.HTMLInputElement;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 
 import static def.jquery.Globals.$;
+
+import static def.dom.Globals.document;
 
 
 public class HtmlElementJSweet extends HtmlElement {
@@ -195,8 +196,8 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public HtmlElement newElement(String html) {
-		return new HtmlElementJSweet($(html));
+	public HtmlElement createElement(String html) {
+		return HtmlElementJSweet.parseHtml(html);
 	}
 
 	@Override
@@ -217,5 +218,18 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		fileReader.readAsText(firstFile);
 	}
+	
+	public static HtmlElementJSweet parseHtml(String html) {
+		T.call(HtmlElementJSweet.class);
 
+		Object[] parsedHtml = $.parseHTML(html, document, false);
+
+		JQuery rootDiv = $(document.createElement("span"));
+
+		for(Object parsedElement : parsedHtml) {
+			rootDiv.append($(parsedElement));
+		}
+
+		return new HtmlElementJSweet(rootDiv);
+	}
 }

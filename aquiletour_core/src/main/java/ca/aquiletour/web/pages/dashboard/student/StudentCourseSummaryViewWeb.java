@@ -3,6 +3,8 @@ package ca.aquiletour.web.pages.dashboard.student;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
+import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -45,7 +47,20 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		T.call(this);
 		
 		if(doesStudentHaveAppointment) {
-			queueStatus.html("<a href='/billetterie/"+queueId+"'>J'ai déjà un rendez-vous</a>");
+			HtmlElement openQueueLink = makeAppointmentLink.createElement("<a href='/billetterie/"+queueId+"'>J'ai déjà un rendez-vous</>");
+
+			queueStatus.clearChildren();
+			queueStatus.appendElement(openQueueLink);
+			
+			openQueueLink.addEventListener("click", new HtmlEventListener() {
+				@Override
+				public void onEvent() {
+					ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
+					showStudentQueueMessage.setCourseId(queueId);
+					Ntro.messages().send(showStudentQueueMessage);
+				}
+			});
+
 			makeAppointmentLink.hide();
 		}else if(isTeacherAvailable) {
 			queueStatus.html("Prof disponible");

@@ -129,33 +129,26 @@ public class AquiletourBackendRequestHandler {
 			int minute = rightNow.get(Calendar.MINUTE);
 			String time = hour + ":" + minute;
 			 */
-			AddAppointmentMessage addAppointmentMessage = new AddAppointmentMessage();
-			Appointment newAppointment = new Appointment();
-			newAppointment.setStudentId(user.getId());
-			newAppointment.setStudentName(user.getName());
-			newAppointment.setStudentSurname(user.getSurname());
-			addAppointmentMessage.setAppointment(newAppointment);
-			addAppointmentMessage.setUser(user);
+			AddAppointmentMessage addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
 			addAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
 			
 		} else if(parameters.containsKey("deleteAppointment") && user instanceof Teacher){
 			
-			DeleteAppointmentMessage deleteAppointmentMessage = new DeleteAppointmentMessage();
-			
+			DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
-			deleteAppointmentMessage.setUser(user);
 			deleteAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
+
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
+
 			String departureId = parameters.get("move")[0];
 			String destinationId = parameters.get("before")[0];
 			MoveAppointmentMessage moveAppointmentMessage = Ntro.messages().create(MoveAppointmentMessage.class);
 			Appointment newAppointment = new Appointment();
 			moveAppointmentMessage.setappointmentDepartureId(departureId);
 			moveAppointmentMessage.setappointmentDestinationId(destinationId);
-			moveAppointmentMessage.setUser(user);
 			moveAppointmentMessage.setCourseId(courseId);
 			//moveAppointmentMessage.sendMessage();
 		}

@@ -43,7 +43,7 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 
 			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", teacher.getId());
 
-			dashboardModel.setTeacherAvailability(true, queueId);
+			dashboardModel.setTeacherAvailability(queueId, true);
 			modelStore.save(dashboardModel);
 
 		}else {
@@ -75,7 +75,7 @@ public class TeacherUsesQueueBackgroundTask extends NtroTaskSync {
 		if(modelStore.ifModelExists(DashboardModel.class, "TODO", studentId)) {
 			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 
-			dashboardModel.setTeacherAvailability(true, queueId);
+			dashboardModel.setTeacherAvailability(queueId, true);
 			modelStore.save(dashboardModel);
 
 		}else {

@@ -4,7 +4,7 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class HtmlElement {
 
-	public abstract HtmlElement newElement(String html);
+	public abstract HtmlElement createElement(String html);
 
 	public abstract void appendHtml(String html);
 	public abstract void appendElement(HtmlElement element);

@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -18,20 +19,26 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	public void handle(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
 
-		User requestingUser = message.getUser();
+		User student = message.getUser();
 		String courseId = message.getCourseId();
 
 		QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-				requestingUser.getAuthToken(),
+				"admin",
 				courseId);
-		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-				requestingUser.getAuthToken(),
-				requestingUser.getId());
 
-		
-		if(queueModel != null && !dashboardModel.doesStudentAlreadyHaveAppointment(courseId) && !(queueModel.getTeacherId().equals(requestingUser.getId()))) {
+		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
+				student.getAuthToken(),
+				student.getId());
+
+		if(queueModel != null 
+				&& !dashboardModel.doesStudentAlreadyHaveAppointment(courseId) 
+				&& !(queueModel.getTeacherId().equals(student.getId()))) {
 			
-			queueModel.addAppointment(message.getAppointment());
+			Appointment appointment = new Appointment();
+			appointment.setStudentId(student.getId());
+			appointment.setStudentName(student.getName());
+			appointment.setStudentSurname(student.getSurname());
+			queueModel.addAppointment(appointment);
 			modelStore.save(queueModel);
 
 			dashboardModel.updateMyAppointment(courseId, true);

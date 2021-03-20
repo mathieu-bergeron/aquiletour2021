@@ -23,7 +23,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 
 			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", teacher.getId());
 
-			dashboardModel.setTeacherAvailability(false, courseId);
+			dashboardModel.setTeacherAvailability(courseId, false);
 			modelStore.save(dashboardModel);
 
 		}else {

@@ -45,7 +45,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				T.call(this);
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				
-				appointmentView.displayAppointement(item);
+				appointmentView.displayAppointement(model.getCourseId(), item);
 				
 				//view.insertAppointment(index, item, appointmentView);
 				view.appendAppointement(item, appointmentView);

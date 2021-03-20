@@ -56,7 +56,8 @@ public class TeacherClosesQueueBackgroundTask extends NtroTaskSync {
 		if(modelStore.ifModelExists(DashboardModel.class, "admin", studentId)) {
 			DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, "admin", studentId);
 
-			dashboardModel.setTeacherAvailability(false, queueId);
+			dashboardModel.setTeacherAvailability(queueId, false);
+			dashboardModel.updateMyAppointment(queueId, false);
 			modelStore.save(dashboardModel);
 
 		}else {

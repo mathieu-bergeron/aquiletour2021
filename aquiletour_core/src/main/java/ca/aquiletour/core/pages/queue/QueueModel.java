@@ -46,7 +46,6 @@ public class QueueModel implements NtroModel {
 		String appointmentId = Integer.toString(getMaxId());
 		appointment.setId(appointmentId);
 		appointments.addItem(appointment);
-		;
 	}
 
 	public void deleteAppointment(String appointmentId) {

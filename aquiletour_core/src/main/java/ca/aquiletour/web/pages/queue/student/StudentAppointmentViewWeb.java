@@ -8,7 +8,6 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.mvc.NtroViewWeb;
 
 public class StudentAppointmentViewWeb extends AppointmentViewWeb implements AppointmentView {
 
@@ -18,7 +17,7 @@ public class StudentAppointmentViewWeb extends AppointmentViewWeb implements App
 	}
 
 	@Override
-	public void displayAppointement(Appointment appointment) {
+	public void displayAppointement(String queueId, Appointment appointment) {
 		T.call(this);
 
 		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);

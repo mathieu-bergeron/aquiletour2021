@@ -19,7 +19,6 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private HtmlElement numberOfStudents;
 	private HtmlElement deleteQueue;
 	private HtmlElement closeQueue;
-	private HtmlElement openQueue;
 	private HtmlElement csvFileInput;
 	private HtmlElement csvFileSubmit;
 	private HtmlElement csvFileQueueId;
@@ -32,11 +31,10 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
-		title = this.getRootElement().find("#course-title").get(0);
+		title = this.getRootElement().find("#course-title-link").get(0);
 		numberOfStudents = this.getRootElement().find("#number-of-students").get(0);
 		deleteQueue = this.getRootElement().find("#delete-queue-link").get(0);
 		closeQueue = this.getRootElement().find("#close-queue-link").get(0);
-		openQueue = this.getRootElement().find("#open-queue-link").get(0);
 		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
 		csvFileSubmit = this.getRootElement().find("#csv-file-submit").get(0);
 		csvFileQueueId = this.getRootElement().find("#csv-file-queue-id").get(0);
@@ -44,12 +42,11 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(title);
 		MustNot.beNull(numberOfStudents);
 		MustNot.beNull(closeQueue);
-		MustNot.beNull(openQueue);
 		MustNot.beNull(csvFileInput);
 		MustNot.beNull(csvFileSubmit);
 		MustNot.beNull(csvFileQueueId);
 		
-		openQueueHref = openQueue.getAttribute("href");
+		openQueueHref = title.getAttribute("href");
 		closeQueueHref = closeQueue.getAttribute("href");
 		deleteQueueHref = deleteQueue.getAttribute("href");
 		
@@ -105,15 +102,13 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private void adjustOpenCloseLinks(CourseSummary course) {
 		T.call(this);
 
+		title.setAttribute("href", openQueueHref + course.getCourseId());
 		closeQueue.setAttribute("href", closeQueueHref + course.getCourseId());
-		openQueue.setAttribute("href", openQueueHref + course.getCourseId());
 
 		if(course.getIsQueueOpen().getValue()) {
-			openQueue.hide();
 			closeQueue.show();
 		} else {
 			closeQueue.hide();
-			openQueue.show();
 		}
 	}
 
@@ -134,7 +129,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private void installerOpenQueueListener(CourseSummary course) {
 		T.call(this);
 
-		openQueue.addEventListener("click", new HtmlEventListener() {
+		title.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				

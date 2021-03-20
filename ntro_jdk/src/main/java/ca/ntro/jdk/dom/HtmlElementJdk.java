@@ -1,5 +1,10 @@
 package ca.ntro.jdk.dom;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -191,8 +196,18 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public HtmlElement newElement(String html) {
-		return new HtmlElementJdk(new Element(html));
+	public HtmlElement createElement(String html) {
+		return parseHtml(html);
+	}
+
+	public static HtmlElement parseHtml(String html) {
+		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
+		
+		Element jsoupRootElement = new Element("span");
+		
+		jsoupDocument.body().childNodes().forEach(c -> jsoupRootElement.appendChild(c.clone()));
+		
+		return new HtmlElementJdk(jsoupRootElement);
 	}
 
 	@Override

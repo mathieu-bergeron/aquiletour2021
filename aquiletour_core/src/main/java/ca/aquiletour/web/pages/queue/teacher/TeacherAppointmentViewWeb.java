@@ -11,7 +11,6 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
-import ca.ntro.web.mvc.NtroViewWeb;
 
 public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements AppointmentView {
 
@@ -21,19 +20,19 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 	}
 
 	@Override
-	public void displayAppointement(Appointment appointment) {
+	public void displayAppointement(String queueId, Appointment appointment) {
 		T.call(this);
 
 		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
 		HtmlElement studentSurname = this.getRootElement().find("#studentSurname").get(0);
 		HtmlElement studentName = this.getRootElement().find("#studentName").get(0);
 		HtmlElements ids = this.getRootElement().find(".appointmentId");
-		HtmlElement closeButton = this.getRootElement().find(".btn-close").get(0);
+		HtmlElement deleteAppointment = this.getRootElement().find("#delete-appointment-button").get(0);
 
 		MustNot.beNull(studentId);
 		MustNot.beNull(studentSurname);
 		MustNot.beNull(studentName);
-		MustNot.beNull(closeButton);
+		MustNot.beNull(deleteAppointment);
 
 		for(int i = 0; i < ids.size(); i++) {
 			HtmlElement id = ids.get(i);
@@ -47,12 +46,11 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 
-		closeButton.addEventListener("click", new HtmlEventListener() {
+		deleteAppointment.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
-				// FIXME
-				deleteAppointmentMessage.setCourseId("3C6");
+				deleteAppointmentMessage.setCourseId(queueId);
 				deleteAppointmentMessage.setAppointmentId(appointment.getId());
 				Ntro.messages().send(deleteAppointmentMessage);
 			}

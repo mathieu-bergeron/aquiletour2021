@@ -90,7 +90,7 @@ public class DashboardModel implements NtroModel {
 
 	}
 	
-	public void setTeacherAvailability(boolean availabilty, String courseId) {
+	public void setTeacherAvailability(String courseId, boolean availabilty) {
 		for (int i = 0; i < courses.size(); i++) {
 			CourseSummary currentCourse = courses.item(i);
 			if(currentCourse.getCourseId().equals(courseId)) {
