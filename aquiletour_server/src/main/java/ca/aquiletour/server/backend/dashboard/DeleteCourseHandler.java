@@ -3,10 +3,12 @@ package ca.aquiletour.server.backend.dashboard;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
+import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.services.Ntro;
 
 public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessage> {
@@ -31,6 +33,19 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 								}
 							});
 		
-		Ntro.threadService().executeLater(new DeleteCourseBackgroundTask(teacher, courseId));
+		Ntro.threadService().executeLater(new NtroTaskAsync() {
+			@Override
+			protected void runTaskAsync() {
+				T.call(this);
+
+				ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+
+				QueueUpdater.deleteQueue(modelStore, courseId);
+			}
+
+			@Override
+			protected void onFailure(Exception e) {
+			}
+		});
 	}
 }
