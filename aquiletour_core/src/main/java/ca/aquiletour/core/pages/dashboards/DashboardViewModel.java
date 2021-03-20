@@ -16,7 +16,6 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 		T.call(this);
 		
 		model.getCourses().observe(new ListObserver<CourseSummary>() {
-
 			@Override
 			public void onValueChanged(List<CourseSummary> oldValue, List<CourseSummary> value) {
 				// TODO Auto-generated method stub
@@ -41,6 +40,53 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 
 				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
 				courseView.displaySummary(item);
+				
+				item.getNumberOfAppointments().observe(new ValueObserver<Integer>() {
+
+					@Override
+					public void onValue(Integer value) {
+						T.call(this);
+
+						courseView.displayNumberOfAppointments(value);
+					}
+
+					@Override
+					public void onDeleted(Integer lastValue) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onValueChanged(Integer oldValue, Integer value) {
+						T.call(this);
+						
+						T.values(value);
+
+						courseView.displayNumberOfAppointments(value);
+					}
+				});
+				
+				item.getNumberOfStudents().observe(new ValueObserver<Integer>() {
+					@Override
+					public void onValue(Integer value) {
+						T.call(this);
+						
+						courseView.displayNumberOfStudents(value);
+					}
+
+					@Override
+					public void onDeleted(Integer lastValue) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onValueChanged(Integer oldValue, Integer value) {
+						T.call(this);
+						
+						courseView.displayNumberOfStudents(value);
+					}
+				});
 				
 				item.getMyAppointment().observe(new ValueObserver<Boolean>() {
 					@Override

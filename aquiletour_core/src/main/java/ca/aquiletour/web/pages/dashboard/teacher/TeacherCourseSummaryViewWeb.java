@@ -16,8 +16,8 @@ import ca.ntro.web.dom.HtmlEventListener;
 public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
 
 	private HtmlElement title;
-	private HtmlElement numberOfStudents;
-	private HtmlElement numberOfAppointments;
+	private HtmlElement numberOfStudentsElement;
+	private HtmlElement numberOfAppointmentsElement;
 	private HtmlElement deleteQueue;
 	private HtmlElement closeQueue;
 	private HtmlElement csvFileInput;
@@ -33,8 +33,8 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		T.call(this);
 
 		title = this.getRootElement().find("#course-title-link").get(0);
-		numberOfStudents = this.getRootElement().find("#number-of-students").get(0);
-		numberOfAppointments = this.getRootElement().find("#number-of-appointments").get(0);
+		numberOfStudentsElement = this.getRootElement().find("#number-of-students").get(0);
+		numberOfAppointmentsElement = this.getRootElement().find("#number-of-appointments").get(0);
 		deleteQueue = this.getRootElement().find("#delete-queue-link").get(0);
 		closeQueue = this.getRootElement().find("#close-queue-link").get(0);
 		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
@@ -42,8 +42,8 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		csvFileQueueId = this.getRootElement().find("#csv-file-queue-id").get(0);
 		
 		MustNot.beNull(title);
-		MustNot.beNull(numberOfStudents);
-		MustNot.beNull(numberOfAppointments);
+		MustNot.beNull(numberOfStudentsElement);
+		MustNot.beNull(numberOfAppointmentsElement);
 		MustNot.beNull(closeQueue);
 		MustNot.beNull(csvFileInput);
 		MustNot.beNull(csvFileSubmit);
@@ -63,6 +63,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 	@Override
 	public void displayStatus(String QueueId, boolean myAppointment, boolean teacherAvailable) {
+		// XXX: not supported
 	}
 
 	@Override
@@ -87,8 +88,8 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		T.call(this);
 
 		title.appendHtml(course.getTitle());
-		numberOfAppointments.html(String.valueOf(course.getNumberOfAppointments().getValue()));
-		numberOfStudents.html(String.valueOf(course.getNumberOfStudents().getValue()));
+		displayNumberOfAppointments(course.getNumberOfAppointments().getValue());
+		displayNumberOfStudents(course.getNumberOfStudents().getValue());
 	}
 
 	private void installQueueActions(CourseSummary course) {
@@ -149,4 +150,17 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		});
 	}
 
+	@Override
+	public void displayNumberOfAppointments(int numberOfAppointments) {
+		T.call(this);
+
+		numberOfAppointmentsElement.html(String.valueOf(numberOfAppointments));
+	}
+
+	@Override
+	public void displayNumberOfStudents(int numberOfStudents) {
+		T.call(this);
+
+		numberOfStudentsElement.html(String.valueOf(numberOfStudents));
+	}
 }

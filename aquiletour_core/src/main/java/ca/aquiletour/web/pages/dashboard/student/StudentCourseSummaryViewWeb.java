@@ -88,4 +88,15 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 			}
 		});
 	}
+
+	@Override
+	public void displayNumberOfAppointments(int numberOfAppointments) {
+		// XXX: not supported
+	}
+
+	@Override
+	public void displayNumberOfStudents(int numberOfStudents) {
+		// XXX: not supported
+	}
+
 }

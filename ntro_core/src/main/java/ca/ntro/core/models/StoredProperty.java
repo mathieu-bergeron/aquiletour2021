@@ -48,7 +48,7 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 	public void get(ValueListener<V> valueListener) {
 		T.call(this);
 		
-		valueListener.onValue(value);
+		valueListener.onValue(getValue());
 	}
 
 	public void onDeleted(DeletionListener<V> deletionListener) {
@@ -76,7 +76,7 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 		T.call(this);
 
 		this.observers.add(observer);
-		observer.onValue(value);
+		observer.onValue(getValue());
 	}
 
 }

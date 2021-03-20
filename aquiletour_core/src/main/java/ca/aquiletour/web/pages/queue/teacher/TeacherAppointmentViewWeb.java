@@ -14,25 +14,32 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements AppointmentView {
 
+	HtmlElement studentId;
+	HtmlElement studentSurname;
+	HtmlElement studentName;
+	HtmlElements ids;
+	HtmlElement deleteAppointment;
+
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
+		T.call(this);
+
+		studentId = this.getRootElement().find("#studentId").get(0);
+		studentSurname = this.getRootElement().find("#studentSurname").get(0);
+		studentName = this.getRootElement().find("#studentName").get(0);
+		ids = this.getRootElement().find(".appointmentId");
+		deleteAppointment = this.getRootElement().find("#delete-appointment-button").get(0);
+
+		MustNot.beNull(studentId);
+		MustNot.beNull(studentSurname);
+		MustNot.beNull(studentName);
+		MustNot.beNull(deleteAppointment);
 
 	}
 
 	@Override
 	public void displayAppointement(String queueId, Appointment appointment) {
 		T.call(this);
-
-		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
-		HtmlElement studentSurname = this.getRootElement().find("#studentSurname").get(0);
-		HtmlElement studentName = this.getRootElement().find("#studentName").get(0);
-		HtmlElements ids = this.getRootElement().find(".appointmentId");
-		HtmlElement deleteAppointment = this.getRootElement().find("#delete-appointment-button").get(0);
-
-		MustNot.beNull(studentId);
-		MustNot.beNull(studentSurname);
-		MustNot.beNull(studentName);
-		MustNot.beNull(deleteAppointment);
 
 		for(int i = 0; i < ids.size(); i++) {
 			HtmlElement id = ids.get(i);
@@ -56,7 +63,4 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 			}
 		});
 	}
-
-
-
 }
