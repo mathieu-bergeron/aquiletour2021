@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -17,17 +18,19 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		User teacher = message.getUser();
 		String courseId = message.getCourse().getCourseId();
 		
-		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-				                                            teacher.getAuthToken(),
-				                                            teacher.getId());
+		modelStore.updateModel(DashboardModel.class, 
+							   teacher.getAuthToken(), 
+							   teacher.getId(), 
+							   new ModelUpdater<DashboardModel>() {
 
-		if(dashboardModel != null) {
+								@Override
+								public void update(DashboardModel teacherDashboard) {
+									T.call(this);
 
-			dashboardModel.addCourse(message.getCourse());
-			modelStore.save(dashboardModel);
+									teacherDashboard.addCourse(message.getCourse());
+								}
+							});
 
-			Ntro.threadService().executeLater(new AddCourseBackgroundTask(teacher, courseId));
-		}
-		
+		Ntro.threadService().executeLater(new AddCourseBackgroundTask(teacher, courseId));
 	}
 }

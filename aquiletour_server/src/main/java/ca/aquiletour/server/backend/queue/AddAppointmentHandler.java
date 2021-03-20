@@ -51,6 +51,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 
 					int nbAppointment = queueModel.getAppointments().size();
+
 					DashboardModel teacherDashboard = modelStore.getModel(DashboardModel.class, "admin", queueModel.getTeacherId());
 					teacherDashboard.updateNbAppointmentOfCourse(courseId, nbAppointment);
 					modelStore.save(teacherDashboard);

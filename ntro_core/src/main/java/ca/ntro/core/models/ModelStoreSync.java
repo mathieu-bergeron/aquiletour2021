@@ -55,4 +55,33 @@ public class ModelStoreSync {
 
 		modelStore.delete(model);
 	}
+	
+	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      String firstPathName, 
+			                                      ModelUpdater<M> updater){
+
+		if(ifModelExists(modelClass, firstPathName, firstPathName)) {
+			
+			M model = (M) getModel(modelClass, authToken, firstPathName);
+
+			updater.update(model);
+			
+			save(model);
+		}
+	}
+
+	public <M extends NtroModel> void createModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      String firstPathName, 
+			                                      ModelInitializer<M> initializer){
+
+		M model = (M) getModel(modelClass, authToken, firstPathName);
+
+		initializer.initialize(model);
+			
+		save(model);
+	}
+	
+	
 }
