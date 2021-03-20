@@ -6,6 +6,7 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
@@ -31,27 +32,39 @@ public class DeleteCourseBackgroundTask extends NtroTaskSync {
 				teacher.getAuthToken(),
 				courseId);
 		
-		if(queue != null) {
+		updateQueueStores(modelStore);
 
-			updateQueueStores(modelStore);
+		updateStudentDashboards(modelStore, queue);
 
-			updateStudentDashboards(modelStore, queue);
-
-			removeQueue(modelStore, queue);
-		}
+		removeQueue(modelStore, queue);
 	}
 
 	private void updateQueueStores(ModelStoreSync modelStore) {
 		T.call(this);
+		
+		modelStore.updateModel(QueuesModel.class, 
+							   "admin",
+				               "allQueues", 
+				               new ModelUpdater<QueuesModel>() {
+									@Override
+									public void update(QueuesModel allQueues) {
+										T.call(this);
 
-		QueuesModel allQueues = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
-		QueuesModel openQueues = modelStore.getModel(QueuesModel.class, "admin", "openQueues");
-		
-		allQueues.deleteQueue(courseId);
-		openQueues.deleteQueue(courseId);
-		
-		modelStore.save(allQueues);
-		modelStore.save(openQueues);
+										allQueues.deleteQueue(courseId);
+									}
+		});
+
+		modelStore.updateModel(QueuesModel.class, 
+				               "admin", 
+				               "openQueues", 
+				               new ModelUpdater<QueuesModel>() {
+									@Override
+									public void update(QueuesModel openQueues) {
+										T.call(this);
+
+										openQueues.deleteQueue(courseId);
+									}
+		});
 	}
 	
 	private void updateStudentDashboards(ModelStoreSync modelStore, QueueModel queue) {

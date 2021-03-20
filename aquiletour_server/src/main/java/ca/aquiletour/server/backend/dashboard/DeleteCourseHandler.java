@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -17,16 +18,19 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 		User teacher = message.getUser();
 		String courseId = message.getCourseId();
 		
-		DashboardModel teacherDashboard = modelStore.getModel(DashboardModel.class, 
-				                                              teacher.getAuthToken(), 
-				                                              teacher.getId());
+		modelStore.updateModel(DashboardModel.class, 
+							   teacher.getAuthToken(), 
+							   teacher.getId(), 
+							   new ModelUpdater<DashboardModel>() {
+
+								@Override
+								public void update(DashboardModel teacherDashboard) {
+									T.call(this);
+
+									teacherDashboard.deleteCourseById(courseId);
+								}
+							});
 		
-		if(teacherDashboard != null) {
-			teacherDashboard.deleteCourseById(courseId);
-			modelStore.save(teacherDashboard);
-
-			Ntro.threadService().executeLater(new DeleteCourseBackgroundTask(teacher, courseId));
-		}
-
+		Ntro.threadService().executeLater(new DeleteCourseBackgroundTask(teacher, courseId));
 	}
 }
