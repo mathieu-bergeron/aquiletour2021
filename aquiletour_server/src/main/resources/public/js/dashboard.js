@@ -1,8 +1,19 @@
 window.onload = function(){
+    // in JSWeet, we must call initializeDashboard when it gets loaded
+    initializeDashboard();
+}
 
-    var buttonAvailable = document.getElementById("buttonAvailable");
+function initializeDashboard(){
+    $('#modalDashboard').modal();
+
+    var addQueueButton = $("#add-queue-button");
+    var buttonAvailable = $("#buttonAvailable");
     var available = document.getElementById("teacherAvailable");
     var availableLink = document.getElementById("availableLink");
+
+    addQueueButton.on('click', function(){
+        showAddQueueModal();
+    });
 
     buttonAvailable.onclick = function() {
       
@@ -41,3 +52,12 @@ window.onload = function(){
       
     } );
 }
+
+function hideAddQueueModal(){
+    $('#modalDashboard').modal('hide');
+}
+
+function showAddQueueModal(){
+    $('#modalDashboard').modal('show');
+}
+

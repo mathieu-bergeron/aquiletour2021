@@ -10,12 +10,12 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
+import def.es6.Globals;
 
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
 	private HtmlElement addCourseButton;
 	private HtmlElement addCourseTitleInput;
-	private HtmlElement addQueueModal;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -24,11 +24,9 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
-		addQueueModal = getRootElement().find("#add-queue-modal").get(0);
 
 		MustNot.beNull(addCourseButton);
 		MustNot.beNull(addCourseTitleInput);
-		MustNot.beNull(addQueueModal);
 
 		addListeners();
 	}
@@ -45,7 +43,8 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value()));
 				Ntro.messages().send(addCourseMessage);
 				
-				addQueueModal.hide();
+				// XXX: defined in dashboard.js
+				Globals.hideAddQueueModal();
 			}
 		});
 	}

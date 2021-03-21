@@ -16,7 +16,6 @@ import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
 
-
 public class HtmlElementJdk extends HtmlElement {
 
 	private Element jsoupElement;
@@ -233,6 +232,4 @@ public class HtmlElementJdk extends HtmlElement {
 	public void readFileFromInput(HtmlFileListener listener) {
 		// XXX: not supported on the server
 	}
-
-
 }

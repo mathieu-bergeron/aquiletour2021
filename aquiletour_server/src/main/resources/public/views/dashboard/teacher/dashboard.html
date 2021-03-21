@@ -1,13 +1,9 @@
 <div class="mt-3 dashboard-container">
 
-  <div class="mt-3 d-flex justify-content-center">
-    <button class="btn-primary btn-add-course" type="button" data-toggle="modal" data-target="#modalDashboard">Ajouter une file d'attente</button>
+
+  <div class="mt-3 flex-container" id="courses-container">
   </div>
 
-  <div class="mt-5 flex-container" id="courses-container">
-  </div>
-
-  <div id="add-queue-modal">
   <div class="modal fade" id="modalDashboard" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content dashboard-mContent">
@@ -29,6 +25,9 @@
       </div>
     </div>
   </div>
+
+  <div class="mt-3 d-flex justify-content-center">
+    <button class="btn-primary btn-add-course" type="button" id="add-queue-button">Ajouter une file d'attente</button>
   </div>
 
 

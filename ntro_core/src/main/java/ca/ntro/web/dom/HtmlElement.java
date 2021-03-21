@@ -44,5 +44,4 @@ public abstract class HtmlElement {
 	public abstract void hide();
 	
 	public abstract void readFileFromInput(HtmlFileListener listener);
-
 }
