@@ -1,10 +1,8 @@
 window.onload = function(){
-    // in JSWeet, we must call initializeDashboard when it gets loaded
-    initializeDashboardJs({'jQueryElement':$(document)});
 
     var buttonAvailable = $("#buttonAvailable");
-    var available = document.getElementById("teacherAvailable");
-    var availableLink = document.getElementById("availableLink");
+    var available $("teacherAvailable");
+    var availableLink = $("availableLink");
 
     buttonAvailable.onclick = function() {
       
@@ -43,24 +41,3 @@ window.onload = function(){
       
     } );
 }
-
-function hideAddQueueModal(){
-    $('#modalDashboard').modal('hide');
-}
-
-function showAddQueueModal(){
-    $('#modalDashboard').modal('show');
-}
-
-function initializeDashboardJs(rootHtmlElement){
-    let jQueryRoot = rootHtmlElement.jQueryElement;
-
-    let addQueueButton = jQueryRoot.find("#add-queue-button");
-    let modalDashboard = jQueryRoot.find("#modalDashboard");
-
-    addQueueButton.on('click', function(){
-        modalDashboard.modal('show');
-    });
-}
-
-

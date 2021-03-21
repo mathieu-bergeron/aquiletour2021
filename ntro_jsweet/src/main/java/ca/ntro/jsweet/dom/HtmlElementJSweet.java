@@ -15,6 +15,7 @@ import def.dom.FileReader;
 import def.dom.HTMLInputElement;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
+import def.js.Function;
 
 import static def.jquery.Globals.$;
 
@@ -250,5 +251,18 @@ public class HtmlElementJSweet extends HtmlElement {
 		}
 
 		return result;
+	}
+
+	@Override
+	public void invoke(String functionName, Object[] args) {
+		T.call(this);
+		
+		def.js.Object jQueryObject = (def.js.Object) jQueryElement;
+		
+		Function _function = jQueryObject.$get(functionName);
+		
+		System.out.println("_function: " + _function);
+		
+		_function.apply(jQueryObject, args);
 	}
 }

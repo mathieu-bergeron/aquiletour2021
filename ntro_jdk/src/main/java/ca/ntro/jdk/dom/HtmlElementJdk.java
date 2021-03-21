@@ -232,4 +232,9 @@ public class HtmlElementJdk extends HtmlElement {
 	public void readFileFromInput(HtmlFileListener listener) {
 		// XXX: not supported on the server
 	}
+
+	@Override
+	public void invoke(String string, Object[] objects) {
+		// XXX: not supported on the server
+	}
 }

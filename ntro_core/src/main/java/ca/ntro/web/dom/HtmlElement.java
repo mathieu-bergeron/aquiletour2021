@@ -44,4 +44,6 @@ public abstract class HtmlElement {
 	public abstract void hide();
 	
 	public abstract void readFileFromInput(HtmlFileListener listener);
+
+	public abstract void invoke(String string, Object[] objects);
 }

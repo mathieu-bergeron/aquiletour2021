@@ -10,27 +10,26 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
-import def.es6.Globals;
 
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
 	private HtmlElement addCourseButton;
+	private HtmlElement addCourseModal;
 	private HtmlElement addCourseTitleInput;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		super.initializeViewWeb(context);
 		T.call(this);
-		
-		// XXX: defined in dashboard.js
-		// FIXME: this crashes in Jdk (UnsatisfiedLinkError)
-		Globals.initializeDashboardJs(getRootElement());
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
+		addCourseModal = getRootElement().find("#modalDashboard").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
 
 		MustNot.beNull(addCourseButton);
+		MustNot.beNull(addCourseModal);
 		MustNot.beNull(addCourseTitleInput);
+
 
 		addListeners();
 	}
@@ -47,8 +46,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value()));
 				Ntro.messages().send(addCourseMessage);
 				
-				// XXX: defined in dashboard.js
-				Globals.hideAddQueueModal();
+				addCourseModal.invoke("modal", new Object[] {"hide"});
 			}
 		});
 	}
