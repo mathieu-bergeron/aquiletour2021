@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.backend.users.UserModels;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -67,10 +68,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			existingUser.setName(userId);
 			existingUser.setId(userId);
 
-			DocumentPath documentPath = new DocumentPath();
-			documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(User.class));
-			documentPath.setDocumentId(userId);
-			modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(existingUser));
+			UserModels.addUser(modelStore, existingUser);
 		}
 
 		User sessionUser = existingUser.toSessionUser();

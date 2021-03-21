@@ -17,6 +17,6 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 	public void handleLater(ModelStoreSync modelStore, TeacherUsesQueueMessage message) {
 		T.call(this);
 
-		QueueUpdater.openQueue(modelStore, message.getCourseId());
+		QueueModels.openQueue(modelStore, message.getCourseId());
 	}
 }

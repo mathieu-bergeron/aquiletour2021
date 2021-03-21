@@ -2,22 +2,30 @@ package ca.aquiletour.server.backend.queue;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
-import ca.aquiletour.server.backend.queues.QueuesUpdater;
+import ca.aquiletour.server.backend.dashboard.DashboardModels;
+import ca.aquiletour.server.backend.queues.QueuesModels;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
-public class QueueUpdater {
+public class QueueModels {
+
+	public static void createQueue(ModelStoreSync modelStore,
+								   String queueId,
+			                       User user) {
+
+		T.call(QueueModels.class);
+		
+		createQueue(modelStore, user.getId(), queueId);
+	}
 
 	public static void createQueue(ModelStoreSync modelStore,
 								   String teacherId,
 			                       String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueModels.class);
 
 		modelStore.createModel(QueueModel.class, 
 							   "admin",
@@ -36,17 +44,17 @@ public class QueueUpdater {
 	public static void deleteQueue(ModelStoreSync modelStore,
 			                       String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueModels.class);
 
-		QueuesUpdater.deleteQueue(modelStore, queueId);
+		QueuesModels.deleteQueue(modelStore, queueId);
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 
-		DashboardUpdater.deleteQueueForUser(modelStore, queueId, queue.getTeacherId());
+		DashboardModels.deleteQueueForUser(modelStore, queueId, queue.getTeacherId());
 		
-		DashboardUpdater.deleteQueueForUsers(modelStore, queueId, queue.getStudentIds());
+		DashboardModels.deleteQueueForUsers(modelStore, queueId, queue.getStudentIds());
 	
 		modelStore.delete(queue);
 	}
@@ -54,41 +62,41 @@ public class QueueUpdater {
 	public static void openQueue(ModelStoreSync modelStore,
 			                     String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueModels.class);
 		
-		QueuesUpdater.openQueue(modelStore, queueId);
+		QueuesModels.openQueue(modelStore, queueId);
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 
-		DashboardUpdater.openQueueForUser(modelStore, queueId, queue.getTeacherId());
+		DashboardModels.openQueueForUser(modelStore, queueId, queue.getTeacherId());
 		
-		DashboardUpdater.openQueueForUsers(modelStore, queueId, queue.getStudentIds());
+		DashboardModels.openQueueForUsers(modelStore, queueId, queue.getStudentIds());
 
 	}
 
 	public static void closeQueue(ModelStoreSync modelStore,
 			                      String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueModels.class);
 
-		QueuesUpdater.closeQueue(modelStore, queueId);
+		QueuesModels.closeQueue(modelStore, queueId);
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 
-		DashboardUpdater.closeQueueForUser(modelStore, queueId, queue.getTeacherId());
+		DashboardModels.closeQueueForUser(modelStore, queueId, queue.getTeacherId());
 		
-		DashboardUpdater.closeQueueForUsers(modelStore, queueId, queue.getStudentIds());
+		DashboardModels.closeQueueForUsers(modelStore, queueId, queue.getStudentIds());
 		
 	}
 
 	public static int addStudentsToQueue(ModelStoreSync modelStore, 
 			                             String queueId, 
 			                             List<User> studentsToAdd) {
-		T.call(QueueUpdater.class);
+		T.call(QueueModels.class);
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
@@ -110,6 +118,6 @@ public class QueueUpdater {
 			modelStore.save(queue);
 		}
 
-		return 0;
+		return numberOfStudentAdded;
 	}
 }

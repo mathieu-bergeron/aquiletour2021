@@ -54,7 +54,7 @@ public class RootController extends NtroRootController {
 		//        two models of the same kind (or with the same DocumentPath)
 		addStudentOrTeacherSubController(context);
 
-		addSubController(QueuesController.class, "billetteries");
+		addSubController(QueuesController.class, "profs");
 	
 		addSubController(TeacherQueueController.class, "billetterie");
 		addSubController(StudentQueueController.class, "billetterie");
