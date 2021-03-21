@@ -23,7 +23,8 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 		T.call(this);
 		
 		// XXX: defined in dashboard.js
-		Globals.initializeDashboardJs();
+		// FIXME: this crashes in Jdk (UnsatisfiedLinkError)
+		Globals.initializeDashboardJs(getRootElement());
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);

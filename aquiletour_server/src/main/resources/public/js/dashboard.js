@@ -1,29 +1,10 @@
 window.onload = function(){
     // in JSWeet, we must call initializeDashboard when it gets loaded
-    initializeDashboardJs();
-}
+    initializeDashboardJs({'jQueryElement':$(document)});
 
-function hideAddQueueModal(){
-    $('#modalDashboard').modal('hide');
-}
-
-function showAddQueueModal(){
-    $('#modalDashboard').modal('show');
-}
-
-function initializeDashboardJs(){
-    $('#modalDashboard').modal();
-
-    // JSweet: the button is not yet in the DOM
-    //         jQuery will not find it
-    var addQueueButton = $("#add-queue-button");
     var buttonAvailable = $("#buttonAvailable");
     var available = document.getElementById("teacherAvailable");
     var availableLink = document.getElementById("availableLink");
-
-    addQueueButton.on('click', function(){
-        showAddQueueModal();
-    });
 
     buttonAvailable.onclick = function() {
       
@@ -54,7 +35,6 @@ function initializeDashboardJs(){
       availableLink.style.cursor = "hand";
     }
 
-    /*
     $(function() {
       $( "#course-cards" ).sortable({
           handle:'.handle'
@@ -62,7 +42,25 @@ function initializeDashboardJs(){
     
       
     } );
-    */
+}
+
+function hideAddQueueModal(){
+    $('#modalDashboard').modal('hide');
+}
+
+function showAddQueueModal(){
+    $('#modalDashboard').modal('show');
+}
+
+function initializeDashboardJs(rootHtmlElement){
+    let jQueryRoot = rootHtmlElement.jQueryElement;
+
+    let addQueueButton = jQueryRoot.find("#add-queue-button");
+    let modalDashboard = jQueryRoot.find("#modalDashboard");
+
+    addQueueButton.on('click', function(){
+        modalDashboard.modal('show');
+    });
 }
 
 
