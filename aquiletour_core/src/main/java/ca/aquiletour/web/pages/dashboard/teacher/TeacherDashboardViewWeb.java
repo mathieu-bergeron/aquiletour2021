@@ -14,7 +14,6 @@ import ca.ntro.web.dom.HtmlEventListener;
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
 	private HtmlElement addCourseButton;
-	private HtmlElement addCourseModal;
 	private HtmlElement closeModalButton;
 	private HtmlElement addCourseTitleInput;
 
@@ -24,12 +23,10 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 		T.call(this);
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
-		addCourseModal = getRootElement().find("#modalDashboard").get(0);
 		closeModalButton = getRootElement().find("#close-modal-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
 
 		MustNot.beNull(addCourseButton);
-		MustNot.beNull(addCourseModal);
 		MustNot.beNull(closeModalButton);
 		MustNot.beNull(addCourseTitleInput);
 
