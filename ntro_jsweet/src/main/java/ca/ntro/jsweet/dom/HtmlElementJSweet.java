@@ -265,4 +265,11 @@ public class HtmlElementJSweet extends HtmlElement {
 		
 		_function.apply(jQueryObject, args);
 	}
+
+	@Override
+	public void trigger(String event) {
+		T.call(this);
+		
+		jQueryElement.trigger(event);
+	}
 }

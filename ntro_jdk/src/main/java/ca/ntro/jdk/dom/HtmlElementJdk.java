@@ -237,4 +237,9 @@ public class HtmlElementJdk extends HtmlElement {
 	public void invoke(String string, Object[] objects) {
 		// XXX: not supported on the server
 	}
+
+	@Override
+	public void trigger(String event) {
+		// XXX: not supported on the server
+	}
 }

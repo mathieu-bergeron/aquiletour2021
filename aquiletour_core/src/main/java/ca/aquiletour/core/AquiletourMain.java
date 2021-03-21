@@ -29,6 +29,7 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
@@ -116,6 +117,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(NtroMessage.class);
 		Ntro.registerSerializableClass(AddCourseMessage.class);
+		Ntro.registerSerializableClass(DeleteCourseMessage.class);
 		Ntro.registerSerializableClass(AddAppointmentMessage.class);
 		Ntro.registerSerializableClass(DeleteAppointmentMessage.class);
 		Ntro.registerSerializableClass(TeacherClosesQueueMessage.class);

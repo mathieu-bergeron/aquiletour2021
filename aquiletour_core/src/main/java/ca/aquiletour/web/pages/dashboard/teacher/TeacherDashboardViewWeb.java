@@ -15,6 +15,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 	private HtmlElement addCourseButton;
 	private HtmlElement addCourseModal;
+	private HtmlElement closeModalButton;
 	private HtmlElement addCourseTitleInput;
 
 	@Override
@@ -24,10 +25,12 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
 		addCourseModal = getRootElement().find("#modalDashboard").get(0);
+		closeModalButton = getRootElement().find("#close-modal-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
 
 		MustNot.beNull(addCourseButton);
 		MustNot.beNull(addCourseModal);
+		MustNot.beNull(closeModalButton);
 		MustNot.beNull(addCourseTitleInput);
 
 
@@ -46,7 +49,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value()));
 				Ntro.messages().send(addCourseMessage);
 				
-				addCourseModal.invoke("modal", new Object[] {"hide"});
+				closeModalButton.trigger("click");
 			}
 		});
 	}

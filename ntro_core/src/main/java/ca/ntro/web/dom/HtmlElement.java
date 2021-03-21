@@ -45,5 +45,7 @@ public abstract class HtmlElement {
 	
 	public abstract void readFileFromInput(HtmlFileListener listener);
 
-	public abstract void invoke(String string, Object[] objects);
+	public abstract void invoke(String method, Object[] objects);
+
+	public abstract void trigger(String event);
 }
