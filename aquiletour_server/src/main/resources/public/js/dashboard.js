@@ -1,11 +1,21 @@
 window.onload = function(){
     // in JSWeet, we must call initializeDashboard when it gets loaded
-    initializeDashboard();
+    initializeDashboardJs();
 }
 
-function initializeDashboard(){
+function hideAddQueueModal(){
+    $('#modalDashboard').modal('hide');
+}
+
+function showAddQueueModal(){
+    $('#modalDashboard').modal('show');
+}
+
+function initializeDashboardJs(){
     $('#modalDashboard').modal();
 
+    // JSweet: the button is not yet
+    //         on the DOM. JQuery will not add event listener
     var addQueueButton = $("#add-queue-button");
     var buttonAvailable = $("#buttonAvailable");
     var available = document.getElementById("teacherAvailable");
@@ -44,6 +54,7 @@ function initializeDashboard(){
       availableLink.style.cursor = "hand";
     }
 
+    /*
     $(function() {
       $( "#course-cards" ).sortable({
           handle:'.handle'
@@ -51,13 +62,7 @@ function initializeDashboard(){
     
       
     } );
+    */
 }
 
-function hideAddQueueModal(){
-    $('#modalDashboard').modal('hide');
-}
-
-function showAddQueueModal(){
-    $('#modalDashboard').modal('show');
-}
 

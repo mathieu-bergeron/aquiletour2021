@@ -21,6 +21,9 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 	public void initializeViewWeb(NtroContext<?> context) {
 		super.initializeViewWeb(context);
 		T.call(this);
+		
+		// XXX: defined in dashboard.js
+		Globals.initializeDashboardJs();
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
