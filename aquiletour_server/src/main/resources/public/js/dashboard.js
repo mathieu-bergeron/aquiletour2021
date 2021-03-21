@@ -14,8 +14,8 @@ function showAddQueueModal(){
 function initializeDashboardJs(){
     $('#modalDashboard').modal();
 
-    // JSweet: the button is not yet
-    //         on the DOM. JQuery will not add event listener
+    // JSweet: the button is not yet in the DOM
+    //         jQuery will not find it
     var addQueueButton = $("#add-queue-button");
     var buttonAvailable = $("#buttonAvailable");
     var available = document.getElementById("teacherAvailable");
