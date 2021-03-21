@@ -121,7 +121,7 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 					}
 				});
 				
-				view.appendCourse(courseView);
+				view.appendCourse(item.getCourseId(), courseView);
 			}
 
 			@Override
@@ -132,13 +132,14 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 
 			@Override
 			public void onItemRemoved(int index, CourseSummary item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				view.deleteCourse(item.getCourseId());
 			}
 
 			@Override
 			public void onClearItems() {
-				System.out.println("onClearItems");
+				T.call(this);
 				view.clearCourses();
 			}
 		});

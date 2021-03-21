@@ -37,7 +37,7 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		
 		HtmlElement appointment = appointmentList.find("#appointment-" + appointmentId).get(0);
 		
-		appointment.remove();
+		appointment.removeFromDocument();
 	}
 
 	@Override

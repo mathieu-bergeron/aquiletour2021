@@ -9,6 +9,7 @@ public class ShowQueuesHandler extends ParentViewMessageHandler<RootView, Queues
 
 	@Override
 	protected void handle(RootView parentView, QueuesView currentView, ShowQueuesMessage message) {
+		T.call(this);
 		
 		parentView.showQueues(currentView);
 	}

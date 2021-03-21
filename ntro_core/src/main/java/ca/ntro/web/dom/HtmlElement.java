@@ -28,12 +28,13 @@ public abstract class HtmlElement {
 
 		for (int i = 0; i < children("*").size(); i++) {
 			HtmlElement child = children("*").get(0);
-			child.remove();
+			child.removeFromDocument();
 		}
 	}
 
 	public abstract void empty();
-	public abstract void remove();
+	public abstract void removeFromDocument();
+	public abstract void deleteForever();
 	public abstract void value(String value);
 	public abstract String html();
 	public abstract void html(String htmlString);

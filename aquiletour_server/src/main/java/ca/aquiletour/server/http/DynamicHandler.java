@@ -17,7 +17,6 @@
 
 package ca.aquiletour.server.http;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -173,7 +172,6 @@ public class DynamicHandler extends AbstractHandler {
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
 				addStudentCsvMessage.setCsvString(fileContent);
 				addStudentCsvMessage.setQueueId(queueId);
-				addStudentCsvMessage.setUser((User) Ntro.userService().currentUser());
 				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
 			}
 		}

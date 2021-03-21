@@ -96,10 +96,10 @@ public class DashboardModels {
 							   new ModelUpdater<DashboardModel>() {
 
 			@Override
-			public void update(DashboardModel teacherDashboard) {
+			public void update(DashboardModel dashboard) {
 				T.call(this);
 
-				teacherDashboard.addCourse(queue);
+				dashboard.addCourse(queue);
 			}
 		});
 	}
@@ -138,8 +138,43 @@ public class DashboardModels {
 			                             String userId) {
 
 		T.call(DashboardModels.class);
+		
 
 		setIsQueueOpenForUser(modelStore, queueId, userId, false);
+		setMyAppointmentForUser(modelStore, queueId, userId, false);
+		setNumberOfAppointmentsForUser(modelStore, queueId, userId, 0);
+	}
+
+	public static void setNumberOfAppointmentsForUserS(ModelStoreSync modelStore, 
+			                                           String queueId,
+			                                           List<User> users,
+			                                           int numberOfAppointments) {
+		T.call(DashboardModels.class);
+		
+		for(User user : users) {
+			setNumberOfAppointmentsForUser(modelStore, queueId, user.getId(), numberOfAppointments);
+		}
+	}
+
+	public static void setNumberOfAppointmentsForUser(ModelStoreSync modelStore, 
+			                                          String queueId,
+			                                          String userId,
+			                                          int numberOfAppointments) {
+
+		T.call(DashboardModels.class);
+
+		modelStore.updateModel(DashboardModel.class, 
+							   "admin",
+							   userId,
+							   new ModelUpdater<DashboardModel>() {
+
+			@Override
+			public void update(DashboardModel dashboard) {
+				T.call(this);
+
+				dashboard.updateNbAppointmentOfCourse(queueId, numberOfAppointments);
+			}
+		});
 	}
 
 	public static void setIsQueueOpenForUser(ModelStoreSync modelStore, 
@@ -159,6 +194,27 @@ public class DashboardModels {
 				T.call(this);
 
 				teacherDashboard.setTeacherAvailability(queueId, isQueueOpen);
+			}
+		});
+	}
+
+	public static void setMyAppointmentForUser(ModelStoreSync modelStore, 
+			                                   String queueId,
+			                                   String userId,
+			                                   boolean myAppointment) {
+
+		T.call(DashboardModels.class);
+
+		modelStore.updateModel(DashboardModel.class, 
+							   "admin",
+							   userId,
+							   new ModelUpdater<DashboardModel>() {
+
+			@Override
+			public void update(DashboardModel dashboard) {
+				T.call(this);
+
+				dashboard.updateMyAppointment(queueId, false);
 			}
 		});
 	}

@@ -15,6 +15,7 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 	private HtmlElement addCourseButton;
 	private HtmlElement addCourseTitleInput;
+	private HtmlElement addQueueModal;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -23,9 +24,11 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
+		addQueueModal = getRootElement().find("#add-queue-modal").get(0);
 
 		MustNot.beNull(addCourseButton);
 		MustNot.beNull(addCourseTitleInput);
+		MustNot.beNull(addQueueModal);
 
 		addListeners();
 	}
@@ -41,6 +44,8 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value()));
 				Ntro.messages().send(addCourseMessage);
+				
+				addQueueModal.hide();
 			}
 		});
 	}

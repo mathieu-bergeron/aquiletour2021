@@ -6,6 +6,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.assertions.MustNot;
@@ -136,7 +137,14 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public void remove() {
+	public void removeFromDocument() {
+		T.call(this);
+
+		jsoupElement.remove();
+	}
+
+	@Override
+	public void deleteForever() {
 		T.call(this);
 
 		jsoupElement.remove();
@@ -197,17 +205,28 @@ public class HtmlElementJdk extends HtmlElement {
 
 	@Override
 	public HtmlElement createElement(String html) {
-		return parseHtml(html);
+		return new HtmlElementJdk(parseHtml(html));
 	}
 
-	public static HtmlElement parseHtml(String html) {
+	public static Element parseHtml(String html) {
+		T.call(HtmlElementJdk.class);
+
+		Element result = null;
+		
 		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
-		
-		Element jsoupRootElement = new Element("span");
-		
-		jsoupDocument.body().childNodes().forEach(c -> jsoupRootElement.appendChild(c.clone()));
-		
-		return new HtmlElementJdk(jsoupRootElement);
+
+		List<Node> childNodes = jsoupDocument.body().childNodes();
+
+		if(childNodes.size() == 1) {
+			result = (Element) childNodes.get(0);
+		}else {
+			result = new Element("span");
+			for(Node childNode : childNodes) {
+				result.appendChild(childNode.clone());
+			}
+		}
+
+		return result;
 	}
 
 	@Override

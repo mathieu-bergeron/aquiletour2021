@@ -8,6 +8,7 @@ import ca.aquiletour.server.backend.dashboard.DashboardModels;
 import ca.aquiletour.server.backend.queues.QueuesModels;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
 public class QueueModels {
@@ -86,6 +87,16 @@ public class QueueModels {
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
+		
+		modelStore.updateModel(QueueModel.class, "amdin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+
+				queue.clearQueue();
+			}
+		});
+		
 
 		DashboardModels.closeQueueForUser(modelStore, queueId, queue.getTeacherId());
 		

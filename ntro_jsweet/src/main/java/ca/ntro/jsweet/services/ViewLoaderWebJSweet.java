@@ -28,7 +28,7 @@ public class ViewLoaderWebJSweet extends ViewLoaderWeb {
 	protected HtmlElement parseHtml(String html) {
 		T.call(this);
 
-		return HtmlElementJSweet.parseHtml(html);
+		return new HtmlElementJSweet(HtmlElementJSweet.parseHtml(html));
 	}
 
 

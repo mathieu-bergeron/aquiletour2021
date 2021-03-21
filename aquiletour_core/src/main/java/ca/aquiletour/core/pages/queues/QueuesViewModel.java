@@ -2,12 +2,9 @@ package ca.aquiletour.core.pages.queues;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
-import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
@@ -20,8 +17,9 @@ public class QueuesViewModel extends ModelViewSubViewHandler<QueuesModel, Queues
 			
 			@Override
 			public void onItemRemoved(int index, QueueSummary item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				view.deleteQueue(item.getId());
 			}
 			
 			@Override
@@ -32,13 +30,12 @@ public class QueuesViewModel extends ModelViewSubViewHandler<QueuesModel, Queues
 			
 			@Override
 			public void onItemAdded(int index, QueueSummary item) {
-				// TODO Auto-generated method stub
 				T.call(this);
-				T.here();
+
 				QueueSummaryView queueSummaryView = (QueueSummaryView) subViewLoader.createView();
 				queueSummaryView.displaySummary(item);
 				
-				view.appendQueue(queueSummaryView);
+				view.appendQueue(item.getId(), queueSummaryView);
 			}
 			
 			@Override

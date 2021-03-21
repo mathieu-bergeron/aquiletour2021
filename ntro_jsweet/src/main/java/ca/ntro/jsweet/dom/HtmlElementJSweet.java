@@ -12,7 +12,6 @@ import def.dom.EventListener;
 import def.dom.File;
 import def.dom.FileList;
 import def.dom.FileReader;
-import def.dom.Globals;
 import def.dom.HTMLInputElement;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
@@ -65,14 +64,18 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		jQueryElement.append($.parseHTML(html));
+		jQueryElement.append(parseHtml(html));
 	}
 
 	@Override
 	public void appendElement(HtmlElement element) {
 		T.call(this);
-
-		jQueryElement.append(((HtmlElementJSweet) element).jQueryElement);
+		
+		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
+		
+		toAppend.show();
+		
+		jQueryElement.append(toAppend);
 	}
 
 	@Override
@@ -133,17 +136,27 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public void remove() {
+	public void removeFromDocument() {
 		T.call(this);
 		
 		// XXX: the DOM method does not remove event listeners
 		//      (unless the element is garbage collected, which
 		//       it won't be as our jQueryElement as a reference to it)
-		Element domElement = jQueryElement.get(0);
-		domElement.remove();
+		for(int i = 0; i < jQueryElement.length; i++) {
+			//Element domElement = jQueryElement.get(i);
+			Element domElement = jQueryElement.get(0);
+			domElement.remove();
+		}
 
 		// XXX: jQuery.remove also removes event listeners
 		//jQueryElement.remove();
+	}
+
+	@Override
+	public void deleteForever() {
+		T.call(this);
+
+		jQueryElement.remove();
 	}
 
 	@Override
@@ -166,10 +179,11 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		// XXX: this would remove listeners
 		//jQueryElement.html("");
-		jQueryElement.get(0).innerHTML = "";
-
+		for(int i = 0; i < jQueryElement.length; i++) {
+			jQueryElement.get(i).innerHTML = "";
+		}
+		
 		if(htmlString != null) {
-
 			Object[] elementsToAppend = $.parseHTML(htmlString);
 
 			if(elementsToAppend != null) {
@@ -197,7 +211,7 @@ public class HtmlElementJSweet extends HtmlElement {
 
 	@Override
 	public HtmlElement createElement(String html) {
-		return HtmlElementJSweet.parseHtml(html);
+		return new HtmlElementJSweet(parseHtml(html));
 	}
 
 	@Override
@@ -219,17 +233,22 @@ public class HtmlElementJSweet extends HtmlElement {
 		fileReader.readAsText(firstFile);
 	}
 	
-	public static HtmlElementJSweet parseHtml(String html) {
+	public static JQuery parseHtml(String html) {
 		T.call(HtmlElementJSweet.class);
+		
+		JQuery result = null;
 
 		Object[] parsedHtml = $.parseHTML(html, document, false);
 
-		JQuery rootDiv = $(document.createElement("span"));
-
-		for(Object parsedElement : parsedHtml) {
-			rootDiv.append($(parsedElement));
+		if(parsedHtml.length == 1) {
+			result = $(parsedHtml[0]);
+		}else {
+			result = $(document.createElement("span"));
+			for(Object parsedElement : parsedHtml) {
+				result.append($(parsedElement));
+			}
 		}
 
-		return new HtmlElementJSweet(rootDiv);
+		return result;
 	}
 }

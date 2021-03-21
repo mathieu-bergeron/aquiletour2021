@@ -47,9 +47,10 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		T.call(this);
 		
 		if(doesStudentHaveAppointment) {
-			HtmlElement openQueueLink = makeAppointmentLink.createElement("<a href='/billetterie/"+queueId+"'>J'ai déjà un rendez-vous</>");
 
-			queueStatus.clearChildren();
+			queueStatus.html("");
+
+			HtmlElement openQueueLink = queueStatus.createElement("<a href='/billetterie/"+queueId+"'>J'ai déjà un rendez-vous</>");
 			queueStatus.appendElement(openQueueLink);
 			
 			openQueueLink.addEventListener("click", new HtmlEventListener() {

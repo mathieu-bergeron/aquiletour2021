@@ -30,6 +30,6 @@ public class ViewLoaderWebJdk extends ViewLoaderWeb {
 	protected HtmlElement parseHtml(String html) {
 		T.call(this);
 
-		return HtmlElementJdk.parseHtml(html);
+		return new HtmlElementJdk(HtmlElementJdk.parseHtml(html));
 	}
 }

@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
@@ -52,18 +53,13 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		openQueueHref = title.getAttribute("href");
 		closeQueueHref = closeQueue.getAttribute("href");
 		deleteQueueHref = deleteQueue.getAttribute("href");
-		
-		addListeners(context);
-	}
-
-	private void addListeners(NtroContext<?> context) {
-		T.call(this);
-		
 	}
 
 	@Override
 	public void displayStatus(String QueueId, boolean myAppointment, boolean teacherAvailable) {
-		// XXX: not supported
+		T.call(this);
+
+		showOrHideCloseQueue(teacherAvailable);
 	}
 
 	@Override
@@ -102,6 +98,17 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		adjustOpenCloseLinks(course);
 
 		deleteQueue.setAttribute("href", deleteQueueHref + course.getCourseId());
+		
+		deleteQueue.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+
+				DeleteCourseMessage deleteCourseMessage = Ntro.messages().create(DeleteCourseMessage.class);
+				deleteCourseMessage.setCourseId(course.getCourseId());
+				Ntro.messages().send(deleteCourseMessage);
+			}
+		});
 	}
 
 	private void adjustOpenCloseLinks(CourseSummary course) {
@@ -110,7 +117,13 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		title.setAttribute("href", openQueueHref + course.getCourseId());
 		closeQueue.setAttribute("href", closeQueueHref + course.getCourseId());
 
-		if(course.getIsQueueOpen().getValue()) {
+		showOrHideCloseQueue(course.getIsQueueOpen().getValue());
+	}
+
+	private void showOrHideCloseQueue(boolean isQueueOpen) {
+		T.call(this);
+
+		if(isQueueOpen) {
 			closeQueue.show();
 		} else {
 			closeQueue.hide();
