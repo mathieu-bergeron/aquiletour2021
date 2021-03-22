@@ -1,34 +1,15 @@
 {
   "appointments": {
     "_C": "ObservableAppointmentList",
-    "value": [
-      {
-        "studentId": "bob",
-        "_C": "Appointment",
-        "studentSurname": "Bérancourt",
-        "studentName": "Bob",
-        "id": "14"
-      },
-      {
-        "studentId": "alice",
-        "_C": "Appointment",
-        "studentSurname": "Awama",
-        "studentName": "Alice",
-        "id": "15"
-      },
-      {
-        "studentId": "bob",
-        "_C": "Appointment",
-        "studentSurname": "Bérancourt",
-        "studentName": "Bob",
-        "id": "16"
-      }
-    ]
+    "value": []
   },
-  "maxId": 16,
+  "maxId": 0,
+  "teacherId": "alice",
   "_C": "QueueModel",
   "studentIds": [
-    "bob",
-    "alice"
-  ]
+    "1234500",
+    "1234501",
+    "1234502"
+  ],
+  "courseId": "4F5"
 }

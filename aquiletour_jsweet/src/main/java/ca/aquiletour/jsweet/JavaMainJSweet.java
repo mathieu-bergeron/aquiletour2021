@@ -35,7 +35,7 @@ public class JavaMainJSweet {
 		//        ideally using a TaskGraph to represent dependancies
 		AquiletourMain.registerSerializableClasses();
 
-		BackendServiceJSweet backendServiceJSweet = new BackendServiceJSweet(Constants.WS_CONNECTION_STRING);
+		BackendServiceJSweet backendServiceJSweet = new BackendServiceJSweet(Constants.WS_PATH);
 		
 		NtroJSweet.defaultInitializationTask(backendServiceJSweet)
 				  .setOptions(options)

@@ -8,6 +8,7 @@ import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueView>  {
 	
@@ -17,6 +18,8 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 		
 		view.clearQueue();
 		
+		view.initializeCloseQueueButton(model.getCourseId());
+
 		model.getAppointments().observe(new ListObserver<Appointment>() {
 
 			@Override
@@ -41,9 +44,13 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 			public void onItemAdded(int index, Appointment item) {
 				// TODO Auto-generated method stub
 				T.call(this);
+				
+				String currentUserId = Ntro.userService().currentUser().getId();
+				
+				
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				
-				appointmentView.displayAppointement(item);
+				appointmentView.displayAppointement(model.getCourseId(), currentUserId, item);
 				
 				//view.insertAppointment(index, item, appointmentView);
 				view.appendAppointement(item, appointmentView);

@@ -8,13 +8,13 @@ import ca.ntro.core.system.trace.T;
 public class ActivityController extends NtroController<CourseController>{
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 		
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		// TODO Auto-generated method stub
 		
 	}

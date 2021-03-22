@@ -2,11 +2,11 @@ package ca.aquiletour.core.pages.dashboards.teacher.messages;
 
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 
-public class DeleteCourseMessage extends NtroMessage {
+public class DeleteCourseMessage extends NtroUserMessage<User> {
+
 	private String courseId;
-	private User user;
 
 	public void setCourseId(String courseId) {
 		T.call(this);
@@ -18,13 +18,5 @@ public class DeleteCourseMessage extends NtroMessage {
 		T.call(this);
 		
 		return courseId;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 }

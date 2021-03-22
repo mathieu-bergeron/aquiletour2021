@@ -12,7 +12,7 @@ import ca.ntro.services.Ntro;
 public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmentMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore,MoveAppointmentMessage message) {
+	public void handleNow(ModelStoreSync modelStore,MoveAppointmentMessage message) {
 		T.call(this);
 		
 		User requestingUser = message.getUser();
@@ -35,5 +35,10 @@ public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmen
 			// TODO: error handling
 			
 		}
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, MoveAppointmentMessage message) {
+		T.call(this);
 	}
 }

@@ -20,10 +20,8 @@ public class TeacherDashboardController extends DashboardController {
 	protected void installParentViewMessageHandler() {
 		T.call(this);
 		
-		System.out.println("TeacherDashboard");
-
 		addParentViewMessageHandler(ShowTeacherDashboardMessage.class, new ShowTeacherDashboardHandler());
-		addSubViewLoader(TeacherCourseSummaryView.class, currentContext().lang());
+		addSubViewLoader(TeacherCourseSummaryView.class, context().lang());
 		
 		addModelViewSubViewHandler(TeacherCourseSummaryView.class, new DashboardViewModel());
 	}

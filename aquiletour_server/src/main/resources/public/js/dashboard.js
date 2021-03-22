@@ -1,8 +1,9 @@
-window.onload = function(){
+function initializeDashboard(viewRootElement, jSweet){
 
-    var buttonAvailable = document.getElementById("buttonAvailable");
-    var available = document.getElementById("teacherAvailable");
-    var availableLink = document.getElementById("availableLink");
+    const buttonAvailable = viewRootElement.find("#buttonAvailable");
+    const available = viewRootElement.find("#teacherAvailable");
+    const availableLink = viewRootElement.find("#availableLink");
+    const coursesContainer = viewRootElement.find("#courses-container");
 
     buttonAvailable.onclick = function() {
       
@@ -33,11 +34,7 @@ window.onload = function(){
       availableLink.style.cursor = "hand";
     }
 
-    $(function() {
-      $( "#course-cards" ).sortable({
-          handle:'.handle'
-      });
-    
-      
-    } );
+    coursesContainer.sortable({
+      handle:'.handle'
+    });
 }

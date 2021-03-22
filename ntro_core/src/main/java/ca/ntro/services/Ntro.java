@@ -388,18 +388,26 @@ public class Ntro {
 	
 	/* <UserService> */
 
-	private static UserService userService;
+	private static Class<? extends UserService> userServiceClass;
+	private static Map<String, UserService> userServices = new HashMap<>();
 
-	static void registerUserService(UserService userService) {
-		__T.call(Ntro.class, "registerUserService");
+	static void registerUserServiceClass(Class<? extends UserService> userServiceClass) {
+		__T.call(Ntro.class, "registerUserServiceClass");
 
-		Ntro.userService = userService;
+		Ntro.userServiceClass = userServiceClass;
 	}
 
 	public static UserService userService() {
 		__T.call(Ntro.class, "userService");
 
-		return Ntro.userService;
+		UserService service = userServices.get(threadService().currentThread().getThreadId());
+
+		if(service == null) {
+			service = Ntro.factory().newInstance(userServiceClass);
+			userServices.put(threadService().currentThread().getThreadId(), service);
+		}
+
+		return service;
 	}
 
 	/* </UserService> */

@@ -1,6 +1,5 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.models.NtroModel;
@@ -10,6 +9,7 @@ import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 import def.dom.Event;
 import def.dom.EventListener;
 import def.dom.Storage;
@@ -49,9 +49,7 @@ public class LocalStoreJSweet extends ModelStore {
 	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
 		T.call(this);
 		
-		String fullId = fullId(documentPath);
-		
-		String jsonString = (String) localStorage.getItem(fullId);
+		String jsonString = getJsonString(documentPath);
 		
 		if(jsonString == null) {
 
@@ -63,11 +61,22 @@ public class LocalStoreJSweet extends ModelStore {
 		return jsonLoader;
 	}
 
+	private String getJsonString(DocumentPath documentPath) {
+		String fullId = fullId(documentPath);
+		
+		String jsonString = (String) localStorage.getItem(fullId);
+		return jsonString;
+	}
+
+	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		return getJsonString(documentPath) != null;
+	}
 
 
 
 	@Override
-	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		String fullId = fullId(documentPath);
@@ -103,4 +112,12 @@ public class LocalStoreJSweet extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		String fullId = fullId(documentPath);
+		
+		localStorage.removeItem(fullId);
+	}
+
 }

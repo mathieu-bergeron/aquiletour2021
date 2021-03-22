@@ -1,6 +1,5 @@
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
@@ -13,6 +12,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 import static def.es6.Globals.fetch;
 
@@ -46,6 +46,12 @@ public class NetworkStoreJSweet extends ModelStore {
 		return new JsonLoaderJSweet(documentPath);
 	}
 
+	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		// XXX: always false. Cannot be known synchronously
+		return false;
+	}
+
     /*
 	// JSWEET: does not compile
 	// Object jsObject = Lang.await(fetchJsonObject(documentPath));
@@ -64,7 +70,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	*/
 
 	@Override
-	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		def.js.Object options = new def.js.Object();
@@ -102,4 +108,10 @@ public class NetworkStoreJSweet extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		// XXX: not supported
+	}
+
 }

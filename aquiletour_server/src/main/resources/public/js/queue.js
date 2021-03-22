@@ -1,50 +1,47 @@
+function initializeQueue(viewRootElement, jSweet){
 
+    console.log(jSweet);
 
-window.onload = function(){
-    
-        $(function() {
+    const appointmentList = viewRootElement.find("#appointment-list");
+
+    appointmentList.sortable({
+        handle:'.handle',
+        update: function(event, ui){
             
-            $( "#appointment-list" ).sortable({
-                handle:'.handle',
-                update: function(event, ui){
-                    
 
-                    const appointment = $(ui.item);
-                    const nextAppointment = $(appointment.next());
-                    const prevAppointment = $(appointment.prev());
+            const appointment = $(ui.item);
+            const nextAppointment = $(appointment.next());
+            const prevAppointment = $(appointment.prev());
 
-                    const appointmentId = appointment.attr("id");
-                    const nextAppointmentId = nextAppointment.attr("id");
-                    const prevAppointmentId = prevAppointment.attr("id");
+            const appointmentId = appointment.attr("id");
+            const nextAppointmentId = nextAppointment.attr("id");
+            const prevAppointmentId = prevAppointment.attr("id");
 
+            if (nextAppointment.length > 0) {
 
-                    if (nextAppointment.length > 0) {
-                        
-                        //window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
-                        history.pushState({
-                            id: 'queue'
-                          }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId);
-                       /* let addCourseMessage = (ca.ntro.services.Ntro.messages().create(ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage));
-                        addCourseMessage.setCourse(new ca.aquiletour.core.pages.dashboards.values.CourseSummary(courseTitle, courseId, false, false, 0));
-                        addCourseMessage.setUser(user);
-                        ca.ntro.services.Ntro.messages().send(addCourseMessage);*/
-                        
-                    } else if (prevAppointment.length > 0) {
-                    
-                        //window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
+                if(jSweet){
+                    history.pushState({
+                        id: 'queue'
+                      }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId);
 
-                        history.pushState({
-                            id: 'queue'
-                          }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
-                    }
+                }else{
 
-                    console.log(nextAppointment);
+                    window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
                 }
-            
-            });
-            
-            
-        });
-    
-}
+                
+                
+            } else if (prevAppointment.length > 0) {
 
+                if(jSweet){
+                    history.pushState({
+                        id: 'queue'
+                      }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
+
+                }else{
+
+                    window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
+                }
+            }
+        }
+    });
+}

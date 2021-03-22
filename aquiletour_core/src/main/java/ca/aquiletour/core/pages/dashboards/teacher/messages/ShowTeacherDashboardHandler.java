@@ -12,6 +12,8 @@ public class ShowTeacherDashboardHandler extends ParentViewMessageHandler<RootVi
 	protected void handle(RootView parentView, 
 			              TeacherDashboardView currentView, 
 			              ShowTeacherDashboardMessage message) {
+		
+		System.out.println("ShowTeacherDashboard");
 
 		parentView.showDashboard(currentView);
 	}

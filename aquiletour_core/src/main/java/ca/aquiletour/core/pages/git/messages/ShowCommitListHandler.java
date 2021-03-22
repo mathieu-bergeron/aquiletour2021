@@ -26,7 +26,7 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		
 		if(!studentId.equals(currentStudentId)) {
 			// XXX: change queue model when needed
-			String authToken = currentController.currentContext().user().getAuthToken();
+			String authToken = currentController.context().user().getAuthToken();
 			currentController.setModelLoader(CommitListModel.class, authToken, studentId);
 			currentStudentId = studentId;
 		}

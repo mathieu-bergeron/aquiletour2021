@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
-import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
@@ -14,75 +14,141 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
-import ca.ntro.web.mvc.NtroViewWeb;
 
 public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
 
+	private HtmlElement title;
+	private HtmlElement numberOfStudentsElement;
+	private HtmlElement numberOfAppointmentsElement;
+	private HtmlElement deleteQueue;
+	private HtmlElement closeQueue;
+	private HtmlElement csvFileInput;
+	private HtmlElement csvFileSubmit;
+	private HtmlElement csvFileQueueId;
+
+	private String openQueueHref;
+	private String closeQueueHref;
+	private String deleteQueueHref;
+
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
+		T.call(this);
+
+		title = this.getRootElement().find("#course-title-link").get(0);
+		numberOfStudentsElement = this.getRootElement().find("#number-of-students").get(0);
+		numberOfAppointmentsElement = this.getRootElement().find("#number-of-appointments").get(0);
+		deleteQueue = this.getRootElement().find("#delete-queue-link").get(0);
+		closeQueue = this.getRootElement().find("#close-queue-link").get(0);
+		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
+		csvFileSubmit = this.getRootElement().find("#csv-file-submit").get(0);
+		csvFileQueueId = this.getRootElement().find("#csv-file-queue-id").get(0);
+		
+		MustNot.beNull(title);
+		MustNot.beNull(numberOfStudentsElement);
+		MustNot.beNull(numberOfAppointmentsElement);
+		MustNot.beNull(closeQueue);
+		MustNot.beNull(csvFileInput);
+		MustNot.beNull(csvFileSubmit);
+		MustNot.beNull(csvFileQueueId);
+		
+		openQueueHref = title.getAttribute("href");
+		closeQueueHref = closeQueue.getAttribute("href");
+		deleteQueueHref = deleteQueue.getAttribute("href");
 	}
 
 	@Override
-	public void displayStatus(boolean myAppointment, boolean isQueueOpen) {
-		HtmlElement closeQueue = this.getRootElement().find("#closeQueue").get(0);
-		MustNot.beNull(closeQueue);
-		
-		if (isQueueOpen) {
-			closeQueue.setAttribute("href", "/billetterie/" + "3C6" + "?teacherClosesQueue");
-			closeQueue.html("CLOSE QUEUE");
-		} else {
-			closeQueue.setAttribute("href", "/billetterie/" + "3C6");
-			closeQueue.html("OPEN QUEUE");
+	public void displayStatus(String QueueId, boolean myAppointment, boolean teacherAvailable) {
+		T.call(this);
 
-		}
-		closeQueue.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-				T.here();
-
-				if (isQueueOpen) {
-					T.here();
-					TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
-					teacherClosesQueueMessage.setCourseId("3C6");
-					Ntro.messages().send(teacherClosesQueueMessage);
-
-				} else {
-					T.here();
-					TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-					teacherUsesQueueMessage.setCourseId("3C6");
-					Ntro.messages().send(teacherUsesQueueMessage);
-				}
-			}
-		});
+		showOrHideCloseQueue(teacherAvailable);
 	}
 
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
-		T.here();
 
-		HtmlElement title = this.getRootElement().find("#course-title").get(0);
-		HtmlElement courseId = this.getRootElement().find("#courseId").get(0);
-		HtmlElement nbAppointment = this.getRootElement().find("#nbAppointment").get(0);
-		HtmlElement makeAppointmentLink = this.getRootElement().find("#availableLink").get(0);
-		HtmlElement deleteCourseLink = this.getRootElement().find("#deleteLink").get(0);
-		HtmlElement closeQueue = this.getRootElement().find("#closeQueue").get(0);
+		displayQueueInfo(course);
 
-		MustNot.beNull(title);
-		MustNot.beNull(courseId);
-		MustNot.beNull(nbAppointment);
-		MustNot.beNull(makeAppointmentLink);
-		MustNot.beNull(closeQueue);
+		installQueueActions(course);
+
+		setUpCsvFileUpload(course);
+	}
+
+	private void setUpCsvFileUpload(CourseSummary course) {
+		T.call(this);
+
+		csvFileSubmit.addEventListener("click", new CsvSubmitListener(course.getCourseId(), csvFileInput));
+		csvFileQueueId.value(course.getCourseId());
+	}
+
+	private void displayQueueInfo(CourseSummary course) {
+		T.call(this);
 
 		title.appendHtml(course.getTitle());
-		// courseId.appendHtml(course.getCourseId());
+		displayNumberOfAppointments(course.getNumberOfAppointments().getValue());
+		displayNumberOfStudents(course.getNumberOfStudents().getValue());
+	}
 
-		nbAppointment.appendHtml(Integer.toString(course.getNumberOfAppointments()));
-		makeAppointmentLink.setAttribute("href", "/billetterie/" + course.getTitle());
-		deleteCourseLink.setAttribute("href", "/mescours/" + course.getTitle() + "?deleteCourse");
+	private void installQueueActions(CourseSummary course) {
+		T.call(this);
 
-		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
+		installerOpenQueueListener(course);
+
+		installCloseQueueListener(course);
+
+		adjustOpenCloseLinks(course);
+
+		deleteQueue.setAttribute("href", deleteQueueHref + course.getCourseId());
+		
+		deleteQueue.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+
+				DeleteCourseMessage deleteCourseMessage = Ntro.messages().create(DeleteCourseMessage.class);
+				deleteCourseMessage.setCourseId(course.getCourseId());
+				Ntro.messages().send(deleteCourseMessage);
+			}
+		});
+	}
+
+	private void adjustOpenCloseLinks(CourseSummary course) {
+		T.call(this);
+
+		title.setAttribute("href", openQueueHref + course.getCourseId());
+		closeQueue.setAttribute("href", closeQueueHref + course.getCourseId());
+
+		showOrHideCloseQueue(course.getIsQueueOpen().getValue());
+	}
+
+	private void showOrHideCloseQueue(boolean isQueueOpen) {
+		T.call(this);
+
+		if(isQueueOpen) {
+			closeQueue.show();
+		} else {
+			closeQueue.hide();
+		}
+	}
+
+	private void installCloseQueueListener(CourseSummary course) {
+		T.call(this);
+
+		closeQueue.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				
+				TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
+				teacherClosesQueueMessage.setCourseId(course.getCourseId());
+				Ntro.messages().send(teacherClosesQueueMessage);
+			}
+		});
+	}
+
+	private void installerOpenQueueListener(CourseSummary course) {
+		T.call(this);
+
+		title.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.here();
@@ -92,14 +158,23 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				Ntro.messages().send(showTeacherQueueMessage);
 
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-				// FIXME
-				teacherUsesQueueMessage.setCourseId("3C6");
+				teacherUsesQueueMessage.setCourseId(course.getCourseId());
 				Ntro.messages().send(teacherUsesQueueMessage);
 			}
 		});
+	}
 
-		
+	@Override
+	public void displayNumberOfAppointments(int numberOfAppointments) {
+		T.call(this);
 
-		
+		numberOfAppointmentsElement.html(String.valueOf(numberOfAppointments));
+	}
+
+	@Override
+	public void displayNumberOfStudents(int numberOfStudents) {
+		T.call(this);
+
+		numberOfStudentsElement.html(String.valueOf(numberOfStudents));
 	}
 }

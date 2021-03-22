@@ -16,27 +16,28 @@ import ca.ntro.core.system.trace.T;
 public class CommitListController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 
 		setViewLoader(CommitListView.class, "fr");
 		setModelLoader(new EmptyModelLoader());
 
 		addControllerMessageHandler(ShowCommitListMessage.class, new ShowCommitListHandler());
-		addSubViewLoader(CommitView.class, currentContext().lang());
+		addSubViewLoader(CommitView.class, context.lang());
 		addModelViewSubViewHandler(CommitView.class, new CommitListViewModel());
 	}
 
-	@Override
-	protected void onChangeContext(NtroContext<?> previousContext) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
 
+	}
+
+	@Override
+	protected void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
