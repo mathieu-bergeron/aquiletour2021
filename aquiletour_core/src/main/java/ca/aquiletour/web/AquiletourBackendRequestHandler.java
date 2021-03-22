@@ -60,7 +60,16 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith("home")) {
 
 			sendHomeMessages(path.subPath(1), parameters);
+			
+		}else if(path.startsWith("progressiongit")) {
+
+			sendGitMessages(path.subPath(1), parameters);
 		}
+	}
+	
+	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
 	}
 
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {

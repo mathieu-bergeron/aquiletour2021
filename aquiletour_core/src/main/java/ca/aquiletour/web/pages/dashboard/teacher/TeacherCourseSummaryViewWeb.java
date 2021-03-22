@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.dashboard.teacher;
 
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
@@ -150,12 +151,12 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		title.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
-				
+				T.here();
 				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(course.getCourseId());
 
 				Ntro.messages().send(showTeacherQueueMessage);
-				
+
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				teacherUsesQueueMessage.setCourseId(course.getCourseId());
 				Ntro.messages().send(teacherUsesQueueMessage);

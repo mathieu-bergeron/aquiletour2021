@@ -45,6 +45,7 @@ public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 				sendShowDashboardMessage();
 			}
 		});
+		
 	}
 
 	private void sendCloseQueueMessage(String courseId) {

@@ -11,6 +11,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
@@ -46,13 +47,26 @@ public class AquiletourRequestHandler {
 			sendLoginMessages(path.subPath(1), parameters);
 			
 		} else if(path.startsWith("accueil")) {
-
+			
 			sendHomeMessages(path.subPath(1), parameters);
 
 		} else if(path.startsWith("deconnexion")) {
 
 			Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
+			
+		} else if(path.startsWith("progressiongit")) {
+
+			sendGitMessages(path.subPath(1), parameters);
 		}
+	}
+
+	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
+
+		ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
+		showGitMessage.setStudentId("bob");
+		Ntro.messages().send(showGitMessage);
+		
 	}
 
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
@@ -121,7 +135,7 @@ public class AquiletourRequestHandler {
 				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(courseId);
 				Ntro.messages().send(showTeacherQueueMessage);
-				
+
 			}else if(user instanceof Student){
 				
 				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);

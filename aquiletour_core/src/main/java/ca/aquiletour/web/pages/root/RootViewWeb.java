@@ -8,6 +8,9 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -168,6 +171,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showHome(HomeView homeView) {
 		T.call(this);
+		
 		showSubView(homeView);
+	}
+
+	@Override
+	public void showGit(CommitListView commitListView) {
+		T.call(this);
+		
+		showSubView(commitListView);
 	}
 }
