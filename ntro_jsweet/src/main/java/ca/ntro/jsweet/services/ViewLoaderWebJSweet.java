@@ -5,6 +5,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.dom.HtmlElementJSweet;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.ViewLoaderWeb;
+import def.es6.Globals;
 
 public class ViewLoaderWebJSweet extends ViewLoaderWeb {
 
@@ -29,6 +30,14 @@ public class ViewLoaderWebJSweet extends ViewLoaderWeb {
 		T.call(this);
 
 		return new HtmlElementJSweet(HtmlElementJSweet.parseHtml(html));
+	}
+
+	@Override
+	protected void initializeJs(String viewName, HtmlElement viewRootHtmlElement) {
+		T.call(this);
+		
+		// XXX: defined in _ntro_initialize.js
+		Globals._ntro_initialize_view(viewName, (HtmlElementJSweet) viewRootHtmlElement);
 	}
 
 

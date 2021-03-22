@@ -1,34 +1,38 @@
-$( "#appointment-list" ).sortable({
-    handle:'.handle',
-    update: function(event, ui){
-        
+function initializeQueue(viewRootElement){
 
-        const appointment = $(ui.item);
-        const nextAppointment = $(appointment.next());
-        const prevAppointment = $(appointment.prev());
+    let appointmentList = $(viewRootElement.find("#appointment-list"));
 
-        const appointmentId = appointment.attr("id");
-        const nextAppointmentId = nextAppointment.attr("id");
-        const prevAppointmentId = prevAppointment.attr("id");
-
-
-        if (nextAppointment.length > 0) {
+    appointmentList.sortable({
+        handle:'.handle',
+        update: function(event, ui){
             
-            //window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
-            history.pushState({
-                id: 'queue'
-              }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId);
-            
-        } else if (prevAppointment.length > 0) {
-        
-            //window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
 
-            history.pushState({
-                id: 'queue'
-              }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
+            const appointment = $(ui.item);
+            const nextAppointment = $(appointment.next());
+            const prevAppointment = $(appointment.prev());
+
+            const appointmentId = appointment.attr("id");
+            const nextAppointmentId = nextAppointment.attr("id");
+            const prevAppointmentId = prevAppointment.attr("id");
+
+
+            if (nextAppointment.length > 0) {
+                
+                //window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
+                history.pushState({
+                    id: 'queue'
+                  }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId);
+                
+            } else if (prevAppointment.length > 0) {
+            
+                //window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
+
+                history.pushState({
+                    id: 'queue'
+                  }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
+            }
+
+            console.log(nextAppointment);
         }
-
-        console.log(nextAppointment);
-    }
-});
-
+    });
+}
