@@ -4,7 +4,6 @@ import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
-import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -17,7 +16,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 	HtmlElement title;
 	HtmlElement queueStatus;
-	HtmlElement makeAppointmentLink;
+	HtmlElement makeAppointmentButton;
 	
 	String makeAppointmentHref;
 
@@ -27,13 +26,13 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 		title = this.getRootElement().find("#course-title").get(0);
 		queueStatus = this.getRootElement().find("#queue-status").get(0);
-		makeAppointmentLink = this.getRootElement().find("#make-appointment-link").get(0);
+		makeAppointmentButton = this.getRootElement().find("#make-appointment-link").get(0);
 
 		MustNot.beNull(queueStatus);
 		MustNot.beNull(title);
-		MustNot.beNull(makeAppointmentLink);
+		MustNot.beNull(makeAppointmentButton);
 		
-		makeAppointmentHref = makeAppointmentLink.getAttribute("href");
+		makeAppointmentHref = makeAppointmentButton.getAttribute("href");
 		
 		addListeners(context);
     }
@@ -62,13 +61,13 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				}
 			});
 
-			makeAppointmentLink.hide();
+			makeAppointmentButton.hide();
 		}else if(isTeacherAvailable) {
 			queueStatus.html("Prof disponible");
-			makeAppointmentLink.show();
+			makeAppointmentButton.show();
 		}else {
 			queueStatus.html("Prof non-disponible");
-			makeAppointmentLink.hide();
+			makeAppointmentButton.hide();
 		}
 	}
 
@@ -78,14 +77,18 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 		title.appendHtml(course.getTitle());
 
-		makeAppointmentLink.setAttribute("href", makeAppointmentHref + course.getTitle() + "?makeAppointment");
+		makeAppointmentButton.setAttribute("href", makeAppointmentHref + course.getTitle() + "?makeAppointment");
 		
-		makeAppointmentLink.addEventListener("click", new HtmlEventListener() {
+		makeAppointmentButton.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				AddAppointmentMessage  addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
 				addAppointmentMessage.setCourseId(course.getCourseId());
 				Ntro.messages().send(addAppointmentMessage);
+				
+				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
+				showStudentQueueMessage.setCourseId(course.getCourseId());
+				Ntro.messages().send(showStudentQueueMessage);
 			}
 		});
 	}

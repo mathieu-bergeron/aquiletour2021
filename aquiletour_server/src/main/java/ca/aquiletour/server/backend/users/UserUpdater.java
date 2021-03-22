@@ -9,10 +9,10 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class UserModels {
+public class UserUpdater {
 
 	public static void addUsers(ModelStoreSync modelStore, List<User> usersToAdd) {
-		T.call(UserModels.class);
+		T.call(UserUpdater.class);
 
 		for(User user : usersToAdd) {
 			addUser(modelStore, user);
@@ -20,7 +20,7 @@ public class UserModels {
 	}
 
 	public static void addUser(ModelStoreSync modelStore, User user) {
-		T.call(UserModels.class);
+		T.call(UserUpdater.class);
 
 		if(!modelStore.ifModelExists(User.class, "admin", user.getId())) {
 

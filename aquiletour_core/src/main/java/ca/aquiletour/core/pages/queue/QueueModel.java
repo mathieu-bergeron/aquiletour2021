@@ -167,4 +167,16 @@ public class QueueModel implements NtroModel {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
+
+	public Appointment findAppointmentById(String appointmentId) {
+		Appointment result = null;
+		for(Appointment candidate : appointments.getValue()) {
+			if(candidate.getId().equals(appointmentId)) {
+				result = candidate;
+				break;
+			}
+		}
+		
+		return result;
+	}
 }

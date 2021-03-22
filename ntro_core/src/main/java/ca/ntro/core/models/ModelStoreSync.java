@@ -80,12 +80,19 @@ public class ModelStoreSync {
 												  String authToken,
 			                                      String modelId, 
 			                                      ModelInitializer<M> initializer){
+		T.call(this);
 
 		M model = (M) getModel(modelClass, authToken, modelId);
 
 		initializer.initialize(model);
 			
 		save(model);
+	}
+
+	public void closeWithoutSaving(NtroModel model) {
+		T.call(this);
+		
+		modelStore.closeWithoutSaving(model);
 	}
 	
 	

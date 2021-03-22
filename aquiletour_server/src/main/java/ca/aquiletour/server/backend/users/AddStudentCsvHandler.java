@@ -7,8 +7,8 @@ import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.aquiletour.server.backend.dashboard.DashboardModels;
-import ca.aquiletour.server.backend.queue.QueueModels;
+import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
+import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -27,14 +27,14 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		studentsToAdd = parseCsv(csvString);
 
-		int numberOfStudentAdded = QueueModels.addStudentsToQueue(modelStore, queueId, studentsToAdd);
+		int numberOfStudentAdded = QueueUpdater.addStudentsToQueue(modelStore, queueId, studentsToAdd);
 			
-		DashboardModels.incrementNumberOfStudents(modelStore, queueId, teacher.getId(), numberOfStudentAdded);
+		DashboardUpdater.incrementNumberOfStudents(modelStore, queueId, teacher.getId(), numberOfStudentAdded);
 
 		// FIXME: we need a real id
-		CourseSummary queueSummary = DashboardModels.createQueueSummary(queueId, queueId);
+		CourseSummary queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
 
-		DashboardModels.addQueueForUser(modelStore, queueSummary, teacher);
+		DashboardUpdater.addQueueForUser(modelStore, queueSummary, teacher);
 	}
 
 	private List<User> parseCsv(String csvString) {
@@ -69,13 +69,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) {
 		T.call(this);
 		
-		UserModels.addUsers(modelStore, studentsToAdd);
+		UserUpdater.addUsers(modelStore, studentsToAdd);
 
 		String queueId = message.getQueueId();
 
 		// FIXME: we need a real id
-		CourseSummary queueSummary = DashboardModels.createQueueSummary(queueId, queueId);
+		CourseSummary queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
 
-		DashboardModels.addQueueForUsers(modelStore, queueSummary, studentsToAdd);
+		DashboardUpdater.addQueueForUsers(modelStore, queueSummary, studentsToAdd);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -133,7 +134,9 @@ public class AquiletourBackendRequestHandler {
 			addAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
 			
-		} else if(parameters.containsKey("deleteAppointment") && user instanceof Teacher){
+		} else if(parameters.containsKey("deleteAppointment")){
+			
+			// FIXME TODO: check for permissions
 			
 			DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
 			String appointmentId = parameters.get("deleteAppointment")[0];

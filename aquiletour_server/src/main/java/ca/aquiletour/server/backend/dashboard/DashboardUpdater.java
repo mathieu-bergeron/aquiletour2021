@@ -9,10 +9,10 @@ import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardModels {
+public class DashboardUpdater {
 
 	public static CourseSummary createQueueSummary(String queueId, String queueTitle) {
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 
 		CourseSummary courseSummary = new CourseSummary();
 		courseSummary.setTitle(queueTitle); 
@@ -23,11 +23,11 @@ public class DashboardModels {
 		
 		return courseSummary;
 	}
-	
+
 	public static void deleteQueueForUsers(ModelStoreSync modelStore, 
 			                                  String queueId, 
 			                                  List<String> userIds) {
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		for(String userId : userIds) {
 			deleteQueueForUser(modelStore, queueId, userId);
@@ -38,7 +38,7 @@ public class DashboardModels {
 			                              String queueId, 
 			                              String userId) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		modelStore.updateModel(DashboardModel.class, 
 				               "admin", 
@@ -57,7 +57,7 @@ public class DashboardModels {
 									      CourseSummary queue,
 			                              List<String> userIds) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		for(String userId : userIds) {
 			addQueueForUserId(modelStore, queue, userId);
@@ -68,7 +68,7 @@ public class DashboardModels {
 									    CourseSummary queue,
 			                            List<User> users) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		for(User user : users) {
 			addQueueForUserId(modelStore, queue, user.getId());
@@ -79,7 +79,7 @@ public class DashboardModels {
 									   CourseSummary queue,
 			                           User user) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		addQueueForUserId(modelStore, queue, user.getId());
 	}
@@ -88,7 +88,7 @@ public class DashboardModels {
 									     CourseSummary queue,
 			                             String userId) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 
 		modelStore.updateModel(DashboardModel.class, 
 							   "admin",
@@ -107,7 +107,7 @@ public class DashboardModels {
 	public static void openQueueForUsers(ModelStoreSync modelStore, 
 			                             String queueId, 
 			                             List<String> userIds) {
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		for(String userId : userIds) {
 			openQueueForUser(modelStore, queueId, userId);
@@ -117,7 +117,7 @@ public class DashboardModels {
 	public static void closeQueueForUsers(ModelStoreSync modelStore, 
 			                              String queueId, 
 			                              List<String> userIds) {
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		for(String userId : userIds) {
 			closeQueueForUser(modelStore, queueId, userId);
@@ -128,7 +128,7 @@ public class DashboardModels {
 			                            String queueId,
 			                            String userId) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 
 		setIsQueueOpenForUser(modelStore, queueId, userId, true);
 	}
@@ -137,11 +137,11 @@ public class DashboardModels {
 			                             String queueId,
 			                             String userId) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 
 		setIsQueueOpenForUser(modelStore, queueId, userId, false);
-		setMyAppointmentForUser(modelStore, queueId, userId, false);
+		setMyAppointmentForUserId(modelStore, queueId, userId, false);
 		setNumberOfAppointmentsForUser(modelStore, queueId, userId, 0);
 	}
 
@@ -149,10 +149,21 @@ public class DashboardModels {
 			                                           String queueId,
 			                                           List<User> users,
 			                                           int numberOfAppointments) {
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 		
 		for(User user : users) {
 			setNumberOfAppointmentsForUser(modelStore, queueId, user.getId(), numberOfAppointments);
+		}
+	}
+
+	public static void setNumberOfAppointmentsForUserIds(ModelStoreSync modelStore, 
+			                                             String queueId,
+			                                             List<String> userIds,
+			                                             int numberOfAppointments) {
+		T.call(DashboardUpdater.class);
+		
+		for(String userId : userIds) {
+			setNumberOfAppointmentsForUser(modelStore, queueId, userId, numberOfAppointments);
 		}
 	}
 
@@ -161,7 +172,7 @@ public class DashboardModels {
 			                                          String userId,
 			                                          int numberOfAppointments) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 
 		modelStore.updateModel(DashboardModel.class, 
 							   "admin",
@@ -182,7 +193,7 @@ public class DashboardModels {
 			                                 String userId,
 			                                 boolean isQueueOpen) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 
 		modelStore.updateModel(DashboardModel.class, 
 							   "admin",
@@ -200,10 +211,19 @@ public class DashboardModels {
 
 	public static void setMyAppointmentForUser(ModelStoreSync modelStore, 
 			                                   String queueId,
-			                                   String userId,
+			                                   User user,
 			                                   boolean myAppointment) {
+		T.call(DashboardUpdater.class);
+		
+		setMyAppointmentForUserId(modelStore, queueId, user.getId(), myAppointment);
+	}
 
-		T.call(DashboardModels.class);
+	public static void setMyAppointmentForUserId(ModelStoreSync modelStore, 
+			                                     String queueId,
+			                                     String userId,
+			                                     boolean myAppointment) {
+
+		T.call(DashboardUpdater.class);
 
 		modelStore.updateModel(DashboardModel.class, 
 							   "admin",
@@ -214,7 +234,7 @@ public class DashboardModels {
 			public void update(DashboardModel dashboard) {
 				T.call(this);
 
-				dashboard.updateMyAppointment(queueId, false);
+				dashboard.updateMyAppointment(queueId, myAppointment);
 			}
 		});
 	}
@@ -224,7 +244,7 @@ public class DashboardModels {
 			                                     String userId, 
 			                                     int numberOfStudentAdded) {
 
-		T.call(DashboardModels.class);
+		T.call(DashboardUpdater.class);
 
 		modelStore.updateModel(DashboardModel.class, 
 							   "admin",

@@ -9,51 +9,29 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 
 public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements AppointmentView {
 
-	HtmlElement studentId;
-	HtmlElement studentSurname;
-	HtmlElement studentName;
-	HtmlElements ids;
-	HtmlElement deleteAppointment;
+	private HtmlElement deleteAppointmentButton;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
+		super.initializeViewWeb(context);
 
-		studentId = this.getRootElement().find("#studentId").get(0);
-		studentSurname = this.getRootElement().find("#studentSurname").get(0);
-		studentName = this.getRootElement().find("#studentName").get(0);
-		ids = this.getRootElement().find(".appointmentId");
-		deleteAppointment = this.getRootElement().find("#delete-appointment-button").get(0);
+		deleteAppointmentButton = this.getRootElement().find("#delete-appointment-button").get(0);
 
-		MustNot.beNull(studentId);
-		MustNot.beNull(studentSurname);
-		MustNot.beNull(studentName);
-		MustNot.beNull(deleteAppointment);
+		MustNot.beNull(deleteAppointmentButton);
 
 	}
 
 	@Override
-	public void displayAppointement(String queueId, Appointment appointment) {
+	public void displayAppointement(String queueId, String userId, Appointment appointment) {
 		T.call(this);
+		super.displayAppointement(queueId, userId, appointment);
 
-		for(int i = 0; i < ids.size(); i++) {
-			HtmlElement id = ids.get(i);
-			id.appendHtml(appointment.getId());
-			id.setAttribute("value", appointment.getId());
-		}
-
-		studentId.appendHtml(appointment.getStudentId());
-		studentSurname.appendHtml(appointment.getStudentSurname());
-		studentName.appendHtml(appointment.getStudentName());
-
-		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
-
-		deleteAppointment.addEventListener("click", new HtmlEventListener() {
+		deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);

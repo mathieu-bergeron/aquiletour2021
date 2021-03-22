@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.queue;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
-import ca.aquiletour.server.backend.dashboard.DashboardModels;
+import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -17,7 +17,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 		User teacher = (User) message.getUser();
 		String courseId = message.getCourseId();
 		
-		DashboardModels.closeQueueForUser(modelStore, courseId, teacher.getId());
+		DashboardUpdater.closeQueueForUser(modelStore, courseId, teacher.getId());
 	}
 
 	@Override
@@ -26,6 +26,6 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 
 		String courseId = message.getCourseId();
 		
-		QueueModels.closeQueue(modelStore, courseId);
+		QueueUpdater.closeQueue(modelStore, courseId);
 	}
 }

@@ -12,31 +12,30 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 
+	private HtmlElement studentName;
+	private HtmlElement appointmentIdInput;
+	
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
+		T.call(this);
 
+		studentName = this.getRootElement().find("#student-name").get(0);
+		appointmentIdInput = this.getRootElement().find("#appointment-id-input").get(0);
+
+		MustNot.beNull(studentName);
+		MustNot.beNull(appointmentIdInput);
 	}
 
 	@Override
-	public void displayAppointement(String queueId, Appointment appointment) {
-		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
-		HtmlElement studentSurname = this.getRootElement().find("#studentSurname").get(0);
-		HtmlElement studentName = this.getRootElement().find("#studentName").get(0);
-		HtmlElements ids = this.getRootElement().find(".appointmentId");
-
-		MustNot.beNull(studentId);
-		MustNot.beNull(studentSurname);
-		MustNot.beNull(studentName);
-		
-		for(int i = 0; i < ids.size(); i++) {
-			HtmlElement id = ids.get(i);
-			id.appendHtml(appointment.getId());
-			id.setAttribute("value", appointment.getId());
+	public void displayAppointement(String queueId, String userId, Appointment appointment) {
+		String userName = appointment.getStudentName();
+		if(appointment.getStudentSurname().length() > 0) {
+			userName += " " + appointment.getStudentSurname();
 		}
-
-		studentId.appendHtml(appointment.getStudentId());
-		studentSurname.appendHtml(appointment.getStudentSurname());
-		studentName.appendHtml(appointment.getStudentName());
+		
+		studentName.text(userName);
+		
+		appointmentIdInput.value(appointment.getId());
 
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
 	}

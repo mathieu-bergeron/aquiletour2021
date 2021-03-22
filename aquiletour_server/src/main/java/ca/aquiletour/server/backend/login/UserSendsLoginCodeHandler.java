@@ -7,7 +7,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.aquiletour.server.backend.users.UserModels;
+import ca.aquiletour.server.backend.users.UserUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -68,7 +68,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			existingUser.setName(userId);
 			existingUser.setId(userId);
 
-			UserModels.addUser(modelStore, existingUser);
+			UserUpdater.addUser(modelStore, existingUser);
 		}
 
 		User sessionUser = existingUser.toSessionUser();

@@ -193,4 +193,14 @@ public abstract class ModelStore {
 	}
 
 	protected abstract void deleteDocument(DocumentPath documentPath);
+
+	public void closeWithoutSaving(NtroModel existingModel) {
+		T.call(this);
+
+		DocumentPath documentPath = localHeap.get(existingModel);
+
+		// JSWEET: will the work correctly? (removing by reference)
+		localHeap.remove(existingModel);
+		localHeapByPath.remove(documentPath);
+	}
 }

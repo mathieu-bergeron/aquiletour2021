@@ -8,7 +8,7 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class QueuesModels {
+public class QueuesUpdater {
 	
 	static {
 		
@@ -28,7 +28,7 @@ public class QueuesModels {
 			                       String queueId,
 			                       User teacher) {
 
-		T.call(QueuesModels.class);
+		T.call(QueuesUpdater.class);
 
 		modelStore.updateModel(QueuesModel.class, 
 							   teacher.getAuthToken(), 
@@ -57,7 +57,7 @@ public class QueuesModels {
 	public static void deleteQueue(ModelStoreSync modelStore,
 			                       String queueId) {
 
-		T.call(QueuesModels.class);
+		T.call(QueuesUpdater.class);
 		
 		deleteQueueFrom(modelStore, "allQueues", queueId);
 		deleteQueueFrom(modelStore, "openQueues", queueId);
@@ -66,7 +66,7 @@ public class QueuesModels {
 	private static void deleteQueueFrom(ModelStoreSync modelStore,
 			                           String queueStoreId,
 			                           String queueId) {
-		T.call(QueuesModels.class);
+		T.call(QueuesUpdater.class);
 
 		modelStore.updateModel(QueuesModel.class, 
 				               "admin", 
@@ -84,11 +84,11 @@ public class QueuesModels {
 	public static void openQueue(ModelStoreSync modelStore,
 			                     String queueId) {
 
-		T.call(QueuesModels.class);
+		T.call(QueuesUpdater.class);
 
 		QueuesModel allQueues = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
-
 		QueueSummary summary = allQueues.findQueueByQueueId(queueId);
+		modelStore.closeWithoutSaving(allQueues);
 		
 		modelStore.updateModel(QueuesModel.class, 
 				               "admin", 
@@ -107,7 +107,7 @@ public class QueuesModels {
 	public static void closeQueue(ModelStoreSync modelStore,
 			                      String queueId) {
 
-		T.call(QueuesModels.class);
+		T.call(QueuesUpdater.class);
 		
 		deleteQueueFrom(modelStore, "openQueues", queueId);
 	}
