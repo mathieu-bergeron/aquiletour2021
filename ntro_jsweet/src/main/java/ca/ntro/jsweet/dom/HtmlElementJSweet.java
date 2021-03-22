@@ -239,7 +239,8 @@ public class HtmlElementJSweet extends HtmlElement {
 		
 		JQuery result = null;
 
-		Object[] parsedHtml = $.parseHTML(html, document, false);
+		                                                  // FIXME: not safe to include all Javascript
+		Object[] parsedHtml = $.parseHTML(html, document, true);
 
 		if(parsedHtml.length == 1) {
 			result = $(parsedHtml[0]);
