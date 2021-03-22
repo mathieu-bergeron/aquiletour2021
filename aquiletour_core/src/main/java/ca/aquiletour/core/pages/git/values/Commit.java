@@ -13,7 +13,7 @@ public class Commit implements NtroModelValue {
 	String exercisePath= "";
 	String id= "";
 	int estimatedEffort;
-	//String[] modifiedFiles = new String[0];
+	//String[] modifiedFiles = new String[0]; TODO List
 
 	public String getCommitMessage() {
 		return commitMessage;
