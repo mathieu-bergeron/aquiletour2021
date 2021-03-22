@@ -174,12 +174,16 @@ public class QueueUpdater {
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}
 
+	// FIXME: much better to increment number of appointments
+	//        if two threads add appointements, this size() could be wrong
 	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
 		T.call(QueueUpdater.class);
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
 
+		// FIXME: use increment insted
 		int nbAppointment = queue.getAppointments().size();
+
 		String teacherId = queue.getTeacherId();
 		List<String> studentIds = queue.getStudentIds();
 
