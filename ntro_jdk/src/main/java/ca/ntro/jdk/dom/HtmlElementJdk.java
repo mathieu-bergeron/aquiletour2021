@@ -96,7 +96,7 @@ public class HtmlElementJdk extends HtmlElement {
 	public HtmlElements children(String cssQuery) {
 		T.call(this);
 
-		Elements elements = jsoupElement.children().select(cssQuery);
+		Elements elements = jsoupElement.select(">" + cssQuery);
 
 		return new HtmlElementsJdk(elements);
 	}
