@@ -27,10 +27,11 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		T.call(this);
 
 		HtmlElement appointmentElement = ((AppointmentViewWeb) appointmentView).getRootElement();
-		
+
 		if(index >= 0 && index < appointmentList.children("*").size()) {
 
 			HtmlElement anchorElement = appointmentList.children("*").get(index);
+			System.out.println(anchorElement);
 			appointmentElement.insertBefore(anchorElement);
 
 		}else {
@@ -45,7 +46,7 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		
 		HtmlElement appointment = appointmentList.find("#appointment-" + appointmentId).get(0);
 		
-		appointment.removeFromDocument();
+		appointment.deleteForever();
 	}
 
 	@Override
