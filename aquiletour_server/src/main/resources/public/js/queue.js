@@ -1,6 +1,6 @@
 function initializeQueue(viewRootElement){
 
-    let appointmentList = $(viewRootElement.find("#appointment-list"));
+    const appointmentList = viewRootElement.find("#appointment-list");
 
     appointmentList.sortable({
         handle:'.handle',
@@ -15,7 +15,6 @@ function initializeQueue(viewRootElement){
             const nextAppointmentId = nextAppointment.attr("id");
             const prevAppointmentId = prevAppointment.attr("id");
 
-
             if (nextAppointment.length > 0) {
                 
                 //window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
@@ -26,13 +25,10 @@ function initializeQueue(viewRootElement){
             } else if (prevAppointment.length > 0) {
             
                 //window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
-
                 history.pushState({
                     id: 'queue'
                   }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
             }
-
-            console.log(nextAppointment);
         }
     });
 }

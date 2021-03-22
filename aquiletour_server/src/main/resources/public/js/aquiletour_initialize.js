@@ -1,5 +1,5 @@
 function initializeView(viewName, viewRootElement){
-    console.log(viewName);
+    //console.log(viewName);
 
     if(viewName === "TeacherQueueViewWeb"){
 

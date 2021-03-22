@@ -34,10 +34,7 @@ function initializeDashboard(viewRootElement){
       availableLink.style.cursor = "hand";
     }
 
-    /*
-    if(coursesContainer.length > 0){
-        coursesContainer.sortable({
-          handle:'.handle'
-        });
-    }*/
+    coursesContainer.sortable({
+      handle:'.handle'
+    });
 }
