@@ -8,8 +8,7 @@ public class MoveAppointmentMessage extends NtroUserMessage<User> {
 
 	
 	private String appointmentId;
-	private String appointmentDestinationId;
-	private String appointmentDepartureId;
+	private MoveAppointmentDestination destination;
 	private String courseId;
 
 	public String getAppointmentId() {
@@ -24,22 +23,6 @@ public class MoveAppointmentMessage extends NtroUserMessage<User> {
 		this.appointmentId = appointmentId;
 	}
 
-	public String getappointmentDestinationId() {
-		return appointmentDestinationId;
-	}
-
-	public void setappointmentDestinationId(String appointmentDestinationId) {
-		this.appointmentDestinationId = appointmentDestinationId;
-	}
-
-	public String getappointmentDepartureId() {
-		return appointmentDepartureId;
-	}
-
-	public void setappointmentDepartureId(String appointmentDepartureId) {
-		this.appointmentDepartureId = appointmentDepartureId;
-	}
-
 	public String getCourseId() {
 		return courseId;
 	}
@@ -47,7 +30,12 @@ public class MoveAppointmentMessage extends NtroUserMessage<User> {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
-	
-	
 
+	public MoveAppointmentDestination getDestination() {
+		return destination;
+	}
+
+	public void setDestination(MoveAppointmentDestination destination) {
+		this.destination = destination;
+	}
 }

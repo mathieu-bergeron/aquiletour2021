@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.queue;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
@@ -102,26 +103,27 @@ public class QueueModel implements NtroModel {
 
 		this.studentIds = studentIds;
 	}
+	
+	public void moveAppointment(String appointmentId, MoveAppointmentDestination destination) {
+		T.call(this);
+		
+		Appointment appointmentToMove = findAppointmentById(appointmentId);
+		Appointment anchorAppointment = findAppointmentById(destination.getAppointmentId());
+		
+		if(appointmentToMove != null && anchorAppointment != null) {
 
-	public void updateOrder(String appointmentDestinationId, String appointmentDepartureId) {
-		Appointment appointmentDestination = null;
-		Appointment appointmentDeparture = null;
-		for (int i = 0; i < appointments.size(); i++) {
-			Appointment currentAppointment = appointments.item(i);
-			if (currentAppointment.getId().equals(appointmentDestinationId)) {
-				appointmentDestination = currentAppointment;
-			} else if (currentAppointment.getId().equals(appointmentDepartureId)) {
-				appointmentDeparture = currentAppointment;
+			getAppointments().removeItem(appointmentToMove);
+
+			int anchorIndex = getAppointments().indexOf(anchorAppointment);
+			
+			if(destination == MoveAppointmentDestination.AFTER) {
+
+				getAppointments().insertItem(anchorIndex+1, appointmentToMove);
+
+			}else {
+
+				getAppointments().insertItem(anchorIndex, appointmentToMove);
 			}
-		}
-		if (appointmentDestination != null && appointmentDeparture != null) {
-			int destinationIndex = appointments.indexOf(appointmentDestination);
-			int departureIndex = appointments.indexOf(appointmentDeparture);
-
-			appointments.insertItem(destinationIndex + 1, appointmentDeparture);
-			appointments.removeItem(appointmentDestination);
-			appointments.insertItem(departureIndex + 1, appointmentDestination);
-			appointments.removeItem(appointmentDeparture);
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.queues.QueuesUpdater;
@@ -228,5 +229,22 @@ public class QueueUpdater {
 		DashboardUpdater.setMyAppointmentForUserId(modelStore, queueId, appointmentOwnerId, false);
 		
 		numberOfAppointmentUpdates(modelStore, queueId);
+	}
+
+	public static void moveAppointment(ModelStoreSync modelStore, 
+			                           String queueId, 
+			                           String appointmentId, 
+			                           MoveAppointmentDestination destination) {
+
+		T.call(QueueUpdater.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+
+				queue.moveAppointment(appointmentId, destination);
+			}
+		});
 	}
 }
