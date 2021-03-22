@@ -1,4 +1,6 @@
-function initializeQueue(viewRootElement){
+function initializeQueue(viewRootElement, jSweet){
+
+    console.log(jSweet);
 
     const appointmentList = viewRootElement.find("#appointment-list");
 
@@ -16,18 +18,29 @@ function initializeQueue(viewRootElement){
             const prevAppointmentId = prevAppointment.attr("id");
 
             if (nextAppointment.length > 0) {
+
+                if(jSweet){
+                    history.pushState({
+                        id: 'queue'
+                      }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId);
+
+                }else{
+
+                    window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
+                }
                 
-                //window.location = window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId;
-                history.pushState({
-                    id: 'queue'
-                  }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&beforeId=" + nextAppointmentId);
                 
             } else if (prevAppointment.length > 0) {
-            
-                //window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
-                history.pushState({
-                    id: 'queue'
-                  }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
+
+                if(jSweet){
+                    history.pushState({
+                        id: 'queue'
+                      }, 'Queue', window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId);
+
+                }else{
+
+                    window.location = window.location.pathname + "?moveId=" + appointmentId + "&afterId=" + prevAppointmentId;
+                }
             }
         }
     });

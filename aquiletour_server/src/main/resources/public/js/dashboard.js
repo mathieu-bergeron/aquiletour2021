@@ -1,4 +1,4 @@
-function initializeDashboard(viewRootElement){
+function initializeDashboard(viewRootElement, jSweet){
 
     const buttonAvailable = viewRootElement.find("#buttonAvailable");
     const available = viewRootElement.find("#teacherAvailable");

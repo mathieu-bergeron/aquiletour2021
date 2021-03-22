@@ -1,15 +1,16 @@
 $(document).ready(function(){
 
-    let viewRootElement = $(document);
+    const viewRootElement = $(document);
+    const jSweet = false;
 
-    initializeView("RootViewWeb", viewRootElement);
-    initializeView("TeacherDashboardViewWeb", viewRootElement);
-    initializeView("TeacherCourseSummaryViewWeb", viewRootElement);
-    initializeView("QueuesViewWeb", viewRootElement);
-    initializeView("QueueSummaryViewWeb", viewRootElement);
-    initializeView("TeacherQueueViewWeb", viewRootElement);
-    initializeView("StudentQueueViewWeb", viewRootElement);
-    initializeView("LoginViewWeb", viewRootElement);
-    initializeView("HomeViewWeb", viewRootElement);
+    initializeView("RootViewWeb", viewRootElement, jSweet);
+    initializeView("TeacherDashboardViewWeb", viewRootElement, jSweet);
+    initializeView("TeacherCourseSummaryViewWeb", viewRootElement, jSweet);
+    initializeView("QueuesViewWeb", viewRootElement, jSweet);
+    initializeView("QueueSummaryViewWeb", viewRootElement, jSweet);
+    initializeView("TeacherQueueViewWeb", viewRootElement, jSweet);
+    initializeView("StudentQueueViewWeb", viewRootElement, jSweet);
+    initializeView("LoginViewWeb", viewRootElement, jSweet);
+    initializeView("HomeViewWeb", viewRootElement, jSweet);
 
 });

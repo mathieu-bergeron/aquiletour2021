@@ -1,5 +1,7 @@
 function _ntro_initialize_view(viewName, viewRootHtmlElement){
-    let viewRootElement = viewRootHtmlElement.jQueryElement;
+    const viewRootElement = viewRootHtmlElement.jQueryElement;
 
-    initializeView(viewName, viewRootElement);
+    const jSweet = true;
+
+    initializeView(viewName, viewRootElement, jSweet);
 }
