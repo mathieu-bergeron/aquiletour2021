@@ -5,10 +5,11 @@ USE git_info;
 # (URL Depot) - Session - Cours - Groupe - Etudiant - TP
 CREATE TABLE IF NOT EXISTS depot (
 	url_depot VARCHAR(255) PRIMARY KEY NOT NULL,
-	session CHAR(5) NOT NULL,
-	cours CHAR(7) NOT NULL,
-	groupe TINYINT,
-	etudiant_id INT NOT NULL,
+	depot_host CHAR(2) NOT NULL CHECK (depot_host RLIKE '^[A-Z][A-Z]$'),
+	session CHAR(3) NOT NULL CHECK (session RLIKE '^[A-Z][0-9][0-9]$'),
+	cours CHAR(7) NOT NULL CHECK (cours RLIKE '^[0-9][0-9][0-9]-[A-Z0-9][A-Z0-9][A-Z0-9]$'),
+	groupe CHAR(2) NOT NULL CHECK (groupe RLIKE '^[0-9][0-9]$'),
+	etudiant_id CHAR(7) NOT NULL CHECK (etudiant_id RLIKE '^[0-9][0-9][0-9][0-9][0-9][0-9][0-9]$'),
 	section VARCHAR(255));
 
 # Table COMMIT:

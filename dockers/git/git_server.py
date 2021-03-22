@@ -152,10 +152,10 @@ if __name__=="__main__":
                         answer TEXT,
                         ack_date TEXT);''')
 # TEST DATA - Begin
-        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-            VALUES (5,DateTime('now','localtime'),"req1")''')
-        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-            VALUES (5,DateTime('now','localtime'),"{""type"": ""hok""}")''')
+#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
+#            VALUES (5,DateTime('now','localtime'),"req1")''')
+#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
+#            VALUES (5,DateTime('now','localtime'),"{""type"": ""hok""}")''')
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
 #            VALUES (9,DateTime('now','localtime'),"req3")''')
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
@@ -168,15 +168,15 @@ if __name__=="__main__":
         cur2.execute('DELETE FROM depot')
         conn2.commit()
         cur2.execute('''INSERT INTO depot 
-            VALUES ('https://gitlab.com/LeducNic/coursmo.git','H21','420ZF5',2,2055573, null)''')
+            VALUES ('https://gitlab.com/LeducNic/coursmo.git','GL','H21','420-ZF5','02',2055573, null)''')
         cur2.execute('''INSERT INTO depot 
-            VALUES ('https://github.com/LeducNic/TestZF5.git','A20','420ZC6',1,2044473, null)''')
+            VALUES ('https://github.com/LeducNic/TestZF5.git','GH','A20','420-ZC6','01',2044473, null)''')
         cur2.execute('''INSERT INTO depot 
-            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','H21','420ZF5',2,1933325, null)''')
+            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','AZ','H21','420-ZF5','02',1933325, null)''')
         cur2.execute('''INSERT INTO depot 
-            VALUES ('https://github.com/LeducNic/TestZF52.git','H21','420ZF5',1,1822273, null)''')
+            VALUES ('https://github.com/LeducNic/TestZF52.git','GH','H21','420-ZF5','01',1822273, null)''')
 #        cur2.execute('''INSERT INTO depot 
-#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','H21','420C65',2,1788895, null)''')
+#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','GL','H21','420-C65','02',1788895, null)''')
         conn2.commit()
         conn2.close()
 # TEST DATA - End
