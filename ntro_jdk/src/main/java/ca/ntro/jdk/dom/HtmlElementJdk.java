@@ -75,7 +75,7 @@ public class HtmlElementJdk extends HtmlElement {
 		MustNot.beNull(otherElement);
 		MustNot.beNull(otherElement.jsoupElement);
 
-		jsoupElement.before(otherElement.jsoupElement);
+		otherElement.jsoupElement.before(jsoupElement);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class HtmlElementJdk extends HtmlElement {
 		MustNot.beNull(otherElement);
 		MustNot.beNull(otherElement.jsoupElement);
 
-		jsoupElement.after(otherElement.jsoupElement);
+		otherElement.jsoupElement.after(jsoupElement);
 	}
 
 	@Override
