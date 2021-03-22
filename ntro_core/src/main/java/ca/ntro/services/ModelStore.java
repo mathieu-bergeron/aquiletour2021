@@ -9,8 +9,10 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
+import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
@@ -88,7 +90,7 @@ public abstract class ModelStore {
 
 	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
 
-	public abstract void saveJsonString(DocumentPath documentPath, String jsonString);
+	public abstract void saveDocument(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
 
@@ -142,7 +144,7 @@ public abstract class ModelStore {
 
 		}else {
 			
-			saveJsonString(documentPath, Ntro.jsonService().toString(model));
+			saveDocument(documentPath, Ntro.jsonService().toString(model));
 
 			// JSWEET: will the work correctly? (removing by reference)
 			localHeap.remove(model);
@@ -159,7 +161,7 @@ public abstract class ModelStore {
 
 		}else {
 			
-			saveJsonString(documentPath, Ntro.jsonService().toString(newModel));
+			saveDocument(documentPath, Ntro.jsonService().toString(newModel));
 
 			// JSWEET: will the work correctly? (removing by reference)
 			localHeap.remove(existingModel);
@@ -172,4 +174,33 @@ public abstract class ModelStore {
 		localHeapByPath = new HashMap<>();
 	}
 
+	public void delete(NtroModel model) {
+		DocumentPath documentPath = localHeap.get(model);
+		
+		if(documentPath == null) {
+
+			Log.warning("Model was already saved and removed from memory: " + model);
+
+		}else {
+			
+			deleteDocument(documentPath);
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(model);
+			localHeapByPath.remove(documentPath);
+		}
+		
+	}
+
+	protected abstract void deleteDocument(DocumentPath documentPath);
+
+	public void closeWithoutSaving(NtroModel existingModel) {
+		T.call(this);
+
+		DocumentPath documentPath = localHeap.get(existingModel);
+
+		// JSWEET: will the work correctly? (removing by reference)
+		localHeap.remove(existingModel);
+		localHeapByPath.remove(documentPath);
+	}
 }

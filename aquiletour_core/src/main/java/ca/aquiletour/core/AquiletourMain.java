@@ -29,6 +29,7 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.queue.QueueModel;
@@ -42,8 +43,6 @@ import ca.aquiletour.core.pages.queues.QueuesModel;
 import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
 import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.users.UsersModel;
-import ca.aquiletour.core.pages.users.values.ObservableUserMap;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
@@ -108,8 +107,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableQueueList.class);
 		Ntro.registerSerializableClass(QueueSummary.class);
 
-		Ntro.registerSerializableClass(UsersModel.class);
-		Ntro.registerSerializableClass(ObservableUserMap.class);
 		Ntro.registerSerializableClass(User.class);
 		Ntro.registerSerializableClass(Teacher.class);
 		Ntro.registerSerializableClass(TeacherGuest.class);
@@ -120,6 +117,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(NtroMessage.class);
 		Ntro.registerSerializableClass(AddCourseMessage.class);
+		Ntro.registerSerializableClass(DeleteCourseMessage.class);
 		Ntro.registerSerializableClass(AddAppointmentMessage.class);
 		Ntro.registerSerializableClass(DeleteAppointmentMessage.class);
 		Ntro.registerSerializableClass(TeacherClosesQueueMessage.class);

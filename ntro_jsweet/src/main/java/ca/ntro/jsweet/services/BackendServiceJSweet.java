@@ -10,7 +10,6 @@ import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
-import def.dom.Document;
 import def.dom.WebSocket;
 import static def.dom.Globals.window;
 
@@ -23,8 +22,13 @@ public class BackendServiceJSweet extends BackendService {
 	public BackendServiceJSweet(String connectionPath) {
 		super();
 		__T.call(this, "<init>");
-		
-		String connectionString = "ws://" + window.location.host + connectionPath;
+
+		String protocol = "ws";
+		if(window.location.protocol.contains("https")) {
+			protocol = "wss";
+		}
+
+		String connectionString = protocol + "://" + window.location.host + connectionPath;
 
 		webSocket = new WebSocket(connectionString);
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
+import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
@@ -45,7 +46,6 @@ public class QueueModel implements NtroModel {
 		String appointmentId = Integer.toString(getMaxId());
 		appointment.setId(appointmentId);
 		appointments.addItem(appointment);
-		;
 	}
 
 	public void deleteAppointment(String appointmentId) {
@@ -166,5 +166,17 @@ public class QueueModel implements NtroModel {
 
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
+	}
+
+	public Appointment findAppointmentById(String appointmentId) {
+		Appointment result = null;
+		for(Appointment candidate : appointments.getValue()) {
+			if(candidate.getId().equals(appointmentId)) {
+				result = candidate;
+				break;
+			}
+		}
+		
+		return result;
 	}
 }

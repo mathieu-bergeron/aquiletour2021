@@ -3,7 +3,6 @@ package ca.ntro.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.listeners.DeletionListener;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.models.listeners.ValueObserver;
@@ -49,7 +48,7 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 	public void get(ValueListener<V> valueListener) {
 		T.call(this);
 		
-		valueListener.onValue(value);
+		valueListener.onValue(getValue());
 	}
 
 	public void onDeleted(DeletionListener<V> deletionListener) {
@@ -62,9 +61,11 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 		V oldValue = value;
 		value = newValue;
 
-		List<Object> args = new ArrayList<>();
-		args.add(newValue);
-		modelStore().onValueMethodInvoked(valuePath(),"set",args);
+		if(modelStore() != null) {
+			List<Object> args = new ArrayList<>();
+			args.add(newValue);
+			modelStore().onValueMethodInvoked(valuePath(),"set",args);
+		}
 		
 		for(ValueObserver<V> observer : observers) {
 			observer.onValueChanged(oldValue, newValue);
@@ -75,7 +76,7 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 		T.call(this);
 
 		this.observers.add(observer);
-		observer.onValue(value);
+		observer.onValue(getValue());
 	}
 
 }

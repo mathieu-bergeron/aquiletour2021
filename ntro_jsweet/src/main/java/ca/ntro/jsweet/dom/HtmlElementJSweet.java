@@ -12,13 +12,14 @@ import def.dom.EventListener;
 import def.dom.File;
 import def.dom.FileList;
 import def.dom.FileReader;
-import def.dom.FormData;
-import def.dom.HTMLElement;
 import def.dom.HTMLInputElement;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
+import def.js.Function;
 
 import static def.jquery.Globals.$;
+
+import static def.dom.Globals.document;
 
 
 public class HtmlElementJSweet extends HtmlElement {
@@ -64,14 +65,18 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		jQueryElement.append($.parseHTML(html));
+		jQueryElement.append(parseHtml(html));
 	}
 
 	@Override
 	public void appendElement(HtmlElement element) {
 		T.call(this);
-
-		jQueryElement.append(((HtmlElementJSweet) element).jQueryElement);
+		
+		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
+		
+		toAppend.show();
+		
+		jQueryElement.append(toAppend);
 	}
 
 	@Override
@@ -132,17 +137,27 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public void remove() {
+	public void removeFromDocument() {
 		T.call(this);
 		
 		// XXX: the DOM method does not remove event listeners
 		//      (unless the element is garbage collected, which
 		//       it won't be as our jQueryElement as a reference to it)
-		Element domElement = jQueryElement.get(0);
-		domElement.remove();
+		for(int i = 0; i < jQueryElement.length; i++) {
+			//Element domElement = jQueryElement.get(i);
+			Element domElement = jQueryElement.get(0);
+			domElement.remove();
+		}
 
 		// XXX: jQuery.remove also removes event listeners
 		//jQueryElement.remove();
+	}
+
+	@Override
+	public void deleteForever() {
+		T.call(this);
+
+		jQueryElement.remove();
 	}
 
 	@Override
@@ -165,10 +180,11 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		// XXX: this would remove listeners
 		//jQueryElement.html("");
-		jQueryElement.get(0).innerHTML = "";
-
+		for(int i = 0; i < jQueryElement.length; i++) {
+			jQueryElement.get(i).innerHTML = "";
+		}
+		
 		if(htmlString != null) {
-
 			Object[] elementsToAppend = $.parseHTML(htmlString);
 
 			if(elementsToAppend != null) {
@@ -195,8 +211,8 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public HtmlElement newElement(String html) {
-		return new HtmlElementJSweet($(html));
+	public HtmlElement createElement(String html) {
+		return new HtmlElementJSweet(parseHtml(html));
 	}
 
 	@Override
@@ -217,5 +233,44 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		fileReader.readAsText(firstFile);
 	}
+	
+	public static JQuery parseHtml(String html) {
+		T.call(HtmlElementJSweet.class);
+		
+		JQuery result = null;
 
+		                                                  // FIXME: not safe to include all Javascript
+		Object[] parsedHtml = $.parseHTML(html, document, true);
+
+		if(parsedHtml.length == 1) {
+			result = $(parsedHtml[0]);
+		}else {
+			result = $(document.createElement("span"));
+			for(Object parsedElement : parsedHtml) {
+				result.append($(parsedElement));
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public void invoke(String functionName, Object[] args) {
+		T.call(this);
+		
+		def.js.Object jQueryObject = (def.js.Object) jQueryElement;
+		
+		Function _function = jQueryObject.$get(functionName);
+		
+		System.out.println("_function: " + _function);
+		
+		_function.apply(jQueryObject, args);
+	}
+
+	@Override
+	public void trigger(String event) {
+		T.call(this);
+		
+		jQueryElement.trigger(event);
+	}
 }

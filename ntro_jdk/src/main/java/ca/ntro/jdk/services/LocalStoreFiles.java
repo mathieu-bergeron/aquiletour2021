@@ -1,8 +1,6 @@
 package ca.ntro.jdk.services;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,8 +9,6 @@ import java.util.List;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.log.Log;
@@ -51,13 +47,18 @@ public class LocalStoreFiles extends ModelStore {
 		T.call(this);
 		
 		File modelFile = getModelFile(documentPath);
+
+		JsonLoader jsonLoader = null;
 		
-		if(!modelFile.exists()) {
-			// XXX: create empty model if none exists
-			writeJsonFile(modelFile,ModelStore.emptyModelString(documentPath));
+		if(modelFile.exists()) {
+
+			jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
+
+		}else {
+
+			// Create empty model if non exists
+			jsonLoader = new JsonLoaderMemory(documentPath, ModelStore.emptyModelString(documentPath));
 		}
-		
-		JsonLoader jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
 		
 		return jsonLoader;
 	}
@@ -93,9 +94,17 @@ public class LocalStoreFiles extends ModelStore {
 		}
 	}
 
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		T.call(this);
+
+		File modelFile = getModelFile(documentPath);
+		
+		modelFile.delete();
+	}
 
 	@Override
-	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		File modelFile = getModelFile(documentPath);
@@ -135,5 +144,6 @@ public class LocalStoreFiles extends ModelStore {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: must be overriden on the server
 	}
+
 
 }

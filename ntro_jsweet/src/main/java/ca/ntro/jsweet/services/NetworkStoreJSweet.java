@@ -70,7 +70,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	*/
 
 	@Override
-	public void saveJsonString(DocumentPath documentPath, String jsonString) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		def.js.Object options = new def.js.Object();
@@ -106,6 +106,11 @@ public class NetworkStoreJSweet extends ModelStore {
 
 	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// XXX: not supported
+	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
 		// XXX: not supported
 	}
 

@@ -18,7 +18,6 @@ import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
-import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -34,17 +33,13 @@ public class AquiletourRequestHandler {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
-		}else if(path.startsWith("billetteries")) {
+		}else if(path.startsWith("profs")) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
 		}else if(path.startsWith("billetterie")) {
 			
 			sendQueueMessages(path.subPath(1), parameters, context.user());
-			
-		}else if(path.startsWith("usagers")) {
-			
-			sendUsersMessages(path.subPath(1), parameters);
 		
 		}else if(path.startsWith("connexion")) {
 			
@@ -119,15 +114,13 @@ public class AquiletourRequestHandler {
 			
 			if(user instanceof Teacher) {
 
+				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
+				teacherUsesQueueMessage.setCourseId(courseId);
+				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
+
 				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 				showTeacherQueueMessage.setCourseId(courseId);
 				Ntro.messages().send(showTeacherQueueMessage);
-				
-				if (!(parameters.containsKey("teacherClosesQueue"))) {
-					TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-					teacherUsesQueueMessage.setCourseId(courseId);
-					Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
-				}
 				
 			}else if(user instanceof Student){
 				
@@ -143,12 +136,4 @@ public class AquiletourRequestHandler {
 
 		}
 	}
-
-	private static void sendUsersMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourRequestHandler.class);
-
-		ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
-		Ntro.messages().send(showUsersMessage);
-	}
-
 }

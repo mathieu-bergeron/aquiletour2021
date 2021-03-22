@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.backend.users.UserUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -18,7 +19,7 @@ import ca.ntro.users.Session;
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
@@ -67,10 +68,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			existingUser.setName(userId);
 			existingUser.setId(userId);
 
-			DocumentPath documentPath = new DocumentPath();
-			documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(User.class));
-			documentPath.setDocumentId(userId);
-			modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(existingUser));
+			UserUpdater.addUser(modelStore, existingUser);
 		}
 
 		User sessionUser = existingUser.toSessionUser();
@@ -82,6 +80,11 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		modelStore.save(session);
 
 		return existingUser;
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
+		T.call(this);
 	}
 
 }

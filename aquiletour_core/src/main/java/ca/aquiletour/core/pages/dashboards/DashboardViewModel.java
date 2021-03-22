@@ -16,7 +16,6 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 		T.call(this);
 		
 		model.getCourses().observe(new ListObserver<CourseSummary>() {
-
 			@Override
 			public void onValueChanged(List<CourseSummary> oldValue, List<CourseSummary> value) {
 				// TODO Auto-generated method stub
@@ -41,7 +40,54 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 
 				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
 				courseView.displaySummary(item);
+				
+				item.getNumberOfAppointments().observe(new ValueObserver<Integer>() {
 
+					@Override
+					public void onValue(Integer value) {
+						T.call(this);
+
+						courseView.displayNumberOfAppointments(value);
+					}
+
+					@Override
+					public void onDeleted(Integer lastValue) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onValueChanged(Integer oldValue, Integer value) {
+						T.call(this);
+						
+						T.values(value);
+
+						courseView.displayNumberOfAppointments(value);
+					}
+				});
+				
+				item.getNumberOfStudents().observe(new ValueObserver<Integer>() {
+					@Override
+					public void onValue(Integer value) {
+						T.call(this);
+						
+						courseView.displayNumberOfStudents(value);
+					}
+
+					@Override
+					public void onDeleted(Integer lastValue) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onValueChanged(Integer oldValue, Integer value) {
+						T.call(this);
+						
+						courseView.displayNumberOfStudents(value);
+					}
+				});
+				
 				item.getMyAppointment().observe(new ValueObserver<Boolean>() {
 					@Override
 					public void onDeleted(Boolean lastValue) {
@@ -49,12 +95,12 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 					
 					@Override
 					public void onValue(Boolean value) {
-						courseView.displayStatus(value, item.getIsQueueOpen().getValue());
+						courseView.displayStatus(item.getCourseId(), value, item.getIsQueueOpen().getValue());
 					}
 					
 					@Override
 					public void onValueChanged(Boolean oldValue, Boolean value) {
-						courseView.displayStatus(value, item.getIsQueueOpen().getValue());
+						courseView.displayStatus(item.getCourseId(), value, item.getIsQueueOpen().getValue());
 					}
 				});
 				
@@ -66,17 +112,16 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 
 					@Override
 					public void onValue(Boolean value) {
-						courseView.displayStatus(item.getMyAppointment().getValue(), value);
+						courseView.displayStatus(item.getCourseId(), item.getMyAppointment().getValue(), value);
 					}
-
 
 					@Override
 					public void onValueChanged(Boolean oldValue, Boolean value) {
-						courseView.displayStatus(item.getMyAppointment().getValue(), value);
+						courseView.displayStatus(item.getCourseId(), item.getMyAppointment().getValue(), value);
 					}
 				});
 				
-				view.appendCourse(courseView);
+				view.appendCourse(item.getCourseId(), courseView);
 			}
 
 			@Override
@@ -87,13 +132,14 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 
 			@Override
 			public void onItemRemoved(int index, CourseSummary item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				view.deleteCourse(item.getCourseId());
 			}
 
 			@Override
 			public void onClearItems() {
-				System.out.println("onClearItems");
+				T.call(this);
 				view.clearCourses();
 			}
 		});

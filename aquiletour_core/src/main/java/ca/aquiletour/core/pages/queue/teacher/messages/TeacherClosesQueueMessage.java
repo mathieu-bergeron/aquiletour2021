@@ -3,10 +3,8 @@ package ca.aquiletour.core.pages.queue.teacher.messages;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.messages.NtroUserMessage;
 
-public class TeacherClosesQueueMessage extends NtroUserMessage {
-
+public class TeacherClosesQueueMessage extends NtroUserMessage<User> {
 	
-	private User teacher;
 	private String courseId;
 
 	public String getCourseId() {
@@ -16,15 +14,4 @@ public class TeacherClosesQueueMessage extends NtroUserMessage {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
-
-	public User getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(User teacher) {
-		this.teacher = teacher;
-	}
-	
-	
-
 }

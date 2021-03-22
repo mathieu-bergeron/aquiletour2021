@@ -14,6 +14,7 @@ import ca.ntro.web.dom.HtmlEventListener;
 public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
 
 	private HtmlElement addCourseButton;
+	private HtmlElement closeModalButton;
 	private HtmlElement addCourseTitleInput;
 
 	@Override
@@ -22,10 +23,13 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 		T.call(this);
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
+		closeModalButton = getRootElement().find("#close-modal-button").get(0);
 		addCourseTitleInput = getRootElement().find("#add-course-title-input").get(0);
 
 		MustNot.beNull(addCourseButton);
+		MustNot.beNull(closeModalButton);
 		MustNot.beNull(addCourseTitleInput);
+
 
 		addListeners();
 	}
@@ -39,8 +43,10 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 				T.call(this);
 
 				AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value(),false,false,0));
+				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value()));
 				Ntro.messages().send(addCourseMessage);
+				
+				closeModalButton.trigger("click");
 			}
 		});
 	}

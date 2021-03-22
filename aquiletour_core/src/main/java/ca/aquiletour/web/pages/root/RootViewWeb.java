@@ -9,13 +9,13 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.home.HomeView;
+import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.queues.QueuesView;
+import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.users.UsersView;
-import ca.aquiletour.core.pages.users.messages.ShowUsersMessage;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
@@ -27,30 +27,40 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
+	private HtmlElement homeLink;
 	private HtmlElement dashboardLink;
-	private HtmlElement usersLink;
+	private HtmlElement queuesLink;
 	private HtmlElement loginLink;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
 
+		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
-		usersLink = getRootElement().find("#users-link").get(0);
+		queuesLink = getRootElement().find("#queues-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
 
+		MustNot.beNull(homeLink);
 		MustNot.beNull(dashboardLink);
-		MustNot.beNull(usersLink);
+		MustNot.beNull(queuesLink);
 		MustNot.beNull(loginLink);
 
 		addListeners();
 
 		adjustLoginLinkText(context);
-
 	}
 
 	private void addListeners() {
 		T.call(this);
+
+		homeLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+				Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
+			}
+		});
 
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -61,13 +71,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 		
-		usersLink.addEventListener("click", new HtmlEventListener() {
+		queuesLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
-
-				ShowUsersMessage showUsersMessage = Ntro.messages().create(ShowUsersMessage.class);
-				Ntro.messages().send(showUsersMessage);
+				Ntro.messages().send(Ntro.messages().create(ShowQueuesMessage.class));
 			}
 		});
 
@@ -140,14 +148,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		showSubView(queueView);
-	}
-
-	@Override
-	public void showUsers(UsersView usersView) {
-		T.call(this);
-
-		showSubView(usersView);
-
 	}
 
 	@Override

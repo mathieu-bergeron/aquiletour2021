@@ -9,9 +9,14 @@ import ca.ntro.services.Ntro;
 public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, UserLogsOutMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserLogsOutMessage message) {
 		T.call(this);
 		
 		Ntro.userService().registerCurrentUser(AuthenticateSessionUserHandler.createGuestSession(modelStore));
+	}
+
+	@Override
+	public void handleLater(ModelStoreSync modelStore, UserLogsOutMessage message) {
+		T.call(this);
 	}
 }

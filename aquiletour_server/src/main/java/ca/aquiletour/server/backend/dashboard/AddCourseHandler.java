@@ -1,62 +1,32 @@
 package ca.aquiletour.server.backend.dashboard;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queues.QueuesModel;
-import ca.aquiletour.core.pages.queues.values.QueueSummary;
+import ca.aquiletour.server.backend.queue.QueueUpdater;
+import ca.aquiletour.server.backend.queues.QueuesUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskSync;
-import ca.ntro.services.Ntro;
 
 public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 
 	@Override
-	public void handle(ModelStoreSync modelStore, AddCourseMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddCourseMessage message) {
 		T.call(this);
 		
-		User fromUser = message.getUser();
-		String courseId = message.getCourse().getTitle();
-		
-		DashboardModel dashboardModel = modelStore.getModel(DashboardModel.class, 
-				                                            fromUser.getAuthToken(),
-				                                            fromUser.getId());
-		
-		if(dashboardModel != null) {
-			
-			dashboardModel.addCourse(message.getCourse());
-			modelStore.save(dashboardModel);
-			
-			Ntro.threadService().executeLater(new NtroTaskSync() {
-				@Override
-				protected void runTask() {
-					QueueModel queueModel = modelStore.getModel(QueueModel.class, 
-													   fromUser.getAuthToken(),
-													   courseId);
-					queueModel.setTeacherId(fromUser.getId());//TODO is the teacher always the person who creates the queue
-					modelStore.save(queueModel);
+		User teacher = message.getUser();
 
-					QueuesModel queuesModel = modelStore.getModel(QueuesModel.class, fromUser.getAuthToken(), "allQueues");
-					QueueSummary queue = new QueueSummary();
-					queue.setId(courseId);
-					queue.setTeacherName(fromUser.getName());
-					queue.setTeacherSurname(fromUser.getSurname());
-					queuesModel.addQueueToList(queue);
-					modelStore.save(queuesModel);
-				}
+		DashboardUpdater.addQueueForUser(modelStore, message.getCourse(), teacher);
+	}
 
-				@Override
-				protected void onFailure(Exception e) {
-				}
-			});
+	@Override
+	public void handleLater(ModelStoreSync modelStore, AddCourseMessage message) {
+		T.call(this);
 
-		}else {
-			
-			// TODO: error handling
-			
-		}
+		User teacher = message.getUser();
+		String courseId = message.getCourse().getCourseId();
+
+		QueueUpdater.createQueue(modelStore, courseId, teacher);
+		QueuesUpdater.createQueue(modelStore, courseId, teacher);
 	}
 }

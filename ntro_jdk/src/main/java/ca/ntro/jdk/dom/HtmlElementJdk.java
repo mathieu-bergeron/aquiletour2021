@@ -1,6 +1,12 @@
 package ca.ntro.jdk.dom;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.assertions.MustNot;
@@ -9,7 +15,6 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
-
 
 public class HtmlElementJdk extends HtmlElement {
 
@@ -131,7 +136,14 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public void remove() {
+	public void removeFromDocument() {
+		T.call(this);
+
+		jsoupElement.remove();
+	}
+
+	@Override
+	public void deleteForever() {
 		T.call(this);
 
 		jsoupElement.remove();
@@ -164,19 +176,56 @@ public class HtmlElementJdk extends HtmlElement {
 
 	@Override
 	public void show() {
-		jsoupElement.removeClass("ntro-hidden");
-		jsoupElement.addClass("ntro-visible");
+		String styleString = getStyleString();
+
+		styleString = styleString.replace("display:none;", "");
+
+		jsoupElement.attr("style", styleString);
 	}
 
 	@Override
 	public void hide() {
-		jsoupElement.removeClass("ntro-visible");
-		jsoupElement.addClass("ntro-hidden");
+		String styleString = getStyleString();
+		
+		if(!styleString.contains("display:none;")){
+			styleString += "display:none;";
+		}
+		
+		jsoupElement.attr("style", styleString);
+	}
+
+	private String getStyleString() {
+		String styleString = jsoupElement.attr("style");
+		if(styleString == null) {
+			styleString = "";
+		}
+		return styleString;
 	}
 
 	@Override
-	public HtmlElement newElement(String html) {
-		return new HtmlElementJdk(new Element(html));
+	public HtmlElement createElement(String html) {
+		return new HtmlElementJdk(parseHtml(html));
+	}
+
+	public static Element parseHtml(String html) {
+		T.call(HtmlElementJdk.class);
+
+		Element result = null;
+		
+		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
+
+		List<Node> childNodes = jsoupDocument.body().childNodes();
+
+		if(childNodes.size() == 1) {
+			result = (Element) childNodes.get(0);
+		}else {
+			result = new Element("span");
+			for(Node childNode : childNodes) {
+				result.appendChild(childNode.clone());
+			}
+		}
+
+		return result;
 	}
 
 	@Override
@@ -184,5 +233,13 @@ public class HtmlElementJdk extends HtmlElement {
 		// XXX: not supported on the server
 	}
 
+	@Override
+	public void invoke(String string, Object[] objects) {
+		// XXX: not supported on the server
+	}
 
+	@Override
+	public void trigger(String event) {
+		// XXX: not supported on the server
+	}
 }

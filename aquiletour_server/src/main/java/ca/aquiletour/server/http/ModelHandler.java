@@ -138,7 +138,7 @@ public class ModelHandler extends AbstractHandler {
 		DocumentPath documentPath = setModelNtroMessage.getDocumentPath();
 		NtroModel model = setModelNtroMessage.getModel();
 
-        Ntro.modelStore().saveJsonString(documentPath, Ntro.jsonService().toString(model));
+        Ntro.modelStore().saveDocument(documentPath, Ntro.jsonService().toString(model));
 
         response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);
