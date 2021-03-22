@@ -4,15 +4,12 @@
     "value": []
   },
   "maxId": 0,
-  "teacherId": "",
+  "teacherId": "alice",
   "_C": "QueueModel",
   "studentIds": [
-    "FamilleA",
-    "FamilleB",
-    "FamilleC",
-    "FamilleD",
-    "FamilleE",
-    "FamilleF"
+    "1234500",
+    "1234501",
+    "1234502"
   ],
-  "courseId": ""
+  "courseId": "3C6"
 }

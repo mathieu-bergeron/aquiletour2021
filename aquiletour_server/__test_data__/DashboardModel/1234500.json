@@ -18,7 +18,7 @@
         },
         "numberOfStudents": {
           "_C": "StoredInteger",
-          "value": 3
+          "value": 0
         },
         "title": "4F5",
         "courseId": "4F5"
@@ -39,7 +39,7 @@
         },
         "numberOfStudents": {
           "_C": "StoredInteger",
-          "value": 3
+          "value": 0
         },
         "title": "3C6",
         "courseId": "3C6"
