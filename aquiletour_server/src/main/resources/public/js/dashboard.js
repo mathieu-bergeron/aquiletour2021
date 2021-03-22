@@ -1,7 +1,7 @@
 window.onload = function(){
 
     var buttonAvailable = $("#buttonAvailable");
-    var available $("teacherAvailable");
+    var available = $("teacherAvailable");
     var availableLink = $("availableLink");
 
     buttonAvailable.onclick = function() {
