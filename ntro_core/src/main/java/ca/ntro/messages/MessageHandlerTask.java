@@ -17,33 +17,23 @@ public class MessageHandlerTask<MSG extends NtroMessage> extends NtroTaskAsync {
 
 	@Override
 	protected void runTaskAsync() {
-		// TODO Auto-generated method stub
-		
+		// BLOCK
 	}
 
 	public void triggerHandlerOnce() {
-		/* FIXME: as implemented below
-		 * I think there is an issue with three
-		 * handlers one after the other
-		 * 
-		 * if A -->    B    -->    C     --> D
-		 *    WAIT    WAIT         DONE
-		 * 
-		 * if A is triggered
-		 * we block on B
-		 * then reset B,C,D
-		 * 
-		 * and we loose the fact that
-		 * C was DONE before A got triggered
-		 * 
-		 */
+		if(state() == TaskState.WAITING_FOR_EXIT_TASK) {
 
-		notifyTaskFinished();  // unblock the handler
-		execute();             // execute tasks that are now unblocked
-		                       // reblock tasks that depend on this handler
-		resetNodeTransitive(TaskState.WAITING_FOR_PREVIOUS_TASKS);
-		execute();             // get ready for next trigger
+			// first trigger
+			notifyTaskFinished();
 
+		}else {
+			
+			// subsequent triggers
+			resetNodeTransitive(TaskState.WAITING_FOR_PREVIOUS_TASKS);
+			setState(TaskState.DONE);
+		}
+
+		execute();
 	}
 
 	@Override

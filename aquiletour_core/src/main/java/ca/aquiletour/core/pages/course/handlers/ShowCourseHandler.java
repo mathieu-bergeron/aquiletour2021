@@ -31,6 +31,9 @@ public class ShowCourseHandler extends ControllerMessageHandler<CourseController
 			currentController.setModelLoader(CourseModel.class, authToken, courseId);
 			currentCourseId = courseId;
 			
+			ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
+			showTaskMessage.setTaskPath(message.getTaskPath());
+			Ntro.messages().send(showTaskMessage);
 		}
 
 		RootView rootView = (RootView) currentController.getParentController().getView();

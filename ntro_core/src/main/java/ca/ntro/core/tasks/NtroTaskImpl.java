@@ -50,7 +50,15 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	public String getTaskId() {
 		return taskId;
 	}
+	
+	protected TaskState state() {
+		return state;
+	}
 
+	protected void setState(TaskState state) {
+		this.state = state;
+	}
+	
 	@Override
 	public String getLabel() {
 		// TMP

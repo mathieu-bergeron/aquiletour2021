@@ -127,17 +127,16 @@ public class AquiletourRequestHandler {
 		if(path.size() >= 1) {//TODO 
 
 			String courseId = path.getName(0);
+			Path taskPath = path.subPath(1);
 			
 			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
 			showCourseMessage.setCourseId(courseId);
-			Ntro.messages().send(showCourseMessage);
-			
-			Path taskPath = path.subPath(1);
+
 			if(taskPath.size() > 0) {
-				ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
-				showTaskMessage.setTaskPath(taskPath);
-				Ntro.messages().send(showTaskMessage);
+				showCourseMessage.setTaskPath(taskPath);
 			}
+
+			Ntro.messages().send(showCourseMessage);
 		}
 	}
 		

@@ -1,11 +1,9 @@
 package ca.aquiletour.core.pages.course;
 
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
-import ca.aquiletour.core.pages.course.handlers.CourseModelHandler;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
-import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.aquiletour.core.pages.root.RootController;
@@ -27,9 +25,8 @@ public class CourseController extends NtroController<RootController>{
 		addControllerMessageHandler(ShowCourseMessage.class, new ShowCourseHandler());
 
 		addSubViewLoader(TaskView.class, context.lang());
+
 		addModelViewSubViewMessageHandler(TaskView.class, ShowTaskMessage.class, new CourseViewModel());
-		
-		addModelHandler(CourseModel.class, new CourseModelHandler());
 	}
 
 	@Override
