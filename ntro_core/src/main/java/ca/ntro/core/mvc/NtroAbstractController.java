@@ -207,6 +207,8 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		T.call(this);
 
 		NtroTask task = handler.getTask();
+		
+		handler.setController(this);
 
 		mainTask.addSubTask(task);
 

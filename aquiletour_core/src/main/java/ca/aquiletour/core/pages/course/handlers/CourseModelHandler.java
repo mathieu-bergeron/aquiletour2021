@@ -11,7 +11,7 @@ public class CourseModelHandler extends ModelHandler<CourseModel> {
 	@Override
 	protected void handle(CourseModel model) {
 		T.call(this);
-
+		
 		// FIXME: we must wait for model to be loaded before firing this
 		//        to fix this we would need a messageQueue in the task graph
 		ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
