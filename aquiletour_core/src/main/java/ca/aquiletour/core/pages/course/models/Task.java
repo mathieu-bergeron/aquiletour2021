@@ -7,9 +7,9 @@ public class Task implements NtroModelValue {
 	private String id = "";
 	private String title = "";
 	
-	private ObservableTaskList previousTasks = new ObservableTaskList();
-	private ObservableTaskList subTasks = new ObservableTaskList();
-	private ObservableTaskList nextTasks = new ObservableTaskList();
+	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
+	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
+	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
 
 	public String getId() {
 		return id;
@@ -27,27 +27,27 @@ public class Task implements NtroModelValue {
 		this.title = title;
 	}
 
-	public ObservableTaskList getPreviousTasks() {
+	public ObservableTaskIdList getPreviousTasks() {
 		return previousTasks;
 	}
 
-	public void setPreviousTasks(ObservableTaskList previousTasks) {
+	public void setPreviousTasks(ObservableTaskIdList previousTasks) {
 		this.previousTasks = previousTasks;
 	}
 
-	public ObservableTaskList getSubTasks() {
+	public ObservableTaskIdList getSubTasks() {
 		return subTasks;
 	}
 
-	public void setSubTasks(ObservableTaskList subTasks) {
+	public void setSubTasks(ObservableTaskIdList subTasks) {
 		this.subTasks = subTasks;
 	}
 
-	public ObservableTaskList getNextTasks() {
+	public ObservableTaskIdList getNextTasks() {
 		return nextTasks;
 	}
 
-	public void setNextTasks(ObservableTaskList nextTasks) {
+	public void setNextTasks(ObservableTaskIdList nextTasks) {
 		this.nextTasks = nextTasks;
 	}
 }

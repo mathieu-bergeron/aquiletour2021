@@ -4,24 +4,13 @@ import ca.ntro.core.models.NtroModel;
 
 public class CourseModel implements NtroModel {
 	
-	private Task rootTask = new Task();
+	private ObservableTaskMap rootTasks = new ObservableTaskMap();
 
-	private ObservableTaskList tasks = new ObservableTaskList();
-
-	public ObservableTaskList getTasks() {
-		return tasks;
+	public ObservableTaskMap getRootTasks() {
+		return rootTasks;
 	}
 
-	public void setTasks(ObservableTaskList tasks) {
-		this.tasks = tasks;
+	public void setRootTasks(ObservableTaskMap rootTasks) {
+		this.rootTasks = rootTasks;
 	}
-
-	public Task getRootTask() {
-		return rootTask;
-	}
-
-	public void setRootTask(Task rootTask) {
-		this.rootTask = rootTask;
-	}
-
 }

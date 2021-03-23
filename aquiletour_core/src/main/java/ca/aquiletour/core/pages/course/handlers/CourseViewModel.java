@@ -15,13 +15,19 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel, CourseView, ShowTaskMessage>  {
 	
+	private Task currentTask;
+	
 	@Override
 	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		
+		if(currentTask != null) {
+			//currentTask.removeObservers();
+		}
+		
 		System.out.println("showTask: " + message.getTaskPath().toString());
 
-		Task rootTask = model.getRootTask();
+		//Task rootTask = model.getRootTask();
 		
 		/* We have a path
 		// currentTask = model.getTaskByPath(path)
