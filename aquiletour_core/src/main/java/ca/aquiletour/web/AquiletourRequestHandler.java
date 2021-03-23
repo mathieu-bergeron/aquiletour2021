@@ -6,6 +6,7 @@ import java.util.Map;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
@@ -38,6 +39,10 @@ public class AquiletourRequestHandler {
 		}else if(path.startsWith("billetterie")) {
 			
 			sendQueueMessages(path.subPath(1), parameters, context.user());
+
+		} else if(path.startsWith("cours")) {
+
+			sendCourseMessages(path.subPath(1), parameters, context.user());
 		
 		}else if(path.startsWith("connexion")) {
 			
@@ -113,6 +118,19 @@ public class AquiletourRequestHandler {
 
 		ShowQueuesMessage showQueuesMessage = Ntro.messages().create(ShowQueuesMessage.class);
 		Ntro.messages().send(showQueuesMessage);
+	}
+
+	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourRequestHandler.class);
+		
+		if(path.size() >= 1) {//TODO 
+
+			String courseId = path.getName(0);
+			
+			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
+			showCourseMessage.setCourseId(courseId);
+			Ntro.messages().send(showCourseMessage);
+		}
 	}
 		
 

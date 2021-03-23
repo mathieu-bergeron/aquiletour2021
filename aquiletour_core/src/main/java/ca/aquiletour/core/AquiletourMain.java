@@ -27,6 +27,11 @@ import ca.aquiletour.core.models.users.SuperUser;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.course.messages.AddTaskMessage;
+import ca.aquiletour.core.pages.course.models.CourseModel;
+import ca.aquiletour.core.pages.course.models.ObservableTaskList;
+import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.core.pages.course.models.TaskRelation;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -112,6 +117,15 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableQueueList.class);
 		Ntro.registerSerializableClass(QueueSummary.class);
 
+		Ntro.registerSerializableClass(CommitListModel.class);
+		Ntro.registerSerializableClass(ObservableCommitList.class);
+		Ntro.registerSerializableClass(Commit.class);
+
+		Ntro.registerSerializableClass(CourseModel.class);
+		Ntro.registerSerializableClass(ObservableTaskList.class);
+		Ntro.registerSerializableClass(Task.class);
+		Ntro.registerSerializableClass(TaskRelation.class);
+
 		Ntro.registerSerializableClass(User.class);
 		Ntro.registerSerializableClass(Teacher.class);
 		Ntro.registerSerializableClass(TeacherGuest.class);
@@ -120,7 +134,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SuperUser.class);
 		Ntro.registerSerializableClass(Guest.class);
 
-		Ntro.registerSerializableClass(NtroMessage.class);
 		Ntro.registerSerializableClass(AddCourseMessage.class);
 		Ntro.registerSerializableClass(DeleteCourseMessage.class);
 		Ntro.registerSerializableClass(AddAppointmentMessage.class);
@@ -131,9 +144,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(UserInitiatesLoginMessage.class);
 		Ntro.registerSerializableClass(UserSendsLoginCodeMessage.class);
 		Ntro.registerSerializableClass(AddStudentCsvMessage.class);
-		Ntro.registerSerializableClass(CommitListModel.class);
-		Ntro.registerSerializableClass(ObservableCommitList.class);
-		Ntro.registerSerializableClass(Commit.class);
+		Ntro.registerSerializableClass(AddTaskMessage.class);
+
 	}
 	
 	protected abstract NtroWindow getWindow();

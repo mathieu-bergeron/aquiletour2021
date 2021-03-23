@@ -5,9 +5,9 @@ import java.util.Map;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.models.users.Student;
-import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.course.messages.AddTaskMessage;
+import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
@@ -15,7 +15,6 @@ import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
-import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -52,6 +51,10 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith("billetterie")) {
 			
 			sendQueueMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
+
+		}else if(path.startsWith("cours")) {
+			
+			sendCourseMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
 			
 		}else if(path.startsWith("connexion")) {
 			
@@ -127,10 +130,38 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
+	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		if(path.size() >= 1) {
+			sendTaskMessages(parameters, user, path.getName(0));
+		}
+	}
+
+	private static void sendTaskMessages(Map<String, String[]> parameters, User user, String courseId) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		if(parameters.containsKey("addTask")) {
+			
+			String taskId = parameters.get("addTask")[0];
+			String taskTitle = taskId;
+
+			Task task = new Task();
+			task.setId(taskId);
+			task.setTitle(taskTitle);
+			
+			AddTaskMessage addTaskMessage = Ntro.messages().create(AddTaskMessage.class);
+			addTaskMessage.setCourseId(courseId);
+			addTaskMessage.setTask(task);
+			Ntro.messages().send(addTaskMessage);
+		}
+	}
+
+
 	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("makeAppointment")) { //localhost8080/billeterie/courseId?makeAppointment
+		if(parameters.containsKey("makeAppointment")) {
 			
 			// FIXME: we need a Ntro service for dates
 			/*

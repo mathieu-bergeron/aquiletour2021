@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
+import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -22,6 +23,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private HtmlElement numberOfAppointmentsElement;
 	private HtmlElement deleteQueue;
 	private HtmlElement closeQueue;
+	private HtmlElement showCourseLink;
 	private HtmlElement csvFileInput;
 	private HtmlElement csvFileSubmit;
 	private HtmlElement csvFileQueueId;
@@ -29,6 +31,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	private String openQueueHref;
 	private String closeQueueHref;
 	private String deleteQueueHref;
+	private String showCourseHref;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -39,6 +42,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		numberOfAppointmentsElement = this.getRootElement().find("#number-of-appointments").get(0);
 		deleteQueue = this.getRootElement().find("#delete-queue-link").get(0);
 		closeQueue = this.getRootElement().find("#close-queue-link").get(0);
+		showCourseLink = this.getRootElement().find("#show-course-link").get(0);
 		csvFileInput = this.getRootElement().find("#csv-file-input").get(0);
 		csvFileSubmit = this.getRootElement().find("#csv-file-submit").get(0);
 		csvFileQueueId = this.getRootElement().find("#csv-file-queue-id").get(0);
@@ -47,6 +51,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		MustNot.beNull(numberOfStudentsElement);
 		MustNot.beNull(numberOfAppointmentsElement);
 		MustNot.beNull(closeQueue);
+		MustNot.beNull(showCourseLink);
 		MustNot.beNull(csvFileInput);
 		MustNot.beNull(csvFileSubmit);
 		MustNot.beNull(csvFileQueueId);
@@ -54,6 +59,7 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 		openQueueHref = title.getAttribute("href");
 		closeQueueHref = closeQueue.getAttribute("href");
 		deleteQueueHref = deleteQueue.getAttribute("href");
+		showCourseHref = showCourseLink.getAttribute("href");
 	}
 
 	@Override
@@ -98,6 +104,14 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 
 		adjustOpenCloseLinks(course);
 
+		installDeleteQueueListener(course);
+		
+		installShowCourseListener(course);
+	}
+
+	private void installDeleteQueueListener(CourseSummary course) {
+		T.call(this);
+
 		deleteQueue.setAttribute("href", deleteQueueHref + course.getCourseId());
 		
 		deleteQueue.addEventListener("click", new HtmlEventListener() {
@@ -108,6 +122,23 @@ public class TeacherCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 				DeleteCourseMessage deleteCourseMessage = Ntro.messages().create(DeleteCourseMessage.class);
 				deleteCourseMessage.setCourseId(course.getCourseId());
 				Ntro.messages().send(deleteCourseMessage);
+			}
+		});
+	}
+
+	private void installShowCourseListener(CourseSummary course) {
+		T.call(this);
+
+		showCourseLink.setAttribute("href", showCourseHref + course.getCourseId());
+		
+		showCourseLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+
+				ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
+				showCourseMessage.setCourseId(course.getCourseId());
+				Ntro.messages().send(showCourseMessage);
 			}
 		});
 	}

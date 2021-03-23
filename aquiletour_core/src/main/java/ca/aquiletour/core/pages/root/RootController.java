@@ -22,6 +22,7 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
+import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
@@ -54,6 +55,8 @@ public class RootController extends NtroRootController {
 		// FIXME: modelStore does not support
 		//        two models of the same kind (or with the same DocumentPath)
 		addStudentOrTeacherSubController(context);
+
+		addSubController(CourseController.class, "cours");
 
 		addSubController(QueuesController.class, "profs");
 	

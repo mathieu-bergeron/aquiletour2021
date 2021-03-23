@@ -1,5 +1,7 @@
 package ca.aquiletour.web;
 
+import ca.aquiletour.core.pages.course.views.CourseView;
+import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
@@ -15,6 +17,8 @@ import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.web.pages.courses.CourseViewWeb;
+import ca.aquiletour.web.pages.courses.TaskViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
@@ -159,5 +163,20 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CommitViewWeb.class));
 
+		ViewLoaders.registerViewLoader(CourseView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/course/teacher/course_teacher.html")
+			     	.setCssUrl("/views/course/teacher/course_teacher.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CourseViewWeb.class));
+
+		ViewLoaders.registerViewLoader(TaskView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/task/teacher/task_teacher.html")
+			     	.setCssUrl("/views/task/teacher/task_teacher.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(TaskViewWeb.class));
 	}
 }
