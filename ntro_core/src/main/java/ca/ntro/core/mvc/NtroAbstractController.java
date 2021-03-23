@@ -203,6 +203,17 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
 
+	protected <M extends NtroModel> void addModelHandler(Class<M> modelClass, ModelHandler<M> handler) {
+		T.call(this);
+
+		NtroTask task = handler.getTask();
+
+		mainTask.addSubTask(task);
+
+		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
+	}
+
+	
 	protected void addModelViewSubViewHandler(Class<? extends NtroView> subViewClass, ModelViewSubViewHandler<?,?> handler) {
 		T.call(this);
 
@@ -214,6 +225,31 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 		ViewLoader subViewLoader = (ViewLoader) getTask().getSubTask(ViewLoader.class, subViewLoaderTaskId);
 		handler.setSubViewLoader(subViewLoader);
+
+		addPreviousTaskTo(task, ViewLoader.class, subViewLoaderTaskId);
+		addPreviousTaskTo(task, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
+		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
+	}
+
+	protected void addModelViewSubViewMessageHandler(Class<? extends NtroView> subViewClass, 
+			                                         Class<? extends NtroMessage> messageClass, 
+			                                         ModelViewSubViewMessageHandler<?,?,?> handler) {
+		T.call(this);
+
+
+		String subViewLoaderTaskId = Ntro.introspector().getSimpleNameForClass(subViewClass);
+
+		ViewLoader subViewLoader = (ViewLoader) getTask().getSubTask(ViewLoader.class, subViewLoaderTaskId);
+		handler.setSubViewLoader(subViewLoader);
+		
+		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
+		handler.setMessageId(messageId);
+
+		handler.getTask().addPreviousTask(messageHandlerTask);
+
+		NtroTask task = handler.getTask();
+		mainTask.addSubTask(task);
 
 		addPreviousTaskTo(task, ViewLoader.class, subViewLoaderTaskId);
 		addPreviousTaskTo(task, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);

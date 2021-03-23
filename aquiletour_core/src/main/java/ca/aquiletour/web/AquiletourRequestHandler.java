@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
+import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
@@ -130,6 +131,13 @@ public class AquiletourRequestHandler {
 			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
 			showCourseMessage.setCourseId(courseId);
 			Ntro.messages().send(showCourseMessage);
+			
+			Path taskPath = path.subPath(1);
+			if(taskPath.size() > 0) {
+				ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
+				showTaskMessage.setTaskPath(taskPath);
+				Ntro.messages().send(showTaskMessage);
+			}
 		}
 	}
 		

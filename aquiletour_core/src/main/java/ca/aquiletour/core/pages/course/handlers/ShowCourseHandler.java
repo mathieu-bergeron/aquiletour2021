@@ -2,12 +2,14 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
+import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class ShowCourseHandler extends ControllerMessageHandler<CourseController,
                                                                 CourseView,
@@ -28,6 +30,7 @@ public class ShowCourseHandler extends ControllerMessageHandler<CourseController
 			String authToken = currentController.context().user().getAuthToken();
 			currentController.setModelLoader(CourseModel.class, authToken, courseId);
 			currentCourseId = courseId;
+			
 		}
 
 		RootView rootView = (RootView) currentController.getParentController().getView();

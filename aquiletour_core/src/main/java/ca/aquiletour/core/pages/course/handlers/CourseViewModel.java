@@ -3,21 +3,34 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
+import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.models.listeners.ListObserver;
-import ca.ntro.core.mvc.ModelViewSubViewHandler;
+import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseViewModel extends ModelViewSubViewHandler<CourseModel, CourseView>  {
+public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel, CourseView, ShowTaskMessage>  {
 	
 	@Override
-	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		
+		System.out.println("showTask: " + message.getTaskPath().toString());
+
+		Task rootTask = model.getRootTask();
+		
+		/* We have a path
+		// currentTask = model.getTaskByPath(path)
+		// view.appendTask(currentTask, view)
+		//
+		// currentTask.clearObservers()
+		// currentTask.observe()
+		
+		*/
 		model.getTasks().observe(new ListObserver<Task>() {
 			
 			@Override

@@ -3,9 +3,10 @@ package ca.ntro.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
 
-public class Path {
+public class Path implements JsonSerializable {
 	
 	private List<String> names = new ArrayList<>();
 	
@@ -128,5 +129,13 @@ public class Path {
 		}
 		
 		return builder.toString();
+	}
+
+	public List<String> getNames() {
+		return names;
+	}
+
+	public void setNames(List<String> names) {
+		this.names = names;
 	}
 }
