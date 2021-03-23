@@ -8,5 +8,9 @@ function initializeView(viewName, viewRootElement, jSweet){
     }else if(viewName === "TeacherDashboardViewWeb"){
 
         initializeDashboard(viewRootElement, jSweet);
+
+    }else if(viewName === "CommitListViewWeb"){
+
+        initializeCommitList(viewRootElement, jSweet);
     }
 }

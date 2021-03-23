@@ -3,10 +3,7 @@ package ca.aquiletour.web;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.aquiletour.core.messages.UserLogsOutMessage;
-import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
-import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
