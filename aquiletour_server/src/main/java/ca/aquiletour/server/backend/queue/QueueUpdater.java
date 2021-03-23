@@ -4,7 +4,6 @@ import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.queues.QueuesUpdater;
@@ -234,7 +233,8 @@ public class QueueUpdater {
 	public static void moveAppointment(ModelStoreSync modelStore, 
 			                           String queueId, 
 			                           String appointmentId, 
-			                           MoveAppointmentDestination destination) {
+			                           String destinationId,
+			                           String beforeOrAfter) {
 
 		T.call(QueueUpdater.class);
 		
@@ -243,7 +243,7 @@ public class QueueUpdater {
 			public void update(QueueModel queue) {
 				T.call(this);
 
-				queue.moveAppointment(appointmentId, destination);
+				queue.moveAppointment(appointmentId, destinationId, beforeOrAfter);
 			}
 		});
 	}

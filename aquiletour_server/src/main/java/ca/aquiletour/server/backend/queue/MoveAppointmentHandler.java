@@ -1,7 +1,6 @@
 package ca.aquiletour.server.backend.queue;
 
 
-import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -15,9 +14,10 @@ public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmen
 		
 		String courseId = message.getCourseId();
 		String appointmentId = message.getAppointmentId();
-		MoveAppointmentDestination destination = message.getDestination();
+		String destinationId = message.getDestinationId();
+		String beforeOrAfter = message.getBeforeOrAfter();
 		
-		QueueUpdater.moveAppointment(modelStore, courseId, appointmentId, destination);
+		QueueUpdater.moveAppointment(modelStore, courseId, appointmentId, destinationId, beforeOrAfter);
 	}
 
 	@Override

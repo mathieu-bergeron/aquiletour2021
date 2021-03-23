@@ -25,13 +25,11 @@ function initializeQueue(viewRootElement, jSweet){
 
                 if(jSweet){
 
-                    let destination = ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination.BEFORE;
-                    destination.setAppointmentId(nextAppointmentId);
-
                     let moveAppointmentMessage = (ca.ntro.services.Ntro.messages().create(ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage));
                     moveAppointmentMessage.setCourseId(queueId);
                     moveAppointmentMessage.setAppointmentId(appointmentId);
-                    moveAppointmentMessage.setDestination(destination);
+                    moveAppointmentMessage.setDestinationId(nextAppointmentId);
+                    moveAppointmentMessage.setBeforeOrAfter("before");
                     ca.ntro.services.Ntro.messages().send(moveAppointmentMessage);
 
 
@@ -53,13 +51,11 @@ function initializeQueue(viewRootElement, jSweet){
 
                 if(jSweet){
 
-                    let destination = ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination.AFTER;
-                    destination.setAppointmentId(prevAppointmentId);
-
                     let moveAppointmentMessage = (ca.ntro.services.Ntro.messages().create(ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage));
                     moveAppointmentMessage.setCourseId(queueId);
                     moveAppointmentMessage.setAppointmentId(appointmentId);
-                    moveAppointmentMessage.setDestination(destination);
+                    moveAppointmentMessage.setDestinationId(prevAppointmentId);
+                    moveAppointmentMessage.setBeforeOrAfter("after");
                     ca.ntro.services.Ntro.messages().send(moveAppointmentMessage);
 
                     /*

@@ -13,7 +13,6 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
-import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
@@ -157,19 +156,20 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
 
 			String appointmentId = parameters.get("move")[0];
-			MoveAppointmentDestination destination = null;
+			String destinationId = null;
+			String beforeOrAfter = null;
 			if(parameters.containsKey("after")) {
-				destination = MoveAppointmentDestination.AFTER;
-				destination.setAppointmentId(parameters.get("after")[0]);
+				destinationId = parameters.get("after")[0];
+				beforeOrAfter = "after";
 			}else if(parameters.containsKey("before")) {
-				destination = MoveAppointmentDestination.BEFORE;
-				destination.setAppointmentId(parameters.get("before")[0]);
+				destinationId = parameters.get("before")[0];
+				beforeOrAfter = "before";
 			}
 
 			MoveAppointmentMessage moveAppointmentMessage = Ntro.messages().create(MoveAppointmentMessage.class);
 			moveAppointmentMessage.setCourseId(courseId);
 			moveAppointmentMessage.setAppointmentId(appointmentId);
-			moveAppointmentMessage.setDestination(destination);
+			moveAppointmentMessage.setDestinationId(destinationId);
 			Ntro.messages().send(moveAppointmentMessage);
 		}
 	}
