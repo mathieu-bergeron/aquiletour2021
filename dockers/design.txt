@@ -26,6 +26,15 @@ extrait les infos des commits master depuis le dernier commit dans DB
 	determine tp/exercice avec DB cours vs dossier et description du commit
 ajoute les commit dans DB
 
+MariaDB:
+Table DEPOTS:
+(URL Depot) - Session - Cours - Groupe - Etudiant - TP
+Table COMMIT:
+(URL Depot - Commit ID) - Date - Message
+Table FICHIER:
+(URL Depot - Commit ID - Fichier Path) - Insert - Delete
+Table TAGS:
+(URL Depot - Commit ID - Tag) - File(O/N) - Message(O/N)
 
 Docker GIT:
 retourne une archive des fichiers selon requete:
@@ -40,6 +49,8 @@ retourne une archive des fichiers selon requete:
 	Besoin de la DB pour trouver les depots pertinents pour chaque etudiant
 API?
 	Definition des requetes?
+	Tous les commit pour 1 etudiant et TP
+	Tous les etudiants sans commit avant date pour TP
 Communication FastAPI <-> GIT manager
 	DB SQLLite: Impossible de partager queue avec workers FastAPI
 	1 ligne par requete et reponse
