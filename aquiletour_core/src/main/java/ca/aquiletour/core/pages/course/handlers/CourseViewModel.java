@@ -37,48 +37,58 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 		// currentTask.observe()
 		
 		*/
-		model.getTasks().observe(new ListObserver<Task>() {
-			
+		
+		/*
+		
+		
+		
+		*/
+		
+		model.getRootTasks().observe(new ListObserver<String>() {
+
 			@Override
-			public void onItemRemoved(int index, Task item) {
+			public void onValueChanged(List<String> oldValue, List<String> value) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onItemUpdated(int index, Task item) {
+			public void onValue(List<String> value) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onItemAdded(int index, Task item) {
+			public void onDeleted(List<String> lastValue) {
+				// TODO Auto-generated method stub
 				
+			}
+
+			@Override
+			public void onItemAdded(int index, String taskId) {
+
 				TaskView taskView = (TaskView) subViewLoader.createView();
 				
-				taskView.displayTask(item);
-				
-				view.insertTask(index, taskView);
+				Task task = model.getTaskById(taskId);
+
+				if(task != null) {
+					taskView.displayTask(task);
+					view.insertTask(index, taskView);
+				}
 			}
-			
+
 			@Override
-			public void onDeleted(List<Task> lastValue) {
+			public void onItemUpdated(int index, String item) {
 				// TODO Auto-generated method stub
 				
 			}
-			
+
 			@Override
-			public void onValue(List<Task> value) {
+			public void onItemRemoved(int index, String item) {
 				// TODO Auto-generated method stub
 				
 			}
-			
-			@Override
-			public void onValueChanged(List<Task> oldValue, List<Task> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+
 			@Override
 			public void onClearItems() {
 				// TODO Auto-generated method stub
