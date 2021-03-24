@@ -17,6 +17,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -171,7 +172,7 @@ public class AquiletourBackendRequestHandler {
 
 			Path newPreviousTaskPath = new Path(parentPath.toString() + "/" + newPreviousTaskId);
 
-			Task newPreviousTask = new Task();
+			Task newPreviousTask = Ntro.modelStore().createModelValue(Task.class);
 			newPreviousTask.setPath(newPreviousTaskPath);
 			newPreviousTask.setTitle(taskTitle);
 
