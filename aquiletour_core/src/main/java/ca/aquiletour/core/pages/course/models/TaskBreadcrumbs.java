@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.course.models;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ca.ntro.core.Path;
@@ -15,7 +16,7 @@ public class TaskBreadcrumbs implements NtroModel {
 	 */
 	
 	private Path trunk;
-	private Map<String, Task> branches = new HashMap<>();
+	private Map<String, List<Task>> branches = new HashMap<>();
 	
 	public Path getTrunk() {
 		return trunk;
@@ -25,11 +26,11 @@ public class TaskBreadcrumbs implements NtroModel {
 		this.trunk = trunk;
 	}
 
-	public Map<String, Task> getBranches() {
+	public Map<String, List<Task>> getBranches() {
 		return branches;
 	}
 
-	public void setBranches(Map<String, Task> branches) {
+	public void setBranches(Map<String, List<Task>> branches) {
 		this.branches = branches;
 	}
 

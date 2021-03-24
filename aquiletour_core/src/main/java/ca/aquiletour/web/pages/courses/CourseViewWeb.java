@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.courses;
 
+import ca.aquiletour.core.pages.course.models.TaskBreadcrumbs;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.Path;
@@ -40,10 +41,9 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void displayPath(Path taskPath) {
+	public void displayBreadcrumbs(TaskBreadcrumbs breadcrumps) {
 		T.call(this);
 		
-		// FIXME: this should be a tree collected from the taskGraph along the taskPath
-
 	}
+
 }
