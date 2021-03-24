@@ -19,8 +19,6 @@ public class CourseModel implements NtroModel {
 	public Task findTaskById(String taskId) {
 		T.call(this);
 		
-		System.out.println("findTaskById: " + taskId);
-
 		return tasks.valueOf(taskId);
 	}
 
@@ -36,11 +34,7 @@ public class CourseModel implements NtroModel {
 	public void addTask(Task task) {
 		T.call(this);
 		
-		System.out.println("addTask " + task.getTaskPath().toString());
-		
 		Path parentTaskPath = task.parentTaskPath();
-
-		System.out.println("parentTaskPath " + parentTaskPath.toString());
 		
 		Task parent = findTaskByPath(parentTaskPath);
 		
@@ -49,6 +43,20 @@ public class CourseModel implements NtroModel {
 		}
 
 		tasks.addEntry(task.getTaskPath().toString(), task);
+	}
+
+	public TaskBreadcrumbs breadcrumbsForTask(Task task) {
+		T.call(this);
+		
+		TaskBreadcrumbs breadcrumbs = new TaskBreadcrumbs();
+		
+		breadcrumbs.setTrunk(task.getTaskPath());
+		
+		// This requires to explore the graph
+		// TODO: add graph interface + 
+		//breadcrumbs.addBranches();
+
+		return breadcrumbs;
 	}
 
 }
