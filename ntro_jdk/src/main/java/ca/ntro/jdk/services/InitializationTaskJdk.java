@@ -112,8 +112,8 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected UserService provideUserService() {
-		return new UserServiceJdk();
+	protected Class<? extends UserService> provideUserServiceClass() {
+		return UserServiceJdk.class;
 	}
 
 	@Override

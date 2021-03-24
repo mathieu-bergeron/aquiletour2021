@@ -1,18 +1,18 @@
 package ca.ntro.services;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
+import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
@@ -20,6 +20,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 public abstract class ModelStore {
 
@@ -28,21 +29,25 @@ public abstract class ModelStore {
 	
 	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
 	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
+	
+	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
+	
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+		T.call(this);
+
+		String documentId = documentId(firstPathName, pathRemainder);
+		DocumentPath documentPath = documentPath(modelClass, documentId);
+
+		return ifModelExistsImpl(documentPath);
+	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
 
 		ModelLoader modelLoader = new ModelLoader(this);
 		
-		String documentId = firstPathName;
-		for(String additionalSegment : pathRemainder) {
-			documentId += "__" + additionalSegment;
-		}
-		
-		DocumentPath documentPath = new DocumentPath();
-
-		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(modelClass));
-		documentPath.setDocumentId(documentId);
+		String documentId = documentId(firstPathName, pathRemainder);
+		DocumentPath documentPath = documentPath(modelClass, documentId);
 		
 		JsonLoader jsonLoader = getJsonLoader(documentPath);
 		jsonLoader.setTaskId("JsonLoader");
@@ -53,6 +58,22 @@ public abstract class ModelStore {
 		modelLoader.addSubTask(jsonLoader);
 
 		return modelLoader;
+	}
+
+	private <M extends NtroModel> DocumentPath documentPath(Class<M> modelClass, String documentId) {
+		DocumentPath documentPath = new DocumentPath();
+
+		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(modelClass));
+		documentPath.setDocumentId(documentId);
+		return documentPath;
+	}
+
+	private String documentId(String firstPathName, String... pathRemainder) {
+		String documentId = firstPathName;
+		for(String additionalSegment : pathRemainder) {
+			documentId += "__" + additionalSegment;
+		}
+		return documentId;
 	}
 	
 	public static String emptyModelString(DocumentPath documentPath) {
@@ -69,7 +90,7 @@ public abstract class ModelStore {
 
 	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
 
-	public abstract void saveJsonString(DocumentPath documentPath, String jsonString);
+	public abstract void saveDocument(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
 
@@ -81,7 +102,11 @@ public abstract class ModelStore {
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
-		System.out.println("invokeValueMethod " + valuePath);
+		if(args.size() > 0) {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+		}else {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+		}
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
 
@@ -112,12 +137,70 @@ public abstract class ModelStore {
 		T.call(this);
 		
 		DocumentPath documentPath = localHeap.get(model);
+		
+		if(documentPath == null) {
 
-		saveJsonString(documentPath, Ntro.jsonService().toString(model));
+			Log.warning("Model was already saved and removed from memory: " + model);
+
+		}else {
+			
+			saveDocument(documentPath, Ntro.jsonService().toString(model));
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(model);
+			localHeapByPath.remove(documentPath);
+		}
+	}
+
+	public void replace(NtroModel existingModel, NtroModel newModel) {
+		DocumentPath documentPath = localHeap.get(existingModel);
+		
+		if(documentPath == null) {
+
+			Log.warning("Model was already saved and removed from memory: " + existingModel);
+
+		}else {
+			
+			saveDocument(documentPath, Ntro.jsonService().toString(newModel));
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(existingModel);
+			localHeapByPath.remove(documentPath);
+		}
 	}
 	
 	void reset() {
 		localHeap = new HashMap<>();
 		localHeapByPath = new HashMap<>();
+	}
+
+	public void delete(NtroModel model) {
+		DocumentPath documentPath = localHeap.get(model);
+		
+		if(documentPath == null) {
+
+			Log.warning("Model was already saved and removed from memory: " + model);
+
+		}else {
+			
+			deleteDocument(documentPath);
+
+			// JSWEET: will the work correctly? (removing by reference)
+			localHeap.remove(model);
+			localHeapByPath.remove(documentPath);
+		}
+		
+	}
+
+	protected abstract void deleteDocument(DocumentPath documentPath);
+
+	public void closeWithoutSaving(NtroModel existingModel) {
+		T.call(this);
+
+		DocumentPath documentPath = localHeap.get(existingModel);
+
+		// JSWEET: will the work correctly? (removing by reference)
+		localHeap.remove(existingModel);
+		localHeapByPath.remove(documentPath);
 	}
 }

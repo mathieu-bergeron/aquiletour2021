@@ -2,9 +2,12 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
-import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserLogsOutMessage;
+import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.course.messages.AddTaskMessage;
+import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
@@ -12,43 +15,47 @@ import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
-import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.core.pages.users.messages.AddUserMessage;
-import ca.aquiletour.core.pages.users.messages.AddUserToCourseMessage;
-import ca.aquiletour.core.pages.users.messages.DeleteUserFromCourseMessage;
-import ca.aquiletour.core.pages.users.messages.DeleteUserMessage;
 import ca.ntro.core.Path;
-import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
-import ca.ntro.services.ResourceLoaderTask;
 
 public class AquiletourBackendRequestHandler {
 	
-	
-	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
-		
-		if(path.startsWith("mescours")) {
 
-			sendDashboardMessages(path.subPath(1), parameters, context.user());
-
-		}else if(path.startsWith("csv")) {
+		if(parameters.containsKey("userId")) {
 			
-			sendCsvMessages(path.subPath(1), parameters, context.user());
+			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
+			userInitiatesLoginMessage.setProvidedId(parameters.get("userId")[0]);
+			Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
 
-		} else if(path.startsWith("billetteries")) {
+		} else if(parameters.containsKey("loginCode")) {
+			
+			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
+			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
+			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
+
+		} else if(path.startsWith("deconnexion")) {
+
+			Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserLogsOutMessage.class));
+
+		} else if(path.startsWith("mescours")) {
+
+			sendDashboardMessages(path.subPath(1), parameters, (User) Ntro.userService().currentUser());
+
+		} else if(path.startsWith("profs")) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
 		}else if(path.startsWith("billetterie")) {
 			
-			sendQueueMessages(path.subPath(1), parameters , context.user());
+			sendQueueMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
+
+		}else if(path.startsWith("cours")) {
 			
-		}else if(path.startsWith("usagers")) {
+			sendCourseMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
 			
-			sendUsersMessages(path.subPath(1), parameters);
-		
 		}else if(path.startsWith("connexion")) {
 			
 			sendLoginMessages(path.subPath(1), parameters);
@@ -56,29 +63,15 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith("home")) {
 
 			sendHomeMessages(path.subPath(1), parameters);
+			
+		}else if(path.startsWith("progressiongit")) {
+
+			sendGitMessages(path.subPath(1), parameters);
 		}
 	}
 	
-	private static void sendCsvMessages(Path path, Map<String, String[]> parameters, User user) {
+	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
-
-		if(parameters.containsKey("queueId")) {// /csv?queueId=3C6
-			
-			String queueId = parameters.get("queueId")[0];
-		
-			AddStudentCsvMessage addStudentCsvMessage = new AddStudentCsvMessage();
-			addStudentCsvMessage.setQueueId(queueId);
-			addStudentCsvMessage.setUser(user);
-			
-			ResourceLoaderTask loadCsv = Ntro.resourceLoader().loadResourceTask("__test__/test01.csv");//TODO comment savoir quel fichier ouvrir?
-			loadCsv.execute();
-
-			addStudentCsvMessage.setCsvString(loadCsv.getResourceAsString());
-			
-			System.out.println(loadCsv.getResourceAsString());
-			
-			Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
-		}
 		
 	}
 
@@ -95,22 +88,30 @@ public class AquiletourBackendRequestHandler {
 	private static void sendDashboardMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("title")) {
+		if(parameters.containsKey("addQueue")) {
 
-			String courseTitle = parameters.get("title")[0];
-			String courseId = parameters.get("title")[0];
+			String courseTitle = parameters.get("addQueue")[0];
+			String courseId = courseTitle; // FIXME we need a real ID
 
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId, false, false, 0));
+			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
-		} else if(parameters.containsKey("deleteCourse")) {
-			DeleteCourseMessage deleteCourseMessage = new DeleteCourseMessage();
+		} else if(parameters.containsKey("closeQueue")) {
+
+			TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
 			
-			String courseId = path.getName(0);
+			String courseId = parameters.get("closeQueue")[0];
+			teacherClosesQueueMessage.setCourseId(courseId);
+			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
+
+		} else if(parameters.containsKey("deleteQueue")) {
+
+			DeleteCourseMessage deleteCourseMessage = Ntro.messages().create(DeleteCourseMessage.class);
+			
+			String courseId = parameters.get("deleteQueue")[0];
 			deleteCourseMessage.setCourseId(courseId);
-			deleteCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(deleteCourseMessage);
 		}
 	}
@@ -129,10 +130,38 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
+	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		if(path.size() >= 1) {
+			sendTaskMessages(parameters, user, path.getName(0));
+		}
+	}
+
+	private static void sendTaskMessages(Map<String, String[]> parameters, User user, String courseId) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		if(parameters.containsKey("addTask")) {
+			
+			String taskId = parameters.get("addTask")[0];
+			String taskTitle = taskId;
+
+			Task task = new Task();
+			task.setId(taskId);
+			task.setTitle(taskTitle);
+			
+			AddTaskMessage addTaskMessage = Ntro.messages().create(AddTaskMessage.class);
+			addTaskMessage.setCourseId(courseId);
+			addTaskMessage.setTask(task);
+			Ntro.messages().send(addTaskMessage);
+		}
+	}
+
+
 	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("makeAppointment")) { //localhost8080/billeterie/courseId?makeAppointment
+		if(parameters.containsKey("makeAppointment")) {
 			
 			// FIXME: we need a Ntro service for dates
 			/*
@@ -141,97 +170,38 @@ public class AquiletourBackendRequestHandler {
 			int minute = rightNow.get(Calendar.MINUTE);
 			String time = hour + ":" + minute;
 			 */
-			AddAppointmentMessage addAppointmentMessage = new AddAppointmentMessage();
-			Appointment newAppointment = new Appointment();
-			newAppointment.setStudentId(user.getId());
-			newAppointment.setStudentName(user.getName());
-			newAppointment.setStudentSurname(user.getSurname());
-			addAppointmentMessage.setAppointment(newAppointment);
-			addAppointmentMessage.setUser(user);
+			AddAppointmentMessage addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
 			addAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
 			
-		} else if(parameters.containsKey("deleteAppointment") && user instanceof Teacher){
+		} else if(parameters.containsKey("deleteAppointment")){
 			
-			DeleteAppointmentMessage deleteAppointmentMessage = new DeleteAppointmentMessage();
+			// FIXME TODO: check for permissions
 			
+			DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
-			deleteAppointmentMessage.setUser(user);
 			deleteAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
+
 		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
-			String departureId = parameters.get("move")[0];
-			String destinationId = parameters.get("before")[0];
+
+			String appointmentId = parameters.get("move")[0];
+			String destinationId = null;
+			String beforeOrAfter = null;
+			if(parameters.containsKey("after")) {
+				destinationId = parameters.get("after")[0];
+				beforeOrAfter = "after";
+			}else if(parameters.containsKey("before")) {
+				destinationId = parameters.get("before")[0];
+				beforeOrAfter = "before";
+			}
+
 			MoveAppointmentMessage moveAppointmentMessage = Ntro.messages().create(MoveAppointmentMessage.class);
-			Appointment newAppointment = new Appointment();
-			moveAppointmentMessage.setappointmentDepartureId(departureId);
-			moveAppointmentMessage.setappointmentDestinationId(destinationId);
-			moveAppointmentMessage.setUser(user);
 			moveAppointmentMessage.setCourseId(courseId);
-			//moveAppointmentMessage.sendMessage();
-		} else if(parameters.containsKey("teacherClosesQueue")&& user instanceof Teacher) {//localhost8080/billeterie/courseId?teacherClosesQueue
-			TeacherClosesQueueMessage teacherClosesQueueMessage = new TeacherClosesQueueMessage();
-			teacherClosesQueueMessage.setCourseId(courseId);
-			teacherClosesQueueMessage.setTeacher(user);
-			T.here();
-			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
+			moveAppointmentMessage.setAppointmentId(appointmentId);
+			moveAppointmentMessage.setDestinationId(destinationId);
+			Ntro.messages().send(moveAppointmentMessage);
 		}
 	}
-
-	private static void sendUsersMessages(Path path, Map<String, String[]> parameters) {
-		T.call(AquiletourBackendRequestHandler.class);
-
-		if(parameters.containsKey("email") 
-		&& parameters.containsKey("password")) {
-			
-			String email = parameters.get("email")[0];
-			String password = parameters.get("password")[0];
-			T.here();
-			
-			AddUserMessage addUserMessage = Ntro.messages().create(AddUserMessage.class);
-			User newUser = new User();
-			newUser.setUserEmail(email);			
-			newUser.setUserPassword(password);	
-			newUser.setName("test");
-			newUser.setAuthToken("test");
-			newUser.setId(email);
-			addUserMessage.setUser(newUser);
-			Ntro.backendService().sendMessageToBackend(addUserMessage);
-
-		} else if(parameters.containsKey("deleteUser")){
-
-			DeleteUserMessage deleteUserMessage = Ntro.messages().create(DeleteUserMessage.class);
-			
-			String userId = parameters.get("deleteUser")[0];
-			deleteUserMessage.setUserId(userId);
-			
-			Ntro.backendService().sendMessageToBackend(deleteUserMessage);
-
-		} else if(parameters.containsKey("addUser")) { // /usagers?addUser=Id&to=IdDuCours
-			T.here();
-			AddUserToCourseMessage addUserToCourseMessage = new AddUserToCourseMessage();
-			T.here();
-			String userId = parameters.get("addUser")[0];
-			String courseId = parameters.get("to")[0];
-			 
-			addUserToCourseMessage.setUserId(userId);
-			addUserToCourseMessage.setCourseId(courseId);
-			Ntro.backendService().sendMessageToBackend(addUserToCourseMessage);
-			 
-			 
-			
-		}else if(parameters.containsKey("removeUser")) { // /usagers?removeUser=Id&from=IdDuCours
-			T.here();
-			DeleteUserFromCourseMessage deleteUserFromCourseMessage = new DeleteUserFromCourseMessage();
-			T.here();
-			String userId = parameters.get("removeUser")[0];
-			String courseId = parameters.get("from")[0];
-			 
-			deleteUserFromCourseMessage.setUserId(userId);
-			deleteUserFromCourseMessage.setCourseId(courseId);
-			Ntro.backendService().sendMessageToBackend(deleteUserFromCourseMessage);
-		}
-	}
-
 }

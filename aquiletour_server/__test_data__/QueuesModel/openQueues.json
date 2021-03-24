@@ -2,14 +2,6 @@
   "_C": "QueuesModel",
   "queues": {
     "_C": "ObservableQueueList",
-    "value": [
-      {
-        "_C": "QueueSummary",
-        "teacherName": "Alice",
-        "teacherSurname": "Awama",
-        "id": "3C6",
-        "numberOfAnswersToDate": 0
-      }
-    ]
+    "value": []
   }
 }

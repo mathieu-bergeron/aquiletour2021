@@ -1,7 +1,7 @@
 package ca.ntro.web;
 
-import ca.ntro.core.NtroUser;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.users.NtroUser;
 
 public interface RouterRegistrar {
 

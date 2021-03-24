@@ -1,6 +1,6 @@
 package ca.ntro.services;
 
-import ca.ntro.core.NtroUser;
+import ca.ntro.core.Path;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredDouble;
@@ -15,8 +15,11 @@ import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
+import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
+import ca.ntro.users.Session;
 
 public abstract class EarlyInitialization {
 
@@ -45,12 +48,15 @@ public abstract class EarlyInitialization {
 
 	private void registerSerializableClasses() {
 		Ntro.registerSerializableClass(NtroUser.class);
+		Ntro.registerSerializableClass(Session.class);
 
 		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.registerSerializableClass(GetModelNtroMessage.class);
 		Ntro.registerSerializableClass(SetModelNtroMessage.class);
+		Ntro.registerSerializableClass(SetUserNtroMessage.class);
 		Ntro.registerSerializableClass(InvokeValueMethodNtroMessage.class);
 
+		Ntro.registerSerializableClass(Path.class);
 		Ntro.registerSerializableClass(DocumentPath.class);
 		Ntro.registerSerializableClass(ValuePath.class);
 

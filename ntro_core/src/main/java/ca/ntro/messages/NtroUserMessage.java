@@ -1,6 +1,6 @@
 package ca.ntro.messages;
 
-import ca.ntro.core.NtroUser;
+import ca.ntro.users.NtroUser;
 
 public class NtroUserMessage<U extends NtroUser> extends NtroMessage {
 	

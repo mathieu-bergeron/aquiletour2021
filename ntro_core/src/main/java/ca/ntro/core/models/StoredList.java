@@ -40,6 +40,12 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		T.call(this);
 		
 		getValue().add(index, item);
+
+		List<Object> args = new ArrayList<>();
+		args.add(index);
+		args.add(item);
+		
+		modelStore().onValueMethodInvoked(valuePath(),"insertItem",args);
 		
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemAdded(index, item);

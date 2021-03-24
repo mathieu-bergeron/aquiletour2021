@@ -2,61 +2,38 @@ package ca.aquiletour.core.pages.queue.teacher.messages;
 
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 
-public class MoveAppointmentMessage extends NtroMessage {
+public class MoveAppointmentMessage extends NtroUserMessage<User> {
 
-	
 	private String appointmentId;
-	private User user;
-	private String appointmentDestinationId;
-	private String appointmentDepartureId;
+	private String destinationId;
+	private String beforeOrAfter;
 	private String courseId;
 
 	public String getAppointmentId() {
-		T.call(this);
-
 		return appointmentId;
 	}
-
 	public void setAppointmentId(String appointmentId) {
-		T.call(this);
-
 		this.appointmentId = appointmentId;
 	}
-
-	public User getUser() {
-		return user;
+	public String getDestinationId() {
+		return destinationId;
 	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setDestinationId(String destinationId) {
+		this.destinationId = destinationId;
 	}
-
-	public String getappointmentDestinationId() {
-		return appointmentDestinationId;
+	public String getBeforeOrAfter() {
+		return beforeOrAfter;
 	}
-
-	public void setappointmentDestinationId(String appointmentDestinationId) {
-		this.appointmentDestinationId = appointmentDestinationId;
+	public void setBeforeOrAfter(String beforeOrAfter) {
+		this.beforeOrAfter = beforeOrAfter;
 	}
-
-	public String getappointmentDepartureId() {
-		return appointmentDepartureId;
-	}
-
-	public void setappointmentDepartureId(String appointmentDepartureId) {
-		this.appointmentDepartureId = appointmentDepartureId;
-	}
-
 	public String getCourseId() {
 		return courseId;
 	}
-
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
 	
-	
-
 }

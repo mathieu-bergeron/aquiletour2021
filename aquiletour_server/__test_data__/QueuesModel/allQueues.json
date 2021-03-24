@@ -5,30 +5,16 @@
     "value": [
       {
         "_C": "QueueSummary",
-        "teacherName": "Alice",
-        "teacherSurname": "Awama",
-        "id": "3C6",
-        "numberOfAnswersToDate": 0
-      },
-      {
-        "_C": "QueueSummary",
-        "teacherName": "Alice",
-        "teacherSurname": "Awama",
+        "teacherName": "alice",
+        "teacherSurname": "",
         "id": "4F5",
         "numberOfAnswersToDate": 0
       },
       {
         "_C": "QueueSummary",
-        "teacherName": "Alice",
-        "teacherSurname": "Awama",
-        "id": "ZD4",
-        "numberOfAnswersToDate": 0
-      },
-      {
-        "_C": "QueueSummary",
-        "teacherName": "Alice",
-        "teacherSurname": "Awama",
-        "id": "😁",
+        "teacherName": "alice",
+        "teacherSurname": "",
+        "id": "3C6",
         "numberOfAnswersToDate": 0
       }
     ]

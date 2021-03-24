@@ -22,7 +22,7 @@ public class ShowTeacherQueueHandler extends ControllerMessageHandler<QueueContr
 		
 		if(!courseId.equals(currentCourseId)) {
 			// XXX: change queue model when needed
-			String authToken = currentController.currentContext().user().getAuthToken();
+			String authToken = currentController.context().user().getAuthToken();
 			currentController.setModelLoader(QueueModel.class, authToken, courseId);
 			currentCourseId = courseId;
 		}

@@ -1,7 +1,6 @@
 package ca.aquiletour.server.http;
 
 import ca.aquiletour.server.RegisteredSockets;
-import ca.ntro.core.NtroUser;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
@@ -11,6 +10,7 @@ import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
+import ca.ntro.users.NtroUser;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Request;
@@ -112,7 +112,7 @@ public class ModelHandler extends AbstractHandler {
         // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
         // NOTE:  we do not need to connect that model to the store
         //        only models in the backend
-        RegisteredSockets.registerThatUserObservesModel(user, documentPath);
+        RegisteredSockets.registerModelObserver(user, documentPath);
         // ??
         // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 
@@ -138,7 +138,7 @@ public class ModelHandler extends AbstractHandler {
 		DocumentPath documentPath = setModelNtroMessage.getDocumentPath();
 		NtroModel model = setModelNtroMessage.getModel();
 
-        Ntro.modelStore().saveJsonString(documentPath, Ntro.jsonService().toString(model));
+        Ntro.modelStore().saveDocument(documentPath, Ntro.jsonService().toString(model));
 
         response.setStatus(HttpStatus.OK_200);
         baseRequest.setHandled(true);

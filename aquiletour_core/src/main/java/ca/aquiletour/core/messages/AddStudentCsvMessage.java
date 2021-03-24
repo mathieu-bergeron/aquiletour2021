@@ -1,12 +1,11 @@
 package ca.aquiletour.core.messages;
 
 import ca.aquiletour.core.models.users.User;
-import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 
-public class AddStudentCsvMessage extends NtroMessage {
+public class AddStudentCsvMessage extends NtroUserMessage<User> {
 	
 	private String csvString, queueId;
-	private User user;
 	
 
 	public String getCsvString() {
@@ -24,15 +23,4 @@ public class AddStudentCsvMessage extends NtroMessage {
 	public void setQueueId(String queueId) {
 		this.queueId = queueId;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	
-	
 }
