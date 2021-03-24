@@ -69,18 +69,7 @@ public class Task implements NtroModelValue, TaskNode {
 	private Path parentPath() {
 		T.call(this);
 
-		Path parentPath = null;
-		
-		if(getPath().nameCount() > 1) {
-
-			parentPath = getPath().subPath(0, getPath().nameCount() - 2);
-
-		}else if(getPath().nameCount() == 1) {
-
-			parentPath = new Path();
-		}
-		
-		return parentPath;
+		return getPath().parent();
 	}
 
 	public Task parent() {
@@ -106,12 +95,24 @@ public class Task implements NtroModelValue, TaskNode {
 		return rootParent;
 	}
 
+	public void addPreviousTask(Task previousTask) {
+		T.call(this);
+		
+		previousTasks.addItem(previousTask.id());
+	}
+
 	public void addSubTask(Task task) {
 		T.call(this);
 		
-		subTasks.addItem(task.getPath().toString());
+		subTasks.addItem(task.id());
 	}
 	
+	public void addNextTask(Task nextTask) {
+		T.call(this);
+		
+		nextTasks.addItem(nextTask.id());
+	}
+
 	public TaskNode asNode() {
 		T.call(this);
 		
@@ -201,9 +202,5 @@ public class Task implements NtroModelValue, TaskNode {
 		return getPath().toString();
 	}
 
-	public void addNextTask(Task nextTask) {
-		T.call(this);
-		
-	}
 
 }

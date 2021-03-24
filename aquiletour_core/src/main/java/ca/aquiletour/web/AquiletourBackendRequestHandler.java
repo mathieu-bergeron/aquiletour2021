@@ -6,6 +6,7 @@ import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
@@ -158,20 +159,44 @@ public class AquiletourBackendRequestHandler {
 			addSubTaskMessage.setSubTask(task);
 			Ntro.messages().send(addSubTaskMessage);
 
-		}else if(parameters.containsKey("subTask")) {
+		}else if(parameters.containsKey("newPreviousTask")
+				&& parameters.get("newPreviousTask")[0].length() > 0) {
 
-			String parentTaskId = parameters.get("taskId")[0];
-			String existingTaskId = parameters.get("subTask")[0];
+			String nextTaskId = parameters.get("taskId")[0];
+			String newPreviousTaskId = parameters.get("newPreviousTask")[0];
+			String taskTitle = newPreviousTaskId;
+			
+			Path nextPath = new Path(nextTaskId);
+			Path parentPath = nextPath.parent();
+
+			Path newPreviousTaskPath = new Path(parentPath.toString() + "/" + newPreviousTaskId);
+
+			Task newPreviousTask = new Task();
+			newPreviousTask.setPath(newPreviousTaskPath);
+			newPreviousTask.setTitle(taskTitle);
+
+			AddPreviousTaskMessage addPreviousTaskMessage = Ntro.messages().create(AddPreviousTaskMessage.class);
+			addPreviousTaskMessage.setCourseId(courseId);
+			addPreviousTaskMessage.setNextPath(nextPath);
+			addPreviousTaskMessage.setPreviousTask(newPreviousTask);
+			
+			Ntro.messages().send(addPreviousTaskMessage);
+
+		}else if(parameters.containsKey("previousTask")) {
+
+			String nextTaskId = parameters.get("taskId")[0];
+			String existingTaskId = parameters.get("previousTask")[0];
 			Path existingTaskPath = new Path(existingTaskId);
 
-			Task task = new Task();
-			task.setPath(existingTaskPath);
-
-			AddSubTaskMessage addSubTaskMessage = Ntro.messages().create(AddSubTaskMessage.class);
-			addSubTaskMessage.setCourseId(courseId);
-			addSubTaskMessage.setParentPath(new Path(parentTaskId));
-			addSubTaskMessage.setSubTask(task);
-			Ntro.messages().send(addSubTaskMessage);
+			Task previousTask = new Task();
+			previousTask.setPath(existingTaskPath);
+			
+			AddPreviousTaskMessage addPreviousTaskMessage = Ntro.messages().create(AddPreviousTaskMessage.class);
+			addPreviousTaskMessage.setCourseId(courseId);
+			addPreviousTaskMessage.setNextPath(new Path(nextTaskId));
+			addPreviousTaskMessage.setPreviousTask(previousTask);
+			
+			Ntro.messages().send(addPreviousTaskMessage);
 		}
 	}
 

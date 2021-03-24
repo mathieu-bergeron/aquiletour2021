@@ -167,4 +167,21 @@ public class Path implements JsonSerializable {
 
 		return isPrefixOf;
 	}
+
+	public Path parent() {
+		T.call(this);
+
+		Path parentPath = null;
+
+		if(nameCount() > 1) {
+
+			parentPath = subPath(0, nameCount() - 2);
+
+		}else if(nameCount() == 1) {
+
+			parentPath = new Path();
+		}
+		
+		return parentPath;
+	}
 }

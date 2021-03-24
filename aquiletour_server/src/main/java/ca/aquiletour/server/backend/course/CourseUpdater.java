@@ -9,6 +9,19 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
 public class CourseUpdater {
+	
+	public static void addPreviousTask(ModelStoreSync modelStore, String courseId, Path nextPath, Task previousTask) {
+		T.call(CourseUpdater.class);
+		
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				course.addPreviousTaskTo(nextPath, previousTask);
+			}
+		});
+	}
+	
 
 	public static void addSubTask(ModelStoreSync modelStore, String courseId, Path parentPath, Task task) {
 		T.call(CourseUpdater.class);

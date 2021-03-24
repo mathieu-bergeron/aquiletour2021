@@ -58,18 +58,62 @@ public class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	public void addNextTaskTo(Path path, Task nextTask) {
+	public void addNextTaskTo(Path previousPath, Task nextTask) {
 		T.call(this);
 		
 		nextTask.setGraph(asGraph());
 
-		Task task = findTaskByPath(path);
+		Task previousTask = findTaskByPath(previousPath);
 
-		if(task != null) {
+		if(previousTask != null) {
 			
-			task.addNextTask(nextTask);
-			if(!tasks.containsKey(nextTask.id())) {
+			Task existingNextTask = findTaskByPath(nextTask.getPath());
+			
+			if(existingNextTask != null) {
+				
+				previousTask.addNextTask(existingNextTask);
+				existingNextTask.addPreviousTask(previousTask);
+				
+			}else {
+
+				previousTask.addNextTask(nextTask);
+				nextTask.addPreviousTask(previousTask);
+
 				tasks.addEntry(nextTask.id(), nextTask);
+			}
+			
+		}else {
+			
+			Log.warning("task not found: " + previousPath);
+		}
+	}
+
+	public void addPreviousTaskTo(Path path, Task previousTask) {
+		T.call(this);
+		
+		previousTask.setGraph(asGraph());
+
+		Task nextTask = findTaskByPath(path);
+
+		if(nextTask != null) {
+			
+			Task existingPreviousTask = findTaskByPath(previousTask.getPath());
+			
+			if(existingPreviousTask != null) {
+				
+				nextTask.addPreviousTask(existingPreviousTask);
+				existingPreviousTask.addNextTask(nextTask);
+				
+			}else {
+
+				nextTask.addPreviousTask(previousTask);
+				
+				
+				// FIXME: previousTask is not linked to modelStore
+				//        is that
+				//previousTask.addNextTask(nextTask);
+
+				tasks.addEntry(previousTask.id(), previousTask);
 			}
 
 		}else {

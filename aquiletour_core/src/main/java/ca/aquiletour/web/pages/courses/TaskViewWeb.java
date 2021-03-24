@@ -17,7 +17,9 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	private HtmlElements addTaskIdToDataTarget;
 	private HtmlElements addTaskIdToId;
 	private HtmlElement taskTitleLink;
-	private HtmlElement previousTaskContainer;
+	private HtmlElement previousTasksContainer;
+	private HtmlElement subTasksContainer;
+	private HtmlElement nextTasksContainer;
 
 	private String taskTitleHref;
 
@@ -29,13 +31,18 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		addTaskIdToDataTarget = getRootElement().find(".add-task-id-to-data-target");
 		addTaskIdToId = getRootElement().find(".add-task-id-to-id");
 		taskTitleLink = getRootElement().find("#task-title-link").get(0);
-		previousTaskContainer = getRootElement().find("#previous-tasks-container").get(0);
+		previousTasksContainer = getRootElement().find("#previous-tasks-container").get(0);
+		subTasksContainer = getRootElement().find("#subtasks-container").get(0);
+		nextTasksContainer = getRootElement().find("#next-tasks-container").get(0);
 		
 		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToDataTarget.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
 		Ntro.verify(that(taskTitleLink).isNotEqualTo(null));
-		Ntro.verify(that(previousTaskContainer).isNotEqualTo(null));
+		Ntro.verify(that(previousTasksContainer).isNotEqualTo(null));
+		Ntro.verify(that(subTasksContainer).isNotEqualTo(null));
+		Ntro.verify(that(nextTasksContainer).isNotEqualTo(null));
+		
 		
 		taskTitleHref = taskTitleLink.getAttribute("href");
 	}
@@ -61,15 +68,29 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 			e.setAttribute("id", id);
 		});
 		
-		task.forEachSubTask(st -> {
-			HtmlElement taskLi = previousTaskContainer.createElement("<li></li>");
-			HtmlElement anchor = taskLi.createElement("<a></a>");
-			taskLi.appendElement(anchor);
-			previousTaskContainer.appendElement(taskLi);
-
-			anchor.text(st.getTitle());
-			anchor.setAttribute("href", "/cours/" + courseId + st.id());
+		task.forEachPreviousTask(pt -> {
+			addTaskLi(courseId, pt, previousTasksContainer);
 		});
+
+		task.forEachSubTask(st -> {
+			addTaskLi(courseId, st, subTasksContainer);
+		});
+
+		task.forEachNextTask(nt -> {
+			addTaskLi(courseId, nt, nextTasksContainer);
+		});
+	}
+
+	private void addTaskLi(String courseId, Task task, HtmlElement container) {
+		T.call(this);
+
+		HtmlElement taskLi = container.createElement("<li></li>");
+		HtmlElement anchor = taskLi.createElement("<a></a>");
+		taskLi.appendElement(anchor);
+		container.appendElement(taskLi);
+
+		anchor.text(task.getTitle());
+		anchor.setAttribute("href", "/cours/" + courseId + task.id());
 	}
 
 }
