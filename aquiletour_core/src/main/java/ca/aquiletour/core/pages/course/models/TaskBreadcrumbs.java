@@ -31,6 +31,14 @@ public class TaskBreadcrumbs implements NtroModel {
 		this.branches = branches;
 	}
 
+	public List<Task> getNextTasks() {
+		return nextTasks;
+	}
+
+	public void setNextTasks(List<Task> nextTasks) {
+		this.nextTasks = nextTasks;
+	}
+
 	public void addBranches(TaskGraph graph) {
 		T.call(this);
 		
