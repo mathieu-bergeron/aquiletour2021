@@ -18,21 +18,28 @@ public class CourseUpdater {
 				@Override
 				public void update(CourseModel course) {
 					T.call(this);
-					course.getTasks().addItem(task);
+					course.addTask(task);
 				}
+
 			});
 
 		}else {
 			
+			// FIXME: here we need to create AND save the model
+			//        because we need to load the model in order to install
+			//        valuePath() and modelStore() in the model values
 			modelStore.createModel(CourseModel.class, "admin", courseId, new ModelInitializer<CourseModel>() {
 				@Override
 				public void initialize(CourseModel course) {
 					T.call(this);
-
-					course.getTasks().addItem(task);
+					
+					Task rootTask = new Task();
+					rootTask.setTitle(courseId);
+					course.addTask(rootTask);
 				}
 			});
+
+			addTaskToCourse(modelStore, courseId, task);
 		}
 	}
-
 }

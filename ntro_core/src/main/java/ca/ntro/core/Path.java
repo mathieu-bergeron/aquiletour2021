@@ -9,6 +9,10 @@ import ca.ntro.core.system.trace.T;
 public class Path implements JsonSerializable {
 	
 	private List<String> names = new ArrayList<>();
+
+	public Path() {
+		T.call(this);
+	}
 	
 	public Path(String path) {
 		T.call(this);
@@ -71,9 +75,13 @@ public class Path implements JsonSerializable {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		
-		for(String name : names) {
+		if(names.size() > 0) {
+			for(String name : names) {
+				builder.append("/");
+				builder.append(name);
+			}
+		}else {
 			builder.append("/");
-			builder.append(name);
 		}
 		
 		return builder.toString();
@@ -95,7 +103,7 @@ public class Path implements JsonSerializable {
 		return remainder;
 	}
 
-	public String getName(int index) {
+	public String name(int index) {
 		T.call(this);
 		
 		String name = null;

@@ -112,7 +112,7 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		//MustNot.beTrue(!removed);
 	}
 
-	public void removeAllObservers() {
+	public void removeObservers() {
 		T.call(this);
 		
 		this.listObservers.clear();

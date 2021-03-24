@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.courses;
 
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -36,5 +37,13 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 			taskContainer.appendElement(taskElement);
 		}
+	}
+
+	@Override
+	public void displayPath(Path taskPath) {
+		T.call(this);
+		
+		// FIXME: this should be a tree collected from the taskGraph along the taskPath
+
 	}
 }

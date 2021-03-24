@@ -20,81 +20,74 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 	@Override
 	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
+
+		view.displayPath(message.getTaskPath());
 		
 		if(currentTask != null) {
-			//currentTask.removeObservers();
+			currentTask.removeObservers();
 		}
 		
-		System.out.println("showTask: " + message.getTaskPath().toString());
-
-		//Task rootTask = model.getRootTask();
+		currentTask = model.findTaskByPath(message.getTaskPath());
 		
-		/* We have a path
-		// currentTask = model.getTaskByPath(path)
-		// view.appendTask(currentTask, view)
-		//
-		// currentTask.clearObservers()
-		// currentTask.observe()
-		
-		*/
-		
-		/*
-		
-		
-		
-		*/
-		
-		model.getRootTasks().observe(new ListObserver<String>() {
+		if(currentTask != null) {
 
-			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
+			observeCurrentTask(model, view, subViewLoader);
+		}
+	}
 
-			@Override
-			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
+	private void observeCurrentTask(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+		T.call(this);
 
-			@Override
-			public void onDeleted(List<String> lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemAdded(int index, String taskId) {
-
-				TaskView taskView = (TaskView) subViewLoader.createView();
-				
-				Task task = model.getTaskById(taskId);
-
-				if(task != null) {
-					taskView.displayTask(task);
-					view.insertTask(index, taskView);
-				}
-			}
-
-			@Override
-			public void onItemUpdated(int index, String item) {
-				// TODO Auto-generated method stub
-				
-			}
-
+		currentTask.getSubTasks().observe(new ListObserver<String>() {
+			
 			@Override
 			public void onItemRemoved(int index, String item) {
 				// TODO Auto-generated method stub
 				
 			}
-
+			
+			@Override
+			public void onItemUpdated(int index, String item) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onItemAdded(int index, String taskId) {
+				T.call(this);
+				
+				Task subTask = model.findTaskById(taskId);
+				
+				TaskView taskView = (TaskView) subViewLoader.createView();
+				
+				taskView.displayTask(subTask);
+				
+				view.insertTask(index, taskView);
+			}
+			
+			@Override
+			public void onDeleted(List<String> lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onValue(List<String> value) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onValueChanged(List<String> oldValue, List<String> value) {
+				// TODO Auto-generated method stub
+				
+			}
+			
 			@Override
 			public void onClearItems() {
 				// TODO Auto-generated method stub
 				
 			}
 		});
-
 	}
 }

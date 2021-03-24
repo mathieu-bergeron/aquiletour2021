@@ -126,7 +126,7 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.size() >= 1) {
-			sendAppointmentMessages(parameters, user, path.getName(0));
+			sendAppointmentMessages(parameters, user, path.name(0));
 		}
 	}
 
@@ -134,7 +134,7 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.size() >= 1) {
-			sendTaskMessages(parameters, user, path.getName(0));
+			sendTaskMessages(parameters, user, path.name(0));
 		}
 	}
 
@@ -145,11 +145,12 @@ public class AquiletourBackendRequestHandler {
 			
 			String taskId = parameters.get("addTask")[0];
 			String taskTitle = taskId;
+			Path taskPath = new Path(taskId);
 
 			Task task = new Task();
-			task.setId(taskId);
+			task.setTaskPath(taskPath);
 			task.setTitle(taskTitle);
-			
+
 			AddTaskMessage addTaskMessage = Ntro.messages().create(AddTaskMessage.class);
 			addTaskMessage.setCourseId(courseId);
 			addTaskMessage.setTask(task);

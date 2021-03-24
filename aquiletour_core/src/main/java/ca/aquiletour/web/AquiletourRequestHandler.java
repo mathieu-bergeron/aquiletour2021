@@ -126,7 +126,7 @@ public class AquiletourRequestHandler {
 		
 		if(path.size() >= 1) {//TODO 
 
-			String courseId = path.getName(0);
+			String courseId = path.name(0);
 			Path taskPath = path.subPath(1);
 			
 			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
@@ -146,7 +146,7 @@ public class AquiletourRequestHandler {
 		
 		if(path.size() >= 1) {//TODO 
 
-			String courseId = path.getName(0);
+			String courseId = path.name(0);
 			
 			if(user instanceof Teacher) {
 
