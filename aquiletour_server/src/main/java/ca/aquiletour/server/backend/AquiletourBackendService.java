@@ -6,7 +6,7 @@ import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.pages.course.messages.AddTaskMessage;
+import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -46,6 +46,6 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(AuthenticateSessionUserMessage.class, new AuthenticateSessionUserHandler());
 		addBackendMessageHandler(UserSendsLoginCodeMessage.class, new UserSendsLoginCodeHandler());
 		addBackendMessageHandler(UserLogsOutMessage.class, new UserLogsOutHandler());
-		addBackendMessageHandler(AddTaskMessage.class, new AddTaskHandler());
+		addBackendMessageHandler(AddSubTaskMessage.class, new AddTaskHandler());
 	}
 }

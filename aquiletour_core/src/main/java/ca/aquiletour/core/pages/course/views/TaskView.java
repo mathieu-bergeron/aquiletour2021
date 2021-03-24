@@ -5,6 +5,6 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface TaskView extends NtroView {
 	
-	void displayTask(Task task);
+	void displayTask(String courseId, Task task);
 
 }

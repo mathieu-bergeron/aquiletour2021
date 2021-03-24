@@ -31,9 +31,8 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 		
 		if(currentTask != null) {
 			
-			TaskBreadcrumbs breadcrumps = model.breadcrumbsForTask(currentTask);
-
-			view.displayBreadcrumbs(breadcrumps);
+			view.identifyCurrentTask(currentTask.id());
+			view.displayBreadcrumbs(model.getCourseId(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, view, subViewLoader);
 		}
@@ -64,7 +63,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 				
 				TaskView taskView = (TaskView) subViewLoader.createView();
 				
-				taskView.displayTask(subTask);
+				taskView.displayTask(model.getCourseId(), subTask);
 				
 				view.insertTask(index, taskView);
 			}

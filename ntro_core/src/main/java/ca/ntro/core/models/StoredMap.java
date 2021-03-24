@@ -73,4 +73,10 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 			}
 		}
 	}
+
+	public boolean containsKey(String key) {
+		T.call(this);
+
+		return getValue().containsKey(key);
+	}
 }

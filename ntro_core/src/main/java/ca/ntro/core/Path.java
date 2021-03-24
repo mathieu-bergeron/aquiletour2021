@@ -20,7 +20,7 @@ public class Path implements JsonSerializable {
 		parsePath(path);
 	}
 
-	public Path(List<String> names) {
+	private Path(List<String> names) {
 		T.call(this);
 
 		this.names = names;
@@ -28,13 +28,11 @@ public class Path implements JsonSerializable {
 
 	private void parsePath(String path) {
 		T.call(this);
-
-		if(path.startsWith("/")) {
-			path = path.substring(1);
-		}
-
+		
 		for(String name : path.split("/")){
-			names.add(name);
+			if(name.length() > 0) {
+				names.add(name);
+			}
 		}
 	}
 	
@@ -58,7 +56,7 @@ public class Path implements JsonSerializable {
 		if(ifValidIndices(beginIndex, endIndex)) {
 			path = new Path(names.subList(beginIndex, endIndex+1));
 		}else {
-			path = new Path(new ArrayList<>());
+			path = new Path();
 		}
 		
 		return path;
@@ -122,7 +120,7 @@ public class Path implements JsonSerializable {
 		return index >= 0 && index < names.size();
 	}
 
-	public int size() {
+	public int nameCount() {
 		T.call(this);
 		
 		return names.size();
@@ -154,12 +152,12 @@ public class Path implements JsonSerializable {
 	public boolean isPrefixOf(Path path) {
 		boolean isPrefixOf = true;
 		
-		if(size() >= path.size()) {
+		if(nameCount() >= path.nameCount()) {
 
 			isPrefixOf = false;
 
 		}else {
-			for(int i = 0; i < size(); i++) {
+			for(int i = 0; i < nameCount(); i++) {
 				if(!name(i).equals(path.name(i))) {
 					isPrefixOf = false;
 					break;

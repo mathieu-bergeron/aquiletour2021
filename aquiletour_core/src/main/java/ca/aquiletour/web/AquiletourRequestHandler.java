@@ -124,7 +124,7 @@ public class AquiletourRequestHandler {
 	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.size() >= 1) {//TODO 
+		if(path.nameCount() >= 1) {//TODO 
 
 			String courseId = path.name(0);
 			Path taskPath = path.subPath(1);
@@ -132,7 +132,7 @@ public class AquiletourRequestHandler {
 			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
 			showCourseMessage.setCourseId(courseId);
 
-			if(taskPath.size() > 0) {
+			if(taskPath.nameCount() > 0) {
 				showCourseMessage.setTaskPath(taskPath);
 			}
 
@@ -144,7 +144,7 @@ public class AquiletourRequestHandler {
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.size() >= 1) {//TODO 
+		if(path.nameCount() >= 1) {//TODO 
 
 			String courseId = path.name(0);
 			

@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.course;
 
 import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.course.models.Task;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -9,7 +10,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseUpdater {
 
-	public static void addTaskToCourse(ModelStoreSync modelStore, String courseId, Task task) {
+	public static void addSubTask(ModelStoreSync modelStore, String courseId, Path parentPath, Task task) {
 		T.call(CourseUpdater.class);
 		
 		if(modelStore.ifModelExists(CourseModel.class, "admin", courseId)) {
@@ -18,7 +19,7 @@ public class CourseUpdater {
 				@Override
 				public void update(CourseModel course) {
 					T.call(this);
-					course.addTask(task);
+					course.addSubTaskTo(parentPath, task);
 				}
 
 			});
@@ -34,12 +35,14 @@ public class CourseUpdater {
 					T.call(this);
 					
 					Task rootTask = new Task();
-					rootTask.setTitle(courseId);
-					course.addTask(rootTask);
+					rootTask.setPath(new Path("/"));
+					rootTask.setTitle(courseId); // FIXME: we need a real title
+					course.setRootTask(rootTask);
+					course.setCourseId(courseId);
 				}
 			});
 
-			addTaskToCourse(modelStore, courseId, task);
+			addSubTask(modelStore, courseId, parentPath, task);
 		}
 	}
 }

@@ -35,4 +35,5 @@ public class ObservableTaskMap extends StoredMap<Task> {
 		
 		super.addEntry(key, task);
 	}
+
 }

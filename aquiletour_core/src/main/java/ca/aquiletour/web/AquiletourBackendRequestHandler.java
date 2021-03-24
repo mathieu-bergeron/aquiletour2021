@@ -6,7 +6,7 @@ import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course.messages.AddTaskMessage;
+import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -125,7 +125,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendQueueMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(path.size() >= 1) {
+		if(path.nameCount() >= 1) {
 			sendAppointmentMessages(parameters, user, path.name(0));
 		}
 	}
@@ -133,7 +133,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(path.size() >= 1) {
+		if(path.nameCount() >= 1) {
 			sendTaskMessages(parameters, user, path.name(0));
 		}
 	}
@@ -141,20 +141,37 @@ public class AquiletourBackendRequestHandler {
 	private static void sendTaskMessages(Map<String, String[]> parameters, User user, String courseId) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(parameters.containsKey("addTask")) {
+		if(parameters.containsKey("newSubTask")) {
 			
-			String taskId = parameters.get("addTask")[0];
-			String taskTitle = taskId;
-			Path taskPath = new Path(taskId);
+			String parentTaskId = parameters.get("taskId")[0];
+			String newSubTaskId = parameters.get("newSubTask")[0];
+			String taskTitle = newSubTaskId;
+			Path newTaskPath = new Path(parentTaskId + "/" + newSubTaskId);
 
 			Task task = new Task();
-			task.setPath(taskPath);
+			task.setPath(newTaskPath);
 			task.setTitle(taskTitle);
 
-			AddTaskMessage addTaskMessage = Ntro.messages().create(AddTaskMessage.class);
-			addTaskMessage.setCourseId(courseId);
-			addTaskMessage.setTask(task);
-			Ntro.messages().send(addTaskMessage);
+			AddSubTaskMessage addSubTaskMessage = Ntro.messages().create(AddSubTaskMessage.class);
+			addSubTaskMessage.setCourseId(courseId);
+			addSubTaskMessage.setParentPath(new Path(parentTaskId));
+			addSubTaskMessage.setSubTask(task);
+			Ntro.messages().send(addSubTaskMessage);
+
+		}else if(parameters.containsKey("subTask")) {
+
+			String parentTaskId = parameters.get("taskId")[0];
+			String existingTaskId = parameters.get("subTask")[0];
+			Path existingTaskPath = new Path(existingTaskId);
+
+			Task task = new Task();
+			task.setPath(existingTaskPath);
+
+			AddSubTaskMessage addSubTaskMessage = Ntro.messages().create(AddSubTaskMessage.class);
+			addSubTaskMessage.setCourseId(courseId);
+			addSubTaskMessage.setParentPath(new Path(parentTaskId));
+			addSubTaskMessage.setSubTask(task);
+			Ntro.messages().send(addSubTaskMessage);
 		}
 	}
 
@@ -202,6 +219,7 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setCourseId(courseId);
 			moveAppointmentMessage.setAppointmentId(appointmentId);
 			moveAppointmentMessage.setDestinationId(destinationId);
+			moveAppointmentMessage.setBeforeOrAfter(beforeOrAfter);
 			Ntro.messages().send(moveAppointmentMessage);
 		}
 	}
