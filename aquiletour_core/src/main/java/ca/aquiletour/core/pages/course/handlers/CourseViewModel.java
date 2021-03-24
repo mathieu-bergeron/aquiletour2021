@@ -23,8 +23,6 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 
-		System.out.println(model);
-		
 		if(currentTask != null) {
 			currentTask.removeObservers();
 		}

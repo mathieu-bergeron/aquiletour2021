@@ -148,7 +148,7 @@ public class AquiletourBackendRequestHandler {
 			Path taskPath = new Path(taskId);
 
 			Task task = new Task();
-			task.setTaskPath(taskPath);
+			task.setPath(taskPath);
 			task.setTitle(taskTitle);
 
 			AddTaskMessage addTaskMessage = Ntro.messages().create(AddTaskMessage.class);

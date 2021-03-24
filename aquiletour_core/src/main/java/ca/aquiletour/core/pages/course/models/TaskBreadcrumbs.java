@@ -1,29 +1,23 @@
 package ca.aquiletour.core.pages.course.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class TaskBreadcrumbs implements NtroModel {
 	
-	/* The task breadcrumb is a tree where
-	 * 
-	 * - the trunk is the taskPath
-	 * - branches are lists of sibling tasks
-	 */
-	
-	private Path trunk;
+	private Task trunk;
 	private Map<String, List<Task>> branches = new HashMap<>();
 	
-	public Path getTrunk() {
+	public Task getTrunk() {
 		return trunk;
 	}
 
-	public void setTrunk(Path trunk) {
+	public void setTrunk(Task trunk) {
 		this.trunk = trunk;
 	}
 
@@ -37,7 +31,35 @@ public class TaskBreadcrumbs implements NtroModel {
 
 	public void addBranches(TaskGraph graph) {
 		T.call(this);
+		
+		Task cursor = trunk;
 
+		while(cursor != null) {
 
+			cursor.forEachSubTask(st -> {
+
+				if(!st.getPath().isPrefixOf(trunk.getPath())) {
+
+					addBranch(st);
+				}
+			});
+
+			cursor = cursor.parent();
+		}
+	}
+	
+	private void addBranch(Task sibling) {
+		T.call(this);
+		
+		String parentId = sibling.parent().getPath().toString();
+		
+		List<Task> siblings = branches.get(parentId);
+
+		if(siblings == null) {
+			siblings = new ArrayList<>();
+			branches.put(parentId, siblings);
+		}
+
+		siblings.add(sibling);
 	}
 }

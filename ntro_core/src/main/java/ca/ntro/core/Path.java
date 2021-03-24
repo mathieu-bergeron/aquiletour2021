@@ -150,4 +150,23 @@ public class Path implements JsonSerializable {
 	public void setNames(List<String> names) {
 		this.names = names;
 	}
+
+	public boolean isPrefixOf(Path path) {
+		boolean isPrefixOf = true;
+		
+		if(size() >= path.size()) {
+
+			isPrefixOf = false;
+
+		}else {
+			for(int i = 0; i < size(); i++) {
+				if(!name(i).equals(path.name(i))) {
+					isPrefixOf = false;
+					break;
+				}
+			}
+		}
+
+		return isPrefixOf;
+	}
 }

@@ -8,7 +8,7 @@ public class Task implements NtroModelValue, TaskNode {
 	
 	private TaskGraph graph;
 	
-	private Path taskPath = new Path();
+	private Path path = new Path();
 	private String title = "";
 	
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
@@ -55,19 +55,19 @@ public class Task implements NtroModelValue, TaskNode {
 		getNextTasks().removeObservers();
 	}
 
-	public Path getTaskPath() {
-		return taskPath;
+	public Path getPath() {
+		return path;
 	}
 
-	public void setTaskPath(Path taskPath) {
-		this.taskPath = taskPath;
+	public void setPath(Path taskPath) {
+		this.path = taskPath;
 	}
 
 	private Path parentTaskPath() {
 		Path parentTaskPath = new Path();
 
-		if(taskPath.size() > 1) {
-			parentTaskPath = taskPath.subPath(0, taskPath.size() - 2);
+		if(path.size() > 1) {
+			parentTaskPath = path.subPath(0, path.size() - 2);
 		}
 
 		return parentTaskPath;
@@ -80,7 +80,7 @@ public class Task implements NtroModelValue, TaskNode {
 	public void addSubTask(Task task) {
 		T.call(this);
 		
-		subTasks.addItem(task.getTaskPath().toString());
+		subTasks.addItem(task.getPath().toString());
 	}
 	
 	public TaskNode asNode() {
@@ -95,6 +95,15 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void setGraph(TaskGraph graph) {
 		this.graph = graph;
+	}
+	
+	public void forEachSubTask(TaskLambda lambda) {
+		T.call(this);
+
+		for(String subTaskId : getSubTasks().getValue()) {
+			Task subTask = graph.findTaskByPath(new Path(subTaskId));
+			lambda.execute(subTask);
+		}
 	}
 
 }
