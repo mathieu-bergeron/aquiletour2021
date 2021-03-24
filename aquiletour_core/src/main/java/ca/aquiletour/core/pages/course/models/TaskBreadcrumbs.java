@@ -6,6 +6,7 @@ import java.util.Map;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.system.trace.T;
 
 public class TaskBreadcrumbs implements NtroModel {
 	
@@ -34,4 +35,8 @@ public class TaskBreadcrumbs implements NtroModel {
 		this.branches = branches;
 	}
 
+	public void addBranches(TaskGraph graph) {
+		T.call(this);
+
+	}
 }

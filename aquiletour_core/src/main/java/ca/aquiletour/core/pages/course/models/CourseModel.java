@@ -4,7 +4,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModel implements NtroModel {
+public class CourseModel implements NtroModel, TaskGraph {
 	
 	private ObservableTaskMap tasks = new ObservableTaskMap();
 	
@@ -52,11 +52,15 @@ public class CourseModel implements NtroModel {
 		
 		breadcrumbs.setTrunk(task.getTaskPath());
 		
-		// This requires to explore the graph
-		// TODO: add graph interface + 
-		//breadcrumbs.addBranches();
+		breadcrumbs.addBranches(asGraph());
 
 		return breadcrumbs;
+	}
+	
+	public TaskGraph asGraph() {
+		T.call(this);
+
+		return this;
 	}
 
 }
