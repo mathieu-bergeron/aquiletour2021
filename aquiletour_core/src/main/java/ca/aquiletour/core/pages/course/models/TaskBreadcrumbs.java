@@ -5,19 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class TaskBreadcrumbs implements NtroModel {
 	
-	private Task trunk;
+	private Path trunk;
 	private Map<String, List<Task>> branches = new HashMap<>();
 	
-	public Task getTrunk() {
+	public Path getTrunk() {
 		return trunk;
 	}
 
-	public void setTrunk(Task trunk) {
+	public void setTrunk(Path trunk) {
 		this.trunk = trunk;
 	}
 
@@ -32,13 +33,13 @@ public class TaskBreadcrumbs implements NtroModel {
 	public void addBranches(TaskGraph graph) {
 		T.call(this);
 		
-		Task cursor = trunk;
+		Task cursor = graph.findTaskByPath(trunk);
 
 		while(cursor != null) {
 
 			cursor.forEachSubTask(st -> {
 
-				if(!st.getPath().isPrefixOf(trunk.getPath())) {
+				if(!st.getPath().isPrefixOf(trunk)) {
 
 					addBranch(st);
 				}

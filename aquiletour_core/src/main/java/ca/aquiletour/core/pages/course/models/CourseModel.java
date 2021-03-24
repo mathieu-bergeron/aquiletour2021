@@ -50,7 +50,7 @@ public class CourseModel implements NtroModel, TaskGraph {
 		
 		TaskBreadcrumbs breadcrumbs = new TaskBreadcrumbs();
 
-		breadcrumbs.setTrunk(task);
+		breadcrumbs.setTrunk(task.getPath());
 		
 		breadcrumbs.addBranches(asGraph());
 
