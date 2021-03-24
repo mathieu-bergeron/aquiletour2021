@@ -33,6 +33,14 @@ public class CourseModel implements NtroModel, TaskGraph {
 
 	public void addTask(Task task) {
 		T.call(this);
+		TaskNode taskNode = asGraph().findNodeByPath(task.getTaskPath());
+		TaskNode parentNode = taskNode.getParent();
+		
+		if(parentNode != null) {
+			parentNode.asTask().addSubTask(task);
+		}
+		
+		
 		
 		Path parentTaskPath = task.parentTaskPath();
 		
