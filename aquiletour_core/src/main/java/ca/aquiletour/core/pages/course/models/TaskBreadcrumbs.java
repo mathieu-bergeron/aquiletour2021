@@ -12,6 +12,7 @@ import ca.ntro.core.system.trace.T;
 public class TaskBreadcrumbs implements NtroModel {
 	
 	private Path trunk;
+	private List<Task> nextTasks = new ArrayList<>();
 	private Map<String, List<Task>> branches = new HashMap<>();
 	
 	public Path getTrunk() {
@@ -33,6 +34,22 @@ public class TaskBreadcrumbs implements NtroModel {
 	public void addBranches(TaskGraph graph) {
 		T.call(this);
 		
+		Task trunkTask = graph.findTaskByPath(trunk);
+		
+		addNextBranches(trunkTask);
+
+		addSubBranches(graph);
+	}
+
+	private void addNextBranches(Task trunkTask) {
+		T.call(this);
+
+		trunkTask.forEachNextTask(nt -> nextTasks.add(nt));
+	}
+
+	private void addSubBranches(TaskGraph graph) {
+		T.call(this);
+
 		Task cursor = graph.findTaskByPath(trunk);
 
 		while(cursor != null) {
