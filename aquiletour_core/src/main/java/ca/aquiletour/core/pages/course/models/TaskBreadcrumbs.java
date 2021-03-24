@@ -38,5 +38,6 @@ public class TaskBreadcrumbs implements NtroModel {
 	public void addBranches(TaskGraph graph) {
 		T.call(this);
 
+
 	}
 }

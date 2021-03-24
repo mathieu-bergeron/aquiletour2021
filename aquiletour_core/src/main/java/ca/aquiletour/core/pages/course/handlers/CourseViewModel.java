@@ -9,6 +9,7 @@ import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.models.TaskBreadcrumbs;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
@@ -22,6 +23,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 
+		System.out.println(model);
 		
 		if(currentTask != null) {
 			currentTask.removeObservers();
@@ -60,7 +62,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
 				
-				Task subTask = model.findTaskById(taskId);
+				Task subTask = model.findTaskByPath(new Path(taskId));
 				
 				TaskView taskView = (TaskView) subViewLoader.createView();
 				

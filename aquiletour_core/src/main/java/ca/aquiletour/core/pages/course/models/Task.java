@@ -6,13 +6,15 @@ import ca.ntro.core.system.trace.T;
 
 public class Task implements NtroModelValue, TaskNode {
 	
+	private TaskGraph graph;
+	
 	private Path taskPath = new Path();
 	private String title = "";
 	
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -61,7 +63,7 @@ public class Task implements NtroModelValue, TaskNode {
 		this.taskPath = taskPath;
 	}
 
-	public Path parentTaskPath() {
+	private Path parentTaskPath() {
 		Path parentTaskPath = new Path();
 
 		if(taskPath.size() > 1) {
@@ -69,6 +71,10 @@ public class Task implements NtroModelValue, TaskNode {
 		}
 
 		return parentTaskPath;
+	}
+
+	public Task parent() {
+		return graph.findTaskByPath(parentTaskPath());
 	}
 
 	public void addSubTask(Task task) {
@@ -82,4 +88,13 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		return this;
 	}
+
+	public TaskGraph getGraph() {
+		return graph;
+	}
+
+	public void setGraph(TaskGraph graph) {
+		this.graph = graph;
+	}
+
 }

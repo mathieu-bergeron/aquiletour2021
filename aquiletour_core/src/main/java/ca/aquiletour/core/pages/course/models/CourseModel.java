@@ -5,9 +5,10 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class CourseModel implements NtroModel, TaskGraph {
-	
-	private ObservableTaskMap tasks = new ObservableTaskMap();
-	
+
+	private ObservableTaskMap tasks = new ObservableTaskMap(this);
+
+	@Override
 	public Task findTaskByPath(Path path) {
 		T.call(this);
 		
@@ -16,7 +17,7 @@ public class CourseModel implements NtroModel, TaskGraph {
 		return findTaskById(taskId);
 	}
 
-	public Task findTaskById(String taskId) {
+	private Task findTaskById(String taskId) {
 		T.call(this);
 		
 		return tasks.valueOf(taskId);
@@ -30,22 +31,13 @@ public class CourseModel implements NtroModel, TaskGraph {
 		this.tasks = tasks;
 	}
 
-
 	public void addTask(Task task) {
 		T.call(this);
-		TaskNode taskNode = asGraph().findNodeByPath(task.getTaskPath());
-		TaskNode parentNode = taskNode.getParent();
 		
-		if(parentNode != null) {
-			parentNode.asTask().addSubTask(task);
-		}
-		
-		
-		
-		Path parentTaskPath = task.parentTaskPath();
-		
-		Task parent = findTaskByPath(parentTaskPath);
-		
+		task.setGraph(asGraph());
+
+		Task parent = task.parent();
+
 		if(parent != null) {
 			parent.addSubTask(task);
 		}
