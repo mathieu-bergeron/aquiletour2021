@@ -4,7 +4,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class Task implements NtroModelValue {
+public class Task implements NtroModelValue, TaskNode {
 	
 	private Path taskPath = new Path();
 	private String title = "";
@@ -75,5 +75,11 @@ public class Task implements NtroModelValue {
 		T.call(this);
 		
 		subTasks.addItem(task.getTaskPath().toString());
+	}
+	
+	public TaskNode asNode() {
+		T.call(this);
+		
+		return this;
 	}
 }
