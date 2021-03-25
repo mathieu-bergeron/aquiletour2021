@@ -36,6 +36,14 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 	public void addEntry(String key, V value) {
 		
 		getValue().put(key, value);
+		
+		List<Object> args = new ArrayList<>();
+		args.add(key);
+		args.add(value);
+		
+		modelStore().onValueMethodInvoked(valuePath(),"addEntry",args);
+		
+		
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onEntryAdded(key, value);
 		}
@@ -49,6 +57,11 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 		
 		V value = getValue().get(key);
 		getValue().remove(key);
+
+		List<Object> args = new ArrayList<>();
+		args.add(key);
+		
+		modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
 		
 		if(value != null) {
 			for(MapObserver<V> mapObserver : mapObservers) {

@@ -292,6 +292,8 @@ public class Task implements NtroModelValue, TaskNode {
 	public void removeTask(String taskId) {
 		T.call(this);
 		
+		System.out.println("removeTask: " + id() + " " + taskId);
+		
 		removePreviousTask(taskId);
 		removeSubTask(taskId);
 		removeNextTask(taskId);

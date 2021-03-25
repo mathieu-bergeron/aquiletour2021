@@ -53,8 +53,11 @@ public class CourseModel implements NtroModel, TaskGraph {
 
 		if(parent != null) {
 
-			parent.addSubTask(subTask);
+			// XXX: must call this before
+			//      as addSubTask triggers a re-display
 			tasks.addEntry(subTask.id(), subTask);
+
+			parent.addSubTask(subTask);
 
 		}else {
 			Log.warning("parentTask not found: " + parentPath);

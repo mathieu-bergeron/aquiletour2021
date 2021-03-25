@@ -115,10 +115,12 @@ public abstract class ModelStore {
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
-		if(args.size() > 0) {
+		if(args.size() == 0) {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+		}else if(args.size() == 1){
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
 		}else {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0) + " " + args.get(1));
 		}
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
@@ -136,7 +138,7 @@ public abstract class ModelStore {
 				try {
 					methodToCall.invoke(value, args);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					Log.fatalError("Unable to invoke " + methodName + "on valuePath " + valuePath.toString(), e);
+					Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
 				}
 			}
 		}
