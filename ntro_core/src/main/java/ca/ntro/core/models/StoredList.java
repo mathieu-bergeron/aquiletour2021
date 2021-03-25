@@ -136,4 +136,8 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 
 		//super.observe(listObserver);
 	}
+
+	public boolean contains(I item) {
+		return Ntro.collections().listContainsEquals(getValue(), item);
+	}
 }

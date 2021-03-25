@@ -4,4 +4,5 @@ import ca.ntro.core.models.StoredList;
 
 public class ObservableTaskIdList extends StoredList<String> {
 
+
 }

@@ -44,10 +44,7 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		ModelStore localStore = new LocalStoreFiles();
-		
-
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, localStore)
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreFiles.class)
 		             .execute();
 	}
 	

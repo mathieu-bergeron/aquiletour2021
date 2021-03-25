@@ -98,19 +98,25 @@ public class Task implements NtroModelValue, TaskNode {
 	public void addPreviousTask(Task previousTask) {
 		T.call(this);
 		
-		previousTasks.addItem(previousTask.id());
+		if(!previousTasks.contains(previousTask.id())) {
+			previousTasks.addItem(previousTask.id());
+		}
 	}
 
 	public void addSubTask(Task task) {
 		T.call(this);
 		
-		subTasks.addItem(task.id());
+		if(!subTasks.contains(task.id())) {
+			subTasks.addItem(task.id());
+		}
 	}
 	
 	public void addNextTask(Task nextTask) {
 		T.call(this);
 		
-		nextTasks.addItem(nextTask.id());
+		if(!nextTasks.contains(nextTask.id())) {
+			nextTasks.addItem(nextTask.id());
+		}
 	}
 
 	public TaskNode asNode() {

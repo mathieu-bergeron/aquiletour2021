@@ -10,8 +10,6 @@ public class AddPreviousTaskHandler extends BackendMessageHandler<AddPreviousTas
 	@Override
 	public void handleNow(ModelStoreSync modelStore, AddPreviousTaskMessage message) {
 		T.call(this);
-		
-		T.here();
 
 		String courseId = message.getCourseId();
 

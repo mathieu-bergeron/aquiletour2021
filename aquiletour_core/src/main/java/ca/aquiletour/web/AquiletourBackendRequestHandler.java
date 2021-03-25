@@ -172,7 +172,7 @@ public class AquiletourBackendRequestHandler {
 
 			Path newPreviousTaskPath = new Path(parentPath.toString() + "/" + newPreviousTaskId);
 
-			Task newPreviousTask = Ntro.modelStore().createModelValue(Task.class);
+			Task newPreviousTask = new Task();
 			newPreviousTask.setPath(newPreviousTaskPath);
 			newPreviousTask.setTitle(taskTitle);
 

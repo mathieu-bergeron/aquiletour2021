@@ -16,18 +16,10 @@ import ca.ntro.services.Ntro;
 
 public abstract class BackendServiceServer extends BackendService {
 
-	private ModelStoreSync modelStore;
-	
 	private Map<Class<? extends NtroMessage>, BackendMessageHandler> handlers = new HashMap<>();
 	
 	public BackendServiceServer() {
 		addBackendMessageHandlers();
-	}
-
-	public void setModelStore(ModelStore modelStore) {
-		T.call(this);
-
-		this.modelStore = new ModelStoreSync(modelStore);
 	}
 
 	protected abstract void addBackendMessageHandlers();
@@ -46,17 +38,15 @@ public abstract class BackendServiceServer extends BackendService {
 			Log.warning("No BackendMessageHandler for " + message.getClass().getSimpleName());
 
 		}else {
-			
-			handler.handleNow(modelStore, message);
+
+			handler.handleNow(new ModelStoreSync(Ntro.modelStore()), message);
 			
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
 				protected void runTask() {
 					T.call(this);
-					
-					ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
-					
-					handler.handleLater(modelStore, message);
+
+					handler.handleLater(new ModelStoreSync(Ntro.modelStore()), message);
 				}
 
 				@Override

@@ -94,9 +94,22 @@ public abstract class ModelStore {
 
 	public abstract void close();
 
-	public void registerModel(DocumentPath documentPath, NtroModel ntroModel) {
-		localHeap.put(ntroModel, documentPath);
-		localHeapByPath.put(documentPath, ntroModel);
+	public void registerModel(DocumentPath documentPath, NtroModel model) {
+		localHeap.put(model, documentPath);
+		localHeapByPath.put(documentPath, model);
+	}
+
+	public void updateStoreConnections(NtroModel model) {
+		DocumentPath modelPath = localHeap.get(model);
+		
+		if(modelPath != null) {
+
+			ModelFactory.updateStoreConnections(model, this, modelPath);
+
+		}else {
+			
+			Log.warning("No model to update: " + model);
+		}
 	}
 
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
@@ -194,13 +207,13 @@ public abstract class ModelStore {
 
 	protected abstract void deleteDocument(DocumentPath documentPath);
 
-	public void closeWithoutSaving(NtroModel existingModel) {
+	public void closeWithoutSaving(NtroModel model) {
 		T.call(this);
 
-		DocumentPath documentPath = localHeap.get(existingModel);
+		DocumentPath documentPath = localHeap.get(model);
 
 		// JSWEET: will the work correctly? (removing by reference)
-		localHeap.remove(existingModel);
+		localHeap.remove(model);
 		localHeapByPath.remove(documentPath);
 	}
 }

@@ -277,6 +277,10 @@ public class Ntro {
 
 	private static Class<? extends ModelStore> modelStoreClass;
 	private static Map<String, ModelStore> modelStores = new HashMap<>();
+	
+	// FIXME: we need a single store (so that multiple request update the same model)
+	//        but then we need to lock write access to model
+	private static ModelStore modelStore;
 
 	static void registerModelStoreClass(Class<? extends ModelStore> modelStoreClass) {
 		__T.call(Ntro.class, "registerModelStoreClass");
@@ -286,13 +290,19 @@ public class Ntro {
 
 	public static ModelStore modelStore() {
 		__T.call(Ntro.class, "modelStore");
+		
+		if(modelStore == null) {
+			modelStore = Ntro.factory().newInstance(modelStoreClass);
+		}
 
+		/*
 		ModelStore modelStore = modelStores.get(threadService().currentThread().getThreadId());
 
 		if(modelStore == null) {
 			modelStore = Ntro.factory().newInstance(modelStoreClass);
 			modelStores.put(threadService().currentThread().getThreadId(), modelStore);
 		}
+		*/
 
 		return modelStore;
 	}

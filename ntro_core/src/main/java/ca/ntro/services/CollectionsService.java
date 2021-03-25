@@ -34,6 +34,7 @@ public abstract class CollectionsService {
 	public abstract boolean containsKeyExact(Map<?, ?> map, Object key);
 	public abstract <V extends Object> V getExactKey(Map<?, V> map, Object key);
 
+	public abstract boolean listContainsEquals(List<?> value, Object target);
 	public abstract boolean listEquals(List<?> list1, List<?> list2);
 	public abstract boolean mapEquals(Map<?,?> map1, Map<?,?> map2);
 

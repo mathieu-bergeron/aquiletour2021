@@ -1,9 +1,11 @@
 package ca.aquiletour.core.pages.course.models;
 
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class CourseModel implements NtroModel, TaskGraph {
 
@@ -77,9 +79,11 @@ public class CourseModel implements NtroModel, TaskGraph {
 			}else {
 
 				previousTask.addNextTask(nextTask);
-				nextTask.addPreviousTask(previousTask);
 
 				tasks.addEntry(nextTask.id(), nextTask);
+				Ntro.modelStore().updateStoreConnections(this);
+
+				nextTask.addPreviousTask(previousTask);
 			}
 			
 		}else {
@@ -108,12 +112,20 @@ public class CourseModel implements NtroModel, TaskGraph {
 
 				nextTask.addPreviousTask(previousTask);
 				
+				Task parent = nextTask.parent();
+				if(parent != null) {
+					parent.addSubTask(previousTask);
+				}
 				
-				// FIXME: previousTask is not linked to modelStore
-				//        is that
-				//previousTask.addNextTask(nextTask);
-
+				// XXX: before modifying the new task, we must:
+				//      - insert it in the model
+				//      - update the model store connections
 				tasks.addEntry(previousTask.id(), previousTask);
+				Ntro.modelStore().updateStoreConnections(this);
+				
+				// XXX: now we can modify the new task
+				//      (its stored properties are now connected)
+				previousTask.addNextTask(nextTask);
 			}
 
 		}else {
@@ -135,5 +147,9 @@ public class CourseModel implements NtroModel, TaskGraph {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
+	
+	
+	
+	
 	
 }
