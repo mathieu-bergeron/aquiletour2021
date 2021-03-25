@@ -93,9 +93,9 @@ public class CourseModel implements NtroModel, TaskGraph {
 
 				nextTask.addPreviousTask(previousTask);
 
-				Task parent = nextTask.parent();
+				Task parent = previousTask.parent();
 				if(parent != null) {
-					parent.addSubTask(previousTask);
+					parent.addSubTask(nextTask);
 				}
 			}
 			
