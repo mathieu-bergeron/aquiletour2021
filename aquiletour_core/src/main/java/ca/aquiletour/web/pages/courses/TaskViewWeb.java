@@ -3,6 +3,7 @@ package ca.aquiletour.web.pages.courses;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
@@ -38,10 +39,11 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToDataTarget.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
-		Ntro.verify(that(taskTitleLink).isNotEqualTo(null));
-		Ntro.verify(that(previousTasksContainer).isNotEqualTo(null));
-		Ntro.verify(that(subTasksContainer).isNotEqualTo(null));
-		Ntro.verify(that(nextTasksContainer).isNotEqualTo(null));
+		
+		MustNot.beNull(taskTitleLink);
+		MustNot.beNull(previousTasksContainer);
+		MustNot.beNull(subTasksContainer);
+		MustNot.beNull(nextTasksContainer);
 		
 		
 		taskTitleHref = taskTitleLink.getAttribute("href");

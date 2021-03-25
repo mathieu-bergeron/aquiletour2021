@@ -141,7 +141,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		HtmlElement subViewElement = viewWeb.getRootElement();
 
-		container.clearChildren();
+		container.removeChildrenFromDocument();
 		container.appendElement(subViewElement);
 	}
 

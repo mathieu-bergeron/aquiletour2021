@@ -21,6 +21,18 @@ public class CourseUpdater {
 			}
 		});
 	}
+
+	public static void addNextTask(ModelStoreSync modelStore, String courseId, Path previousPath, Task nextTask) {
+		T.call(CourseUpdater.class);
+		
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				course.addNextTaskTo(previousPath, nextTask);
+			}
+		});
+	}
 	
 
 	public static void addSubTask(ModelStoreSync modelStore, String courseId, Path parentPath, Task task) {

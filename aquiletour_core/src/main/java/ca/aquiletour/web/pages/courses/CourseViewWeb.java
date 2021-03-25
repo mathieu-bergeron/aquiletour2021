@@ -67,4 +67,20 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		taskIdInput.value(id);
 	}
 
+	@Override
+	public void clearTasks() {
+		T.call(this);
+		
+		taskContainer.deleteChildrenForever();
+	}
+
+	@Override
+	public void appendTask(TaskView taskView) {
+		T.call(this);
+
+		HtmlElement taskElement = ((TaskViewWeb) taskView).getRootElement();
+		
+		taskContainer.appendElement(taskElement);
+	}
+
 }

@@ -11,6 +11,7 @@ import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.ListObserver;
+import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -40,7 +41,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 
 	private void observeCurrentTask(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
-
+		
 		currentTask.getSubTasks().observe(new ListObserver<String>() {
 			
 			@Override
@@ -58,14 +59,9 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			@Override
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
+
+				displaySubtasksInOrder(model, view, subViewLoader);
 				
-				Task subTask = model.findTaskByPath(new Path(taskId));
-				
-				TaskView taskView = (TaskView) subViewLoader.createView();
-				
-				taskView.displayTask(model.getCourseId(), subTask);
-				
-				view.insertTask(index, taskView);
 			}
 			
 			@Override
@@ -76,21 +72,33 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			
 			@Override
 			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
 			}
+
 			
 			@Override
 			public void onClearItems() {
 				// TODO Auto-generated method stub
 				
 			}
+		});
+	}
+
+	private void displaySubtasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+		T.call(this);
+
+		view.clearTasks();
+		
+		currentTask.forEachSubTaskInOrder(st -> {
+			
+			TaskView taskView = (TaskView) subViewLoader.createView();
+			
+			taskView.displayTask(model.getCourseId(), st);
+			
+			view.appendTask(taskView);
 		});
 	}
 }

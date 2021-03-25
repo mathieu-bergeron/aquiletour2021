@@ -6,6 +6,7 @@ import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course.models.Task;
@@ -198,6 +199,45 @@ public class AquiletourBackendRequestHandler {
 			addPreviousTaskMessage.setPreviousTask(previousTask);
 			
 			Ntro.messages().send(addPreviousTaskMessage);
+
+		}else if(parameters.containsKey("newNextTask")
+				&& parameters.get("newNextTask")[0].length() > 0) {
+
+			String previousTaskId = parameters.get("taskId")[0];
+			String newNextTaskId = parameters.get("newNextTask")[0];
+			String taskTitle = newNextTaskId;
+			
+			Path previousPath = new Path(previousTaskId);
+			Path parentPath = previousPath.parent();
+
+			Path newNextTaskPath = new Path(parentPath.toString() + "/" + newNextTaskId);
+
+			Task newNextTask = new Task();
+			newNextTask.setPath(newNextTaskPath);
+			newNextTask.setTitle(taskTitle);
+
+			AddNextTaskMessage addNextTaskMessage = Ntro.messages().create(AddNextTaskMessage.class);
+			addNextTaskMessage.setCourseId(courseId);
+			addNextTaskMessage.setPreviousPath(previousPath);
+			addNextTaskMessage.setNextTask(newNextTask);
+			
+			Ntro.messages().send(addNextTaskMessage);
+
+		}else if(parameters.containsKey("nextTask")) {
+
+			String previousTaskId = parameters.get("taskId")[0];
+			String existingTaskId = parameters.get("nextTask")[0];
+			Path existingTaskPath = new Path(existingTaskId);
+			
+			Task nextTask = new Task();
+			nextTask.setPath(existingTaskPath);
+
+			AddNextTaskMessage addNextTaskMessage = Ntro.messages().create(AddNextTaskMessage.class);
+			addNextTaskMessage.setCourseId(courseId);
+			addNextTaskMessage.setPreviousPath(new Path(previousTaskId));
+			addNextTaskMessage.setNextTask(nextTask);
+
+			Ntro.messages().send(addNextTaskMessage);
 		}
 	}
 

@@ -1,11 +1,14 @@
 package ca.aquiletour.core.pages.course.models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class Task implements NtroModelValue, TaskNode {
 	
@@ -171,6 +174,7 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
+
 	private List<Task> trunk() {
 		
 		T.call(this);
@@ -209,4 +213,78 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 
+	public void forEachStartTaskLocal(TaskLambda lambda) {
+		T.call(this);
+
+		for(String subTaskId : getSubTasks().getValue()) {
+			Task subTask = graph.findTaskByPath(new Path(subTaskId));
+			if(subTask.isStartTaskLocal()) {
+				lambda.execute(subTask);
+			}
+		}
+	}
+
+	public void forEachReachableTaskLocal(TaskLambda lambda) {
+		T.call(this);
+		
+		forEachReachableTaskLocalImpl(parent(), new HashSet<>(), lambda);
+	}
+
+	public void forEachReachableTaskLocalImpl(Task parent,
+			                                  Set<Task> visitedTasks,
+			                                  TaskLambda lambda) {
+		T.call(this);
+		
+		if(Ntro.collections().setContainsExact(visitedTasks, this)) return;
+		visitedTasks.add(this);
+
+		for(String nextTaskId : getNextTasks().getValue()) {
+			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
+			
+			if(nextTask.parent() == parent) {
+				lambda.execute(nextTask);
+				nextTask.forEachReachableTaskLocalImpl(parent, 
+						                               visitedTasks, 
+						                               lambda);
+			}
+		}
+	}
+
+
+	public boolean isStartTaskLocal() {
+		boolean isStartTaskLocal = true;
+
+		for(String previousTaskId : getPreviousTasks().getValue()) {
+			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
+			if(previousTask.parent() == parent()) {
+				isStartTaskLocal = false;
+				break;
+			}
+		}
+
+		return isStartTaskLocal;
+	}
+
+
+	public void forEachSubTaskInOrder(TaskLambda lambda) {
+		T.call(this);
+		
+		Set<Task> visitedTasks = new HashSet<>();
+		
+		forEachStartTaskLocal(st -> {
+
+			if(Ntro.collections().setContainsExact(visitedTasks, st)) return;
+			visitedTasks.add(st);
+			
+			lambda.execute(st);
+			
+			st.forEachReachableTaskLocal(rt -> {
+
+				if(Ntro.collections().setContainsExact(visitedTasks, rt)) return;
+				visitedTasks.add(rt);
+				
+				lambda.execute(rt);
+			});
+		});
+	}
 }

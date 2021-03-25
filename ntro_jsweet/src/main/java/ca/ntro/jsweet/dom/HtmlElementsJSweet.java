@@ -31,7 +31,9 @@ public class HtmlElementsJSweet implements HtmlElements {
 	public void forEach(HtmlElementLambda lambda) {
 		T.call(this);
 		
-		jQueryElements.forEach(e -> lambda.execute(new HtmlElementJSweet($(e))));
+		for(int i = 0; i < jQueryElements.length; i++) {
+			lambda.execute(new HtmlElementJSweet($(jQueryElements.get(i))));
+		}
 	}
 
 }
