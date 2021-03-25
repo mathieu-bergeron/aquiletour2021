@@ -97,10 +97,17 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			TaskView taskView = (TaskView) subViewLoader.createView();
 			view.appendTask(taskView);
 
-			taskView.displayTask(model.getCourseId(), st);
+			displayTask(model.getCourseId(), st, taskView);
 
 			observeSubTask(st, model.getCourseId(), taskView);
 		});
+	}
+
+	private void displayTask(String courseId, Task st, TaskView taskView) {
+		T.call(this);
+
+		taskView.clear();
+		taskView.displayTask(courseId, st);
 	}
 
 	private void observeSubTask(Task st, String courseId, TaskView taskView) {
@@ -114,8 +121,9 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			
 			@Override
 			public void onItemRemoved(int index, String item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				displayTask(courseId, st, taskView);
 			}
 			
 			@Override
@@ -128,7 +136,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
-				taskView.displayTask(courseId, st);
+				displayTask(courseId, st, taskView);
 			}
 			
 			@Override
@@ -180,7 +188,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
-				taskView.displayTask(courseId, st);
+				displayTask(courseId, st, taskView);
 			}
 
 			@Override
@@ -191,8 +199,9 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 
 			@Override
 			public void onItemRemoved(int index, String item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				displayTask(courseId, st, taskView);
 			}
 
 			@Override
@@ -226,7 +235,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
-				taskView.displayTask(courseId, st);
+				displayTask(courseId, st, taskView);
 			}
 
 			@Override
@@ -237,8 +246,9 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 
 			@Override
 			public void onItemRemoved(int index, String item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				displayTask(courseId, st, taskView);
 			}
 
 			@Override

@@ -136,7 +136,13 @@ public abstract class ModelStore {
 				NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
 				NtroMethod methodToCall = valueClass.methodByName(methodName);
 				try {
+
 					methodToCall.invoke(value, args);
+					
+					// XXX: if we add a NtroModelValue, we need to connect it to the store
+					ModelFactory.updateStoreConnections(model, this, documentPath);
+					
+					
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
 				}

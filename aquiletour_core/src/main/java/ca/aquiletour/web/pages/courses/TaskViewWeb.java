@@ -109,4 +109,14 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		deleteAnchor.setAttribute("href", "?remove" + taskType + "=" + task.getPath().toFileName() + "&from=" + currentTask.getPath().toFileName());
 	}
 
+	@Override
+	public void clear() {
+		T.call(this);
+		
+		previousTasksContainer.deleteChildrenForever();
+		subTasksContainer.deleteChildrenForever();
+		nextTasksContainer.deleteChildrenForever();
+		
+	}
+
 }

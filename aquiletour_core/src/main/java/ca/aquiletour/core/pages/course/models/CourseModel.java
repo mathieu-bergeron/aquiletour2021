@@ -82,12 +82,21 @@ public class CourseModel implements NtroModel, TaskGraph {
 				
 			}else {
 
-				previousTask.addNextTask(nextTask);
 
+				// XXX: addEntry must be called before anyting else
+				//      otherwise the task does not exists
+				//      and refering to it by id will fail
 				tasks.addEntry(nextTask.id(), nextTask);
 				Ntro.modelStore().updateStoreConnections(this);
 
+				previousTask.addNextTask(nextTask);
+
 				nextTask.addPreviousTask(previousTask);
+
+				Task parent = nextTask.parent();
+				if(parent != null) {
+					parent.addSubTask(previousTask);
+				}
 			}
 			
 		}else {
@@ -114,22 +123,23 @@ public class CourseModel implements NtroModel, TaskGraph {
 				
 			}else {
 
-				nextTask.addPreviousTask(previousTask);
-				
-				Task parent = nextTask.parent();
-				if(parent != null) {
-					parent.addSubTask(previousTask);
-				}
 				
 				// XXX: before modifying the new task, we must:
 				//      - insert it in the model
 				//      - update the model store connections
 				tasks.addEntry(previousTask.id(), previousTask);
 				Ntro.modelStore().updateStoreConnections(this);
-				
+
 				// XXX: now we can modify the new task
 				//      (its stored properties are now connected)
 				previousTask.addNextTask(nextTask);
+
+				nextTask.addPreviousTask(previousTask);
+				
+				Task parent = nextTask.parent();
+				if(parent != null) {
+					parent.addSubTask(previousTask);
+				}
 			}
 
 		}else {
