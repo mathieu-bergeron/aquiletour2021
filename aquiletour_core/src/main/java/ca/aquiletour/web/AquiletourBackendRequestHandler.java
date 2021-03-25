@@ -9,6 +9,10 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
+import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
+import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
+import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -18,7 +22,6 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -238,6 +241,69 @@ public class AquiletourBackendRequestHandler {
 			addNextTaskMessage.setNextTask(nextTask);
 
 			Ntro.messages().send(addNextTaskMessage);
+
+		}else if(parameters.containsKey("delete")) {
+
+			String taskId = parameters.get("delete")[0];
+			Path taskPath = new Path();
+			taskPath.parseFileName(taskId);
+			
+			DeleteTaskMessage deleteTaskMessage = Ntro.messages().create(DeleteTaskMessage.class);
+			deleteTaskMessage.setCourseId(courseId);
+			deleteTaskMessage.setTaskToDelete(taskPath);
+
+			Ntro.messages().send(deleteTaskMessage);
+
+		}else if(parameters.containsKey("removePreviousTask")) {
+
+			String toRemoveId = parameters.get("removePreviousTask")[0];
+			Path toRemovePath = new Path();
+			toRemovePath.parseFileName(toRemoveId);
+
+			String toModifyId = parameters.get("from")[0];
+			Path toModifyPath = new Path();
+			toModifyPath.parseFileName(toModifyId);
+			
+			RemovePreviousTaskMessage removePreviousTaskMessage = Ntro.messages().create(RemovePreviousTaskMessage.class);
+			removePreviousTaskMessage.setCourseId(courseId);
+			removePreviousTaskMessage.setTaskToModify(toModifyPath);
+			removePreviousTaskMessage.setTaskToRemove(toRemovePath);
+
+			Ntro.messages().send(removePreviousTaskMessage);
+
+		}else if(parameters.containsKey("removeSubTask")) {
+
+			String toRemoveId = parameters.get("removeSubTask")[0];
+			Path toRemovePath = new Path();
+			toRemovePath.parseFileName(toRemoveId);
+
+			String toModifyId = parameters.get("from")[0];
+			Path toModifyPath = new Path();
+			toModifyPath.parseFileName(toModifyId);
+			
+			RemoveSubTaskMessage removeSubTaskMessage = Ntro.messages().create(RemoveSubTaskMessage.class);
+			removeSubTaskMessage.setCourseId(courseId);
+			removeSubTaskMessage.setTaskToModify(toModifyPath);
+			removeSubTaskMessage.setTaskToRemove(toRemovePath);
+
+			Ntro.messages().send(removeSubTaskMessage);
+
+		}else if(parameters.containsKey("removeNextTask")) {
+
+			String toRemoveId = parameters.get("removeNextTask")[0];
+			Path toRemovePath = new Path();
+			toRemovePath.parseFileName(toRemoveId);
+
+			String toModifyId = parameters.get("from")[0];
+			Path toModifyPath = new Path();
+			toModifyPath.parseFileName(toModifyId);
+			
+			RemoveNextTaskMessage removeNextTaskMessage = Ntro.messages().create(RemoveNextTaskMessage.class);
+			removeNextTaskMessage.setCourseId(courseId);
+			removeNextTaskMessage.setTaskToModify(toModifyPath);
+			removeNextTaskMessage.setTaskToRemove(toRemovePath);
+
+			Ntro.messages().send(removeNextTaskMessage);
 		}
 	}
 

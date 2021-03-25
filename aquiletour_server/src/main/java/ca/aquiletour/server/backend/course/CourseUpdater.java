@@ -9,6 +9,63 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
 public class CourseUpdater {
+
+	public static void removeNextTask(ModelStoreSync modelStore, 
+			                          String courseId, 
+			                          Path taskToModify,
+			                          Path taskToDelete) {
+		T.call(CourseUpdater.class);
+		
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				course.removeNextTask(taskToModify, taskToDelete);
+			}
+		});
+	}
+
+	public static void removeSubTask(ModelStoreSync modelStore, 
+			                              String courseId, 
+			                              Path taskToModify,
+			                              Path taskToDelete) {
+		T.call(CourseUpdater.class);
+		
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				course.removeSubTask(taskToModify, taskToDelete);
+			}
+		});
+	}
+
+	public static void removePreviousTask(ModelStoreSync modelStore, 
+			                              String courseId, 
+			                              Path taskToModify,
+			                              Path taskToDelete) {
+		T.call(CourseUpdater.class);
+		
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				course.removePreviousTask(taskToModify, taskToDelete);
+			}
+		});
+	}
+
+	public static void deleteTask(ModelStoreSync modelStore, String courseId, Path taskToDelete) {
+		T.call(CourseUpdater.class);
+		
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				course.deleteTask(taskToDelete);
+			}
+		});
+	}
 	
 	public static void addPreviousTask(ModelStoreSync modelStore, String courseId, Path nextPath, Task previousTask) {
 		T.call(CourseUpdater.class);

@@ -167,11 +167,13 @@ public class Task implements NtroModelValue, TaskNode {
 		T.call(this);
 		
 		Task parent = parent();
-		parent.forEachSubTask(sib -> {
-			if(sib != this) {
-				lambda.execute(sib);
-			}
-		});
+		if(parent != null) {
+			parent.forEachSubTask(sib -> {
+				if(sib != this) {
+					lambda.execute(sib);
+				}
+			});
+		}
 	}
 
 
@@ -184,8 +186,7 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		
 		if(parent != null) {
-			
-			System.out.println("parent: " + parent.getPath().toString());
+
 			trunk = parent.trunk();
 
 		}else {
@@ -286,5 +287,31 @@ public class Task implements NtroModelValue, TaskNode {
 				lambda.execute(rt);
 			});
 		});
+	}
+
+	public void removeTask(String taskId) {
+		T.call(this);
+		
+		removePreviousTask(taskId);
+		removeSubTask(taskId);
+		removeNextTask(taskId);
+	}
+
+	public void removePreviousTask(String taskId) {
+		T.call(this);
+		
+		previousTasks.removeItem(taskId);
+	}
+
+	public void removeSubTask(String taskId) {
+		T.call(this);
+		
+		subTasks.removeItem(taskId);
+	}
+
+	public void removeNextTask(String taskId) {
+		T.call(this);
+
+		nextTasks.removeItem(taskId);
 	}
 }

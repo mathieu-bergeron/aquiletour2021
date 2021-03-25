@@ -9,6 +9,10 @@ import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
+import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
+import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
+import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -19,6 +23,10 @@ import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.server.backend.course.AddNextTaskHandler;
 import ca.aquiletour.server.backend.course.AddPreviousTaskHandler;
 import ca.aquiletour.server.backend.course.AddTaskHandler;
+import ca.aquiletour.server.backend.course.DeleteTaskHandler;
+import ca.aquiletour.server.backend.course.RemoveNextTaskHandler;
+import ca.aquiletour.server.backend.course.RemovePreviousTaskHandler;
+import ca.aquiletour.server.backend.course.RemoveSubTaskHandler;
 import ca.aquiletour.server.backend.dashboard.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
 import ca.aquiletour.server.backend.login.AuthenticateSessionUserHandler;
@@ -53,5 +61,9 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(AddSubTaskMessage.class, new AddTaskHandler());
 		addBackendMessageHandler(AddPreviousTaskMessage.class, new AddPreviousTaskHandler());
 		addBackendMessageHandler(AddNextTaskMessage.class, new AddNextTaskHandler());
+		addBackendMessageHandler(DeleteTaskMessage.class, new DeleteTaskHandler());
+		addBackendMessageHandler(RemovePreviousTaskMessage.class, new RemovePreviousTaskHandler());
+		addBackendMessageHandler(RemoveSubTaskMessage.class, new RemoveSubTaskHandler());
+		addBackendMessageHandler(RemoveNextTaskMessage.class, new RemoveNextTaskHandler());
 	}
 }

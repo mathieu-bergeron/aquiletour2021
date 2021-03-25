@@ -35,6 +35,16 @@ public class Path implements JsonSerializable {
 			}
 		}
 	}
+
+	public void parseFileName(String path) {
+		T.call(this);
+
+		for(String name : path.split("_")){
+			if(name.length() > 0) {
+				names.add(name);
+			}
+		}
+	}
 	
 	public boolean startsWith(String name) {
 		boolean startsWith = false;
@@ -130,9 +140,10 @@ public class Path implements JsonSerializable {
 		StringBuilder builder = new StringBuilder();
 		
 		if(names.size() > 0) {
-			for(String name : names) {
-				builder.append(name);
+			builder.append(names.get(0));
+			for(int i = 1; i < names.size(); i++) {
 				builder.append("_");
+				builder.append(names.get(i));
 			}
 		}else {
 			builder.append("_");
@@ -184,4 +195,5 @@ public class Path implements JsonSerializable {
 		
 		return parentPath;
 	}
+
 }

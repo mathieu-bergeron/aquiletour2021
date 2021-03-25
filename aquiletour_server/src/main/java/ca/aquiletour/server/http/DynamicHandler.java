@@ -299,12 +299,12 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(baseRequest.getParameter("nojs") != null) {
 			
-			response.addCookie(new Cookie("jsOnly", "false"));
+			setCookie(response, "jsOnly" , "false" );
 			ifJsOnly = false;
 
 		} else if(baseRequest.getParameter("js") != null) {
 			
-			response.addCookie(new Cookie("jsOnly", "true"));
+			setCookie(response, "jsOnly" , "true" );
 			ifJsOnly = true;
 			
 		}else if(hasCookie(baseRequest, "jsOnly")) {

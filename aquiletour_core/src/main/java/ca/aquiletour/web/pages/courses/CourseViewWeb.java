@@ -54,6 +54,18 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 			HtmlElement anchor = taskLi.createElement("<a></a>");
 			taskLi.appendElement(anchor);
 			breadcrumbsContainer.appendElement(taskLi);
+			
+			taskLi.appendHtml("&nbsp;&nbsp;&nbsp;alternatives: [");
+			t.forEachSibling(s -> {
+				
+				HtmlElement siblingAnchor = taskLi.createElement("<a></a>");
+				taskLi.appendElement(siblingAnchor);
+				taskLi.appendHtml(",&nbsp;");
+				siblingAnchor.text(s.getTitle());
+				siblingAnchor.setAttribute("href", "/cours/" + courseId + s.id());
+			});
+
+			taskLi.appendHtml("]");
 
 			anchor.text(t.getTitle());
 			anchor.setAttribute("href", "/cours/" + courseId + t.id());

@@ -1,7 +1,6 @@
 package ca.aquiletour.core.pages.course.models;
 
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -16,9 +15,11 @@ public class CourseModel implements NtroModel, TaskGraph {
 	public Task findTaskByPath(Path path) {
 		T.call(this);
 		
-		String taskId = path.toString();
+		return findTaskById(pathToId(path));
+	}
 
-		return findTaskById(taskId);
+	private String pathToId(Path path) {
+		return path.toString();
 	}
 
 	private Task findTaskById(String taskId) {
@@ -148,8 +149,58 @@ public class CourseModel implements NtroModel, TaskGraph {
 		this.courseId = courseId;
 	}
 	
-	
-	
-	
+	public void forEachTask(TaskLambda lambda) {
+		T.call(this);
+		
+		for(Task task : tasks.getValue().values()) {
+			lambda.execute(task);
+		}
+	}
+
+	public void deleteTask(Path taskToDelete) {
+		T.call(this);
+		
+		deleteTask(pathToId(taskToDelete));
+	}
+
+	public void deleteTask(String taskId) {
+		T.call(this);
+		
+		forEachTask(t -> t.removeTask(taskId));
+		
+		tasks.removeEntry(taskId);
+		
+		// FIXME: remove unreachable tasks!
+	}
+
+	public void removePreviousTask(Path taskToModify, Path taskToDelete) {
+		T.call(this);
+		
+		Task toModify = findTaskByPath(taskToModify);
+		
+		toModify.removePreviousTask(pathToId(taskToDelete));
+		
+		// FIXME: remove unreachable tasks!
+	}
+
+	public void removeSubTask(Path taskToModify, Path taskToDelete) {
+		T.call(this);
+		
+		Task toModify = findTaskByPath(taskToModify);
+		
+		toModify.removeSubTask(pathToId(taskToDelete));
+		
+		// FIXME: remove unreachable tasks!
+	}
+
+	public void removeNextTask(Path taskToModify, Path taskToDelete) {
+		T.call(this);
+		
+		Task toModify = findTaskByPath(taskToModify);
+		
+		toModify.removeNextTask(pathToId(taskToDelete));
+		
+		// FIXME: remove unreachable tasks!
+	}
 	
 }
