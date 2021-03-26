@@ -1,9 +1,9 @@
 function initializeDashboard(viewRootElement, jSweet){
 
-    var buttonAvailable = document.getElementById("buttonAvailable");
-    var available = document.getElementById("teacherAvailable");
-    var availableLink = document.getElementById("availableLink");
-    var buttonAddCourse = document.getElementById("add-course-submit-button");
+    var buttonAvailable = viewRootElement.find("#buttonAvailable");
+    var available = viewRootElement.find("#teacherAvailable");
+    var availableLink = viewRootElement.find("#availableLink");
+    var buttonAddCourse = viewRootElement.find("#add-course-submit-button");
 
     $(function() {
       
@@ -118,7 +118,8 @@ function initializeDashboard(viewRootElement, jSweet){
         },2500);
     }    
 
+    /*
     coursesContainer.sortable({
       handle:'.handle'
-    });
+    });*/
 }
