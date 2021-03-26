@@ -1,28 +1,28 @@
 # Les id
 
 1. Plan de cours
-    * `/cours/mathieu.bergeron/4203C6MO/`                         
+    * `/cours/mathieu.bergeron/3C6/`                         
     * identifiant unique du prof
     * identifiant unique du cours
 
 1. Cours-groupe (ou Groupe)
-    * `/groupes/mathieu.bergeron/A2021/4203C6MO/01`
+    * `/groupes/mathieu.bergeron/A2021/3C6/01`
     * prof
     * cours
     * session
     * groupe
-    * Path: `mathieu.bergeron/A2021/4203C6MO/01`
+    * Path: `mathieu.bergeron/A2021/3C6/01`
     * Collection: GroupCourse
-    * Id `mathieu.bergeron_A2021_4203C6MO_01`     (path.toFileName())
+    * Id `mathieu.bergeron_A2021_3C6_01`     (path.toFileName())
 
 1. Cours (ou Session)
-    * `/sessions/mathieu.bergeron/A2021/4203C6MO`
+    * `/sessions/mathieu.bergeron/A2021/3C6`
     * Collection: Course
-    * Id `mathieu.bergeron_A2021_4203C6MO`
+    * Id `mathieu.bergeron_A2021_3C6`
 
 1. Et le matériel de cours?
     * c'est dans le plan de cours
-    * `/cours/mathieu.bergeron/4203C6MO/etape1/module1.2/atelier`
+    * `/cours/mathieu.bergeron/3C6/etape1/module1.2/atelier`
     * identifiant du plan de cours
     * le reste est l'id de la tâche: `/etape1/module1.2/atelier`
 

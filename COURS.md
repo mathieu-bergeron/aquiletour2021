@@ -43,10 +43,8 @@ NOTE:
 
 1. Instantiation d'un plan de cours
 1. Spécifie:
-    * la session, p.ex. A2021
-    * obtenu du CSV:
-        * le code exact du cours: 4203C6MO
-        * la listes des étudiants
+    * la session, p.ex. A2021 (avec un choix de session existante)
+    * la listes des étudiants (obtenur du CSV)
     * les séances:
         * séance 1: mardi 14-16h
         * séance 2: vendredi 8h-12h
