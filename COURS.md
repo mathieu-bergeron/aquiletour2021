@@ -1,6 +1,6 @@
 # Point de vue étudiant
 
-## Cours
+## Groupe
 
 1. Le calendrier
 1. Pour chaque activité on peut:
@@ -17,7 +17,7 @@ NOTE: pour «faire du ménage» on peut:
 1. Effacer les cours-groupes plus vieux que X
 1. Effacer les plans de cours inutilisés et plus vieux que X
 
-### Plan de cours
+### Cours
 
 1. La structure du cours
 1. Dates abstraites: semaine 10, séance 2
@@ -39,7 +39,7 @@ NOTE:
     * calendrier du cours
     * tableau des évaluations
 
-### Cours-groupe
+### Groupe
 
 1. Instantiation d'un plan de cours
 1. Spécifie:
@@ -55,8 +55,7 @@ NOTE:
 
 * On pourrait générer un plan de cours plus détaillé
 
-### Cours
+### Session
 
 1. Modèle créer automatiquement avec la création d'un cours-groupe
 1. Résumé des résultats pour tous les groupes d'un même cours, même session
-
