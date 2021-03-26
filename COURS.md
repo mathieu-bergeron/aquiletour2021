@@ -26,7 +26,7 @@ NOTE: pour «faire du ménage» on peut:
     * type d'évaluation (formative, théorie, pratique)
     * 
 
-1. Le plan de cours peut avoir n'importe quel titre/code
+1. Doit tout de suite avoir le code exact du cours
 1. Créer un nouveau plan de cours 
     * à partir d'un plan de cours existant (copie)
     * à neuf
