@@ -22,6 +22,8 @@ window.onload = function(){
     });
     */
 
+    /*
     document.getElementById('website-directory').innerHTML = window.location.pathname;
     console.log(window.location.pathname);
+    */
 }

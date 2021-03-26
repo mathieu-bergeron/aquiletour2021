@@ -1,6 +1,5 @@
 function initializeDashboard(viewRootElement, jSweet){
 
-<<<<<<< HEAD
     var buttonAvailable = document.getElementById("buttonAvailable");
     var available = document.getElementById("teacherAvailable");
     var availableLink = document.getElementById("availableLink");
@@ -117,7 +116,6 @@ function initializeDashboard(viewRootElement, jSweet){
       availableLink.style.cursor = "hand";
     }
 
-<<<<<<< HEAD
     buttonAddCourse.onclick = function() {
 
       document.getElementById("card-header").className = "ghost-header";
@@ -130,9 +128,8 @@ function initializeDashboard(viewRootElement, jSweet){
           document.getElementById("shimmering").className = "";
         },2500);
     }    
-=======
+
     coursesContainer.sortable({
       handle:'.handle'
     });
->>>>>>> brouillon_calendrier
 }

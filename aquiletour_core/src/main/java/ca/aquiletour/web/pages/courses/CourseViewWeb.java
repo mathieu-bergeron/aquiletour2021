@@ -50,11 +50,12 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		T.call(this);
 		
 		breadcrumps.forEachTask(t -> {
-			HtmlElement taskLi = breadcrumbsContainer.createElement("<li></li>");
+			HtmlElement taskLi = breadcrumbsContainer.createElement("<li class='breadcrumb-item'></li>");
 			HtmlElement anchor = taskLi.createElement("<a></a>");
 			taskLi.appendElement(anchor);
 			breadcrumbsContainer.appendElement(taskLi);
 			
+			/*
 			if(t.parent() != null) {
 				taskLi.appendHtml("&nbsp;&nbsp;&nbsp;alternatives: [");
 				t.forEachSibling(s -> {
@@ -67,7 +68,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 				});
 
 				taskLi.appendHtml("]");
-			}
+			}*/
 
 			anchor.text(t.getTitle());
 			anchor.setAttribute("href", "/cours/" + courseId + t.id());
