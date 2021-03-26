@@ -2,18 +2,28 @@ function initializeCommitList(viewRootElement, jSweet) {
 	console.log("initializeCommitList");
 
 	const commitList = viewRootElement.find("#commit-list li");
-	var ctx = viewRootElement.find("#myChart");
-	var myChart = new Chart(ctx, {
+	var ctx = viewRootElement.find("#commitsChart");
+	var pointBackgroundColors = [];
+	var commitsChart = new Chart(ctx, {
 	    type: 'scatter',
 	    data: {
 	    	datasets: [{
-	    		backgroundColor: 'rgb(255, 30, 30)',
+	    		backgroundColor:"#EF1010",
+	    		pointBackgroundColor: pointBackgroundColors,
 	            label: "student's commit history",
+	            pointRadius: 10,
+	            pointHoverRadius: 10,
 	            data: [{
 	            }],
 	         }]
 	    },
 	    options: {
+	    	legend: {
+	    	       labels: {
+	    	         fontColor: "#000000",
+	    	        fontSize: 30
+	    	      }
+	    	   },
 	    	scales: {
 	    	      xAxes: [{
 	    	        display: true,
@@ -23,8 +33,17 @@ function initializeCommitList(viewRootElement, jSweet) {
 	    	        },
 	    	        scaleLabel: {
 	    	          display: true,
-	    	          labelString: 'Timestamp'
-	    	        }
+	    	          labelString: 'Timestamp',
+	    	          fontColor: "black",
+	    	          fontSize: 24
+	    	        },
+	    	        ticks: {
+                        fontColor: "black",
+                        fontSize: 24,
+                        callback: function(value) { 
+                            return new Date(value).toLocaleDateString('fr-ca', {month:'short', day:'numeric'}); 
+                        },
+                    }
 	    	      }],
 	    	      yAxes: [{
 	    	        display: true,
@@ -34,44 +53,58 @@ function initializeCommitList(viewRootElement, jSweet) {
 	    	        },
 	    	        scaleLabel: {
 	    	          display: true,
-	    	          labelString: 'Estimated Effort'
-	    	        }
+	    	          labelString: 'Estimated Effort',
+	    	          fontColor: "black",
+	    	          fontSize: 24
+	    	        },
+	    	        ticks: {
+                        fontColor: "black",
+                        fontSize: 24,
+                        stepSize: 1,
+                        beginAtZero: true
+                    }
 	    	      }]
 	    	    },
 	    	tooltips:{
-	    		 callbacks: {
+	    		titleFontSize: 24,
+	    	    bodyFontSize: 18,
+	    		callbacks: {
 	                 label: function(tooltipItem, data) {
-	                     var label;
-	                  
-	                     commitList.each(function(i, li) {
-	                    		var commit = $(li)
-		             			var div = commit.children()[0];
-	                    		var timeStampSpan = $(div).find('#timestamp');
-	                    		var timeStamp = parseInt($(timeStampSpan).text());
-	                    		
-	                    		if(timeStamp==tooltipItem.xLabel){
-	                    			var commitMessageSpan = $(div).find('#commitMessage');
-			             			var exercicePathSpan = $(div).find('#exercicePath');
-			             			var modifiedFilesSpan = $(div).find('#modifiedFiles');
-			             			
-			             			var commitMessage = $(commitMessageSpan).text();
-			             			var exercicePath = $(exercicePathSpan).text();
-			             			var modifiedFiles = $(modifiedFilesSpan).text();
-			             			
-			             			label = ["Timestamp : " + tooltipItem.xLabel];
-	         						label.push("Estimated Effort : " + tooltipItem.yLabel);
-	         						label.push("Commit Message : " + commitMessage);
-	         						label.push("Exercice Path : " + exercicePath);
-	         						label.push("Modified Files : " + modifiedFiles); 
-	                    		}                 	             			
-	             		});
-	                     return label;
+	                    var commitInfo; 			
+	                    commitInfo = ["Timestamp : " + (new Date(tooltipItem.xLabel).toLocaleDateString('fr-ca', {month:'short', day:'numeric'})).toString() ];
+	                    commitInfo.push("Estimated Effort : " + tooltipItem.yLabel);
+	                    commitInfo.push("Commit Message : " + getCommitMessage(tooltipItem, data.datasets));
+	                    commitInfo.push("Exercice Path : " + getExercicePath(tooltipItem, data.datasets));
+	                    commitInfo.push("Modified Files : " + getModifiedFiles(tooltipItem, data.datasets));                	             			
+	                    return commitInfo;
 	                 }
 	             }
-	    	}
+	    	},
+	    	    elements: {
+	    	        line: {
+	    	            tension: .1, // bezier curves
+	    	        }
+	    	     }
 	    	
 	    }
 	});
+	
+	function getCommitMessage(tooltipItem, datasets) {
+	    return datasets[tooltipItem.datasetIndex].data.find(datum => {
+	        return datum.x === tooltipItem.xLabel && datum.y === tooltipItem.yLabel;
+	    }).commitMessage;
+	}
+	function getExercicePath(tooltipItem, datasets) {
+	    return datasets[tooltipItem.datasetIndex].data.find(datum => {
+	        return datum.x === tooltipItem.xLabel && datum.y === tooltipItem.yLabel;
+	    }).exercicePath;
+	}
+	function getModifiedFiles(tooltipItem, datasets) {
+	    return datasets[tooltipItem.datasetIndex].data.find(datum => {
+	        return datum.x === tooltipItem.xLabel && datum.y === tooltipItem.yLabel;
+	    }).modifiedFiles;
+	}
+	
 	
 		commitList.each(function(i, li) {
 			var commit = $(li)
@@ -79,13 +112,34 @@ function initializeCommitList(viewRootElement, jSweet) {
 			
 			var timeStampSpan = $(div).find('#timestamp');
 			var estimatedEffortSpan = $(div).find('#estimatedEffort');
+			var commitMessageSpan = $(div).find('#commitMessage');
+     		var exercicePathSpan = $(div).find('#exercicePath');
+     		var modifiedFilesSpan = $(div).find('#modifiedFiles');
 			
-			var timeStamp = parseInt($(timeStampSpan).text());
-			var estimatedEffort = parseInt($(estimatedEffortSpan).text());
+			var timeStampInt = parseInt($(timeStampSpan).text());
+			var estimatedEffortInt = parseInt($(estimatedEffortSpan).text());
+			var commitMessageText = $(commitMessageSpan).text();
+     		var exercicePathText = $(exercicePathSpan).text();
+     		var modifiedFilesText = $(modifiedFilesSpan).text();
+     		console.log(new Date(timeStampInt))
 			
-			myChart.data.datasets.forEach((dataset) => {
-		        dataset.data.push({x:timeStamp,y:estimatedEffort});
+			commitsChart.data.datasets.forEach((dataset) => {
+		        dataset.data.push({x:timeStampInt,y:estimatedEffortInt,
+		        	commitMessage: commitMessageText, exercicePath: exercicePathText, modifiedFiles: modifiedFilesText });
 			});
-			myChart.update();
+			commitsChart.update();
 		});
+		const colors = ["#EF1010","#F05410","#F08A10","#F0B010","#F0E610","#B6F010","#68F010","#10F043","#10F0ED" ];
+		var counter = 0;
+		for (i = 0; i < commitsChart.data.datasets[0].data.length; i++) {
+			if(counter <= colors.length - 1){
+				pointBackgroundColors.push(colors[counter]);
+				counter ++;
+			}else {
+				counter = 0;
+				pointBackgroundColors.push(colors[counter]);
+				counter ++;
+			}
+		}
+		commitsChart.update();
 }
