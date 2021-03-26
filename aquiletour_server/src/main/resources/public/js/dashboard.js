@@ -74,21 +74,10 @@ function initializeDashboard(viewRootElement, jSweet){
       countChecked();
       $(":checkbox").click(countChecked);
     });
-=======
-    const buttonAvailable = viewRootElement.find("#buttonAvailable");
-    const available = viewRootElement.find("#teacherAvailable");
-    const availableLink = viewRootElement.find("#availableLink");
-    const coursesContainer = viewRootElement.find("#courses-container");
->>>>>>> brouillon_calendrier
 
     buttonAvailable.onclick = function() {
-      
-      
-
       if (available.style.background == "green") {
         available.style.background = "red";
-        
-        
 
         disableLink();
         
