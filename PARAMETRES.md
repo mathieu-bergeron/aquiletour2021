@@ -4,7 +4,19 @@
 
 1. P.ex. dans une tâche:
 
-    {depotGit {/ateliers/atelier1} {atelier1}}
+        SVP copier l'URL de votre dépôt git: {urlDepotGit}
+
+
+    *  pour une tâche, chaque paramètres ajoute une sous-tâche que l'étudiant doit
+       faire afin de réaliser la tâche. P.ex. copier le dépôt Git
+
+1. Pour une remise:
+
+        {remiseGit}     # valeurs par défaut
+
+        OU
+
+        {remiseGit {/ateliers/atelier1} {atelier1}}   # spécifier le exerciceFolder et le completionKeywords
 
 
 1. Dans la description d'une billetterie
