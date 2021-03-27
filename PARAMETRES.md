@@ -1,3 +1,14 @@
+# Deux onglets
+
+1. Encore mieux que le champ description, deux onglets
+    * |Aperçu|Texte|
+    * Dans le champ texte, on peut mettre des liens vers les tâches préalable n'importe où
+
+        {préalable /Etape1/Examen1}      # ajout automatique d'un lien
+
+    * Utiliser l'aperçu générer un texte
+
+
 # Champ description
 
 1. Dans le champ optionnel `description`, on peut ajouter du code pour spécifier les options
