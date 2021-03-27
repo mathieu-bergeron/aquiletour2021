@@ -32,6 +32,5 @@
 
 1. Dans la description d'une billetterie
 
-    {afficherHeures: non}
-    {ouvertATous: oui}
-
+    {afficher les heures: non}
+    {ouvert à tous: oui}
