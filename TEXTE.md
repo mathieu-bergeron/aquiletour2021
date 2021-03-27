@@ -10,90 +10,127 @@
 1. On vise une syntaxe similaire à Markdown, mais avec des sections imbriquables {}
 
 1. Syntaxe
-    * {<texte> : <valeur>}                               # définition d'une valeur
-    * {<valeur>}                                         # évaluation d'une valeur
+    * {<texte> : <valeur>}         # définition d'une valeur
+    * {<valeur>}                   # évaluation d'une valeur
+    * {<fonction> <arg1> <arg2>}   # appel de fonction
+    * { <texte>}                   # texte inerte à cause de l'espace après {
 
 1. Seule la {structure: } est obligatoire. Le reste est facultatif
 
-{ tâche:
+{tâche:
 
-    { titre: Travail pratique #1 }
+    {titre: Travail pratique #1}
 
-    { identifiant: TP1 }
+    {identifiant: TP1}
 
-    { description:
+    {description:
 
-        SVP copier l'URL de votre dépôt Git {remise: {dépôtGit}}
-
+        SVP copier l'URL de votre dépôt Git {remise dépôtGit}
     }
 
-    { préalables:
+    {préalables:
 
-        * { /Étape 1/Atelier 1 }
-        * { /Étape 1/Atelier 2 }
+        * {lien {Atelier 1} {/Étape 1/Atelier 1}}
+        * {lien {Atelier 2} {/Étape 1/Atelier 2}}
     }
 
-    { sous-tâches:
+    {sous-tâches:
 
-        * { /Étape 1/Atelier 1/Vue }
-        * { /Étape 1/Atelier 1/Modele }
+        * {lien Vue {/Étape 1/Atelier 1/Vue}}
+        * {lien Vue {/Étape 1/Atelier 1/Modele}}
     }
 
-    { tâches suivantes: 
+    {tâches suivantes: 
 
-        * { /Étape 2 }
+        * {lien {Étape 2} {/Étape 2}}
     }
 }
 
-{ texte:
+{texte:
 
-    { en-tête:
+    {en-tête:
 
-        420-3C6-MO { prof }
+        420-3C6-MO {prof}
 
     }
 
-    { corps:
+    {corps:
 
-        # { titre }
+        # {titre}
 
-        { structure }
+        {structure}
 
 
         ## Étapes
 
-        { étapes:                                                     # produit <div id="étapes">LE TEXTE</div>
+        {étapes:                                                     # produit <div id="étapes">LE TEXTE</div>
 
-            { sous-tâches }           
+            {sous-tâches}           
         }
 
         ## Remise
 
-        1. Je m'assure d'avoir terminer {lien: étapes {les étapes}}   # produit <a href="#étapes">les étapes</a>
+        1. Je m'assure d'avoir terminer {lien étapes {les étapes}}   # produit <a href="#étapes">les étapes</a>
 
-        { description }
+        {description}
 
 
     }
 
-    { pied de page:
+    {pied de page:
 
-        { numéro de page }
+        {numéro de page}
     }
 }
 
 
 # Syntaxe pour une fonction
 
-1. Commentaire:  {* commentaire *}
+1. Commentaire:  {# commentaire #}
 1. Pour une fonction
     * {<texte> {<arg1>} {<arg2>} {<arg3>} : <valeur>}    # définition d'une fonction
 
 { question01 {fichier} {séparateur}:
 
-    Ouvrir le {fichier} et chercher chaque {séparateur} avec {kbd {CTRL+F}}.
+    1. Ouvrir le {fichier} et chercher chaque {séparateur} avec {kbd {CTRL+F}}.
 }
 
-{* Utiliser la fonction *}              # Ceci est un commentaire
+{# Utiliser la fonction #}              # Ceci est un commentaire
 
 { question01 {`test.csv`} {`#`} }       # Les valeurs sont du texte (qui peuvent comprendre d'autres fonctions)
+
+
+# Syntaxe pour table (enfin!)
+
+{# ordonné par les rangées #}
+
+{table 
+
+    {rangée 
+
+        {cellule {Bonjour, je suis une *cellule*}}
+        {cellule {Deuxième `cellule`}}
+    }
+    {rangée 
+
+        {cellule { cellule *B1*}}     {# { cellule!!!! l'espace clarifie que ce n'est pas l'appel à {cellule #}
+        {cellule { cellule `B2`}}
+    }
+}
+
+{# ordonné par les colonnes #}
+
+{table 
+
+    {colonne
+
+        {cellule {Bonjour, je suis une *cellule*}}
+        {cellule {Deuxième `cellule`}}
+    }
+
+    {colonne
+
+        {cellule { cellule *B1*}}
+        {cellule { cellule `B2`}}
+    }
+}
