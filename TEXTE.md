@@ -10,8 +10,8 @@
 1. On vise une syntaxe similaire à Markdown, mais avec des sections imbriquables {}
 
 1. Syntaxe
-    * {<texte> : <valeur>}    # définition d'une valeur
-    * {<valeur>}              # évaluation d'une valeur
+    * {<texte> : <valeur>}                               # définition d'une valeur
+    * {<valeur>}                                         # évaluation d'une valeur
 
 1. Seule la {structure: } est obligatoire. Le reste est facultatif
 
@@ -81,3 +81,19 @@
         { numéro de page }
     }
 }
+
+
+# Syntaxe pour une fonction
+
+1. Commentaire:  {* commentaire *}
+1. Pour une fonction
+    * {<texte> {<arg1>} {<arg2>} {<arg3>} : <valeur>}    # définition d'une fonction
+
+{ question01 {fichier} {séparateur}:
+
+    Ouvrir le {fichier} et chercher chaque {séparateur} avec {kbd {CTRL+F}}.
+}
+
+{* Utiliser la fonction *}              # Ceci est un commentaire
+
+{ question01 {`test.csv`} {`#`} }       # Les valeurs sont du texte (qui peuvent comprendre d'autres fonctions)
