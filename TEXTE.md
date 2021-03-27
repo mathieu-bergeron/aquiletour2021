@@ -63,28 +63,31 @@
 
         ## Étapes
 
-        {étapes:                                                     # produit <div id="étapes">LE TEXTE</div>
+        {étapes:                                                     {# produit <div id="étapes">CONTENU</div> #}
 
             {sous-tâches}           
         }
 
         ## Remise
 
-        1. Je m'assure d'avoir terminer {lien étapes {les étapes}}   # produit <a href="#étapes">les étapes</a>
+        1. Je m'assure d'avoir terminer {lien {les étapes} étapes}   {# produit <a href="#étapes">les étapes</a> #}
 
         {description}
 
+        ## À faire ensuite
+
+        {afficher {tâches suivantes}}                        {# le afficher rend ça plus clair, même si {{tâches suivantes}} ferait la même chose  #}
 
     }
 
     {pied de page:
 
-        {numéro de page}
+        {afficher {numéro de page}}
     }
 }
 
 
-# Syntaxe pour une fonction
+# Syntaxe additionnelle
 
 1. Commentaire:  {# commentaire #}
 1. Pour une fonction
@@ -113,7 +116,7 @@
     }
     {rangée 
 
-        {cellule { cellule *B1*}}     {# { cellule!!!! l'espace clarifie que ce n'est pas l'appel à {cellule #}
+        {cellule { cellule *B1*}}     {# XXX: { cellule ... l'espace clarifie que ce n'est pas un appel à la fonction cellule #}
         {cellule { cellule `B2`}}
     }
 }
