@@ -12,7 +12,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 
-public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements StudentCourseSummaryView {
+public class CourseSummaryViewWebStudent extends CourseSummaryViewWeb implements StudentCourseSummaryView {
 
 	HtmlElement title;
 	HtmlElement queueStatus;
@@ -23,6 +23,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
+		super.initializeViewWeb(context);
 
 		title = this.getRootElement().find("#course-title").get(0);
 		queueStatus = this.getRootElement().find("#queue-status").get(0);
@@ -74,6 +75,7 @@ public class StudentCourseSummaryViewWeb extends CourseSummaryViewWeb implements
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
+		super.displaySummary(course);
 
 		title.appendHtml(course.getTitle());
 

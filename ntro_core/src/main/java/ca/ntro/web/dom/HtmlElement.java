@@ -11,6 +11,7 @@ public abstract class HtmlElement {
 	public abstract void insertBefore(HtmlElement element);
 	public abstract void insertAfter(HtmlElement element);
 	public abstract void text(String newText);
+	public abstract String text();
 
 	public abstract void removeListeners();
 	public abstract void addEventListener(String event, HtmlEventListener listener);

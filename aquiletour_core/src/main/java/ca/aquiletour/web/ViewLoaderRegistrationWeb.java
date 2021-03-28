@@ -25,9 +25,9 @@ import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
 import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
 import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
 import ca.aquiletour.web.pages.course.teacher.TaskViewWebTeacher;
-import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.student.CourseSummaryViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
-import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.teacher.CourseSummaryViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
 import ca.aquiletour.web.pages.git.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.CommitViewWeb;
@@ -79,7 +79,7 @@ public class ViewLoaderRegistrationWeb {
 				.setHtmlUrl("/views/course_summary/teacher/course_summary_teacher.html")
 		     	.setCssUrl("/views/course_summary/teacher/course_summary_teacher.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(TeacherCourseSummaryViewWeb.class));
+				.setTargetClass(CourseSummaryViewWebTeacher.class));
 		
 		ViewLoaders.registerViewLoader(StudentCourseSummaryView.class,
 				"fr"
@@ -87,7 +87,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setHtmlUrl("/views/course_summary/student/course_summary_student.html")
 			     	.setCssUrl("/views/course_summary/student/course_summary_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(StudentCourseSummaryViewWeb.class));
+			     	.setTargetClass(CourseSummaryViewWebStudent.class));
 
 		ViewLoaders.registerViewLoader(StudentQueueView.class,
 				"fr"

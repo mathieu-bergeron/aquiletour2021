@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.course;
 
+import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.models.TaskBreadcrumbs;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
@@ -75,10 +76,10 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void identifyCurrentTask(String id) {
+	public void identifyCurrentTask(String courseId,Task task) {
 		T.call(this);
 		
-		taskIdInput.value(id);
+		taskIdInput.value(task.id());
 	}
 
 	@Override

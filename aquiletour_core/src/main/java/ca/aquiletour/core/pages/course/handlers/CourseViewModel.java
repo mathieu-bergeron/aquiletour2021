@@ -33,7 +33,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 		
 		if(currentTask != null) {
 			
-			view.identifyCurrentTask(currentTask.id());
+			view.identifyCurrentTask(model.getCourseId(), currentTask);
 			view.displayBreadcrumbs(model.getCourseId(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, view, subViewLoader);
