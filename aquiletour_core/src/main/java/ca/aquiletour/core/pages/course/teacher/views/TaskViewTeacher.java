@@ -4,4 +4,6 @@ import ca.aquiletour.core.pages.course.views.TaskView;
 
 public interface TaskViewTeacher extends TaskView {
 
+
+
 }

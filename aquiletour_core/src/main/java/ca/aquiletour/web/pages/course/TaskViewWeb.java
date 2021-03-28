@@ -10,15 +10,9 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-import static ca.ntro.assertions.Factory.that;
-
 public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	
-	private HtmlElements addTaskIdToValue;
-	private HtmlElements addTaskIdToDataTarget;
-	private HtmlElements addTaskIdToId;
 	private HtmlElement taskTitleLink;
-	private HtmlElement deleteTaskLink;
 	private HtmlElement previousTasksContainer;
 	private HtmlElement subTasksContainer;
 	private HtmlElement nextTasksContainer;
@@ -28,22 +22,14 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
-		
-		addTaskIdToValue = getRootElement().find(".add-task-id-to-value");
-		addTaskIdToDataTarget = getRootElement().find(".add-task-id-to-data-target");
-		addTaskIdToId = getRootElement().find(".add-task-id-to-id");
+
 		taskTitleLink = getRootElement().find("#task-title-link").get(0);
-		deleteTaskLink = getRootElement().find("#delete-task-link").get(0);
 		previousTasksContainer = getRootElement().find("#previous-tasks-container").get(0);
 		subTasksContainer = getRootElement().find("#subtasks-container").get(0);
 		nextTasksContainer = getRootElement().find("#next-tasks-container").get(0);
 		
-		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
-		Ntro.verify(that(addTaskIdToDataTarget.size() > 0).isTrue());
-		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
 		
 		MustNot.beNull(taskTitleLink);
-		MustNot.beNull(deleteTaskLink);
 		MustNot.beNull(previousTasksContainer);
 		MustNot.beNull(subTasksContainer);
 		MustNot.beNull(nextTasksContainer);
@@ -58,22 +44,6 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		
 		taskTitleLink.html(task.getTitle());
 		taskTitleLink.setAttribute("href", taskTitleHref + courseId + "/" + task.id());
-
-		deleteTaskLink.setAttribute("href", "?delete=" + task.getPath().toFileName());
-
-		addTaskIdToValue.forEach(e -> e.value(task.id()));
-
-		addTaskIdToDataTarget.forEach(e -> {
-			String dataTarget = e.getAttribute("data-target");
-			dataTarget += task.getPath().toFileName();
-			e.setAttribute("data-target", dataTarget);
-		});
-
-		addTaskIdToId.forEach(e -> {
-			String id = e.getAttribute("id");
-			id += task.getPath().toFileName();
-			e.setAttribute("id", id);
-		});
 		
 		task.forEachPreviousTask(pt -> {
 			addTaskLi(courseId, task, pt, previousTasksContainer, "PreviousTask");
@@ -88,11 +58,11 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		});
 	}
 
-	private void addTaskLi(String courseId, 
-						   Task currentTask,
-			               Task task, 
-			               HtmlElement container, 
-			               String taskType) {
+	protected void addTaskLi(String courseId, 
+						     Task currentTask,
+			                 Task task, 
+			                 HtmlElement container, 
+			                 String taskType) {
 		T.call(this);
 
 		HtmlElement taskLi = container.createElement("<li></li>");
