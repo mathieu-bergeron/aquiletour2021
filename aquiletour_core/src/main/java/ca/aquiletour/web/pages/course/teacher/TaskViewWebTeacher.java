@@ -2,7 +2,7 @@ package ca.aquiletour.web.pages.course.teacher;
 
 
 import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.course.views.TaskView;
+import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.web.pages.course.TaskViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -13,7 +13,7 @@ import ca.ntro.web.dom.HtmlElements;
 
 import static ca.ntro.assertions.Factory.that;
 
-public class TaskViewWebTeacher extends TaskViewWeb implements TaskView {
+public class TaskViewWebTeacher extends TaskViewWeb implements TaskViewTeacher {
 
 	private HtmlElements addTaskIdToValue;
 	private HtmlElements addTaskIdToDataTarget;
