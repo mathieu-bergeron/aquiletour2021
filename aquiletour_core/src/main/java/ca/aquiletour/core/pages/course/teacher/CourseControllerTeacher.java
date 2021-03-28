@@ -1,44 +1,43 @@
 package ca.aquiletour.core.pages.course.teacher;
 
-import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.CourseController;
-import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
-import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
-import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
+import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
+import ca.aquiletour.core.pages.course.teacher.handlers.CourseViewModelTeacher;
+import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
+import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
-import ca.ntro.core.models.EmptyModelLoader;
-import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.ControllerMessageHandler;
+import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 
 public class CourseControllerTeacher extends CourseController {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected Class<? extends CourseView> viewClass() {
 		T.call(this);
 
-		setViewLoader(CourseView.class, "fr");
-
-		setModelLoader(new EmptyModelLoader());
-
-		addControllerMessageHandler(ShowCourseMessage.class, new ShowCourseHandler());
-
-		addSubViewLoader(TaskView.class, context.lang());
-
-		addModelViewSubViewMessageHandler(TaskView.class, ShowTaskMessage.class, new CourseViewModel());
+		return CourseViewTeacher.class;
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
-		// TODO Auto-generated method stub
-		
+	protected Class<? extends TaskView> subViewClass() {
+		T.call(this);
+
+		return TaskViewTeacher.class;
 	}
 
 	@Override
-	protected void onFailure(Exception e) {
+	protected ControllerMessageHandler<?, ?, ?> showHandler() {
 		T.call(this);
-		
+
+		return new ShowCourseHandler();
 	}
 
+	@Override
+	protected ModelViewSubViewMessageHandler<?, ?, ?> viewModel() {
+		T.call(this);
 
+		return new CourseViewModelTeacher();
+	}
 }

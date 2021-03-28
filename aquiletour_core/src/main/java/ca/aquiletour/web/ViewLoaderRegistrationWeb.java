@@ -1,5 +1,9 @@
 package ca.aquiletour.web;
 
+import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
+import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
+import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
+import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
@@ -165,7 +169,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CommitViewWeb.class));
 
-		ViewLoaders.registerViewLoader(CourseView.class,
+		ViewLoaders.registerViewLoader(CourseViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/course/teacher/course_teacher.html")
@@ -173,7 +177,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CourseViewWebTeacher.class));
 
-		ViewLoaders.registerViewLoader(TaskView.class,
+		ViewLoaders.registerViewLoader(TaskViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/task/teacher/task_teacher.html")
@@ -181,19 +185,19 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TaskViewWebTeacher.class));
 
-		ViewLoaders.registerViewLoader(CourseView.class,
+		ViewLoaders.registerViewLoader(CourseViewStudent.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/course/teacher/course_student.html")
-			     	.setCssUrl("/views/course/teacher/course_student.css")
+			     	.setHtmlUrl("/views/course/student/course_student.html")
+			     	.setCssUrl("/views/course/student/course_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CourseViewWebStudent.class));
 
-		ViewLoaders.registerViewLoader(TaskView.class,
+		ViewLoaders.registerViewLoader(TaskViewStudent.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/task/teacher/task_student.html")
-			     	.setCssUrl("/views/task/teacher/task_student.css")
+			     	.setHtmlUrl("/views/task/student/task_student.html")
+			     	.setCssUrl("/views/task/student/task_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TaskViewWebStudent.class));
 	}
