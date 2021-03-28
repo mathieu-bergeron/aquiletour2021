@@ -9,7 +9,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueHandler;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.ntro.core.system.trace.T;
 
-public  class StudentQueueController extends QueueController {
+public  class QueueControllerStudent extends QueueController {
 
 	@Override
 	protected Class<? extends QueueView> viewClass() {

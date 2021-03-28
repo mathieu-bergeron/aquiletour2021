@@ -1,4 +1,4 @@
-package ca.aquiletour.web.pages.courses;
+package ca.aquiletour.web.pages.course;
 
 import ca.aquiletour.core.pages.course.models.TaskBreadcrumbs;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -54,7 +54,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 			HtmlElement anchor = taskLi.createElement("<a></a>");
 			taskLi.appendElement(anchor);
 			breadcrumbsContainer.appendElement(taskLi);
-			
 			/*
 			if(t.parent() != null) {
 				taskLi.appendHtml("&nbsp;&nbsp;&nbsp;alternatives: [");

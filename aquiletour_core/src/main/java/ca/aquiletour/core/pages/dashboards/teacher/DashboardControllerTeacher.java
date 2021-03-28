@@ -7,7 +7,7 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboard
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.ntro.core.system.trace.T;
 
-public class TeacherDashboardController extends DashboardController {
+public class DashboardControllerTeacher extends DashboardController {
 
 	@Override
 	protected Class<? extends DashboardView> viewClass() {

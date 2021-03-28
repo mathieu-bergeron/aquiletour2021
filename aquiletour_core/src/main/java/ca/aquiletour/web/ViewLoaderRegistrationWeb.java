@@ -17,8 +17,10 @@ import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.web.pages.courses.CourseViewWeb;
-import ca.aquiletour.web.pages.courses.TaskViewWeb;
+import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
+import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
+import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
+import ca.aquiletour.web.pages.course.teacher.TaskViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
@@ -169,7 +171,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setHtmlUrl("/views/course/teacher/course_teacher.html")
 			     	.setCssUrl("/views/course/teacher/course_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(CourseViewWeb.class));
+			     	.setTargetClass(CourseViewWebTeacher.class));
 
 		ViewLoaders.registerViewLoader(TaskView.class,
 				"fr"
@@ -177,6 +179,22 @@ public class ViewLoaderRegistrationWeb {
 			     	.setHtmlUrl("/views/task/teacher/task_teacher.html")
 			     	.setCssUrl("/views/task/teacher/task_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(TaskViewWeb.class));
+			     	.setTargetClass(TaskViewWebTeacher.class));
+
+		ViewLoaders.registerViewLoader(CourseView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/course/teacher/course_student.html")
+			     	.setCssUrl("/views/course/teacher/course_student.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CourseViewWebStudent.class));
+
+		ViewLoaders.registerViewLoader(TaskView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/task/teacher/task_student.html")
+			     	.setCssUrl("/views/task/teacher/task_student.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(TaskViewWebStudent.class));
 	}
 }

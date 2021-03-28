@@ -1,4 +1,4 @@
-package ca.aquiletour.web.pages.courses;
+package ca.aquiletour.web.pages.course;
 
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.views.TaskView;
