@@ -20,13 +20,13 @@ package ca.aquiletour.core;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.messages.git.DeRegisterExerciseMessage;
-import ca.aquiletour.core.messages.git.DeRegisterRepoMessage;
+import ca.aquiletour.core.messages.git.DeRegisterExercise;
+import ca.aquiletour.core.messages.git.DeRegisterRepo;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.messages.git.OnCloneFailedMessage;
-import ca.aquiletour.core.messages.git.OnCloneMessage;
-import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
-import ca.aquiletour.core.messages.git.RegisterRepoMessage;
+import ca.aquiletour.core.messages.git.OnCloneFailed;
+import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.messages.git.RegisterExercice;
+import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -158,12 +158,12 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(AddSubTaskMessage.class);
 		Ntro.registerSerializableClass(AddPreviousTaskMessage.class);
 		Ntro.registerSerializableClass(AddNextTaskMessage.class);
-		Ntro.registerSerializableClass(RegisterExerciceMessage.class);
-		Ntro.registerSerializableClass(DeRegisterExerciseMessage.class);
-		Ntro.registerSerializableClass(RegisterRepoMessage.class);
-		Ntro.registerSerializableClass(DeRegisterRepoMessage.class);
-		Ntro.registerSerializableClass(OnCloneMessage.class);
-		Ntro.registerSerializableClass(OnCloneFailedMessage.class);
+		Ntro.registerSerializableClass(RegisterExercice.class);
+		Ntro.registerSerializableClass(DeRegisterExercise.class);
+		Ntro.registerSerializableClass(RegisterRepo.class);
+		Ntro.registerSerializableClass(DeRegisterRepo.class);
+		Ntro.registerSerializableClass(OnClone.class);
+		Ntro.registerSerializableClass(OnCloneFailed.class);
 		Ntro.registerSerializableClass(GetCommitsForPath.class);
 
 	}

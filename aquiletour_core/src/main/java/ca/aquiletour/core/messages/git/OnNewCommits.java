@@ -2,7 +2,7 @@ package ca.aquiletour.core.messages.git;
 
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 
-public class OnNewCommitsMessage extends StudentExerciseMessage {
+public class OnNewCommits extends StudentExerciseMessage {
 
 	private CommitListModel commitList;
 

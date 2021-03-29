@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.course.models;
 
-import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
+import ca.aquiletour.core.messages.git.RegisterExercice;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;

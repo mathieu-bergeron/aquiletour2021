@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.messages.git.RegisterRepoMessage;
+import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;

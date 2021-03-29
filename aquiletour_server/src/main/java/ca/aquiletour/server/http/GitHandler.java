@@ -33,10 +33,10 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.messages.git.OnCloneFailedMessage;
-import ca.aquiletour.core.messages.git.OnCloneMessage;
-import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
-import ca.aquiletour.core.messages.git.RegisterRepoMessage;
+import ca.aquiletour.core.messages.git.OnCloneFailed;
+import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.messages.git.RegisterExercice;
+import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.models.ModelLoader;
@@ -86,12 +86,12 @@ public class GitHandler extends AbstractHandler {
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			
-			if(message instanceof RegisterExerciceMessage) {
+			if(message instanceof RegisterExercice) {
 
 				
-			}else if(message instanceof RegisterRepoMessage) {
+			}else if(message instanceof RegisterRepo) {
 				
-				handleRegisterRepoMessage(baseRequest, response, (RegisterRepoMessage) message);
+				handleRegisterRepoMessage(baseRequest, response, (RegisterRepo) message);
 
 			}else if(message instanceof GetCommitsForPath) {
 				
@@ -138,7 +138,7 @@ public class GitHandler extends AbstractHandler {
 
 	private void handleRegisterRepoMessage(Request baseRequest, 
 			                               HttpServletResponse response,
-			                               RegisterRepoMessage message) {
+			                               RegisterRepo message) {
 		
 		System.out.println("RegisterRepoMessage");
 		
@@ -152,13 +152,13 @@ public class GitHandler extends AbstractHandler {
 
 				if(random.nextBoolean()) {
 					
-					OnCloneMessage onCloneMessage = Ntro.messages().create(OnCloneMessage.class);
+					OnClone onCloneMessage = Ntro.messages().create(OnClone.class);
 					onCloneMessage.loadStudentExerciseInfo(message);
 					GitMessages.sendReply(onCloneMessage);
 					
 				}else {
 					
-					OnCloneFailedMessage onCloneFailedMessage = Ntro.messages().create(OnCloneFailedMessage.class);
+					OnCloneFailed onCloneFailedMessage = Ntro.messages().create(OnCloneFailed.class);
 					onCloneFailedMessage.loadStudentExerciseInfo(message);
 					GitMessages.sendReply(onCloneFailedMessage);
 				}

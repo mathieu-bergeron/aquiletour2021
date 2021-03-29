@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.git;
 
-public class RegisterRepoMessage extends StudentExerciseMessage {
+public class RegisterRepo extends StudentExerciseMessage {
 	
 	private String repoUrl;
 

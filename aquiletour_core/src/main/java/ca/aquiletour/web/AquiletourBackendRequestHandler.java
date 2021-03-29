@@ -5,7 +5,7 @@ import java.util.Map;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.messages.git.RegisterRepoMessage;
+import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -310,7 +310,7 @@ public class AquiletourBackendRequestHandler {
 				
 				String taskId = parameters.get("taskId")[0];
 				String repoUrl = parameters.get("registerGitRepo")[0];
-				RegisterRepoMessage registerRepoMessage = Ntro.messages().create(RegisterRepoMessage.class);
+				RegisterRepo registerRepoMessage = Ntro.messages().create(RegisterRepo.class);
 				registerRepoMessage.setCourseId(courseId);
 				registerRepoMessage.setStudentId(Ntro.userService().currentUser().getId());
 				registerRepoMessage.setSemesterId("H2021"); // FIXME
