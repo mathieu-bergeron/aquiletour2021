@@ -1,7 +1,10 @@
 package ca.aquiletour.server.backend.course;
 
 import ca.aquiletour.core.pages.course.models.CourseModel;
+import ca.aquiletour.core.pages.course.models.OnTaskAdded;
+import ca.aquiletour.core.pages.course.models.OnTaskRemoved;
 import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
@@ -62,7 +65,14 @@ public class CourseUpdater {
 			@Override
 			public void update(CourseModel course) {
 				T.call(this);
-				course.deleteTask(taskToDelete);
+				course.deleteTask(taskToDelete, new OnTaskRemoved() {
+					@Override
+					public void onTaskRemoved(Task task) {
+						T.call(this);
+						
+						GitMessages.deRegisterExercice(courseId, task.getPath());
+					}
+				});
 			}
 		});
 	}
@@ -74,7 +84,15 @@ public class CourseUpdater {
 			@Override
 			public void update(CourseModel course) {
 				T.call(this);
-				course.addPreviousTaskTo(nextPath, previousTask);
+
+				course.addPreviousTaskTo(nextPath, previousTask, new OnTaskAdded() {
+					@Override
+					public void onTaskAdded() {
+						T.call(this);
+						
+						GitMessages.registerExercice(courseId, previousTask.getPath());
+					}
+				});
 			}
 		});
 	}
@@ -86,7 +104,15 @@ public class CourseUpdater {
 			@Override
 			public void update(CourseModel course) {
 				T.call(this);
-				course.addNextTaskTo(previousPath, nextTask);
+
+				course.addNextTaskTo(previousPath, nextTask, new OnTaskAdded() {
+					@Override
+					public void onTaskAdded() {
+						T.call(this);
+
+						GitMessages.registerExercice(courseId, nextTask.getPath());
+					}
+				});
 			}
 		});
 	}
@@ -101,9 +127,16 @@ public class CourseUpdater {
 				@Override
 				public void update(CourseModel course) {
 					T.call(this);
-					course.addSubTaskTo(parentPath, task);
-				}
 
+					course.addSubTaskTo(parentPath, task, new OnTaskAdded() {
+						@Override
+						public void onTaskAdded() {
+							T.call(this);
+
+							GitMessages.registerExercice(courseId, task.getPath());
+						}
+					});
+				}
 			});
 
 		}else {

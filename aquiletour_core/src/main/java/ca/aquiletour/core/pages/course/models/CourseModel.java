@@ -1,5 +1,6 @@
 package ca.aquiletour.core.pages.course.models;
 
+import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
@@ -44,7 +45,7 @@ public class CourseModel implements NtroModel, TaskGraph {
 		tasks.addEntry(rootTask.id(), rootTask);
 	}
 
-	public void addSubTaskTo(Path parentPath, Task subTask) {
+	public void addSubTaskTo(Path parentPath, Task subTask, OnTaskAdded onTaskAdded) {
 		T.call(this);
 		
 		subTask.setGraph(asGraph());
@@ -52,19 +53,19 @@ public class CourseModel implements NtroModel, TaskGraph {
 		Task parent = findTaskByPath(parentPath);
 
 		if(parent != null) {
-
-			// XXX: must call this before
-			//      as addSubTask triggers a re-display
-			tasks.addEntry(subTask.id(), subTask);
+			
+			addNewTask(subTask);
 
 			parent.addSubTask(subTask);
+			
+			onTaskAdded.onTaskAdded();
 
 		}else {
 			Log.warning("parentTask not found: " + parentPath);
 		}
 	}
 
-	public void addNextTaskTo(Path previousPath, Task nextTask) {
+	public void addNextTaskTo(Path previousPath, Task nextTask, OnTaskAdded onTaskAdded) {
 		T.call(this);
 		
 		nextTask.setGraph(asGraph());
@@ -82,21 +83,9 @@ public class CourseModel implements NtroModel, TaskGraph {
 				
 			}else {
 
+				addNewNextTask(previousTask, nextTask);
 
-				// XXX: addEntry must be called before anyting else
-				//      otherwise the task does not exists
-				//      and refering to it by id will fail
-				tasks.addEntry(nextTask.id(), nextTask);
-				Ntro.modelStore().updateStoreConnections(this);
-
-				previousTask.addNextTask(nextTask);
-
-				nextTask.addPreviousTask(previousTask);
-
-				Task parent = previousTask.parent();
-				if(parent != null) {
-					parent.addSubTask(nextTask);
-				}
+				onTaskAdded.onTaskAdded();
 			}
 			
 		}else {
@@ -105,7 +94,30 @@ public class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	public void addPreviousTaskTo(Path path, Task previousTask) {
+	private void addNewNextTask(Task previousTask, Task nextTask) {
+		T.call(this);
+
+		// XXX: addNewTask first
+		addNewTask(nextTask);
+
+		previousTask.addNextTask(nextTask);
+
+		nextTask.addPreviousTask(previousTask);
+
+		Task parent = previousTask.parent();
+		if(parent != null) {
+			parent.addSubTask(nextTask);
+		}
+	}
+
+	private void addNewTask(Task nextTask) {
+		T.call(this);
+
+		tasks.addEntry(nextTask.id(), nextTask);
+		Ntro.modelStore().updateStoreConnections(this);
+	}
+
+	public void addPreviousTaskTo(Path path, Task previousTask, OnTaskAdded onTaskAdded) {
 		T.call(this);
 		
 		previousTask.setGraph(asGraph());
@@ -123,28 +135,29 @@ public class CourseModel implements NtroModel, TaskGraph {
 				
 			}else {
 
-				
-				// XXX: before modifying the new task, we must:
-				//      - insert it in the model
-				//      - update the model store connections
-				tasks.addEntry(previousTask.id(), previousTask);
-				Ntro.modelStore().updateStoreConnections(this);
+				addNewPreviousTask(previousTask, nextTask);
 
-				// XXX: now we can modify the new task
-				//      (its stored properties are now connected)
-				previousTask.addNextTask(nextTask);
-
-				nextTask.addPreviousTask(previousTask);
-				
-				Task parent = nextTask.parent();
-				if(parent != null) {
-					parent.addSubTask(previousTask);
-				}
+				onTaskAdded.onTaskAdded();
 			}
 
 		}else {
 			
 			Log.warning("task not found: " + path);
+		}
+	}
+
+	private void addNewPreviousTask(Task previousTask, Task nextTask) {
+		addNewTask(previousTask);
+
+		// XXX: now we can modify the new task
+		//      (its stored properties are now connected)
+		previousTask.addNextTask(nextTask);
+
+		nextTask.addPreviousTask(previousTask);
+		
+		Task parent = nextTask.parent();
+		if(parent != null) {
+			parent.addSubTask(previousTask);
 		}
 	}
 	
@@ -170,18 +183,25 @@ public class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	public void deleteTask(Path taskToDelete) {
+	public void deleteTask(Path taskToDelete, OnTaskRemoved onTaskRemoved) {
 		T.call(this);
 		
-		deleteTask(pathToId(taskToDelete));
+		deleteTask(pathToId(taskToDelete), onTaskRemoved);
 	}
 
-	public void deleteTask(String taskId) {
+	public void deleteTask(String taskId, OnTaskRemoved onTaskRemoved) {
 		T.call(this);
 		
-		forEachTask(t -> t.removeTask(taskId));
-		
-		tasks.removeEntry(taskId);
+		if(tasks.containsKey(taskId)) {
+
+			forEachTask(t -> t.removeTask(taskId));
+			
+			Task task = tasks.valueOf(taskId);
+
+			tasks.removeEntry(taskId);
+
+			onTaskRemoved.onTaskRemoved(task);
+		}
 		
 		// FIXME: remove unreachable tasks!
 	}
