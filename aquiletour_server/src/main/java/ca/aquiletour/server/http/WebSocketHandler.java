@@ -7,6 +7,8 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.websocket.server.NativeWebSocketServletContainerInitializer;
 import org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter;
 
+import ca.ntro.core.Constants;
+
 // from  https://github.com/jetty-project/embedded-jetty-websocket-examples
 public class WebSocketHandler extends ServletContextHandler {
 
@@ -23,7 +25,7 @@ public class WebSocketHandler extends ServletContextHandler {
                 nativeWebSocketConfiguration.getPolicy().setMaxTextMessageBufferSize(65535);
                 
                 // Add websockets
-                nativeWebSocketConfiguration.addMapping("/*", WebSocket.class);
+                nativeWebSocketConfiguration.addMapping(Constants.SOCKET_URL_SEGMENT, WebSocket.class);
                 
                 //nativeWebSocketConfiguration.setStopTimeout(10*60*1000); // 10 minutes
             });

@@ -53,7 +53,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		Ntro.jsonService().setPrettyPrinting(true);
 
 		// Start server
-		// always do server-side rendering (except for static resources: Urls starting with _R)
+		// always do server-side rendering (except for static resources: Urls starting with _resources)
 		// always include javascript content (it can be ignored by nojs clients)
 		try {
 			startServer();
@@ -83,9 +83,9 @@ public class AquiletourMainServer extends NtroTaskAsync {
         // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-		handlers.addHandler(ModelHandler.createModelHandler("/_B", "/public"));
-		handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "/public"));
-		handlers.addHandler(WebSocketHandler.createWebSocketHandler("/_messages"));
+		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX, "/public"));
+		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
+		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.MESSAGES_URL_PREFIX));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 
         server.setHandler(handlers);

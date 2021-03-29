@@ -30,3 +30,7 @@
     * quand on transmet des InvokeValueMethodMessage, on donne aussi le numéro de version
         * si le BE refuse nos InvokeValueMethodMessage, il répond avec un PutModelMessage (i.e. il répond en nous demandant de mettre à jour le modèle au complet)
 
+
+## Message à l'usager
+
+1. Le serveur contient une version différente de cette page: [Utiliser ma version] [Utiliser la version du serveur]
