@@ -1,6 +1,8 @@
 package ca.aquiletour.core.messages.git;
 
-public class OnCloneMessage {
+import ca.ntro.messages.NtroMessage;
+
+public class OnCloneMessage extends NtroMessage {
 
 	private String courseId;
 	private String semesterId;

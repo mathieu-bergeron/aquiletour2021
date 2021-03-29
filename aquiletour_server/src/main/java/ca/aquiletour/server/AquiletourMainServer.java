@@ -28,6 +28,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.server.http.DynamicHandler;
+import ca.aquiletour.server.http.GitHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
@@ -83,8 +84,9 @@ public class AquiletourMainServer extends NtroTaskAsync {
         // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX, "/public"));
+		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX));
 		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
+		handlers.addHandler(GitHandler.createGitHandler(ca.aquiletour.core.Constants.GIT_API_URL_PATH));
 		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.MESSAGES_URL_PREFIX));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 

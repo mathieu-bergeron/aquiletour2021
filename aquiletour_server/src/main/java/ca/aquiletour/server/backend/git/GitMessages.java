@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
@@ -38,15 +39,26 @@ public class GitMessages {
 		T.call(GitMessages.class);
 		
 		String messageString = Ntro.jsonService().toString(message);
+		byte[] messageBytes = messageString.getBytes(StandardCharsets.UTF_8);
+		int messageLength = messageBytes.length;
+		
+		System.out.println("GitMessages.send: ");
+		System.out.println(messageString);
 
 		try {
 
-			URL url = new URL("localhost:8888/" + Constants.GIT_API_URL_PATH);
+			URL url = new URL("http://localhost:8080" + Constants.GIT_API_URL_PATH + "/");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
+			con.setFixedLengthStreamingMode(messageLength);
+			con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			con.setDoOutput(true);
+			con.connect();
 			OutputStream out = con.getOutputStream();
-			out.write(messageString.getBytes());
-			out.close();
+			out.write(messageBytes);
+			
+			int responseCode = con.getResponseCode();
+			System.out.println("GitMessages::responseCode " + responseCode);
 
 		} catch (IOException e) {
 			Log.fatalError("Unable to connect to _git_api", e);

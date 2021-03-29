@@ -67,7 +67,7 @@ import ca.ntro.users.Session;
 
 public class GitHandler extends AbstractHandler {
 
-	public static ContextHandler createDynamicHandler(String urlPrefix, String privateFilesPrefix) {
+	public static ContextHandler createGitHandler(String urlPrefix) {
 		T.call(GitHandler.class);
 
         // Http handler
@@ -78,7 +78,7 @@ public class GitHandler extends AbstractHandler {
         dynamicContext.setInitParameter("cacheControl", "no-store,no-cache,must-revalidate,max-age=0,public");
         dynamicContext.setInitParameter("maxCacheSize", "0");
         
-        dynamicContext.setHandler(new GitHandler(urlPrefix, privateFilesPrefix, new FileLoaderDev()));
+        dynamicContext.setHandler(new GitHandler(urlPrefix));
         
         // TODO: dev-only: load resources from ./src/main/ressources NOT ./build/resources/...
         //staticFilesContext.setResourceBase("./src/main/resources");
@@ -86,19 +86,12 @@ public class GitHandler extends AbstractHandler {
         return dynamicContext;
 	}
 	
-	private String resourcesUrlPrefix;
-	private String privateFilesPrefix;
-	private FileLoader fileLoader;
+	private String urlPrefix;
 
-	public GitHandler(String resourcesUrlPrefix, 
-			String publicFilesPrefix, 
-			FileLoader fileLoader) {
-
+	public GitHandler(String urlPrefix) {
 		T.call(this);
 
-		this.resourcesUrlPrefix = resourcesUrlPrefix;
-		this.privateFilesPrefix = publicFilesPrefix;
-		this.fileLoader = fileLoader;
+		this.urlPrefix = urlPrefix;
 	}
 	
 	@Override
@@ -113,11 +106,9 @@ public class GitHandler extends AbstractHandler {
 		
         if (request.getMethod().equals("POST")) {
         	
-        	
         	String body = ModelHandler.readBody(baseRequest);
         	
-        	System.out.println("GitHandler: ");
-        	System.out.println(body);
+        	System.out.println("GitHandler::body " + body);
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			
