@@ -45,10 +45,10 @@ public class NetworkStoreJSweet extends ModelStore {
 	protected JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
 		
-		String serviceUrl = Constants.MODELS_URL_PREFIX;
+		String serviceUrl = Constants.MODELS_URL_PREFIX + "/";
 		GetModelNtroMessage request = new GetModelNtroMessage();
 		request.setDocumentPath(documentPath);
-		request.setTargetClass(targetClass);
+		request.registerTargetClass(targetClass);
 		
 		return new JsonLoaderJSweet(serviceUrl, request);
 	}

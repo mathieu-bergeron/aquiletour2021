@@ -30,7 +30,7 @@ public class GetCommitListMessage extends StudentExerciseMessage implements Ntro
 	}
 
 	@Override
-	public DocumentPath getDocumentPath() {
+	public DocumentPath documentPath() {
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();
@@ -52,7 +52,7 @@ public class GetCommitListMessage extends StudentExerciseMessage implements Ntro
 	}
 
 	@Override
-	public Class<? extends NtroModel> getTargetClass() {
+	public Class<? extends NtroModel> targetClass() {
 		T.call(this);
 		
 		return CommitListModel.class;

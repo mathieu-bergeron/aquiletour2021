@@ -6,7 +6,7 @@ import ca.ntro.stores.DocumentPath;
 
 public interface NtroModelMessage extends JsonSerializable {
 
-	DocumentPath getDocumentPath();
-	Class<? extends NtroModel> getTargetClass();
+	DocumentPath documentPath();
+	Class<? extends NtroModel> targetClass();
 
 }

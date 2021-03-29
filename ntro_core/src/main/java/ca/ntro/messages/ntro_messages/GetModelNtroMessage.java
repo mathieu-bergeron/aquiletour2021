@@ -10,7 +10,7 @@ public class GetModelNtroMessage extends NtroUserMessage implements NtroModelMes
 	private DocumentPath documentPath;
 	private Class<? extends NtroModel> targetClass;
 
-	public DocumentPath getDocumentPath() {
+	public DocumentPath documentPath() {
 		return documentPath;
 	}
 
@@ -19,11 +19,11 @@ public class GetModelNtroMessage extends NtroUserMessage implements NtroModelMes
 	}
 
 	@Override
-	public Class<? extends NtroModel> getTargetClass() {
+	public Class<? extends NtroModel> targetClass() {
 		return targetClass;
 	}
 
-	public void setTargetClass(Class<? extends NtroModel> targetClass) {
+	public void registerTargetClass(Class<? extends NtroModel> targetClass) {
 		this.targetClass = targetClass;
 	}
 }
