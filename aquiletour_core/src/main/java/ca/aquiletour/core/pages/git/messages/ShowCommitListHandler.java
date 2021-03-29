@@ -16,26 +16,15 @@ import ca.ntro.services.Ntro;
 public class ShowCommitListHandler extends ControllerMessageHandler<CommitListController,
                                                                   CommitListView,
                                                                   ShowCommitListMessage> {
-	private String currentStudentId = null;
-
+	
 	@Override
 	protected void handle(CommitListController currentController, CommitListView currentView, ShowCommitListMessage message) {
-		// TODO Auto-generated method stub
 		T.call(this);
 		
-		String studentId = message.getStudentId();
+		GetCommitListMessage getCommitListMessage = Ntro.messages().create(GetCommitListMessage.class);
+		getCommitListMessage.loadStudentExerciseInfo(message);
 
-		MustNot.beNull(studentId);
-		
-		if(!studentId.equals(currentStudentId)) {
-			
-			GetCommitListMessage getCommitListMessage = Ntro.messages().create(GetCommitListMessage.class);
-			getCommitListMessage.loadStudentExerciseInfo(message);
-
-			currentController.setModelLoader(Ntro.webService(Constants.GIT_API_URL).modelLoader(getCommitListMessage)); 
-
-			currentStudentId = studentId;
-		}
+		currentController.setModelLoader(Ntro.webService(Constants.GIT_API_URL).modelLoader(getCommitListMessage)); 
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showGit(currentView);
