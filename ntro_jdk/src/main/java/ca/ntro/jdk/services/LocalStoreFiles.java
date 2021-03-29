@@ -58,7 +58,7 @@ public abstract class LocalStoreFiles extends ModelStore {
 		}else {
 
 			// Create empty model if non exists
-			jsonLoader = new JsonLoaderMemory(documentPath, ModelStore.emptyModelString(documentPath));
+			jsonLoader = new JsonLoaderMemory(ModelStore.emptyModelString(documentPath));
 		}
 		
 		return jsonLoader;

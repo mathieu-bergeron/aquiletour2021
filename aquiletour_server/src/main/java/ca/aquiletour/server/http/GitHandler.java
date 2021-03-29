@@ -32,11 +32,14 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
+import ca.aquiletour.core.messages.git.GetCommitListMessage;
 import ca.aquiletour.core.messages.git.OnCloneFailedMessage;
 import ca.aquiletour.core.messages.git.OnCloneMessage;
 import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
 import ca.aquiletour.core.messages.git.RegisterRepoMessage;
+import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.server.backend.git.GitMessages;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
@@ -90,6 +93,10 @@ public class GitHandler extends AbstractHandler {
 				
 				handleRegisterRepoMessage(baseRequest, response, (RegisterRepoMessage) message);
 
+			}else if(message instanceof GetCommitListMessage) {
+				
+				handleGetCommitListMessage(baseRequest, response, (GetCommitListMessage) message);
+
 			}else {
 
 				Log.error("[GitHandler] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
@@ -108,9 +115,30 @@ public class GitHandler extends AbstractHandler {
         }
 	}
 
+	private void handleGetCommitListMessage(Request baseRequest, 
+			                                HttpServletResponse response,
+			                                GetCommitListMessage message) {
+
+		System.out.println("handleGetCommitListMessage");
+		
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(CommitListModel.class, "admin", "bob");
+		modelLoader.execute();
+
+		CommitListModel model = (CommitListModel) modelLoader.getModel();
+		
+		try {
+
+			response.getOutputStream().write(Ntro.jsonService().toString(model).getBytes());
+
+		} catch (IOException e) {
+
+			Log.fatalError("Cannot write model", e);
+		}
+	}
+
 	private void handleRegisterRepoMessage(Request baseRequest, 
-			HttpServletResponse response,
-			RegisterRepoMessage message) {
+			                               HttpServletResponse response,
+			                               RegisterRepoMessage message) {
 		
 		System.out.println("RegisterRepoMessage");
 		

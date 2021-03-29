@@ -36,13 +36,16 @@ public class GetCommitListMessage extends StudentExerciseMessage implements Ntro
 		DocumentPath documentPath = new DocumentPath();
 		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(CommitListModel.class));
 		
+		Path exercisePath = new Path(getExerciseId());
+
 		Path path = new Path();
 		path.getNames().add(getCourseId());
 		path.getNames().add(getSemesterId());
 		path.getNames().add(getGroupId());
 		path.getNames().add(getStudentId());
-		path.getNames().add(getExerciseId());
-		path.getNames().add(getExerciseId());
+		for(int i = 0; i < exercisePath.nameCount(); i++) {
+			path.getNames().add(exercisePath.name(i));
+		}
 		path.getNames().add(String.valueOf(getFromDate()));
 		path.getNames().add(String.valueOf(getToDate()));
 

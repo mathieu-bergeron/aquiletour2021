@@ -86,7 +86,7 @@ public class LocalStoreNitrite extends ModelStore {
 			models.insert(document);
 		}
 		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonString);
+		JsonLoader jsonLoader = new JsonLoaderMemory(jsonString);
 		
 		return jsonLoader;
 	}

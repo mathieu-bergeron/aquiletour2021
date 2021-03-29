@@ -52,7 +52,16 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 		
 		MustNot.beNull(resourceStream);
 		
-		Scanner scanner = new Scanner(resourceStream);
+		
+		resourceAsString = readStream(resourceStream);
+		
+		notifyTaskFinished();
+	}
+	
+	public static String readStream(InputStream stream) {
+		T.call(ResourceLoaderJdk.class);
+
+		Scanner scanner = new Scanner(stream);
 		
 		StringBuilder builder = new StringBuilder();
 
@@ -60,12 +69,10 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 			builder.append(scanner.nextLine());
 			builder.append(System.lineSeparator());
 		}
-		
-		resourceAsString = builder.toString();
-		
+
 		scanner.close();
 		
-		notifyTaskFinished();
+		return builder.toString();
 	}
 
 	@Override

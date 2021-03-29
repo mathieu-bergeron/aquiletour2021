@@ -57,7 +57,7 @@ public class LocalStoreJSweet extends ModelStore {
 			jsonString = ModelStore.emptyModelString(documentPath);
 		}
 		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonString);
+		JsonLoader jsonLoader = new JsonLoaderMemory(jsonString);
 
 		return jsonLoader;
 	}

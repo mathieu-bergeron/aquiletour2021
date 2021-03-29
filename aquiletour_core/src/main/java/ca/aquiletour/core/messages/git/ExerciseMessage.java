@@ -28,7 +28,7 @@ public class ExerciseMessage extends NtroMessage {
 		T.call(this);
 		
 		setCourseId(message.getCourseId());
-		setExerciseId(message.getCourseId());
+		setExerciseId(message.getExerciseId());
 	}
 
 }
