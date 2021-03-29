@@ -35,11 +35,4 @@ public class JsonLoaderMemory extends JsonLoader {
 		
 		return jsonString;
 	}
-
-	@Override
-	public DocumentPath getDocumentPath() {
-		T.call(this);
-
-		return documentPath;
-	}
 }

@@ -1,18 +1,20 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.core.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.json.JsonLoaderJSweet;
 import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
-import ca.ntro.users.NtroUser;
 
 import static def.es6.Globals.fetch;
 
@@ -40,10 +42,22 @@ public class NetworkStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
+	protected JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
+		T.call(this);
+		
+		String serviceUrl = Constants.MODELS_URL_PREFIX;
+		GetModelNtroMessage request = new GetModelNtroMessage();
+		request.setDocumentPath(documentPath);
+		request.setTargetClass(targetClass);
+		
+		return new JsonLoaderJSweet(serviceUrl, request);
+	}
+
+	@Override
+	protected JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage request) {
 		T.call(this);
 
-		return new JsonLoaderJSweet(documentPath);
+		return new JsonLoaderJSweet(serviceUrl, request);
 	}
 
 	@Override
@@ -100,11 +114,6 @@ public class NetworkStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
-		// XXX: not supported
-	}
-
-	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
@@ -113,5 +122,6 @@ public class NetworkStoreJSweet extends ModelStore {
 	protected void deleteDocument(DocumentPath documentPath) {
 		// XXX: not supported
 	}
+
 
 }

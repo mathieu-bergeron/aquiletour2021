@@ -24,7 +24,7 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		GetCommitListMessage getCommitListMessage = Ntro.messages().create(GetCommitListMessage.class);
 		getCommitListMessage.loadStudentExerciseInfo(message);
 
-		currentController.setModelLoader(Ntro.webService(Constants.GIT_API_URL).modelLoader(getCommitListMessage)); 
+		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showGit(currentView);

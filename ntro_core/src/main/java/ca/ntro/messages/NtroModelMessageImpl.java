@@ -1,21 +1,16 @@
-package ca.ntro.messages.ntro_messages;
+package ca.ntro.messages;
 
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.messages.NtroModelMessage;
-import ca.ntro.messages.NtroUserMessage;
 import ca.ntro.stores.DocumentPath;
 
-public class GetModelNtroMessage extends NtroUserMessage implements NtroModelMessage {
+public class NtroModelMessageImpl implements NtroModelMessage {
 	
 	private DocumentPath documentPath;
 	private Class<? extends NtroModel> targetClass;
 
+	@Override
 	public DocumentPath getDocumentPath() {
 		return documentPath;
-	}
-
-	public void setDocumentPath(DocumentPath documentPath) {
-		this.documentPath = documentPath;
 	}
 
 	@Override
@@ -23,7 +18,12 @@ public class GetModelNtroMessage extends NtroUserMessage implements NtroModelMes
 		return targetClass;
 	}
 
+	public void setDocumentPath(DocumentPath documentPath) {
+		this.documentPath = documentPath;
+	}
+
 	public void setTargetClass(Class<? extends NtroModel> targetClass) {
 		this.targetClass = targetClass;
 	}
+
 }

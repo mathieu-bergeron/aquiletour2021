@@ -4,6 +4,8 @@ import ca.ntro.core.json.JsonLoader;
 
 import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -14,30 +16,29 @@ import static def.es6.Globals.fetch;
 
 public class JsonLoaderJSweet extends JsonLoader {
 
-    private       String       jsonString;
-    private final DocumentPath documentPath;
+    private String jsonString;
+    private final String serviceUrl;
+    private final NtroModelMessage request;
 
-    public JsonLoaderJSweet(DocumentPath documentPath) {
+    public JsonLoaderJSweet(String serviceUrl, NtroModelMessage request) {
         super();
         T.call(this);
 
-        this.documentPath = documentPath;
+        this.serviceUrl = serviceUrl;
+        this.request = request;
     }
 
     @Override
     protected void runTaskAsync() {
         T.call(this);
         
-        GetModelNtroMessage message = Ntro.messages().create(GetModelNtroMessage.class);
-        message.setDocumentPath(documentPath);
-        
-        String messageText = Ntro.jsonService().toString(message);
+        String messageText = Ntro.jsonService().toString(request);
 
 		def.js.Object options = new def.js.Object();
 		options.$set("method","POST");
 		options.$set("body",messageText);
 
-        fetch(Constants.MODELS_URL_PREFIX + "/", options).then((Globals.FetchResponse response) -> {
+        fetch(serviceUrl, options).then((Globals.FetchResponse response) -> {
             if (response.ok) {
                 return response.text()
                         .then(text -> {
@@ -46,7 +47,7 @@ public class JsonLoaderJSweet extends JsonLoader {
                             notifyTaskFinished();
                         })
                         .Catch((java.lang.Object error) -> {
-                            System.err.println("[NetworkStore] for " + documentPath.toString() + ", " + error);
+                            System.err.println("[NetworkStore] for " + messageText + ", " + error);
                         	System.err.println(error);
                         });
             } else {
@@ -61,23 +62,10 @@ public class JsonLoaderJSweet extends JsonLoader {
 
     }
 
-    private String fullId(DocumentPath documentPath) {
-        return documentPath.getCollection() + "/" + documentPath.getDocumentId();
-    }
-
     @Override
     public String getJsonString() {
         T.call(this);
 
         return jsonString;
     }
-
-    @Override
-    public DocumentPath getDocumentPath() {
-        T.call(this);
-
-        return documentPath;
-    }
-
-
 }

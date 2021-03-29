@@ -11,6 +11,7 @@ import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroUser;
 
@@ -296,6 +297,12 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		NtroView view = initTasks.getSubTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
 
 		return view;
+	}
+
+	public void setModelUsingWebService(String serviceUrl, NtroModelMessage message) {
+		T.call(this);
+
+		setModelLoader(Ntro.modelStore().getModelLoaderFromRequest(serviceUrl, message));
 	}
 
 	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, String modelId) {

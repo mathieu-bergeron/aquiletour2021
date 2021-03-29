@@ -5,6 +5,7 @@ import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
@@ -46,7 +47,7 @@ public class LocalStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	protected JsonLoader getJsonLoader(DocumentPath documentPath) {
+	protected JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
 		
 		String jsonString = getJsonString(documentPath);
@@ -59,6 +60,12 @@ public class LocalStoreJSweet extends ModelStore {
 		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonString);
 
 		return jsonLoader;
+	}
+
+	@Override
+	protected JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+		// XXX: not supported
+		return null;
 	}
 
 	private String getJsonString(DocumentPath documentPath) {
@@ -104,11 +111,6 @@ public class LocalStoreJSweet extends ModelStore {
 	}
 
 	@Override
-	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
-		// XXX: not supported
-	}
-
-	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// XXX: not supported
 	}
@@ -119,5 +121,6 @@ public class LocalStoreJSweet extends ModelStore {
 		
 		localStorage.removeItem(fullId);
 	}
+
 
 }

@@ -17,6 +17,8 @@ import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
@@ -44,15 +46,32 @@ public abstract class ModelStore {
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
 
-		ModelLoader modelLoader = new ModelLoader(this);
 		
 		String documentId = documentId(firstPathName, pathRemainder);
 		DocumentPath documentPath = documentPath(modelClass, documentId);
+
+		ModelLoader modelLoader = new ModelLoader(this, documentPath);
 		
-		JsonLoader jsonLoader = getJsonLoader(documentPath);
+		JsonLoader jsonLoader = getJsonLoader(modelClass,documentPath);
 		jsonLoader.setTaskId("JsonLoader");
 
 		modelLoader.setTargetClass(modelClass);
+
+		//modelLoader.addPreviousTask(jsonLoader);
+		modelLoader.addSubTask(jsonLoader);
+
+		return modelLoader;
+	}
+
+	public ModelLoader getModelLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+		T.call(this);
+
+		ModelLoader modelLoader = new ModelLoader(this, message.getDocumentPath());
+
+		JsonLoader jsonLoader = jsonLoaderFromRequest(serviceUrl, message);
+		jsonLoader.setTaskId("JsonLoader");
+
+		modelLoader.setTargetClass(message.getTargetClass());
 
 		//modelLoader.addPreviousTask(jsonLoader);
 		modelLoader.addSubTask(jsonLoader);
@@ -88,7 +107,9 @@ public abstract class ModelStore {
 
 	protected abstract void installExternalUpdateListener(ExternalUpdateListener updateListener);
 
-	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
+	protected abstract JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath);
+
+	protected abstract JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage message);
 
 	public abstract void saveDocument(DocumentPath documentPath, String jsonString);
 
@@ -151,8 +172,6 @@ public abstract class ModelStore {
 	}
 
 	public abstract void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args);
-
-	public abstract void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model);
 
 	public void save(NtroModel model) {
 		T.call(this);
@@ -224,4 +243,5 @@ public abstract class ModelStore {
 		localHeap.remove(model);
 		localHeapByPath.remove(documentPath);
 	}
+
 }

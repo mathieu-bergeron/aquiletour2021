@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.pages.git.values.Commit;
+import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.ntro.core.models.NtroModel;
 
 public class CommitListModel implements NtroModel {
 
 	private String semesterId = "", studentId = "", exercisePath = "", fromDate = "", toDate = "";
-	private List<Commit> commits = new ArrayList<>();
+	private ObservableCommitList commits = new ObservableCommitList();
 
 	public String getSemesterId() {
 		return semesterId;
@@ -51,11 +52,12 @@ public class CommitListModel implements NtroModel {
 		this.toDate = toDate;
 	}
 
-	public List<Commit> getCommits() {
+	public ObservableCommitList getCommits() {
 		return commits;
 	}
 
-	public void setCommits(List<Commit> commits) {
+	public void setCommits(ObservableCommitList commits) {
 		this.commits = commits;
 	}
+
 }
