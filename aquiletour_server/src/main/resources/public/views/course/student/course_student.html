@@ -28,11 +28,21 @@
       </form>
   </div>
 
-  <div class="mt-3 d-flex justify-content-center" id="git-status">
-      <div>
-          Réception du dépôt Git: <span id="git-repo-status"></span><br><br>
-          Dernier commit reçu: <span id="git-repo-newest-commit"></span>
-      </div>
+  <div class="d-flex justify-content-center" id="git-status">
+      <table>
+          <tr>
+              <td>Réception du dépôt Git:</td>
+              <td> <span id="git-repo-status"></span></td>
+          </tr>
+          <tr>
+              <td>Dernier commit reçu:</td>
+              <td><span id="git-repo-newest-commit"></span></td>
+          </tr>
+          <tr>
+              <td>Tâche complétée: </td>
+              <td><span id="git-repo-task-completed"></span></td>
+          </tr>
+      </table>
   </div>
 
 </div>
