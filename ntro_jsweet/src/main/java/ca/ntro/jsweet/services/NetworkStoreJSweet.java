@@ -47,6 +47,7 @@ public class NetworkStoreJSweet extends ModelStore {
 		
 		String serviceUrl = Constants.MODELS_URL_PREFIX + "/";
 		GetModelNtroMessage request = new GetModelNtroMessage();
+		request.setUser(Ntro.userService().currentUser());
 		request.setDocumentPath(documentPath);
 		request.registerTargetClass(targetClass);
 		
@@ -86,12 +87,8 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
-
-		def.js.Object options = new def.js.Object();
-		options.$set("method","POST");
-		options.$set("body",jsonString);
-
-		fetch("/_B/" + fullId(documentPath), options);
+		
+		// XXX: not supported
 	}
 
 	@Override

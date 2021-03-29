@@ -4,12 +4,8 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitListMessage;
 import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.git.CommitListView;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
-import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
-import ca.ntro.core.mvc.ParentViewMessageHandler;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 

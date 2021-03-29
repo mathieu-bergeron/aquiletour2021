@@ -51,7 +51,7 @@ public class JsonLoaderJSweet extends JsonLoader {
                         	System.err.println(error);
                         });
             } else {
-                return Promise.reject("[NetworkStore] return code != 200");
+                return Promise.reject("[NetworkStore] return code != 200 for " + messageText);
             }
         });
     }
