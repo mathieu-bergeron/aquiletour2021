@@ -1,7 +1,7 @@
 Structure sur disque:
 - exterieur du docker git
-- repertoires git: session/cours-gr/DAetudiant/depot/...
-	- ex: H2021/420ZF5-02/202033395/testZF5/...
+- repertoires git: session/cours/gr/DAetudiant/depot/...
+	- ex: H21/420ZF5/02/202033395/testZF5/...
 
 		TP/AT	Exer	DEPOT		Repertoire
 GitLab/GitHub	TP04	-	420ZF5		TP04		TP sans exercices separes
@@ -14,6 +14,24 @@ AzureDepOp	TP01	-	420ZE5-01	-		Forcer des depots differents?
 		TP02	-	420ZE5-02	-
 
 - Possibilite de changer le depot, mais avertir l'enseignant sauf si changement force
+
+Exemples de path dans depot vs calendrier:
+			src/leducni/TP02/Exercice1/Exer1.java			Travail Pratique 2/Exercice 1
+			src/leducni/ateliers/AT02/Exercice3.java		Atelier 2/Exercice 3
+			src/leducni/travailpratique/3/Exercice05.java		Travail Pratique 3/Exercice 5
+			TravailPratique3/Exercice02/test.java			Travail Pratique 3/Exercice 2
+			Atelier4/Exercice1.java					Atelier 4/Exercice 1
+			TP05/*							Travail Pratique 5
+			Atelier06/*						Atelier 6
+
+Etape2			src/leducni/TP02/Exercice1/Exer1.java			Etape2 / Travail Pratique 2/Exercice 1
+			src/leducni/Sec3/ateliers/AT02/Exercice3.java		Section03 / Atelier 2/Exercice 3
+Section2/Etape3		src/leducni/travailpratique/3/Exercice05.java		Section2/Etape3 / Travail Pratique 3/Exercice 5
+Partie01		TravailPratique3/Exercice02/test.java			Partie01 / Travail Pratique 3/Exercice 2
+			PT02/Atelier4/Exercice1.java				Partie02 / Atelier 4/Exercice 1
+Partie2			Etape4/TP05/*						Partie2/Etape04 / Travail Pratique 5
+			Sec4/PT3/Atelier06/*					Section4/Partie3 / Atelier 6
+
 
 Algo GIT:
 Recoit webhook.
