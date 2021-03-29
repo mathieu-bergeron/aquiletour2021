@@ -28,17 +28,25 @@ public class CommitViewWeb extends NtroViewWeb implements CommitView {
 		HtmlElement commitMessage = this.getRootElement().find("#commitMessage").get(0);
 		HtmlElement exercicePath = this.getRootElement().find("#exercicePath").get(0);
 		HtmlElement estimatedEffort = this.getRootElement().find("#estimatedEffort").get(0);
+		HtmlElement modifiedFiles = this.getRootElement().find("#modifiedFiles").get(0);
 		HtmlElement timestamp = this.getRootElement().find("#timestamp").get(0);
 
 		MustNot.beNull(commitMessage);
 		MustNot.beNull(exercicePath);
 		MustNot.beNull(estimatedEffort);
 		MustNot.beNull(timestamp);
-		T.values(commit.getExercisePath());
+		MustNot.beNull(modifiedFiles);
 		
 		commitMessage.appendHtml(commit.getCommitMessage());
 		exercicePath.appendHtml(commit.getExercisePath());
 		estimatedEffort.appendHtml(Integer.toString(commit.getEstimatedEffort()));
 		timestamp.appendHtml(commit.getTimeStamp());
+		for (int i = 0; i < commit.getModifiedFiles().size(); i++) {
+			if(i == commit.getModifiedFiles().size() - 1) {
+				modifiedFiles.appendHtml(commit.getModifiedFiles().get(i));
+			}else {
+				modifiedFiles.appendHtml(commit.getModifiedFiles().get(i) + ", ");
+			}
+		}
 	}
 }
