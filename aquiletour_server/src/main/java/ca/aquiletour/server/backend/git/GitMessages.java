@@ -27,8 +27,8 @@ public class GitMessages {
 		
 		RegisterExerciceMessage registerExerciceMessage = Ntro.messages().create(RegisterExerciceMessage.class);
 		registerExerciceMessage.setCourseId(courseId);
-		registerExerciceMessage.setExerciseId(path.toString());
 		registerExerciceMessage.setExercisePath(path.toString());
+		registerExerciceMessage.setSourceFolderPath(path.toString());
 		registerExerciceMessage.setCompletionKeywords(directoryName);
 		
 		sendMessage(registerExerciceMessage);

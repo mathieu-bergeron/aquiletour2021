@@ -316,7 +316,7 @@ public class AquiletourBackendRequestHandler {
 				registerRepoMessage.setSemesterId("H2021"); // FIXME
 				registerRepoMessage.setGroupId("01"); // FIXME
 				registerRepoMessage.setRepoUrl(repoUrl);
-				registerRepoMessage.setExerciseId(taskId);
+				registerRepoMessage.setExercisePath(taskId);
 
 				Ntro.backendService().sendMessageToBackend(registerRepoMessage);
 			}

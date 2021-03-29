@@ -3,7 +3,7 @@ package ca.aquiletour.web;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.aquiletour.core.messages.git.GetCommitListMessage;
+import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.RegisterRepoMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
@@ -79,7 +79,7 @@ public class AquiletourRequestHandler {
 
 			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
 			showGitMessage.setCourseId(courseId);
-			showGitMessage.setExerciseId(exerciseId);
+			showGitMessage.setExercisePath(exerciseId);
 			showGitMessage.setStudentId(user.getId());
 			showGitMessage.setGroupId("01"); // TODO
 			showGitMessage.setSemesterId("H2021"); // TODO

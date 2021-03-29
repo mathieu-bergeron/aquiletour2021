@@ -32,7 +32,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
-import ca.aquiletour.core.messages.git.GetCommitListMessage;
+import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailedMessage;
 import ca.aquiletour.core.messages.git.OnCloneMessage;
 import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
@@ -93,9 +93,9 @@ public class GitHandler extends AbstractHandler {
 				
 				handleRegisterRepoMessage(baseRequest, response, (RegisterRepoMessage) message);
 
-			}else if(message instanceof GetCommitListMessage) {
+			}else if(message instanceof GetCommitsForPath) {
 				
-				handleGetCommitListMessage(baseRequest, response, (GetCommitListMessage) message);
+				handleGetCommitListMessage(baseRequest, response, (GetCommitsForPath) message);
 
 			}else {
 
@@ -117,7 +117,7 @@ public class GitHandler extends AbstractHandler {
 
 	private void handleGetCommitListMessage(Request baseRequest, 
 			                                HttpServletResponse response,
-			                                GetCommitListMessage message) {
+			                                GetCommitsForPath message) {
 
 		System.out.println("handleGetCommitListMessage");
 		

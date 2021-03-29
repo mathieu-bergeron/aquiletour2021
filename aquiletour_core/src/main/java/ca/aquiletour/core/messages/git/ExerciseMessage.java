@@ -6,7 +6,7 @@ import ca.ntro.messages.NtroMessage;
 public class ExerciseMessage extends NtroMessage {
 
 	private String courseId;
-	private String exerciseId;
+	private String exercisePath;
 
 	public String getCourseId() {
 		return courseId;
@@ -16,19 +16,19 @@ public class ExerciseMessage extends NtroMessage {
 		this.courseId = courseId;
 	}
 
-	public String getExerciseId() {
-		return exerciseId;
+	public String getExercisePath() {
+		return exercisePath;
 	}
 
-	public void setExerciseId(String exerciseId) {
-		this.exerciseId = exerciseId;
+	public void setExercisePath(String exercisePath) {
+		this.exercisePath = exercisePath;
 	}
 	
 	public void loadExerciseInfo(ExerciseMessage message) {
 		T.call(this);
 		
 		setCourseId(message.getCourseId());
-		setExerciseId(message.getExerciseId());
+		setExercisePath(message.getExercisePath());
 	}
 
 }

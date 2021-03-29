@@ -8,26 +8,8 @@ import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class GetCommitListMessage extends StudentExerciseMessage implements NtroModelMessage {
+public class GetCommitsForPath extends StudentExerciseMessage implements NtroModelMessage {
 	
-	private long fromDate;
-	private long toDate;
-
-	public long getFromDate() {
-		return fromDate;
-	}
-
-	public void setFromDate(long fromDate) {
-		this.fromDate = fromDate;
-	}
-
-	public long getToDate() {
-		return toDate;
-	}
-
-	public void setToDate(long toDate) {
-		this.toDate = toDate;
-	}
 
 	@Override
 	public DocumentPath documentPath() {
@@ -35,8 +17,16 @@ public class GetCommitListMessage extends StudentExerciseMessage implements Ntro
 		
 		DocumentPath documentPath = new DocumentPath();
 		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(CommitListModel.class));
-		
-		Path exercisePath = new Path(getExerciseId());
+
+		documentPath.setDocumentId(documentIdAsPath().toFileName());
+
+		return documentPath;
+	}
+	
+	protected Path documentIdAsPath() {
+		T.call(this);
+
+		Path exercisePath = new Path(getExercisePath());
 
 		Path path = new Path();
 		path.getNames().add(getCourseId());
@@ -46,12 +36,8 @@ public class GetCommitListMessage extends StudentExerciseMessage implements Ntro
 		for(int i = 0; i < exercisePath.nameCount(); i++) {
 			path.getNames().add(exercisePath.name(i));
 		}
-		path.getNames().add(String.valueOf(getFromDate()));
-		path.getNames().add(String.valueOf(getToDate()));
-
-		documentPath.setDocumentId(path.toFileName());
-
-		return documentPath;
+		
+		return path;
 	}
 
 	@Override

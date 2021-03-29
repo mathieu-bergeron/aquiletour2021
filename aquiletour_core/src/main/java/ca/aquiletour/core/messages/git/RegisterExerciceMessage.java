@@ -2,15 +2,15 @@ package ca.aquiletour.core.messages.git;
 
 public class RegisterExerciceMessage extends ExerciseMessage {
 	
-	private String exercisePath;
+	private String sourceFolderPath;
 	private String completionKeywords;
 	
-	public String getExercisePath() {
-		return exercisePath;
+	public String getSourceFolderPath() {
+		return sourceFolderPath;
 	}
 
-	public void setExercisePath(String exercisePath) {
-		this.exercisePath = exercisePath;
+	public void setSourceFolderPath(String sourceFolderPath) {
+		this.sourceFolderPath = sourceFolderPath;
 	}
 
 	public String getCompletionKeywords() {
