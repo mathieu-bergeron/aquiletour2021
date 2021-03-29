@@ -21,10 +21,11 @@ public class Constants {
 	
 	public static final String INITIALIZATION_TASK_ID="initializationTask";
 	
-	public static final String MESSAGES_URL_PREFIX = "/_messages";
-	public static final String SOCKET_URL_SEGMENT = "socket";
-	public static final String MESSAGES_URL_PATH_SOCKET = MESSAGES_URL_PREFIX + "/" + SOCKET_URL_SEGMENT;
-	public static final String MESSAGES_URL_PATH_HTTP = MESSAGES_URL_PREFIX + "/http";
+	public static final String SOCKET_PREFIX = "/_socket";
+	public static final String HTTP_PREFIX = "/_http";
+	public static final String MESSAGES_SEGMENT = "messages";
+	public static final String MESSAGES_URL_PATH_SOCKET = SOCKET_PREFIX + "/" + MESSAGES_SEGMENT;
+	public static final String MESSAGES_URL_PATH_HTTP = HTTP_PREFIX + "/" + MESSAGES_SEGMENT;
 	public static final String RESOURCES_URL_PREFIX = "/_resources";
 	public static final String MODELS_URL_PREFIX = "/_models";
 }

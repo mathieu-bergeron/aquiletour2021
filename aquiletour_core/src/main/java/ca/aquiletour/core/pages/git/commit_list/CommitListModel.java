@@ -1,15 +1,15 @@
 package ca.aquiletour.core.pages.git.commit_list;
 
-import ca.aquiletour.core.pages.git.values.ObservableCommitList;
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.aquiletour.core.pages.git.values.Commit;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredBoolean;
-import ca.ntro.core.system.trace.T;
 
 public class CommitListModel implements NtroModel {
 
-	String semesterId = "", studentId = "", exercisePath = "", fromDate = "", toDate = "";
-	ObservableCommitList commits = new ObservableCommitList();
+	private String semesterId = "", studentId = "", exercisePath = "", fromDate = "", toDate = "";
+	private List<Commit> commits = new ArrayList<>();
 
 	public String getSemesterId() {
 		return semesterId;
@@ -51,13 +51,11 @@ public class CommitListModel implements NtroModel {
 		this.toDate = toDate;
 	}
 
-	public ObservableCommitList getCommits() {
+	public List<Commit> getCommits() {
 		return commits;
 	}
 
-	public void setCommits(ObservableCommitList commits) {
+	public void setCommits(List<Commit> commits) {
 		this.commits = commits;
 	}
-	
-	
 }

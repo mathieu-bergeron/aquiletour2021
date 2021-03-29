@@ -1,5 +1,7 @@
 package ca.aquiletour.core.pages.git.messages;
 
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.git.GetCommitListMessage;
 import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
@@ -9,6 +11,7 @@ import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class ShowCommitListHandler extends ControllerMessageHandler<CommitListController,
                                                                   CommitListView,
@@ -21,13 +24,16 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		T.call(this);
 		
 		String studentId = message.getStudentId();
-		
+
 		MustNot.beNull(studentId);
 		
 		if(!studentId.equals(currentStudentId)) {
-			// XXX: change queue model when needed
-			String authToken = currentController.context().user().getAuthToken();
-			currentController.setModelLoader(CommitListModel.class, authToken, studentId);
+			
+			GetCommitListMessage getCommitListMessage = Ntro.messages().create(GetCommitListMessage.class);
+			getCommitListMessage.loadStudentExerciseInfo(message);
+
+			currentController.setModelLoader(Ntro.webService(Constants.GIT_API_URL).modelLoader(getCommitListMessage)); 
+
 			currentStudentId = studentId;
 		}
 

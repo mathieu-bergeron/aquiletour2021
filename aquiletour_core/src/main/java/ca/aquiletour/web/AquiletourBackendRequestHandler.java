@@ -5,6 +5,7 @@ import java.util.Map;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.git.RegisterRepoMessage;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -304,7 +305,21 @@ public class AquiletourBackendRequestHandler {
 			removeNextTaskMessage.setTaskToRemove(toRemovePath);
 
 			Ntro.messages().send(removeNextTaskMessage);
-		}
+
+		} else if(parameters.containsKey("registerGitRepo")) {
+				
+				String taskId = parameters.get("taskId")[0];
+				String repoUrl = parameters.get("registerGitRepo")[0];
+				RegisterRepoMessage registerRepoMessage = Ntro.messages().create(RegisterRepoMessage.class);
+				registerRepoMessage.setCourseId(courseId);
+				registerRepoMessage.setStudentId(Ntro.userService().currentUser().getId());
+				registerRepoMessage.setSemesterId("H2021"); // FIXME
+				registerRepoMessage.setGroupId("01"); // FIXME
+				registerRepoMessage.setRepoUrl(repoUrl);
+				registerRepoMessage.setExerciseId(taskId);
+
+				Ntro.backendService().sendMessageToBackend(registerRepoMessage);
+			}
 	}
 
 
@@ -353,6 +368,8 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setDestinationId(destinationId);
 			moveAppointmentMessage.setBeforeOrAfter(beforeOrAfter);
 			Ntro.messages().send(moveAppointmentMessage);
-		}
+
+		} 
+		
 	}
 }

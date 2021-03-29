@@ -3,7 +3,6 @@ package ca.aquiletour.server.backend.git;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -28,26 +27,41 @@ public class GitMessages {
 		
 		RegisterExerciceMessage registerExerciceMessage = Ntro.messages().create(RegisterExerciceMessage.class);
 		registerExerciceMessage.setCourseId(courseId);
-		registerExerciceMessage.setExercicePath(path.toString());
-		registerExerciceMessage.setDirectoryName(directoryName);
+		registerExerciceMessage.setExerciseId(path.toString());
+		registerExerciceMessage.setExercisePath(path.toString());
 		registerExerciceMessage.setCompletionKeywords(directoryName);
 		
 		sendMessage(registerExerciceMessage);
 	}
 
-	private static void sendMessage(NtroMessage message) {
+	public static void sendMessage(NtroMessage message) {
 		T.call(GitMessages.class);
-		
+
+		System.out.println("GitMessages.sendMessage: ");
+		System.out.println(Ntro.jsonService().toString(message));
+
+		sendMessageToService(message, Constants.GIT_API_URL);
+	}
+
+	public static void sendReply(NtroMessage message) {
+		T.call(GitMessages.class);
+
+		System.out.println("GitMessages.sendReply: ");
+		System.out.println(Ntro.jsonService().toString(message));
+
+		sendMessageToService(message, Constants.HOST + ca.ntro.core.Constants.MESSAGES_URL_PATH_HTTP + "/");
+	}
+
+	static void sendMessageToService(NtroMessage message, String serviceUrl) {
+		T.call(GitMessages.class);
+
 		String messageString = Ntro.jsonService().toString(message);
 		byte[] messageBytes = messageString.getBytes(StandardCharsets.UTF_8);
 		int messageLength = messageBytes.length;
-		
-		System.out.println("GitMessages.send: ");
-		System.out.println(messageString);
 
 		try {
 
-			URL url = new URL("http://localhost:8080" + Constants.GIT_API_URL_PATH + "/");
+			URL url = new URL(serviceUrl);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setFixedLengthStreamingMode(messageLength);
@@ -57,9 +71,10 @@ public class GitMessages {
 			OutputStream out = con.getOutputStream();
 			out.write(messageBytes);
 			
+			// XXX: we need to getResponseCode for the request to be trully sent??
 			int responseCode = con.getResponseCode();
-			System.out.println("GitMessages::responseCode " + responseCode);
-
+			//System.out.println("Response code: " + responseCode);
+			
 		} catch (IOException e) {
 			Log.fatalError("Unable to connect to _git_api", e);
 		}

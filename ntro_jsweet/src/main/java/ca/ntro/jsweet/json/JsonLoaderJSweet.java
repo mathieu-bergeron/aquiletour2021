@@ -1,6 +1,8 @@
 package ca.ntro.jsweet.json;
 
 import ca.ntro.core.json.JsonLoader;
+
+import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.services.Ntro;
@@ -35,7 +37,7 @@ public class JsonLoaderJSweet extends JsonLoader {
 		options.$set("method","POST");
 		options.$set("body",messageText);
 
-        fetch("/_B/", options).then((Globals.FetchResponse response) -> {
+        fetch(Constants.MODELS_URL_PREFIX + "/", options).then((Globals.FetchResponse response) -> {
             if (response.ok) {
                 return response.text()
                         .then(text -> {

@@ -1,30 +1,18 @@
 package ca.aquiletour.core.messages.git;
 
-import ca.ntro.messages.NtroMessage;
-
-public class RegisterExerciceMessage extends NtroMessage {
+public class RegisterExerciceMessage extends ExerciseMessage {
 	
-	private String courseId;
-	private String exercicePath;
-	private String directoryName;
+	private String exercisePath;
 	private String completionKeywords;
 	
-	public String getCourseId() {
-		return courseId;
+	public String getExercisePath() {
+		return exercisePath;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public void setExercisePath(String exercisePath) {
+		this.exercisePath = exercisePath;
 	}
 
-	public String getExercicePath() {
-		return exercicePath;
-	}
-
-	public void setExercicePath(String exercicePath) {
-		this.exercicePath = exercicePath;
-	}
-	
 	public String getCompletionKeywords() {
 		return completionKeywords;
 	}
@@ -32,13 +20,4 @@ public class RegisterExerciceMessage extends NtroMessage {
 	public void setCompletionKeywords(String completionKeywords) {
 		this.completionKeywords = completionKeywords;
 	}
-
-	public String getDirectoryName() {
-		return directoryName;
-	}
-
-	public void setDirectoryName(String directoryName) {
-		this.directoryName = directoryName;
-	}
-
 }

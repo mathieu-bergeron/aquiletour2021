@@ -18,10 +18,6 @@
 package ca.aquiletour.server.http;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,22 +28,15 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
-import ca.aquiletour.core.messages.git.OnCloneFailedMessage;
-import ca.aquiletour.core.messages.git.OnCloneMessage;
-import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
-import ca.aquiletour.core.messages.git.RegisterRepoMessage;
-import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 
-public class GitHandler extends AbstractHandler {
-	
-	private static Random random = new Random(new Date().toInstant().getEpochSecond());
+public class MessageHandler extends AbstractHandler {
 
-	public static ContextHandler createGitHandler(String urlPrefix) {
-		T.call(GitHandler.class);
+	public static ContextHandler createMessageHandler(String urlPrefix) {
+		T.call(MessageHandler.class);
 
         // Http handler
         ContextHandler dynamicContext = new ContextHandler();
@@ -57,12 +46,13 @@ public class GitHandler extends AbstractHandler {
         dynamicContext.setInitParameter("cacheControl", "no-store,no-cache,must-revalidate,max-age=0,public");
         dynamicContext.setInitParameter("maxCacheSize", "0");
         
-        dynamicContext.setHandler(new GitHandler());
-        
-        // TODO: dev-only: load resources from ./src/main/ressources NOT ./build/resources/...
-        //staticFilesContext.setResourceBase("./src/main/resources");
+        dynamicContext.setHandler(new MessageHandler());
         
         return dynamicContext;
+	}
+	
+	public MessageHandler() {
+		T.call(this);
 	}
 	
 	@Override
@@ -75,27 +65,16 @@ public class GitHandler extends AbstractHandler {
 		
 		T.call(this);
 		
+		
+		System.out.println("MessagesHandler");
+		
         if (request.getMethod().equals("POST")) {
         	
         	String body = ModelHandler.readBody(baseRequest);
         	
-        	System.out.println("GitHandler::body " + body);
-
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			
-			if(message instanceof RegisterExerciceMessage) {
-
-				
-			}else if(message instanceof RegisterRepoMessage) {
-				
-				handleRegisterRepoMessage(baseRequest, response, (RegisterRepoMessage) message);
-
-			}else {
-
-				Log.error("[GitHandler] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
-				response.setStatus(HttpStatus.NO_CONTENT_204);
-				baseRequest.setHandled(true);
-			}
+			Ntro.backendService().sendMessageToBackend(message);
 
 			response.setStatus(HttpStatus.OK_200);
 			baseRequest.setHandled(true);
@@ -106,37 +85,5 @@ public class GitHandler extends AbstractHandler {
             response.setStatus(HttpStatus.METHOD_NOT_ALLOWED_405);
             baseRequest.setHandled(true);
         }
-	}
-
-	private void handleRegisterRepoMessage(Request baseRequest, 
-			HttpServletResponse response,
-			RegisterRepoMessage message) {
-		
-		System.out.println("RegisterRepoMessage");
-		
-		Timer timer = new Timer();
-		
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				T.call(this);
-
-				if(random.nextBoolean()) {
-					
-					OnCloneMessage onCloneMessage = Ntro.messages().create(OnCloneMessage.class);
-					onCloneMessage.loadStudentExerciseInfo(message);
-					GitMessages.sendReply(onCloneMessage);
-					
-				}else {
-					
-					OnCloneFailedMessage onCloneFailedMessage = Ntro.messages().create(OnCloneFailedMessage.class);
-					onCloneFailedMessage.loadStudentExerciseInfo(message);
-					GitMessages.sendReply(onCloneFailedMessage);
-				}
-			}
-			
-		}, 1000); // 1 second
-		
 	}
 }

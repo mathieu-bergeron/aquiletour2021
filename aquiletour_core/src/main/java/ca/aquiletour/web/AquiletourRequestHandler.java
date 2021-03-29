@@ -3,6 +3,8 @@ package ca.aquiletour.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.aquiletour.core.messages.git.GetCommitListMessage;
+import ca.aquiletour.core.messages.git.RegisterRepoMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
@@ -21,6 +23,7 @@ import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.services.Ntro;
 
 public class AquiletourRequestHandler {
@@ -59,17 +62,29 @@ public class AquiletourRequestHandler {
 			
 		} else if(path.startsWith("progressiongit")) {
 
-			sendGitMessages(path.subPath(1), parameters);
+			sendGitMessages(path.subPath(1), parameters, context.user());
 		}
 	}
 
-	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
+	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
-
-		ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
-		showGitMessage.setStudentId("bob");
-		Ntro.messages().send(showGitMessage);
 		
+		if(subPath.nameCount() >= 1) {
+			
+			String courseId = subPath.name(0);
+			String exerciseId = new Path().toString();
+			if(subPath.nameCount() > 1) {
+				exerciseId = subPath.subPath(1).toString();
+			}
+
+			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
+			showGitMessage.setCourseId(courseId);
+			showGitMessage.setExerciseId(exerciseId);
+			showGitMessage.setStudentId(user.getId());
+			showGitMessage.setGroupId("01"); // TODO
+			showGitMessage.setSemesterId("H2021"); // TODO
+			Ntro.messages().send(showGitMessage);
+		}
 	}
 
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
@@ -137,6 +152,8 @@ public class AquiletourRequestHandler {
 			}
 
 			Ntro.messages().send(showCourseMessage);
+			
+			
 		}
 	}
 		

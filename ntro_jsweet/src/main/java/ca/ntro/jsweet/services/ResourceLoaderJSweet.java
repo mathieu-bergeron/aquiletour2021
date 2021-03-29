@@ -25,7 +25,7 @@ public class ResourceLoaderJSweet extends ResourceLoader {
 
 	@Override
 	public ResourceLoaderTask loadResourceTask(String resourcePath) {
-		return new ResourceLoaderTaskJsweet("/" + Constants.RESOURCES_URL_PREFIX + "/" + resourcePath);
+		return new ResourceLoaderTaskJsweet(Constants.RESOURCES_URL_PREFIX + "/" + resourcePath);
 	}
 
 }
