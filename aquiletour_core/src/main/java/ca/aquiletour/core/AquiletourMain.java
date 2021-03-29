@@ -20,7 +20,7 @@ package ca.aquiletour.core;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.messages.git.DeRegisterExerciceMessage;
+import ca.aquiletour.core.messages.git.DeRegisterExerciseMessage;
 import ca.aquiletour.core.messages.git.DeRegisterRepoMessage;
 import ca.aquiletour.core.messages.git.OnCloneFailedMessage;
 import ca.aquiletour.core.messages.git.OnCloneMessage;
@@ -158,7 +158,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(AddPreviousTaskMessage.class);
 		Ntro.registerSerializableClass(AddNextTaskMessage.class);
 		Ntro.registerSerializableClass(RegisterExerciceMessage.class);
-		Ntro.registerSerializableClass(DeRegisterExerciceMessage.class);
+		Ntro.registerSerializableClass(DeRegisterExerciseMessage.class);
 		Ntro.registerSerializableClass(RegisterRepoMessage.class);
 		Ntro.registerSerializableClass(DeRegisterRepoMessage.class);
 		Ntro.registerSerializableClass(OnCloneMessage.class);
