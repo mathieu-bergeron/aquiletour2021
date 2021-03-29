@@ -25,7 +25,7 @@ public class WebSocketHandler extends ServletContextHandler {
                 nativeWebSocketConfiguration.getPolicy().setMaxTextMessageBufferSize(65535);
                 
                 // Add websockets
-                nativeWebSocketConfiguration.addMapping(Constants.SOCKET_URL_SEGMENT, WebSocket.class);
+                nativeWebSocketConfiguration.addMapping("/" + Constants.SOCKET_URL_SEGMENT, WebSocket.class);
                 
                 //nativeWebSocketConfiguration.setStopTimeout(10*60*1000); // 10 minutes
             });

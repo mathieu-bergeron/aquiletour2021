@@ -1,23 +1,14 @@
 package ca.aquiletour.core.messages.git;
 
-import ca.ntro.messages.NtroMessage;
+import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 
-public class RegisterRepoMessage extends NtroMessage {
-	
+public class OnNewCommitsMessage {
+
 	private String courseId;
 	private String semesterId;
-	private String groupId;
 	private String studentId;
 	private String exercicePath;
-	private String repoUrl;
-
-	public String getExercicePath() {
-		return exercicePath;
-	}
-
-	public void setExercicePath(String exercicePath) {
-		this.exercicePath = exercicePath;
-	}
+	private CommitListModel commitList;
 
 	public String getCourseId() {
 		return courseId;
@@ -43,19 +34,19 @@ public class RegisterRepoMessage extends NtroMessage {
 		this.studentId = studentId;
 	}
 
-	public String getRepoUrl() {
-		return repoUrl;
+	public String getExercicePath() {
+		return exercicePath;
 	}
 
-	public void setRepoUrl(String repoUrl) {
-		this.repoUrl = repoUrl;
+	public void setExercicePath(String exercicePath) {
+		this.exercicePath = exercicePath;
 	}
 
-	public String getGroupId() {
-		return groupId;
+	public CommitListModel getCommitList() {
+		return commitList;
 	}
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
+	public void setCommitList(CommitListModel commitList) {
+		this.commitList = commitList;
 	}
 }

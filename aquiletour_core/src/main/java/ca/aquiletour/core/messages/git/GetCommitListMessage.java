@@ -2,14 +2,15 @@ package ca.aquiletour.core.messages.git;
 
 import ca.ntro.messages.NtroMessage;
 
-public class RegisterRepoMessage extends NtroMessage {
+public class GetCommitListMessage extends NtroMessage {
 	
 	private String courseId;
 	private String semesterId;
 	private String groupId;
 	private String studentId;
 	private String exercicePath;
-	private String repoUrl;
+	private long fromDate;
+	private long toDate;
 
 	public String getExercicePath() {
 		return exercicePath;
@@ -43,19 +44,27 @@ public class RegisterRepoMessage extends NtroMessage {
 		this.studentId = studentId;
 	}
 
-	public String getRepoUrl() {
-		return repoUrl;
-	}
-
-	public void setRepoUrl(String repoUrl) {
-		this.repoUrl = repoUrl;
-	}
-
 	public String getGroupId() {
 		return groupId;
 	}
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public long getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(long fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public long getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(long toDate) {
+		this.toDate = toDate;
 	}
 }
