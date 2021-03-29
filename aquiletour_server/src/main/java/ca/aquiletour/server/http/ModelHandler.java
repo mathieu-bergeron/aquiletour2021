@@ -122,7 +122,7 @@ public class ModelHandler extends AbstractHandler {
         baseRequest.setHandled(true);
 	}
 
-	private String readBody(Request baseRequest) throws IOException {
+	static String readBody(Request baseRequest) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = baseRequest.getReader();
 		String line;
