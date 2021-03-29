@@ -96,7 +96,7 @@ public class ModelHandler extends AbstractHandler {
 	private void handleGetModelMessage(Request baseRequest, HttpServletResponse response,
 			GetModelNtroMessage getModelNtroMessage) throws IOException {
 
-		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
+		DocumentPath documentPath = getModelNtroMessage.documentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
 		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());

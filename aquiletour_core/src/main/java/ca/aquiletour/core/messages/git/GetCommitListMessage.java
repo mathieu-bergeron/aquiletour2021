@@ -30,7 +30,7 @@ public class GetCommitListMessage extends StudentExerciseMessage implements Ntro
 	}
 
 	@Override
-	public DocumentPath getDocumentPath() {
+	public DocumentPath documentPath() {
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();
