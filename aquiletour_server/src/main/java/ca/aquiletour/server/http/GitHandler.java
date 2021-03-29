@@ -40,6 +40,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
+import ca.aquiletour.core.messages.git.RegisterExerciceMessage;
 import ca.aquiletour.core.messages.git.RegisterRepoMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Teacher;
@@ -112,10 +113,13 @@ public class GitHandler extends AbstractHandler {
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			
-			if(message instanceof RegisterRepoMessage) {
+			if(message instanceof RegisterExerciceMessage) {
 
-				handleRegisterRepoMessage(baseRequest, response, (RegisterRepoMessage) message);
 				
+			}else if(message instanceof RegisterRepoMessage) {
+				
+				handleRegisterRepoMessage(baseRequest, response, (RegisterRepoMessage) message);
+
 			}else {
 
 				Log.error("[GitHandler] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
