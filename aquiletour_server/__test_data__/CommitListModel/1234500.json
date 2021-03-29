@@ -1,0 +1,29 @@
+  {
+      "_C":"CommitListModel",
+      "semesterId":"H2021",
+      "studentId":"1234500",
+      "exercisePath":"/4F5/TP1",
+      "fromDate": 16152151235,
+      "toDate": 1615215942,
+      "commits": {
+          "_C":"ObservableCommitList",
+          "value":[
+              {
+                  "_C":"Commit",
+                  "exercicePath":"/3C6/etape1/atelier4/exercice2",
+                  "modifiedFiles": ["/src/atelier4/Exercise2.java",".project"],
+                  "estimatedEffort": 34,
+                  "commitMessage": "Blah blah",
+                  "timestamp": 1615215942
+              },
+              {
+                  "_C":"Commit",
+                  "exercicePath":"/3C6/etape1/atelier1/exercice3",
+                  "modifiedFiles": ["/src/atelier2/Exercise3.java","REAMDE.md"],
+                  "estimatedEffort": 2,
+                  "commitMessage": "Blih blih",
+                  "timestamp": 1615215234
+              }
+          ]
+      }
+  }
