@@ -17,11 +17,13 @@ public class CommitListController extends NtroController<RootController> {
 		T.call(this);
 
 		setViewLoader(CommitListView.class, "fr");
+
 		setModelLoader(new EmptyModelLoader());
+		setSubModelLoader(new EmptyModelLoader());
 
 		addControllerMessageHandler(ShowCommitListMessage.class, new ShowCommitListHandler());
 		addSubViewLoader(CommitView.class, context.lang());
-		addModelViewSubViewHandler(CommitView.class, new CommitListViewModel());
+		addModelSubModelViewSubViewHandler(CommitView.class, new CommitListViewModel());
 	}
 
 

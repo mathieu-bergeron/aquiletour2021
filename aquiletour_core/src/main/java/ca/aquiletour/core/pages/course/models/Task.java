@@ -17,6 +17,9 @@ public class Task implements NtroModelValue, TaskNode {
 	private Path path = new Path();
 	private String title = "";
 	
+	private long startTime = -1;
+	private long endTime = -1;
+
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
@@ -316,4 +319,21 @@ public class Task implements NtroModelValue, TaskNode {
 
 		nextTasks.removeItem(taskId);
 	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
+	public long getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+
 }
