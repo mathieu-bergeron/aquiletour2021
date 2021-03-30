@@ -30,6 +30,8 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 	public void displayAppointement(String queueId, String userId, Appointment appointment) {
 		T.call(this);
 		super.displayAppointement(queueId, userId, appointment);
+		
+		deleteAppointmentButton.setAttribute("href", "?deleteAppointment" + appointment.getId());
 
 		deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {
 			@Override

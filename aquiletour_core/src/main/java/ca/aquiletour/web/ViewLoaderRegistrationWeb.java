@@ -1,7 +1,13 @@
 package ca.aquiletour.web;
 
+import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
+import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
+import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
+import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
+import ca.aquiletour.core.pages.course.views.CourseView;
+import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.student.StudentDashboardView;
+import ca.aquiletour.core.pages.dashboards.student.DashboardViewStudent;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
@@ -15,9 +21,13 @@ import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.queues.QueueSummaryView;
 import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.web.pages.dashboard.student.StudentCourseSummaryViewWeb;
-import ca.aquiletour.web.pages.dashboard.student.StudentDashboardViewWeb;
-import ca.aquiletour.web.pages.dashboard.teacher.TeacherCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
+import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
+import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
+import ca.aquiletour.web.pages.course.teacher.TaskViewWebTeacher;
+import ca.aquiletour.web.pages.dashboard.student.CourseSummaryViewWebStudent;
+import ca.aquiletour.web.pages.dashboard.student.DashboardViewWebStudent;
+import ca.aquiletour.web.pages.dashboard.teacher.CourseSummaryViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
 import ca.aquiletour.web.pages.git.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.CommitViewWeb;
@@ -50,48 +60,48 @@ public class ViewLoaderRegistrationWeb {
 		ViewLoaders.registerViewLoader(TeacherDashboardView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/dashboard/teacher/dashboard.html")
-			     	.setCssUrl("/views/dashboard/teacher/dashboard.css")
+			     	.setHtmlUrl("/views/dashboard/teacher/dashboard_teacher.html")
+			     	.setCssUrl("/views/dashboard/teacher/dashboard_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TeacherDashboardViewWeb.class));
 
-		ViewLoaders.registerViewLoader(StudentDashboardView.class,
+		ViewLoaders.registerViewLoader(DashboardViewStudent.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/dashboard/student/dashboard.html")
-			     	.setCssUrl("/views/dashboard/student/dashboard.css")
+			     	.setHtmlUrl("/views/dashboard/student/dashboard_student.html")
+			     	.setCssUrl("/views/dashboard/student/dashboard_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(StudentDashboardViewWeb.class));
+			     	.setTargetClass(DashboardViewWebStudent.class));
 
 		ViewLoaders.registerViewLoader(TeacherCourseSummaryView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-				.setHtmlUrl("/views/course_summary/teacher/course_summary.html")
-		     	.setCssUrl("/views/course_summary/teacher/course_summary.css")
+				.setHtmlUrl("/views/course_summary/teacher/course_summary_teacher.html")
+		     	.setCssUrl("/views/course_summary/teacher/course_summary_teacher.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(TeacherCourseSummaryViewWeb.class));
+				.setTargetClass(CourseSummaryViewWebTeacher.class));
 		
 		ViewLoaders.registerViewLoader(StudentCourseSummaryView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/course_summary/student/course_summary.html")
-			     	.setCssUrl("/views/course_summary/student/course_summary.css")
+			     	.setHtmlUrl("/views/course_summary/student/course_summary_student.html")
+			     	.setCssUrl("/views/course_summary/student/course_summary_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(StudentCourseSummaryViewWeb.class));
+			     	.setTargetClass(CourseSummaryViewWebStudent.class));
 
 		ViewLoaders.registerViewLoader(StudentQueueView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-				.setHtmlUrl("/views/queue/student/queue.html")
-				.setCssUrl("/views/queue/student/queue.css")
+				.setHtmlUrl("/views/queue/student/queue_student.html")
+				.setCssUrl("/views/queue/student/queue_student.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
 				.setTargetClass(StudentQueueViewWeb.class));
 		
 		ViewLoaders.registerViewLoader(TeacherQueueView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/queue/teacher/queue.html")
-			     	.setCssUrl("/views/queue/teacher/queue.css")
+			     	.setHtmlUrl("/views/queue/teacher/queue_teacher.html")
+			     	.setCssUrl("/views/queue/teacher/queue_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TeacherQueueViewWeb.class));
 
@@ -114,16 +124,16 @@ public class ViewLoaderRegistrationWeb {
 		ViewLoaders.registerViewLoader(TeacherAppointmentView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-				.setHtmlUrl("/views/appointment/teacher/appointment.html")
-				.setCssUrl("/views/appointment/teacher/appointment.css")
+				.setHtmlUrl("/views/appointment/teacher/appointment_teacher.html")
+				.setCssUrl("/views/appointment/teacher/appointment_teacher.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
 				.setTargetClass(TeacherAppointmentViewWeb.class));
 		
 		ViewLoaders.registerViewLoader(StudentAppointmentView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/appointment/student/appointment.html")
-			     	.setCssUrl("/views/appointment/student/appointment.css")
+			     	.setHtmlUrl("/views/appointment/student/appointment_student.html")
+			     	.setCssUrl("/views/appointment/student/appointment_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(StudentAppointmentViewWeb.class));
 
@@ -159,5 +169,36 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CommitViewWeb.class));
 
+		ViewLoaders.registerViewLoader(CourseViewTeacher.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/course/teacher/course_teacher.html")
+			     	.setCssUrl("/views/course/teacher/course_teacher.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CourseViewWebTeacher.class));
+
+		ViewLoaders.registerViewLoader(TaskViewTeacher.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/task/teacher/task_teacher.html")
+			     	.setCssUrl("/views/task/teacher/task_teacher.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(TaskViewWebTeacher.class));
+
+		ViewLoaders.registerViewLoader(CourseViewStudent.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/course/student/course_student.html")
+			     	.setCssUrl("/views/course/student/course_student.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CourseViewWebStudent.class));
+
+		ViewLoaders.registerViewLoader(TaskViewStudent.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/task/student/task_student.html")
+			     	.setCssUrl("/views/task/student/task_student.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(TaskViewWebStudent.class));
 	}
 }

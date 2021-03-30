@@ -42,7 +42,7 @@ public class NtroServerMain extends NtroTaskAsync {
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
 
 		// Start server
-		// always do server-side rendering (except for static resources: Urls starting with _R)
+		// always do server-side rendering (except for static resources: Urls starting with _resources)
 		// always include javascript content (it can be ignored by nojs clients)
 		try {
 			startServer();
@@ -72,7 +72,7 @@ public class NtroServerMain extends NtroTaskAsync {
         // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-		handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "/public"));
+		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 
         server.setHandler(handlers);

@@ -1,35 +1,26 @@
 package ca.aquiletour.core.pages.git.messages;
 
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.git.CommitListView;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
-import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
-import ca.ntro.core.mvc.ParentViewMessageHandler;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class ShowCommitListHandler extends ControllerMessageHandler<CommitListController,
                                                                   CommitListView,
                                                                   ShowCommitListMessage> {
-	private String currentStudentId = null;
-
+	
 	@Override
 	protected void handle(CommitListController currentController, CommitListView currentView, ShowCommitListMessage message) {
-		// TODO Auto-generated method stub
 		T.call(this);
 		
-		String studentId = message.getStudentId();
-		
-		MustNot.beNull(studentId);
-		
-		if(!studentId.equals(currentStudentId)) {
-			// XXX: change queue model when needed
-			String authToken = currentController.context().user().getAuthToken();
-			currentController.setModelLoader(CommitListModel.class, authToken, studentId);
-			currentStudentId = studentId;
-		}
+		GetCommitsForPath getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
+		getCommitListMessage.loadStudentExerciseInfo(message);
+
+		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showGit(currentView);

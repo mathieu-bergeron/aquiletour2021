@@ -17,21 +17,24 @@
 
 package ca.aquiletour.core.pages.root;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.pages.dashboards.student.StudentDashboardController;
+import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
+import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
+import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
-import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardController;
+import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.queue.student.StudentQueueController;
-import ca.aquiletour.core.pages.queue.teacher.TeacherQueueController;
+import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
+import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
 import ca.aquiletour.core.pages.queues.QueuesController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
@@ -43,7 +46,7 @@ public class RootController extends NtroRootController {
 	
 	// FIXME: ugly, but modelStore does not support
 	//        two models of the same kind
-	private boolean ifDashboardControllerAlreadyAdded = false;
+	private boolean ifRoleSpecificSubControllersAdded = false;
 	
 	@Override
 	protected void onCreate(NtroContext<?> context) {
@@ -53,16 +56,14 @@ public class RootController extends NtroRootController {
 		
 		// FIXME: modelStore does not support
 		//        two models of the same kind (or with the same DocumentPath)
-		addStudentOrTeacherSubController(context);
+		addRoleSpecificSubControllers(context);
 
-		addSubController(QueuesController.class, "profs");
+		addSubController(QueuesController.class, Constants.QUEUES_URL_SEGMENT);
 	
-		addSubController(TeacherQueueController.class, "billetterie");
-		addSubController(StudentQueueController.class, "billetterie");
+		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
+		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);
 
-		addSubController(LoginController.class, "connexion");
-		addSubController(HomeController.class, "accueil");
-		addSubController(CommitListController.class, "progressiongit");
+		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
 
 		addWindowViewHandler(new RootViewHandler());
 		
@@ -103,31 +104,31 @@ public class RootController extends NtroRootController {
 
 		view.adjustLoginLinkText(context);
 		
-		addStudentOrTeacherSubController(context);
+		addRoleSpecificSubControllers(context);
 	}
 
-	private void addStudentOrTeacherSubController(NtroContext<?> context) {
+	private void addRoleSpecificSubControllers(NtroContext<?> context) {
 		T.call(this);
 		
-		if(ifDashboardControllerAlreadyAdded) return;
+		if(ifRoleSpecificSubControllersAdded) return;
 
 		if(context.user() instanceof Teacher
 				|| context.user() instanceof TeacherGuest) {
 			
-			System.out.println("addTeacherSubController");
+			addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
+			addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
+			addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
 			
-			addSubController(TeacherDashboardController.class, "mescours");
-			
-			ifDashboardControllerAlreadyAdded = true;
+			ifRoleSpecificSubControllersAdded = true;
 			
 		}else if(context.user() instanceof Student
 				|| context.user() instanceof StudentGuest){
 
-			System.out.println("addStudentSubController");
+			addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
+			addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
+			addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
 
-			addSubController(StudentDashboardController.class, "mescours");
-
-			ifDashboardControllerAlreadyAdded = true;
+			ifRoleSpecificSubControllersAdded = true;
 		}
 	}
 

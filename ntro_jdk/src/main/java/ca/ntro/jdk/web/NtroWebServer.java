@@ -17,7 +17,8 @@ public class NtroWebServer {
 
 	}
 
-	public static NtroInitializationTask defaultInitializationTask(Class<? extends BackendServiceServer> backendServiceClass, ModelStore localStore) {
+	public static NtroInitializationTask defaultInitializationTask(Class<? extends BackendServiceServer> backendServiceClass, 
+			                                                       Class<? extends ModelStore> modelStoreClass) {
 		__T.call(NtroWebServer.class, "defaultInitializationTask");
 
 		EarlyInitializationJdk earlyInitialization = new EarlyInitializationJdk();
@@ -26,7 +27,7 @@ public class NtroWebServer {
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
 		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
 
-		initializationTask.addSubTask(new InitializationTaskWebserver(backendServiceClass, localStore));
+		initializationTask.addSubTask(new InitializationTaskWebserver(backendServiceClass, modelStoreClass));
 
 		return initializationTask;
 	}

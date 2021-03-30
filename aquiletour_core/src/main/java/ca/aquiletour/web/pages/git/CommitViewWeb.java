@@ -16,13 +16,11 @@ public class CommitViewWeb extends NtroViewWeb implements CommitView {
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
-		T.here();
 	}
 
 
 	@Override
 	public void displayCommit(Commit commit) {
-		T.here();
 		T.call(this);
 
 		HtmlElement commitMessage = this.getRootElement().find("#commitMessage").get(0);

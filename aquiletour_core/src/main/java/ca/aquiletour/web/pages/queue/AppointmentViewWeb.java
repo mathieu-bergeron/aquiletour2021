@@ -6,8 +6,6 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {

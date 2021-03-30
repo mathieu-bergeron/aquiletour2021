@@ -67,7 +67,7 @@ public abstract class MessageService {
 		MSG message = Ntro.factory().newInstance(messageClass);
 		
 		if(message instanceof NtroUserMessage) {
-			((NtroUserMessage) message).setUser(Ntro.userService().currentUser());
+			((NtroUserMessage) message).setUser(Ntro.userService().user());
 		}
 
 		return message;

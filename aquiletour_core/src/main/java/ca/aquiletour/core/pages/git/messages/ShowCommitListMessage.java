@@ -1,18 +1,7 @@
 package ca.aquiletour.core.pages.git.messages;
 
-import ca.ntro.messages.NtroMessage;
+import ca.aquiletour.core.messages.git.StudentExerciseMessage;
 
-public class ShowCommitListMessage extends NtroMessage {
-	
-	String studentId;
-
-	public String getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
-	
+public class ShowCommitListMessage extends StudentExerciseMessage {
 	
 }

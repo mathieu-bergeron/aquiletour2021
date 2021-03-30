@@ -25,7 +25,7 @@ public class JsonSerialization {
 	
 
 	private static Object toJsonValue(Object javaValue, String valuePath, Map<Object, String> localHeap) {
-		
+
 		Object jsonValue = null;
 		
 		if(javaValue == null) {

@@ -104,11 +104,11 @@ public class QueueModel implements NtroModel {
 		this.studentIds = studentIds;
 	}
 	
-	public void moveAppointment(String appointmentId, MoveAppointmentDestination destination) {
+	public void moveAppointment(String appointmentId, String destinationId, String beforeOrAftetr) {
 		T.call(this);
 		
 		Appointment appointmentToMove = findAppointmentById(appointmentId);
-		Appointment anchorAppointment = findAppointmentById(destination.getAppointmentId());
+		Appointment anchorAppointment = findAppointmentById(destinationId);
 		
 		if(appointmentToMove != null && anchorAppointment != null) {
 
@@ -116,7 +116,7 @@ public class QueueModel implements NtroModel {
 
 			int anchorIndex = getAppointments().indexOf(anchorAppointment);
 			
-			if(destination == MoveAppointmentDestination.AFTER) {
+			if(beforeOrAftetr.equals("after")) {
 
 				getAppointments().insertItem(anchorIndex+1, appointmentToMove);
 

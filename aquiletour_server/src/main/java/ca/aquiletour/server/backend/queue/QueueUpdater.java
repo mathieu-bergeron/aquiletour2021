@@ -234,7 +234,12 @@ public class QueueUpdater {
 	public static void moveAppointment(ModelStoreSync modelStore, 
 			                           String queueId, 
 			                           String appointmentId, 
+<<<<<<< HEAD
 			                           MoveAppointmentDestination destination) {
+=======
+			                           String destinationId,
+			                           String beforeOrAfter) {
+>>>>>>> main
 
 		T.call(QueueUpdater.class);
 		
@@ -243,7 +248,11 @@ public class QueueUpdater {
 			public void update(QueueModel queue) {
 				T.call(this);
 
+<<<<<<< HEAD
 				queue.moveAppointment(appointmentId, destination);
+=======
+				queue.moveAppointment(appointmentId, destinationId, beforeOrAfter);
+>>>>>>> main
 			}
 		});
 	}

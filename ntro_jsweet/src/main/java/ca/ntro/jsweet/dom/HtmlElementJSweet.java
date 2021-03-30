@@ -83,14 +83,14 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void insertBefore(HtmlElement element) {
 		T.call(this);
 
-		jQueryElement.before(((HtmlElementJSweet) element).jQueryElement);
+		jQueryElement.insertBefore(((HtmlElementJSweet) element).jQueryElement);
 	}
 
 	@Override
 	public void insertAfter(HtmlElement element) {
 		T.call(this);
 
-		jQueryElement.after(((HtmlElementJSweet) element).jQueryElement);
+		jQueryElement.insertAfter(((HtmlElementJSweet) element).jQueryElement);
 	}
 
 	@Override
@@ -271,5 +271,10 @@ public class HtmlElementJSweet extends HtmlElement {
 		T.call(this);
 		
 		jQueryElement.trigger(event);
+	}
+
+	@Override
+	public String text() {
+		return jQueryElement.text();
 	}
 }

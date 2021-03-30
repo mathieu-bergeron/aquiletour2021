@@ -31,6 +31,11 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
+	public String text() {
+		return jsoupElement.text();
+	}
+
+	@Override
 	public void removeListeners() {
 		T.call(this);
 		// XXX: event listeners ignored on server
@@ -243,4 +248,5 @@ public class HtmlElementJdk extends HtmlElement {
 	public void trigger(String event) {
 		// XXX: not supported on the server
 	}
+
 }

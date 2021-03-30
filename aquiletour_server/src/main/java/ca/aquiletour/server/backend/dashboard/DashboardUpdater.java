@@ -5,8 +5,10 @@ import java.util.List;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class DashboardUpdater {
@@ -89,6 +91,15 @@ public class DashboardUpdater {
 			                             String userId) {
 
 		T.call(DashboardUpdater.class);
+		
+		if(!modelStore.ifModelExists(DashboardModel.class, "admin", userId)) {
+			modelStore.createModel(DashboardModel.class, "admin", userId, new ModelInitializer<DashboardModel>() {
+				@Override
+				public void initialize(DashboardModel newModel) {
+					T.call(this);
+				}
+			});
+		}
 
 		modelStore.updateModel(DashboardModel.class, 
 							   "admin",

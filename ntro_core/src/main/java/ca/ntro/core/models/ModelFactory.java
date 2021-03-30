@@ -33,6 +33,17 @@ public class ModelFactory {
 		
 		return model;
 	}
+	
+	
+	public static void updateStoreConnections(NtroModel model,
+										      ModelStore modelStore,
+			                                  DocumentPath documentPath) {
+
+		T.call(ModelFactory.class);
+		
+		initializeStoreConnections(model, modelStore, documentPath.toValuePath(), new HashSet<>());
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	private static void initializeStoreConnections(Object value, 
