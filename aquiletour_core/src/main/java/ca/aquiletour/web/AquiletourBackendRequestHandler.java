@@ -2,6 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
@@ -43,35 +44,35 @@ public class AquiletourBackendRequestHandler {
 			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
 			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
 
-		} else if(path.startsWith("deconnexion")) {
+		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 
 			Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserLogsOutMessage.class));
 
-		} else if(path.startsWith("mescours")) {
+		} else if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
 
 			sendDashboardMessages(path.subPath(1), parameters, (User) Ntro.userService().currentUser());
 
-		} else if(path.startsWith("profs")) {
+		} else if(path.startsWith(Constants.QUEUES_URL_SEGMENT)) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
-		}else if(path.startsWith("billetterie")) {
+		}else if(path.startsWith(Constants.QUEUE_URL_SEGMENT)) {
 			
 			sendQueueMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
 
-		}else if(path.startsWith("cours")) {
+		}else if(path.startsWith(Constants.COURSE_URL_SEGMENT)) {
 			
 			sendCourseMessages(path.subPath(1), parameters , (User) Ntro.userService().currentUser());
 			
-		}else if(path.startsWith("connexion")) {
+		}else if(path.startsWith(Constants.LOGIN_URL_SEGMENT)) {
 			
 			sendLoginMessages(path.subPath(1), parameters);
 	
-		}else if(path.startsWith("home")) {
+		}else if(path.startsWith(Constants.HOME_URL_SEGMENT)) {
 
 			sendHomeMessages(path.subPath(1), parameters);
 			
-		}else if(path.startsWith("progressiongit")) {
+		}else if(path.startsWith(Constants.GIT_PROGRESS_URL_SEGMENT)) {
 
 			sendGitMessages(path.subPath(1), parameters);
 		}

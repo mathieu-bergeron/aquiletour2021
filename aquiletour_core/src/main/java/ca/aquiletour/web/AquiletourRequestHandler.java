@@ -3,13 +3,11 @@ package ca.aquiletour.web;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
-import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
@@ -23,7 +21,6 @@ import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
 import ca.ntro.services.Ntro;
 
 public class AquiletourRequestHandler {
@@ -32,35 +29,35 @@ public class AquiletourRequestHandler {
 	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.startsWith("mescours")) {
+		if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
-		}else if(path.startsWith("profs")) {
+		}else if(path.startsWith(Constants.QUEUES_URL_SEGMENT)) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
-		}else if(path.startsWith("billetterie")) {
+		}else if(path.startsWith(Constants.QUEUE_URL_SEGMENT)) {
 			
 			sendQueueMessages(path.subPath(1), parameters, context.user());
 
-		} else if(path.startsWith("cours")) {
+		} else if(path.startsWith(Constants.COURSE_URL_SEGMENT)) {
 
 			sendCourseMessages(path.subPath(1), parameters, context.user());
 		
-		}else if(path.startsWith("connexion")) {
+		}else if(path.startsWith(Constants.LOGIN_URL_SEGMENT)) {
 			
 			sendLoginMessages(path.subPath(1), parameters);
 			
-		} else if(path.startsWith("accueil")) {
+		} else if(path.startsWith(Constants.HOME_URL_SEGMENT)) {
 			
 			sendHomeMessages(path.subPath(1), parameters);
 
-		} else if(path.startsWith("deconnexion")) {
+		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 
 			Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
 			
-		} else if(path.startsWith("progressiongit")) {
+		} else if(path.startsWith(Constants.GIT_PROGRESS_URL_SEGMENT)) {
 
 			sendGitMessages(path.subPath(1), parameters, context.user());
 		}
@@ -152,8 +149,7 @@ public class AquiletourRequestHandler {
 			}
 
 			Ntro.messages().send(showCourseMessage);
-			
-			
+
 		}
 	}
 		
