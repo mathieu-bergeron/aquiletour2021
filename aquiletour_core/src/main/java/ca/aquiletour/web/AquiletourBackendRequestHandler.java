@@ -99,26 +99,26 @@ public class AquiletourBackendRequestHandler {
 		if(parameters.containsKey("addQueue")) {
 
 			String courseTitle = parameters.get("addQueue")[0];
-			String courseId = courseTitle; // FIXME we need a real ID
+			String courseId = courseTitle;  // FIXME: we need a real id
 
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setCourse(new CourseSummary(courseTitle, courseId));
 			addCourseMessage.setUser(user);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
-		} else if(parameters.containsKey("closeQueue")) {
+		} else if(parameters.containsKey(Constants.CLOSE_QUEUE_URL_PARAM)) {
 
 			TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
 			
-			String courseId = parameters.get("closeQueue")[0];
+			String courseId = parameters.get(Constants.CLOSE_QUEUE_URL_PARAM)[0];
 			teacherClosesQueueMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
 
-		} else if(parameters.containsKey("deleteQueue")) {
+		} else if(parameters.containsKey(Constants.DELETE_QUEUE_URL_PARAM)) {
 
 			DeleteCourseMessage deleteCourseMessage = Ntro.messages().create(DeleteCourseMessage.class);
 			
-			String courseId = parameters.get("deleteQueue")[0];
+			String courseId = parameters.get(Constants.DELETE_QUEUE_URL_PARAM)[0];
 			deleteCourseMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(deleteCourseMessage);
 		}

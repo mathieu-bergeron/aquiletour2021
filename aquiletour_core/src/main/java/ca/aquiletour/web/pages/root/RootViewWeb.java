@@ -32,6 +32,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private HtmlElement homeLink;
 	private HtmlElement dashboardLink;
+	private HtmlElement coursesLink;
+	private HtmlElement groupsLink;
 	private HtmlElement queuesLink;
 	private HtmlElement loginLink;
 

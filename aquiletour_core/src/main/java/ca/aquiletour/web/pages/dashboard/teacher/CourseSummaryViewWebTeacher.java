@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
@@ -7,6 +8,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -24,10 +26,6 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 	private HtmlElement csvFileInput;
 	private HtmlElement csvFileSubmit;
 	private HtmlElement csvFileQueueId;
-
-	private String openQueueHref;
-	private String closeQueueHref;
-	private String deleteQueueHref;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -51,9 +49,6 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 		MustNot.beNull(csvFileSubmit);
 		MustNot.beNull(csvFileQueueId);
 		
-		openQueueHref = title.getAttribute("href");
-		closeQueueHref = closeQueue.getAttribute("href");
-		deleteQueueHref = deleteQueue.getAttribute("href");
 	}
 
 	@Override
@@ -105,8 +100,10 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 
 	private void installDeleteQueueListener(CourseSummary course) {
 		T.call(this);
+		
+		Path coursePath = new Path(course.getCourseId());
 
-		deleteQueue.setAttribute("href", deleteQueueHref + course.getCourseId());
+		deleteQueue.setAttribute("href", "?" + Constants.DELETE_QUEUE_URL_PARAM  + "=" + coursePath.toFileName());
 		
 		deleteQueue.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -123,9 +120,11 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 
 	private void adjustOpenCloseLinks(CourseSummary course) {
 		T.call(this);
+		
+		Path coursePath = new Path(course.getCourseId());
 
-		title.setAttribute("href", openQueueHref + course.getCourseId());
-		closeQueue.setAttribute("href", closeQueueHref + course.getCourseId());
+		title.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + coursePath.toFileName());
+		closeQueue.setAttribute("href", "?" + Constants.CLOSE_QUEUE_URL_PARAM + "=" + coursePath.toFileName());
 
 		showOrHideCloseQueue(course.getIsQueueOpen().getValue());
 	}
