@@ -20,7 +20,7 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		
 		GetCommitsForPath getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
 		getCommitListMessage.loadStudentExerciseInfo(message);
-
+		
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
 		currentController.setSubModelLoader(CourseModel.class, Ntro.userService().user().getAuthToken(), message.getCourseId());
 

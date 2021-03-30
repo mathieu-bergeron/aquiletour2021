@@ -4,20 +4,20 @@ import ca.ntro.users.NtroUser;
 
 public abstract class UserService {
 	
-	private NtroUser user;
+	private NtroUser _user;
 
 	public NtroUser user() {
-		if(user == null) {
-			user = new NtroUser();
-			user.setId("__ntro");
-			user.setAuthToken("__ntro");
+		if(_user == null) {
+			_user = new NtroUser();
+			_user.setId("__ntro");
+			_user.setAuthToken("__ntro");
 		}
 
-		return user;
+		return _user;
 	}
 
 	public void registerCurrentUser(NtroUser user) {
-		this.user = user;
+		this._user = user;
 	}
 	
 }

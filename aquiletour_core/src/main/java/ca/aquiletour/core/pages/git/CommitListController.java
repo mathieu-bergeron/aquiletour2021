@@ -15,6 +15,21 @@ public class CommitListController extends NtroController<RootController> {
 	@Override
 	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
+		
+		/* Il faut faire mieux comme API
+		 * 
+		 * - pour commencer, uniquement
+		 *     
+		 *                      Controller -->
+		 *     ShowCommitListMessage.class --> ShowCommitListHandler
+		 *     
+		 * - une fois le ShowCommitListMessage rȩcu, on ajoute:
+		 * 
+		 *   ViewLoader()       -->
+		 *   SubViewLoader()    -->    CommitListViewModel
+		 *   ModelLoader()      -->     
+		 *   SubModelLoader()   -->
+		 */
 
 		setViewLoader(CommitListView.class, "fr");
 

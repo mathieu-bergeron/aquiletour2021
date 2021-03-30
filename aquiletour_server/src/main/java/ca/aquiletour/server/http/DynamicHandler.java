@@ -145,9 +145,16 @@ public class DynamicHandler extends AbstractHandler {
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
 		
-		//System.out.println(rootController.getTask().toString());
+		/* for a truly async server, we need
+		 * 
+		 * - a listener for when the taskGraph becomes "stale", that is:
+		 *   when all tasks are either:
+		 *   DONE or WAITING for a message  (all messages are already sent)
+		 *   BUT NOT: waiting for a resource (that we must wait)
+		 */
 		
-		// XXX the entire taskGraph is not really async
+		
+		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
 		if(!baseRequest.isHandled()) {
@@ -235,12 +242,6 @@ public class DynamicHandler extends AbstractHandler {
 
 		AquiletourRequestHandler.sendMessages(context, path, parameters);
 
-		// DEBUG
-		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
-		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
-
-		//rootController.getTask().destroy();
-		
 		// XXX: prepare for next request
 		Ntro.reset();
 	}
