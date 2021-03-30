@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.root;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
@@ -48,13 +49,15 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(queuesLink);
 		MustNot.beNull(loginLink);
 
-		addListeners();
+		initializeLinks();
 
 		adjustLoginLinkText(context);
 	}
 
-	private void addListeners() {
+	private void initializeLinks() {
 		T.call(this);
+		
+		homeLink.setAttribute("href", "/" + Constants.HOME_URL_SEGMENT);
 
 		homeLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -63,6 +66,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
 			}
 		});
+		
+		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT 
+				                               + "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+				                               + "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 
 		dashboardLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -72,6 +79,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
 			}
 		});
+
+		queuesLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
 		
 		queuesLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -80,6 +89,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(Ntro.messages().create(ShowQueuesMessage.class));
 			}
 		});
+
+		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
 
 		loginLink.addEventListener("click", new HtmlEventListener() {
 			@Override

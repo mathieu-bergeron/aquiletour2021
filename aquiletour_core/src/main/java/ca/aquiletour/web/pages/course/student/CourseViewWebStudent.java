@@ -1,11 +1,13 @@
 package ca.aquiletour.web.pages.course.student;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
@@ -13,7 +15,6 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement gitRepoForm;
 	private HtmlElement gitProgressionLink;
 	
-	private String gitProgressionHref;
 	private String gitProgressionText;
 
 	@Override
@@ -27,7 +28,6 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(gitRepoForm);
 		MustNot.beNull(gitProgressionLink);
 		
-		gitProgressionHref = gitProgressionLink.getAttribute("href");
 		gitProgressionText = gitProgressionLink.text();
 	}
 
@@ -36,7 +36,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		super.identifyCurrentTask(courseId, task);
 		
-		gitProgressionLink.setAttribute("href", gitProgressionHref  + courseId + task.id());
+		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
+				                                + "/" + courseId 
+				                                + task.id()
+												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
+
 		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + courseId + task.id());
 	}
 

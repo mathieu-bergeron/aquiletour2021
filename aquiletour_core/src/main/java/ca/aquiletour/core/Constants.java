@@ -21,6 +21,9 @@ public class Constants {
 	public static final String LOGIN_URL_SEGMENT = "connexion";
 	public static final String LOGOUT_URL_SEGMENT = "deconnexion";
 	public static final String HOME_URL_SEGMENT = "accueil";
-	public static final String GIT_PROGRESS_URL_SEGMENT = "rapports_git";
+	public static final String GIT_PROGRESS_URL_SEGMENT = "git";
+
+	public static final String USER_URL_PARAM = "u";
+	public static final String SEMESTER_URL_PARAM = "s";
 	
 }

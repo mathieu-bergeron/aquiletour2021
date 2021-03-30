@@ -13,7 +13,7 @@ public class DashboardControllerStudent extends DashboardController {
 	protected Class<? extends DashboardView> viewClass() {
 		T.call(this);
 
-		return StudentDashboardView.class;
+		return DashboardViewStudent.class;
 	}
 
 	@Override

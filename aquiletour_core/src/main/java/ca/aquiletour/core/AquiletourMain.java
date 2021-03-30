@@ -87,7 +87,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// FIXME
 		Constants.LANG = "fr";
 
-		User currentUser = (User) Ntro.userService().currentUser();
+		User currentUser = (User) Ntro.userService().user();
 		
 		NtroContext<User> context = new NtroContext<>();
 		context.registerUser(currentUser);

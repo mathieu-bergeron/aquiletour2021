@@ -257,11 +257,11 @@ public class Ntro {
 	public static MessageService messages() {
 		__T.call(Ntro.class, "messageService");
 
-		MessageService service = messageServices.get(threadService().currentThread().getThreadId());
+		MessageService service = messageServices.get(threadService().currentThread().threadId());
 
 		if(service == null) {
 			service = Ntro.factory().newInstance(messageServiceClass);
-			messageServices.put(threadService().currentThread().getThreadId(), service);
+			messageServices.put(threadService().currentThread().threadId(), service);
 		}
 
 		return service;
@@ -410,11 +410,11 @@ public class Ntro {
 	public static UserService userService() {
 		__T.call(Ntro.class, "userService");
 
-		UserService service = userServices.get(threadService().currentThread().getThreadId());
+		UserService service = userServices.get(threadService().currentThread().threadId());
 
 		if(service == null) {
 			service = Ntro.factory().newInstance(userServiceClass);
-			userServices.put(threadService().currentThread().getThreadId(), service);
+			userServices.put(threadService().currentThread().threadId(), service);
 		}
 
 		return service;

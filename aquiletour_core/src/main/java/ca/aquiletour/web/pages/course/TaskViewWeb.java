@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.course;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
@@ -17,8 +18,6 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	private HtmlElement subTasksContainer;
 	private HtmlElement nextTasksContainer;
 
-	private String taskTitleHref;
-
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
@@ -33,9 +32,6 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		MustNot.beNull(previousTasksContainer);
 		MustNot.beNull(subTasksContainer);
 		MustNot.beNull(nextTasksContainer);
-		
-		
-		taskTitleHref = taskTitleLink.getAttribute("href");
 	}
 
 	@Override
@@ -43,7 +39,11 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		T.call(this);
 		
 		taskTitleLink.html(task.getTitle());
-		taskTitleLink.setAttribute("href", taskTitleHref + courseId + "/" + task.id());
+		taskTitleLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT 
+	                                     	+ "/" + courseId 
+	                                     	+ task.id()
+	                                     	+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+	                                     	+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 		
 		task.forEachPreviousTask(pt -> {
 			addTaskLi(courseId, task, pt, previousTasksContainer, "PreviousTask");

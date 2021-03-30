@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.dashboard;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
@@ -15,8 +16,6 @@ public abstract class CourseSummaryViewWeb extends NtroViewWeb implements Course
 
 	private HtmlElement showCourseLink;
 
-	private String showCourseHref;
-
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
@@ -24,8 +23,6 @@ public abstract class CourseSummaryViewWeb extends NtroViewWeb implements Course
 		showCourseLink = this.getRootElement().find("#show-course-link").get(0);
 
 		MustNot.beNull(showCourseLink);
-
-		showCourseHref = showCourseLink.getAttribute("href");
 
 	}
 
@@ -39,8 +36,8 @@ public abstract class CourseSummaryViewWeb extends NtroViewWeb implements Course
 	private void installShowCourseListener(CourseSummary course) {
 		T.call(this);
 
-		showCourseLink.setAttribute("href", showCourseHref + course.getCourseId());
-		
+		showCourseLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + "/" + course.getCourseId());
+
 		showCourseLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
