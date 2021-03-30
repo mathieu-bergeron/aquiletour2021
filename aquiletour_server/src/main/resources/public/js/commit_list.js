@@ -84,6 +84,14 @@ function initializeCommitList(viewRootElement, jSweet) {
                         return commitInfo;
                     }
                 }
+            },
+            onClick: function(evt) {//bring to commit on page
+                var element = commitsChart.getElementAtEvent(evt);
+                if(element.length > 0)
+                {
+                    var ind = element[0]._index;
+                    window.location.replace("#commit-" + ind);
+                }
             }
 
         }
@@ -123,7 +131,6 @@ function initializeCommitList(viewRootElement, jSweet) {
         var commitMessageText = $(commitMessageSpan).text();
         var exercisePathText = $(exercisePathSpan).text();
         var modifiedFilesText = $(modifiedFilesSpan).text();
-        console.log(new Date(timeStampInt))
 
         commitsChart.data.datasets.forEach((dataset) => {
             dataset.data.push({
@@ -137,10 +144,11 @@ function initializeCommitList(viewRootElement, jSweet) {
     //colors
     var colors = [];
     var exercisePathsAlreadyColored = [];
-    var exercisePathExists = false;
+    var exercisePathIsInTheArray;
     for (i = 0; i < commitsChart.data.datasets[0].data.length; i++) {
 		var exercisePath = commitsChart.data.datasets[0].data[i].exercisePath;
 		var color = getRandomColor();
+        exercisePathIsInTheArray = false
 		if (exercisePathsAlreadyColored.length === 0) {
             exercisePathsAlreadyColored.push(exercisePath);
             colors.push(color);
@@ -148,24 +156,19 @@ function initializeCommitList(viewRootElement, jSweet) {
 
 		} else {
 			for (j = 0; j < exercisePathsAlreadyColored.length; j++) {
-                console.log(exercisePathsAlreadyColored[j]);
-                // console.log(exercisePath);
 				if (exercisePathsAlreadyColored[j] === exercisePath) {
 					pointBackgroundColors.push(colors[j]);
-                    exercisePathExists = true;
+                    exercisePathIsInTheArray = true;
 				}
 			}
-			if(!exercisePathExists){
-                exercisePathExists = false;
+			if(!exercisePathIsInTheArray){
                 exercisePathsAlreadyColored.push(exercisePath);
                 colors.push(color);
                 pointBackgroundColors.push(color);
             }
 		}
 	}
-    // console.log(exercisePathsAlreadyColored);
-    // console.log(colors);
-   
+    console.log(exercisePathsAlreadyColored);
     commitsChart.update();
 
 
@@ -178,6 +181,7 @@ function initializeCommitList(viewRootElement, jSweet) {
         return color;
     }
 
+    //size
     for (i = 1; i < commitsChart.data.datasets[0].data.length; i++) { //i = 1, because first entry is not a datapoint
         var estimatedEffort = commitsChart.data.datasets[0].data[i].y;
         if (estimatedEffort >= 0 && estimatedEffort < 10) {

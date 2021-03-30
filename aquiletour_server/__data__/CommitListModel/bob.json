@@ -21,9 +21,9 @@
 			},
 			{
 				"_C": "Commit",
-				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"exercisePath": "/3C6/etape1/atelier4/exercice2",
 				"modifiedFiles": [
-					"/src/atelier2/Exercise3.java",
+					"/src/atelier4/Exercise2.java",
 					"REAMDE.md"
 				],
 				"estimatedEffort": 2,
@@ -45,7 +45,7 @@
 				"_C": "Commit",
 				"exercisePath": "/3C6/etape1/atelier1/exercice3",
 				"modifiedFiles": [
-					"/src/atelier2/Exercise3.java",
+					"/src/atelier4/Exercise2.java",
 					"REAMDE.md"
 				],
 				"estimatedEffort": 7,
@@ -76,7 +76,7 @@
 			},
 			{
 				"_C": "Commit",
-				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"exercisePath": "/3C6/etape1/atelier4/exercice2",
 				"modifiedFiles": [
 					"/src/atelier2/Exercise3.java",
 					"REAMDE.md"
@@ -111,7 +111,7 @@
 				"_C": "Commit",
 				"exercisePath": "/3C6/etape1/atelier1/exercice3",
 				"modifiedFiles": [
-					"/src/atelier2/Exercise3.java",
+					"/src/atelier4/Exercise2.java",
 					"REAMDE.md"
 				],
 				"estimatedEffort": 16,
@@ -131,7 +131,7 @@
 			},
 			{
 				"_C": "Commit",
-				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"exercisePath": "/3C6/etape1/atelier4/exercice2",
 				"modifiedFiles": [
 					"/src/atelier2/Exercise3.java",
 					"REAMDE.md"
@@ -155,7 +155,7 @@
 				"_C": "Commit",
 				"exercisePath": "/3C6/etape1/atelier1/exercice3",
 				"modifiedFiles": [
-					"/src/atelier2/Exercise3.java",
+					"/src/atelier2/Exercise1.java",
 					"REAMDE.md"
 				],
 				"estimatedEffort": 4,
