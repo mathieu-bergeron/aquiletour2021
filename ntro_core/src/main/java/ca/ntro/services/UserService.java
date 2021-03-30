@@ -6,7 +6,7 @@ public abstract class UserService {
 	
 	private NtroUser user;
 
-	public NtroUser currentUser() {
+	public NtroUser user() {
 		if(user == null) {
 			user = new NtroUser();
 			user.setId("__ntro");

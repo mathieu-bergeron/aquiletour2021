@@ -6,48 +6,34 @@ import ca.ntro.messages.NtroUserMessage;
 
 public class MoveAppointmentMessage extends NtroUserMessage<User> {
 
-	
 	private String appointmentId;
-	private String appointmentDestinationId;
-	private String appointmentDepartureId;
+	private String destinationId;
+	private String beforeOrAfter;
 	private String courseId;
 
 	public String getAppointmentId() {
-		T.call(this);
-
 		return appointmentId;
 	}
-
 	public void setAppointmentId(String appointmentId) {
-		T.call(this);
-
 		this.appointmentId = appointmentId;
 	}
-
-	public String getappointmentDestinationId() {
-		return appointmentDestinationId;
+	public String getDestinationId() {
+		return destinationId;
 	}
-
-	public void setappointmentDestinationId(String appointmentDestinationId) {
-		this.appointmentDestinationId = appointmentDestinationId;
+	public void setDestinationId(String destinationId) {
+		this.destinationId = destinationId;
 	}
-
-	public String getappointmentDepartureId() {
-		return appointmentDepartureId;
+	public String getBeforeOrAfter() {
+		return beforeOrAfter;
 	}
-
-	public void setappointmentDepartureId(String appointmentDepartureId) {
-		this.appointmentDepartureId = appointmentDepartureId;
+	public void setBeforeOrAfter(String beforeOrAfter) {
+		this.beforeOrAfter = beforeOrAfter;
 	}
-
 	public String getCourseId() {
 		return courseId;
 	}
-
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
 	
-	
-
 }

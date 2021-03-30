@@ -25,11 +25,15 @@ import ca.ntro.services.__Ntro;
 public class Log {
 
 	public static void warning(String... messages) {
-
+		for(String message : messages) {
+			System.err.println(message);
+		}
 	}
 
 	public static void error(String... messages) {
-
+		for(String message : messages) {
+			System.err.println(message);
+		}
 	}
 
 	public static void fatalErrorAtDepth(String message, int currentDepth, Exception... causedBy) {

@@ -14,13 +14,14 @@ import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.json.JsonLoaderFiles;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
 
-public class LocalStoreFiles extends ModelStore {
+public abstract class LocalStoreFiles extends ModelStore {
 	
 	protected String getFileName() {
 		T.call(this);
@@ -43,7 +44,7 @@ public class LocalStoreFiles extends ModelStore {
 	}
 	
 	@Override
-	public JsonLoader getJsonLoader(DocumentPath documentPath) {
+	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
 		
 		File modelFile = getModelFile(documentPath);
@@ -52,12 +53,12 @@ public class LocalStoreFiles extends ModelStore {
 		
 		if(modelFile.exists()) {
 
-			jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
+			jsonLoader = new JsonLoaderFiles(modelFile);
 
 		}else {
 
 			// Create empty model if non exists
-			jsonLoader = new JsonLoaderMemory(documentPath, ModelStore.emptyModelString(documentPath));
+			jsonLoader = new JsonLoaderMemory(ModelStore.emptyModelString(documentPath));
 		}
 		
 		return jsonLoader;
@@ -135,15 +136,6 @@ public class LocalStoreFiles extends ModelStore {
 		
 	}
 
-	@Override
-	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
-		// XXX: must be overriden on the server
-	}
-
-	@Override
-	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
-		// XXX: must be overriden on the server
-	}
 
 
 }

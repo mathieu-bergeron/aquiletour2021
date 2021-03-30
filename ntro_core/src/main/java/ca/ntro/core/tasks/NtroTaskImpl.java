@@ -50,7 +50,15 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	public String getTaskId() {
 		return taskId;
 	}
+	
+	protected TaskState state() {
+		return state;
+	}
 
+	protected void setState(TaskState state) {
+		this.state = state;
+	}
+	
 	@Override
 	public String getLabel() {
 		// TMP
@@ -529,9 +537,10 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 				if(ifTaskChangedState) {
 					
 					boolean cycleDetected = appendCurrentStateToTrace(trace, (NtroTaskImpl)task);
+					/*
 					if(cycleDetected) {
 						Log.warning("Cycle detected in task graph at node " + getNodeId());
-					}
+					}*/
 					
 					ifShouldContinueExecution = true;
 				}

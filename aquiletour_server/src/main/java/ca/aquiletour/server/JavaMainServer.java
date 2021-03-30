@@ -20,16 +20,13 @@ package ca.aquiletour.server;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.web.NtroWebServer;
-import ca.ntro.services.ModelStore;
 
 public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		ModelStore localStore = new LocalStoreServer();
-		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, localStore)
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreServer.class)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();

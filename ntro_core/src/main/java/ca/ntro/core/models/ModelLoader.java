@@ -11,13 +11,15 @@ public class ModelLoader extends NtroTaskAsync {
 	private Class<? extends NtroModel> modelClass;
 	
 	private NtroModel model;
+	private DocumentPath documentPath;
 	private ModelStore modelStore;
 	
-	public ModelLoader(ModelStore modelStore) {
+	public ModelLoader(ModelStore modelStore, DocumentPath documentPath) {
 		super();
 		T.call(this);
 		
 		this.modelStore = modelStore;
+		this.documentPath = documentPath;
 	}
 	
 	@Override
@@ -28,7 +30,6 @@ public class ModelLoader extends NtroTaskAsync {
 		JsonLoader jsonLoader = (JsonLoader) getSubTask(JsonLoader.class, "JsonLoader");
 		
 		String jsonString = jsonLoader.getJsonString();
-		DocumentPath documentPath = jsonLoader.getDocumentPath();
 		
 		model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
 		

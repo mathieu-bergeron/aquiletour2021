@@ -45,15 +45,13 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				// TODO Auto-generated method stub
 				T.call(this);
 				
-				String currentUserId = Ntro.userService().currentUser().getId();
-				
+				String currentUserId = Ntro.userService().user().getId();
 				
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				
 				appointmentView.displayAppointement(model.getCourseId(), currentUserId, item);
 				
-				//view.insertAppointment(index, item, appointmentView);
-				view.appendAppointement(item, appointmentView);
+				view.insertAppointment(index, appointmentView);
 			}
 
 			@Override
@@ -67,8 +65,6 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				// TODO Auto-generated method stub
 				T.call(this);
 				
-				System.out.println("onItemRemoved " + index);
-
 				view.deleteAppointment(item.getId());
 			}
 

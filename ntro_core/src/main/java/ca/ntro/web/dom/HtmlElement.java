@@ -11,6 +11,7 @@ public abstract class HtmlElement {
 	public abstract void insertBefore(HtmlElement element);
 	public abstract void insertAfter(HtmlElement element);
 	public abstract void text(String newText);
+	public abstract String text();
 
 	public abstract void removeListeners();
 	public abstract void addEventListener(String event, HtmlEventListener listener);
@@ -23,12 +24,25 @@ public abstract class HtmlElement {
 	public abstract String getAttribute(String name);
 	public abstract void setAttribute(String name, String value);
 
-	public void clearChildren() {
+	public void removeChildrenFromDocument() {
 		T.call(this);
 
-		for (int i = 0; i < children("*").size(); i++) {
-			HtmlElement child = children("*").get(0);
+		HtmlElements children = children("*");
+
+		for (int i = 0; i < children.size(); i++) {
+			HtmlElement child = children.get(i);
 			child.removeFromDocument();
+		}
+	}
+
+	public void deleteChildrenForever() {
+		T.call(this);
+		
+		HtmlElements children = children("*");
+
+		for (int i = 0; i < children.size(); i++) {
+			HtmlElement child = children.get(i);
+			child.deleteForever();
 		}
 	}
 

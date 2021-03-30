@@ -1,0 +1,15 @@
+{
+  "appointments": {
+    "_C": "ObservableAppointmentList",
+    "value": []
+  },
+  "maxId": 0,
+  "teacherId": "alice",
+  "_C": "QueueModel",
+  "studentIds": [
+    "1234500",
+    "1234501",
+    "1234502"
+  ],
+  "courseId": "StruDon"
+}

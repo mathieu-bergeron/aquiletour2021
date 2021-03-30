@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeFilter;
 
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -27,6 +28,11 @@ public class HtmlElementJdk extends HtmlElement {
 	@Override
 	public void text(String newText) {
 		jsoupElement.text(newText);
+	}
+
+	@Override
+	public String text() {
+		return jsoupElement.text();
 	}
 
 	@Override
@@ -74,7 +80,7 @@ public class HtmlElementJdk extends HtmlElement {
 		MustNot.beNull(otherElement);
 		MustNot.beNull(otherElement.jsoupElement);
 
-		jsoupElement.before(otherElement.jsoupElement);
+		otherElement.jsoupElement.before(jsoupElement);
 	}
 
 	@Override
@@ -88,14 +94,14 @@ public class HtmlElementJdk extends HtmlElement {
 		MustNot.beNull(otherElement);
 		MustNot.beNull(otherElement.jsoupElement);
 
-		jsoupElement.after(otherElement.jsoupElement);
+		otherElement.jsoupElement.after(jsoupElement);
 	}
 
 	@Override
 	public HtmlElements children(String cssQuery) {
 		T.call(this);
 
-		Elements elements = jsoupElement.children().select(cssQuery);
+		Elements elements = jsoupElement.select(">" + cssQuery);
 
 		return new HtmlElementsJdk(elements);
 	}
@@ -242,4 +248,5 @@ public class HtmlElementJdk extends HtmlElement {
 	public void trigger(String event) {
 		// XXX: not supported on the server
 	}
+
 }

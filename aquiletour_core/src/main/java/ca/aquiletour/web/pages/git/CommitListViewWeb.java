@@ -14,12 +14,11 @@ public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
-		T.here();
+
 	}
 
 	@Override
 	public void appendCommit(Commit commit, CommitView commitView) {
-		T.here();
 		HtmlElement container = this.getRootElement().find("#commit-list").get(0);
 
 		MustNot.beNull(container);
@@ -32,8 +31,6 @@ public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 
 	@Override
 	public void displayCommitList(CommitListModel commitListModel) {
-		T.here();
-		
 		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
 		HtmlElement semesterId = this.getRootElement().find("#semesterId").get(0);
 		HtmlElement exercisePath = this.getRootElement().find("#exercisePath").get(0);
@@ -51,6 +48,5 @@ public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 		exercisePath.appendHtml(commitListModel.getExercisePath());
 		fromDate.appendHtml(commitListModel.getFromDate());
 		toDate.appendHtml(commitListModel.getToDate());
-		
 	}
 }

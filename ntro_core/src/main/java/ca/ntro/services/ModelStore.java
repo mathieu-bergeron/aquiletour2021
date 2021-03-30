@@ -17,6 +17,8 @@ import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
@@ -44,15 +46,32 @@ public abstract class ModelStore {
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
 
-		ModelLoader modelLoader = new ModelLoader(this);
 		
 		String documentId = documentId(firstPathName, pathRemainder);
 		DocumentPath documentPath = documentPath(modelClass, documentId);
+
+		ModelLoader modelLoader = new ModelLoader(this, documentPath);
 		
-		JsonLoader jsonLoader = getJsonLoader(documentPath);
+		JsonLoader jsonLoader = getJsonLoader(modelClass,documentPath);
 		jsonLoader.setTaskId("JsonLoader");
 
 		modelLoader.setTargetClass(modelClass);
+
+		//modelLoader.addPreviousTask(jsonLoader);
+		modelLoader.addSubTask(jsonLoader);
+
+		return modelLoader;
+	}
+
+	public ModelLoader getModelLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+		T.call(this);
+
+		ModelLoader modelLoader = new ModelLoader(this, message.documentPath());
+		
+		JsonLoader jsonLoader = jsonLoaderFromRequest(serviceUrl, message);
+		jsonLoader.setTaskId("JsonLoader");
+
+		modelLoader.setTargetClass(message.targetClass());
 
 		//modelLoader.addPreviousTask(jsonLoader);
 		modelLoader.addSubTask(jsonLoader);
@@ -88,24 +107,41 @@ public abstract class ModelStore {
 
 	protected abstract void installExternalUpdateListener(ExternalUpdateListener updateListener);
 
-	protected abstract JsonLoader getJsonLoader(DocumentPath documentPath);
+	protected abstract JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath);
+
+	protected abstract JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage message);
 
 	public abstract void saveDocument(DocumentPath documentPath, String jsonString);
 
 	public abstract void close();
 
-	public void registerModel(DocumentPath documentPath, NtroModel ntroModel) {
-		localHeap.put(ntroModel, documentPath);
-		localHeapByPath.put(documentPath, ntroModel);
+	public void registerModel(DocumentPath documentPath, NtroModel model) {
+		localHeap.put(model, documentPath);
+		localHeapByPath.put(documentPath, model);
+	}
+
+	public void updateStoreConnections(NtroModel model) {
+		DocumentPath modelPath = localHeap.get(model);
+		
+		if(modelPath != null) {
+
+			ModelFactory.updateStoreConnections(model, this, modelPath);
+
+		}else {
+			
+			Log.warning("No model to update: " + model);
+		}
 	}
 
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
-		if(args.size() > 0) {
+		if(args.size() == 0) {
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+		}else if(args.size() == 1){
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
 		}else {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0) + " " + args.get(1));
 		}
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
@@ -121,17 +157,21 @@ public abstract class ModelStore {
 				NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
 				NtroMethod methodToCall = valueClass.methodByName(methodName);
 				try {
+
 					methodToCall.invoke(value, args);
+					
+					// XXX: if we add a NtroModelValue, we need to connect it to the store
+					ModelFactory.updateStoreConnections(model, this, documentPath);
+					
+					
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					Log.fatalError("Unable to invoke " + methodName + "on valuePath " + valuePath.toString(), e);
+					Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
 				}
 			}
 		}
 	}
 
 	public abstract void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args);
-
-	public abstract void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model);
 
 	public void save(NtroModel model) {
 		T.call(this);
@@ -194,13 +234,14 @@ public abstract class ModelStore {
 
 	protected abstract void deleteDocument(DocumentPath documentPath);
 
-	public void closeWithoutSaving(NtroModel existingModel) {
+	public void closeWithoutSaving(NtroModel model) {
 		T.call(this);
 
-		DocumentPath documentPath = localHeap.get(existingModel);
+		DocumentPath documentPath = localHeap.get(model);
 
 		// JSWEET: will the work correctly? (removing by reference)
-		localHeap.remove(existingModel);
+		localHeap.remove(model);
 		localHeapByPath.remove(documentPath);
 	}
+
 }

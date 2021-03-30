@@ -4,6 +4,7 @@ import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElementLambda;
 import ca.ntro.web.dom.HtmlElements;
 
 public class HtmlElementsJdk implements HtmlElements {
@@ -30,6 +31,13 @@ public class HtmlElementsJdk implements HtmlElements {
 		T.call(this);
 		
 		return elements.size();
+	}
+
+	@Override
+	public void forEach(HtmlElementLambda lambda) {
+		T.call(this);
+
+		elements.forEach(e -> lambda.execute(new HtmlElementJdk(e)));
 	}
 
 }

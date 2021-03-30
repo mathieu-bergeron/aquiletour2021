@@ -33,7 +33,7 @@ class ParentViewMessageHandlerTask<PV extends NtroView,
 		CV currentView = (CV) ((ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID)).getView();
 		MustNot.beNull(currentView);
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		MessageHandlerTask messageHandlerTask = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
 		MustNot.beNull(messageHandlerTask);
 

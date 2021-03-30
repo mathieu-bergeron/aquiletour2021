@@ -1,12 +1,9 @@
 package ca.aquiletour.core.pages.git;
 
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitListViewModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListHandler;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
-import ca.aquiletour.core.pages.queue.QueueViewModel;
-import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
