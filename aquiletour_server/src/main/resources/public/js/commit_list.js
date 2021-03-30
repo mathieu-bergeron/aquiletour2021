@@ -85,11 +85,16 @@ function initializeCommitList(viewRootElement, jSweet) {
                     }
                 }
             },
-            onClick: function(evt) {//bring to commit on page
+            onClick: function (evt) {//bring to commit on page
                 var element = commitsChart.getElementAtEvent(evt);
-                if(element.length > 0)
-                {
+                if (element.length > 0) {
                     var ind = element[0]._index;
+                    $(viewRootElement.find("#commit-" + ind).parent()).css('border-style', 'solid');
+                    $(viewRootElement.find("#commit-" + ind).parent()).css('border-color', 'red');
+                    setTimeout(function () {
+                        $(viewRootElement.find("#commit-" + ind).parent()).css('border-style', '');
+                        $(viewRootElement.find("#commit-" + ind).parent()).css('border-color', '');
+                    }, 5000)
                     window.location.replace("#commit-" + ind);
                 }
             }
@@ -146,29 +151,28 @@ function initializeCommitList(viewRootElement, jSweet) {
     var exercisePathsAlreadyColored = [];
     var exercisePathIsInTheArray;
     for (i = 0; i < commitsChart.data.datasets[0].data.length; i++) {
-		var exercisePath = commitsChart.data.datasets[0].data[i].exercisePath;
-		var color = getRandomColor();
+        var exercisePath = commitsChart.data.datasets[0].data[i].exercisePath;
+        var color = getRandomColor();
         exercisePathIsInTheArray = false
-		if (exercisePathsAlreadyColored.length === 0) {
+        if (exercisePathsAlreadyColored.length === 0) {
             exercisePathsAlreadyColored.push(exercisePath);
             colors.push(color);
             pointBackgroundColors.push(color);
 
-		} else {
-			for (j = 0; j < exercisePathsAlreadyColored.length; j++) {
-				if (exercisePathsAlreadyColored[j] === exercisePath) {
-					pointBackgroundColors.push(colors[j]);
+        } else {
+            for (j = 0; j < exercisePathsAlreadyColored.length; j++) {
+                if (exercisePathsAlreadyColored[j] === exercisePath) {
+                    pointBackgroundColors.push(colors[j]);
                     exercisePathIsInTheArray = true;
-				}
-			}
-			if(!exercisePathIsInTheArray){
+                }
+            }
+            if (!exercisePathIsInTheArray) {
                 exercisePathsAlreadyColored.push(exercisePath);
                 colors.push(color);
                 pointBackgroundColors.push(color);
             }
-		}
-	}
-    console.log(exercisePathsAlreadyColored);
+        }
+    }
     commitsChart.update();
 
 
@@ -185,25 +189,25 @@ function initializeCommitList(viewRootElement, jSweet) {
     for (i = 1; i < commitsChart.data.datasets[0].data.length; i++) { //i = 1, because first entry is not a datapoint
         var estimatedEffort = commitsChart.data.datasets[0].data[i].y;
         if (estimatedEffort >= 0 && estimatedEffort < 10) {
-            pointRadiusByEstimatedEffort.push(4);
+            pointRadiusByEstimatedEffort.push(8);
         } else if (estimatedEffort >= 10 && estimatedEffort < 20) {
-            pointRadiusByEstimatedEffort.push(7);
+            pointRadiusByEstimatedEffort.push(10);
         } else if (estimatedEffort >= 20 && estimatedEffort < 30) {
-            pointRadiusByEstimatedEffort.push(9);
+            pointRadiusByEstimatedEffort.push(12);
         } else if (estimatedEffort >= 30 && estimatedEffort < 40) {
-            pointRadiusByEstimatedEffort.push(11);
+            pointRadiusByEstimatedEffort.push(14);
         } else if (estimatedEffort >= 40 && estimatedEffort < 50) {
-            pointRadiusByEstimatedEffort.push(13);
-        } else if (estimatedEffort >= 50 && estimatedEffort < 60) {
             pointRadiusByEstimatedEffort.push(16);
-        } else if (estimatedEffort >= 60 && estimatedEffort < 70) {
+        } else if (estimatedEffort >= 50 && estimatedEffort < 60) {
             pointRadiusByEstimatedEffort.push(18);
-        } else if (estimatedEffort >= 70 && estimatedEffort < 80) {
+        } else if (estimatedEffort >= 60 && estimatedEffort < 70) {
             pointRadiusByEstimatedEffort.push(20);
-        } else if (estimatedEffort >= 80 && estimatedEffort < 90) {
+        } else if (estimatedEffort >= 70 && estimatedEffort < 80) {
             pointRadiusByEstimatedEffort.push(22);
+        } else if (estimatedEffort >= 80 && estimatedEffort < 90) {
+            pointRadiusByEstimatedEffort.push(24);
         } else if (estimatedEffort >= 90 && estimatedEffort <= 100) {
-            pointRadiusByEstimatedEffort.push(25);
+            pointRadiusByEstimatedEffort.push(26);
         }
     }
     commitsChart.update();
