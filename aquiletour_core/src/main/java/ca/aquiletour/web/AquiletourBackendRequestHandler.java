@@ -371,6 +371,5 @@ public class AquiletourBackendRequestHandler {
 			Ntro.messages().send(moveAppointmentMessage);
 
 		} 
-		
 	}
 }

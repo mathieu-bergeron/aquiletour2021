@@ -71,7 +71,7 @@ function initializeCommitList(viewRootElement, jSweet) {
 	    		callbacks: {
 	                 label: function(tooltipItem, data) {
 	                    var commitInfo; 			
-	                    commitInfo = ["Timestamp : " + (new Date(tooltipItem.xLabel).toLocaleDateString('fr-ca', {month:'short', day:'numeric'})).toString() ];
+	                    commitInfo = ["Timestamp : " + (new Date(tooltipItem.xLabel).toLocaleDateString('fr-ca', {month:'short', day:'numeric', hour:'numeric', minute:'numeric'})).toString() ];
 	                    commitInfo.push("Estimated Effort : " + tooltipItem.yLabel);
 	                    commitInfo.push("Commit Message : " + getCommitMessage(tooltipItem, data.datasets));
 	                    commitInfo.push("Exercice Path : " + getExercicePath(tooltipItem, data.datasets));
@@ -79,12 +79,7 @@ function initializeCommitList(viewRootElement, jSweet) {
 	                    return commitInfo;
 	                 }
 	             }
-	    	},
-	    	    elements: {
-	    	        line: {
-	    	            tension: .1, // bezier curves
-	    	        }
-	    	     }
+	    	}
 	    	
 	    }
 	});
