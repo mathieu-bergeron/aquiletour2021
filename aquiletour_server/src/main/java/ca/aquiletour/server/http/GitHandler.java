@@ -35,7 +35,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
-import ca.aquiletour.core.messages.git.RegisterExercice;
+import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.server.backend.git.GitMessages;
@@ -86,7 +86,7 @@ public class GitHandler extends AbstractHandler {
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			
-			if(message instanceof RegisterExercice) {
+			if(message instanceof RegisterExercise) {
 
 				
 			}else if(message instanceof RegisterRepo) {

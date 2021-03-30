@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.git;
 
-public class RegisterExercice extends ExerciseMessage {
+public class RegisterExercise extends ExerciseMessage {
 	
 	private String sourceFolderPath;
 	private String completionKeywords;

@@ -5,7 +5,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class GetCommitsForPathBetweenDates extends GetCommitsForPath {
+public class GetCommitsForPathAndTimePeriod extends GetCommitsForPath {
 	
 	private long fromDate;
 	private long toDate;

@@ -8,6 +8,9 @@ import ca.ntro.core.system.trace.T;
 
 public class Path implements JsonSerializable {
 	
+	private static final String PATH_SEPARATOR = "/";
+	private static final String FILENAME_SEPARATOR = "¬";
+	
 	private List<String> names = new ArrayList<>();
 
 	public Path() {
@@ -29,7 +32,7 @@ public class Path implements JsonSerializable {
 	private void parsePath(String path) {
 		T.call(this);
 		
-		for(String name : path.split("/")){
+		for(String name : path.split(PATH_SEPARATOR)){
 			if(name.length() > 0) {
 				names.add(name);
 			}
@@ -39,7 +42,7 @@ public class Path implements JsonSerializable {
 	public void parseFileName(String path) {
 		T.call(this);
 
-		for(String name : path.split("_")){
+		for(String name : path.split(FILENAME_SEPARATOR)){
 			if(name.length() > 0) {
 				names.add(name);
 			}
@@ -85,11 +88,11 @@ public class Path implements JsonSerializable {
 		
 		if(names.size() > 0) {
 			for(String name : names) {
-				builder.append("/");
+				builder.append(PATH_SEPARATOR);
 				builder.append(name);
 			}
 		}else {
-			builder.append("/");
+			builder.append(PATH_SEPARATOR);
 		}
 		
 		return builder.toString();
@@ -142,11 +145,11 @@ public class Path implements JsonSerializable {
 		if(names.size() > 0) {
 			builder.append(names.get(0));
 			for(int i = 1; i < names.size(); i++) {
-				builder.append("_");
+				builder.append(FILENAME_SEPARATOR);
 				builder.append(names.get(i));
 			}
 		}else {
-			builder.append("_");
+			builder.append(FILENAME_SEPARATOR);
 		}
 		
 		return builder.toString();

@@ -25,7 +25,7 @@ import ca.aquiletour.core.messages.git.DeRegisterRepo;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
-import ca.aquiletour.core.messages.git.RegisterExercice;
+import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
@@ -158,7 +158,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(AddSubTaskMessage.class);
 		Ntro.registerSerializableClass(AddPreviousTaskMessage.class);
 		Ntro.registerSerializableClass(AddNextTaskMessage.class);
-		Ntro.registerSerializableClass(RegisterExercice.class);
+		Ntro.registerSerializableClass(RegisterExercise.class);
 		Ntro.registerSerializableClass(DeRegisterExercise.class);
 		Ntro.registerSerializableClass(RegisterRepo.class);
 		Ntro.registerSerializableClass(DeRegisterRepo.class);
