@@ -5,6 +5,23 @@ function initializeCommitList(viewRootElement, jSweet) {
     var ctx = viewRootElement.find("#commitsChart");
     var pointBackgroundColors = [];
     var pointRadiusByEstimatedEffort = [0];
+    var marketing = ['1615215942', '1715215942'];
+    var annotations = marketing.map(function(epoch, index) {
+        return {
+            type: 'line',
+            id: 'vline' + index,
+            mode: 'vertical',
+            scaleID: 'x-axis-1',
+            value: epoch,
+            borderColor: pointBackgroundColors[index],
+            borderWidth: 1,
+            label: {
+                enabled: true,
+                position: "center",
+                content: "Deadline"
+            }
+        }
+    });
     var commitsChart = new Chart(ctx, {
         type: 'scatter',
         data: {
@@ -41,7 +58,7 @@ function initializeCommitList(viewRootElement, jSweet) {
                         fontColor: "black",
                         fontSize: 24,
                         callback: function (value) {
-                            return new Date(value).toLocaleDateString('fr-ca', {month: 'short', day: 'numeric'});
+                            return new Date(value).toLocaleDateString('fr-ca', {year: 'numeric', month: 'short', day: 'numeric'});
                         },
                     }
                 }],
@@ -65,6 +82,9 @@ function initializeCommitList(viewRootElement, jSweet) {
                     }
                 }]
             },
+            annotation: {
+                annotations: annotations
+            },
             tooltips: {
                 titleFontSize: 24,
                 bodyFontSize: 18,
@@ -72,6 +92,7 @@ function initializeCommitList(viewRootElement, jSweet) {
                     label: function (tooltipItem, data) {
                         var commitInfo;
                         commitInfo = ["Timestamp : " + (new Date(tooltipItem.xLabel).toLocaleDateString('fr-ca', {
+                            year: "numeric",
                             month: 'short',
                             day: 'numeric',
                             hour: 'numeric',
@@ -101,6 +122,26 @@ function initializeCommitList(viewRootElement, jSweet) {
 
         }
     });
+    marketing.push("1915215942");
+    var annotations = marketing.map(function(epoch, index) {
+        return {
+            type: 'line',
+            id: 'vline' + index,
+            mode: 'vertical',
+            scaleID: 'x-axis-1',
+            value: epoch,
+            borderColor: pointBackgroundColors[index],
+            borderWidth: 1,
+            label: {
+                enabled: true,
+                position: "center",
+                content: "Deadline"
+            }
+        }
+    });
+    commitsChart.update();
+
+
 
     function getCommitMessage(tooltipItem, datasets) {
         return datasets[tooltipItem.datasetIndex].data.find(datum => {
@@ -136,6 +177,8 @@ function initializeCommitList(viewRootElement, jSweet) {
         var commitMessageText = $(commitMessageSpan).text();
         var exercisePathText = $(exercisePathSpan).text();
         var modifiedFilesText = $(modifiedFilesSpan).text();
+        exercisePathText = exercisePathText.replace(/ /g, '');//modifiedFilesText
+        modifiedFilesText = modifiedFilesText.replace(/ /g, '');//modifiedFilesText
 
         commitsChart.data.datasets.forEach((dataset) => {
             dataset.data.push({
