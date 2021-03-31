@@ -3,29 +3,58 @@ function initializeCommitList(viewRootElement, jSweet) {
 
     const commitList = viewRootElement.find("#commit-list li");
     var ctx = viewRootElement.find("#commitsChart");
-    var pointBackgroundColors = [0];
-    var pointRadiusByEstimatedEffort = [0];
-    var exercisePaths = [];
-    var timeStamps = [];
-    var estimatedEfforts = [];
-    var commitMessages = [];
-    var modifiedFilesOfEachCommit = [];
+
+    var pointBackgroundColors = [0];// color of points
+    var pointRadiusByEstimatedEffort = [0];//size of points
+
+    var exercisePaths = []; // for tooltip content
+    var timeStamps = [];//
+    var estimatedEfforts = [];//
+    var commitMessages = [];//
+    var modifiedFilesOfEachCommit = [];//
+
+    var colors = [];// for deadlines
+    var deadlines = [1715215942, 2715215941, 2015215942, 2215215942, 2615215941, 2515215941];
     setAllCommitInfo();
     changeColors();
-    var annotations = timeStamps.map(function(epoch, index) {
+    var annotations = deadlines.map(function(epoch, index) {
+        console.log(colors);
+        console.log(deadlines);
+        console.log(index);
+        console.log(colors[index])
         return {
             type: 'line',
             id: 'vline' + index,
             mode: 'vertical',
             scaleID: 'x-axis-1',
             value: epoch,
-            borderColor: pointBackgroundColors[index + 1],
-            borderWidth: 1,
+            borderColor: colors[index],
+            borderWidth: 3,
             label: {
                 enabled: true,
-                position: "center",
-                content: "Deadline"
-            }
+                backgroundColor: 'rgba(0,0,0,0.3)',
+                fontSize: 12
+            },
+            onMouseenter: function(e) {
+               this.options.borderWidth = 6;
+                this.options.label.backgroundColor = 'rgba(0,0,0,0.8)';
+                this.options.label.fontSize = 18;
+                this.options.label.position = "center";
+                this.options.label.content = "Remise : " + new Date(epoch).toLocaleDateString('fr-ca', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                }),
+                commitsChart.update();
+            },
+            onMouseleave: function(e) {
+                this.options.borderWidth = 3;
+                this.options.label.backgroundColor = 'rgba(0,0,0,0.3)';
+                this.options.label.fontSize = 12;
+                this.options.label.content = "";
+                commitsChart.update();
+            },
         }
     });
     var commitsChart = new Chart(ctx, {
@@ -89,6 +118,8 @@ function initializeCommitList(viewRootElement, jSweet) {
                 }]
             },
             annotation: {
+                //drawTime: "afterDraw",
+                events: ['click','mouseenter','mouseleave'],
                 annotations: annotations
             },
             tooltips: {
@@ -189,17 +220,13 @@ function initializeCommitList(viewRootElement, jSweet) {
 
     //colors
     function changeColors() {
-        var colors = [];
         var exercisePathsAlreadyColored = [];
         var exercisePathIsInTheArray;
-        console.log(exercisePaths);
         for (i = 0; i < exercisePaths.length; i++) {
             var exercisePath = exercisePaths[i];
             var color = getRandomColor();
             exercisePathIsInTheArray = false
             if (exercisePathsAlreadyColored.length === 0) {
-                console.log(exercisePath);
-                console.log(color);
                 exercisePathsAlreadyColored.push(exercisePath);
                 colors.push(color);
                 pointBackgroundColors.push(color);
@@ -207,8 +234,6 @@ function initializeCommitList(viewRootElement, jSweet) {
             } else {
                 for (j = 0; j < exercisePathsAlreadyColored.length; j++) {
                     if (exercisePathsAlreadyColored[j] === exercisePath) {
-                        console.log(exercisePath);
-                        console.log(colors[j]);
                         pointBackgroundColors.push(colors[j]);
                         exercisePathIsInTheArray = true;
                     }
