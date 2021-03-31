@@ -4,7 +4,6 @@ import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentDestination;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.queues.QueuesUpdater;

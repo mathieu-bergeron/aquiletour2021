@@ -14,7 +14,6 @@ public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmen
 		
 		String courseId = message.getCourseId();
 		String appointmentId = message.getAppointmentId();
-
 		String destinationId = message.getDestinationId();
 		String beforeOrAfter = message.getBeforeOrAfter();
 		

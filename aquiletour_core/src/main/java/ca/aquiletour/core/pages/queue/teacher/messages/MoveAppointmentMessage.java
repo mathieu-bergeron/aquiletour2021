@@ -7,10 +7,8 @@ import ca.ntro.messages.NtroUserMessage;
 public class MoveAppointmentMessage extends NtroUserMessage<User> {
 
 	private String appointmentId;
-
 	private String destinationId;
 	private String beforeOrAfter;
-
 	private String courseId;
 
 	public String getAppointmentId() {
@@ -37,5 +35,4 @@ public class MoveAppointmentMessage extends NtroUserMessage<User> {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
-
 }

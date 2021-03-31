@@ -9,6 +9,7 @@ function initializeQueue(viewRootElement, jSweet){
             function trimId(fullId){
                 return fullId.replace("appointment-","");
             }
+
             const queueIdElement = viewRootElement.find("#queue-id");
             const queueId = queueIdElement.html();
 

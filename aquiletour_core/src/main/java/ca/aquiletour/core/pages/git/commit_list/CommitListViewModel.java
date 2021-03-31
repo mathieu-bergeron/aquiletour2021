@@ -2,18 +2,25 @@ package ca.aquiletour.core.pages.git.commit_list;
 
 import java.util.List;
 
+import ca.aquiletour.core.pages.course.models.CourseModel;
+import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.values.Commit;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.ListObserver;
-import ca.ntro.core.mvc.ModelViewSubViewHandler;
+import ca.ntro.core.mvc.ModelSubModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CommitListViewModel extends ModelViewSubViewHandler<CommitListModel, CommitListView>  {
+public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitListModel, CourseModel, CommitListView>  {
 	
 	@Override
-	protected void handle(CommitListModel model, CommitListView view, ViewLoader subViewLoader) {
+	protected void handle(CommitListModel model, CourseModel courseModel, CommitListView view, ViewLoader subViewLoader) {
 		T.call(this);
+		
+		long deadline = findExerciseDeadline(courseModel, model.getExercisePath());
+		System.out.println(deadline);
 
 		view.displayCommitList(model);
 		
@@ -66,5 +73,26 @@ public class CommitListViewModel extends ModelViewSubViewHandler<CommitListModel
 				
 			}
 		});
+	}
+	
+	private long findExerciseDeadline(CourseModel courseModel, String exercisePath) {
+		T.call(this);
+		
+		long deadline = -1;
+
+		Path path = new Path(exercisePath);
+		Task task = courseModel.findTaskByPath(path);
+		
+		if(task != null) {
+
+			deadline = task.getEndTime();
+			
+		}else {
+			
+			Log.warning("\nTask not found " + exercisePath);
+			
+		}
+
+		return deadline;
 	}
 }
