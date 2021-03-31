@@ -3,17 +3,23 @@ function initializeCommitList(viewRootElement, jSweet) {
 
     const commitList = viewRootElement.find("#commit-list li");
     var ctx = viewRootElement.find("#commitsChart");
-    var pointBackgroundColors = [];
+    var pointBackgroundColors = [0];
     var pointRadiusByEstimatedEffort = [0];
-    var marketing = ['1615215942', '1715215942'];
-    var annotations = marketing.map(function(epoch, index) {
+    var exercisePaths = [];
+    var timeStamps = [];
+    var estimatedEfforts = [];
+    var commitMessages = [];
+    var modifiedFilesOfEachCommit = [];
+    setAllCommitInfo();
+    changeColors();
+    var annotations = timeStamps.map(function(epoch, index) {
         return {
             type: 'line',
             id: 'vline' + index,
             mode: 'vertical',
             scaleID: 'x-axis-1',
             value: epoch,
-            borderColor: pointBackgroundColors[index],
+            borderColor: pointBackgroundColors[index + 1],
             borderWidth: 1,
             label: {
                 enabled: true,
@@ -122,26 +128,7 @@ function initializeCommitList(viewRootElement, jSweet) {
 
         }
     });
-    marketing.push("1915215942");
-    var annotations = marketing.map(function(epoch, index) {
-        return {
-            type: 'line',
-            id: 'vline' + index,
-            mode: 'vertical',
-            scaleID: 'x-axis-1',
-            value: epoch,
-            borderColor: pointBackgroundColors[index],
-            borderWidth: 1,
-            label: {
-                enabled: true,
-                position: "center",
-                content: "Deadline"
-            }
-        }
-    });
-    commitsChart.update();
-
-
+    populateGraph(timeStamps, estimatedEfforts, commitMessages, exercisePaths, modifiedFilesOfEachCommit);
 
     function getCommitMessage(tooltipItem, datasets) {
         return datasets[tooltipItem.datasetIndex].data.find(datum => {
@@ -162,61 +149,78 @@ function initializeCommitList(viewRootElement, jSweet) {
     }
 
 
-    commitList.each(function (i, li) {
-        var commit = $(li)
-        var div = commit.children()[0];
+    function setAllCommitInfo() {
+        commitList.each(function (i, li) {
+            var commit = $(li)
+            var div = commit.children()[0];
 
-        var timeStampSpan = $(div).find('#timestamp');
-        var estimatedEffortSpan = $(div).find('#estimatedEffort');
-        var commitMessageSpan = $(div).find('#commitMessage');
-        var exercisePathSpan = $(div).find('#exercicePath');
-        var modifiedFilesSpan = $(div).find('#modifiedFiles');
+            var timeStampSpan = $(div).find('#timestamp');
+            var estimatedEffortSpan = $(div).find('#estimatedEffort');
+            var commitMessageSpan = $(div).find('#commitMessage');
+            var exercisePathSpan = $(div).find('#exercicePath');
+            var modifiedFilesSpan = $(div).find('#modifiedFiles');
 
-        var timeStampInt = parseInt($(timeStampSpan).text());
-        var estimatedEffortInt = parseInt($(estimatedEffortSpan).text());
-        var commitMessageText = $(commitMessageSpan).text();
-        var exercisePathText = $(exercisePathSpan).text();
-        var modifiedFilesText = $(modifiedFilesSpan).text();
-        exercisePathText = exercisePathText.replace(/ /g, '');//modifiedFilesText
-        modifiedFilesText = modifiedFilesText.replace(/ /g, '');//modifiedFilesText
+            var timeStampInt = parseInt($(timeStampSpan).text());
+            var estimatedEffortInt = parseInt($(estimatedEffortSpan).text());
+            var commitMessageText = $(commitMessageSpan).text();
+            var exercisePathText = $(exercisePathSpan).text();
+            var modifiedFilesText = $(modifiedFilesSpan).text();
+            exercisePathText = exercisePathText.replace(/ /g, '');//modifiedFilesText
+            modifiedFilesText = modifiedFilesText.replace(/ /g, '');//modifiedFilesText
 
-        commitsChart.data.datasets.forEach((dataset) => {
-            dataset.data.push({
-                x: timeStampInt, y: estimatedEffortInt,
-                commitMessage: commitMessageText, exercisePath: exercisePathText, modifiedFiles: modifiedFilesText
-            });
+            timeStamps.push(timeStampInt);
+            estimatedEfforts.push(estimatedEffortInt);
+            commitMessages.push(commitMessageText);
+            exercisePaths.push(exercisePathText);
+            modifiedFilesOfEachCommit.push(modifiedFilesText);
         });
+    }
+    function populateGraph(timeStamps, estimatedEfforts, commitMessages, exercisePaths, modifiedFilesOfEachCommit ){
+        for(i = 0; i < timeStamps.length; i++){
+            commitsChart.data.datasets.forEach((dataset) => {
+                dataset.data.push({
+                    x: timeStamps[i], y: estimatedEfforts[i],
+                    commitMessage: commitMessages[i], exercisePath: exercisePaths[i], modifiedFiles: modifiedFilesOfEachCommit[i]
+                });
+            });
+        }
         commitsChart.update();
-    });
+    }
 
     //colors
-    var colors = [];
-    var exercisePathsAlreadyColored = [];
-    var exercisePathIsInTheArray;
-    for (i = 0; i < commitsChart.data.datasets[0].data.length; i++) {
-        var exercisePath = commitsChart.data.datasets[0].data[i].exercisePath;
-        var color = getRandomColor();
-        exercisePathIsInTheArray = false
-        if (exercisePathsAlreadyColored.length === 0) {
-            exercisePathsAlreadyColored.push(exercisePath);
-            colors.push(color);
-            pointBackgroundColors.push(color);
-
-        } else {
-            for (j = 0; j < exercisePathsAlreadyColored.length; j++) {
-                if (exercisePathsAlreadyColored[j] === exercisePath) {
-                    pointBackgroundColors.push(colors[j]);
-                    exercisePathIsInTheArray = true;
-                }
-            }
-            if (!exercisePathIsInTheArray) {
+    function changeColors() {
+        var colors = [];
+        var exercisePathsAlreadyColored = [];
+        var exercisePathIsInTheArray;
+        console.log(exercisePaths);
+        for (i = 0; i < exercisePaths.length; i++) {
+            var exercisePath = exercisePaths[i];
+            var color = getRandomColor();
+            exercisePathIsInTheArray = false
+            if (exercisePathsAlreadyColored.length === 0) {
+                console.log(exercisePath);
+                console.log(color);
                 exercisePathsAlreadyColored.push(exercisePath);
                 colors.push(color);
                 pointBackgroundColors.push(color);
+
+            } else {
+                for (j = 0; j < exercisePathsAlreadyColored.length; j++) {
+                    if (exercisePathsAlreadyColored[j] === exercisePath) {
+                        console.log(exercisePath);
+                        console.log(colors[j]);
+                        pointBackgroundColors.push(colors[j]);
+                        exercisePathIsInTheArray = true;
+                    }
+                }
+                if (!exercisePathIsInTheArray) {
+                    exercisePathsAlreadyColored.push(exercisePath);
+                    colors.push(color);
+                    pointBackgroundColors.push(color);
+                }
             }
         }
     }
-    commitsChart.update();
 
 
     function getRandomColor() {
