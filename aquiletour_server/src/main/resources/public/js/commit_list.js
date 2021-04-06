@@ -18,10 +18,6 @@ function initializeCommitList(viewRootElement, jSweet) {
     setAllCommitInfo();
     changeColors();
     var annotations = deadlines.map(function(epoch, index) {
-        console.log(colors);
-        console.log(deadlines);
-        console.log(index);
-        console.log(colors[index])
         return {
             type: 'line',
             id: 'vline' + index,
@@ -57,13 +53,14 @@ function initializeCommitList(viewRootElement, jSweet) {
             },
         }
     });
+    commitHistoryName = window.location.pathname.slice(4);
     var commitsChart = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [{
                 backgroundColor: "#EF1010",
                 pointBackgroundColor: pointBackgroundColors,
-                label: "student's commit history",
+                label: "L'historique des commits de : " + commitHistoryName,
                 pointRadius: pointRadiusByEstimatedEffort,
                 pointHoverRadius: pointRadiusByEstimatedEffort,
                 data: [{}],
@@ -85,7 +82,7 @@ function initializeCommitList(viewRootElement, jSweet) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Timestamp',
+                        labelString: 'Date',
                         fontColor: "black",
                         fontSize: 24
                     },
@@ -93,7 +90,7 @@ function initializeCommitList(viewRootElement, jSweet) {
                         fontColor: "black",
                         fontSize: 24,
                         callback: function (value) {
-                            return new Date(value).toLocaleDateString('fr-ca', {year: 'numeric', month: 'short', day: 'numeric'});
+                            return new Date(value).toLocaleDateString('fr-ca', {month: 'short', day: 'numeric'});
                         },
                     }
                 }],
@@ -105,7 +102,7 @@ function initializeCommitList(viewRootElement, jSweet) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Estimated Effort',
+                        labelString: "Effort estimé",
                         fontColor: "black",
                         fontSize: 24
                     },
@@ -118,7 +115,6 @@ function initializeCommitList(viewRootElement, jSweet) {
                 }]
             },
             annotation: {
-                //drawTime: "afterDraw",
                 events: ['click','mouseenter','mouseleave'],
                 annotations: annotations
             },
@@ -128,17 +124,17 @@ function initializeCommitList(viewRootElement, jSweet) {
                 callbacks: {
                     label: function (tooltipItem, data) {
                         var commitInfo;
-                        commitInfo = ["Timestamp : " + (new Date(tooltipItem.xLabel).toLocaleDateString('fr-ca', {
+                        commitInfo = ["Date : " + (new Date(tooltipItem.xLabel).toLocaleDateString('fr-ca', {
                             year: "numeric",
                             month: 'short',
                             day: 'numeric',
                             hour: 'numeric',
                             minute: 'numeric'
                         })).toString()];
-                        commitInfo.push("Estimated Effort : " + tooltipItem.yLabel);
-                        commitInfo.push("Commit Message : " + getCommitMessage(tooltipItem, data.datasets));
-                        commitInfo.push("Exercice Path : " + getExercicePath(tooltipItem, data.datasets));
-                        commitInfo.push("Modified Files : " + getModifiedFiles(tooltipItem, data.datasets));
+                        commitInfo.push("L'effort estimé : " + tooltipItem.yLabel);
+                        commitInfo.push("Message du commit : " + getCommitMessage(tooltipItem, data.datasets));
+                        commitInfo.push("Chemin de l'exercise : " + getExercicePath(tooltipItem, data.datasets));
+                        commitInfo.push("Fichiers modifiés : " + getModifiedFiles(tooltipItem, data.datasets));
                         return commitInfo;
                     }
                 }
@@ -196,13 +192,22 @@ function initializeCommitList(viewRootElement, jSweet) {
             var commitMessageText = $(commitMessageSpan).text();
             var exercisePathText = $(exercisePathSpan).text();
             var modifiedFilesText = $(modifiedFilesSpan).text();
-            exercisePathText = exercisePathText.replace(/ /g, '');//modifiedFilesText
-            modifiedFilesText = modifiedFilesText.replace(/ /g, '');//modifiedFilesText
+            exercisePathText = exercisePathText.replace(/ /g, '');//there's a big empty space, this removes it
+            modifiedFilesText = modifiedFilesText.replace(/ /g, '');//
 
             timeStamps.push(timeStampInt);
             estimatedEfforts.push(estimatedEffortInt);
+            if(commitMessageText.length > 40){//cannot show more than 40 characters
+                commitMessageText = commitMessageText.slice(0,39) + "...";
+            }
             commitMessages.push(commitMessageText);
+            if(exercisePathText.length > 40){
+                exercisePathText = exercisePathText.slice(0,39) + "...";
+            }
             exercisePaths.push(exercisePathText);
+            if(modifiedFilesText.length > 40){
+                modifiedFilesText = modifiedFilesText.slice(0,39) + "...";
+            }
             modifiedFilesOfEachCommit.push(modifiedFilesText);
         });
     }
