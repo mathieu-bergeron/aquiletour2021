@@ -12,7 +12,7 @@ public class Constants {
 	
 	
 	public static final String DASHBOARD_URL_SEGMENT = "tableau_de_bord";
-	public static final String QUEUE_URL_SEGMENT = "salles";
+	public static final String QUEUE_URL_SEGMENT = "files_d_attente";
 	public static final String QUEUES_URL_SEGMENT = "profs_disponibles";
 	public static final String COURSE_URL_SEGMENT = "cours";
 	public static final String GROUP_URL_SEGMENT = "groupes";
