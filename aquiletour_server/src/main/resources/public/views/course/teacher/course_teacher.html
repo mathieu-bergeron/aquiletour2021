@@ -1,28 +1,30 @@
 <div class="mt-3 courses-container">
 
-  <div class="mt-3 flex-container justify-content-start">
-      <nav class="ms-3 d-flex" aria-label="breadcrumb">
-          <ol class="breadcrumb breadcrumbs-ol" id="breadcrumbs-container">
-          </ol>
-      </nav>
-      <div class="dropdown show me-3">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plan de cours</a>
-
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">Groupe01</a>
-            <a class="dropdown-item" href="#">Groupe02</a>
-            <a class="dropdown-item" href="#">Tous les groupes</a>
-            <a class="dropdown-item" href="#">1234500</a>
-            <a class="dropdown-item" href="#">-- archives --</a>
-          </div>
+  <div class="mt-3 d-flex justify-content-start align-items-baseline">
+      <div>
+          <nav class="ms-3" aria-label="breadcrumb">
+              <ol class="breadcrumb breadcrumbs-ol" id="breadcrumbs-container">
+              </ol>
+          </nav>
       </div>
-      <div class="dropdown show me-3">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">H2021</a>
+      <div class="flex-fill"></div>
+      <div class="me-1">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="group-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plan de cours</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="group-menu-link">
+                <a class="dropdown-item" href="#">Groupe01</a>
+                <a class="dropdown-item" href="#">Groupe02</a>
+                <a class="dropdown-item" href="#">Tous les groupes</a>
+                <a class="dropdown-item" href="#">----------</a>
+                <a class="dropdown-item" href="#">1234500</a>
+              </div>
+      </div>
+      <div class="me-3">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="semester-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">H2021</a>
 
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">A2021</a>
-            <a class="dropdown-item" href="#">--archives--</a>
-          </div>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="semester-menu-link">
+                <a class="dropdown-item" href="#">A2021</a>
+                <a class="dropdown-item" href="#"><i>brouillons</i></a>
+              </div>
       </div>
   </div>
 
@@ -30,7 +32,7 @@
   </div>
 
   <div class="mt-3 d-flex justify-content-center">
-    <button class="btn-primary btn-add-course" 
+    <button class="btn btn-primary" 
             type="button" 
             id="add-task-button" 
             data-toggle="modal" 
