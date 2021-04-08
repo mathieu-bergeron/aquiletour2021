@@ -2,6 +2,8 @@ package ca.aquiletour.core.pages.admin.calendar_list;
 
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.pages.admin.calendar_list.handlers.CalendarListViewModel;
+import ca.aquiletour.core.pages.admin.calendar_list.handlers.ShowCalendarListHandler;
+import ca.aquiletour.core.pages.admin.calendar_list.messages.ShowCalendarListMessage;
 import ca.aquiletour.core.pages.admin.calendar_list.models.CalendarModel;
 import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
 import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarView;
@@ -10,7 +12,7 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CalendarListController extends NtroController<RootController> {
+public class CalendarListController extends NtroController<RootController> {
 	
 
 	@Override
@@ -19,6 +21,8 @@ public abstract class CalendarListController extends NtroController<RootControll
 
 		setViewLoader(CalendarListView.class, context.lang());
 
+		addParentViewMessageHandler(ShowCalendarListMessage.class, new ShowCalendarListHandler());
+
 		setModelLoader(CalendarModel.class, 
 					   context.user().getAuthToken(),
 					   context.user().getId());
@@ -26,7 +30,6 @@ public abstract class CalendarListController extends NtroController<RootControll
 		addSubViewLoader(CalendarView.class, context().lang());
 		
 		addModelViewSubViewHandler(CalendarView.class, new CalendarListViewModel());
-		
 	}
 	
 	@Override

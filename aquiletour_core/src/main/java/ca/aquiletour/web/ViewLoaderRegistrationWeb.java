@@ -1,6 +1,7 @@
 package ca.aquiletour.web;
 
 import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
+import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarView;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
@@ -23,6 +24,7 @@ import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.web.pages.calendar_list.CalendarListViewWeb;
+import ca.aquiletour.web.pages.calendar_list.CalendarViewWeb;
 import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
 import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
 import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
@@ -210,5 +212,13 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/calendar_list/calendar_list.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CalendarListViewWeb.class));
+
+		ViewLoaders.registerViewLoader(CalendarView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/calendar/calendar.html")
+			     	.setCssUrl("/views/calendar/calendar.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CalendarViewWeb.class));
 	}
 }

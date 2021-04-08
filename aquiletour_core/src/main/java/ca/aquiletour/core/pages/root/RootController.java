@@ -23,6 +23,7 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
+import ca.aquiletour.core.pages.admin.calendar_list.CalendarListController;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
@@ -64,6 +65,8 @@ public class RootController extends NtroRootController {
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);
 
 		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
+
+		addSubController(CalendarListController.class, Constants.CALENDAR_LIST_URL_SEGMENT);
 
 		addWindowViewHandler(new RootViewHandler());
 		
