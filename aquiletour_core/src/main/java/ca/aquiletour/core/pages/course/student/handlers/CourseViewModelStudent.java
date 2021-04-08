@@ -1,10 +1,9 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;

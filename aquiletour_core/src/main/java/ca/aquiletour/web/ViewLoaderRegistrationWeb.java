@@ -1,5 +1,6 @@
 package ca.aquiletour.web;
 
+import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
@@ -14,13 +15,14 @@ import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
 import ca.aquiletour.core.pages.queue.student.StudentAppointmentView;
 import ca.aquiletour.core.pages.queue.student.StudentQueueView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
-import ca.aquiletour.core.pages.queues.QueueSummaryView;
-import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.web.pages.calendar_list.CalendarListViewWeb;
 import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
 import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
 import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
@@ -105,7 +107,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TeacherQueueViewWeb.class));
 
-		ViewLoaders.registerViewLoader(QueuesView.class,
+		ViewLoaders.registerViewLoader(OpenQueueListView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/queues/queues.html")
@@ -113,7 +115,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(QueuesViewWeb.class));
 
-		ViewLoaders.registerViewLoader(QueueSummaryView.class,
+		ViewLoaders.registerViewLoader(OpenQueueView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/queue_summary/queue_summary.html")
@@ -200,5 +202,13 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/task/student/task_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TaskViewWebStudent.class));
+
+		ViewLoaders.registerViewLoader(CalendarListView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/calendar_list/calendar_list.html")
+			     	.setCssUrl("/views/calendar_list/calendar_list.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(CalendarListViewWeb.class));
 	}
 }

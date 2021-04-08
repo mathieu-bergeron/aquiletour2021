@@ -33,9 +33,9 @@ import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueListController;
 import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
 import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
-import ca.aquiletour.core.pages.queues.QueuesController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
@@ -58,7 +58,7 @@ public class RootController extends NtroRootController {
 		//        two models of the same kind (or with the same DocumentPath)
 		addRoleSpecificSubControllers(context);
 
-		addSubController(QueuesController.class, Constants.QUEUES_URL_SEGMENT);
+		addSubController(OpenQueueListController.class, Constants.QUEUES_URL_SEGMENT);
 	
 		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);

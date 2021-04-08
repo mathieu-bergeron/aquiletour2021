@@ -1,3 +1,25 @@
+# Modèles
+
+1. Prof:
+    1. Tableau de bord (CoursSession)
+        * résumé pour tous les groupes
+        * lien vers le cours
+        * lien vers les groupes
+        * lien vers la file d'attente
+    1. Cours (plan de cours, dates abstraites: samedi de la semaine 10)
+    2. CoursGroupe (dates concrètes, 4 oct)
+        * liste d'étudiants
+        * 
+    3. CoursSession 
+        * (résumé de plusieurs groupes, dates abstraites)
+
+1. Étudiant: CoursGroupe
+
+1. Session: 
+    * éditable par un SuperUser
+    * calendrier de la session (semaine - jour)
+
+
 # Point de vue étudiant
 
 ## Groupe

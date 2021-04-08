@@ -7,16 +7,17 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.admin.calendar_list.messages.ShowCalendarListMessage;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
+import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
-import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -60,7 +61,18 @@ public class AquiletourRequestHandler {
 		} else if(path.startsWith(Constants.GIT_PROGRESS_URL_SEGMENT)) {
 
 			sendGitMessages(path.subPath(1), parameters, context.user());
+
+		} else if(path.startsWith(Constants.CALENDAR_LIST_URL_SEGMENT)) {
+
+			sendCalendarListMessages(path.subPath(1), parameters, context.user());
 		}
+	}
+
+	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourRequestHandler.class);
+		
+		ShowCalendarListMessage showCalendarListMessage = Ntro.messages().create(ShowCalendarListMessage.class);
+		Ntro.messages().send(showCalendarListMessage);
 	}
 
 	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters, User user) {
@@ -129,7 +141,7 @@ public class AquiletourRequestHandler {
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowQueuesMessage showQueuesMessage = Ntro.messages().create(ShowQueuesMessage.class);
+		ShowOpenQueueListMessage showQueuesMessage = Ntro.messages().create(ShowOpenQueueListMessage.class);
 		Ntro.messages().send(showQueuesMessage);
 	}
 

@@ -3,9 +3,9 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.models.listeners.ListObserver;

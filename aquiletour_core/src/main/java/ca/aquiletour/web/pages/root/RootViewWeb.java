@@ -8,17 +8,19 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.admin.calendar_list.messages.ShowCalendarListMessage;
+import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
-import ca.aquiletour.core.pages.queues.QueuesView;
-import ca.aquiletour.core.pages.queues.messages.ShowQueuesMessage;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
+import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
@@ -34,7 +36,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement dashboardLink;
 	private HtmlElement coursesLink;
 	private HtmlElement groupsLink;
-	private HtmlElement queuesLink;
+	private HtmlElement openQueueListLink;
+	private HtmlElement calendarListLink;
 	private HtmlElement loginLink;
 
 	@Override
@@ -43,12 +46,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
-		queuesLink = getRootElement().find("#queues-link").get(0);
+		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
+		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
 
 		MustNot.beNull(homeLink);
 		MustNot.beNull(dashboardLink);
-		MustNot.beNull(queuesLink);
+		MustNot.beNull(openQueueListLink);
+		MustNot.beNull(calendarListLink);
 		MustNot.beNull(loginLink);
 
 		initializeLinks();
@@ -82,13 +87,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		queuesLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
+		openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
 		
-		queuesLink.addEventListener("click", new HtmlEventListener() {
+		openQueueListLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
-				Ntro.messages().send(Ntro.messages().create(ShowQueuesMessage.class));
+				Ntro.messages().send(Ntro.messages().create(ShowOpenQueueListMessage.class));
 			}
 		});
 
@@ -101,6 +106,18 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
 				showLoginMessage.setMessageToUser("");
 				Ntro.messages().send(showLoginMessage);
+			}
+		});
+
+		calendarListLink.setAttribute("href", "/" + Constants.CALENDAR_LIST_URL_SEGMENT);
+
+		calendarListLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+				
+				ShowCalendarListMessage showCalendarListMessage = Ntro.messages().create(ShowCalendarListMessage.class);
+				Ntro.messages().send(showCalendarListMessage);
 			}
 		});
 	}
@@ -174,7 +191,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showQueues(QueuesView currentView) {
+	public void showQueues(OpenQueueListView currentView) {
 		T.call(this);
 
 		showSubView(currentView);
@@ -199,5 +216,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		showSubView(courseView);
+	}
+
+	@Override
+	public void showCalendarList(CalendarListView calendarListView) {
+		T.call(this);
+
+		showSubView(calendarListView);
 	}
 }

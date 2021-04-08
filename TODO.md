@@ -1,4 +1,40 @@
+# Point de vue prof
+
+1. Tableau de bord: `/tableau_de_bord/`
+    * résumé pour chaque cours (selon date)
+1. Cours: `/mescours/` 
+    * liste des cours
+    * lien vers les tâches du cours («Éditer le calendrier du cours»)
+    * résumé pour la session en cours:
+        * groupe / nombre d'étudiants
+        * progression
+1. Tâches du cours: `/cours/`
+1. Groupes: `/mesgroupes`
+    * liste des cours-groupes 
+    * ajouter un cours-groupe
+    * inscrire des étudiants
+    * spécifier l'horaire: séance 1: mardi 14h
+    * lien vers le cours
+
+1. Files d'attente: `/files_d_attente` (point de vue prof)
+
+# Point de vue étudiant
+
+1. Tableau de bord: `/tableau_de_bord/`
+    * résumé pour chaque cours (selon date)
+    * lien vers le calendrier de cours plus complet
+
+1. Tâche d'un cours: `/cours` (mais point de vue étudiant) 
+    * En fait, on partage pas le modèle
+    * Chaque étudiant a son propre calendrier de cours (comme cours-groupe)
+
+1. Files d'attente: `/files_d_attente` (point de vue prof)
+    * Modèle partagé
+
+
 # TODO
+
+
 
 1. Identifiants, URLs et navigation
     * mettre toujours au long "?u=&s=" etc.

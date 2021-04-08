@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.course.teacher;
 
 
-import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.web.pages.course.TaskViewWeb;
 import ca.ntro.core.mvc.NtroContext;

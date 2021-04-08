@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.git.messages;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.pages.course.models.CourseModel;
+import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.root.RootView;

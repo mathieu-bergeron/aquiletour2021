@@ -1,8 +1,8 @@
 package ca.aquiletour.server.backend.queues;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.queues.QueuesModel;
-import ca.aquiletour.core.pages.queues.values.QueueSummary;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
+import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
@@ -14,12 +14,12 @@ public class QueuesUpdater {
 		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
-		if(!modelStore.ifModelExists(QueuesModel.class, "admin", "allQueues")) {
-			modelStore.createModel(QueuesModel.class, "admin", "allQueues", m -> {});
+		if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "allQueues")) {
+			modelStore.createModel(OpenQueueListModel.class, "admin", "allQueues", m -> {});
 		}
 
-		if(!modelStore.ifModelExists(QueuesModel.class, "admin", "openQueues")) {
-			modelStore.createModel(QueuesModel.class, "admin", "openQueues", m -> {});
+		if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "openQueues")) {
+			modelStore.createModel(OpenQueueListModel.class, "admin", "openQueues", m -> {});
 		}
 	}
 	
@@ -30,12 +30,12 @@ public class QueuesUpdater {
 
 		T.call(QueuesUpdater.class);
 
-		modelStore.updateModel(QueuesModel.class, 
+		modelStore.updateModel(OpenQueueListModel.class, 
 							   teacher.getAuthToken(), 
 							   "allQueues", 
-							   new ModelUpdater<QueuesModel>() {
+							   new ModelUpdater<OpenQueueListModel>() {
 			@Override
-			public void update(QueuesModel allQueues) {
+			public void update(OpenQueueListModel allQueues) {
 				T.call(this);
 
 				allQueues.addQueueToList(newQueueSummary(queueId, teacher));
@@ -43,10 +43,10 @@ public class QueuesUpdater {
 		});
 	}
 
-	private static QueueSummary newQueueSummary(String queueId, User teacher) {
-		T.call(QueuesModel.class);
+	private static OpenQueue newQueueSummary(String queueId, User teacher) {
+		T.call(OpenQueueListModel.class);
 
-		QueueSummary queueSummary = new QueueSummary();
+		OpenQueue queueSummary = new OpenQueue();
 		queueSummary.setId(queueId);
 		queueSummary.setTeacherName(teacher.getName());
 		queueSummary.setTeacherSurname(teacher.getSurname());
@@ -68,12 +68,12 @@ public class QueuesUpdater {
 			                           String queueId) {
 		T.call(QueuesUpdater.class);
 
-		modelStore.updateModel(QueuesModel.class, 
+		modelStore.updateModel(OpenQueueListModel.class, 
 				               "admin", 
 				               queueStoreId,
-				               new ModelUpdater<QueuesModel>() {
+				               new ModelUpdater<OpenQueueListModel>() {
 									@Override
-									public void update(QueuesModel queueStore) {
+									public void update(OpenQueueListModel queueStore) {
 										T.call(this);
 
 										queueStore.deleteQueue(queueId);
@@ -86,17 +86,17 @@ public class QueuesUpdater {
 
 		T.call(QueuesUpdater.class);
 
-		QueuesModel allQueues = modelStore.getModel(QueuesModel.class, "admin", "allQueues");
-		QueueSummary summary = allQueues.findQueueByQueueId(queueId);
+		OpenQueueListModel allQueues = modelStore.getModel(OpenQueueListModel.class, "admin", "allQueues");
+		OpenQueue summary = allQueues.findQueueByQueueId(queueId);
 		modelStore.closeWithoutSaving(allQueues);
 		
-		modelStore.updateModel(QueuesModel.class, 
+		modelStore.updateModel(OpenQueueListModel.class, 
 				               "admin", 
 				               "openQueues", 
-				               new ModelUpdater<QueuesModel>() {
+				               new ModelUpdater<OpenQueueListModel>() {
 
 			@Override
-			public void update(QueuesModel openQueues) {
+			public void update(OpenQueueListModel openQueues) {
 				T.call(this);
 
 				openQueues.addQueueToList(summary);

@@ -27,21 +27,21 @@ import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
+import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskRelation;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.SuperUser;
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.ObservableTaskIdList;
-import ca.aquiletour.core.pages.course.models.ObservableTaskMap;
-import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.course.models.TaskRelation;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -51,6 +51,9 @@ import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
+import ca.aquiletour.core.pages.open_queue_list.values.ObservableQueueList;
+import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
@@ -59,9 +62,6 @@ import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
-import ca.aquiletour.core.pages.queues.QueuesModel;
-import ca.aquiletour.core.pages.queues.values.ObservableQueueList;
-import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
@@ -123,9 +123,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableAppointmentList.class);
 		Ntro.registerSerializableClass(Appointment.class);
 
-		Ntro.registerSerializableClass(QueuesModel.class);
+		Ntro.registerSerializableClass(OpenQueueListModel.class);
 		Ntro.registerSerializableClass(ObservableQueueList.class);
-		Ntro.registerSerializableClass(QueueSummary.class);
+		Ntro.registerSerializableClass(OpenQueue.class);
 
 		Ntro.registerSerializableClass(CommitListModel.class);
 		Ntro.registerSerializableClass(ObservableCommitList.class);
@@ -142,7 +142,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(TeacherGuest.class);
 		Ntro.registerSerializableClass(Student.class);
 		Ntro.registerSerializableClass(StudentGuest.class);
-		Ntro.registerSerializableClass(SuperUser.class);
+		Ntro.registerSerializableClass(Admin.class);
 		Ntro.registerSerializableClass(Guest.class);
 
 		Ntro.registerSerializableClass(AddCourseMessage.class);

@@ -3,9 +3,9 @@ package ca.aquiletour.core.pages.queue;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
-import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 

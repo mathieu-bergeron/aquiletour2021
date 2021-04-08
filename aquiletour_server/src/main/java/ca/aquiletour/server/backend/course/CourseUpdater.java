@@ -1,9 +1,9 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.OnTaskAdded;
-import ca.aquiletour.core.pages.course.models.OnTaskRemoved;
-import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.OnTaskAdded;
+import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;

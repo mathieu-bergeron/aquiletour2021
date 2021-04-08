@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.course.student;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;

@@ -3,10 +3,10 @@ package ca.aquiletour.web.pages.queues;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
+import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
-import ca.aquiletour.core.pages.queues.QueueSummaryView;
-import ca.aquiletour.core.pages.queues.values.QueueSummary;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -15,7 +15,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView {
+public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 
 	private HtmlElement queueLink;
 	private HtmlElement numberOfAnswersToDate;
@@ -35,7 +35,7 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView
 	}
 
 	@Override
-	public void displaySummary(QueueSummary queue) {
+	public void displaySummary(OpenQueue queue) {
 		T.call(this);
 		
 		queueLink.html(queue.getId());

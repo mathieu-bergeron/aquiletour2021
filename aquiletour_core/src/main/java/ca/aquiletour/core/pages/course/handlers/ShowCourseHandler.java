@@ -1,9 +1,9 @@
 package ca.aquiletour.core.pages.course.handlers;
 
+import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
-import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;

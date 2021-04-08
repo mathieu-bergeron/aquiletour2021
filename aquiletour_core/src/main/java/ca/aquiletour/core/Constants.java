@@ -10,7 +10,6 @@ public class Constants {
 	
 	public static final String GIT_API_URL = HOST + GIT_API_URL_PATH  + "/";
 	
-	
 	public static final String DASHBOARD_URL_SEGMENT = "tableau_de_bord";
 	public static final String QUEUE_URL_SEGMENT = "files_d_attente";
 	public static final String QUEUES_URL_SEGMENT = "profs_disponibles";
@@ -21,6 +20,7 @@ public class Constants {
 	public static final String LOGIN_URL_SEGMENT = "connexion";
 	public static final String LOGOUT_URL_SEGMENT = "deconnexion";
 	public static final String HOME_URL_SEGMENT = "accueil";
+	public static final String CALENDAR_LIST_URL_SEGMENT = "calendriers";
 	public static final String GIT_PROGRESS_URL_SEGMENT = "git";
 
 	public static final String USER_URL_PARAM = "u";

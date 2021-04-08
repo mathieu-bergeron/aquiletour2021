@@ -2,8 +2,8 @@ package ca.aquiletour.core.pages.git.commit_list;
 
 import java.util.List;
 
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.ntro.core.Path;
