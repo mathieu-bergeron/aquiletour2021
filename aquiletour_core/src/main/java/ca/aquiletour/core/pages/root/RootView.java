@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.pages.course.views.CourseView;
+import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.home.HomeView;
@@ -22,4 +23,5 @@ public interface RootView extends NtroView {
 	void showGit(CommitListView gitView);
 	void showCourse(CourseView currentView);
 	void showCalendarList(SemesterListView currentView);
+	void showCourseList(CourseListView currentView);
 }

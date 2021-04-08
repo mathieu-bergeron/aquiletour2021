@@ -2,8 +2,8 @@ package ca.aquiletour.web.pages.dashboard;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.DashboardCourseView;
+import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -12,7 +12,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public abstract class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
+public abstract class ActiveCourseSummaryViewWeb extends NtroViewWeb implements DashboardCourseView {
 
 	private HtmlElement showCourseLink;
 
@@ -27,13 +27,13 @@ public abstract class CourseSummaryViewWeb extends NtroViewWeb implements Course
 	}
 
 	@Override
-	public void displaySummary(CourseSummary course) {
+	public void displaySummary(DashboardCourse course) {
 		T.call(this);
 
 		installShowCourseListener(course);
 	}
 
-	private void installShowCourseListener(CourseSummary course) {
+	private void installShowCourseListener(DashboardCourse course) {
 		T.call(this);
 
 		showCourseLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + "/" + course.getCourseId());

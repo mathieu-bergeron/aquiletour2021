@@ -4,9 +4,9 @@ package ca.aquiletour.core.pages.dashboards.values;
 import ca.ntro.core.models.StoredList;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableCourseList extends StoredList<CourseSummary> {
+public class ObservableDashboardCourseList extends StoredList<DashboardCourse> {
 
-	public ObservableCourseList() {
+	public ObservableDashboardCourseList() {
 		super();
 		T.call(this);
 	}

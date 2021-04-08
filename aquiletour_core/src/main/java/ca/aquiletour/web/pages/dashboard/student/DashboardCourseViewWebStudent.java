@@ -1,10 +1,10 @@
 package ca.aquiletour.web.pages.dashboard.student;
 
-import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.student.DashboardCourseViewStudent;
+import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
-import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.ActiveCourseSummaryViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -12,7 +12,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 
-public class CourseSummaryViewWebStudent extends CourseSummaryViewWeb implements StudentCourseSummaryView {
+public class DashboardCourseViewWebStudent extends ActiveCourseSummaryViewWeb implements DashboardCourseViewStudent {
 
 	HtmlElement title;
 	HtmlElement queueStatus;
@@ -73,7 +73,7 @@ public class CourseSummaryViewWebStudent extends CourseSummaryViewWeb implements
 	}
 
 	@Override
-	public void displaySummary(CourseSummary course) {
+	public void displaySummary(DashboardCourse course) {
 		T.call(this);
 		super.displaySummary(course);
 

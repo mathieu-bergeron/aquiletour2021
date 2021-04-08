@@ -5,7 +5,7 @@ import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredInteger;
 import ca.ntro.core.system.trace.T;
 
-public class CourseSummary implements NtroModelValue {
+public class DashboardCourse implements NtroModelValue {
 
 	private String title = "";
 	private String courseId = "";
@@ -14,12 +14,12 @@ public class CourseSummary implements NtroModelValue {
 	private StoredInteger numberOfStudents = new StoredInteger();
 	private StoredInteger numberOfAppointments = new StoredInteger();
 
-	public CourseSummary() {
+	public DashboardCourse() {
 		super();
 		T.call(this);
 	}
 
-	public CourseSummary(String title, String courseId) {
+	public DashboardCourse(String title, String courseId) {
 		super();
 		T.call(this);
 
@@ -27,7 +27,7 @@ public class CourseSummary implements NtroModelValue {
 		this.courseId = courseId;
 	}
 	
-	public CourseSummary(String title) {
+	public DashboardCourse(String title) {
 		this.title = title;
 	}
 

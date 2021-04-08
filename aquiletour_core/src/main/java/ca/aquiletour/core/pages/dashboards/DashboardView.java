@@ -4,7 +4,7 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface DashboardView extends NtroView  {
 
-	void appendCourse(String queueId, CourseSummaryView courseView);
+	void appendCourse(String queueId, DashboardCourseView courseView);
 	void deleteCourse(String queueId);
 	void clearCourses();
 	

@@ -1,13 +1,13 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.teacher.DashboardCourseViewTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
-import ca.aquiletour.web.pages.dashboard.CourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.ActiveCourseSummaryViewWeb;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -16,7 +16,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 
-public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements TeacherCourseSummaryView {
+public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb implements DashboardCourseViewTeacher {
 
 	private HtmlElement title;
 	private HtmlElement numberOfStudentsElement;
@@ -59,7 +59,7 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 	}
 
 	@Override
-	public void displaySummary(CourseSummary course) {
+	public void displaySummary(DashboardCourse course) {
 		T.call(this);
 		super.displaySummary(course);
 
@@ -70,14 +70,14 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 		setUpCsvFileUpload(course);
 	}
 
-	private void setUpCsvFileUpload(CourseSummary course) {
+	private void setUpCsvFileUpload(DashboardCourse course) {
 		T.call(this);
 
 		csvFileSubmit.addEventListener("click", new CsvSubmitListener(course.getCourseId(), csvFileInput));
 		csvFileQueueId.value(course.getCourseId());
 	}
 
-	private void displayQueueInfo(CourseSummary course) {
+	private void displayQueueInfo(DashboardCourse course) {
 		T.call(this);
 
 		title.appendHtml(course.getTitle());
@@ -85,7 +85,7 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 		displayNumberOfStudents(course.getNumberOfStudents().getValue());
 	}
 
-	private void installQueueActions(CourseSummary course) {
+	private void installQueueActions(DashboardCourse course) {
 		T.call(this);
 
 		installerOpenQueueListener(course);
@@ -98,7 +98,7 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 		
 	}
 
-	private void installDeleteQueueListener(CourseSummary course) {
+	private void installDeleteQueueListener(DashboardCourse course) {
 		T.call(this);
 		
 		Path coursePath = new Path(course.getCourseId());
@@ -118,7 +118,7 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 	}
 
 
-	private void adjustOpenCloseLinks(CourseSummary course) {
+	private void adjustOpenCloseLinks(DashboardCourse course) {
 		T.call(this);
 		
 		Path coursePath = new Path(course.getCourseId());
@@ -139,7 +139,7 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 		}
 	}
 
-	private void installCloseQueueListener(CourseSummary course) {
+	private void installCloseQueueListener(DashboardCourse course) {
 		T.call(this);
 
 		closeQueue.addEventListener("click", new HtmlEventListener() {
@@ -153,7 +153,7 @@ public class CourseSummaryViewWebTeacher extends CourseSummaryViewWeb implements
 		});
 	}
 
-	private void installerOpenQueueListener(CourseSummary course) {
+	private void installerOpenQueueListener(DashboardCourse course) {
 		T.call(this);
 
 		title.addEventListener("click", new HtmlEventListener() {

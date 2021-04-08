@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.dashboards;
 
 import java.util.List;
 
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
@@ -15,30 +15,30 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 	protected void handle(DashboardModel model, DashboardView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
-		model.getCourses().observe(new ListObserver<CourseSummary>() {
+		model.getCourses().observe(new ListObserver<DashboardCourse>() {
 			@Override
-			public void onValueChanged(List<CourseSummary> oldValue, List<CourseSummary> value) {
+			public void onValueChanged(List<DashboardCourse> oldValue, List<DashboardCourse> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValue(List<CourseSummary> value) {
+			public void onValue(List<DashboardCourse> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onDeleted(List<CourseSummary> lastValue) {
+			public void onDeleted(List<DashboardCourse> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemAdded(int index, CourseSummary item) {
+			public void onItemAdded(int index, DashboardCourse item) {
 				T.call(this);
 
-				CourseSummaryView courseView = (CourseSummaryView) subViewLoader.createView();
+				DashboardCourseView courseView = (DashboardCourseView) subViewLoader.createView();
 				courseView.displaySummary(item);
 				
 				item.getNumberOfAppointments().observe(new ValueObserver<Integer>() {
@@ -125,13 +125,13 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 			}
 
 			@Override
-			public void onItemUpdated(int index, CourseSummary item) {
+			public void onItemUpdated(int index, DashboardCourse item) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemRemoved(int index, CourseSummary item) {
+			public void onItemRemoved(int index, DashboardCourse item) {
 				T.call(this);
 
 				view.deleteCourse(item.getCourseId());

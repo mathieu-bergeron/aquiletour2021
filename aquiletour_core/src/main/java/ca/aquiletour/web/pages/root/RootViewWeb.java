@@ -9,6 +9,8 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.views.CourseView;
+import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
+import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.home.HomeView;
@@ -47,6 +49,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
 		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
+		coursesLink = getRootElement().find("#courses-link").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
 
@@ -118,6 +121,18 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				
 				ShowSemesterListMessage showCalendarListMessage = Ntro.messages().create(ShowSemesterListMessage.class);
 				Ntro.messages().send(showCalendarListMessage);
+			}
+		});
+
+		coursesLink.setAttribute("href", "/" + Constants.MY_COURSES_URL_SEGMENT);
+
+		coursesLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+				
+				ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
+				Ntro.messages().send(showCourseListMessage);
 			}
 		});
 	}
@@ -223,5 +238,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		showSubView(calendarListView);
+	}
+
+	@Override
+	public void showCourseList(CourseListView courseListView) {
+		T.call(this);
+
+		showSubView(courseListView);
 	}
 }

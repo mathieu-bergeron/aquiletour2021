@@ -42,11 +42,14 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
+import ca.aquiletour.core.pages.course_list.models.CourseListModel;
+import ca.aquiletour.core.pages.course_list.models.CourseSummary;
+import ca.aquiletour.core.pages.course_list.models.ObservableCourseList;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
+import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
+import ca.aquiletour.core.pages.dashboards.values.ObservableDashboardCourseList;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
@@ -119,8 +122,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		T.call(AquiletourMain.class);
 
 		Ntro.registerSerializableClass(DashboardModel.class);
-		Ntro.registerSerializableClass(ObservableCourseList.class);
-		Ntro.registerSerializableClass(CourseSummary.class);
+		Ntro.registerSerializableClass(ObservableDashboardCourseList.class);
+		Ntro.registerSerializableClass(DashboardCourse.class);
 
 		Ntro.registerSerializableClass(QueueModel.class);
 		Ntro.registerSerializableClass(ObservableAppointmentList.class);
@@ -143,6 +146,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterModel.class);
 		Ntro.registerSerializableClass(SemesterListModel.class);
 		Ntro.registerSerializableClass(ObservableSemesterList.class);
+
+		Ntro.registerSerializableClass(CourseSummary.class);
+		Ntro.registerSerializableClass(CourseListModel.class);
+		Ntro.registerSerializableClass(ObservableCourseList.class);
 
 		Ntro.registerSerializableClass(User.class);
 		Ntro.registerSerializableClass(Teacher.class);

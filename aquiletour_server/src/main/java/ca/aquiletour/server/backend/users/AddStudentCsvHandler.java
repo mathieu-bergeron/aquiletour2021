@@ -6,7 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.ntro.BackendMessageHandler;
@@ -32,7 +32,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		DashboardUpdater.incrementNumberOfStudents(modelStore, queueId, teacher.getId(), numberOfStudentAdded);
 
 		// FIXME: we need a real id
-		CourseSummary queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
+		DashboardCourse queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
 
 		DashboardUpdater.addQueueForUser(modelStore, queueSummary, teacher);
 	}
@@ -74,7 +74,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		String queueId = message.getQueueId();
 
 		// FIXME: we need a real id
-		CourseSummary queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
+		DashboardCourse queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
 
 		DashboardUpdater.addQueueForUsers(modelStore, queueSummary, studentsToAdd);
 	}
