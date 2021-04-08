@@ -124,7 +124,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		coursesLink.setAttribute("href", "/" + Constants.MY_COURSES_URL_SEGMENT);
+		coursesLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
 		coursesLink.addEventListener("click", new HtmlEventListener() {
 			@Override

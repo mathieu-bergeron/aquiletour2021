@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
+import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
@@ -65,7 +66,18 @@ public class AquiletourRequestHandler {
 		} else if(path.startsWith(Constants.CALENDAR_LIST_URL_SEGMENT)) {
 
 			sendCalendarListMessages(path.subPath(1), parameters, context.user());
+
+		} else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
+
+			sendCourseListMessages(path.subPath(1), parameters, context.user());
 		}
+	}
+
+	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourRequestHandler.class);
+		
+		ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
+		Ntro.messages().send(showCourseListMessage);
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {

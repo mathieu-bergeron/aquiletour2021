@@ -25,6 +25,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
+import ca.aquiletour.core.pages.course_list.CourseListController;
 import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
@@ -67,6 +68,8 @@ public class RootController extends NtroRootController {
 		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
 
 		addSubController(SemesterListController.class, Constants.CALENDAR_LIST_URL_SEGMENT);
+
+		addSubController(CourseListController.class, Constants.COURSE_LIST_URL_SEGMENT);
 
 		addWindowViewHandler(new RootViewHandler());
 		
