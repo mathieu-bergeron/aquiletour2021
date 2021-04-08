@@ -1,7 +1,5 @@
 package ca.aquiletour.web;
 
-import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
-import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarView;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
@@ -23,8 +21,8 @@ import ca.aquiletour.core.pages.queue.student.StudentQueueView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.web.pages.calendar_list.CalendarListViewWeb;
-import ca.aquiletour.web.pages.calendar_list.CalendarViewWeb;
+import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
+import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
 import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
 import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
@@ -32,7 +30,7 @@ import ca.aquiletour.web.pages.course.teacher.TaskViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.student.CourseSummaryViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.student.DashboardViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.teacher.CourseSummaryViewWebTeacher;
-import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
+import ca.aquiletour.web.pages.dashboard.teacher.DashboardViewWebTeacher;
 import ca.aquiletour.web.pages.git.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.CommitViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
@@ -44,6 +42,8 @@ import ca.aquiletour.web.pages.queue.teacher.TeacherQueueViewWeb;
 import ca.aquiletour.web.pages.queues.QueueSummaryViewWeb;
 import ca.aquiletour.web.pages.queues.QueuesViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
+import ca.aquiletour.web.pages.semester_list.SemesterListViewWeb;
+import ca.aquiletour.web.pages.semester_list.SemesterViewWeb;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -67,7 +67,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setHtmlUrl("/views/dashboard/teacher/dashboard_teacher.html")
 			     	.setCssUrl("/views/dashboard/teacher/dashboard_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(TeacherDashboardViewWeb.class));
+			     	.setTargetClass(DashboardViewWebTeacher.class));
 
 		ViewLoaders.registerViewLoader(DashboardViewStudent.class,
 				"fr"
@@ -205,20 +205,20 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TaskViewWebStudent.class));
 
-		ViewLoaders.registerViewLoader(CalendarListView.class,
+		ViewLoaders.registerViewLoader(SemesterListView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/calendar_list/calendar_list.html")
 			     	.setCssUrl("/views/calendar_list/calendar_list.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(CalendarListViewWeb.class));
+			     	.setTargetClass(SemesterListViewWeb.class));
 
-		ViewLoaders.registerViewLoader(CalendarView.class,
+		ViewLoaders.registerViewLoader(SemesterView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/calendar/calendar.html")
 			     	.setCssUrl("/views/calendar/calendar.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(CalendarViewWeb.class));
+			     	.setTargetClass(SemesterViewWeb.class));
 	}
 }

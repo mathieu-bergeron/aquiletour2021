@@ -1,17 +1,14 @@
-package ca.aquiletour.web.pages.dashboard.teacher;
+package ca.aquiletour.web.pages.semester_list;
 
-import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
-import ca.aquiletour.web.pages.dashboard.DashboardViewWeb;
+import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
+import ca.ntro.web.mvc.NtroViewWeb;
 
-public class TeacherDashboardViewWeb extends DashboardViewWeb implements TeacherDashboardView {
+public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 
 	private HtmlElement addCourseButton;
 	private HtmlElement closeModalButton;
@@ -19,7 +16,6 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
-		super.initializeViewWeb(context);
 		T.call(this);
 
 		addCourseButton = getRootElement().find("#add-course-submit-button").get(0);
@@ -29,7 +25,6 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 		MustNot.beNull(addCourseButton);
 		MustNot.beNull(closeModalButton);
 		MustNot.beNull(addCourseTitleInput);
-
 
 		addListeners();
 	}
@@ -41,14 +36,9 @@ public class TeacherDashboardViewWeb extends DashboardViewWeb implements Teacher
 			@Override
 			public void onEvent() {
 				T.call(this);
-
-				AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-				addCourseMessage.setCourse(new CourseSummary(addCourseTitleInput.value(), addCourseTitleInput.value()));
-				Ntro.messages().send(addCourseMessage);
 				
 				closeModalButton.trigger("click");
 			}
 		});
 	}
-
 }

@@ -8,8 +8,6 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.admin.calendar_list.messages.ShowCalendarListMessage;
-import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
@@ -17,6 +15,8 @@ import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
+import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
@@ -116,7 +116,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			public void onEvent() {
 				T.call(this);
 				
-				ShowCalendarListMessage showCalendarListMessage = Ntro.messages().create(ShowCalendarListMessage.class);
+				ShowSemesterListMessage showCalendarListMessage = Ntro.messages().create(ShowSemesterListMessage.class);
 				Ntro.messages().send(showCalendarListMessage);
 			}
 		});
@@ -219,7 +219,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showCalendarList(CalendarListView calendarListView) {
+	public void showCalendarList(SemesterListView calendarListView) {
 		T.call(this);
 
 		showSubView(calendarListView);

@@ -7,7 +7,6 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.admin.calendar_list.messages.ShowCalendarListMessage;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
@@ -19,6 +18,7 @@ import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
+import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -71,7 +71,7 @@ public class AquiletourRequestHandler {
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
-		ShowCalendarListMessage showCalendarListMessage = Ntro.messages().create(ShowCalendarListMessage.class);
+		ShowSemesterListMessage showCalendarListMessage = Ntro.messages().create(ShowSemesterListMessage.class);
 		Ntro.messages().send(showCalendarListMessage);
 	}
 

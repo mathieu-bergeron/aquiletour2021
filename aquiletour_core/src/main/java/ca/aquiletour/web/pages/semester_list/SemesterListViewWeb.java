@@ -1,11 +1,11 @@
-package ca.aquiletour.web.pages.calendar_list;
+package ca.aquiletour.web.pages.semester_list;
 
-import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarView;
+import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CalendarViewWeb extends NtroViewWeb implements CalendarView {
+public class SemesterListViewWeb extends NtroViewWeb implements SemesterListView {
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {

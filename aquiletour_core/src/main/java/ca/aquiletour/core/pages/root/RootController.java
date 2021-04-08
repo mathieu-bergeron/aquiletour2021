@@ -23,7 +23,6 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.pages.admin.calendar_list.CalendarListController;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
@@ -37,6 +36,7 @@ import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListController;
 import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
 import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
+import ca.aquiletour.core.pages.semester_list.SemesterListController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
@@ -66,7 +66,7 @@ public class RootController extends NtroRootController {
 
 		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
 
-		addSubController(CalendarListController.class, Constants.CALENDAR_LIST_URL_SEGMENT);
+		addSubController(SemesterListController.class, Constants.CALENDAR_LIST_URL_SEGMENT);
 
 		addWindowViewHandler(new RootViewHandler());
 		
