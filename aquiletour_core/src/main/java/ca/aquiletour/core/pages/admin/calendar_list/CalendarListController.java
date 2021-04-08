@@ -4,6 +4,7 @@ import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.pages.admin.calendar_list.handlers.CalendarListViewModel;
 import ca.aquiletour.core.pages.admin.calendar_list.handlers.ShowCalendarListHandler;
 import ca.aquiletour.core.pages.admin.calendar_list.messages.ShowCalendarListMessage;
+import ca.aquiletour.core.pages.admin.calendar_list.models.CalendarListModel;
 import ca.aquiletour.core.pages.admin.calendar_list.models.CalendarModel;
 import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarListView;
 import ca.aquiletour.core.pages.admin.calendar_list.views.CalendarView;
@@ -23,7 +24,7 @@ public class CalendarListController extends NtroController<RootController> {
 
 		addParentViewMessageHandler(ShowCalendarListMessage.class, new ShowCalendarListHandler());
 
-		setModelLoader(CalendarModel.class, 
+		setModelLoader(CalendarListModel.class, 
 					   context.user().getAuthToken(),
 					   context.user().getId());
 
