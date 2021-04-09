@@ -11,6 +11,9 @@
             </h2>
             <div id="semester-dates" class="accordion-collapse hide collapse" aria-labelledby="headingOne" data-bs-parent="#semester-accordion">
                 <div class="card-text accordion-body">
+                    <form action="" method="post" id="add-semester-dates-form">
+                        <input class="add-id-to-value" name="" style="display:none;"></input>
+                    </form>
                     <table class="table" id="semester-dates-table">
                         <tr>
                             <th>Semaine du</th>
@@ -21,28 +24,26 @@
                             <th>Vendredi</th>
                         </tr>
                         <tr id="add-week-row">
-                            <form>
-                                <input class="add-id-to-value" name="" style="display:none;"></input>
                                 <td>
-                                    <input class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
+                                    <input form="add-semester-dates-form" class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
                                 </td>
                                 <td>
-                                    <input name="monday" style="max-width:2rem"></input>
+                                    <input form="add-semester-dates-form" name="monday" style="max-width:2rem"></input>
                                 </td>
                                 <td>
-                                    <input name="tuesday" style="max-width:2rem"></input>
+                                    <input form="add-semester-dates-form" name="tuesday" style="max-width:2rem"></input>
                                 </td>
                                 <td>
-                                    <input name="wednesday" style="max-width:2rem"></input>
+                                    <input form="add-semester-dates-form" name="wednesday" style="max-width:2rem"></input>
                                 </td>
                                 <td>
-                                    <input name="thursday" style="max-width:2rem"></input>
+                                    <input form="add-semester-dates-form" name="thursday" style="max-width:2rem"></input>
                                 </td>
                                 <td>
-                                    <input name="friday" style="max-width:2rem"></input>
+                                    <input form="add-semester-dates-form" name="friday" style="max-width:2rem"></input>
                                 </td>
                                 <td>
-                                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
+                                    <input form="add-semester-dates-form" type="submit" class="add-id-to-href" id="add-date-button" style="float:right;" value="⊞"></input>
                                 </td>
                             </form>
                         </tr>
