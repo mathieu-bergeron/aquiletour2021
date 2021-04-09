@@ -2,43 +2,81 @@
     <div class='card-header bg-transparent border'>
         <a href="#" class="" id="semester-id"></a>
     </div>
-    <div class='card-text'>
-        <table class="table" id="semester-dates-table">
-            <tr>
-                <th>Semaine du</th>
-                <th>Lundi</th>
-                <th>Mardi</th>
-                <th>Mercredi</th>
-                <th>Jeudi</th>
-                <th>Vendredi</th>
-            </tr>
-            <tr id="add-week-row">
-                <form>
-                    <input class="add-id-to-value" name="" style="display:none;"></input>
-                <td>
-                    <input class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
-                </td>
-                <td>
-                    <input name="monday" style="max-width:2rem"></input>
-                </td>
-                <td>
-                    <input name="tuesday" style="max-width:2rem"></input>
-                </td>
-                <td>
-                    <input name="wednesday" style="max-width:2rem"></input>
-                </td>
-                <td>
-                    <input name="thursday" style="max-width:2rem"></input>
-                </td>
-                <td>
-                    <input name="friday" style="max-width:2rem"></input>
-                </td>
-                <td>
-                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
-                </td>
-                </form>
-            </tr>
-        </table>
+    <div class="accordion" id="semester-accordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#semester-dates" aria-expanded="false" aria-controls="semester-dates">
+                    Calendrier scolaire
+                </button>
+            </h2>
+            <div id="semester-dates" class="accordion-collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="card-text accordion-body">
+                    <table class="table" id="semester-dates-table">
+                        <tr>
+                            <th>Semaine du</th>
+                            <th>Lundi</th>
+                            <th>Mardi</th>
+                            <th>Mercredi</th>
+                            <th>Jeudi</th>
+                            <th>Vendredi</th>
+                        </tr>
+                        <tr id="add-week-row">
+                            <form>
+                                <input class="add-id-to-value" name="" style="display:none;"></input>
+                                <td>
+                                    <input class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
+                                </td>
+                                <td>
+                                    <input name="monday" style="max-width:2rem"></input>
+                                </td>
+                                <td>
+                                    <input name="tuesday" style="max-width:2rem"></input>
+                                </td>
+                                <td>
+                                    <input name="wednesday" style="max-width:2rem"></input>
+                                </td>
+                                <td>
+                                    <input name="thursday" style="max-width:2rem"></input>
+                                </td>
+                                <td>
+                                    <input name="friday" style="max-width:2rem"></input>
+                                </td>
+                                <td>
+                                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
+                                </td>
+                            </form>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#courses" aria-expanded="true" aria-controls="collapseOne">
+                    Les cours
+                </button>
+            </h2>
+            <div id="courses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="card-text accordion-body">
+                    asdf
+
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#groups" aria-expanded="true" aria-controls="collapseOne">
+                    Les groupes
+                </button>
+            </h2>
+            <div id="groups" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="card-text accordion-body">
+                    asdf
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
