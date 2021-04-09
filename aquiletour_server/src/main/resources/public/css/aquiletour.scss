@@ -1,3 +1,4 @@
+//DASHBOARD
 .flex-container {
   /* We first create a flex layout context */
   display: -webkit-box;
@@ -27,11 +28,49 @@
   margin-right: auto;
   
 }
+/*progress bar*/
+input[type="checkbox"] { 
+  height: 20px; 
+  width: 20px; 
+  margin-right: 10px;
+}	
+
+.ready { font-size: 1.5em; }
+.ui-progressbar-value { background: lightgreen; }
+.progressbar-container {
+  position: relative;
+  width: 350px; 
+}
+
+.progressbar-bar { 
+  height: 25px;
+  margin: 10px 0;
+  border-radius: 7px;
+}
+
+.progressbar-label {
+  position: absolute;
+  top: 2px;
+  left: 45%;
+  z-index: 2;
+}
+
+/*cards*/
+.card{
+  height: fit-content!important;
+  width: fit-content!important;
+  //max-width: 15rem;
+}
+
+.course-title{
+    margin-right:auto;
+}
+
 
 .mb-3{
   margin-bottom: 2rem!important;
 }
-
+  /*Defines the circle inside a card*/
 .color {
   height: 20px;
   width: 20px;
@@ -39,6 +78,84 @@
   display: inline-block;
   border: 1px solid black;
   position: absolute; 
+}
+
+.ghost {
+  position: absolute;
+  //top: 0;
+  //right: 0;
+  //bottom: 0;
+  //left: 0;
+  background-color: #f7f7f7;
+}
+.ghost-header {
+  position: relative;
+  box-sizing: border-box;
+  height: 41px;
+  border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+.ghost-header::before, .ghost-header::after {
+  content: "";
+  position: absolute;
+  //top: 20px;
+  //right: 48px;
+  //left: 16px;
+  height: 8px;
+  background-color: rgba(0, 0, 0, .20);
+}
+.ghost-header::after {
+  top: auto;
+  //bottom: 20px;
+  //right: 144px;
+  background-color: rgba(0, 0, 0, .06);
+}
+.ghost-body {
+  box-sizing: border-box;
+  position: relative;
+  height: 120px;
+}
+.ghost-body::before, .ghost-body::after {
+  content: "";
+  position: absolute;
+  //top: 20px;
+  //right: 16px;
+  //left: 16px;
+  height: 16px;
+  border-style: solid;
+  border-width: 8px 0;
+  border-color: rgba(0, 0, 0, .08);
+}
+.ghost-body::after {
+  top: auto;
+  bottom: 20px;
+  right: 72px;
+}
+.shimmering {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+	transform: translate3d(-100%, 0, 0);
+	animation: slide 1.6s infinite;
+	background: -webkit-linear-gradient(
+		left, 
+		rgba(255,255,255,0) 0%,
+		rgba(255,255,255,0.6) 50%,
+		rgba(255,255,255,0) 99%,
+		rgba(255,255,255,0) 100%
+	); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(
+		to right, 
+		rgba(255,255,255,0) 0%,
+		rgba(255,255,255,0.6) 50%,
+		rgba(255,255,255,0) 99%,
+		rgba(255,255,255,0) 100%
+	); /* W3C */
+}
+@keyframes slide {
+	0% {transform:translateX(-5%);}
+	100% {transform:translateX(5%);}
 }
 
 .available-icon {
@@ -49,27 +166,47 @@
   margin-bottom: 40px;
 }
 
+/*dashboard modal*/
+.dashboard-mFooter{
+  position: absolute;
+  bottom: 0;
+}
+
+.dashboard-mBody{
+  text-align: justify;
+  height: 15rem;
+  width: 15rem;
+}
+
+.dashboard-mContent{
+  width: fit-content;
+  height: fit-content;
+ 
+}
+
+.btn-add-course{
+  top: 0;
+}
+//QUEUE
 .queue {
   margin-left: 15%;
   margin-right: 15%;
   margin-top: 10px;
 }
 
-.wrap-close-btn {
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-
 .queue-settings {
-  float: right;
+ float: right;
   
 }
 
 .list-group-item {
   word-break: break-all;
   text-align: left;
+  height: auto;
+  
 }
 
+//NAVBAR
 .navbar-brand{
   margin-left: 1%;
 }
@@ -88,45 +225,20 @@
   right: 0;
 }
 
-//dashboard modal
-.dashboard-mFooter{
-  position: absolute;
-  bottom: 0;
+.connect{
+  padding-right: 1rem!important;
 }
 
-.dashboard-mBody{
-  text-align: justify;
-  height: 15rem;
-  width: 15rem;
-}
-
-.dashboard-mContent{
-  width: fit-content;
-  height: fit-content;
-  position: absolute;
-  left: 30%;
-}
-
-//For site footer
+//FOOTER
 #page-container{
   padding-bottom: 2.5rem;
-  height: 100%;
-}
-
-.page-contains{
   min-height: 100%;
-  height: 100%; /*try min height*/
-  width: 100%;
-  position: absolute;
+   
 }
-
-html, body{
-  height: 100%;
-  position: relative;
- }
 
 .site-footer {
   position: relative;
+  height: 150px;
   bottom: 0;
   width: 100%;
   color:#737373;
@@ -149,5 +261,103 @@ html, body{
     margin-top:5px;
     letter-spacing:2px
   }
+}
+
+//HOMEPAGE
+.home{
+  
+}
+
+.img-homepage {
+  height: 80vh;
+  margin: auto;
+}
+
+.carousel-indicators{
+  top: 0!important;
+}
+
+.home-modal{
+  width: auto;
+  top: 25rem!important;
+}
+
+.role-container{
+  border-style: solid;
+  border-color: #63999C;
+  border-width: 2px;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  width: fit-content;
+  letter-spacing: 0.5px;
+  
+}
+
+.home-mBody{
+  text-align: justify;
+  height: fit-content;
+  width: fit-content;
+}
+
+.userInput{
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+
+  &:focus{
+    outline-width: 0;
+    border-bottom-color: blue;
+  }
+}
+
+#roleStudent{
+  border-right: 2px #63999C;
+  border-style: solid;
+  border-top: none;
+  border-bottom: none;
+  border-left: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#roleTeacher{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+//WHOLE SITE
+html, body{
+  min-height: 100%;
+  
+  
+}
+
+body{
+  background-color: #63999C!important;
+  
+  
+  
+}
+
+.modal-content{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#page-loader {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  display: none;
+  text-align: center;
+  width: 100%;
+  padding-top: 25px;
+  background-color: rgba(255, 255, 255, 0.7); 
 }
 /* For chatbox feature*/

@@ -1,6 +1,7 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.NtroMessage;
@@ -34,10 +35,10 @@ public abstract class ControllerMessageHandler<C extends NtroAbstractController,
 	}
 
 	@Override
-	public void execute() {
+	public GraphTraceConnector execute() {
 		T.call(this);
 		
-		task.execute();
+		return task.execute();
 	}
 
 	@SuppressWarnings("unchecked")

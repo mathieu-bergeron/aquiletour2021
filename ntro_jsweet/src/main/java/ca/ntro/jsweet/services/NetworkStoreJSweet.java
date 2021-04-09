@@ -1,85 +1,94 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.core.Constants;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ExternalUpdateListener;
-import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
-import def.dom.Event;
-import def.dom.EventListener;
-import def.dom.Storage;
+import ca.ntro.jsweet.json.JsonLoaderJSweet;
+import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
+import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
+import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ExternalUpdateListener;
+import ca.ntro.stores.ValuePath;
 
-import static def.dom.Globals.window;
+import static def.es6.Globals.fetch;
+
+import java.util.List;
 
 public class NetworkStoreJSweet extends ModelStore {
-	
-	// FIXME: replace by a server connection!!
-	Storage localStorage = window.localStorage;
+
+	public NetworkStoreJSweet() {
+		
+		Ntro.backendService().handleMessageFromBackend(InvokeValueMethodNtroMessage.class, new MessageHandler<InvokeValueMethodNtroMessage>(){
+			@Override
+			public void handle(InvokeValueMethodNtroMessage message) {
+				invokeValueMethod(message.getValuePath(), message.getMethodName(), message.getArgs());
+			}
+		});
+	}
 
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		T.call(this);
+	}
 
-		// XXX: called only when the storage is modified OUTSIDE our tab
-		window.addEventListener("storage", new EventListener() {
+	private String fullId(DocumentPath documentPath) {
+		return documentPath.getCollection() + "/" + documentPath.getDocumentId();
+	}
 
-			@Override
-			public void $apply(Event evt) {
-				T.call(this);
-				
-				updateListener.onExternalUpdate();
+	@Override
+	protected JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
+		T.call(this);
+		
+		String serviceUrl = Constants.MODELS_URL_PREFIX + "/";
+		GetModelNtroMessage request = new GetModelNtroMessage();
+		request.setUser(Ntro.userService().user());
+		request.setDocumentPath(documentPath);
+		request.registerTargetClass(targetClass);
+		
+		return new JsonLoaderJSweet(serviceUrl, request);
+	}
+
+	@Override
+	protected JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage request) {
+		T.call(this);
+
+		return new JsonLoaderJSweet(serviceUrl, request);
+	}
+
+	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		// XXX: always false. Cannot be known synchronously
+		return false;
+	}
+
+    /*
+	// JSWEET: does not compile
+	// Object jsObject = Lang.await(fetchJsonObject(documentPath));
+	private Promise<Object> fetchJsonObject(DocumentPath documentPath) {
+		return fetch("/_B/" + fullId(documentPath)).then((Globals.FetchResponse response) -> {
+			if (response.ok) {
+				return response.json()
+						.Catch((java.lang.Object error) -> {
+							System.err.println("[NetworkStore] Erreur lors du chargement du modèle (JSON invalide)");
+						});
+			} else {
+				return Promise.reject("[NetworkStore] Erreur lors du chargement du modèle (code non-200 du serveur)");
 			}
 		});
-		
 	}
-	
-	private String fullId(DocumentPath documentPath) {
-		
-		return documentPath.getCollection() + "_" + documentPath.getId();
-		
-	}
+	*/
 
 	@Override
-	protected JsonLoader getJsonObject(DocumentPath documentPath) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 		
-		String fullId = fullId(documentPath);
-		
-		String jsonString = (String) localStorage.getItem(fullId);
-		
-		JsonObject jsonObject = null;
-		
-		if(jsonString != null) {
-
-			jsonObject =  JsonParser.fromString(jsonString);
-			
-		}else {
-			
-			jsonObject = JsonParser.jsonObject();
-		}
-		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonObject);
-
-		return jsonLoader;
-	}
-
-
-
-
-	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
-		T.call(this);
-
-		String jsonString = JsonParser.toString(jsonObject);
-
-		String fullId = fullId(documentPath);
-		
-		localStorage.setItem(fullId, jsonString);
+		// XXX: not supported
 	}
 
 	@Override
@@ -90,7 +99,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	public void addValueListener(ValuePath valuePath, ValueListener valueListener) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -98,6 +107,18 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	public <V> void setValue(ValuePath valuePath, V value) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// XXX: not supported
+	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		// XXX: not supported
+	}
+
+
 }

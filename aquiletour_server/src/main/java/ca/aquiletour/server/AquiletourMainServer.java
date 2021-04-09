@@ -19,37 +19,43 @@ package ca.aquiletour.server;
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+
+import ca.aquiletour.server.http.ModelHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.server.http.DynamicHandler;
+import ca.aquiletour.server.http.GitHandler;
+import ca.aquiletour.server.http.MessageHandler;
 import ca.aquiletour.server.http.ResourceHandler;
+import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
-import ca.ntro.core.Ntro;
-import ca.ntro.core.initialization.NtroInitializationTask;
+import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.services.Ntro;
+import ca.ntro.services.NtroInitializationTask;
 
 public class AquiletourMainServer extends NtroTaskAsync {
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
-		
+
 		// TODO: fetching option (parsed by InitializationTask)
-		String mainDirectory = getPreviousTask(NtroInitializationTask.class).getOption("mainDirectory");
+		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
 
 		ViewLoaderRegistrationWeb.registerViewLoaders();
 		
+		AquiletourMain.registerSerializableClasses();
+		
+		Ntro.jsonService().setPrettyPrinting(true);
+
 		// Start server
-		// always do server-side rendering (except for static resources: Urls starting with _R)
+		// always do server-side rendering (except for static resources: Urls starting with _resources)
 		// always include javascript content (it can be ignored by nojs clients)
 		try {
 			startServer();
@@ -58,7 +64,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 			e.printStackTrace(System.err);
 			Ntro.appCloser().close();
 		}
-		
+
 		notifyTaskFinished();
 	}
 
@@ -67,10 +73,10 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		System.err.println("Ntro initialization failed");
 		e.printStackTrace(System.err);
 	}
-	
-	private Server createServer(int port) {
+
+	private Server createServer(int port) throws ServletException {
 		T.call(this);
-		
+
 		Server server = new Server(port);
 
 		// TODO: add HTTPS, WS and WSS connectors
@@ -79,8 +85,12 @@ public class AquiletourMainServer extends NtroTaskAsync {
         // NOTE: HandlerList stops after first successful answer
         HandlerList handlers = new HandlerList();
 
-        handlers.addHandler(ResourceHandler.createResourceHandler("/_R", "/public"));
-        handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
+		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX));
+		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
+		handlers.addHandler(GitHandler.createGitHandler(ca.aquiletour.core.Constants.GIT_API_URL_PATH));
+		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.SOCKET_PREFIX));
+		handlers.addHandler(MessageHandler.createMessageHandler(Constants.HTTP_PREFIX));
+		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
 
         server.setHandler(handlers);
 
@@ -92,14 +102,14 @@ public class AquiletourMainServer extends NtroTaskAsync {
 
         int port = 8080;
         Server server = createServer(port);
-        
+
         server.start();
-        
+
         System.out.println(String.format("\n\nListening on http://localhost:%s", port));
         System.out.println("\n\nPress Enter to stop the server...");
-        
+
         System.in.read();
-        
+
         server.stop();
 
         server.join();

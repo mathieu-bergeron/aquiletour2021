@@ -29,6 +29,7 @@ public class SourceMapAnalyzer {
 	}
 
 	public static SourceFileLocation getOriginalLocation(String fileName, int line, int column) {
+		if(SourceMapAnalyzer.analyzerFunction == null) return new SourceFileLocation("unknown", 0);
 
 		//System.out.println("line, column " + line + " " + column);
 

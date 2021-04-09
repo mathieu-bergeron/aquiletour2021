@@ -1,16 +1,11 @@
 package ca.ntro.jsweet.services;
 
 import ca.ntro.core.mvc.ViewLoader;
-import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.dom.HtmlElementJSweet;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.ViewLoaderWeb;
-import def.dom.Globals;
-import def.jquery.JQuery;
-
-import static def.dom.Globals.console;
-import static def.jquery.Globals.$;
+import def.es6.Globals;
 
 public class ViewLoaderWebJSweet extends ViewLoaderWeb {
 
@@ -34,15 +29,15 @@ public class ViewLoaderWebJSweet extends ViewLoaderWeb {
 	protected HtmlElement parseHtml(String html) {
 		T.call(this);
 
-		Object[] parsedHtml = $.parseHTML(html, Globals.document, false);
+		return new HtmlElementJSweet(HtmlElementJSweet.parseHtml(html));
+	}
 
-		if (parsedHtml.length > 1) {
-			console.warn("[ViewLoader] Root HTML contains more than one root node. First non-text node will be used.");
-		}
-
-		JQuery firstNonTextNode = $(parsedHtml).filter((index, element) -> element.nodeType != 3);
-
-		return new HtmlElementJSweet($(firstNonTextNode));
+	@Override
+	protected void initializeJs(String viewName, HtmlElement viewRootHtmlElement) {
+		T.call(this);
+		
+		// XXX: defined in _ntro_initialize.js
+		Globals._ntro_initialize_view(viewName, (HtmlElementJSweet) viewRootHtmlElement);
 	}
 
 

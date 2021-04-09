@@ -1,26 +1,29 @@
 {
   "courses": {
-    "_T": "ca.aquiletour.core.pages.dashboards.values.ObservableCourseList",
+    "_C": "ObservableCourseList",
     "value": [
       {
-        "date": "3 mars",
-        "summary": "Exercices 5-10",
-        "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "3C6"
-      },
-      {
-        "date": "15 janvier",
-        "summary": "Lecture roman",
-        "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "4F5"
-      },
-      {
-        "date": "4 février",
-        "summary": "Essay 3",
-        "_T": "ca.aquiletour.core.pages.dashboards.values.CourseSummary",
-        "title": "5B5"
+        "numberOfAppointments": {
+          "_C": "StoredInteger",
+          "value": 0
+        },
+        "_C": "CourseSummary",
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "myAppointment": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "numberOfStudents": {
+          "_C": "StoredInteger",
+          "value": 3
+        },
+        "title": "StruDon",
+        "courseId": "StruDon"
       }
     ]
   },
-  "_T": "ca.aquiletour.core.pages.dashboards.DashboardModel"
+  "_C": "DashboardModel"
 }

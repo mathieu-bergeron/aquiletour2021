@@ -1,0 +1,7 @@
+Classe 4206APMO-000001 Stage en développement d'appli
+FamilleA FD Bd;PrénomA;201234567;420.AA;6;450 555-1234;;;;;
+FamilleB;PrénomB;202234567;420.AA;6;514 555-2234;;;;;
+FamilleC;PrénomC-PrénomB;203234567;420.AA;6;514 555-3234;;;;;
+FamilleD;PrénomD;204234567;420.AA;6;514 555-4234;;;;;
+FamilleE FamilleD;PrénomE PrénomE;205234567;420.AA;6;514 555-5234;;;;;
+FamilleF;PrénomF;206234567;420.AA;6;450 555-6234;;;;;

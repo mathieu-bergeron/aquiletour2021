@@ -1,49 +1,37 @@
 package ca.ntro.core.models;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.json.JsonLoader;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.services.stores.DocumentPath;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.services.ModelStore;
+import ca.ntro.stores.DocumentPath;
 
 public class ModelLoader extends NtroTaskAsync {
 	
 	private Class<? extends NtroModel> modelClass;
 	
 	private NtroModel model;
+	private DocumentPath documentPath;
 	private ModelStore modelStore;
 	
-	public ModelLoader(ModelStore modelStore) {
+	public ModelLoader(ModelStore modelStore, DocumentPath documentPath) {
 		super();
 		T.call(this);
 		
 		this.modelStore = modelStore;
+		this.documentPath = documentPath;
 	}
 	
-
-	@Override
-	protected void initializeTask() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 
-		JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
+		//JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
+		JsonLoader jsonLoader = (JsonLoader) getSubTask(JsonLoader.class, "JsonLoader");
 		
-		JsonObject jsonObject = jsonLoader.getJsonObject();
-		DocumentPath documentPath = jsonLoader.getDocumentPath();
+		String jsonString = jsonLoader.getJsonString();
 		
-		model = Factory.newInstance(modelClass);
-
-		model.setOrigin(modelStore);
-		
-		model.loadFromJsonObject(jsonObject);
-		
-		model.setId(documentPath.getId());
+		model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
 		
 		notifyTaskFinished();
 	}

@@ -1,0 +1,27 @@
+plugins{
+    id 'local-java-plugin'
+}
+
+dependencies {
+    // Ntro
+    implementation project(':ntro_core')
+    implementation project(':ntro_jdk')
+
+    // Jetty web server
+    implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.28.v20200408'
+}
+
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
+}
+
+task testServer (type:JavaExec) {
+    dependsOn 'classes'
+    main = 'ca.ntro.server.JavaMainServer'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm
+    standardInput = System.in
+}

@@ -19,6 +19,6 @@ package ca.ntro.core.mvc;
 
 public interface NtroView {
 	
-	void initialize();
+	void initializeView(NtroContext<?> context);
 
 }

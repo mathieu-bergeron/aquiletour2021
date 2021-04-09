@@ -17,17 +17,19 @@
 
 package ca.aquiletour.server;
 
+import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.web.NtroWebserver;
+import ca.ntro.jdk.web.NtroWebServer;
 
 public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
-
-		NtroWebserver.defaultInitializationTask()
+		
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreServer.class)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();
+		             //.execute().addGraphWriter(new GraphTraceWriterJdk(new File("TMP")));
 	}
 }

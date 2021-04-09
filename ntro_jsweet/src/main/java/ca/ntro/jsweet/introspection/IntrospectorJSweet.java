@@ -22,13 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.introspection.NtroClass;
+import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.system.trace.T;
 import def.js.Array;
 import def.js.Function;
-import def.js.JSON;
 
 import static jsweet.util.Lang.object;
 import static jsweet.util.Lang.typeof;
@@ -129,10 +130,11 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public Object buildValueForType(Class<?> superType, Object jsonValue) {
+	public Object castPrimitiveValue(Class<?> targetClass, Object primitiveValue) {
 		T.call(this);
 
-		return buildValue(jsonValue);
+		// JSWEET: primitive casting does not make sense in Javascript
+		return primitiveValue;
 	}
 
 	@Override
@@ -143,11 +145,18 @@ public class IntrospectorJSweet extends Introspector {
 			def.js.String interfaceName = new def.js.String(clazz);
 
 			ret = interfaceName.substring(interfaceName.lastIndexOf(".") + 1, interfaceName.length - 1).toString();
+
 		} else {
+
 			ret = clazz.getSimpleName();
 		}
 
 		return ret;
+	}
+
+	@Override
+	public String getFullNameForClass(Class<?> clazz) {
+		return clazz.getName();
 	}
 
 	@Override
@@ -211,8 +220,9 @@ public class IntrospectorJSweet extends Introspector {
 
 					jsMethod.$set("fn", fn);
 					jsMethod.$set("name", methodName);
-					// FIXME: should the be the superclass
-					//        where the method is defined??
+					
+					// XXX: owner is the Class<?> where the
+					//      method executes
 					jsMethod.$set("owner", owner);
 
 					// XXX: JSweet magic cast
@@ -249,8 +259,8 @@ public class IntrospectorJSweet extends Introspector {
 	}
 
 	@Override
-	public MethodSignature methodSignature(Method method) {
-		throw new RuntimeException("TODO: IntrospectorJSweet.methodSignature");
+	public NtroMethod ntroMethod(Method method) {
+		return new NtroMethodJSweet(method);
 	}
 
 	@Override
@@ -261,5 +271,42 @@ public class IntrospectorJSweet extends Introspector {
 	@Override
 	public boolean isClass(Object object) {
 		return object.getClass().getSimpleName().equals("Function");
+	}
+
+	@Override
+	public boolean isMap(Object object) {
+		
+		// XXX: this is only true for maps where keys are NOT strings
+		// def.js.Object jsObject = (def.js.Object) object;
+		// return jsObject.$get("entries") != null;
+		
+		return object instanceof Map;
+	}
+
+	@Override
+	public boolean isList(Object object) {
+		return object instanceof List;
+	}
+
+	@Override
+	public NtroClass ntroClassFromObject(Object object) {
+		
+		Class<?> _class = null;
+		
+		if(typeof(object).equals("string")) {
+			
+			_class = String.class;
+
+		}else {
+			
+			_class = object.getClass();
+		}
+		
+		return ntroClassFromJavaClass(_class);
+	}
+
+	@Override
+	public NtroClass ntroClassFromJavaClass(Class<?> _class) {
+		return new NtroClassJSweet(_class);
 	}
 }

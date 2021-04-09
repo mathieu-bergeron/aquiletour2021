@@ -37,7 +37,7 @@ services:
     build:
       context: httprouter
     ports: 
-      - "8000:80"
+      - "80:80"
     networks:
       - aqlt_net
     depends_on:

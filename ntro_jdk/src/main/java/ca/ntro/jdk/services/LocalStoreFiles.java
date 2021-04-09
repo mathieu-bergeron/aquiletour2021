@@ -1,27 +1,27 @@
 package ca.ntro.jdk.services;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ExternalUpdateListener;
-import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.json.JsonLoaderFiles;
+import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.services.ModelStore;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ExternalUpdateListener;
+import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
-public class LocalStoreFiles extends ModelStore {
+public abstract class LocalStoreFiles extends ModelStore {
 	
 	protected String getFileName() {
 		T.call(this);
@@ -44,12 +44,22 @@ public class LocalStoreFiles extends ModelStore {
 	}
 	
 	@Override
-	public JsonLoader getJsonObject(DocumentPath documentPath) {
+	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
 		
 		File modelFile = getModelFile(documentPath);
 
-		JsonLoader jsonLoader = new JsonLoaderFiles(documentPath, modelFile);
+		JsonLoader jsonLoader = null;
+		
+		if(modelFile.exists()) {
+
+			jsonLoader = new JsonLoaderFiles(modelFile);
+
+		}else {
+
+			// Create empty model if non exists
+			jsonLoader = new JsonLoaderMemory(ModelStore.emptyModelString(documentPath));
+		}
 		
 		return jsonLoader;
 	}
@@ -65,19 +75,19 @@ public class LocalStoreFiles extends ModelStore {
 			collectionDir.mkdir();
 		}
 		
-		Path modelFilePath = Paths.get(collectionDir.getAbsolutePath(), documentPath.getId() + ".json");
+		Path modelFilePath = Paths.get(collectionDir.getAbsolutePath(), documentPath.getDocumentId() + ".json");
 		
 		File modelFile = modelFilePath.toFile();
 		return modelFile;
 	}
 
-	private void writeJsonFile(File file, JsonObject jsonObject) {
+	private void writeJsonFile(File file, String jsonString) {
 		T.call(this);
 
 		try {
 
 			FileOutputStream out = new FileOutputStream(file);
-			out.write(JsonParser.toString(jsonObject).getBytes());
+			out.write(jsonString.getBytes());
 			out.close();
 
 		} catch (IOException e) {
@@ -85,14 +95,27 @@ public class LocalStoreFiles extends ModelStore {
 		}
 	}
 
-
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	protected void deleteDocument(DocumentPath documentPath) {
 		T.call(this);
 
 		File modelFile = getModelFile(documentPath);
 		
-		writeJsonFile(modelFile, jsonObject);
+		modelFile.delete();
+	}
+
+	@Override
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
+		T.call(this);
+
+		File modelFile = getModelFile(documentPath);
+		
+		writeJsonFile(modelFile, jsonString);
+	}
+
+	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		return getModelFile(documentPath).exists();
 	}
 
 	@Override
@@ -112,4 +135,7 @@ public class LocalStoreFiles extends ModelStore {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
 }

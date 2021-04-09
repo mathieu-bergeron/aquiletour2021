@@ -42,6 +42,11 @@ public class MethodSignature extends ProcedureSignature {
 
 	private String returnType;
 
+	public MethodSignature(String name) {
+		super(name, null, null);
+		T.call(this);
+	}
+
 	public MethodSignature(String name, List<String> argumentTypes, String returnType, List<String> modifiers) {
 		super(name, argumentTypes, modifiers);
 		T.call(this);

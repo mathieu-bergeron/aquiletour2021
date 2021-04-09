@@ -1,22 +1,23 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.NtroUser;
+import ca.ntro.users.NtroUser;
 
 public class NtroContext<U extends NtroUser>{
 	
 	private String lang;
-	private U user;
+	private NtroUser user;
 	
-	public String getLang() {
+	public String lang() {
 		return lang;
 	}
-	public void setLang(String lang) {
+	public void registerLang(String lang) {
 		this.lang = lang;
 	}
-	public U getUser() {
-		return user;
+	@SuppressWarnings("unchecked")
+	public U user() {
+		return (U) user;
 	}
-	public void setUser(U user) {
+	public void registerUser(NtroUser user) {
 		this.user = user;
 	}
 

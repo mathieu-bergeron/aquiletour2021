@@ -3,14 +3,15 @@ package ca.aquiletour.javafx.pages.root;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import ca.aquiletour.core.pages.dashboard.DashboardView;
-import ca.aquiletour.core.pages.dashboard.messages.ShowDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queues.QueuesView;
 import ca.aquiletour.core.pages.root.QuitMessage;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.settings.SettingsView;
-import ca.aquiletour.core.pages.settings.ShowSettingsMessage;
 import ca.aquiletour.core.pages.users.UsersView;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
@@ -38,8 +39,8 @@ public class RootViewFx extends NtroViewFx implements RootView {
 	private VBox pageContainer;
 	
 	private QuitMessage quitMessage = MessageFactory.getOutgoingMessage(QuitMessage.class);
-	private ShowDashboardMessage showDashboardMessage = MessageFactory.getOutgoingMessage(ShowDashboardMessage.class);
-	private ShowSettingsMessage showSettingsMessage = MessageFactory.getOutgoingMessage(ShowSettingsMessage.class);
+	private ShowStudentDashboardMessage showStudentDashboardMessage = MessageFactory.getOutgoingMessage(ShowStudentDashboardMessage.class);
+	private ShowTeacherDashboardMessage showTeacherDashboardMessage = MessageFactory.getOutgoingMessage(ShowTeacherDashboardMessage.class);
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -55,16 +56,7 @@ public class RootViewFx extends NtroViewFx implements RootView {
 			public void handle(ActionEvent event) {
 				T.call(this);
 				
-				showDashboardMessage.sendMessage();
-			}
-		});
-
-		settings.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				T.call(this);
-				
-				showSettingsMessage.sendMessage();
+				showStudentDashboardMessage.sendMessage();
 			}
 		});
 		
@@ -80,10 +72,9 @@ public class RootViewFx extends NtroViewFx implements RootView {
 	}
 
 	@Override
-	public void showSettings(SettingsView settingsView) {
-		T.call(this);
+	public void initialize() {
+		// TODO Auto-generated method stub
 		
-		showSubView(settingsView);
 	}
 
 	@Override
@@ -109,11 +100,6 @@ public class RootViewFx extends NtroViewFx implements RootView {
 		showSubView(queueView);
 	}
 
-	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void showUsers(UsersView usersView) {
@@ -127,6 +113,17 @@ public class RootViewFx extends NtroViewFx implements RootView {
 		T.call(this);
 		
 		showSubView(loginView);
-		
+	}
+
+	@Override
+	public void showQueues(QueuesView queuesView) {
+
+		showSubView(queuesView);
+	}
+
+	@Override
+	public void showHome(HomeView homeView) {
+
+		showSubView(homeView);
 	}
 }

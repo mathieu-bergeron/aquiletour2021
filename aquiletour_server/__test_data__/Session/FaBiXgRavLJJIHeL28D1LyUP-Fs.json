@@ -1,0 +1,14 @@
+{
+  "_C": "Session",
+  "loginCode": "173959",
+  "user": {
+    "phoneNumber": "",
+    "_C": "Teacher",
+    "surname": "",
+    "authToken": "FaBiXgRavLJJIHeL28D1LyUP-Fs",
+    "name": "mathieu.bergeron",
+    "id": "mathieu.bergeron",
+    "email": "mathieu.bergeron@cmontmorency.qc.ca"
+  },
+  "timeToLiveMiliseconds": 6720000
+}

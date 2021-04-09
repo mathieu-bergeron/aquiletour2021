@@ -1,5 +1,6 @@
 plugins {
     id 'local-java-plugin'
+    id 'local-jsweet-plugin'
     id 'maven'
 }
 
@@ -23,15 +24,24 @@ dependencies {
     implementation 'guru.nidi:graphviz-java-all-j2v8:0.18.0'
     // </DEV ONLY>
 
+    testImplementation project(':ntro_test')
     testImplementation 'junit:junit:4.13'
 }
+
+configurations{
+    // XXX: not needed in runtime 
+    //      and conflicts with selenium and gson
+    testRuntime.exclude group: 'org.jsweet'
+    runtime.exclude group: 'org.jsweet' 
+}
+
 
 tasks.build {
     finalizedBy 'install'
 }
 
 tasks.test{
-    //testLogging.showStandardStreams = true
+    testLogging.showStandardStreams = true
 
     afterTest { desc, result -> 
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"

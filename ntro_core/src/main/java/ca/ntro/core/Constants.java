@@ -19,6 +19,13 @@ package ca.ntro.core;
 
 public class Constants {
 	
-	public static final String RESOURCES_URL_PREFIX = "_R";
-
+	public static final String INITIALIZATION_TASK_ID="initializationTask";
+	
+	public static final String SOCKET_PREFIX = "/_socket";
+	public static final String HTTP_PREFIX = "/_http";
+	public static final String MESSAGES_SEGMENT = "messages";
+	public static final String MESSAGES_URL_PATH_SOCKET = SOCKET_PREFIX + "/" + MESSAGES_SEGMENT;
+	public static final String MESSAGES_URL_PATH_HTTP = HTTP_PREFIX + "/" + MESSAGES_SEGMENT;
+	public static final String RESOURCES_URL_PREFIX = "/_resources";
+	public static final String MODELS_URL_PREFIX = "/_models";
 }

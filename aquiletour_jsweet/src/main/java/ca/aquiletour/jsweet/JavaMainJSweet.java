@@ -17,8 +17,10 @@
 
 package ca.aquiletour.jsweet;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jsweet.NtroJSweet;
+import ca.ntro.jsweet.services.BackendServiceJSweet;
+import ca.ntro.jsweet.services.NtroJSweet;
 
 public class JavaMainJSweet {
 
@@ -26,8 +28,15 @@ public class JavaMainJSweet {
 		__T.call(JavaMainJSweet.class,"main");
 
 		String[] options = new String[] {"--traceLevel","APP"};
+		
+		// FIXME: this has to be done before pretty much anything
+		//        we need a better init sequence
+		//        ideally using a TaskGraph to represent dependancies
+		AquiletourMain.registerSerializableClasses();
 
-		NtroJSweet.defaultInitializationTask()
+		BackendServiceJSweet backendServiceJSweet = new BackendServiceJSweet(ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET);
+		
+		NtroJSweet.defaultInitializationTask(backendServiceJSweet)
 				  .setOptions(options)
 				  .addNextTask(new AquiletourMainJSweet())
 				  .execute();

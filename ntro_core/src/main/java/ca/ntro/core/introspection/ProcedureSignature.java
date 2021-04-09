@@ -99,7 +99,7 @@ public abstract class ProcedureSignature {
 		}
 	}
 
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
@@ -107,7 +107,7 @@ public abstract class ProcedureSignature {
 		this.name = name;
 	}
 
-	public List<String> getArgumentTypes() {
+	public List<String> argumentTypes() {
 		return argumentTypes;
 	}
 
@@ -135,7 +135,7 @@ public abstract class ProcedureSignature {
 		}
 	}
 	
-	public List<String> getModifiers() {
+	public List<String> modifiers() {
 		return modifiers;
 	}
 

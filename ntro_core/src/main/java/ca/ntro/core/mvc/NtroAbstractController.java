@@ -1,48 +1,54 @@
 package ca.ntro.core.mvc;
 
-import ca.ntro.core.Ntro;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.ContainerTask;
+import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
-import ca.ntro.messages.MessageFactory;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
+import static ca.ntro.core.mvc.Constants.SUB_MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_CREATOR_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_MODEL_TASK_ID;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static ca.ntro.core.mvc.Constants.VIEW_HANDLER_TASK_ID;
 
 
-abstract class NtroAbstractController extends AnyController implements TaskWrapper {
+public abstract class NtroAbstractController  implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
-	private NtroContext context;
+	private NtroTask initTasks = new ContainerTask();
+	private NtroContext<?> context;
 	private Path path;
-
-	protected abstract void onCreate();
-	protected abstract void onChangeContext(NtroContext previousContext);
+	
+	private List<NtroAbstractController> subControllers = new ArrayList<>();
+	
+	protected abstract void onCreate(NtroContext<?> context);
+	protected abstract void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
 		T.call(this);
-
-		mainTask.setTaskId(Ntro.introspector().getSimpleNameForClass(this.getClass()));
-
-		// TODO
-		//addDefaultTasks();
-	}
-
-	private void addDefaultTasks() {
-		T.call(this);
 		
-		setModelLoader(new EmptyModelLoader());
+		mainTask.setTaskId(Ntro.introspector().getSimpleNameForClass(this.getClass()));
+		initTasks.setTaskId("InitTasks");
+		
+		mainTask.addSubTask(initTasks);
 	}
+
 	@Override
 	public NtroTask getTask() {
 		T.call(this);
@@ -51,10 +57,10 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 	}
 
 	@Override
-	public void execute() {
+	public GraphTraceConnector execute() {
 		T.call(this);
 
-		getTask().execute();
+		return getTask().execute();
 	}
 	
 	void setContext(NtroContext context) {
@@ -67,12 +73,11 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 		this.path = path;
 	}
 	
-	public NtroContext currentContext() {
+	public NtroContext context() {
 		T.call(this);
 		
 		return context;
 	}
-
 
 	protected <C extends NtroController<?>> void addSubController(Class<C> controllerClass, String controllerId) {
 		T.call(this);
@@ -81,15 +86,10 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 			Path pathRemainder = path.removePrefix(controllerId);
 			
 			C subController = ControllerFactory.createController(controllerClass, pathRemainder, this, context);
-
-			getTask().addNextTask(subController.getTask());
-
-		}else {
-
-			System.err.println("[WARNING]: subController not added: " + controllerId);
-
+			initTasks.addNextTask(subController.getTask());
+			
+			subControllers.add(subController);
 		}
-
 	}
 
 	protected void addSubViewLoader(Class<? extends NtroView> subViewClass, String lang) {
@@ -101,25 +101,11 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 
 		// FIXME: it should be ok to reuse a viewLoader at DONE
 		//        it simply means the files are already loaded
-		viewLoader.reset();
+		//viewLoader.resetTask();
 
 		viewLoader.setTaskId(Ntro.introspector().getSimpleNameForClass(subViewClass));
 
 		getTask().addSubTask(viewLoader);
-	}
-
-	protected void addMessageHandler(Class<? extends NtroMessage> messageClass, MessageHandler<?,?> handler) {
-		T.call(this);
-
-		NtroTask message = MessageFactory.getIncomingMessage(messageClass);
-		
-		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
-		message.setTaskId(messageId);
-		handler.setMessageId(messageId);
-		
-		handler.setController(this);
-
-		handler.getTask().addPreviousTask(message);
 	}
 
 	protected void addModelMessageHandler(Class<? extends NtroMessage> messageClass, ModelMessageHandler<?,?> handler) {
@@ -127,12 +113,11 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 
-		NtroMessage message = MessageFactory.getIncomingMessage(messageClass);
-		message.setTaskId(messageId);
+		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 
 		handler.setMessageId(messageId);
 
-		handler.getTask().addPreviousTask(message);
+		handler.getTask().addPreviousTask(messageHandlerTask);
 
 		addPreviousTaskTo(handler.getTask(), ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
@@ -140,25 +125,33 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 	protected void setViewLoader(ViewLoader viewLoader) {
 		T.call(this);
 
-		// FIXME: it should be ok to reuse a viewLoader at DONE
-		//        it simply means the files are already loaded
-		viewLoader.reset();
-
-		viewLoader.setTaskId(VIEW_LOADER_TASK_ID);
-		getTask().addSubTask(viewLoader);
-
-		ViewCreatorTask viewCreator = new ViewCreatorTask();
-		viewCreator.setTaskId(VIEW_CREATOR_TASK_ID);
-
-		getTask().addSubTask(viewCreator);
-
-		viewCreator.addPreviousTask(viewLoader);
-
-		addPreviousTaskTo(ModelViewHandlerTask.class, VIEW_MODEL_TASK_ID, viewCreator);
-		addPreviousTaskTo(ViewHandlerTask.class, VIEW_HANDLER_TASK_ID, viewCreator);
+		viewLoader.registerContext(context);
 		
+		ViewLoader currentViewLoader = initTasks.getSubTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
 
+		if(currentViewLoader == null) {
+			
+			viewLoader.setTaskId(VIEW_LOADER_TASK_ID);
+			initTasks.addSubTask(viewLoader);
+
+			ViewCreatorTask viewCreator = new ViewCreatorTask();
+			viewCreator.setTaskId(VIEW_CREATOR_TASK_ID);
+
+			initTasks.addSubTask(viewCreator);
+
+			viewCreator.addPreviousTask(viewLoader);
+
+			addPreviousTaskTo(ModelViewHandlerTask.class, VIEW_MODEL_TASK_ID, viewCreator);
+			addPreviousTaskTo(ViewHandlerTask.class, VIEW_HANDLER_TASK_ID, viewCreator);
+			
+		}else {
+			
+			viewLoader.setTaskId(VIEW_LOADER_TASK_ID);
+			currentViewLoader.replaceWith(viewLoader);
+			
+		}
 	}
+
 	protected void setViewLoader(Class<? extends NtroView> viewClass, String lang) {
 		T.call(this);
 
@@ -172,7 +165,10 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 	private <NT extends NtroTask> void addPreviousTaskTo(Class<NT> taskClass, String taskId, NtroTask previousTask) {
 		T.call(this);
 
-		NT task = getTask().getSubTask(taskClass, taskId);
+		NT task = initTasks.getSubTask(taskClass, taskId);
+		if(task == null) {
+			task = mainTask.getSubTask(taskClass, taskId);
+		}
 
 		if(task != null) {
 			task.addPreviousTask(previousTask);
@@ -182,10 +178,39 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 	public void setModelLoader(ModelLoader modelLoader) {
 		T.call(this);
 
-		modelLoader.setTaskId(MODEL_LOADER_TASK_ID);
-		getTask().addSubTask(modelLoader);
+		ModelLoader currentModelLoader = mainTask.getSubTask(ModelLoader.class, MODEL_LOADER_TASK_ID);
+		
+		if(currentModelLoader == null) {
 
-		addPreviousTaskTo(ModelViewHandlerTask.class, VIEW_MODEL_TASK_ID, modelLoader);
+			modelLoader.setTaskId(MODEL_LOADER_TASK_ID);
+			mainTask.addSubTask(modelLoader);
+
+			addPreviousTaskTo(ModelViewHandlerTask.class, VIEW_MODEL_TASK_ID, modelLoader);
+			
+		}else {
+			
+			modelLoader.setTaskId(MODEL_LOADER_TASK_ID);
+			currentModelLoader.asTask().replaceWith(modelLoader);
+		}
+	}
+
+	public void setSubModelLoader(ModelLoader modelLoader) {
+		T.call(this);
+
+		ModelLoader currentSubModelLoader = mainTask.getSubTask(ModelLoader.class, SUB_MODEL_LOADER_TASK_ID);
+		
+		if(currentSubModelLoader == null) {
+
+			modelLoader.setTaskId(SUB_MODEL_LOADER_TASK_ID);
+			mainTask.addSubTask(modelLoader);
+
+			addPreviousTaskTo(ModelViewHandlerTask.class, VIEW_MODEL_TASK_ID, modelLoader);
+			
+		}else {
+			
+			modelLoader.setTaskId(SUB_MODEL_LOADER_TASK_ID);
+			currentSubModelLoader.asTask().replaceWith(modelLoader);
+		}
 	}
 
 	protected void setModelViewHandler(ModelViewHandler<?,?> handler) {
@@ -193,18 +218,31 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 
 		NtroTask task = handler.getTask();
 
-		getTask().addSubTask(task);
+		mainTask.addSubTask(task);
 
 		addPreviousTaskTo(task, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
 
+	protected <M extends NtroModel> void addModelHandler(Class<M> modelClass, ModelHandler<M> handler) {
+		T.call(this);
+
+		NtroTask task = handler.getTask();
+		
+		handler.setController(this);
+
+		mainTask.addSubTask(task);
+
+		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
+	}
+
+	
 	protected void addModelViewSubViewHandler(Class<? extends NtroView> subViewClass, ModelViewSubViewHandler<?,?> handler) {
 		T.call(this);
 
 		NtroTask task = handler.getTask();
 
-		getTask().addSubTask(task);
+		mainTask.addSubTask(task);
 
 		String subViewLoaderTaskId = Ntro.introspector().getSimpleNameForClass(subViewClass);
 
@@ -216,11 +254,58 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
 	}
 
+	protected void addModelSubModelViewSubViewHandler(Class<? extends NtroView> subViewClass, ModelSubModelViewSubViewHandler<?,?,?> handler) {
+		T.call(this);
+
+		NtroTask task = handler.getTask();
+
+		mainTask.addSubTask(task);
+
+		String subViewLoaderTaskId = Ntro.introspector().getSimpleNameForClass(subViewClass);
+
+		ViewLoader subViewLoader = (ViewLoader) getTask().getSubTask(ViewLoader.class, subViewLoaderTaskId);
+		handler.setSubViewLoader(subViewLoader);
+
+		addPreviousTaskTo(task, ViewLoader.class, subViewLoaderTaskId);
+		addPreviousTaskTo(task, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
+		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
+		addPreviousTaskTo(task, ModelLoader.class, SUB_MODEL_LOADER_TASK_ID);
+	}
+
+	protected void addModelViewSubViewMessageHandler(Class<? extends NtroView> subViewClass, 
+			                                         Class<? extends NtroMessage> messageClass, 
+			                                         ModelViewSubViewMessageHandler<?,?,?> handler) {
+		T.call(this);
+
+
+		String subViewLoaderTaskId = Ntro.introspector().getSimpleNameForClass(subViewClass);
+
+		ViewLoader subViewLoader = (ViewLoader) getTask().getSubTask(ViewLoader.class, subViewLoaderTaskId);
+		handler.setSubViewLoader(subViewLoader);
+		
+		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
+		handler.setMessageId(messageId);
+
+		handler.getTask().addPreviousTask(messageHandlerTask);
+
+		NtroTask task = handler.getTask();
+		mainTask.addSubTask(task);
+
+		addPreviousTaskTo(task, ViewLoader.class, subViewLoaderTaskId);
+		addPreviousTaskTo(task, ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
+		addPreviousTaskTo(task, ModelLoader.class, MODEL_LOADER_TASK_ID);
+	}
+
 
 	protected <NT extends NtroTask> void addPreviousTaskTo(NtroTask nextTask, Class<NT> taskClass, String taskId) {
 		T.call(this);
 
-		NT previousTask = getTask().getSubTask(taskClass, taskId);
+		NT previousTask = initTasks.getSubTask(taskClass, taskId);
+
+		if(previousTask == null) {
+			previousTask = mainTask.getSubTask(taskClass, taskId);
+		}
 
 		if(previousTask != null) {
 			nextTask.addPreviousTask(previousTask);
@@ -232,7 +317,7 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 
 		handler.setController(this);
 
-		getTask().addSubTask(handler.getTask());
+		mainTask.addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 	}
 
@@ -240,16 +325,58 @@ abstract class NtroAbstractController extends AnyController implements TaskWrapp
 	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?> handler) {
 		T.call(this);
 
-		getTask().addSubTask(handler.getTask());
+		mainTask.addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 	}
 
 	public NtroView getView() {
 		T.call(this);
 
-		NtroView view = getTask().getSubTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
+		NtroView view = initTasks.getSubTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID).getView();
 
 		return view;
+	}
+
+	public void setModelUsingWebService(String serviceUrl, NtroModelMessage message) {
+		T.call(this);
+
+		setModelLoader(Ntro.modelStore().getModelLoaderFromRequest(serviceUrl, message));
+	}
+
+	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, String modelId) {
+		T.call(this);
+
+		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelId));
+	}
+
+	public void setSubModelLoader(Class<? extends NtroModel> modelClass, String authToken, String modelId) {
+		T.call(this);
+
+		setSubModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelId));
+	}
+
+	public void changeUser(NtroUser user) {
+		
+		// FIXME: clone context
+		NtroContext<?> oldContext = context;
+
+		context.registerUser(user);
+
+		onChangeContext(oldContext, context);
+
+		for(NtroAbstractController subController : subControllers) {
+			subController.changeUser(user);
+		}
+
+		if(this instanceof NtroRootController) {
+			reExecuteAfterContextChange();
+		}
+	}
+
+	public void reExecuteAfterContextChange() {
+		T.call(this);
+		
+		getTask().execute();
 	}
 
 }

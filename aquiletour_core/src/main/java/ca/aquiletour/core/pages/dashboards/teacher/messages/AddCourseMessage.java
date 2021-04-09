@@ -2,13 +2,14 @@ package ca.aquiletour.core.pages.dashboards.teacher.messages;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 
-public class AddCourseMessage extends NtroMessage {
+                                                             // FIXME: should not be necessary
+public class AddCourseMessage extends NtroUserMessage<User> implements JsonSerializable {
 
 	private CourseSummary course;
-	private User user;
 
 	public void setCourse(CourseSummary course) {
 		T.call(this);
@@ -21,13 +22,4 @@ public class AddCourseMessage extends NtroMessage {
 		
 		return course;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 }

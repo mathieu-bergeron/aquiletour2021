@@ -22,12 +22,12 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import ca.ntro.core.services.ResourceLoaderTask;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
+import ca.ntro.services.ResourceLoaderTask;
 
 public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 	
@@ -52,7 +52,16 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 		
 		MustNot.beNull(resourceStream);
 		
-		Scanner scanner = new Scanner(resourceStream);
+		
+		resourceAsString = readStream(resourceStream);
+		
+		notifyTaskFinished();
+	}
+	
+	public static String readStream(InputStream stream) {
+		T.call(ResourceLoaderJdk.class);
+
+		Scanner scanner = new Scanner(stream);
 		
 		StringBuilder builder = new StringBuilder();
 
@@ -60,12 +69,10 @@ public class ResourceLoaderTaskJdk extends ResourceLoaderTask {
 			builder.append(scanner.nextLine());
 			builder.append(System.lineSeparator());
 		}
-		
-		resourceAsString = builder.toString();
-		
+
 		scanner.close();
 		
-		notifyTaskFinished();
+		return builder.toString();
 	}
 
 	@Override

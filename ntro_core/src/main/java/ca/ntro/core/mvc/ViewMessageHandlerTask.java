@@ -5,6 +5,7 @@ import ca.ntro.core.system.assertions.MustNot;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
@@ -23,27 +24,21 @@ public class ViewMessageHandlerTask<V extends NtroView,
 	}
 
 	@Override
-	protected void initializeTask() {
-		T.call(this);
-		
-	}
-
-	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
 		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
-		MSG message = (MSG) getPreviousTask(NtroMessage.class, messageId);
+		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
 
 		MustNot.beNull(viewLoader);
-		MustNot.beNull(message);
+		MustNot.beNull(messageHandler);
 
 		@SuppressWarnings("unchecked")
 		V view = (V) viewLoader.createView();
 		
 		MustNot.beNull(view);
 
-		handler.handleImpl(view, message);
+		handler.handleImpl(view, (MSG) messageHandler.getMessage());
 		
 		notifyTaskFinished();
 	}

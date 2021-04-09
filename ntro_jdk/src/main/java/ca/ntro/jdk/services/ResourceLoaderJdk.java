@@ -17,8 +17,8 @@
 
 package ca.ntro.jdk.services;
 
-import ca.ntro.core.services.ResourceLoader;
-import ca.ntro.core.services.ResourceLoaderTask;
+import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.ResourceLoaderTask;
 
 public class ResourceLoaderJdk extends ResourceLoader {
 

@@ -6,18 +6,23 @@ import org.dizitart.no2.NitriteCollection;
 
 import static org.dizitart.no2.filters.Filters.eq;
 
+import java.util.List;
+
 import org.dizitart.no2.Cursor;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.json.JsonObject;
 import ca.ntro.core.json.JsonParser;
-import ca.ntro.core.models.ModelStore;
-import ca.ntro.core.models.properties.observable.simple.ValueListener;
-import ca.ntro.core.services.stores.DocumentPath;
-import ca.ntro.core.services.stores.ExternalUpdateListener;
-import ca.ntro.core.services.stores.ValuePath;
+import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.services.ModelStore;
+import ca.ntro.stores.DocumentPath;
+import ca.ntro.stores.ExternalUpdateListener;
+import ca.ntro.stores.ValuePath;
+import ca.ntro.users.NtroUser;
 
 public class LocalStoreNitrite extends ModelStore {
 	
@@ -38,57 +43,68 @@ public class LocalStoreNitrite extends ModelStore {
 
 		db.close();
 	}
+
+	@Override
+	protected boolean ifModelExistsImpl(DocumentPath documentPath) {
+		NitriteCollection models = db.getCollection(documentPath.getCollection());
+
+		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
+		Document document  = cursor.firstOrDefault();
+		
+		return document != null;
+	}
 	
 	@Override
-	public JsonLoader getJsonObject(DocumentPath documentPath) {
+	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
 		
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
-		
+
 		addIndex(models);
-		
-		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()));
+
+		Cursor cursor = models.find(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
 		Document document  = cursor.firstOrDefault();
+
 		
-		JsonObject jsonObject = null;
+		String jsonString = null;
 		
 		if(document != null) {
 
-			jsonObject = (JsonObject) document.get(ModelStore.MODEL_DATA_KEY);
+			jsonString = (String) document.get(ModelStore.MODEL_DATA_KEY);
 			
 			//System.out.println(jsonObject.toString());
 
 		}else {
 
 			// XXX: create document if none exists
-			jsonObject = JsonParser.jsonObject();
+			jsonString = ModelStore.emptyModelString(documentPath);
 
 			document = new Document();
-			document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
-			document.put(ModelStore.MODEL_DATA_KEY, jsonObject);
+			document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
+			document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 
 			models.insert(document);
 		}
 		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonObject);
+		JsonLoader jsonLoader = new JsonLoaderMemory(jsonString);
 		
 		return jsonLoader;
 	}
 
 
 	@Override
-	protected void saveJsonObject(DocumentPath documentPath, JsonObject jsonObject) {
+	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
 		
 		Document document = new Document();
 		
-		document.put(ModelStore.MODEL_ID_KEY, documentPath.getId());
-		document.put(ModelStore.MODEL_DATA_KEY, jsonObject);
+		document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
+		document.put(ModelStore.MODEL_DATA_KEY, jsonString);
 		
 		
-		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getId()), document);
+		models.update(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document);
 		
 		db.commit();
 	}
@@ -125,6 +141,24 @@ public class LocalStoreNitrite extends ModelStore {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected void deleteDocument(DocumentPath documentPath) {
+		throw new RuntimeException("TODO");
+	}
+
+	@Override
+	protected JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+		// XXX: not supported
+		return null;
+	}
+
 	
 
 }

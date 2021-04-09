@@ -1,22 +1,20 @@
 package ca.aquiletour.core.models.users;
 
-import ca.ntro.core.NtroUser;
+import ca.ntro.users.NtroUser;
 
 public class User extends NtroUser {
 	
-	private String name;
-	private String surname;
-	private String userEmail;
-	private String userPassword;
+	private String name = "";
+	private String surname = "";
+	private String email = "";
+	private String phoneNumber = "";	
 
 	public User() {
 		
 	}
 	
-	public User(String email, String password) {
-		this.userEmail = email;
-		this.userPassword = password;;
-		
+	public User(String email) {
+		this.email = email;
 	}
 
 	public String getName() {
@@ -32,17 +30,43 @@ public class User extends NtroUser {
 		this.surname = surname;
 	}
 
+	public String getEmail() {
+		return email;
+	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	public String getUserPassword() {
-		return userPassword;
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
+
+	public void copyPublicInfomation(User user) {
+		setName(user.getName());
+		setSurname(user.getSurname());
+		setEmail(user.getEmail());
 	}
+
+	public User toSessionUser() {
+		User sessionUser = new User();
+
+		copySessionOnlyInfo(sessionUser);
+
+		return sessionUser;
+	}
+
+	protected void copySessionOnlyInfo(User sessionUser) {
+		sessionUser.setId(getId());
+		sessionUser.setAuthToken(getAuthToken());
+		sessionUser.setName(getName());
+		sessionUser.setSurname(getSurname());
+		sessionUser.setEmail(getEmail());
+	}
+	
+	
 }

@@ -3,10 +3,10 @@ package ca.aquiletour.javafx.pages.dashboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import ca.aquiletour.core.pages.dashboard.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboard.DashboardView;
-import ca.aquiletour.core.pages.dashboard.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboard.values.CourseSummary;
+import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
+import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -39,8 +39,6 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 
 	private AddCourseMessage addCourseMessage = MessageFactory.getOutgoingMessage(AddCourseMessage.class);
 	
-	private ViewLoaderFx courseSummaryViewLoader;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		T.call(this);
@@ -54,7 +52,7 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 			public void handle(ActionEvent event) {
 				T.call(this);
 				
-				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText(), newSummaryText.getText(), newSummaryDate.getText()));
+				addCourseMessage.setCourse(new CourseSummary(newCourseText.getText()));
 				addCourseMessage.sendMessage();
 				
 				newCourseText.clear();
@@ -62,6 +60,11 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 				newSummaryDate.clear();
 			}
 		});
+	}
+
+	@Override
+	public void initialize() {
+		
 	}
 
 	@Override
@@ -73,11 +76,4 @@ public class DashboardViewFx extends NtroViewFx implements DashboardView {
 		
 		courseContainer.getChildren().add(courseViewFx.getParent());
 	}
-
-	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

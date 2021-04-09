@@ -1,16 +1,22 @@
 package ca.ntro.core.json;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.Ntro;
+import com.google.javascript.jscomp.Es6ExtractClasses;
+
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public abstract class JsonParser {
 
 	private static JsonParser instance;
+	
+	// SimpleName => Full name
+	private static Map<String, String> classes = new HashMap<>();
 
 	public static void initialize(JsonParser instance) {
 		T.call(JsonParser.class);
@@ -35,6 +41,12 @@ public abstract class JsonParser {
 		}
 
 		return result;
+	}
+
+	public static void registerSerializableClass(Class _class) {
+		T.call(JsonParser.class);
+		
+		classes.put(Ntro.introspector().getSimpleNameForClass(_class), Ntro.introspector().getFullNameForClass(_class));
 	}
 
 
@@ -133,7 +145,7 @@ public abstract class JsonParser {
 
 		Class<?> typeClass = Ntro.introspector().getClassFromName(typeName);
 
-		Object userDefinedObject = Factory.newInstance(typeClass);
+		Object userDefinedObject = Ntro.factory().newInstance(typeClass);
 
 		try {
 

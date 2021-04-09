@@ -1,0 +1,15 @@
+{
+  "_C": "Session",
+  "loginCode": "530718",
+  "user": {
+    "phoneNumber": "",
+    "_C": "Student",
+    "surname": "Bérancourt",
+    "authToken": "jR7ctktNvNbNGgHo9UtJmEc4P5Y",
+    "name": "Bob",
+    "id": "1234500",
+    "email": "",
+    "programId": "420.AA"
+  },
+  "timeToLiveMiliseconds": 240000
+}

@@ -1,0 +1,14 @@
+{
+  "_C": "Session",
+  "loginCode": "757546",
+  "user": {
+    "phoneNumber": "",
+    "_C": "Teacher",
+    "surname": "",
+    "authToken": "MSQIf3RKOiIcuw9eYFktYSg6eOg",
+    "name": "alice",
+    "id": "alice",
+    "email": ""
+  },
+  "timeToLiveMiliseconds": 750000
+}

@@ -18,12 +18,10 @@
 package ca.ntro.jsweet.services;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-import ca.ntro.core.services.ResourceLoaderTask;
+import ca.ntro.services.ResourceLoaderTask;
 import def.es6.Globals;
 import def.es6.Globals.FetchResponse;
-import def.js.PromiseLike;
 
 public class ResourceLoaderTaskJsweet extends ResourceLoaderTask {
 	

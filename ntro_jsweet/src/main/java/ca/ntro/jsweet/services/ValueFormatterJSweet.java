@@ -17,13 +17,19 @@
 
 package ca.ntro.jsweet.services;
 
-import ca.ntro.core.services.ValueFormatter;
+import ca.ntro.services.ValueFormatter;
 
 public class ValueFormatterJSweet extends ValueFormatter {
 
 	@Override
-	public void formatImpl(StringBuilder builder, boolean isHtml, Object... values) {
-		throw new RuntimeException("TODO: ValueFormatterJSweet");
+	protected void formatImpl(StringBuilder builder, boolean isHtml, Object... values) {
+		for(Object value : values) {
+			if(value == null) {
+				builder.append("null");
+			}else {
+				builder.append(value.toString());
+			}
+		}
 	}
 
 }

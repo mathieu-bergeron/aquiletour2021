@@ -1,39 +1,52 @@
 package ca.aquiletour.web.pages.dashboard;
 
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
+public abstract class CourseSummaryViewWeb extends NtroViewWeb implements CourseSummaryView {
+
+	private HtmlElement showCourseLink;
 
 	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
-		
+	public void initializeViewWeb(NtroContext<?> context) {
+		T.call(this);
+
+		showCourseLink = this.getRootElement().find("#show-course-link").get(0);
+
+		MustNot.beNull(showCourseLink);
+
 	}
 
 	@Override
 	public void displaySummary(CourseSummary course) {
 		T.call(this);
-		T.here();
 
-		HtmlElement title = this.getRootElement().children("#course-title").get(0);
-		HtmlElement summaryText = this.getRootElement().children("#summary-text").get(0);
-		HtmlElement summaryDate = this.getRootElement().children("#summary-date").get(0);
-		
-		
-		MustNot.beNull(title);
-		MustNot.beNull(summaryText);
-		MustNot.beNull(summaryDate);
-
-		T.values(course.getTitle(), course.getSummary(), course.getDate());
-		
-		title.appendHtml(course.getTitle());
-		summaryText.appendHtml(course.getSummary());
-		summaryDate.appendHtml(course.getDate());
+		installShowCourseListener(course);
 	}
 
+	private void installShowCourseListener(CourseSummary course) {
+		T.call(this);
+
+		showCourseLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + "/" + course.getCourseId());
+
+		showCourseLink.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent() {
+				T.call(this);
+
+				ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
+				showCourseMessage.setCourseId(course.getCourseId());
+				Ntro.messages().send(showCourseMessage);
+			}
+		});
+	}
 }

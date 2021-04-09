@@ -3,7 +3,6 @@ package ca.ntro.web;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.NtroWindow;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.dom.HtmlElement;
@@ -35,7 +34,7 @@ public abstract class NtroWindowWeb extends NtroWindow {
 
 		HtmlElement body = getDocument().select("body").get(0);
 
-		body.setAttribute("current-path", path.toString());
+		//body.setAttribute("current-path", path.toString());
 	}
 
 

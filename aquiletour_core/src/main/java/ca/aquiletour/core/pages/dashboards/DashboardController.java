@@ -1,30 +1,23 @@
 package ca.aquiletour.core.pages.dashboards;
 
-import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardHandler;
-import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
-import ca.ntro.core.services.stores.NetworkStore;
 import ca.ntro.core.system.trace.T;
 
 public abstract class DashboardController extends NtroController<RootController> {
+	
 
 	@Override
-	protected void onCreate() {
+	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 
-		setViewLoader(viewClass(), currentContext().getLang());
+		setViewLoader(viewClass(), context.lang());
 		
-		setModelLoader(NetworkStore.getLoader(DashboardModel.class, 
-				                              currentContext().getUser().getAuthToken(),
-				                              currentContext().getUser().getId()));
+		requestModel(context);
 
 		installParentViewMessageHandler();
-
-		addSubViewLoader(CourseSummaryView.class, currentContext().getLang());
-		
-		addModelViewSubViewHandler(CourseSummaryView.class, new DashboardViewModel());
 		
 		// TODO: add model handler to pre-load models of each courses
 		//       on the server, model pre-loading does nothing (or is restricted by path)
@@ -35,9 +28,22 @@ public abstract class DashboardController extends NtroController<RootController>
 	
 
 	@Override
-	protected void onChangeContext(NtroContext previousContext) {
+	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
 		T.call(this);
 		
+		System.out.println("onContextChange");
+		
+		//requestModel(context);
+	}
+
+	private void requestModel(NtroContext<?> context) {
+		T.call(this);
+
+		System.out.println("requestModel");
+
+		setModelLoader(DashboardModel.class, 
+					   context.user().getAuthToken(),
+					   context.user().getId());
 	}
 
 	@Override
@@ -45,6 +51,4 @@ public abstract class DashboardController extends NtroController<RootController>
 		T.call(this);
 
 	}
-
-
 }
