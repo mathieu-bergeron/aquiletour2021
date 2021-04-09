@@ -1,54 +1,68 @@
 <div class="mt-3 courses-container">
 
-  <div class="mt-3" style="margin-left:30px;" id="breadcrumbs-container">
-      <a href="#">4F5</a> ❯ 
-      <a href="#">Étape 1</a> ❯ 
-      <a href="#">Travaux pratiques</a> ❯ 
-      <a href="#">TP1</a> → 
-      <a href="#">TP2</a><br> 
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↘&nbsp;<a href="#">Préparer examen 1</a> 
-      </div>
-  </div>
+  
+  <ol id="breadcrumb" class="breadcrumb" style="margin-left:30px; margin-bottom: 0px;">
+    <li id="bc-position" class="breadcrumb-item"><a href="#">4F5</a></li>
+    <li class="breadcrumb-item"><a href="#">Étape 1</a></li>
+    <li class="breadcrumb-item"><a href="#">Travaux pratiques</a></li>
+    <li class="breadcrumb-item"><a href="#">TP1</a></li>
+    <li class="breadcrumb-item"><a href="#">TP2</a></li>
+  </ol>
+    <canvas id="breadcrumbs-container">
+      
+    </canvas>
+    
+  
+
 
   <div class="mt-3 flex-container" id="tasks-container">
 
-    <div class='card border mb-3'>
-        <div class='card-header bg-transparent border'>
-            <span id="task-name">TP1</span><span style="float:right;">4 avril</span>
-        </div>
-        <div class='card-body text'>
-            <div>Tâches préalables:</div>
-            <div class='card-footer bg-transparent border'>
-                <ul>
-                    <li><a href="#">atelier 1</a> ✓
-                    <li><a href="#">bonus</a> ☆
-                </ul>
-            </div>
-            <span style="float:right;">⊞</span>
+    <div> 
+      <div class='card border mb-3'>
+          <div class='card-header bg-transparent border'>
+              <span id="task-name">TP1</span><span style="float:right;">4 avril</span>
+          </div>
+          <div class='card-body text'>
+              <div>Tâches préalables:</div>
+              <div class='card-footer bg-transparent border'>
+                  <ul>
+                    <li><input type="checkbox"/><a href="#">atelier 1</a> ✓
+                    <li><input type="checkbox"/><a href="#">bonus</a> ☆
+                  </ul>
+              </div>
+              <span style="float:right;">⊞</span>
 
-            <br>
+              <br>
 
-            <div>Sous-tâches:</div>
-            <div class='card-footer bg-transparent border'>
-                <ul>
-                    <li><a href="#">créer la vue</a> ✓
-                    <li><a href="#">créer le modèle</a> ☆
-                    <li><a href="#">créer un test</a> ☆
-                </ul>
-            </div>
-            <span style="float:right;">⊞</span>
+              <div>Sous-tâches:</div>
+              <div class='card-footer bg-transparent border'>
+                  <ul>
+                    <li><input type="checkbox"/>  <a href="#">créer la vue</a> ✓
+                    <li><input type="checkbox"/><a href="#">créer le modèle</a> ☆
+                    <li><input type="checkbox"/><a href="#">créer un test</a> ☆
+                  </ul>
+              </div>
+              <span style="float:right;">⊞</span>
 
-            <br>
+              <br>
 
-            <div>Tâches suivantes:</div>
-            <div class='card-footer bg-transparent border'>
-                <ul>
-                    <li><a href="#">TP2</a>
-                    <li><a href="#">préparer examen 1</a>
-                </ul>
-            </div>
-            <span style="float:right;">⊞</span>
-        </div>
+              <div>Tâches suivantes:</div>
+              <div class='card-footer bg-transparent border'>
+                  <ul>
+                      <li><a href="#">TP2</a>
+                      <li><a href="#">préparer examen 1</a>
+                  </ul>
+              </div>
+              <span style="float:right;">⊞</span>
+          </div>
+      </div>
+      
+      
+      <div class="progressbar">
+        <div class="progressbar-bar"></div>
+        <div class="progressbar-label"></div>
+      </div>
+      <div class="ready"></div>
     </div>
 
     <div class='card border mb-3'>
@@ -126,3 +140,191 @@
 
 
 </div>
+
+<script type="text/javascript" src="/_R/js/fabric.min.js"></script>
+
+<script>
+
+  var canvas = new fabric.Canvas('breadcrumbs-container');
+  var radius = 8;
+  var diameter = radius * 2;
+  
+  var breadcrumb = $("#breadcrumb");
+  var margin = parseInt(breadcrumb.css("marginLeft"));
+
+  canvas.setWidth((breadcrumb.outerWidth() + margin));
+  canvas.setHeight(100);
+
+  function testCircle(top, left, radius){
+    var circle = new fabric.Circle({
+    top: top,
+    left: left,
+    strokeWidth: 3,
+    radius: radius,
+    fill: 'black',
+    stroke: 'white',
+    selectable: false
+    });
+
+    return circle;
+  }
+
+  /*function makeCircle(left, top, line1, line2, line3, line4){
+    var circle = new fabric.Circle({
+      x: left,
+      y: top,
+      strokeWidth: 5,
+      radius: 10,
+      fill: 'black',
+      stroke: 'white'
+    });
+    circle.hasControls = circle.hasBorders = false;
+
+    circle.line1 = line1;
+    circle.line2 = line2;
+    circle.line3 = line3;
+    circle.line4 = line4;
+
+    return circle;
+  }
+
+  function makeLine(coords) {
+    return new fabric.Line(coords, {
+      fill: 'orange',
+      stroke: 'orange',
+      strokeWidth: 5,
+      selectable: false,
+      evented: false
+    });
+  }
+
+  var line = makeLine([250, 125, 250, 175]),
+      line2 = makeLine([250, 175, 250, 250]),
+      line3 = makeLine([250, 250, 300, 350]),
+      line4 = makeLine([250, 250, 200, 350]),
+      line5 = makeLine([250, 175, 175, 225]),
+      line6 = makeLine([250, 175, 325, 225]);
+
+  canvas.add(line, line2, line3, line4, line5, line6);
+  
+  canvas.add(
+    makeCircle(line.get('x1'), line.get('y1'), null, line),
+    makeCircle(line.get('x2'), line.get('y2'), line, line2, line5, line6),
+    makeCircle(line2.get('x2'), line2.get('y2'), line2, line3, line4),
+    makeCircle(line3.get('x2'), line3.get('y2'), line3),
+    makeCircle(line4.get('x2'), line4.get('y2'), line4),
+    makeCircle(line5.get('x2'), line5.get('y2'), line5),
+    makeCircle(line6.get('x2'), line6.get('y2'), line6),
+    testCircle
+  );
+
+  canvas.on('object:moving', function(e) {
+    var p = e.target;
+    p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
+    p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
+    p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
+    p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
+    canvas.renderAll();
+  });*/
+
+
+  function getPosition(element) {
+    var xPos = 0;
+    var yPos = 0;
+
+    while (element) {
+      if (element.tagName == "BODY") {
+        var xScroll = element.scrollLeft || document.documentElement.scrollLeft;
+        var yScroll = element.scrollTop || document.documentElement.scrollTop;
+
+        xPos += (element.offsetLeft - xScroll + element.clientLeft);
+        yPos += (element.offsetTop - yScroll + element.clientTop);
+      } else {
+        xPos += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+        yPos += (element.offsetTop - element.scrollTop + element.clientTop);
+      }
+      
+      element = element.offsetParent;
+    }
+    return {
+      x: xPos,
+      y: yPos
+    };
+  }
+
+ document.addEventListener('load',updatePosition());
+ 
+  function makeLine(coords) {
+    return new fabric.Line(coords,{
+      fill: 'orange',
+      stroke: 'orange',
+      strokeWidth: 5,
+      selectable: false,
+      evented: false
+    });
+  }
+
+  
+  function updatePosition() {
+    var bcItems = $(".breadcrumb-item");
+    var myElement = document.querySelector("#bc-position"); 
+    var position = getPosition(myElement);
+    
+    canvas.clear();
+
+    //console.log(bcItems);
+
+    bcItems.each(( index, element ) => {
+      console.log(element, getPosition(element), index);
+      
+
+      
+      var offsetY = element.offsetTop - (element.offsetTop - 1);
+      var centerY = element.offsetTop + (element.offsetHeight / 2) - radius;
+      var centerX = element.offsetLeft + (element.offsetWidth / 2) - radius;
+      var offsetRight = window.innerWidth - element.offsetLeft - element.offsetWidth;
+
+
+      console.log("offset top: " + centerY + " offset left: " + offsetRight);
+
+      canvas.add(makeLine([element.offsetLeft, radius, offsetRight, radius]),testCircle(offsetY, centerX, radius));
+      
+
+      
+    });
+
+    
+    //console.log("position x: " + position.x + ", position y: " + position.y);
+  }
+
+$(document).ready(function() {
+  
+  // get box count
+  var count = 0;
+  var checked = 0;
+  function countBoxes() { 
+    count = $("input[type='checkbox']").length;
+    console.log(count);
+  }
+  
+  countBoxes();
+  $(":checkbox").click(countBoxes);
+  
+  // count checks
+  
+  function countChecked() {
+    checked = $("input:checked").length;
+    
+    var percentage = parseInt(((checked / count) * 100),10);
+    $(".progressbar-bar").progressbar({
+            value: percentage
+        });
+    $(".progressbar-label").text(percentage + "%");
+    
+  }
+  
+  countChecked();
+  $(":checkbox").click(countChecked);
+});
+
+</script>

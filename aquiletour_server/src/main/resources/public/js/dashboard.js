@@ -1,6 +1,5 @@
 function initializeDashboard(viewRootElement, jSweet){
 
-<<<<<<< HEAD
     var buttonAvailable = document.getElementById("buttonAvailable");
     var available = document.getElementById("teacherAvailable");
     var availableLink = document.getElementById("availableLink");
@@ -47,40 +46,11 @@ function initializeDashboard(viewRootElement, jSweet){
         
     });
     
-    $(document).ready(function() {
-  
-      // get box count
-      var count = 0;
-      var checked = 0;
-      function countBoxes() { 
-        count = $("input[type='checkbox']").length;
-        console.log(count);
-      }
-      
-      countBoxes();
-      $(":checkbox").click(countBoxes);
-      
-      // count checks
-      
-      function countChecked() {
-        checked = $("input:checked").length;
-        
-        var percentage = parseInt(((checked / count) * 100),10);
-        $(".progressbar-bar").progressbar({
-                value: percentage
-            });
-        $(".progressbar-label").text(percentage + "%");
-      }
-      
-      countChecked();
-      $(":checkbox").click(countChecked);
-    });
-=======
+    
     const buttonAvailable = viewRootElement.find("#buttonAvailable");
     const available = viewRootElement.find("#teacherAvailable");
     const availableLink = viewRootElement.find("#availableLink");
     const coursesContainer = viewRootElement.find("#courses-container");
->>>>>>> brouillon_calendrier
 
     buttonAvailable.onclick = function() {
       
@@ -117,7 +87,6 @@ function initializeDashboard(viewRootElement, jSweet){
       availableLink.style.cursor = "hand";
     }
 
-<<<<<<< HEAD
     buttonAddCourse.onclick = function() {
 
       document.getElementById("card-header").className = "ghost-header";
@@ -130,9 +99,7 @@ function initializeDashboard(viewRootElement, jSweet){
           document.getElementById("shimmering").className = "";
         },2500);
     }    
-=======
     coursesContainer.sortable({
       handle:'.handle'
     });
->>>>>>> brouillon_calendrier
 }

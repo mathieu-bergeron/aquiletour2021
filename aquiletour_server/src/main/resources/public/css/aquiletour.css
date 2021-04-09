@@ -26,8 +26,8 @@
 
 /*progress bar*/
 input[type="checkbox"] {
-  height: 20px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
   margin-right: 10px;
 }
 
@@ -36,12 +36,12 @@ input[type="checkbox"] {
 }
 
 .ui-progressbar-value {
-  background: lightgreen;
+  background-color: lightgreen !important;
 }
 
-.progressbar-container {
+.progressbar {
   position: relative;
-  width: 350px;
+  width: auto;
 }
 
 .progressbar-bar {
@@ -59,7 +59,11 @@ input[type="checkbox"] {
 
 /*cards*/
 .card {
+  height: -webkit-fit-content !important;
+  height: -moz-fit-content !important;
   height: fit-content !important;
+  width: -webkit-fit-content !important;
+  width: -moz-fit-content !important;
   width: fit-content !important;
 }
 
@@ -187,7 +191,11 @@ input[type="checkbox"] {
 }
 
 .dashboard-mContent {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
 }
 
@@ -247,13 +255,16 @@ input[type="checkbox"] {
   line-height: 24px;
   padding: 45px 0 20px;
 }
+
 .site-footer hr {
   border-top-color: #bbb;
   opacity: 0.5;
 }
+
 .site-footer hr.small {
   margin: 20px 0;
 }
+
 .site-footer h6 {
   color: #fff;
   font-size: 16px;
@@ -283,14 +294,22 @@ input[type="checkbox"] {
   font-size: 1.2rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
   letter-spacing: 0.5px;
 }
 
 .home-mBody {
   text-align: justify;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
 }
 
@@ -299,6 +318,7 @@ input[type="checkbox"] {
   border-left: 0;
   border-right: 0;
 }
+
 .userInput:focus {
   outline-width: 0;
   border-bottom-color: blue;
@@ -331,7 +351,8 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 #page-loader {
@@ -348,6 +369,16 @@ body {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
-/* For chatbox feature*/
+.breadcrumb {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
 
+/* Style to change separator  */
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "";
+}
+
+/* For chatbox feature*/
 /*# sourceMappingURL=aquiletour.css.map */
