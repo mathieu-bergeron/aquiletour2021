@@ -15,13 +15,12 @@ public class Constants {
 	public static final String QUEUES_URL_SEGMENT = "profs_disponibles";
 	public static final String COURSE_URL_SEGMENT = "cours";
 	public static final String COURSE_LIST_URL_SEGMENT = "mescours";
-	public static final String GROUP_URL_SEGMENT = "groupes";
-	public static final String SEMESTER_URL_SEGMENT = "sessions";
+	public static final String SEMESTER_URL_SEGMENT = "session";
 	public static final String USERS_URL_SEGMENT = "usagers";
 	public static final String LOGIN_URL_SEGMENT = "connexion";
 	public static final String LOGOUT_URL_SEGMENT = "deconnexion";
 	public static final String HOME_URL_SEGMENT = "accueil";
-	public static final String CALENDAR_LIST_URL_SEGMENT = "planifier";
+	public static final String SEMESTER_LIST_URL_SEGMENT = "planifier";
 	public static final String GIT_PROGRESS_URL_SEGMENT = "git";
 
 	public static final String USER_URL_PARAM = "u";

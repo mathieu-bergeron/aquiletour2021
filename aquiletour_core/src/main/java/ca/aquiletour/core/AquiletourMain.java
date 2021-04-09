@@ -32,6 +32,11 @@ import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskRelation;
+import ca.aquiletour.core.models.dates.CalendarDate;
+import ca.aquiletour.core.models.dates.CourseDateClassDay;
+import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
+import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.dates.SemesterDay;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -51,7 +56,6 @@ import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
 import ca.aquiletour.core.pages.dashboards.values.ObservableDashboardCourseList;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
@@ -68,6 +72,7 @@ import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
+import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterDateList;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterList;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
@@ -146,10 +151,17 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterModel.class);
 		Ntro.registerSerializableClass(SemesterListModel.class);
 		Ntro.registerSerializableClass(ObservableSemesterList.class);
+		Ntro.registerSerializableClass(ObservableSemesterDateList.class);
 
 		Ntro.registerSerializableClass(CourseSummary.class);
 		Ntro.registerSerializableClass(CourseListModel.class);
 		Ntro.registerSerializableClass(ObservableCourseList.class);
+
+		Ntro.registerSerializableClass(CalendarDate.class);
+		Ntro.registerSerializableClass(CourseDateClassDay.class);
+		Ntro.registerSerializableClass(CourseDateSemesterDay.class);
+		Ntro.registerSerializableClass(SemesterDate.class);
+		Ntro.registerSerializableClass(SemesterDay.class);
 
 		Ntro.registerSerializableClass(User.class);
 		Ntro.registerSerializableClass(Teacher.class);

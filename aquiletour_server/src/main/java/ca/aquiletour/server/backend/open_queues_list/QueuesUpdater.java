@@ -1,4 +1,4 @@
-package ca.aquiletour.server.backend.queues;
+package ca.aquiletour.server.backend.open_queues_list;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;

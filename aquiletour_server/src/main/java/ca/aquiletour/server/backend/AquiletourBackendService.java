@@ -21,6 +21,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.server.backend.course.AddNextTaskHandler;
 import ca.aquiletour.server.backend.course.AddPreviousTaskHandler;
 import ca.aquiletour.server.backend.course.AddTaskHandler;
@@ -40,6 +41,7 @@ import ca.aquiletour.server.backend.queue.DeleteAppointmentHandler;
 import ca.aquiletour.server.backend.queue.MoveAppointmentHandler;
 import ca.aquiletour.server.backend.queue.TeacherClosesQueueHandler;
 import ca.aquiletour.server.backend.queue.TeacherUsesQueueHandler;
+import ca.aquiletour.server.backend.semester_list.AddSemesterHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
 
@@ -68,5 +70,6 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(RemoveSubTaskMessage.class, new RemoveSubTaskHandler());
 		addBackendMessageHandler(RemoveNextTaskMessage.class, new RemoveNextTaskHandler());
 		addBackendMessageHandler(RegisterRepo.class, new RegisterRepoHandler());
+		addBackendMessageHandler(AddSemesterMessage.class, new AddSemesterHandler());
 	}
 }

@@ -6,7 +6,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
-import ca.aquiletour.server.backend.queues.QueuesUpdater;
+import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;

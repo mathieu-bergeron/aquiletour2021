@@ -1,6 +1,8 @@
 package ca.aquiletour.core.models.dates;
 
-public enum SemesterDay {
+import ca.ntro.core.models.NtroModelValue;
+
+public enum SemesterDay implements NtroModelValue {
 
 	MONDAY,
 	TUESDAY,

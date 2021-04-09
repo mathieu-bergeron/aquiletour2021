@@ -1,9 +1,13 @@
 package ca.aquiletour.core.models.dates;
 
-public class SemesterDate {
+import ca.ntro.core.models.NtroModelValue;
+
+public class SemesterDate implements NtroModelValue {
 	
 	private int semesterWeek;            // typically 1-15
-	private SemesterDay semesterDay;
+	private SemesterDay semesterDay;     // monday-sunday
+
+	private CalendarDate calendarDate;   // actual date
 
 	public int getSemesterWeek() {
 		return semesterWeek;
@@ -19,5 +23,13 @@ public class SemesterDate {
 
 	public void setSemesterDay(SemesterDay semesterDay) {
 		this.semesterDay = semesterDay;
+	}
+
+	public CalendarDate getCalendarDate() {
+		return calendarDate;
+	}
+
+	public void setCalendarDate(CalendarDate calendarDate) {
+		this.calendarDate = calendarDate;
 	}
 }

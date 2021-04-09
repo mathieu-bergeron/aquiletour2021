@@ -112,7 +112,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		calendarListLink.setAttribute("href", "/" + Constants.CALENDAR_LIST_URL_SEGMENT);
+		calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
 
 		calendarListLink.addEventListener("click", new HtmlEventListener() {
 			@Override

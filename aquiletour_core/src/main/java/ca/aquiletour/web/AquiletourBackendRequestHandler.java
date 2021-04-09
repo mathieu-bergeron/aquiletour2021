@@ -23,6 +23,7 @@ import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
+import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -76,7 +77,7 @@ public class AquiletourBackendRequestHandler {
 
 			sendGitMessages(path.subPath(1), parameters);
 
-		}else if(path.startsWith(Constants.SEMESTER_URL_SEGMENT)) {
+		}else if(path.startsWith(Constants.SEMESTER_LIST_URL_SEGMENT)) {
 
 			sendSemesterMessages(path.subPath(1), parameters);
 		}
@@ -87,8 +88,12 @@ public class AquiletourBackendRequestHandler {
 
 		if(parameters.containsKey(Constants.ADD_SEMESTER_URL_PARAM)) {
 			
-			String semesterCode;
-
+			String semesterId = parameters.get(Constants.ADD_SEMESTER_URL_PARAM)[0];
+			
+			AddSemesterMessage addSemesterMessage = Ntro.messages().create(AddSemesterMessage.class);
+			addSemesterMessage.setSemesterId(semesterId);
+			
+			Ntro.messages().send(addSemesterMessage);
 		}
 	}
 	

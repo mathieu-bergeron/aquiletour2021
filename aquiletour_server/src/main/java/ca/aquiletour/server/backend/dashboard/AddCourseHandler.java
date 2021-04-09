@@ -2,8 +2,8 @@ package ca.aquiletour.server.backend.dashboard;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
-import ca.aquiletour.server.backend.queues.QueuesUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;

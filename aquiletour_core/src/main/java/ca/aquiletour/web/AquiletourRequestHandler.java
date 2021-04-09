@@ -63,7 +63,7 @@ public class AquiletourRequestHandler {
 
 			sendGitMessages(path.subPath(1), parameters, context.user());
 
-		} else if(path.startsWith(Constants.CALENDAR_LIST_URL_SEGMENT)) {
+		} else if(path.startsWith(Constants.SEMESTER_LIST_URL_SEGMENT)) {
 
 			sendCalendarListMessages(path.subPath(1), parameters, context.user());
 
