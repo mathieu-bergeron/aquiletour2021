@@ -14,4 +14,5 @@ $(document).ready(function(){
     initializeView("HomeViewWeb", viewRootElement, jSweet);
     initializeView("CourseViewWeb", viewRootElement, jSweet);
     initializeView("CommitListViewWeb", viewRootElement, jSweet);
+    initializeView("SemesterViewWeb", viewRootElement, jSweet);
 });

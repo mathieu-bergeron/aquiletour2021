@@ -1,5 +1,5 @@
 function initializeView(viewName, viewRootElement, jSweet){
-    //console.log(viewName);
+    console.log(viewName);
 
     if(viewName === "TeacherQueueViewWeb"){
 
@@ -11,10 +11,14 @@ function initializeView(viewName, viewRootElement, jSweet){
 
     }else if(viewName === "CommitListViewWeb"){
 
-        initializeCommitList(viewRootElement, jSweet);
+        //initializeCommitList(viewRootElement, jSweet);
 
     }else if(viewName === "CourseViewWeb"){
 
         initializeCourse(viewRootElement, jSweet);
+
+    }else if(viewName === "SemesterViewWeb"){
+
+        initializeSemester(viewRootElement, jSweet);
     }
 }

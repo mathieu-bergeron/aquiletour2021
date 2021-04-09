@@ -1,5 +1,44 @@
-<div class='card border mb-3'>
+<div class='card border mb-3 p-2'>
     <div class='card-header bg-transparent border'>
         <a href="#" class="" id="semester-id"></a>
     </div>
+    <div class='card-text'>
+        <table class="table" id="semester-dates-table">
+            <tr>
+                <th>Semaine du</th>
+                <th>Lundi</th>
+                <th>Mardi</th>
+                <th>Mercredi</th>
+                <th>Jeudi</th>
+                <th>Vendredi</th>
+            </tr>
+            <tr id="add-week-row">
+                <form>
+                    <input class="add-id-to-value" name="" style="display:none;"></input>
+                <td>
+                    <input class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
+                </td>
+                <td>
+                    <input name="monday" style="max-width:2rem"></input>
+                </td>
+                <td>
+                    <input name="tuesday" style="max-width:2rem"></input>
+                </td>
+                <td>
+                    <input name="wednesday" style="max-width:2rem"></input>
+                </td>
+                <td>
+                    <input name="thursday" style="max-width:2rem"></input>
+                </td>
+                <td>
+                    <input name="friday" style="max-width:2rem"></input>
+                </td>
+                <td>
+                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
+                </td>
+                </form>
+            </tr>
+        </table>
+    </div>
 </div>
+

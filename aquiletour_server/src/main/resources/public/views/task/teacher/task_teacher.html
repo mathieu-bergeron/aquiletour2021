@@ -28,81 +28,78 @@
         </div>
         <a class="add-task-id-to-data-target" id="add-nexttask-button" href="#" data-toggle="modal" data-target="#add-next-task-modal" style="float:right;">⊞</a>
     </div>
-
-      <div class="modal fade add-task-id-to-id" id="add-previous-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content dashboard-mContent">
-            <div class="modal-header">
-              <h5 class="modal-title" id="add-previous-task-modal-title">Ajouter une tâche préalable</h5>
-              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body dashboard-mBody">
-              <form action="" method="post">
-                <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
-                <label for="title">Nouvelle tâche préalable:</label>
-                <input name="newPreviousTask" id="new-previous-task-input"></input>
-                <label for="title">Lien vers une tâche existante:</label>
-                <input name="previousTask" id="existing-previous-task-input"></input>
-                <div class="modal-footer border-0">         
-                  <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
-                </div>  
-              </form>
-            </div>       
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade add-task-id-to-id" id="add-subtask-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content dashboard-mContent">
-            <div class="modal-header">
-              <h5 class="modal-title" id="add-subtask-modal-title">Ajouter une sous-tâche</h5>
-              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body dashboard-mBody">
-              <form action="" method="post" class="add-course-form">
-                <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
-                <label for="title">Titre de la nouvelle sous-tâche</label>
-                <input name="newSubTask" id="new-subtask-input"></input>
-                <div class="modal-footer border-0">         
-                  <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
-                </div>  
-              </form>
-            </div>       
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade add-task-id-to-id" id="add-next-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content dashboard-mContent">
-            <div class="modal-header">
-              <h5 class="modal-title" id="add-next-task-modal-title">Ajouter une tâche suivante</h5>
-              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <div class="modal-body dashboard-mBody">
-              <form action="" method="post">
-                <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
-                <label for="title">Nouvelle tâche suivante:</label>
-                <input name="newNextTask" id="new-next-task-input"></input>
-                <label for="title">Lien vers une tâche existante:</label>
-                <input name="nextTask" id="existing-next-task-input"></input>
-                <div class="modal-footer border-0">         
-                  <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
-                </div>  
-              </form>
-            </div>       
-          </div>
-        </div>
-      </div>
-
-    
-
 </div>
 
+
+  <div class="modal fade add-task-id-to-id" id="add-previous-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content dashboard-mContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-previous-task-modal-title">Ajouter une tâche préalable</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body dashboard-mBody">
+          <form action="" method="post">
+            <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+            <label for="title">Nouvelle tâche préalable:</label>
+            <input name="newPreviousTask" id="new-previous-task-input"></input>
+            <label for="title">Lien vers une tâche existante:</label>
+            <input name="previousTask" id="existing-previous-task-input"></input>
+            <div class="modal-footer border-0">         
+              <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+            </div>  
+          </form>
+        </div>       
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade add-task-id-to-id" id="add-subtask-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content dashboard-mContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-subtask-modal-title">Ajouter une sous-tâche</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body dashboard-mBody">
+          <form action="" method="post" class="add-course-form">
+            <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+            <label for="title">Titre de la nouvelle sous-tâche</label>
+            <input name="newSubTask" id="new-subtask-input"></input>
+            <div class="modal-footer border-0">         
+              <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+            </div>  
+          </form>
+        </div>       
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade add-task-id-to-id" id="add-next-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content dashboard-mContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-next-task-modal-title">Ajouter une tâche suivante</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body dashboard-mBody">
+          <form action="" method="post">
+            <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+            <label for="title">Nouvelle tâche suivante:</label>
+            <input name="newNextTask" id="new-next-task-input"></input>
+            <label for="title">Lien vers une tâche existante:</label>
+            <input name="nextTask" id="existing-next-task-input"></input>
+            <div class="modal-footer border-0">         
+              <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+            </div>  
+          </form>
+        </div>       
+      </div>
+    </div>
+  </div>
