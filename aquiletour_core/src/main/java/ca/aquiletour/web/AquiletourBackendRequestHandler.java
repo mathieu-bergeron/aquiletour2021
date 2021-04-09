@@ -75,6 +75,20 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith(Constants.GIT_PROGRESS_URL_SEGMENT)) {
 
 			sendGitMessages(path.subPath(1), parameters);
+
+		}else if(path.startsWith(Constants.SEMESTER_URL_SEGMENT)) {
+
+			sendSemesterMessages(path.subPath(1), parameters);
+		}
+	}
+
+	private static void sendSemesterMessages(Path subPath, Map<String, String[]> parameters) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		if(parameters.containsKey(Constants.ADD_SEMESTER_URL_PARAM)) {
+			
+			String semesterCode;
+
 		}
 	}
 	

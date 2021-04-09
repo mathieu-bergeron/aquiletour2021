@@ -29,4 +29,6 @@ public class Constants {
 	public static final String DELETE_QUEUE_URL_PARAM = "dQ";
 	public static final String CLOSE_QUEUE_URL_PARAM = "cQ";
 
+	public static final String ADD_SEMESTER_URL_PARAM = "aS";
+
 }
