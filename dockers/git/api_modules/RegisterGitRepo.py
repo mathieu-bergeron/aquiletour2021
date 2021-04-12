@@ -7,19 +7,19 @@ import re
 import utils.normalize_data
 
 #  {
-#      "_C":"RegisterGitRepo",
-#      "repoUrl":"https://github.com/patate/atelier.git",
-#      "semesterId":"H2021",
-#      "studentId":"1234567",
-#      "courseId":"3C6",
-#      "groupId":"01",
-#      "exercisePath":"/etape1/atelier",
+#      "_C": "RegisterGitRepo",
+#      "courseId": "nicolas.leduc/IntroProg",
+#      "semesterId": "H2021",
+#      "groupId": "01",
+#      "studentId": "bob.berancourt",
+#      "repoPath": "/Semaine 01"
+#      "repoUrl": "https://github.com/test/test.git",
 #  }
 def process(api_req, maria_conn, lite_conn):
 #    if not 'groupId' in api_req:
 #        api_req['groupId'] = None
-    if not 'exercisePath' in api_req:
-        api_req['exercisePath'] = None
+    if not 'repoPath' in api_req:
+        api_req['repoPath'] = '/'
     if maria_conn:
         try:
             host = 'ZZ'
@@ -30,14 +30,14 @@ def process(api_req, maria_conn, lite_conn):
             elif re.search('azure', api_req['repoUrl']):
                 host = 'AZ'
             maria_cur = maria_conn.cursor()
-            maria_cur.execute('''INSERT INTO depot 
+            maria_cur.execute('''INSERT INTO repository 
                 VALUES (%s,%s,%s,%s,%s,%s,%s)''',
                 (api_req['repoUrl'], host,
                 utils.normalize_data.normalize_session(api_req['semesterId']),
                 utils.normalize_data.normalize_courseId(api_req['courseId']),
                 utils.normalize_data.normalize_group(api_req['groupId']),
                 utils.normalize_data.normalize_studentId(api_req['studentId']),
-                api_req['exercisePath']))
+                api_req['repoPath']))
             maria_conn.commit()
             response = JSONResponse()
             response.status_code = status.HTTP_200_OK

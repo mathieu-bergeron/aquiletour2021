@@ -165,18 +165,20 @@ if __name__=="__main__":
         conn.commit()
         conn2 = mysql.connector.connect(user='root',password='test',database='git_info')
         cur2= conn2.cursor()
-        cur2.execute('DELETE FROM depot')
+        cur2.execute('DELETE FROM commit_file')
+        cur2.execute('DELETE FROM commit')
+        cur2.execute('DELETE FROM repository')
         conn2.commit()
-        cur2.execute('''INSERT INTO depot 
-            VALUES ('https://gitlab.com/LeducNic/coursmo.git','GL','H21','420-ZF5','02',2055573, null)''')
-        cur2.execute('''INSERT INTO depot 
-            VALUES ('https://github.com/LeducNic/TestZF5.git','GH','A20','420-ZC6','01',2044473, null)''')
-        cur2.execute('''INSERT INTO depot 
-            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','AZ','H21','420-ZF5','02',1933325, null)''')
-        cur2.execute('''INSERT INTO depot 
-            VALUES ('https://github.com/LeducNic/TestZF52.git','GH','H21','420-ZF5','01',1822273, null)''')
-#        cur2.execute('''INSERT INTO depot 
-#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','GL','H21','420-C65','02',1788895, null)''')
+        cur2.execute('''INSERT INTO repository 
+            VALUES ('https://gitlab.com/LeducNic/coursmo.git','GL','H2021','nicolas.leduc/420-ZF5','02',2055573, '/')''')
+        cur2.execute('''INSERT INTO repository 
+            VALUES ('https://github.com/LeducNic/TestZF5.git','GH','A2020','nicolas.leduc/420-ZC6','01',2044473, '/')''')
+        cur2.execute('''INSERT INTO repository 
+            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','AZ','H2021','mathieu.bergeron/420-ZF5','02',1933325, '/')''')
+        cur2.execute('''INSERT INTO repository 
+            VALUES ('https://github.com/LeducNic/TestZF52.git','GH','H2021','mathieu.bergeron/420-ZF5','01',1822273, '/')''')
+#        cur2.execute('''INSERT INTO repository 
+#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','GL','H2021','alain.pilon/420-C65','02',1788895, '/')''')
         conn2.commit()
         conn2.close()
 # TEST DATA - End

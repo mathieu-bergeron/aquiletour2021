@@ -92,7 +92,7 @@ def update_commit_db(depot, depotPath, maria_conn):
     repo = git.Repo(depotPath)
     cur = maria_conn.cursor()
     # Trouver dernier commit du depot
-    cur.execute('SELECT commit_id FROM commit WHERE url_depot=%s ORDER BY commit_date DESC',(depot,))
+    cur.execute('SELECT commit_id FROM commit WHERE repo_url=%s ORDER BY commit_date DESC',(depot,))
     last_commit = cur.fetchone()
     print(last_commit)
     if last_commit:
@@ -103,17 +103,21 @@ def update_commit_db(depot, depotPath, maria_conn):
     for commit in repo.iter_commits(last_commit, reverse = True):
         print(commit)
         commit_id = commit.hexsha
+        commit_sum = commit.summary
         commit_msg = commit.message
         commit_date = commit.authored_datetime
-        cur.execute('INSERT INTO commit VALUES (%s,%s,%s,%s)',
-            (depot, commit_id, commit_date, commit_msg))
+        completed_ex = None # TODO: Match des exercices keyword avec summary
+        cur.execute('INSERT INTO commit VALUES (%s,%s,%s,%s,%s,%s)',
+            (depot, commit_id, commit_date, commit_sum, commit_msg, completed_ex))
         maria_conn.commit()
         for file_name,stat in commit.stats.files.items():
             print(file_name)
             insert = stat['insertions']
             delete = stat['deletions']
-            cur.execute('INSERT INTO element VALUES (%s,%s,%s,%s,%s)',
-                (depot, commit_id, file_name, insert, delete))
+            effort = insert + delete # TODO: Utiliser JPlag pour calculer l'effort
+            exercice = '/' # TODO: Determiner le chemin de l'exercice qui correspond au fichier
+            cur.execute('INSERT INTO commit_file VALUES (%s,%s,%s,%s,%s,%s,%s)',
+                (depot, commit_id, file_name, insert, delete, effort, exercice))
             maria_conn.commit()
 # delete from element where (url_depot, commit_id) in (select url_depot, commit_id from commit where commit_date > '2020-09-30');
 # delete from commit where commit_date > '2020-09-30';
@@ -126,7 +130,7 @@ def update_commit_db(depot, depotPath, maria_conn):
 
 def hook_task(depot, maria_conn):
     maria_cur = maria_conn.cursor()
-    maria_cur.execute('SELECT * FROM depot WHERE url_depot=%s',(depot,))
+    maria_cur.execute('SELECT * FROM repository WHERE repo_url=%s',(depot,))
     record = maria_cur.fetchone()
     print(record)
     if record:
