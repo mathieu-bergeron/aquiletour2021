@@ -25,9 +25,15 @@ public class Constants {
 
 	public static final String USER_URL_PARAM = "u";
 	public static final String SEMESTER_URL_PARAM = "s";
+	public static final String GROUP_URL_PARAM = "g";
 	public static final String DELETE_QUEUE_URL_PARAM = "dQ";
 	public static final String CLOSE_QUEUE_URL_PARAM = "cQ";
 
 	public static final String ADD_SEMESTER_URL_PARAM = "aS";
+
+	public static final String COURSE_DRAFTS = "brouillons";
+	public static final String COURSE_TEMPLATE = "plan de cours";
+
+	public static final String CREATE_COURSE_TEXT = "Ajouter un cours";
 
 }

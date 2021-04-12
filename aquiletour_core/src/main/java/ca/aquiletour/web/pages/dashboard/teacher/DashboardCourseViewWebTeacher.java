@@ -3,7 +3,7 @@ package ca.aquiletour.web.pages.dashboard.teacher;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardCourseViewTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
-import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
+import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
@@ -59,7 +59,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 	}
 
 	@Override
-	public void displaySummary(DashboardCourse course) {
+	public void displaySummary(CourseDashboard course) {
 		T.call(this);
 		super.displaySummary(course);
 
@@ -70,14 +70,14 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 		setUpCsvFileUpload(course);
 	}
 
-	private void setUpCsvFileUpload(DashboardCourse course) {
+	private void setUpCsvFileUpload(CourseDashboard course) {
 		T.call(this);
 
 		csvFileSubmit.addEventListener("click", new CsvSubmitListener(course.getCourseId(), csvFileInput));
 		csvFileQueueId.value(course.getCourseId());
 	}
 
-	private void displayQueueInfo(DashboardCourse course) {
+	private void displayQueueInfo(CourseDashboard course) {
 		T.call(this);
 
 		title.appendHtml(course.getTitle());
@@ -85,7 +85,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 		displayNumberOfStudents(course.getNumberOfStudents().getValue());
 	}
 
-	private void installQueueActions(DashboardCourse course) {
+	private void installQueueActions(CourseDashboard course) {
 		T.call(this);
 
 		installerOpenQueueListener(course);
@@ -98,7 +98,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 		
 	}
 
-	private void installDeleteQueueListener(DashboardCourse course) {
+	private void installDeleteQueueListener(CourseDashboard course) {
 		T.call(this);
 		
 		Path coursePath = new Path(course.getCourseId());
@@ -118,7 +118,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 	}
 
 
-	private void adjustOpenCloseLinks(DashboardCourse course) {
+	private void adjustOpenCloseLinks(CourseDashboard course) {
 		T.call(this);
 		
 		Path coursePath = new Path(course.getCourseId());
@@ -139,7 +139,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 		}
 	}
 
-	private void installCloseQueueListener(DashboardCourse course) {
+	private void installCloseQueueListener(CourseDashboard course) {
 		T.call(this);
 
 		closeQueue.addEventListener("click", new HtmlEventListener() {
@@ -153,7 +153,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 		});
 	}
 
-	private void installerOpenQueueListener(DashboardCourse course) {
+	private void installerOpenQueueListener(CourseDashboard course) {
 		T.call(this);
 
 		title.addEventListener("click", new HtmlEventListener() {

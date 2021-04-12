@@ -4,7 +4,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
+import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -13,10 +13,10 @@ import ca.ntro.core.system.trace.T;
 
 public class DashboardUpdater {
 
-	public static DashboardCourse createQueueSummary(String queueId, String queueTitle) {
+	public static CourseDashboard createQueueSummary(String queueId, String queueTitle) {
 		T.call(DashboardUpdater.class);
 
-		DashboardCourse courseSummary = new DashboardCourse();
+		CourseDashboard courseSummary = new CourseDashboard();
 		courseSummary.setTitle(queueTitle); 
 		courseSummary.setCourseId(queueId);
 		courseSummary.updateQueueOpen(false);
@@ -56,7 +56,7 @@ public class DashboardUpdater {
 	}
 
 	public static void addQueueForUserIds(ModelStoreSync modelStore, 
-									      DashboardCourse queue,
+									      CourseDashboard queue,
 			                              List<String> userIds) {
 
 		T.call(DashboardUpdater.class);
@@ -67,7 +67,7 @@ public class DashboardUpdater {
 	}
 
 	public static void addQueueForUsers(ModelStoreSync modelStore, 
-									    DashboardCourse queue,
+									    CourseDashboard queue,
 			                            List<User> users) {
 
 		T.call(DashboardUpdater.class);
@@ -78,7 +78,7 @@ public class DashboardUpdater {
 	}
 
 	public static void addQueueForUser(ModelStoreSync modelStore, 
-									   DashboardCourse queue,
+									   CourseDashboard queue,
 			                           User user) {
 
 		T.call(DashboardUpdater.class);
@@ -87,7 +87,7 @@ public class DashboardUpdater {
 	}
 
 	public static void addQueueForUserId(ModelStoreSync modelStore, 
-									     DashboardCourse queue,
+									     CourseDashboard queue,
 			                             String userId) {
 
 		T.call(DashboardUpdater.class);
@@ -266,7 +266,7 @@ public class DashboardUpdater {
 			public void update(DashboardModel dashboard) {
 				T.call(this);
 				
-				DashboardCourse summary = dashboard.findCourseById(queueId);
+				CourseDashboard summary = dashboard.findCourseById(queueId);
 				int currentNumber = summary.getNumberOfAppointments().getValue();
 				summary.updateNumberOfStudents(currentNumber + numberOfStudentAdded);
 			}

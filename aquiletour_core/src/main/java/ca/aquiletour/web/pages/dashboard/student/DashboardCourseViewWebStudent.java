@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.dashboard.student;
 
 import ca.aquiletour.core.pages.dashboards.student.DashboardCourseViewStudent;
-import ca.aquiletour.core.pages.dashboards.values.DashboardCourse;
+import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.web.pages.dashboard.ActiveCourseSummaryViewWeb;
@@ -73,7 +73,7 @@ public class DashboardCourseViewWebStudent extends ActiveCourseSummaryViewWeb im
 	}
 
 	@Override
-	public void displaySummary(DashboardCourse course) {
+	public void displaySummary(CourseDashboard course) {
 		T.call(this);
 		super.displaySummary(course);
 
