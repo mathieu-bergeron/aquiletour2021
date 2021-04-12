@@ -62,7 +62,7 @@ public abstract class ModelStore {
 		 *      + load actual data from DB if necessary
 		 *      	+ (we want to synchronize on model here, not localHeapByPath as loading can take time)
 		 *      + run the updater
-		 *      + save (async - the model object if always up-to-date)
+		 *      + queue a saveModel event
 		 * 
 		 * That way, the modelStore can be accessed from multiple threads
 		 * 	    + the model object is always the same
