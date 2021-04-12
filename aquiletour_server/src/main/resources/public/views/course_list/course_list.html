@@ -36,9 +36,13 @@
 
                 <div class="modal-body dashboard-mBody">
                     <form action="" method="post" class="add-course-form">
-                        <input name="taskId" id="task-id-input" style="display:none;"></input>
-                        <label for="title">Code de cours</label>
-                        <input name="newSubTask" id="new-subtask-input"></input>
+                        <input name="semesterId" id="semester-id" style="display:none;"></input>
+                        <label for="title">Titre du cours (*)</label>
+                        <input name="courseTitle" id="course-title-input"></input>
+                        <label for="code">Code de cours (*)</label>
+                        <input name="courseId" id="course-code-input"></input>
+                        <label for="code">Description</label>
+                        <textarea  name="courseDescription" id="course-description-input"></textarea>
                         <div class="modal-footer border-0">         
                             <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          

@@ -8,7 +8,9 @@ import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
+import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
+import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
@@ -18,6 +20,7 @@ import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessag
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.root.DisplayErrorMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.ntro.core.Path;
@@ -78,6 +81,33 @@ public class AquiletourRequestHandler {
 		
 		ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
 		Ntro.messages().send(showCourseListMessage);
+		
+		
+		if(parameters.containsKey("courseId")) {
+			
+			String courseId = parameters.get("courseId")[0];
+			String semesterId = parameters.get("semesterId")[0];
+			String courseTitle = parameters.get("courseTitle")[0];
+			String courseDescriptionText = parameters.get("courseDescription")[0];
+			
+			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle, courseDescriptionText);
+			
+			String errorMessage = Validator.validateCourseDescription(courseDescription);
+
+			if(errorMessage == null) {
+			
+				AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
+				addCourseMessage.setCourseDescription(courseDescription);
+				Ntro.backendService().sendMessageToBackend(addCourseMessage);
+			
+			}else {
+				
+				DisplayErrorMessage displayErrorMessage = Ntro.messages().create(DisplayErrorMessage.class);
+				displayErrorMessage.setMessage(errorMessage);
+				Ntro.messages().send(displayErrorMessage);
+			}
+		}
+		
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {

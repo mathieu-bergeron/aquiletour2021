@@ -130,29 +130,18 @@ public class DynamicHandler extends AbstractHandler {
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
-		AquiletourBackendRequestHandler.sendMessages(path, parameters);
 
-		// currentUser might have changed
-		setUserCookie(response);
-
-		sendCsvMessage(baseRequest);
+		// BACKEND
+		executeBackend(baseRequest, response, path, parameters);
 
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
 		NtroWindowServer window = newWindow(ifJsOnly, path);
 		
+		// FRONTEND
 		if(!ifJsOnly) {
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
-		
-		/* for a truly async server, we need
-		 * 
-		 * - a listener for when the taskGraph becomes "stale", that is:
-		 *   when all tasks are either:
-		 *   DONE or WAITING for a message  (all messages are already sent)
-		 *   BUT NOT: waiting for a resource (that we must wait)
-		 */
-		
 		
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
@@ -162,6 +151,17 @@ public class DynamicHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_OK);
 			writeResponse(window, baseRequest, out);
 		}
+	}
+
+	private void executeBackend(Request baseRequest, HttpServletResponse response, Path path,
+			Map<String, String[]> parameters) throws IOException {
+
+		AquiletourBackendRequestHandler.sendMessages(path, parameters);
+
+		// currentUser might have changed
+		setUserCookie(response);
+
+		sendCsvMessage(baseRequest);
 	}
 
 	private void sendCsvMessage(Request baseRequest) throws IOException {

@@ -19,6 +19,7 @@ import ca.aquiletour.core.pages.queue.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
+import ca.aquiletour.web.widgets.BootstrapAlert;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
@@ -41,6 +42,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement openQueueListLink;
 	private HtmlElement calendarListLink;
 	private HtmlElement loginLink;
+	private BootstrapAlert alertDanger;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -52,16 +54,28 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLink = getRootElement().find("#courses-link").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
+		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 
 		MustNot.beNull(homeLink);
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(openQueueListLink);
 		MustNot.beNull(calendarListLink);
 		MustNot.beNull(loginLink);
+		MustNot.beNull(alertDangerElement);
+
+		alertDanger = new BootstrapAlert(alertDangerElement);
 
 		initializeLinks();
 
 		adjustLoginLinkText(context);
+		
+		initializeAlerts();
+	}
+
+	private void initializeAlerts() {
+		T.call(this);
+		
+		alertDanger.hide();
 	}
 
 	private void initializeLinks() {
@@ -245,5 +259,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		showSubView(courseListView);
+	}
+
+	@Override
+	public void displayErrorMessage(String message) {
+		T.call(this);
+		
+		alertDanger.displayMessage(message);
+		
 	}
 }

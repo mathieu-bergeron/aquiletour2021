@@ -73,6 +73,8 @@ public class RootController extends NtroRootController {
 
 		addWindowViewHandler(new RootViewHandler());
 		
+		addViewMessageHandler(DisplayErrorMessage.class, new DisplayErrorHandler());
+
 		// FIXME: could be in main. Not specific to Controller
 		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());
 		

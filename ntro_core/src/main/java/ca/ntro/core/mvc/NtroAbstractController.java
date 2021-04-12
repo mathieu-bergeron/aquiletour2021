@@ -325,6 +325,12 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?> handler) {
 		T.call(this);
 
+		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
+		handler.setMessageId(messageId);
+
+		handler.getTask().addPreviousTask(messageHandlerTask);
+
 		mainTask.addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 	}

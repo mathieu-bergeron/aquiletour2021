@@ -24,4 +24,5 @@ public interface RootView extends NtroView {
 	void showCourse(CourseView currentView);
 	void showCalendarList(SemesterListView currentView);
 	void showCourseList(CourseListView currentView);
+	void displayErrorMessage(String message);
 }

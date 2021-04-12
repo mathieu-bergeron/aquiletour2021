@@ -30,6 +30,7 @@ public class Constants {
 	public static final String CLOSE_QUEUE_URL_PARAM = "cQ";
 
 	public static final String ADD_SEMESTER_URL_PARAM = "aS";
+	public static final String ADD_COURSE_URL_PARAM = "aC";
 
 	public static final String COURSE_DRAFTS = "brouillons";
 	public static final String COURSE_TEMPLATE = "plan de cours";

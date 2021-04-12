@@ -28,6 +28,8 @@ public abstract class MessageService {
 	}
 
 	public void registerHandlerTask(Class<? extends NtroMessage> messageClass, MessageHandlerTask messageHandlerTask) {
+		T.call(this);
+		
 		// JSWEET: compilation error with <MSG extends NtroMessage>
 		handlers.put(messageClass, new MessageHandler() {
 			@Override
@@ -40,6 +42,8 @@ public abstract class MessageService {
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroMessage> void send(M message) {
+		T.call(this);
+		
 		if(handlers.containsKey(message.getClass())) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());

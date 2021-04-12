@@ -16,7 +16,8 @@ import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -80,7 +81,15 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith(Constants.SEMESTER_LIST_URL_SEGMENT)) {
 
 			sendSemesterMessages(path.subPath(1), parameters);
+
+		}else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
+
+			sendCourseListMessages(path.subPath(1), parameters, (User) Ntro.userService().user());
 		}
+	}
+
+	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
+		T.call(AquiletourBackendRequestHandler.class);
 	}
 
 	private static void sendSemesterMessages(Path subPath, Map<String, String[]> parameters) {
@@ -117,13 +126,6 @@ public class AquiletourBackendRequestHandler {
 
 		if(parameters.containsKey("addQueue")) {
 
-			String courseTitle = parameters.get("addQueue")[0];
-			String courseId = courseTitle;  // FIXME: we need a real id
-
-			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-			addCourseMessage.setCourse(new CourseDashboard(courseTitle, courseId));
-			addCourseMessage.setUser(user);
-			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 
 		} else if(parameters.containsKey(Constants.CLOSE_QUEUE_URL_PARAM)) {
 
