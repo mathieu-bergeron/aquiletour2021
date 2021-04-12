@@ -1,4 +1,4 @@
-<div class="mt-3 courses-container">
+<div class="mt-3">
 
   <div class="mt-3 d-flex justify-content-start align-items-baseline">
       <div>
@@ -9,16 +9,15 @@
       </div>
       <div class="flex-fill"></div>
       <div class="me-3">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="semester-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">H2021</a>
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="semester-dropdown-head"></a>
 
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="semester-menu-link">
-                <a class="dropdown-item" href="#">A2021</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="semester-menu-link" id="semester-dropdown-tail">
                 <a class="dropdown-item" href="#"><i>brouillons</i></a>
               </div>
       </div>
   </div>
 
-  <div class="mt-3 flex-container" id="tasks-container">
+  <div class="mt-3 d-flex" id="courses-container">
   </div>
 
   <div class="mt-3 d-flex justify-content-center">
@@ -26,7 +25,7 @@
             type="button" 
             id="add-task-button" 
             data-toggle="modal" 
-            data-target="#add-task-modal">Ajouter une tâche</button>
+            data-target="#add-task-modal">Ajouter un cours</button>
   </div>
 
   <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -40,7 +39,7 @@
         <div class="modal-body dashboard-mBody">
           <form action="" method="post" class="add-course-form">
             <input name="taskId" id="task-id-input" style="display:none;"></input>
-            <label for="title">Titre de la nouvelle tâche:</label>
+            <label for="title">Code de cours</label>
             <input name="newSubTask" id="new-subtask-input"></input>
             <div class="modal-footer border-0">         
               <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  

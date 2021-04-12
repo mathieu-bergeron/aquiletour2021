@@ -4,5 +4,6 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface CourseListView extends NtroView {
 
+	void insertIntoSemesterDropdown(int index, String semesterId);
 
 }
