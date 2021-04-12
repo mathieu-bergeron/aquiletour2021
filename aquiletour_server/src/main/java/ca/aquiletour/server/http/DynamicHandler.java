@@ -39,7 +39,6 @@ import org.eclipse.jetty.util.UrlEncoded;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
-import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
@@ -48,14 +47,12 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
-import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
@@ -120,27 +117,23 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
+		/*
 		System.out.println("");
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
+		*/
 		
-		// This will register a Ntro.userService().currentUser()
-		// (possibly a Guest)
-		sendLoginMessagesAccordingToCookies(baseRequest);
-
-		setCurrentSemesgerAccordingToCookies(baseRequest);
+		sendSessionMessagesAccordingToCookies(baseRequest);
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
-		// BACKEND
 		executeBackend(baseRequest, response, path, parameters);
 
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
 		NtroWindowServer window = newWindow(ifJsOnly, path);
 		
-		// FRONTEND
 		if(!ifJsOnly) {
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
@@ -160,11 +153,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		AquiletourBackendRequestHandler.sendMessages(path, parameters);
 
-		// currentUser might have changed
-		setUserCookie(response);
-
-		// currentSemester might have changed
-		setSemesterCookie(response);
+		setSessionCookie(response);
 
 		sendCsvMessage(baseRequest);
 	}
@@ -202,35 +191,16 @@ public class DynamicHandler extends AbstractHandler {
 		return builder.toString();
 	}
 
-	private void setCurrentSemesterAccordingToCookies(Request baseRequest) {
-		T.call(this);
-
-		if(hasCookie(baseRequest, "semester")) {
-
-			String currentSemester = UrlEncoded.decodeString(getCookie(baseRequest, "semester"));
-
-			// TODO: get session object
-			
-		}else {
-			
-			// 
-			
-		}
-	}
-
-
-	private void sendLoginMessagesAccordingToCookies(Request baseRequest) {
+	private void sendSessionMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
 
 		AuthenticateSessionUserMessage authenticateSessionUserMessage = Ntro.messages().create(AuthenticateSessionUserMessage.class);
 
-		if(hasCookie(baseRequest, "user")) {
-
-			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
-			User sessionUser = Ntro.jsonService().fromString(User.class, userString);
+		if(hasCookie(baseRequest, "session")) {
+			String sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
+			Session<User,?> session = Ntro.jsonService().fromString(Session.class, sessionString);
 			
-			authenticateSessionUserMessage.setSessionUser(sessionUser);
-
+			authenticateSessionUserMessage.setSessionUser(session.getUser());
 		}
 
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
@@ -307,7 +277,7 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private void setUserCookie(HttpServletResponse response) {
+	private void setSessionCookie(HttpServletResponse response) {
 		T.call(this);
 		
 		User currentUser = (User) Ntro.userService().user();

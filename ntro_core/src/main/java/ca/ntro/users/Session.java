@@ -1,19 +1,20 @@
 package ca.ntro.users;
 
+import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.models.NtroModel;
 
-public class Session implements NtroModel {
+public class Session<U extends NtroUser, D extends JsonSerializable> implements NtroModel {
 	
-	private NtroUser user = new NtroUser();
-	private String currentSemester = "";
+	private U user = (U) new NtroUser();
+	private D appData = (D) new JsonSerializable() {};
 	private String loginCode = "";
 	private long timeToLiveMiliseconds = 1000 * 60 * 1;         // TMP: 1 minute by default
 	
-	public NtroUser getUser() {
+	public U getUser() {
 		return user;
 	}
 
-	public void setUser(NtroUser user) {
+	public void setUser(U user) {
 		this.user = user;
 	}
 
@@ -33,11 +34,12 @@ public class Session implements NtroModel {
 		this.loginCode = loginCode;
 	}
 
-	public String getCurrentSemester() {
-		return currentSemester;
+	public D getAppData() {
+		return appData;
 	}
 
-	public void setCurrentSemester(String currentSemester) {
-		this.currentSemester = currentSemester;
+	public void setAppData(D appData) {
+		this.appData = appData;
 	}
+	
 }
