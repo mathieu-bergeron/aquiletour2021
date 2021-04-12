@@ -10,13 +10,12 @@ public class CourseDescription implements NtroModelValue {
 	private String courseTitle = "";
 	private String courseDescription = "";
 
-	public CourseDescription(String semesterId, String courseId, String courseTitle, String courseDescription) {
+	public CourseDescription(String semesterId, String courseId, String courseTitle) {
 		T.call(this);
 		
 		this.semesterId = semesterId;
 		this.courseId = courseId;
 		this.courseTitle = courseTitle;
-		this.courseDescription = courseDescription;
 	}
 
 	public String getSemesterId() {

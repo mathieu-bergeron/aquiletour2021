@@ -128,6 +128,8 @@ public class DynamicHandler extends AbstractHandler {
 		// (possibly a Guest)
 		sendLoginMessagesAccordingToCookies(baseRequest);
 
+		setCurrentSemesgerAccordingToCookies(baseRequest);
+
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
@@ -160,6 +162,9 @@ public class DynamicHandler extends AbstractHandler {
 
 		// currentUser might have changed
 		setUserCookie(response);
+
+		// currentSemester might have changed
+		setSemesterCookie(response);
 
 		sendCsvMessage(baseRequest);
 	}
@@ -196,6 +201,23 @@ public class DynamicHandler extends AbstractHandler {
 
 		return builder.toString();
 	}
+
+	private void setCurrentSemesterAccordingToCookies(Request baseRequest) {
+		T.call(this);
+
+		if(hasCookie(baseRequest, "semester")) {
+
+			String currentSemester = UrlEncoded.decodeString(getCookie(baseRequest, "semester"));
+
+			// TODO: get session object
+			
+		}else {
+			
+			// 
+			
+		}
+	}
+
 
 	private void sendLoginMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
@@ -286,6 +308,14 @@ public class DynamicHandler extends AbstractHandler {
 
 
 	private void setUserCookie(HttpServletResponse response) {
+		T.call(this);
+		
+		User currentUser = (User) Ntro.userService().user();
+		User sessionUser = currentUser.toSessionUser();
+		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
+	}
+
+	private void setSemesterCookie(HttpServletResponse response) {
 		T.call(this);
 		
 		User currentUser = (User) Ntro.userService().user();

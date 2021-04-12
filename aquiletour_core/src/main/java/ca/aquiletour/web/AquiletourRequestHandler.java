@@ -83,14 +83,14 @@ public class AquiletourRequestHandler {
 		Ntro.messages().send(showCourseListMessage);
 		
 		
-		if(parameters.containsKey("courseId")) {
+		if(parameters.containsKey("courseTitle")) {
 			
-			String courseId = parameters.get("courseId")[0];
 			String semesterId = parameters.get("semesterId")[0];
 			String courseTitle = parameters.get("courseTitle")[0];
-			String courseDescriptionText = parameters.get("courseDescription")[0];
 			
-			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle, courseDescriptionText);
+			String courseId = "TODO";
+			
+			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle);
 			
 			String errorMessage = Validator.validateCourseDescription(courseDescription);
 
