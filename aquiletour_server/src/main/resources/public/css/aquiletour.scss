@@ -1,3 +1,6 @@
+$primary: purple;
+
+
 //DASHBOARD
 .flex-container {
   /* We first create a flex layout context */
@@ -340,12 +343,14 @@ body{
   
 }
 
+/*
 .modal-content{
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
+*/
 
 #page-loader {
   position: absolute;

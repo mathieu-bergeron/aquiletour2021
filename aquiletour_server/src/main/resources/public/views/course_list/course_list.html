@@ -28,21 +28,45 @@
 
     <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content dashboard-mContent">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title"></h5>
+                    <h4 id="modal-title"></h4>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body dashboard-mBody">
-                    <form action="" method="post" class="add-course-form">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Créer un nouveau cours</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Dupliquer un cours existant</button>
+                        </li>
+                    </ul>
+                    <form action="" method="post">
                         <input name="semesterId" id="semester-id" style="display:none;"></input>
-                        <label for="title">Titre du cours (*)</label>
-                        <input name="courseTitle" id="course-title-input"></input>
-                        <label for="code">Code de cours (*)</label>
-                        <input name="courseId" id="course-code-input"></input>
-                        <label for="code">Description</label>
-                        <textarea  name="courseDescription" id="course-description-input"></textarea>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="form-group row mb-2 mx-2">
+                                    <label for="title">Titre du cours (*)</label>
+                                    <input name="courseTitle" id="course-title-input"></input>
+                                </div>
+                                <div class="form-group row mb-2 mx-2">
+                                    <label for="code">Code de cours (*)</label>
+                                    <input name="courseId" id="course-code-input"></input>
+                                </div>
+                                <div class="form-group row mb-2 mx-2">
+                                    <label for="code">Description</label>
+                                    <textarea  name="courseDescription" id="course-description-input"></textarea>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="form-group row mb-2 mx-2">
+                                    <label for="copyCourse">Session / code du cours</label>
+                                    <input name="copyCourse" id="copy-course-input"></input>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal-footer border-0">         
                             <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
