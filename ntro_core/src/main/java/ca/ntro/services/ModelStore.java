@@ -11,6 +11,7 @@ import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.listeners.ValueListener;
@@ -29,6 +30,7 @@ public abstract class ModelStore {
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
 	
+	
 	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
 	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
 	
@@ -43,9 +45,38 @@ public abstract class ModelStore {
 		return ifModelExistsImpl(documentPath);
 	}
 
+
+	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      String modelId, 
+			                                      ModelUpdater<M> updater){
+		T.call(this);
+		
+		/* TODO: make modelStore threadSafe on the server
+		 * 
+		 * updateModel:
+		 * 
+		 * 1. synchronized(localHeapByPath) and get a model object (possibly empty)
+		 *      + manage cache (e.g. possible destroy some older models)
+		 * 1. synchronized(model):
+		 *      + load actual data from DB if necessary
+		 *      	+ (we want to synchronize on model here, not localHeapByPath as loading can take time)
+		 *      + run the updater
+		 *      + save (async - the model object if always up-to-date)
+		 * 
+		 * That way, the modelStore can be accessed from multiple threads
+		 * 	    + the model object is always the same
+		 * 		+ the model is modified by a single thread at a time
+		 * 
+		 * 
+		 * 
+		 */
+		
+		
+	}
+
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
 		T.call(this);
-
 		
 		String documentId = documentId(firstPathName, pathRemainder);
 		DocumentPath documentPath = documentPath(modelClass, documentId);
