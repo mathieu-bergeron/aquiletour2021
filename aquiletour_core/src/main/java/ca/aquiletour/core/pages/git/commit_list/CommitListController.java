@@ -1,7 +1,5 @@
-package ca.aquiletour.core.pages.git;
+package ca.aquiletour.core.pages.git.commit_list;
 
-import ca.aquiletour.core.pages.git.commit_list.CommitListViewModel;
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListHandler;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.root.RootController;

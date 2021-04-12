@@ -29,7 +29,7 @@ import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
-import ca.aquiletour.core.pages.git.CommitListController;
+import ca.aquiletour.core.pages.git.commit_list.CommitListController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;

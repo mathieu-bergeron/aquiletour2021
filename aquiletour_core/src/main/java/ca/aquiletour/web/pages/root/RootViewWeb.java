@@ -10,7 +10,7 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.git.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;

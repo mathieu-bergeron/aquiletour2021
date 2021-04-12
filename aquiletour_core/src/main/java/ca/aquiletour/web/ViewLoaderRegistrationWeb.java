@@ -10,7 +10,7 @@ import ca.aquiletour.core.pages.dashboards.student.StudentCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.student.DashboardViewStudent;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherCourseSummaryView;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
-import ca.aquiletour.core.pages.git.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;

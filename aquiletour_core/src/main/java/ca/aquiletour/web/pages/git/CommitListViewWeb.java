@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.git;
 
-import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.ntro.core.mvc.NtroContext;
