@@ -1,16 +1,22 @@
 import time
+import os
 import sqlite3
 import mysql.connector
 import json
+import utils.normalize_data
+import git
 
 def process_requests():
     maria_conn = None
     lite_conn = None
-
-    maria_cnf_FD = open('db_conf.json')
-    maria_cnf = json.load(maria_cnf_FD)
-    maria_cnf_FD.close()
+        
     try:
+        maria_cnf_FD = open('db_conf.json')
+        maria_cnf = json.load(maria_cnf_FD)
+        maria_cnf_FD.close()
+        if not os.path.isdir('depot'):
+            print('ERROR: Depot dir not found')
+            return
         lite_conn = sqlite3.connect('data/git_tasks.db')
         maria_conn = mysql.connector.connect(host=maria_cnf['host'],user=maria_cnf['user'],
             password=maria_cnf['password'],database='git_info')
@@ -54,6 +60,8 @@ def process_requests():
         print('Database Error, Exiting server')
         print(e)
         maria_conn = None
+    except json.JSONDecodeError:
+        print('ERROR Reading json config file')
     except KeyboardInterrupt:
         pass
     finally:
@@ -78,27 +86,70 @@ def process_requests():
 # >>> rep.git.checkout('HEAD~1')
 # >>> rep.git.checkout('-')
 # >>> rep.git.status()
-# # Verifier si le depot existe
-# Si oui, Pull, sinon, clone
-#        depotPath = os.path.join(configJSON['depotDir'], row[1])
-#        if not os.path.isdir(depotPath) :
-#            print(depotPath + ' not exists, cloning!')
-#            git.Repo.clone_from(row[3],depotPath)
-#        else :
-#            print(depotPath + ' exists, pulling!')
-#            try :
-#                git.Repo(depotPath).remotes.origin.pull()
+# rep.commit().diff('HEAD~1')[1].a_blob.data_stream.read() # ou b_blob
+#rep.commit().tree.trees[0].blobs[1].data_stream.read() # parcourir un commit...
+def update_commit_db(depot, depotPath, maria_conn):
+    repo = git.Repo(depotPath)
+    cur = maria_conn.cursor()
+    # Trouver dernier commit du depot
+    cur.execute('SELECT commit_id FROM commit WHERE repo_url=%s ORDER BY commit_date DESC',(depot,))
+    last_commit = cur.fetchone()
+    print(last_commit)
+    if last_commit:
+        last_commit = last_commit[0] + '..'
+        cur.fetchall()
+#    last_commit = '4091faf65b9d875d3c23dc7b373e02ae858b21b7' + '..'
+    repo = git.Repo(depotPath)
+    for commit in repo.iter_commits(last_commit, reverse = True):
+        print(commit)
+        commit_id = commit.hexsha
+        commit_sum = commit.summary
+        commit_msg = commit.message
+        commit_date = commit.authored_datetime
+        completed_ex = None # TODO: Match des exercices keyword avec summary
+        cur.execute('INSERT INTO commit VALUES (%s,%s,%s,%s,%s,%s)',
+            (depot, commit_id, commit_date, commit_sum, commit_msg, completed_ex))
+        maria_conn.commit()
+        for file_name,stat in commit.stats.files.items():
+            print(file_name)
+            insert = stat['insertions']
+            delete = stat['deletions']
+            effort = insert + delete # TODO: Utiliser JPlag pour calculer l'effort
+            exercice = '/' # TODO: Determiner le chemin de l'exercice qui correspond au fichier
+            cur.execute('INSERT INTO commit_file VALUES (%s,%s,%s,%s,%s,%s,%s)',
+                (depot, commit_id, file_name, insert, delete, effort, exercice))
+            maria_conn.commit()
+# delete from element where (url_depot, commit_id) in (select url_depot, commit_id from commit where commit_date > '2020-09-30');
+# delete from commit where commit_date > '2020-09-30';
+    # Pour tous les commit suivants
+    # Extraire date et message
+    # Pour chaque fichier du Commit
+    # Extraire les infos
+    # Calculer l'effort (utiliser diff pour recuperer les fichiers)
+    pass
 
 def hook_task(depot, maria_conn):
     maria_cur = maria_conn.cursor()
-    maria_cur.execute('SELECT * FROM depot WHERE url_depot=%s',(depot,))
+    maria_cur.execute('SELECT * FROM repository WHERE repo_url=%s',(depot,))
     record = maria_cur.fetchone()
     print(record)
     if record:
         depotDir = record[0].split('/')
-        depotDir = depotDir[len(depotDir)-1].replace('.git','')
-        print(depotDir)
-        answer = 'DONE'
+        depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record[1]
+        depotPath = os.path.join('depot',record[2],record[3],record[4],record[5],depotDir)
+#        print(depotPath)
+        try:
+            if not os.path.isdir(depotPath) :
+                print(depotPath + ' not exists, cloning!')
+                git.Repo.clone_from(depot,depotPath)
+            else :
+                print(depotPath + ' exists, pulling!')
+                git.Repo(depotPath).remotes.origin.pull()
+            answer = update_commit_db(depot, depotPath, maria_conn)
+            if not answer:
+                answer = 'DONE'
+        except git.exc.GitCommandError:
+            answer = 'DEPOT not accessible on server'
         #   Not there... Error
         # Fetch / Clone depot
         #   Not possible ... Error

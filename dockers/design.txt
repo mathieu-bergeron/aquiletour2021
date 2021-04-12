@@ -1,7 +1,7 @@
 Structure sur disque:
 - exterieur du docker git
-- repertoires git: session/cours-gr/DAetudiant/depot/...
-	- ex: H2021/420ZF5-02/202033395/testZF5/...
+- repertoires git: session/cours/gr/DAetudiant/depot/...
+	- ex: H21/420ZF5/02/202033395/testZF5/...
 
 		TP/AT	Exer	DEPOT		Repertoire
 GitLab/GitHub	TP04	-	420ZF5		TP04		TP sans exercices separes
@@ -15,6 +15,36 @@ AzureDepOp	TP01	-	420ZE5-01	-		Forcer des depots differents?
 
 - Possibilite de changer le depot, mais avertir l'enseignant sauf si changement force
 
+Exemples de path dans depot vs calendrier:
+			src/leducni/TP02/Exercice1/Exer1.java			Travail Pratique 2/Exercice 1
+			src/leducni/ateliers/AT02/Exercice3.java		Atelier 2/Exercice 3
+			src/leducni/travailpratique/3/Exercice05.java		Travail Pratique 3/Exercice 5
+			TravailPratique3/Exercice02/test.java			Travail Pratique 3/Exercice 2
+			Atelier4/Exercice1.java					Atelier 4/Exercice 1
+			TP05/*							Travail Pratique 5
+			Atelier06/*						Atelier 6
+
+Etape2			src/leducni/TP02/Exercice1/Exer1.java			Etape2 / Travail Pratique 2/Exercice 1
+			src/leducni/Sec3/ateliers/AT02/Exercice3.java		Section03 / Atelier 2/Exercice 3
+Section2/Etape3		src/leducni/travailpratique/3/Exercice05.java		Section2/Etape3 / Travail Pratique 3/Exercice 5
+Partie01		TravailPratique3/Exercice02/test.java			Partie01 / Travail Pratique 3/Exercice 2
+			PT02/Atelier4/Exercice1.java				Partie02 / Atelier 4/Exercice 1
+Partie2			Etape4/TP05/*						Partie2/Etape04 / Travail Pratique 5
+			Sec4/PT3/Atelier06/*					Section4/Partie3 / Atelier 6
+
+/module1/ateliers/atelier2 match module1/atelier2
+/module2/ateliers/atelier3 match module2/atelier3
+/module1/tp3 match module1/src/tp3
+/module2/tp3 match module2/src/tp3
+/module1/ateliers/atelier2 match module1/src/atelier2
+/module2/ateliers/atelier2 match module2/src/atelier2
+NOTE:
+on regarde aussi si on peut générer un sourceFolderPath raisonable directement dans le calendrier de cours
+/semaine01/atelier1/exercice1 match marwane/atelier1/exercice1
+/semaine01/atelier1/exercice2 match marwane/atelier1/exercice2
+/semaine02/atelier2/exercice1 match marwane/atelier2/exercice1
+
+
 Algo GIT:
 Recoit webhook.
 Determine session/cours-gr/etudiant avec url du depot et DB cours
@@ -26,6 +56,33 @@ extrait les infos des commits master depuis le dernier commit dans DB
 	determine tp/exercice avec DB cours vs dossier et description du commit
 ajoute les commit dans DB
 
+MariaDB:
+Table EXERCICE:
+(Session - Cours - Groupe - CalPath) - DepotPath - FilePath - CompletionKW
+Table DEPOT:
+(URL Depot) - Session - Cours - Groupe - Etudiant - DepotPath
+Table COMMIT:
+(URL Depot - Commit ID) - Date - ShortMessage - Message - CalPath
+Table FICHIER:
+(URL Depot - Commit ID - FilePath) - Insert - Delete - Effort - CalPath
+
+Session : "H2021"
+Cours : "mathieu.bergeron/StruDon"
+Groupe : "01"
+CalPath : "/TP1/Exercice 1"
+DepotPath : "/TP1"
+FilePath : "/exercice01"
+CompletionKW : "Exercice 1"
+URLDepot : "https://github.com/test/test.git"
+Etudiant : "bob.berancourt"
+CommitID : "asdfasdfw34qfadsfasdrf3"
+Date : "1615215942"
+ShortMessage : "Blah Blah"
+Message : "Blah Blah Blah Blah"
+FilePath : "/src/atelier2/Exercise3.java"
+Insert : "5"
+Delete : "10"
+Effort : "34"
 
 Docker GIT:
 retourne une archive des fichiers selon requete:
@@ -40,6 +97,8 @@ retourne une archive des fichiers selon requete:
 	Besoin de la DB pour trouver les depots pertinents pour chaque etudiant
 API?
 	Definition des requetes?
+	Tous les commit pour 1 etudiant et TP
+	Tous les etudiants sans commit avant date pour TP
 Communication FastAPI <-> GIT manager
 	DB SQLLite: Impossible de partager queue avec workers FastAPI
 	1 ligne par requete et reponse
