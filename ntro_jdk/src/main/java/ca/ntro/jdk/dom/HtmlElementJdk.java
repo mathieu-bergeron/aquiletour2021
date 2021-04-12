@@ -184,7 +184,7 @@ public class HtmlElementJdk extends HtmlElement {
 	public void show() {
 		String styleString = getStyleString();
 
-		styleString = styleString.replace("display:none;", "");
+		styleString = styleString.replace("display:none !important;", "");
 
 		jsoupElement.attr("style", styleString);
 	}
@@ -193,8 +193,8 @@ public class HtmlElementJdk extends HtmlElement {
 	public void hide() {
 		String styleString = getStyleString();
 		
-		if(!styleString.contains("display:none;")){
-			styleString += "display:none;";
+		if(!styleString.contains("display:none !important;")){
+			styleString += " display:none !important;";
 		}
 		
 		jsoupElement.attr("style", styleString);
