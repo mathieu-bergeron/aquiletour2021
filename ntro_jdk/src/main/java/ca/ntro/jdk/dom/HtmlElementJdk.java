@@ -182,30 +182,30 @@ public class HtmlElementJdk extends HtmlElement {
 
 	@Override
 	public void show() {
-		String classString = getClassString();
+		String styleString = getStyleString();
 
-		classString = classString.replace("d-none", "");
+		styleString = styleString.replace("display:none !important;", "");
 
-		jsoupElement.attr("class", classString);
+		jsoupElement.attr("style", styleString);
 	}
 
 	@Override
 	public void hide() {
-		String classString = getClassString();
+		String styleString = getStyleString();
 		
-		if(!classString.contains("d-none")){
-			classString += " d-none";
+		if(!styleString.contains("display:none !important;")){
+			styleString += " display:none !important;";
 		}
 		
-		jsoupElement.attr("class", classString);
+		jsoupElement.attr("style", styleString);
 	}
 
-	private String getClassString() {
-		String classString = jsoupElement.attr("class");
-		if(classString == null) {
-			classString = "";
+	private String getStyleString() {
+		String styleString = jsoupElement.attr("style");
+		if(styleString == null) {
+			styleString = "";
 		}
-		return classString;
+		return styleString;
 	}
 
 	@Override
