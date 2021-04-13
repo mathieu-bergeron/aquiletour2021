@@ -19,7 +19,7 @@ public interface RootView extends NtroView {
 	void showLogin(LoginView loginView);
 	void showQueues(OpenQueueListView currentView);
 	void showHome(HomeView homeView);
-	void adjustLoginLinkText(NtroContext<?> context);
+	void adjustLoginLinkText(NtroContext<?,?> context);
 	void showGit(CommitListView gitView);
 	void showCourse(CourseView currentView);
 	void showCalendarList(SemesterListView currentView);

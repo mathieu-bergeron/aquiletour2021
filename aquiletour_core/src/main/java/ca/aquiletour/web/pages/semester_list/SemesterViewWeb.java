@@ -13,7 +13,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	private HtmlElement semesterIdAnchor;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		semesterIdAnchor = this.getRootElement().find("#semester-id").get(0);

@@ -10,7 +10,7 @@ import ca.ntro.core.system.trace.T;
 public class LoginController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(LoginView.class, "fr");
@@ -19,7 +19,7 @@ public class LoginController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 
 		LoginView view = (LoginView) getView();

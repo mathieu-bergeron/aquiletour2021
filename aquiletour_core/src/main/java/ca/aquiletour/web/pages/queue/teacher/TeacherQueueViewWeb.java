@@ -17,7 +17,7 @@ public class TeacherQueueViewWeb extends QueueViewWeb implements QueueView {
 	private HtmlElement queueId;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		super.initializeViewWeb(context);
 		T.call(this);
 

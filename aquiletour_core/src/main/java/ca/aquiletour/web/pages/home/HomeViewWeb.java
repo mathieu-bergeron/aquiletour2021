@@ -14,7 +14,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class HomeViewWeb extends NtroViewWeb implements HomeView {
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 	}
 }

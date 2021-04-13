@@ -51,7 +51,7 @@ public class RootController extends NtroRootController {
 	private boolean ifRoleSpecificSubControllersAdded = false;
 	
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 		
 		setViewLoader(RootView.class, context.lang());
@@ -105,7 +105,7 @@ public class RootController extends NtroRootController {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 		
 		RootView view = (RootView) getView();
@@ -115,7 +115,7 @@ public class RootController extends NtroRootController {
 		addRoleSpecificSubControllers(context);
 	}
 
-	private void addRoleSpecificSubControllers(NtroContext<?> context) {
+	private void addRoleSpecificSubControllers(NtroContext<?,?> context) {
 		T.call(this);
 		
 		if(ifRoleSpecificSubControllersAdded) return;

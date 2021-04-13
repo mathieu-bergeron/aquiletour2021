@@ -19,7 +19,7 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	private HtmlElement nextTasksContainer;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		taskTitleLink = getRootElement().find("#task-title-link").get(0);

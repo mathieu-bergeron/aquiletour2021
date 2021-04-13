@@ -45,7 +45,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private BootstrapAlert alertDanger;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		homeLink = getRootElement().find("#home-link").get(0);
@@ -152,7 +152,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void adjustLoginLinkText(NtroContext<?> context) {
+	public void adjustLoginLinkText(NtroContext<?,?> context) {
 		T.call(this);
 
 		User user = (User) context.user();

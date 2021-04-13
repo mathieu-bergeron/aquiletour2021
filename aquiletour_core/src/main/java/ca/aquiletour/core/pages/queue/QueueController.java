@@ -9,7 +9,7 @@ import ca.ntro.core.system.trace.T;
 public abstract class QueueController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		// empty model loader until the ShowQueue message
@@ -26,7 +26,7 @@ public abstract class QueueController extends NtroController<RootController> {
 	
 	
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 		
 //		 TODO: we can automatize this!

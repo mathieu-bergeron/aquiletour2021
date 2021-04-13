@@ -39,6 +39,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
@@ -193,6 +194,10 @@ public class DynamicHandler extends AbstractHandler {
 
 	private void sendSessionMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
+		
+		SessionData sessionData = new SessionData();
+		sessionData.setCurrentSemester(Constants.COURSE_DRAFTS);
+		Ntro.currentSession().setSessionData(sessionData);
 
 		InitializeSessionMessage authenticateSessionUserMessage = Ntro.messages().create(InitializeSessionMessage.class);
 
@@ -214,10 +219,11 @@ public class DynamicHandler extends AbstractHandler {
 		
 		handleRedirections(baseRequest, response, path);
 
-		NtroContext<User> context = new NtroContext<>();
+		NtroContext<User, SessionData> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
 		context.registerUser((User) Ntro.currentUser());
-		
+		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
 

@@ -21,7 +21,7 @@ public class DashboardCourseViewWebStudent extends ActiveCourseSummaryViewWeb im
 	String makeAppointmentHref;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 
@@ -38,7 +38,7 @@ public class DashboardCourseViewWebStudent extends ActiveCourseSummaryViewWeb im
 		addListeners(context);
     }
 
-	private void addListeners(NtroContext<?> context) {
+	private void addListeners(NtroContext<?,?> context) {
 		T.call(this);
 	}
 

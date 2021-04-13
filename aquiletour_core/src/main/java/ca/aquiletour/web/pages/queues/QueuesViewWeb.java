@@ -13,7 +13,7 @@ public class QueuesViewWeb extends NtroViewWeb implements OpenQueueListView {
 	private HtmlElement container;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 		container = this.getRootElement().children("#queues-container").get(0);
 		

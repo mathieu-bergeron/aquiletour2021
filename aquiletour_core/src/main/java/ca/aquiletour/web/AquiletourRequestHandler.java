@@ -88,8 +88,15 @@ public class AquiletourRequestHandler {
 		ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
 		Ntro.messages().send(showCourseListMessage);
 		
+		String currentSemesterId = null;
+		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+			currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+		}else {
+			currentSemesterId = sessionData.getCurrentSemester();
+		}
+
 		SelectSemesterMessage selectSemesterMessage = Ntro.messages().create(SelectSemesterMessage.class);
-		selectSemesterMessage.setSemesterId(sessionData.getCurrentSemester());
+		selectSemesterMessage.setSemesterId(currentSemesterId);
 		Ntro.messages().send(selectSemesterMessage);
 	}
 

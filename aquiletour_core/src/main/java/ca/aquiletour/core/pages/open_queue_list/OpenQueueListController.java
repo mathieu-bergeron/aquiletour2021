@@ -10,7 +10,7 @@ import ca.ntro.core.system.trace.T;
 public class OpenQueueListController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(OpenQueueListView.class, "fr");
@@ -25,7 +25,7 @@ public class OpenQueueListController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 	}
 

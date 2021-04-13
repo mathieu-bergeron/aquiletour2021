@@ -16,7 +16,7 @@ public class TeacherAppointmentViewWeb extends AppointmentViewWeb implements App
 	private HtmlElement deleteAppointmentButton;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 

@@ -19,7 +19,7 @@ public class SemesterListViewWeb extends NtroViewWeb implements SemesterListView
 	private HtmlElement closeModalButton;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		semesterCodeInput = this.getRootElement().find("#semester-code-input").get(0);

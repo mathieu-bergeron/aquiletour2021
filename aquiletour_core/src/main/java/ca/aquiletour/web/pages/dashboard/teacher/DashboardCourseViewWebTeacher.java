@@ -28,7 +28,7 @@ public class DashboardCourseViewWebTeacher extends ActiveCourseSummaryViewWeb im
 	private HtmlElement csvFileQueueId;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 

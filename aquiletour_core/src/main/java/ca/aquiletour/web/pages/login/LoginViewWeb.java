@@ -25,7 +25,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 	private HtmlElement loginMessage;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		loginFormStep1 = getRootElement().find("#login-form-step1").get(0);
@@ -85,7 +85,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 
 	// FIXME: we would prefer that logic in the controller
 	@Override
-	public void selectLoginStep(NtroContext<?> context) {
+	public void selectLoginStep(NtroContext<?,?> context) {
 		T.call(this);
 
 		if(context.user() instanceof Guest) {

@@ -15,7 +15,7 @@ public class SemesterListController extends NtroController<RootController> {
 	
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(SemesterListView.class, context.lang());
@@ -32,7 +32,7 @@ public class SemesterListController extends NtroController<RootController> {
 	}
 	
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 	}
 

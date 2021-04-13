@@ -9,7 +9,7 @@ public class DashboardViewWebTeacher extends DashboardViewWeb implements Teacher
 
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		super.initializeViewWeb(context);
 		T.call(this);
 	}

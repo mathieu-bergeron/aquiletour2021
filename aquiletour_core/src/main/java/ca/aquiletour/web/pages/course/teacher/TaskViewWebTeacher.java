@@ -21,7 +21,7 @@ public class TaskViewWebTeacher extends TaskViewWeb implements TaskViewTeacher {
 	private HtmlElement deleteTaskLink;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 		

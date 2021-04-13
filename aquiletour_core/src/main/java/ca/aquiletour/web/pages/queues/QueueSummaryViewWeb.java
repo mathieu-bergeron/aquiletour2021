@@ -22,7 +22,7 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 	private HtmlElement teacherName;
 	
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		queueLink = this.getRootElement().find("#queue-link").get(0);

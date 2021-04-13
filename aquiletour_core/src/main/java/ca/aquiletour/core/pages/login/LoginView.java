@@ -10,5 +10,5 @@ public interface LoginView extends NtroView  {
 	void displayStep1();
 	void displayStep2();
 	void hideSteps();
-	void selectLoginStep(NtroContext<?> context);
+	void selectLoginStep(NtroContext<?,?> context);
 }

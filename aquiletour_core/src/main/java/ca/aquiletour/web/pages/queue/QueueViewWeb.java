@@ -14,7 +14,7 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	private HtmlElement appointmentList;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		appointmentList = this.getRootElement().find("#appointment-list").get(0);
