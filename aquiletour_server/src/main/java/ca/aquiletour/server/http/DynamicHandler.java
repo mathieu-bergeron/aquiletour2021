@@ -45,9 +45,11 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -124,6 +126,8 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
 		*/
 		
+		setCurrentSemester();
+		
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
@@ -132,9 +136,11 @@ public class DynamicHandler extends AbstractHandler {
 		executeBackend(baseRequest, response, path, parameters);
 
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
+		//boolean ifJsOnly = false;
 
 		NtroWindowServer window = newWindow(ifJsOnly, path);
-		
+		//NtroWindowServer window = newWindow(true, path);
+
 		if(!ifJsOnly) {
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
@@ -194,10 +200,6 @@ public class DynamicHandler extends AbstractHandler {
 
 	private void sendSessionMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
-		
-		SessionData sessionData = new SessionData();
-		sessionData.setCurrentSemester(Constants.COURSE_DRAFTS);
-		Ntro.currentSession().setSessionData(sessionData);
 
 		InitializeSessionMessage authenticateSessionUserMessage = Ntro.messages().create(InitializeSessionMessage.class);
 
@@ -209,6 +211,19 @@ public class DynamicHandler extends AbstractHandler {
 		}
 
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
+	}
+
+	private void setCurrentSemester() {
+		T.call(this);
+		
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterModel.class, "admin", "currentSemester");
+		modelLoader.execute();
+		SemesterModel currentSemester = (SemesterModel) modelLoader.getModel();
+		Ntro.modelStore().save(currentSemester);
+		
+		SessionData sessionData = new SessionData();
+		sessionData.setCurrentSemester(currentSemester.getSemesterId());
+		Ntro.currentSession().setSessionData(sessionData);
 	}
 
 	private void executeFrontendOnServer(Request baseRequest, 

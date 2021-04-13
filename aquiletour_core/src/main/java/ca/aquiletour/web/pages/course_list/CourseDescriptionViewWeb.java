@@ -1,10 +1,12 @@
 package ca.aquiletour.web.pages.course_list;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -26,7 +28,12 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 	public void displayCourseDescription(CourseDescription item) {
 		T.call(this);
 		
+		String href = "/" + Constants.COURSE_URL_SEGMENT + 
+		              "/" + Ntro.currentUser().getId() + 
+		              "/" + item.getCourseId();
+		
 		title.text(item.getCourseTitle());
+		title.setAttribute("href", href);
 	}
 
 }

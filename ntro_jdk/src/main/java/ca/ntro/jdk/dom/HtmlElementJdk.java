@@ -2,6 +2,7 @@ package ca.ntro.jdk.dom;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +13,7 @@ import org.jsoup.select.NodeFilter;
 
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
@@ -249,4 +251,18 @@ public class HtmlElementJdk extends HtmlElement {
 		// XXX: not supported on the server
 	}
 
+	@Override
+	public void animate(Map<String, Object> properties, long duration, AnimationListener listener) {
+		listener.animationFinished();
+	}
+
+	@Override
+	public void css(String property, String value) {
+		// XXX: not supported on the server
+	}
+
+	@Override
+	public void css(String property, double value) {
+		// XXX: not supported on the server
+	}
 }

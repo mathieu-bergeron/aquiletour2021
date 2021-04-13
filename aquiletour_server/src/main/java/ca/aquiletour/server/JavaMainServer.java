@@ -26,7 +26,7 @@ public class JavaMainServer {
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreServer.class)
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreServer.class, MessageServiceWebserver.class)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();

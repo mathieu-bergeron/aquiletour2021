@@ -4,7 +4,7 @@ import ca.ntro.core.models.NtroModel;
 
 public class SemesterModel implements NtroModel {
 	
-	private String semesterId;
+	private String semesterId = "";
 	private ObservableSemesterDateList dates = new ObservableSemesterDateList();
 
 	public String getSemesterId() {

@@ -180,10 +180,11 @@ public class AquiletourRequestHandler {
 	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.nameCount() >= 1) {//TODO 
+		if(path.nameCount() >= 2) {//TODO 
 
-			String courseId = path.name(0);
-			Path taskPath = path.subPath(1);
+			String teacherId = path.name(0);
+			String courseId = path.name(1);
+			Path taskPath = path.subPath(2);
 			
 			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
 			showCourseMessage.setCourseId(courseId);

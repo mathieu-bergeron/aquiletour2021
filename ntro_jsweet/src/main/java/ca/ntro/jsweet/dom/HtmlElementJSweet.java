@@ -1,7 +1,9 @@
 package ca.ntro.jsweet.dom;
 
+import java.util.Map;
 import java.util.function.BiFunction;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
@@ -17,9 +19,13 @@ import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 import def.js.Function;
 
+import static jsweet.util.Lang.function;
+
 import static def.jquery.Globals.$;
 
 import static def.dom.Globals.document;
+
+import static def.dom.Globals.history;;
 
 
 public class HtmlElementJSweet extends HtmlElement {
@@ -28,6 +34,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
+		
 	}
 
 	@Override
@@ -132,8 +139,19 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void setAttribute(String name, String value) {
 		T.call(this);
-
+		
 		jQueryElement.attr(name, value);
+		
+		if(name.equals("href")) {
+			addEventListener("click", new HtmlEventListener() {
+				@Override
+				public void onEvent() {
+					T.call(this);
+					
+					history.pushState(null, "TODO", value);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -200,15 +218,6 @@ public class HtmlElementJSweet extends HtmlElement {
 		return jQueryElement.html();
 	}
 
-	@Override
-	public void show() {
-		jQueryElement.show();
-	}
-
-	@Override
-	public void hide() {
-		jQueryElement.hide();
-	}
 
 	@Override
 	public HtmlElement createElement(String html) {
@@ -276,5 +285,28 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public String text() {
 		return jQueryElement.text();
+	}
+
+	@Override
+	public void animate(Map<String, Object> properties, long duration, AnimationListener listener) {
+		T.call(this);
+		
+		jQueryElement.animate(properties, 
+				              duration, 
+				              function(()-> listener.animationFinished()));
+	}
+
+	@Override
+	public void css(String property, String value) {
+		T.call(this);
+		
+		jQueryElement.css(property, value);
+	}
+
+	@Override
+	public void css(String property, double value) {
+		T.call(this);
+		
+		jQueryElement.css(property, value);
 	}
 }

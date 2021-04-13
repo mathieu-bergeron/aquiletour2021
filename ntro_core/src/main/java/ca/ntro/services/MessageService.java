@@ -38,12 +38,18 @@ public abstract class MessageService {
 			}
 		});
 	}
+	
+	protected <M extends NtroMessage> boolean localHandlerPresent(M message) {
+		T.call(this);
+		
+		return handlers.containsKey(message.getClass());
+	}
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroMessage> void send(M message) {
 		T.call(this);
 		
-		if(handlers.containsKey(message.getClass())) {
+		if(localHandlerPresent(message)) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
 			handler.handle(message);
@@ -56,9 +62,6 @@ public abstract class MessageService {
 
 			Ntro.backendService().sendMessageToBackend(message);
 		}
-		
-		// TODO: send message to client on WebSocket
-
 	}
 
 	void reset() {

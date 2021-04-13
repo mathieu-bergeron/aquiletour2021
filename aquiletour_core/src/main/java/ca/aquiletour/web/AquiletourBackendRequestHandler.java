@@ -175,12 +175,20 @@ public class AquiletourBackendRequestHandler {
 	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(path.nameCount() >= 1) {
-			sendTaskMessages(parameters, user, path.name(0));
+		if(path.nameCount() >= 2) {
+
+			String teacherId = path.name(0);
+			String courseId = path.name(1);
+			
+			sendTaskMessages(parameters, user, teacherId, courseId);
 		}
 	}
 
-	private static void sendTaskMessages(Map<String, String[]> parameters, User user, String courseId) {
+	private static void sendTaskMessages(Map<String, String[]> parameters, 
+			                             User user, 
+			                             String teacherId,
+			                             String courseId) {
+
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(parameters.containsKey("newSubTask")) {

@@ -25,8 +25,8 @@ public class ShowCourseHandler extends ControllerMessageHandler<CourseController
 		
 		MustNot.beNull(courseId);
 		
+		// XXX: change model only when needed
 		if(!courseId.equals(currentCourseId)) {
-			// XXX: change model only when needed
 			String authToken = currentController.context().user().getAuthToken();
 			currentController.setModelLoader(CourseModel.class, authToken, courseId);
 			currentCourseId = courseId;

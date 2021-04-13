@@ -90,24 +90,19 @@ import ca.ntro.services.NtroInitializationTask;
 public abstract class AquiletourMain extends NtroTaskSync {
 
 	protected abstract void registerViewLoaders();
+	
 
 	@Override
 	protected void runTask() {
 		T.call(this);
 		
-		Constants.LANG = getPreviousTask(NtroInitializationTask.class, "initializationTask").getOption("lang");
-
 		// FIXME
+		Constants.LANG = getPreviousTask(NtroInitializationTask.class, "initializationTask").getOption("lang");
 		Constants.LANG = "fr";
 
-		User currentUser = (User) Ntro.currentUser();
-		
-		NtroContext<User, SessionData> context = new NtroContext<>();
-		context.registerUser(currentUser);
-		context.registerLang(Constants.LANG);
-
 		registerViewLoaders();
-		
+
+		NtroContext<User, SessionData> context = createNtroContext();
 
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
@@ -123,6 +118,18 @@ public abstract class AquiletourMain extends NtroTaskSync {
 				rootController.changeUser(message.getUser());
 			}
 		});
+	}
+
+	protected static NtroContext<User, SessionData> createNtroContext() {
+		T.call(AquiletourMain.class);
+
+		NtroContext<User, SessionData> context = new NtroContext<>();
+
+		context.registerUser(Ntro.currentUser());
+		context.registerLang(Constants.LANG);
+		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+
+		return context;
 	}
 	
 	public static void registerSerializableClasses() {
