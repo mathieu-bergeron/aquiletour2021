@@ -13,7 +13,7 @@ import ca.ntro.core.system.trace.T;
 public class CommitListController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 		
 		/* Il faut faire mieux comme API
@@ -49,7 +49,7 @@ public class CommitListController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> oldContext, NtroContext<?,?> context) {
 		// TODO Auto-generated method stub
 		
 	}

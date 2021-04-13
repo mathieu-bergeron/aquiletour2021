@@ -17,7 +17,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement breadcrumbsContainer;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		taskContainer = this.getRootElement().find("#tasks-container").get(0);

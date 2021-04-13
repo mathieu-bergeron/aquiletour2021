@@ -14,7 +14,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	private HtmlElement appointmentIdInput;
 	
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		studentName = this.getRootElement().find("#student-name").get(0);

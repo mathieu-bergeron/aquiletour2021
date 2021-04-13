@@ -11,7 +11,6 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
-import jsweet.util.StringTypes.ol;
 
 public class InitializeSessionHandler extends BackendMessageHandler<InitializeSessionMessage> {
 

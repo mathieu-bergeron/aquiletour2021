@@ -10,7 +10,7 @@ public abstract class DashboardController extends NtroController<RootController>
 	
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(viewClass(), context.lang());

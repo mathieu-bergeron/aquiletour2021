@@ -22,9 +22,9 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 
 public abstract class ViewLoader extends NtroTaskAsync implements Cloneable {
 	
-	private NtroContext<?> context;
+	private NtroContext<?,?> context;
 	
-	public void registerContext(NtroContext<?> context) {
+	public void registerContext(NtroContext<?,?> context) {
 		this.context = context;
 	}
 

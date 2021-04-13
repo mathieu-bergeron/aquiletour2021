@@ -17,7 +17,7 @@ public abstract class ActiveCourseSummaryViewWeb extends NtroViewWeb implements 
 	private HtmlElement showCourseLink;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		showCourseLink = this.getRootElement().find("#show-course-link").get(0);

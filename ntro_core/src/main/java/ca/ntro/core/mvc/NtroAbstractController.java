@@ -31,13 +31,13 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
 	private NtroTask initTasks = new ContainerTask();
-	private NtroContext<?> context;
+	private NtroContext<?,?> context;
 	private Path path;
 	
 	private List<NtroAbstractController> subControllers = new ArrayList<>();
 	
-	protected abstract void onCreate(NtroContext<?> context);
-	protected abstract void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context);
+	protected abstract void onCreate(NtroContext<?,?> context);
+	protected abstract void onChangeContext(NtroContext<?,?> oldContext, NtroContext<?,?> context);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -364,7 +364,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	public void changeUser(NtroUser user) {
 		
 		// FIXME: clone context
-		NtroContext<?> oldContext = context;
+		NtroContext<?,?> oldContext = context;
 
 		context.registerUser(user);
 

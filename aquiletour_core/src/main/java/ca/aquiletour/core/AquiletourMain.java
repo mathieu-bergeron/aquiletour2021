@@ -102,7 +102,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		User currentUser = (User) Ntro.currentUser();
 		
-		NtroContext<User> context = new NtroContext<>();
+		NtroContext<User, SessionData> context = new NtroContext<>();
 		context.registerUser(currentUser);
 		context.registerLang(Constants.LANG);
 

@@ -15,7 +15,7 @@ import ca.ntro.core.system.trace.T;
 public abstract class CourseController extends NtroController<RootController>{
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(viewClass(), "fr");
@@ -35,7 +35,7 @@ public abstract class CourseController extends NtroController<RootController>{
 	protected abstract ModelViewSubViewMessageHandler<?,?,?> viewModel();
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -3,48 +3,38 @@ package ca.aquiletour.core.pages.course_list.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.pages.course_list.messages.SelectSemesterMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.ntro.core.models.listeners.ListObserver;
-import ca.ntro.core.models.listeners.ValueObserver;
-import ca.ntro.core.mvc.ModelViewSubViewHandler;
+import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseListViewModel extends ModelViewSubViewHandler<CourseListModel, CourseListView> {
+public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseListModel, CourseListView, SelectSemesterMessage> {
+	
+	private String currentSemesterId = null;
 
 	@Override
-	protected void handle(CourseListModel model, CourseListView view, ViewLoader subViewLoader) {
+	protected void handle(CourseListModel model, CourseListView view, ViewLoader subViewLoader, SelectSemesterMessage message) {
 		T.call(this);
 		
-		view.insertIntoSemesterDropdown(0, Constants.COURSE_DRAFTS);
-
-		reactToCurrentSemester(Constants.COURSE_DRAFTS, model, view, subViewLoader);
+		if(currentSemesterId == null) {
+			view.insertIntoSemesterDropdown(0, Constants.COURSE_DRAFTS);
+			observeSemesterIdList(model, view);
+		}
 		
-		model.getCurrentSemester().observe(new ValueObserver<String>() {
-			
-			@Override
-			public void onDeleted(String lastValue) {
+		if(!message.getSemesterId().equals(currentSemesterId)) {
+			currentSemesterId = message.getSemesterId();
 
-			}
-			
-			@Override
-			public void onValue(String currentSemesterId) {
-				T.call(this);
-				
-				reactToCurrentSemester(currentSemesterId, model, view, subViewLoader);
-			}
+			changeCurrentSemester(currentSemesterId, model, view, subViewLoader);
+		}
+	}
 
-			
-			@Override
-			public void onValueChanged(String oldValue, String currentSemesterId) {
-				T.call(this);
-
-				reactToCurrentSemester(currentSemesterId, model, view, subViewLoader);
-			}
-		});
+	private void observeSemesterIdList(CourseListModel model, CourseListView view) {
+		T.call(this);
 
 		model.getSemesters().observe(new ListObserver<String>() {
 			
@@ -91,12 +81,9 @@ public class CourseListViewModel extends ModelViewSubViewHandler<CourseListModel
 				
 			}
 		});
-		
-
-		
 	}
 
-	private void reactToCurrentSemester(String currentSemesterId, 
+	private void changeCurrentSemester(String currentSemesterId, 
 			                            CourseListModel model, 
 			                            CourseListView view, 
 			                            ViewLoader subViewLoader) {

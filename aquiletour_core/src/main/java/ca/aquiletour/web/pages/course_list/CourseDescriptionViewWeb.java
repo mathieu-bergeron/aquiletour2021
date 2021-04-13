@@ -13,7 +13,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 	private HtmlElement title;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		title = this.getRootElement().find("#course-title-link").get(0);

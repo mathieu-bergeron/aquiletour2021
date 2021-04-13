@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
+import ca.aquiletour.core.pages.course_list.messages.SelectSemesterMessage;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
@@ -31,7 +33,7 @@ import ca.ntro.services.Ntro;
 public class AquiletourRequestHandler {
 	
 	
-	public static void sendMessages(NtroContext<User> context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 		
 		if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
@@ -72,16 +74,23 @@ public class AquiletourRequestHandler {
 
 		} else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
 
-			sendCourseListMessages(path.subPath(1), parameters, context.user());
+			sendCourseListMessages(path.subPath(1), parameters, context.user(), context.sessionData());
 		}
 	}
 
-	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
+	private static void sendCourseListMessages(Path subPath, 
+			                                   Map<String, String[]> parameters, 
+			                                   User user, 
+			                                   SessionData sessionData) {
+
 		T.call(AquiletourRequestHandler.class);
 		
 		ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
 		Ntro.messages().send(showCourseListMessage);
 		
+		SelectSemesterMessage selectSemesterMessage = Ntro.messages().create(SelectSemesterMessage.class);
+		selectSemesterMessage.setSemesterId(sessionData.getCurrentSemester());
+		Ntro.messages().send(selectSemesterMessage);
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {

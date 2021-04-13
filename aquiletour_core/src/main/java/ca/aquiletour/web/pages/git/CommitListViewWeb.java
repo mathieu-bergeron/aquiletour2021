@@ -13,7 +13,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 	}
 

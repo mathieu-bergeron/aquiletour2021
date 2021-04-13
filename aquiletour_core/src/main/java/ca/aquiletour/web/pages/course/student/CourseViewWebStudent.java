@@ -18,7 +18,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private String gitProgressionText;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 

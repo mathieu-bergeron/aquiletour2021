@@ -19,7 +19,7 @@ public class CourseListViewWeb extends NtroViewWeb implements CourseListView {
 	private HtmlElement semesterIdInput;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		HtmlElement semesterDropdownHead = getRootElement().find("#semester-dropdown-head").get(0);

@@ -1,16 +1,16 @@
 package ca.ntro.core.mvc;
 
+import ca.ntro.users.NtroSessionData;
 import ca.ntro.users.NtroUser;
 
-public class NtroContext<U extends NtroUser>{
+public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	
 	private String lang;
+	private S sessionData;
 
 	// FIXME: authToken should be here
 	//        instead of User
 	//private String authToken;
-
-
 
 	private NtroUser user;
 	
@@ -41,8 +41,16 @@ public class NtroContext<U extends NtroUser>{
 		this.user = user;
 	}
 
-	public boolean hasSameLang(NtroContext<U> otherContext) {
+	public boolean hasSameLang(NtroContext<U,S> otherContext) {
 		if(lang == null && otherContext.lang != null) return false;
 		return this.lang.equals(otherContext.lang);
+	}
+
+	public void registerSessionData(S sessionData) {
+		this.sessionData = sessionData;
+	}
+
+	public S sessionData() {
+		return sessionData;
 	}
 }
