@@ -3,7 +3,6 @@ package ca.ntro.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.MessageHandlerTask;
