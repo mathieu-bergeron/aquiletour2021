@@ -6,7 +6,7 @@ import ca.aquiletour.core.pages.course_list.handlers.ShowCourseListHandler;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
-import ca.aquiletour.core.pages.course_list.views.CourseSummaryView;
+import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.handlers.SemesterListViewModel;
 import ca.aquiletour.core.pages.semester_list.handlers.ShowSemesterListHandler;
@@ -33,9 +33,9 @@ public class CourseListController extends NtroController<RootController> {
 					   context.user().getAuthToken(),
 					   context.user().getId());
 
-		addSubViewLoader(CourseSummaryView.class, context().lang());
+		addSubViewLoader(CourseDescriptionView.class, context().lang());
 		
-		addModelViewSubViewHandler(CourseSummaryView.class, new CourseListViewModel());
+		addModelViewSubViewHandler(CourseDescriptionView.class, new CourseListViewModel());
 	}
 	
 	@Override

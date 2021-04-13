@@ -51,7 +51,8 @@ import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
-import ca.aquiletour.core.pages.course_list.models.ObservableCourseList;
+import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
+import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
@@ -156,7 +157,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(CourseDescription.class);
 		Ntro.registerSerializableClass(CourseListModel.class);
-		Ntro.registerSerializableClass(ObservableCourseList.class);
+		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
+		Ntro.registerSerializableClass(ObservableSemesterIdList.class);
 
 		Ntro.registerSerializableClass(CalendarDate.class);
 		Ntro.registerSerializableClass(CourseDateClassDay.class);

@@ -7,5 +7,7 @@ public interface CourseListView extends NtroView {
 	void insertIntoSemesterDropdown(int index, String semesterId);
 	void selectSemester(String semesterId);
 	void identifyCurrentSemester(String semesterId);
+	void appendCourseDescription(CourseDescriptionView courseDescriptionView);
+	void clearCourses();
 
 }

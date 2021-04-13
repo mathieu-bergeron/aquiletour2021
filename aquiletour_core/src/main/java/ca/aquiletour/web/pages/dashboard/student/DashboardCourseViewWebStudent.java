@@ -14,9 +14,9 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class DashboardCourseViewWebStudent extends ActiveCourseSummaryViewWeb implements DashboardCourseViewStudent {
 
-	HtmlElement title;
-	HtmlElement queueStatus;
-	HtmlElement makeAppointmentButton;
+	private HtmlElement title;
+	private HtmlElement queueStatus;
+	private HtmlElement makeAppointmentButton;
 	
 	String makeAppointmentHref;
 

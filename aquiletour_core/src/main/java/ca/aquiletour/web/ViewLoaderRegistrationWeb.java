@@ -5,7 +5,7 @@ import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
-import ca.aquiletour.core.pages.course_list.views.CourseSummaryView;
+import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
 import ca.aquiletour.core.pages.dashboards.student.DashboardCourseViewStudent;
 import ca.aquiletour.core.pages.dashboards.student.DashboardViewStudent;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardCourseViewTeacher;
@@ -28,7 +28,7 @@ import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
 import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
 import ca.aquiletour.web.pages.course.teacher.TaskViewWebTeacher;
 import ca.aquiletour.web.pages.course_list.CourseListViewWeb;
-import ca.aquiletour.web.pages.course_list.CourseSummaryViewWeb;
+import ca.aquiletour.web.pages.course_list.CourseDescriptionViewWeb;
 import ca.aquiletour.web.pages.dashboard.ActiveCourseSummaryViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.DashboardCourseViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.student.DashboardViewWebStudent;
@@ -232,13 +232,13 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CourseListViewWeb.class));
 		
-		ViewLoaders.registerViewLoader(CourseSummaryView.class,
+		ViewLoaders.registerViewLoader(CourseDescriptionView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-				.setHtmlUrl("/views/course_summary/course_summary.html")
-		     	.setCssUrl("/views/course_summary/course_summary.css")
+				.setHtmlUrl("/views/course_description/course_description.html")
+		     	.setCssUrl("/views/course_description/course_description.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(CourseSummaryViewWeb.class));
+				.setTargetClass(CourseDescriptionViewWeb.class));
 		
 	}
 }

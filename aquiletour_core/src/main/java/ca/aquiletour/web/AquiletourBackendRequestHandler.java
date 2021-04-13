@@ -90,6 +90,19 @@ public class AquiletourBackendRequestHandler {
 
 	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
+		
+		if(parameters.containsKey("courseTitle")) {
+			
+			String semesterId = parameters.get("semesterId")[0];
+			String courseTitle = parameters.get("courseTitle")[0];
+			String courseId = parameters.get("courseId")[0];
+			
+			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle);
+			
+			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
+			addCourseMessage.setCourseDescription(courseDescription);
+			Ntro.backendService().sendMessageToBackend(addCourseMessage);
+		}
 	}
 
 	private static void sendSemesterMessages(Path subPath, Map<String, String[]> parameters) {

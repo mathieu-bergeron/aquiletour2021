@@ -82,19 +82,6 @@ public class AquiletourRequestHandler {
 		ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
 		Ntro.messages().send(showCourseListMessage);
 		
-		
-		if(parameters.containsKey("courseTitle")) {
-			
-			String semesterId = parameters.get("semesterId")[0];
-			String courseTitle = parameters.get("courseTitle")[0];
-			String courseId = parameters.get("courseId")[0];
-			
-			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle);
-			
-			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-			addCourseMessage.setCourseDescription(courseDescription);
-			Ntro.backendService().sendMessageToBackend(addCourseMessage);
-		}
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
