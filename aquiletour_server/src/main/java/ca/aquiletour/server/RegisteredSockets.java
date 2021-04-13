@@ -13,6 +13,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;

@@ -37,6 +37,7 @@ import ca.aquiletour.core.models.dates.CourseDateClassDay;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterDay;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -98,7 +99,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// FIXME
 		Constants.LANG = "fr";
 
-		User currentUser = (User) Ntro.userService().user();
+		User currentUser = (User) Ntro.currentUser();
 		
 		NtroContext<User> context = new NtroContext<>();
 		context.registerUser(currentUser);
@@ -117,7 +118,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.backendService().handleMessageFromBackend(SetUserNtroMessage.class, new MessageHandler<SetUserNtroMessage>() {
 			@Override
 			public void handle(SetUserNtroMessage message) {
-				Ntro.userService().registerCurrentUser(message.getUser());
+				Ntro.currentSession().setUser(message.getUser());
 				rootController.changeUser(message.getUser());
 			}
 		});
@@ -170,6 +171,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentGuest.class);
 		Ntro.registerSerializableClass(Admin.class);
 		Ntro.registerSerializableClass(Guest.class);
+		Ntro.registerSerializableClass(SessionData.class);
 
 		Ntro.registerSerializableClass(AddCourseMessage.class);
 		Ntro.registerSerializableClass(DeleteCourseMessage.class);

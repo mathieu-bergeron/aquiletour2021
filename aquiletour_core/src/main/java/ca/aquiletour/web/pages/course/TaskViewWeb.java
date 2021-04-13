@@ -42,7 +42,7 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		taskTitleLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT 
 	                                     	+ "/" + courseId 
 	                                     	+ task.id()
-	                                     	+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+	                                     	+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
 	                                     	+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 		
 		task.forEachPreviousTask(pt -> {

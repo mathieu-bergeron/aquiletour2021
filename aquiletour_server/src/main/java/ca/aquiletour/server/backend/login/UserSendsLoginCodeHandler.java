@@ -1,6 +1,7 @@
 package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
@@ -14,7 +15,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
@@ -26,10 +27,15 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		User userToRegister = null;
 
-		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
+		SessionData sessionData = null;
 		
-		if(session != null 
-				&& session.getLoginCode().equals(loginCode)) {
+		if(session != null) {
+			sessionData = (SessionData) session.getSessionData();
+		}
+		
+		if(sessionData != null 
+				&& sessionData.getLoginCode().equals(loginCode)) {
 			
 			userToRegister = registerStudentOrTeacher(modelStore, authToken,  userId, session);
 			
@@ -38,14 +44,14 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			userToRegister = (User) message.getUser();
 		}
 
-		Ntro.userService().registerCurrentUser(userToRegister);
+		Ntro.currentSession().setUser(userToRegister);
 
 		SetUserNtroMessage setUserNtroMessage = Ntro.messages().create(SetUserNtroMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 	}
 
-	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, Session session) {
+	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
 
 		User existingUser = null;
 

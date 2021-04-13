@@ -39,7 +39,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
 				                                + "/" + courseId 
 				                                + task.id()
-												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
 												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 
 		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + courseId + task.id());

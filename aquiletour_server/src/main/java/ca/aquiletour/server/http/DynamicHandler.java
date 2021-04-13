@@ -38,7 +38,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
+import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
@@ -56,7 +56,7 @@ import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -159,7 +159,7 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 	private void sendCsvMessage(Request baseRequest) throws IOException {
-		if(Ntro.userService().user() instanceof Teacher) {
+		if(Ntro.currentUser() instanceof Teacher) {
 			
 			String queueId = baseRequest.getParameter("queueId");
 			Part filePart = null;
@@ -194,13 +194,13 @@ public class DynamicHandler extends AbstractHandler {
 	private void sendSessionMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
 
-		AuthenticateSessionUserMessage authenticateSessionUserMessage = Ntro.messages().create(AuthenticateSessionUserMessage.class);
+		InitializeSessionMessage authenticateSessionUserMessage = Ntro.messages().create(InitializeSessionMessage.class);
 
 		if(hasCookie(baseRequest, "session")) {
 			String sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
-			Session<User,?> session = Ntro.jsonService().fromString(Session.class, sessionString);
-			
-			authenticateSessionUserMessage.setSessionUser(session.getUser());
+			NtroSession session = Ntro.jsonService().fromString(NtroSession.class, sessionString);
+
+			authenticateSessionUserMessage.setSessionUser((User) session.getUser());
 		}
 
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
@@ -212,12 +212,11 @@ public class DynamicHandler extends AbstractHandler {
 			                             Map<String, String[]> parameters,
 			                             NtroWindowServer window) {
 		
-		
 		handleRedirections(baseRequest, response, path);
 
 		NtroContext<User> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.userService().user());
+		context.registerUser((User) Ntro.currentUser());
 		
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
@@ -280,15 +279,16 @@ public class DynamicHandler extends AbstractHandler {
 	private void setSessionCookie(HttpServletResponse response) {
 		T.call(this);
 		
-		User currentUser = (User) Ntro.userService().user();
-		User sessionUser = currentUser.toSessionUser();
-		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
+		NtroSession session = Ntro.currentSession();
+		User user = (User) session.getUser();
+		session.setUser(user.toSessionUser());
+		setCookie(response, "session", Ntro.jsonService().toString(session));
 	}
 
 	private void setSemesterCookie(HttpServletResponse response) {
 		T.call(this);
 		
-		User currentUser = (User) Ntro.userService().user();
+		User currentUser = (User) Ntro.currentUser();
 		User sessionUser = currentUser.toSessionUser();
 		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
 	}

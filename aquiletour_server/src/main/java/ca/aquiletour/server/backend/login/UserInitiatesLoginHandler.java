@@ -1,6 +1,7 @@
 package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
@@ -12,7 +13,7 @@ import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 
 public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiatesLoginMessage> {
 
@@ -24,7 +25,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		String providedId = message.getProvidedId();
 		User userToRegister = null;
 
-		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
 
@@ -35,14 +36,14 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			userToRegister = user;
 		}
 
-		Ntro.userService().registerCurrentUser(userToRegister);
+		Ntro.currentSession().setUser(userToRegister);
 		
 		SetUserNtroMessage setUserNtroMessage = Ntro.messages().create(SetUserNtroMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 	}
 
-	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, Session session) {
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, NtroSession session) {
 
 		User userToRegister;
 		
@@ -84,9 +85,12 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			protected void onFailure(Exception e) {
 			}
 		});
+		
+		SessionData sessionData = new SessionData();
+		sessionData.setLoginCode(loginCode.replace(" ", ""));
 
 		session.setUser(userToRegister.toSessionUser());
-		session.setLoginCode(loginCode.replace(" ", ""));
+		session.setSessionData(sessionData);
 		modelStore.save(session);
 
 		return userToRegister;

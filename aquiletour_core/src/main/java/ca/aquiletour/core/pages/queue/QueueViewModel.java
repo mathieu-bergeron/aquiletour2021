@@ -45,7 +45,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 				// TODO Auto-generated method stub
 				T.call(this);
 				
-				String currentUserId = Ntro.userService().user().getId();
+				String currentUserId = Ntro.currentUser().getId();
 				
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				

@@ -12,7 +12,7 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 	public void handleNow(ModelStoreSync modelStore, UserLogsOutMessage message) {
 		T.call(this);
 		
-		Ntro.userService().registerCurrentUser(AuthenticateSessionUserHandler.createGuestSession(modelStore));
+		Ntro.currentSession().setUser(InitializeSessionHandler.createGuestSession(modelStore));
 	}
 
 	@Override

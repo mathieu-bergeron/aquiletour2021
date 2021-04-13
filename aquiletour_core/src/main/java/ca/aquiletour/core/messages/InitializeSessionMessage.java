@@ -3,7 +3,7 @@ package ca.aquiletour.core.messages;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.messages.NtroMessage;
 
-public class AuthenticateSessionUserMessage extends NtroMessage {
+public class InitializeSessionMessage extends NtroMessage {
 	
 	private User sessionUser;
 

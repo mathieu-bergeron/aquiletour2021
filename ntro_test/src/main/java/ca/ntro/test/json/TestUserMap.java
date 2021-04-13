@@ -16,11 +16,4 @@ public class TestUserMap extends StoredMap<TestUser> {
 	public TestUserMap(Map<String, TestUser> map) {
 		super(map);
 	}
-
-	public boolean isUserValid(String userId, String authToken) {
-		T.call(this);
-
-		return valueOf(userId).isValid(authToken);
-	}
-
 }

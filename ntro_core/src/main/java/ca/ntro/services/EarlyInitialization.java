@@ -19,7 +19,8 @@ import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
+import ca.ntro.users.NtroSessionData;
 
 public abstract class EarlyInitialization {
 
@@ -48,7 +49,8 @@ public abstract class EarlyInitialization {
 
 	private void registerSerializableClasses() {
 		Ntro.registerSerializableClass(NtroUser.class);
-		Ntro.registerSerializableClass(Session.class);
+		Ntro.registerSerializableClass(NtroSession.class);
+		Ntro.registerSerializableClass(NtroSessionData.class);
 
 		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.registerSerializableClass(GetModelNtroMessage.class);

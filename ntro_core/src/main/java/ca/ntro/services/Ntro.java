@@ -26,6 +26,8 @@ import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.users.NtroUser;
+import ca.ntro.users.NtroSession;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -398,29 +400,43 @@ public class Ntro {
 	
 	/* <UserService> */
 
-	private static Class<? extends UserService> userServiceClass;
-	private static Map<String, UserService> userServices = new HashMap<>();
-
-	static void registerUserServiceClass(Class<? extends UserService> userServiceClass) {
-		__T.call(Ntro.class, "registerUserServiceClass");
-
-		Ntro.userServiceClass = userServiceClass;
-	}
-
-	public static UserService userService() {
+	public static NtroUser currentUser() {
 		__T.call(Ntro.class, "userService");
-
-		UserService service = userServices.get(threadService().currentThread().threadId());
-
-		if(service == null) {
-			service = Ntro.factory().newInstance(userServiceClass);
-			userServices.put(threadService().currentThread().threadId(), service);
-		}
-
-		return service;
+		
+		return currentSession().getUser();
 	}
 
 	/* </UserService> */
+	
+	
+	
+	
+	
+	/* <SessionService> */
+
+	private static Class<? extends SessionService> sessionServiceClass;
+	private static Map<String, SessionService> sessionServices = new HashMap<>();
+
+	static void registerSessionServiceClass(Class<? extends SessionService> sessionServiceClass) {
+		__T.call(Ntro.class, "registerSessionServiceClass");
+
+		Ntro.sessionServiceClass = sessionServiceClass;
+	}
+
+	public static NtroSession currentSession() {
+		__T.call(Ntro.class, "currentSession");
+
+		SessionService service = sessionServices.get(threadService().currentThread().threadId());
+
+		if(service == null) {
+			service = Ntro.factory().newInstance(sessionServiceClass);
+			sessionServices.put(threadService().currentThread().threadId(), service);
+		}
+
+		return service.session();
+	}
+
+	/* </SessionService> */
 	
 	
 	

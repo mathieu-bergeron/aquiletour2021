@@ -52,7 +52,7 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
 
-			sendDashboardMessages(path.subPath(1), parameters, (User) Ntro.userService().user());
+			sendDashboardMessages(path.subPath(1), parameters, (User) Ntro.currentUser());
 
 		} else if(path.startsWith(Constants.QUEUES_URL_SEGMENT)) {
 			
@@ -60,11 +60,11 @@ public class AquiletourBackendRequestHandler {
 
 		}else if(path.startsWith(Constants.QUEUE_URL_SEGMENT)) {
 			
-			sendQueueMessages(path.subPath(1), parameters , (User) Ntro.userService().user());
+			sendQueueMessages(path.subPath(1), parameters , (User) Ntro.currentUser());
 
 		}else if(path.startsWith(Constants.COURSE_URL_SEGMENT)) {
 			
-			sendCourseMessages(path.subPath(1), parameters , (User) Ntro.userService().user());
+			sendCourseMessages(path.subPath(1), parameters , (User) Ntro.currentUser());
 			
 		}else if(path.startsWith(Constants.LOGIN_URL_SEGMENT)) {
 			
@@ -84,7 +84,7 @@ public class AquiletourBackendRequestHandler {
 
 		}else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
 
-			sendCourseListMessages(path.subPath(1), parameters, (User) Ntro.userService().user());
+			sendCourseListMessages(path.subPath(1), parameters, (User) Ntro.currentUser());
 		}
 	}
 
@@ -334,7 +334,7 @@ public class AquiletourBackendRequestHandler {
 				String repoUrl = parameters.get("registerGitRepo")[0];
 				RegisterRepo registerRepoMessage = Ntro.messages().create(RegisterRepo.class);
 				registerRepoMessage.setCourseId(courseId);
-				registerRepoMessage.setStudentId(Ntro.userService().user().getId());
+				registerRepoMessage.setStudentId(Ntro.currentUser().getId());
 				registerRepoMessage.setSemesterId("H2021"); // FIXME
 				registerRepoMessage.setGroupId("01"); // FIXME
 				registerRepoMessage.setRepoUrl(repoUrl);

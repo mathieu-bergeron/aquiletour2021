@@ -35,6 +35,7 @@ import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
@@ -112,8 +113,8 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected Class<? extends UserService> provideUserServiceClass() {
-		return UserServiceJdk.class;
+	protected Class<? extends SessionService> provideSessionServiceClass() {
+		return SessionServiceJdk.class;
 	}
 
 	@Override

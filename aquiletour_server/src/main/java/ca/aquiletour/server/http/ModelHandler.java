@@ -101,7 +101,7 @@ public class ModelHandler extends AbstractHandler {
 
 		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
 		
-        ModelLoader modelLoader = Ntro.modelStore().getLoader(modelClass, user.getAuthToken(), documentPath.getDocumentId());
+        ModelLoader modelLoader = Ntro.modelStore().getLoader(modelClass, getModelNtroMessage.getAuthToken(), documentPath.getDocumentId());
         modelLoader.execute();
         
         NtroModel model = modelLoader.getModel();

@@ -47,7 +47,7 @@ public class NetworkStoreJSweet extends ModelStore {
 		
 		String serviceUrl = Constants.MODELS_URL_PREFIX + "/";
 		GetModelNtroMessage request = new GetModelNtroMessage();
-		request.setUser(Ntro.userService().user());
+		request.setUser(Ntro.currentUser());
 		request.setDocumentPath(documentPath);
 		request.registerTargetClass(targetClass);
 		

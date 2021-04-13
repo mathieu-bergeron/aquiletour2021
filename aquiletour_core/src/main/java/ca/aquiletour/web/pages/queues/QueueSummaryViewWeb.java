@@ -46,8 +46,8 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 			public void onEvent() {
 				T.call(this);
 				
-				if(Ntro.userService().user() instanceof Teacher ||
-						Ntro.userService().user() instanceof TeacherGuest) {
+				if(Ntro.currentUser() instanceof Teacher ||
+						Ntro.currentUser() instanceof TeacherGuest) {
 					
 					ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 					showTeacherQueueMessage.setCourseId(queue.getId());

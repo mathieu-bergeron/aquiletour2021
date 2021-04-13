@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
+import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
@@ -10,17 +10,17 @@ import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 import jsweet.util.StringTypes.ol;
 
-public class AuthenticateSessionUserHandler extends BackendMessageHandler<AuthenticateSessionUserMessage> {
+public class InitializeSessionHandler extends BackendMessageHandler<InitializeSessionMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AuthenticateSessionUserMessage message) {
+	public void handleNow(ModelStoreSync modelStore, InitializeSessionMessage message) {
 
 		User sessionUser = null;
 		User user = null;
-		Session session = null;
+		NtroSession session = null;
 		
 		sessionUser = message.getSessionUser();
 		
@@ -38,23 +38,23 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 			user = createGuestSession(modelStore);
 		}
 
-		Ntro.userService().registerCurrentUser(user);
+		Ntro.currentSession().setUser(user);
 	}
 
-	public static Session getStoredSession(ModelStoreSync modelStore, String authToken) {
-		T.call(AuthenticateSessionUserHandler.class);
+	public static NtroSession getStoredSession(ModelStoreSync modelStore, String authToken) {
+		T.call(InitializeSessionHandler.class);
 
-		Session session = null;
+		NtroSession session = null;
 		
-		if(modelStore.ifModelExists(Session.class, "TODO", authToken)) {
+		if(modelStore.ifModelExists(NtroSession.class, "TODO", authToken)) {
 			
-			session = modelStore.getModel(Session.class, "TODO", authToken);
+			session = modelStore.getModel(NtroSession.class, "TODO", authToken);
 		}
 
 		return session;
 	}
 
-	private User updateExistingSession(ModelStoreSync modelStore, Session session) {
+	private User updateExistingSession(ModelStoreSync modelStore, NtroSession session) {
 		T.call(this);
 
 		session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
@@ -76,7 +76,7 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 		return actualUser;
 	}
 
-	private User updateSessionWithActualUser(ModelStoreSync modelStore, Session session, User oldSessionUser) {
+	private User updateSessionWithActualUser(ModelStoreSync modelStore, NtroSession session, User oldSessionUser) {
 		T.call(this);
 
 		User actualUser = oldSessionUser;
@@ -97,7 +97,7 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 	}
 
 	public static User createGuestSession(ModelStoreSync modelStore) {
-		T.call(AuthenticateSessionUserHandler.class);
+		T.call(InitializeSessionHandler.class);
 		
 		User user = new Guest();
 		
@@ -106,7 +106,7 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 		user.setId(authToken);
 		user.setAuthToken(authToken);
 
-		Session session = modelStore.getModel(Session.class, "TODO", authToken);
+		NtroSession session = modelStore.getModel(NtroSession.class, "TODO", authToken);
 
 		session.setUser(user);
 		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
@@ -117,7 +117,7 @@ public class AuthenticateSessionUserHandler extends BackendMessageHandler<Authen
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, AuthenticateSessionUserMessage message) {
+	public void handleLater(ModelStoreSync modelStore, InitializeSessionMessage message) {
 		T.call(this);
 	}
 

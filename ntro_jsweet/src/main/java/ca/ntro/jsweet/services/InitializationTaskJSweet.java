@@ -30,6 +30,7 @@ import ca.ntro.services.JsonService;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
@@ -123,8 +124,8 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 
 	@Override
-	protected Class<? extends UserService> provideUserServiceClass() {
-		return UserServiceJSweet.class;
+	protected Class<? extends SessionService> provideSessionServiceClass() {
+		return SessionServiceJSweet.class;
 	}
 
 

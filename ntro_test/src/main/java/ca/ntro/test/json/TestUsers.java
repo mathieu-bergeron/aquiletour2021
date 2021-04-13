@@ -19,12 +19,6 @@ public class TestUsers implements NtroModel {
 		this.users = users;
 	}
 
-	public boolean isUserValid(String userId, String authToken) {
-		T.call(this);
-		
-		return users.isUserValid(userId, authToken);
-	}
-
 	public void addUser(TestUser user) {
 		T.call(this);
 
