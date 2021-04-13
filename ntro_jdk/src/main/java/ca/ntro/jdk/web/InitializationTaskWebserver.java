@@ -18,17 +18,14 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 	}
 
 	@Override
-	protected BackendService provideBackendService() {
+	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(InitializationTaskWebserver.class, "provideBackendService");
 		
-		BackendServiceServer service = Ntro.factory().newInstance(backendServiceClass);
-		
-		return service;
-		
+		return backendServiceClass;
 	}
 
 	@Override
-	protected Class<? extends ModelStore> provideModelStoreClass() {
-		return modelStoreClass;
+	protected ModelStore provideModelStore() {
+		return Ntro.factory().newInstance(modelStoreClass);
 	}
 }

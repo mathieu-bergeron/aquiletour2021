@@ -38,25 +38,12 @@ import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJSweet extends InitializationTask {
 	
-	private final BackendServiceJSweet backendServiceJSweet;
-	
-	public InitializationTaskJSweet(BackendServiceJSweet backendServiceJSweet) {
-		super();
-		T.call(this);
-
-		this.backendServiceJSweet = backendServiceJSweet;
-	}
-	
-	
 	@Override
 	protected StackAnalyzer provideStackAnalyzer() {
 		__T.call(this, "provideStackAnalyzer");
 
 		return new StackAnalyzerJSweet();
 	}
-
-
-
 
 	@Override
 	protected ValueFormatter provideValueFormatter() {
@@ -105,10 +92,10 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 
 	@Override
-	protected BackendService provideBackendService() {
+	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(this, "provideBackendService");
 
-		return backendServiceJSweet;
+		return BackendServiceJSweet.class;
 	}
 
 	@Override
@@ -128,11 +115,9 @@ public class InitializationTaskJSweet extends InitializationTask {
 		return SessionServiceJSweet.class;
 	}
 
-
 	@Override
-	protected Class<? extends ModelStore> provideModelStoreClass() {
-		return NetworkStoreJSweet.class;
+	protected ModelStore provideModelStore() {
+		return new NetworkStoreJSweet();
 	}
-
 
 }

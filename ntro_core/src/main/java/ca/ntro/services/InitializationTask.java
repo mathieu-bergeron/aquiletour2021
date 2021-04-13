@@ -48,15 +48,14 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.registerThreadService(provideThreadService());
 		Ntro.registerMessageServiceClass(provideMessageServiceClass());
-		Ntro.registerBackendService(provideBackendService());
+		Ntro.registerBackendServiceClass(provideBackendServiceClass());
 
 		Ntro.registerAssertService(provideAssertService());
 		Ntro.registerJsonService(provideJsonService());
 
 		Ntro.registerSessionServiceClass(provideSessionServiceClass());
 		
-		Ntro.registerModelStoreClass(provideModelStoreClass());
-		
+		Ntro.registerModelStore(provideModelStore());
 		
 		Ntro.registerValueFormatter(provideValueFormatter());
 	}
@@ -67,11 +66,11 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract JsonParser provideJsonParser();
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
-	protected abstract BackendService provideBackendService();
+	protected abstract Class<? extends BackendService> provideBackendServiceClass();
 	protected abstract AssertService provideAssertService();
 	protected abstract JsonService provideJsonService();
 	protected abstract Class<? extends SessionService> provideSessionServiceClass();
-	protected abstract Class<? extends ModelStore> provideModelStoreClass();
+	protected abstract ModelStore provideModelStore();
 	protected abstract ValueFormatter provideValueFormatter();
 
 }

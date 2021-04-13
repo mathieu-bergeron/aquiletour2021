@@ -33,6 +33,7 @@ import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.SessionService;
@@ -96,10 +97,10 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected BackendService provideBackendService() {
+	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(InitializationTaskJdk.class, "provideBackendService");
 		
-		return new BackendServiceJdk();
+		return BackendServiceJdk.class;
 	}
 
 	@Override
@@ -118,9 +119,8 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected Class<? extends ModelStore> provideModelStoreClass() {
-		return LocalStoreFiles.class;
+	protected ModelStore provideModelStore() {
+		return Ntro.factory().newInstance(LocalStoreFiles.class);
 	}
-
 
 }

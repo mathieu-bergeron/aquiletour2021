@@ -7,10 +7,15 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseListUpdater {
 
+	public static String validateCourseDescription(CourseDescription courseDescription) {
+		T.call(CourseListUpdater.class);
+
+		return "Code de cours invalide";
+	}
+
 	public static void addCourseForUser(ModelStoreSync modelStore, CourseDescription courseDescription, User teacher) {
 		T.call(CourseListUpdater.class);
-		
-		
+
 		
 	}
 

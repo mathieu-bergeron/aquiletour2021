@@ -19,7 +19,7 @@ public class BackendServiceJSweet extends BackendService {
 	
 	private final Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
 	
-	public BackendServiceJSweet(String connectionPath) {
+	public BackendServiceJSweet() {
 		super();
 		__T.call(this, "<init>");
 
@@ -28,7 +28,7 @@ public class BackendServiceJSweet extends BackendService {
 			protocol = "wss";
 		}
 
-		String connectionString = protocol + "://" + window.location.host + connectionPath;
+		String connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
 
 		webSocket = new WebSocket(connectionString);
 

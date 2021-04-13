@@ -87,27 +87,14 @@ public class AquiletourRequestHandler {
 			
 			String semesterId = parameters.get("semesterId")[0];
 			String courseTitle = parameters.get("courseTitle")[0];
-			
-			String courseId = "TODO";
+			String courseId = parameters.get("courseId")[0];
 			
 			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle);
 			
-			String errorMessage = Validator.validateCourseDescription(courseDescription);
-
-			if(errorMessage == null) {
-			
-				AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
-				addCourseMessage.setCourseDescription(courseDescription);
-				Ntro.backendService().sendMessageToBackend(addCourseMessage);
-			
-			}else {
-				
-				DisplayErrorMessage displayErrorMessage = Ntro.messages().create(DisplayErrorMessage.class);
-				displayErrorMessage.setMessage(errorMessage);
-				Ntro.messages().send(displayErrorMessage);
-			}
+			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
+			addCourseMessage.setCourseDescription(courseDescription);
+			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 		}
-		
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {

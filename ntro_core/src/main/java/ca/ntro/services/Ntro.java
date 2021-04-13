@@ -277,34 +277,16 @@ public class Ntro {
 	
 	/* <ModelStore> */
 
-	private static Class<? extends ModelStore> modelStoreClass;
-	private static Map<String, ModelStore> modelStores = new HashMap<>();
-	
-	// FIXME: we need a single store (so that multiple request update the same model)
-	//        but then we need to lock write access to model
 	private static ModelStore modelStore;
 
-	static void registerModelStoreClass(Class<? extends ModelStore> modelStoreClass) {
-		__T.call(Ntro.class, "registerModelStoreClass");
+	static void registerModelStore(ModelStore modelStore) {
+		__T.call(Ntro.class, "registerModelStore");
 
-		Ntro.modelStoreClass = modelStoreClass;
+		Ntro.modelStore = modelStore;
 	}
 
 	public static ModelStore modelStore() {
 		__T.call(Ntro.class, "modelStore");
-		
-		if(modelStore == null) {
-			modelStore = Ntro.factory().newInstance(modelStoreClass);
-		}
-
-		/*
-		ModelStore modelStore = modelStores.get(threadService().currentThread().getThreadId());
-
-		if(modelStore == null) {
-			modelStore = Ntro.factory().newInstance(modelStoreClass);
-			modelStores.put(threadService().currentThread().getThreadId(), modelStore);
-		}
-		*/
 
 		return modelStore;
 	}
@@ -317,18 +299,26 @@ public class Ntro {
 	
 	/* <BackendService> */
 
-	private static BackendService backendService;
+	private static Class<? extends BackendService> backendServiceClass;
+	private static Map<String, BackendService> backendServices = new HashMap<>();
 
-	static void registerBackendService(BackendService backendService) {
-		__T.call(Ntro.class, "registerBackendService");
+	static void registerBackendServiceClass(Class<? extends BackendService> backendServiceClass) {
+		__T.call(Ntro.class, "registerBackendServiceClass");
 
-		Ntro.backendService = backendService;
+		Ntro.backendServiceClass = backendServiceClass;
 	}
 
 	public static BackendService backendService() {
 		__T.call(Ntro.class, "backendService");
 
-		return backendService;
+		BackendService service = backendServices.get(threadService().currentThread().threadId());
+
+		if(service == null) {
+			service = Ntro.factory().newInstance(backendServiceClass);
+			backendServices.put(threadService().currentThread().threadId(), service);
+		}
+
+		return service;
 	}
 
 	/* </BackendService> */

@@ -56,6 +56,9 @@ public abstract class MessageService {
 
 			Ntro.backendService().sendMessageToBackend(message);
 		}
+		
+		// TODO: send message to client on WebSocket
+
 	}
 
 	void reset() {
