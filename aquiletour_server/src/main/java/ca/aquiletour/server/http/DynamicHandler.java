@@ -45,6 +45,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
@@ -126,9 +127,9 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
 		*/
 		
-		setCurrentSemester();
-		
 		sendSessionMessagesAccordingToCookies(baseRequest);
+
+		setCurrentSemester();
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
@@ -218,13 +219,13 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCurrentSemester() {
 		T.call(this);
 		
-		ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterModel.class, "admin", "currentSemester");
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModel.class, "admin", Ntro.currentUser().getId());
 		modelLoader.execute();
-		SemesterModel currentSemester = (SemesterModel) modelLoader.getModel();
-		Ntro.modelStore().save(currentSemester);
+		SemesterListModel semesterList = (SemesterListModel) modelLoader.getModel();
+		Ntro.modelStore().save(semesterList);
 		
 		SessionData sessionData = new SessionData();
-		sessionData.setCurrentSemester(currentSemester.getSemesterId());
+		sessionData.setCurrentSemester(semesterList.getCurrentSemesterId().getValue());
 		Ntro.currentSession().setSessionData(sessionData);
 	}
 

@@ -16,6 +16,45 @@ public class CourseListUpdater {
 		return null;
 	}
 
+	public static void addSemesterForUser(ModelStoreSync modelStore, 
+			                              String semesterId, 
+			                              User user) {
+
+		T.call(CourseListUpdater.class);
+		
+		addSemesterForUserId(modelStore, semesterId, user.getId());
+	}
+	
+	public static void addSemesterForUserId(ModelStoreSync modelStore, 
+			                              String semesterId, 
+			                              String userId) {
+
+		T.call(CourseListUpdater.class);
+		
+		if(!modelStore.ifModelExists(CourseListModel.class, "admin", userId)) {
+			modelStore.createModel(CourseListModel.class, "admin", userId, new ModelInitializer<CourseListModel>() {
+				@Override
+				public void initialize(CourseListModel newModel) {
+					T.call(this);
+				}
+			});
+		}
+
+		modelStore.updateModel(CourseListModel.class, 
+							   "admin",
+							   userId,
+							   new ModelUpdater<CourseListModel>() {
+
+			@Override
+			public void update(CourseListModel courseListModel) {
+				T.call(this);
+				
+				courseListModel.addSemesterId(semesterId);
+			}
+		});
+	}
+	
+
 	public static void addCourseForUser(ModelStoreSync modelStore, CourseDescription courseDescription, User teacher) {
 		T.call(CourseListUpdater.class);
 		

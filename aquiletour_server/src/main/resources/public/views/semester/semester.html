@@ -1,101 +1,111 @@
 <div class='card border mb-3 p-2'>
     <div class='card-header bg-transparent border'>
-        <a href="#" class="" id="semester-id"></a>
+        <div class="d-flex">
+            <h5 id="semester-id"></h5>
+            <div class="flex-fill" style="min-width:6rem;"></div>
+            <div class="d-flex align-items-center">
+                <span class="me-2">session courante</span>
+                <div class="form-check form-switch">
+                <form action="" method="post" id="select-current-semester-form">
+                    <input name="semesterId" value="" style="display:none;"></input>
+                    <input class="form-check-input" type="checkbox" id="current-semester-checkbox">
+                </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="accordion" id="semester-accordion">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#semester-dates" aria-expanded="false" aria-controls="semester-dates">
-                    Calendrier scolaire
-                </button>
-            </h2>
-            <div id="semester-dates" class="accordion-collapse hide collapse" aria-labelledby="headingOne" data-bs-parent="#semester-accordion">
-                <div class="card-text accordion-body">
-                    <form action="" method="post" id="add-semester-dates-form">
-                        <input class="add-id-to-value" name="" style="display:none;"></input>
-                    </form>
-                    <table class="table" id="semester-dates-table">
-                        <tr>
-                            <th>Semaine du</th>
-                            <th>Lundi</th>
-                            <th>Mardi</th>
-                            <th>Mercredi</th>
-                            <th>Jeudi</th>
-                            <th>Vendredi</th>
-                        </tr>
-                        <tr id="add-week-row">
-                                <td>
-                                    <input form="add-semester-dates-form" class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
-                                </td>
-                                <td>
-                                    <input form="add-semester-dates-form" name="monday" style="max-width:2rem"></input>
-                                </td>
-                                <td>
-                                    <input form="add-semester-dates-form" name="tuesday" style="max-width:2rem"></input>
-                                </td>
-                                <td>
-                                    <input form="add-semester-dates-form" name="wednesday" style="max-width:2rem"></input>
-                                </td>
-                                <td>
-                                    <input form="add-semester-dates-form" name="thursday" style="max-width:2rem"></input>
-                                </td>
-                                <td>
-                                    <input form="add-semester-dates-form" name="friday" style="max-width:2rem"></input>
-                                </td>
-                                <td>
-                                    <input form="add-semester-dates-form" type="submit" class="add-id-to-href" id="add-date-button" style="float:right;" value="⊞"></input>
-                                </td>
-                            </form>
-                        </tr>
-                    </table>
-
-                </div>
-            </div>
+    <a class="accordion-button collapsed" data-toggle="collapse" href="#semester-calendar" role="button" aria-expanded="false" aria-controls="semester-calendar">
+        Calendrier scolaire
+    </a>
+    <div class="collapse" id="semester-calendar">
+        <div class="card card-body">
+            <form action="" method="post" id="add-semester-dates-form">
+                <input class="add-id-to-value" name="" style="display:none;"></input>
+            </form>
+            <table class="table" id="semester-dates-table">
+                <tr>
+                    <th>Semaine du</th>
+                    <th>Lundi</th>
+                    <th>Mardi</th>
+                    <th>Mercredi</th>
+                    <th>Jeudi</th>
+                    <th>Vendredi</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr id="add-week-row">
+                    <td>
+                        <input form="add-semester-dates-form" class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
+                    </td>
+                    <td>
+                        <input form="add-semester-dates-form" name="monday" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-semester-dates-form" name="tuesday" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-semester-dates-form" name="wednesday" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-semester-dates-form" name="thursday" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-semester-dates-form" name="friday" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm" form="add-semester-dates-form" type="submit" style="line-height:0px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#courses" aria-expanded="true" aria-controls="collapseOne">
-                    Mes cours
-                </button>
-            </h2>
-            <div id="courses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="card-text accordion-body">
-                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#groups" aria-expanded="true" aria-controls="collapseOne">
-                    Mes groupes 
-                </button>
-            </h2>
-            <div id="groups" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="card-text accordion-body mb-2">
-                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
-                </div>
-            </div>
-        </div>
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#groups" aria-expanded="true" aria-controls="collapseOne">
-                    Mon horaire
-                </button>
-            </h2>
-            <div id="groups" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="card-text accordion-body mb-2">
-                    <table class="table" id="semester-dates-table">
-                        <tr>
-                            <th>Journée</th>
-                            <th>Début</th>
-                            <th>Fin</th>
-                            <th>Cours-groupe</th>
-                            <th>Séance</th>
-                        </tr>
-                    </table>
-                    <a class="add-id-to-href" id="add-date-button" href="#" style="float:right;">⊞</a>
-                </div>
-            </div>
+    </div>
+    <a class="accordion-button collapsed" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
+        Mon horaire
+    </a>
+    <div class="collapse show" id="schedule">
+        <div class="card-body mb-2">
+            <form action="" method="post" id="add-schedule-line-form">
+                <input class="add-id-to-value" name="" style="display:none;"></input>
+            </form>
+            <table class="table" id="semester-dates-table">
+                <tr>
+                    <th>Journée</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>Cours-groupe</th>
+                    <th>Séance</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input form="add-schedule-line-form" name="day" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-schedule-line-form" name="start" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-schedule-line-form" name="end" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-schedule-line-form" name="course-groupe" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-schedule-line-form" name="session" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm" form="add-schedule-line-form" type="submit" style="line-height:0px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

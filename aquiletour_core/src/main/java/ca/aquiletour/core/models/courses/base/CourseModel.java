@@ -261,6 +261,7 @@ public class CourseModel implements NtroModel, TaskGraph {
 	public void setSemesters(ObservableSemesterIdList semesters) {
 		this.semesters = semesters;
 	}
+
 	
 	// TODO: update task description
 	//       can also change task type

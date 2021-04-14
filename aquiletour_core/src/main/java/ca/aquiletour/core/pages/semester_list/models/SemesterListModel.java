@@ -1,11 +1,14 @@
 package ca.aquiletour.core.pages.semester_list.models;
 
+import ca.aquiletour.core.Constants;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
 
 public class SemesterListModel implements NtroModel {
 	
 	private ObservableSemesterList semesters = new ObservableSemesterList();
+	private StoredString currentSemesterId = new StoredString(Constants.COURSE_DRAFTS);
 
 	public ObservableSemesterList getSemesters() {
 		return semesters;
@@ -15,6 +18,14 @@ public class SemesterListModel implements NtroModel {
 		this.semesters = semesters;
 	}
 	
+	public StoredString getCurrentSemesterId() {
+		return currentSemesterId;
+	}
+
+	public void setCurrentSemesterId(StoredString currentSemesterId) {
+		this.currentSemesterId = currentSemesterId;
+	}
+
 	public SemesterModel semesterById(String semesterId) {
 		SemesterModel semester = null;
 		

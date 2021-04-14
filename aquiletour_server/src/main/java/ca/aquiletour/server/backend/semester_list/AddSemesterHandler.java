@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
+import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -16,12 +17,13 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 		User user = message.getUser();
 		
 		SemesterListUpdater.addSemesterForUser(modelStore, semesterId, user);
+		CourseListUpdater.addSemesterForUser(modelStore, semesterId, user);
+
 	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddSemesterMessage message) {
 		T.call(this);
-		
 	}
 
 }

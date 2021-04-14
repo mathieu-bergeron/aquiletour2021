@@ -30,4 +30,10 @@ public class CourseListModel implements NtroModel {
 		
 		courses.addItem(courseDescription);
 	}
+
+	public void addSemesterId(String semesterId) {
+		T.call(this);
+		
+		semesters.addItem(semesterId);
+	}
 }

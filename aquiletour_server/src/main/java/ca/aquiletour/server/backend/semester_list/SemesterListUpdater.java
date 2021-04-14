@@ -40,9 +40,6 @@ public class SemesterListUpdater {
 				semesterList.addSemester(semester);
 			}
 		});
-		
-		
-		
 	}
 
 	public static void addSemesterForUser(ModelStoreSync modelStore, 
