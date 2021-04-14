@@ -1,5 +1,8 @@
 package ca.aquiletour.core.models.courses.base;
 
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
+import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
@@ -8,8 +11,10 @@ import ca.ntro.services.Ntro;
 
 public class CourseModel implements NtroModel, TaskGraph {
 
-	private String courseId = "";
+	private ObservableSemesterIdList semesters = new ObservableSemesterIdList();
+	private CoursePath coursePath = new CoursePath();
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
+	private ObservableGroupMap groups = new ObservableGroupMap();
 
 	@Override
 	public Task findTaskByPath(Path path) {
@@ -41,7 +46,7 @@ public class CourseModel implements NtroModel, TaskGraph {
 		
 		rootTask.setGraph(asGraph());
 
-		tasks.addEntry(rootTask.id(), rootTask);
+		tasks.putEntry(rootTask.id(), rootTask);
 	}
 
 	public void addSubTaskTo(Path parentPath, Task subTask, OnTaskAdded onTaskAdded) {
@@ -112,7 +117,7 @@ public class CourseModel implements NtroModel, TaskGraph {
 	private void addNewTask(Task nextTask) {
 		T.call(this);
 
-		tasks.addEntry(nextTask.id(), nextTask);
+		tasks.putEntry(nextTask.id(), nextTask);
 		Ntro.modelStore().updateStoreConnections(this);
 	}
 
@@ -166,14 +171,15 @@ public class CourseModel implements NtroModel, TaskGraph {
 		return this;
 	}
 
-	public String getCourseId() {
-		return courseId;
+	
+	public CoursePath getCoursePath() {
+		return coursePath;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public void setCoursePath(CoursePath coursePath) {
+		this.coursePath = coursePath;
 	}
-	
+
 	public void forEachTask(TaskLambda lambda) {
 		T.call(this);
 		
@@ -235,4 +241,28 @@ public class CourseModel implements NtroModel, TaskGraph {
 		// FIXME: remove unreachable tasks!
 	}
 	
+	public String courseId() {
+		T.call(this);
+		return coursePath.toFileName();
+	}
+
+	public ObservableGroupMap getGroups() {
+		return groups;
+	}
+
+	public void setGroups(ObservableGroupMap groups) {
+		this.groups = groups;
+	}
+
+	public ObservableSemesterIdList getSemesters() {
+		return semesters;
+	}
+
+	public void setSemesters(ObservableSemesterIdList semesters) {
+		this.semesters = semesters;
+	}
+	
+	// TODO: update task description
+	//       can also change task type
+
 }

@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -33,8 +34,8 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 		
 		if(currentTask != null) {
 			
-			view.identifyCurrentTask(model.getCourseId(), currentTask);
-			view.displayBreadcrumbs(model.getCourseId(), currentTask.breadcrumbs());
+			view.identifyCurrentTask(model.courseId(), currentTask);
+			view.displayBreadcrumbs(model.courseId(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, view, subViewLoader);
 		}
@@ -98,20 +99,20 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			TaskView taskView = (TaskView) subViewLoader.createView();
 			view.appendTask(taskView);
 
-			displayTask(model.getCourseId(), st, taskView);
+			displayTask(model.getCoursePath(), st, taskView);
 
-			observeSubTask(st, model.getCourseId(), taskView);
+			observeSubTask(st, model.getCoursePath(), taskView);
 		});
 	}
 
-	private void displayTask(String courseId, Task st, TaskView taskView) {
+	private void displayTask(CoursePath coursePath, Task st, TaskView taskView) {
 		T.call(this);
 
 		taskView.clear();
-		taskView.displayTask(courseId, st);
+		taskView.displayTask(coursePath, st);
 	}
 
-	private void observeSubTask(Task st, String courseId, TaskView taskView) {
+	private void observeSubTask(Task st, CoursePath coursePath, TaskView taskView) {
 		T.call(this);
 		
 		st.getPreviousTasks().removeObservers();
@@ -124,7 +125,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemRemoved(int index, String item) {
 				T.call(this);
 
-				displayTask(courseId, st, taskView);
+				displayTask(coursePath, st, taskView);
 			}
 			
 			@Override
@@ -137,7 +138,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
-				displayTask(courseId, st, taskView);
+				displayTask(coursePath, st, taskView);
 			}
 			
 			@Override
@@ -189,7 +190,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
-				displayTask(courseId, st, taskView);
+				displayTask(coursePath, st, taskView);
 			}
 
 			@Override
@@ -202,7 +203,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemRemoved(int index, String item) {
 				T.call(this);
 
-				displayTask(courseId, st, taskView);
+				displayTask(coursePath, st, taskView);
 			}
 
 			@Override
@@ -236,7 +237,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
-				displayTask(courseId, st, taskView);
+				displayTask(coursePath, st, taskView);
 			}
 
 			@Override
@@ -249,7 +250,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 			public void onItemRemoved(int index, String item) {
 				T.call(this);
 
-				displayTask(courseId, st, taskView);
+				displayTask(coursePath, st, taskView);
 			}
 
 			@Override

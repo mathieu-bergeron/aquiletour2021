@@ -28,12 +28,12 @@ public class ObservableTaskMap extends StoredMap<Task> {
 	}
 	
 	@Override
-	public void addEntry(String key, Task task) {
+	public void putEntry(String key, Task task) {
 		T.call(this);
 		
 		task.setGraph(course.asGraph());
 		
-		super.addEntry(key, task);
+		super.putEntry(key, task);
 	}
 
 }

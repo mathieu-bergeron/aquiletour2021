@@ -3,7 +3,9 @@ package ca.aquiletour.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.course.CourseMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
@@ -50,7 +52,7 @@ public class AquiletourRequestHandler {
 
 		} else if(path.startsWith(Constants.COURSE_URL_SEGMENT)) {
 
-			sendCourseMessages(path.subPath(1), parameters, context.user());
+			sendCourseMessages(path.subPath(1), parameters, context.user(), context.sessionData());
 		
 		}else if(path.startsWith(Constants.LOGIN_URL_SEGMENT)) {
 			
@@ -176,25 +178,44 @@ public class AquiletourRequestHandler {
 		ShowOpenQueueListMessage showQueuesMessage = Ntro.messages().create(ShowOpenQueueListMessage.class);
 		Ntro.messages().send(showQueuesMessage);
 	}
+	
+	static <MSG extends CourseMessage> MSG createCourseMessage(Class<MSG> messageClass, 
+			                                                   Path path, 
+			                                                   Map<String, String[]> parameters,
+			                                                   SessionData sessionData) {
+		T.call(AquiletourRequestHandler.class);
+		
+		MSG message = Ntro.messages().create(messageClass);
 
-	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user) {
+		String teacherId = path.name(0);
+		String courseId = path.name(1);
+		Path taskPath = path.subPath(2);
+
+		String semesterId = null;
+		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+			semesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+		}else {
+			semesterId = sessionData.getCurrentSemester();
+		}
+
+		message.setTeacherId(teacherId);
+		message.setCourseId(courseId);
+		message.setSemesterId(semesterId);
+
+		if(taskPath.nameCount() > 0) {
+			message.setTaskPath(taskPath);
+		}
+		
+		return message;
+	}
+
+	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user, SessionData sessionData) {
 		T.call(AquiletourRequestHandler.class);
 		
 		if(path.nameCount() >= 2) {//TODO 
 
-			String teacherId = path.name(0);
-			String courseId = path.name(1);
-			Path taskPath = path.subPath(2);
-			
-			ShowCourseMessage showCourseMessage = Ntro.messages().create(ShowCourseMessage.class);
-			showCourseMessage.setCourseId(courseId);
-
-			if(taskPath.nameCount() > 0) {
-				showCourseMessage.setTaskPath(taskPath);
-			}
-
+			ShowCourseMessage showCourseMessage = createCourseMessage(ShowCourseMessage.class, path, parameters, sessionData);
 			Ntro.messages().send(showCourseMessage);
-
 		}
 	}
 		

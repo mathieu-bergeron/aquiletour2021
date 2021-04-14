@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
@@ -29,12 +30,12 @@ public class CourseUpdater {
 	}
 
 	public static void removeSubTask(ModelStoreSync modelStore, 
-			                              String courseId, 
+			                              CoursePath coursePath, 
 			                              Path taskToModify,
 			                              Path taskToDelete) {
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
 			public void update(CourseModel course) {
 				T.call(this);
@@ -118,22 +119,22 @@ public class CourseUpdater {
 	}
 	
 
-	public static void addSubTask(ModelStoreSync modelStore, String courseId, Path parentPath, Task task) {
+	public static void addSubTask(ModelStoreSync modelStore, CoursePath coursePath, Path parentTaskPath, Task task) {
 		T.call(CourseUpdater.class);
 		
-		if(modelStore.ifModelExists(CourseModel.class, "admin", courseId)) {
+		if(modelStore.ifModelExists(CourseModel.class, "admin", coursePath)) {
 			
-			modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
+			modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 				@Override
 				public void update(CourseModel course) {
 					T.call(this);
 
-					course.addSubTaskTo(parentPath, task, new OnTaskAdded() {
+					course.addSubTaskTo(parentTaskPath, task, new OnTaskAdded() {
 						@Override
 						public void onTaskAdded() {
 							T.call(this);
 
-							GitMessages.registerExercice(courseId, task.getPath());
+							GitMessages.registerExercice("FIXME", task.getPath());
 						}
 					});
 				}
@@ -141,23 +142,20 @@ public class CourseUpdater {
 
 		}else {
 			
-			// FIXME: here we need to create AND save the model
-			//        because we need to load the model in order to install
-			//        valuePath() and modelStore() in the model values
-			modelStore.createModel(CourseModel.class, "admin", courseId, new ModelInitializer<CourseModel>() {
+			modelStore.createModel(CourseModel.class, "admin", coursePath, new ModelInitializer<CourseModel>() {
 				@Override
 				public void initialize(CourseModel course) {
 					T.call(this);
 					
 					Task rootTask = new Task();
 					rootTask.setPath(new Path("/"));
-					rootTask.setTitle(courseId); // FIXME: we need a real title
+					rootTask.setTitle("FIXME"); // FIXME: we need a real title
 					course.setRootTask(rootTask);
-					course.setCourseId(courseId);
+					course.setCoursePath(coursePath);
 				}
 			});
 
-			addSubTask(modelStore, courseId, parentPath, task);
+			addSubTask(modelStore, coursePath, parentTaskPath, task);
 		}
 	}
 }

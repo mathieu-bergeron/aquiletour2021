@@ -33,7 +33,7 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 		return getValue().size();
 	}
 
-	public void addEntry(String key, V value) {
+	public void putEntry(String key, V value) {
 		
 		getValue().put(key, value);
 		

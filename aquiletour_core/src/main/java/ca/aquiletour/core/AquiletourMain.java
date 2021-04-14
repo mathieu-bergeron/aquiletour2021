@@ -27,11 +27,15 @@ import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskRelation;
+import ca.aquiletour.core.models.courses.group.Group;
+import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
+import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.models.dates.CalendarDate;
 import ca.aquiletour.core.models.dates.CourseDateClassDay;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
@@ -88,9 +92,16 @@ import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
 public abstract class AquiletourMain extends NtroTaskSync {
+	
+	public static String currentSemester() {
+		T.call(AquiletourMain.class);
+		
+		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
+		
+		return sessionData.getCurrentSemester();
+	}
 
 	protected abstract void registerViewLoaders();
-	
 
 	@Override
 	protected void runTask() {
@@ -152,10 +163,15 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(Commit.class);
 
 		Ntro.registerSerializableClass(CourseModel.class);
+		Ntro.registerSerializableClass(CoursePath.class);
 		Ntro.registerSerializableClass(ObservableTaskMap.class);
 		Ntro.registerSerializableClass(ObservableTaskIdList.class);
 		Ntro.registerSerializableClass(Task.class);
 		Ntro.registerSerializableClass(TaskRelation.class);
+
+		Ntro.registerSerializableClass(Group.class);
+		Ntro.registerSerializableClass(StudentDescription.class);
+		Ntro.registerSerializableClass(ObservableGroupMap.class);
 
 		Ntro.registerSerializableClass(SemesterModel.class);
 		Ntro.registerSerializableClass(SemesterListModel.class);

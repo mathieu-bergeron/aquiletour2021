@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.course.teacher;
 
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.web.pages.course.TaskViewWeb;
@@ -41,9 +42,9 @@ public class TaskViewWebTeacher extends TaskViewWeb implements TaskViewTeacher {
 	}
 
 	@Override
-	public void displayTask(String courseId, Task task) {
+	public void displayTask(CoursePath coursePath, Task task) {
 		T.call(this);
-		super.displayTask(courseId, task);
+		super.displayTask(coursePath, task);
 
 		deleteTaskLink.setAttribute("href", "?delete=" + task.getPath().toFileName());
 		

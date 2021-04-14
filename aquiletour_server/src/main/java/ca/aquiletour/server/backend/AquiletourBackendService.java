@@ -24,7 +24,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.server.backend.course.AddNextTaskHandler;
 import ca.aquiletour.server.backend.course.AddPreviousTaskHandler;
-import ca.aquiletour.server.backend.course.AddTaskHandler;
+import ca.aquiletour.server.backend.course.AddSubTaskHandler;
 import ca.aquiletour.server.backend.course.DeleteTaskHandler;
 import ca.aquiletour.server.backend.course.RemoveNextTaskHandler;
 import ca.aquiletour.server.backend.course.RemovePreviousTaskHandler;
@@ -62,7 +62,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(InitializeSessionMessage.class, new InitializeSessionHandler());
 		addBackendMessageHandler(UserSendsLoginCodeMessage.class, new UserSendsLoginCodeHandler());
 		addBackendMessageHandler(UserLogsOutMessage.class, new UserLogsOutHandler());
-		addBackendMessageHandler(AddSubTaskMessage.class, new AddTaskHandler());
+		addBackendMessageHandler(AddSubTaskMessage.class, new AddSubTaskHandler());
 		addBackendMessageHandler(AddPreviousTaskMessage.class, new AddPreviousTaskHandler());
 		addBackendMessageHandler(AddNextTaskMessage.class, new AddNextTaskHandler());
 		addBackendMessageHandler(DeleteTaskMessage.class, new DeleteTaskHandler());

@@ -1,5 +1,6 @@
 package ca.ntro.core.models;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -15,16 +16,22 @@ public class ModelStoreSync {
 		this.modelStore = modelStore;
 	}
 
-	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) {
 		T.call(this);
 
-		return modelStore.ifModelExists(modelClass, authToken, firstPathName, pathRemainder);
+		return ifModelExists(modelClass, authToken, modelStore.documentId(modelPath));
+	}
+
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) {
+		T.call(this);
+
+		return modelStore.ifModelExists(modelClass, authToken, documentId);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String documentId) {
 
-		ModelLoader loader = modelStore.getLoader(modelClass, authToken, firstPathName, pathRemainder);
+		ModelLoader loader = modelStore.getLoader(modelClass, authToken, documentId);
 		loader.execute();
 		
 		M model = (M) loader.getModel();
@@ -57,11 +64,21 @@ public class ModelStoreSync {
 
 		modelStore.delete(model);
 	}
+
+	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      Path modelPath, 
+			                                      ModelUpdater<M> updater){
+		T.call(this);
+
+		updateModel(modelClass, authToken, modelStore.documentId(modelPath), updater);
+	}
 	
 	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,
 			                                      String modelId, 
 			                                      ModelUpdater<M> updater){
+		T.call(this);
 
 		if(ifModelExists(modelClass, authToken, modelId)) {
 			
@@ -74,6 +91,15 @@ public class ModelStoreSync {
 		}else {
 			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
 		}
+	}
+
+	public <M extends NtroModel> void createModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      Path modelPath, 
+			                                      ModelInitializer<M> initializer){
+		T.call(this);
+		
+		createModel(modelClass, authToken, modelStore.documentId(modelPath), initializer);
 	}
 
 	public <M extends NtroModel> void createModel(Class<? extends NtroModel> modelClass, 

@@ -1,6 +1,8 @@
 package ca.aquiletour.web.pages.course;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
@@ -35,26 +37,31 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	}
 
 	@Override
-	public void displayTask(String courseId, Task task) {
+	public void displayTask(CoursePath coursePath, Task task) {
 		T.call(this);
 		
 		taskTitleLink.html(task.getTitle());
-		taskTitleLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT 
-	                                     	+ "/" + courseId 
-	                                     	+ task.id()
-	                                     	+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
-	                                     	+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
+		
+		String href = "/" + Constants.COURSE_URL_SEGMENT  +
+	                  "/" + coursePath.toUrlPath() + 
+	                  task.id();
+		
+		if(!AquiletourMain.currentSemester().equals(coursePath.semesterId())) {
+			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId();
+		}
+		
+		taskTitleLink.setAttribute("href", href);
 		
 		task.forEachPreviousTask(pt -> {
-			addTaskLi(courseId, task, pt, previousTasksContainer, "PreviousTask");
+			addTaskLi(coursePath.toId(), task, pt, previousTasksContainer, "PreviousTask");
 		});
 
 		task.forEachSubTask(st -> {
-			addTaskLi(courseId, task, st, subTasksContainer, "SubTask");
+			addTaskLi(coursePath.toId(), task, st, subTasksContainer, "SubTask");
 		});
 
 		task.forEachNextTask(nt -> {
-			addTaskLi(courseId, task, nt, nextTasksContainer, "NextTask");
+			addTaskLi(coursePath.toId(), task, nt, nextTasksContainer, "NextTask");
 		});
 	}
 

@@ -349,6 +349,12 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		setModelLoader(Ntro.modelStore().getModelLoaderFromRequest(serviceUrl, message));
 	}
 
+	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) {
+		T.call(this);
+
+		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelPath));
+	}
+
 	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, String modelId) {
 		T.call(this);
 

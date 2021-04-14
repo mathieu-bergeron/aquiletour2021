@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
@@ -13,17 +14,14 @@ import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
-import ca.ntro.users.NtroUser;
 
 public abstract class ModelStore {
 
@@ -35,11 +33,10 @@ public abstract class ModelStore {
 	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
 	
 	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
-	
-	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String firstPathName, String... pathRemainder) {
+
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) {
 		T.call(this);
 
-		String documentId = documentId(firstPathName, pathRemainder);
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 
 		return ifModelExistsImpl(documentPath);
@@ -75,10 +72,23 @@ public abstract class ModelStore {
 		
 	}
 
-	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String firstPathName, String... pathRemainder){
+	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, Path modelPath){
 		T.call(this);
 		
-		String documentId = documentId(firstPathName, pathRemainder);
+		return getLoader(modelClass, authToken, documentId(modelPath));
+	}
+
+	public String documentId(Path modelPath) {
+		T.call(this);
+
+		String documentId = modelPath.toFileName();
+
+		return documentId;
+	}
+
+	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String documentId){
+		T.call(this);
+		
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 
 		ModelLoader modelLoader = new ModelLoader(this, documentPath);
@@ -116,14 +126,6 @@ public abstract class ModelStore {
 		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(modelClass));
 		documentPath.setDocumentId(documentId);
 		return documentPath;
-	}
-
-	private String documentId(String firstPathName, String... pathRemainder) {
-		String documentId = firstPathName;
-		for(String additionalSegment : pathRemainder) {
-			documentId += "__" + additionalSegment;
-		}
-		return documentId;
 	}
 	
 	public static String emptyModelString(DocumentPath documentPath) {

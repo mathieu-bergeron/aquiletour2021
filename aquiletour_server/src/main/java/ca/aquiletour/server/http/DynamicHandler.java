@@ -135,13 +135,13 @@ public class DynamicHandler extends AbstractHandler {
 
 		executeBackend(baseRequest, response, path, parameters);
 
-		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
-		//boolean ifJsOnly = false;
+		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
+		//boolean ifJSweet = false;
 
-		NtroWindowServer window = newWindow(ifJsOnly, path);
+		NtroWindowServer window = newWindow(ifJSweet, path);
 		//NtroWindowServer window = newWindow(true, path);
 
-		if(!ifJsOnly) {
+		if(!ifJSweet) {
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
 		
@@ -158,7 +158,9 @@ public class DynamicHandler extends AbstractHandler {
 	private void executeBackend(Request baseRequest, HttpServletResponse response, Path path,
 			Map<String, String[]> parameters) throws IOException {
 
-		AquiletourBackendRequestHandler.sendMessages(path, parameters);
+		NtroContext<User, SessionData> context = createNtroContext();
+
+		AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
 
 		setSessionCookie(response);
 
@@ -234,10 +236,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		handleRedirections(baseRequest, response, path);
 
-		NtroContext<User, SessionData> context = new NtroContext<>();
-		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.currentUser());
-		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		NtroContext<User, SessionData> context = createNtroContext();
 
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
@@ -256,6 +255,14 @@ public class DynamicHandler extends AbstractHandler {
 
 		// XXX: prepare for next request
 		Ntro.reset();
+	}
+
+	private NtroContext<User, SessionData> createNtroContext() {
+		NtroContext<User, SessionData> context = new NtroContext<>();
+		context.registerLang(Constants.LANG); // TODO
+		context.registerUser((User) Ntro.currentUser());
+		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		return context;
 	}
 
 	private void handleRedirections(Request baseRequest, HttpServletResponse response, Path path) {
@@ -317,41 +324,41 @@ public class DynamicHandler extends AbstractHandler {
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		boolean ifJsOnly = true;
+		boolean ifJSweet = true;
 
-		if(baseRequest.getParameter("nojs") != null) {
+		if(baseRequest.getParameter("nojsweet") != null) {
 			
-			setCookie(response, "jsOnly" , "false" );
-			ifJsOnly = false;
+			setCookie(response, "jsweet" , "false" );
+			ifJSweet = false;
 
-		} else if(baseRequest.getParameter("js") != null) {
+		} else if(baseRequest.getParameter("jsweet") != null) {
 			
-			setCookie(response, "jsOnly" , "true" );
-			ifJsOnly = true;
+			setCookie(response, "jsweet" , "true" );
+			ifJSweet = true;
 			
-		}else if(hasCookie(baseRequest, "jsOnly")) {
+		}else if(hasCookie(baseRequest, "jsweet")) {
 			
-			String jsOnlyCookie = getCookie(baseRequest, "jsOnly");
-			ifJsOnly = Boolean.valueOf(jsOnlyCookie);
+			String jsOnlyCookie = getCookie(baseRequest, "jsweet");
+			ifJSweet = Boolean.valueOf(jsOnlyCookie);
 
 		}
 		
-		return ifJsOnly;
+		return ifJSweet;
 
 	}
 
-	private NtroWindowServer newWindow(boolean ifJsOnly, Path path) {
+	private NtroWindowServer newWindow(boolean ifJSweet, Path path) {
 		T.call(this);
 
 		NtroWindowServer newWindow;
 
-		if(ifJsOnly) {
+		if(ifJSweet) {
 
 			newWindow = new NtroWindowServer("/private/index.html");
 			
 		}else {
 
-			newWindow = new NtroWindowServer("/private/nojs.html");
+			newWindow = new NtroWindowServer("/private/nojsweet.html");
 
 		} 
 

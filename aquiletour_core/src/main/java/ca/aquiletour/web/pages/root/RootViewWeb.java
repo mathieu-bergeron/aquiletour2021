@@ -101,9 +101,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 		
-		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT 
-				                               + "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
-				                               + "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
+		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
 
 		/*
 		dashboardLink.addEventListener("click", new HtmlEventListener() {

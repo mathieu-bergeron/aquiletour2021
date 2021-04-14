@@ -199,4 +199,10 @@ public class Path implements JsonSerializable {
 		return parentPath;
 	}
 
+	public void addName(String name) {
+		T.call(this);
+		
+		getNames().add(name);
+	}
+
 }

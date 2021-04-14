@@ -5,7 +5,7 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface CourseDescriptionView extends NtroView {
 
-	void displayCourseDescription(CourseDescription item);
+	void displayCourseDescription(CourseDescription courseDescription);
 
 
 }

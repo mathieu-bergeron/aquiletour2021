@@ -1,6 +1,52 @@
 <div class='card border mb-3'>
     <div class='card-header bg-transparent border'>
-        <a href="#" class="course-title" id="course-title-link"></a>
+        <a href="#" class="course-title" id="course-title-link"></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H2021
+    </div>
+    <div class='card-body text'>
+        <a href="#">Structure du cours</a>
+        <br>
+        <br>
+        <div>Groupes</div>
+        <div class='card-footer bg-transparent border'>
+            <ul id="previous-tasks-container">
+                <li><a href="#">01</a>
+                <li><a href="#">02</a>
+            </ul>
+        </div>
+        <a class="add-task-id-to-data-target" id="add-previous-task-button" href="#" data-toggle="modal" data-target="#add-group-modal" style="float:right;">⊞</a>
+        <br><br>
+        </div>
     </div>
 </div>
+
+
+  <div class="modal fade add-task-id-to-id" id="add-group-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content dashboard-mContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-previous-task-modal-title">Ajouter un groupe</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body dashboard-mBody">
+          <form action="" method="post">
+            <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+            <div class="form-group row">
+                <label for="title">Code du groupe</label>
+                <input name="groupId" id="new-previous-task-input"></input>
+            </div>
+            <div class="form-group">
+                <label for="csvFile">Fichier .csv de ColNet</label>
+                <input type="file" name="csvFile" id="csv-file-input"/><br>
+            </div>
+            <div class="modal-footer border-0">         
+              <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+            </div>  
+          </form>
+        </div>       
+      </div>
+    </div>
+  </div>
+
 

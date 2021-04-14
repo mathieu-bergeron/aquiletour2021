@@ -6,6 +6,7 @@ import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -15,22 +16,20 @@ public class ShowCourseHandler extends ControllerMessageHandler<CourseController
                                                                 CourseView,
                                                                 ShowCourseMessage> {
 	
-	private String currentCourseId;
+	private Path currentCoursePath;
 
 	@Override
 	protected void handle(CourseController currentController, CourseView currentView, ShowCourseMessage message) {
 		T.call(this);
 
-		String courseId = message.getCourseId();
-		
-		MustNot.beNull(courseId);
-		
+		Path coursePath = message.coursePath();
+
 		// XXX: change model only when needed
-		if(!courseId.equals(currentCourseId)) {
+		if(!coursePath.equals(currentCoursePath)) {
 			String authToken = currentController.context().user().getAuthToken();
-			currentController.setModelLoader(CourseModel.class, authToken, courseId);
-			currentCourseId = courseId;
-			
+			currentController.setModelLoader(CourseModel.class, authToken, coursePath);
+			currentCoursePath = coursePath;
+
 			ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
 			showTaskMessage.setTaskPath(message.getTaskPath());
 			Ntro.messages().send(showTaskMessage);

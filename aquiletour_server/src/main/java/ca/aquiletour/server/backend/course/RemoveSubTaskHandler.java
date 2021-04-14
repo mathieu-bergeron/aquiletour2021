@@ -11,9 +11,7 @@ public class RemoveSubTaskHandler extends BackendMessageHandler<RemoveSubTaskMes
 	public void handleNow(ModelStoreSync modelStore, RemoveSubTaskMessage message) {
 		T.call(this);
 		
-		String courseId = message.getCourseId();
-
-		CourseUpdater.removeSubTask(modelStore, courseId, message.getTaskToModify(), message.getTaskToRemove());
+		CourseUpdater.removeSubTask(modelStore, message.coursePath(), message.getTaskToModify(), message.getTaskToRemove());
 	}
 
 	@Override

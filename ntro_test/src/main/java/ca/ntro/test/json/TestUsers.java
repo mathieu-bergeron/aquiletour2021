@@ -24,7 +24,7 @@ public class TestUsers implements NtroModel {
 
 		String userId = Integer.toString(users.size());
 		user.setId(userId);
-		users.addEntry(userId, user);
+		users.putEntry(userId, user);
 	}
 	
 	public void deleteUser(String userId) {
