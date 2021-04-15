@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -171,19 +172,31 @@ public class DynamicHandler extends AbstractHandler {
 
 	private void sendCsvMessage(Request baseRequest) throws IOException {
 		if(Ntro.currentUser() instanceof Teacher) {
+
+			/*
+			Enumeration<String> names = baseRequest.getParameterNames();
+			while(names.hasMoreElements()) {
+				System.out.println(names.nextElement());
+			}*/
 			
-			String queueId = baseRequest.getParameter("queueId");
+			String semesterId = baseRequest.getParameter("semesterId");
+			String courseId = baseRequest.getParameter("courseId");
 			Part filePart = null;
 			try {
 				filePart = baseRequest.getPart("csvFile");
 			} catch (IOException | ServletException e) {}
-
-			if(queueId != null && filePart != null) {
+			
+			if(semesterId != null && courseId != null && filePart != null) {
+				
 				String fileContent = readPart(filePart);
 				
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
+
+				addStudentCsvMessage.setSemesterId(semesterId);
+				addStudentCsvMessage.setCourseId(courseId);
 				addStudentCsvMessage.setCsvString(fileContent);
-				addStudentCsvMessage.setQueueId(queueId);
+				addStudentCsvMessage.setCsvFilename(filePart.getSubmittedFileName());
+
 				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
 			}
 		}

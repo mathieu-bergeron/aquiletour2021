@@ -9,6 +9,7 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescriptionView {
@@ -16,6 +17,9 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 	private HtmlElement courseTitleLink;
 	private HtmlElement courseTitleSemesterId;
 	private HtmlElement addGroupModalTitle;
+	private HtmlElement groupList;
+	private HtmlElements addSemesterIdToValue;
+	private HtmlElements addCourseIdToValue;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -24,10 +28,14 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		courseTitleLink = this.getRootElement().find("#course-title-link").get(0);
 		courseTitleSemesterId = this.getRootElement().find("#course-title-semester-id").get(0);
 		addGroupModalTitle = this.getRootElement().find("#add-group-modal-title").get(0);
+		groupList = this.getRootElement().find("#group-list").get(0);
+		addSemesterIdToValue = this.getRootElement().find(".add-semester-id-to-value");
+		addCourseIdToValue = this.getRootElement().find(".add-course-id-to-value");
 
 		MustNot.beNull(courseTitleLink);
 		MustNot.beNull(courseTitleSemesterId);
 		MustNot.beNull(addGroupModalTitle);
+		MustNot.beNull(groupList);
 	}
 
 	@Override
@@ -47,7 +55,29 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		
 		courseTitleSemesterId.text(courseDescription.getSemesterId());
 		
-		addGroupModalTitle.text("Ajouter un groupe à " + courseDescription.getCourseId());
+		addGroupModalTitle.text("Ajouter un groupe au cours " + courseDescription.getCourseId());
+		
+		for(String groupId : courseDescription.getGroupIds().getValue()) {
+			HtmlElement groupLi = groupList.createElement("<li class=\"list-group-item\"></li>");
+			groupList.appendElement(groupLi);
+
+			HtmlElement groupAnchor = groupLi.createElement("<a href='#'></a>");
+			groupLi.appendElement(groupAnchor);
+
+			groupAnchor.text(groupId);
+		}
+		
+		addSemesterIdToValue.forEach(e -> {
+			String value = e.getAttribute("value");
+			value += courseDescription.getSemesterId();
+			e.setAttribute("value", value);
+		});
+
+		addCourseIdToValue.forEach(e -> {
+			String value = e.getAttribute("value");
+			value += courseDescription.getCourseId();
+			e.setAttribute("value", value);
+		});
 	}
 
 }

@@ -1,5 +1,7 @@
 package ca.aquiletour.server.backend.course_list;
 
+import java.util.List;
+
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
@@ -15,6 +17,7 @@ public class CourseListUpdater {
 
 		return null;
 	}
+
 
 	public static void addSemesterForUser(ModelStoreSync modelStore, 
 			                              String semesterId, 
@@ -80,6 +83,36 @@ public class CourseListUpdater {
 			
 			addCourseForUser(modelStore, courseDescription, teacher);
 		}
+	}
+
+	public static void addGroupForUser(ModelStoreSync modelStore, 
+			                           String semesterId, 
+			                           String courseId, 
+			                           String groupId, 
+			                           User user) {
+
+		T.call(CourseListUpdater.class);
+		
+		addGroupForUserId(modelStore, semesterId, courseId, groupId, user.getId());
+		
+	}
+
+	public static void addGroupForUserId(ModelStoreSync modelStore, 
+			                             String semesterId, 
+			                             String courseId, 
+			                             String groupId,
+			                             String userId) {
+
+		T.call(CourseListUpdater.class);
+
+		modelStore.updateModel(CourseListModel.class, "admin", userId, new ModelUpdater<CourseListModel>() {
+			@Override
+			public void update(CourseListModel existingModel) {
+				T.call(this);
+
+				existingModel.addGroup(semesterId, courseId, groupId);
+			}
+		});
 	}
 
 }

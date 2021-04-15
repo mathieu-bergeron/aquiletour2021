@@ -28,7 +28,7 @@ public class CsvSubmitListener implements HtmlEventListener {
 				T.call(this);
 				
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
-				addStudentCsvMessage.setQueueId(courseId);
+				addStudentCsvMessage.setCourseId(courseId);
 				
 				addStudentCsvMessage.setCsvString(fileContent);
 				
