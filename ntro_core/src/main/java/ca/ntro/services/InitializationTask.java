@@ -58,7 +58,13 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.registerModelStore(provideModelStore());
 		
 		Ntro.registerValueFormatter(provideValueFormatter());
+		
+		Ntro.registerConfigService(provideConfigService());
+		
+		Ntro.registerCalendarService(provideCalendarService());
 	}
+
+
 
 	protected abstract StackAnalyzer provideStackAnalyzer();
 	protected abstract ResourceLoader provideResourceLoader();
@@ -72,5 +78,7 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract Class<? extends SessionService> provideSessionServiceClass();
 	protected abstract ModelStore provideModelStore();
 	protected abstract ValueFormatter provideValueFormatter();
+	protected abstract ConfigService provideConfigService();
+	protected abstract CalendarService provideCalendarService();
 
 }

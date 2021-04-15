@@ -20,38 +20,41 @@
     <div class="collapse" id="semester-calendar">
         <div class="card card-body">
             <form action="" method="post" id="add-semester-dates-form">
-                <input class="add-id-to-value" name="" style="display:none;"></input>
+                <input class="add-id-to-value" name="semesterId" value="" style="display:none;"></input>
             </form>
             <table class="table" id="semester-dates-table">
+                <thead>
                 <tr>
                     <th>Semaine du</th>
-                    <th>Lundi</th>
-                    <th>Mardi</th>
-                    <th>Mercredi</th>
-                    <th>Jeudi</th>
-                    <th>Vendredi</th>
+                    <th>Lundi<br>(horaire du)</th>
+                    <th>Mardi<br>(horaire du)</th>
+                    <th>Mercredi<br>(horaire du)</th>
+                    <th>Jeudi<br>(horaire du)</th>
+                    <th>Vendredi<br>(horaire du)</th>
                     <th>&nbsp;</th>
                 </tr>
+                </thead>
+                <tbody id="semester-weeks-tbody">
                 <tr id="add-week-row">
-                    <td>
-                        <input form="add-semester-dates-form" class="form-control" name="week-of" id="week-of-input" style="max-width:7rem;"></input>
+                    <td rowspan="2">
+                        <input form="add-semester-dates-form" class="form-control" name="weekOf" id="week-of-input" style="max-width:7rem;"></input>
                     </td>
                     <td>
-                        <input form="add-semester-dates-form" name="monday" style="max-width:2rem"></input>
+                        <input form="add-semester-dates-form" name="day0" style="max-width:2rem"></input>
                     </td>
                     <td>
-                        <input form="add-semester-dates-form" name="tuesday" style="max-width:2rem"></input>
+                        <input form="add-semester-dates-form" name="day1" style="max-width:2rem"></input>
                     </td>
                     <td>
-                        <input form="add-semester-dates-form" name="wednesday" style="max-width:2rem"></input>
+                        <input form="add-semester-dates-form" name="day2" style="max-width:2rem"></input>
                     </td>
                     <td>
-                        <input form="add-semester-dates-form" name="thursday" style="max-width:2rem"></input>
+                        <input form="add-semester-dates-form" name="day3" style="max-width:2rem"></input>
                     </td>
                     <td>
-                        <input form="add-semester-dates-form" name="friday" style="max-width:2rem"></input>
+                        <input form="add-semester-dates-form" name="day4" style="max-width:2rem"></input>
                     </td>
-                    <td>
+                    <td rowspan="2">
                         <button class="btn btn-secondary btn-sm" form="add-semester-dates-form" type="submit" style="line-height:0px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -60,18 +63,66 @@
                         </button>
                     </td>
                 </tr>
+                <tr id="schedule-of-row">
+                    <td>
+                        <select form="add-semester-dates-form" name="day0ScheduleOf" style="max-width:4rem">
+                            <option name="monday" selected>LU</option>
+                            <option name="tuesday">MA</option>
+                            <option name="wednesday">ME</option>
+                            <option name="thursday">JE</option>
+                            <option name="friday">VE</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select form="add-semester-dates-form" name="day1ScheduleOf" style="max-width:4rem">
+                            <option name="monday">LU</option>
+                            <option name="tuesday" selected>MA</option>
+                            <option name="wednesday">ME</option>
+                            <option name="thursday">JE</option>
+                            <option name="friday">VE</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select form="add-semester-dates-form" name="day2ScheduleOf" style="max-width:4rem">
+                            <option name="monday">LU</option>
+                            <option name="tuesday">MA</option>
+                            <option name="wednesday" selected>ME</option>
+                            <option name="thursday">JE</option>
+                            <option name="friday">VE</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select form="add-semester-dates-form" name="day3ScheduleOf" style="max-width:4rem">
+                            <option name="monday">LU</option>
+                            <option name="tuesday">MA</option>
+                            <option name="wednesday">ME</option>
+                            <option name="thursday" selected>JE</option>
+                            <option name="friday">VE</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select form="add-semester-dates-form" name="day4ScheduleOf" style="max-width:4rem">
+                            <option name="monday">LU</option>
+                            <option name="tuesday">MA</option>
+                            <option name="wednesday">ME</option>
+                            <option name="thursday">JE</option>
+                            <option name="friday" selected>VE</option>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
             </table>
         </div>
     </div>
-    <a class="accordion-button collapsed" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
+    <a class="accordion-button" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
         Mon horaire
     </a>
     <div class="collapse show" id="schedule">
         <div class="card-body mb-2">
             <form action="" method="post" id="add-schedule-line-form">
-                <input class="add-id-to-value" name="" style="display:none;"></input>
+                <input class="add-id-to-value" name="semesterId" value="" style="display:none;"></input>
             </form>
-            <table class="table" id="semester-dates-table">
+            <table class="table" id="schdule">
                 <tr>
                     <th>Journée</th>
                     <th>Début</th>
@@ -82,19 +133,73 @@
                 </tr>
                 <tr>
                     <td>
-                        <input form="add-schedule-line-form" name="day" style="max-width:2rem"></input>
+                        <select form="add-schedule-line-form" name="day" style="max-width:4rem">
+                            <option name="monday">LU</option>
+                            <option name="tuesday">MA</option>
+                            <option name="wednesday">ME</option>
+                            <option name="thursday">JE</option>
+                            <option name="friday">VE</option>
+                        </select>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="start" style="max-width:2rem"></input>
+                        <input form="add-schedule-line-form" name="startTime" style="max-width:2rem"></input>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="end" style="max-width:2rem"></input>
+                        <input form="add-schedule-line-form" name="endTime" style="max-width:2rem"></input>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="course-groupe" style="max-width:2rem"></input>
+                        <select form="add-schedule-line-form" name="courseGroup" style="max-width:4rem">
+                        </select>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="session" style="max-width:2rem"></input>
+                        <select form="add-schedule-line-form" name="session" style="max-width:4rem">
+                            <option name="1">1ère séance</option>
+                            <option name="2">2ième séance</option>
+                            <option name="3">3ième séance</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm" form="add-schedule-line-form" type="submit" style="line-height:0px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a class="accordion-button" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
+        Mes disponibilitées
+    </a>
+    <div class="collapse show" id="schedule">
+        <div class="card-body mb-2">
+            <form action="" method="post" id="add-availibility-line-form">
+                <input class="add-id-to-value" name="semesterId" value="" style="display:none;"></input>
+            </form>
+            <table class="table" id="availibility-table">
+                <tr>
+                    <th>Journée</th>
+                    <th>Début</th>
+                    <th>Fin</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <td>
+                        <select form="add-schedule-line-form" name="day" style="max-width:4rem">
+                            <option name="monday">LU</option>
+                            <option name="tuesday">MA</option>
+                            <option name="wednesday">ME</option>
+                            <option name="thursday">JE</option>
+                            <option name="friday">VE</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input form="add-schedule-line-form" name="startTime" style="max-width:2rem"></input>
+                    </td>
+                    <td>
+                        <input form="add-schedule-line-form" name="endTime" style="max-width:2rem"></input>
                     </td>
                     <td>
                         <button class="btn btn-secondary btn-sm" form="add-schedule-line-form" type="submit" style="line-height:0px;">

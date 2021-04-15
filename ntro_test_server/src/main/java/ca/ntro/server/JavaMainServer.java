@@ -27,7 +27,7 @@ public class JavaMainServer {
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		NtroWebServer.defaultInitializationTask(BackendServiceTest.class, LocalStoreFiles.class, MessageServiceWebserver.class)
+		NtroWebServer.defaultInitializationTask(BackendServiceTest.class, LocalStoreFiles.class, MessageServiceWebserver.class, null)
 		             .setOptions(args)
 		             .addNextTask(new NtroServerMain())
 		             .execute();

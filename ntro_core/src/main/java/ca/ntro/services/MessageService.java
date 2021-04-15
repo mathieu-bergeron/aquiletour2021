@@ -39,7 +39,7 @@ public abstract class MessageService {
 		});
 	}
 	
-	protected <M extends NtroMessage> boolean localHandlerPresent(M message) {
+	protected <M extends NtroMessage> boolean handlerExistsFor(M message) {
 		T.call(this);
 		
 		return handlers.containsKey(message.getClass());
@@ -49,7 +49,7 @@ public abstract class MessageService {
 	public <M extends NtroMessage> void send(M message) {
 		T.call(this);
 		
-		if(localHandlerPresent(message)) {
+		if(handlerExistsFor(message)) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
 			handler.handle(message);

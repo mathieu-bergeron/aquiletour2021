@@ -25,6 +25,7 @@ import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.regex.RegEx;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.NtroSession;
@@ -43,6 +44,58 @@ public class Ntro {
 	}
 
 	/* </Factory> */
+	
+	
+	
+	
+	
+	/* <Config> */
+
+	private static ConfigService config;
+
+	static void registerConfigService(ConfigService config) {
+		__T.call(Ntro.class, "registerConfigService");
+
+		Ntro.config = config;
+	}
+
+	public static ConfigService config() {
+		__T.call(Ntro.class, "config");
+
+		if(config == null) {
+			Log.fatalError("ConfigService not registered");
+		}
+
+		return config;
+	}
+
+	/* </Config> */
+	
+	
+	
+	
+	
+	/* <Calendar> */
+
+	private static CalendarService calendarService;
+
+	static void registerCalendarService(CalendarService calendarService) {
+		__T.call(Ntro.class, "registerCalendarService");
+
+		Ntro.calendarService = calendarService;
+	}
+
+	public static CalendarService calendar() {
+		__T.call(Ntro.class, "calendar");
+
+		if(calendarService == null) {
+			Log.fatalError("CalendarService not registered");
+		}
+
+		return calendarService;
+	}
+
+	/* </Calendar> */
 	
 	
 	

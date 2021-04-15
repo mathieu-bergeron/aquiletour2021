@@ -72,4 +72,10 @@ public class BackendServiceJSweet extends BackendService {
 		handlers.put(messageClass, handler);
 	}
 
+	@Override
+	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
+		// Always true: all messages are sent on the socket
+		return true;
+	}
+
 }

@@ -16,6 +16,7 @@ import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
 import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.models.NtroDate;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
@@ -47,10 +48,11 @@ public abstract class EarlyInitialization {
 	protected abstract RegEx provideRegEx();
 	protected abstract CollectionsService provideCollectionsService();
 
-	private void registerSerializableClasses() {
+	protected void registerSerializableClasses() {
 		Ntro.registerSerializableClass(NtroUser.class);
 		Ntro.registerSerializableClass(NtroSession.class);
 		Ntro.registerSerializableClass(NtroSessionData.class);
+		Ntro.registerSerializableClass(NtroDate.class);
 
 		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
 		Ntro.registerSerializableClass(GetModelNtroMessage.class);

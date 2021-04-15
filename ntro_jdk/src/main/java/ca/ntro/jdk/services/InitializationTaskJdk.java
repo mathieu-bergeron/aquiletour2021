@@ -28,6 +28,7 @@ import ca.ntro.jdk.web.ViewLoaderWebJdk;
 import ca.ntro.services.AppCloser;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.CalendarService;
 import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
@@ -35,6 +36,7 @@ import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.CollectionsService;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
@@ -122,5 +124,19 @@ public class InitializationTaskJdk extends InitializationTask {
 	protected ModelStore provideModelStore() {
 		return Ntro.factory().newInstance(LocalStoreFiles.class);
 	}
+
+
+	@Override
+	protected ConfigService provideConfigService() {
+		throw new RuntimeException("provideConfigService must be re-implemented");
+	}
+
+
+	@Override
+	protected CalendarService provideCalendarService() {
+		return new CalendarServiceJdk();
+	}
+
+
 
 }

@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.semester_list;
 
+import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
@@ -9,6 +10,36 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
 public class SemesterListUpdater {
+
+	public static void addSemesterWeekForUser(ModelStoreSync modelStore, 
+			                                  String semesterId, 
+			                                  SemesterWeek semesterWeek,
+			                                  User user) {
+
+		T.call(SemesterListUpdater.class);
+		
+		addSemesterWeekForUserId(modelStore, semesterId, semesterWeek, user.getId());
+	}
+
+	public static void addSemesterWeekForUserId(ModelStoreSync modelStore, 
+			                                    String semesterId, 
+			                                    SemesterWeek semesterWeek,
+			                                    String userId) {
+		T.call(SemesterListUpdater.class);
+
+		modelStore.updateModel(SemesterListModel.class, 
+							   "admin",
+							   userId,
+							   new ModelUpdater<SemesterListModel>() {
+
+			@Override
+			public void update(SemesterListModel semesterList) {
+				T.call(this);
+				
+				semesterList.addSemesterWeek(semesterId, semesterWeek);
+			}
+		});
+	}
 
 	public static void addSemesterForUserId(ModelStoreSync modelStore, 
 			                              String semesterId, 

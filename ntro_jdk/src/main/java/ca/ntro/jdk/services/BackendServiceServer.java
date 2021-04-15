@@ -62,5 +62,8 @@ public abstract class BackendServiceServer extends BackendService {
 		
 	}
 
-
+	@Override
+	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
+		return handlers.containsKey(message.getClass());
+	}
 }

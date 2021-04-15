@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeFilter;
 
@@ -264,5 +265,10 @@ public class HtmlElementJdk extends HtmlElement {
 	@Override
 	public void css(String property, double value) {
 		// XXX: not supported on the server
+	}
+
+	@Override
+	public HtmlElement createTag(String tagName) {
+		return new HtmlElementJdk(new Element(Tag.valueOf(tagName),""));
 	}
 }

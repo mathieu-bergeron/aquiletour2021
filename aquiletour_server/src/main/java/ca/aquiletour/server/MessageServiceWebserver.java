@@ -13,7 +13,7 @@ public class MessageServiceWebserver extends MessageServiceJdk {
 
 		super.send(message);
 		
-		if(!localHandlerPresent(message)) {
+		if(!handlerExistsFor(message) && !Ntro.backendService().handlerExistsFor(message)) {
 
 			System.out.println("sending on WebSocket: " + message.getClass().getSimpleName());
 			RegisteredSockets.sendMessageToUser(Ntro.currentUser(), message);

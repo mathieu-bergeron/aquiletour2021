@@ -309,4 +309,9 @@ public class HtmlElementJSweet extends HtmlElement {
 		
 		jQueryElement.css(property, value);
 	}
+
+	@Override
+	public HtmlElement createTag(String tagName) {
+		return new HtmlElementJSweet($(tagName));
+	}
 }

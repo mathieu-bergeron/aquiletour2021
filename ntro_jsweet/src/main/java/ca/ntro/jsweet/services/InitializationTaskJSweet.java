@@ -25,6 +25,8 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.CalendarService;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.MessageService;
@@ -118,6 +120,17 @@ public class InitializationTaskJSweet extends InitializationTask {
 	@Override
 	protected ModelStore provideModelStore() {
 		return new NetworkStoreJSweet();
+	}
+
+	@Override
+	protected ConfigService provideConfigService() {
+		// XXX: not supported in the client
+		return null;
+	}
+
+	@Override
+	protected CalendarService provideCalendarService() {
+		return new CalendarServiceJSweet();
 	}
 
 }

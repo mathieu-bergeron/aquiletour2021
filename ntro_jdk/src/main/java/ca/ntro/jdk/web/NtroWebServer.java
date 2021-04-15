@@ -5,6 +5,7 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.EarlyInitializationJdk;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.NtroInitializationTask;
@@ -20,7 +21,8 @@ public class NtroWebServer {
 
 	public static NtroInitializationTask defaultInitializationTask(Class<? extends BackendServiceServer> backendServiceClass, 
 			                                                       Class<? extends ModelStore> modelStoreClass,
-			                                                       Class<? extends MessageService> messageServiceClass) {
+			                                                       Class<? extends MessageService> messageServiceClass,
+			                                                       ConfigService configService) {
 		__T.call(NtroWebServer.class, "defaultInitializationTask");
 
 		EarlyInitializationJdk earlyInitialization = new EarlyInitializationJdk();
@@ -29,7 +31,7 @@ public class NtroWebServer {
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
 		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
 
-		initializationTask.addSubTask(new InitializationTaskWebserver(backendServiceClass, modelStoreClass, messageServiceClass));
+		initializationTask.addSubTask(new InitializationTaskWebserver(backendServiceClass, modelStoreClass, messageServiceClass, configService));
 
 		return initializationTask;
 	}

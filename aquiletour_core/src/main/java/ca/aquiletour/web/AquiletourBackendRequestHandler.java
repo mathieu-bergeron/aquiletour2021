@@ -1,5 +1,7 @@
 package ca.aquiletour.web;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
@@ -8,6 +10,9 @@ import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.dates.SemesterDay;
+import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
@@ -24,10 +29,12 @@ import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
+import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
 public class AquiletourBackendRequestHandler {
@@ -117,8 +124,45 @@ public class AquiletourBackendRequestHandler {
 			addSemesterMessage.setSemesterId(semesterId);
 			
 			Ntro.messages().send(addSemesterMessage);
+
+		} else if(parameters.containsKey("semesterId") && parameters.containsKey("weekOf")) {
+
+			String semesterId = parameters.get("semesterId")[0];
+			String weekOf = parameters.get("weekOf")[0];
+			
+			SemesterWeek semesterWeek = new SemesterWeek();
+			
+			NtroDate mondayDate = Ntro.calendar().fromString(weekOf, "dd/MM/yyyy");
+			semesterWeek.setMondayDate(mondayDate);
+			
+			for(int dayOfWeek = SemesterDay.MONDAY; dayOfWeek <= SemesterDay.FRIDAY; dayOfWeek++) {
+				String semesterWeekId = parameters.get("day" + dayOfWeek)[0];
+				String scheduleOf = parameters.get("day" + dayOfWeek + "ScheduleOf")[0];
+				
+				SemesterDate semesterDate = new SemesterDate();
+				semesterDate.setCalendarDate(mondayDate.deltaDays(dayOfWeek));
+				semesterDate.setSemesterWeek(Integer.valueOf(semesterWeekId));
+				semesterDate.setSemesterDay(new SemesterDay(dayOfWeek));
+				semesterDate.setScheduleOf(SemesterDay.fromString(scheduleOf));
+
+				semesterWeek.addDate(semesterDate);
+			}
+
+			AddSemesterWeekMessage addSemesterWeek = Ntro.messages().create(AddSemesterWeekMessage.class);
+			addSemesterWeek.setSemesterId(semesterId);
+			addSemesterWeek.setSemesterWeek(semesterWeek);
+			Ntro.messages().send(addSemesterWeek);
+
+			
+		} else if(parameters.containsKey("semesterId") && parameters.containsKey("courseGroup")) {
+			// add scedule dates
+			
+		} else if(parameters.containsKey("semesterId")) {
+			// add availibility dates
 		}
 	}
+	
+	
 	
 	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);

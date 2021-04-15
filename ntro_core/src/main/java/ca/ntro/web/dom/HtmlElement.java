@@ -6,6 +6,7 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class HtmlElement {
 
+	public abstract HtmlElement createTag(String tagName);
 	public abstract HtmlElement createElement(String html);
 
 	public abstract void animate(Map<String,Object> properties, long duration, AnimationListener listener);

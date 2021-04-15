@@ -41,6 +41,7 @@ import ca.aquiletour.core.models.dates.CourseDateClassDay;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterDay;
+import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
@@ -78,7 +79,7 @@ import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
-import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterDateList;
+import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterWeekList;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterList;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
@@ -176,7 +177,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterModel.class);
 		Ntro.registerSerializableClass(SemesterListModel.class);
 		Ntro.registerSerializableClass(ObservableSemesterList.class);
-		Ntro.registerSerializableClass(ObservableSemesterDateList.class);
+		Ntro.registerSerializableClass(ObservableSemesterWeekList.class);
+		Ntro.registerSerializableClass(SemesterWeek.class);
 
 		Ntro.registerSerializableClass(CourseDescription.class);
 		Ntro.registerSerializableClass(CourseListModel.class);

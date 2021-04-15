@@ -1,8 +1,10 @@
 package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class SemesterListModel implements NtroModel {
@@ -49,6 +51,21 @@ public class SemesterListModel implements NtroModel {
 		
 		if(!ifSemesterIdExists(semester.getSemesterId())) {
 			semesters.addItem(semester);
+		}
+	}
+
+	public void addSemesterWeek(String semesterId, SemesterWeek semesterWeek) {
+		T.call(this);
+		
+		SemesterModel semester = semesterById(semesterId);
+		
+		if(semester != null) {
+			
+			semester.addWeek(semesterWeek);
+			
+		} else {
+			
+			Log.warning("Semester not found: " + semesterId);
 		}
 	}
 }
