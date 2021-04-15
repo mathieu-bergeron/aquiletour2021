@@ -89,7 +89,6 @@ import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
-import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
