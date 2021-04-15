@@ -13,16 +13,21 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescriptionView {
 	
-	private HtmlElement title;
+	private HtmlElement courseTitleLink;
+	private HtmlElement courseTitleSemesterId;
+	private HtmlElement addGroupModalTitle;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
-		title = this.getRootElement().find("#course-title-link").get(0);
+		courseTitleLink = this.getRootElement().find("#course-title-link").get(0);
+		courseTitleSemesterId = this.getRootElement().find("#course-title-semester-id").get(0);
+		addGroupModalTitle = this.getRootElement().find("#add-group-modal-title").get(0);
 
-		MustNot.beNull(title);
-		
+		MustNot.beNull(courseTitleLink);
+		MustNot.beNull(courseTitleSemesterId);
+		MustNot.beNull(addGroupModalTitle);
 	}
 
 	@Override
@@ -37,8 +42,12 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + courseDescription.getSemesterId();
 		}
 		
-		title.text(courseDescription.getCourseTitle());
-		title.setAttribute("href", href);
+		courseTitleLink.text(courseDescription.getCourseId());
+		courseTitleLink.setAttribute("href", href);
+		
+		courseTitleSemesterId.text(courseDescription.getSemesterId());
+		
+		addGroupModalTitle.text("Ajouter un groupe à " + courseDescription.getCourseId());
 	}
 
 }
