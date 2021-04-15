@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.course_list.messages;
 
 import ca.ntro.messages.NtroMessage;
 
-public class SelectSemesterMessage extends NtroMessage {
+public class SelectCourseListSubset extends NtroMessage {
 	
 	private String semesterId;
 

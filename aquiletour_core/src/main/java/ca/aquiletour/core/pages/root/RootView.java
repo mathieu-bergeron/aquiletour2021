@@ -4,6 +4,7 @@ import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
+import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
@@ -25,4 +26,5 @@ public interface RootView extends NtroView {
 	void showCalendarList(SemesterListView currentView);
 	void showCourseList(CourseListView currentView);
 	void displayErrorMessage(String message);
+	void showGroupList(GroupListView currentView);
 }

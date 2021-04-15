@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.course_list.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course_list.messages.SelectSemesterMessage;
+import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
@@ -13,12 +13,12 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseListModel, CourseListView, SelectSemesterMessage> {
+public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseListModel, CourseListView, SelectCourseListSubset> {
 	
 	private String currentSemesterId = null;
 
 	@Override
-	protected void handle(CourseListModel model, CourseListView view, ViewLoader subViewLoader, SelectSemesterMessage message) {
+	protected void handle(CourseListModel model, CourseListView view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
 		
 		if(currentSemesterId == null) {

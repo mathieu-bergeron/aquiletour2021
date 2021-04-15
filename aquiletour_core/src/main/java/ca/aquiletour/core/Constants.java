@@ -15,6 +15,7 @@ public class Constants {
 	public static final String QUEUES_URL_SEGMENT = "profs_disponibles";
 	public static final String COURSE_URL_SEGMENT = "cours";
 	public static final String COURSE_LIST_URL_SEGMENT = "mescours";
+	public static final String GROUP_LIST_URL_SEGMENT = "mesgroupes";
 	public static final String SEMESTER_URL_SEGMENT = "session";
 	public static final String USERS_URL_SEGMENT = "usagers";
 	public static final String LOGIN_URL_SEGMENT = "connexion";

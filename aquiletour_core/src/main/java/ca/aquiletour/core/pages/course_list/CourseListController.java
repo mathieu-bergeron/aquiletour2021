@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.course_list;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course_list.handlers.CourseListViewModel;
 import ca.aquiletour.core.pages.course_list.handlers.ShowCourseListHandler;
-import ca.aquiletour.core.pages.course_list.messages.SelectSemesterMessage;
+import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
@@ -36,7 +36,7 @@ public class CourseListController extends NtroController<RootController> {
 
 		addSubViewLoader(CourseDescriptionView.class, context().lang());
 		
-		addModelViewSubViewMessageHandler(CourseDescriptionView.class, SelectSemesterMessage.class, new CourseListViewModel());
+		addModelViewSubViewMessageHandler(CourseDescriptionView.class, SelectCourseListSubset.class, new CourseListViewModel());
 	}
 	
 	@Override

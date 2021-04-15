@@ -1,6 +1,8 @@
 package ca.aquiletour.web.pages.course_list;
 
+
 import ca.aquiletour.core.AquiletourMain;
+import static ca.ntro.assertions.Factory.that;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
@@ -18,6 +20,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 	private HtmlElement courseTitleSemesterId;
 	private HtmlElement addGroupModalTitle;
 	private HtmlElement groupList;
+	private HtmlElement groupContainer;
 	private HtmlElements addSemesterIdToValue;
 	private HtmlElements addCourseIdToValue;
 
@@ -29,6 +32,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		courseTitleSemesterId = this.getRootElement().find("#course-title-semester-id").get(0);
 		addGroupModalTitle = this.getRootElement().find("#add-group-modal-title").get(0);
 		groupList = this.getRootElement().find("#group-list").get(0);
+		groupContainer = this.getRootElement().find("#group-container").get(0);
 		addSemesterIdToValue = this.getRootElement().find(".add-semester-id-to-value");
 		addCourseIdToValue = this.getRootElement().find(".add-course-id-to-value");
 
@@ -36,6 +40,10 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		MustNot.beNull(courseTitleSemesterId);
 		MustNot.beNull(addGroupModalTitle);
 		MustNot.beNull(groupList);
+		MustNot.beNull(groupContainer);
+
+		Ntro.verify(that(addSemesterIdToValue.size() > 0).isTrue());
+		Ntro.verify(that(addCourseIdToValue.size() > 0).isTrue());
 	}
 
 	@Override
@@ -48,6 +56,10 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		
 		if(!AquiletourMain.currentSemester().equals(courseDescription.getSemesterId())) {
 			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + courseDescription.getSemesterId();
+		}
+		
+		if(courseDescription.getSemesterId().equals(Constants.COURSE_DRAFTS)) {
+			groupContainer.hide();
 		}
 		
 		courseTitleLink.text(courseDescription.getCourseId());

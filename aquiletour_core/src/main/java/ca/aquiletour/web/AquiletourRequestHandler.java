@@ -12,12 +12,14 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.course_list.messages.SelectSemesterMessage;
+import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
+import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
+import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
@@ -77,7 +79,33 @@ public class AquiletourRequestHandler {
 		} else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
 
 			sendCourseListMessages(path.subPath(1), parameters, context.user(), context.sessionData());
+
+		} else if(path.startsWith(Constants.GROUP_LIST_URL_SEGMENT)) {
+
+			sendGroupListMessages(path.subPath(1), parameters, context.user(), context.sessionData());
 		}
+	}
+
+	private static void sendGroupListMessages(Path subPath, 
+			                                  Map<String, String[]> parameters, 
+			                                  User user, 
+			                                  SessionData sessionData) {
+
+		T.call(AquiletourRequestHandler.class);
+		
+		ShowGroupListMessage showGroupListMessage = Ntro.messages().create(ShowGroupListMessage.class);
+		Ntro.messages().send(showGroupListMessage);
+		
+		String currentSemesterId = null;
+		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+			currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+		}else {
+			currentSemesterId = sessionData.getCurrentSemester();
+		}
+
+		SelectGroupListSubset selectGroupListSubset = Ntro.messages().create(SelectGroupListSubset.class);
+		selectGroupListSubset.setSemesterId(currentSemesterId);
+		Ntro.messages().send(selectGroupListSubset);
 	}
 
 	private static void sendCourseListMessages(Path subPath, 
@@ -97,9 +125,9 @@ public class AquiletourRequestHandler {
 			currentSemesterId = sessionData.getCurrentSemester();
 		}
 
-		SelectSemesterMessage selectSemesterMessage = Ntro.messages().create(SelectSemesterMessage.class);
-		selectSemesterMessage.setSemesterId(currentSemesterId);
-		Ntro.messages().send(selectSemesterMessage);
+		SelectCourseListSubset selectCourseListSubset = Ntro.messages().create(SelectCourseListSubset.class);
+		selectCourseListSubset.setSemesterId(currentSemesterId);
+		Ntro.messages().send(selectCourseListSubset);
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {

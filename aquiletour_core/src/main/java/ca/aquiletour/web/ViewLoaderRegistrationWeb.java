@@ -12,6 +12,8 @@ import ca.aquiletour.core.pages.dashboards.teacher.DashboardCourseViewTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.group_list.views.GroupDescriptionView;
+import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
@@ -36,6 +38,8 @@ import ca.aquiletour.web.pages.dashboard.teacher.DashboardCourseViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.teacher.DashboardViewWebTeacher;
 import ca.aquiletour.web.pages.git.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.CommitViewWeb;
+import ca.aquiletour.web.pages.group_list.GroupDescriptionViewWeb;
+import ca.aquiletour.web.pages.group_list.GroupListViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
 import ca.aquiletour.web.pages.queue.student.StudentAppointmentViewWeb;
@@ -239,6 +243,22 @@ public class ViewLoaderRegistrationWeb {
 		     	.setCssUrl("/views/course_description/course_description.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
 				.setTargetClass(CourseDescriptionViewWeb.class));
+
+		ViewLoaders.registerViewLoader(GroupListView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/group_list/group_list.html")
+			     	.setCssUrl("/views/group_list/group_list.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(GroupListViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(GroupDescriptionView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+				.setHtmlUrl("/views/group_description/group_description.html")
+		     	.setCssUrl("/views/group_description/group_description.css")
+				.setTranslationsUrl("/i18n/fr/string.json")
+				.setTargetClass(GroupDescriptionViewWeb.class));
 		
 	}
 }

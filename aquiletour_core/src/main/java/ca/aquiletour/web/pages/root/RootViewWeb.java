@@ -15,6 +15,7 @@ import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
+import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -46,7 +47,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement homeLink;
 	private HtmlElement dashboardLink;
 	private HtmlElement coursesLink;
-	private HtmlElement groupsLink;
+	private HtmlElement groupListLink;
 	private HtmlElement openQueueListLink;
 	private HtmlElement calendarListLink;
 	private HtmlElement loginLink;
@@ -62,6 +63,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
 		coursesLink = getRootElement().find("#courses-link").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
+		groupListLink = getRootElement().find("#group-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 
@@ -71,6 +73,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(openQueueListLink);
 		MustNot.beNull(calendarListLink);
 		MustNot.beNull(loginLink);
+		MustNot.beNull(groupListLink);
 		MustNot.beNull(alertDangerElement);
 
 		alertDanger = new BootstrapAlert(alertDangerElement);
@@ -146,6 +149,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				Ntro.messages().send(showCalendarListMessage);
 			}
 		});
+
+		groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
 
 		coursesLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
@@ -311,5 +316,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		alertDanger.displayMessage(message);
 		
+	}
+
+	@Override
+	public void showGroupList(GroupListView groupListView) {
+		T.call(this);
+
+		showSubView(groupListView);
 	}
 }

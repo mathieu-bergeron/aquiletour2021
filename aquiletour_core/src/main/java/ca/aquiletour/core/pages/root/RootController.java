@@ -31,6 +31,7 @@ import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboard
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.CommitListController;
+import ca.aquiletour.core.pages.group_list.GroupListController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
@@ -70,6 +71,8 @@ public class RootController extends NtroRootController {
 		addSubController(SemesterListController.class, Constants.SEMESTER_LIST_URL_SEGMENT);
 
 		addSubController(CourseListController.class, Constants.COURSE_LIST_URL_SEGMENT);
+
+		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
 
 		addWindowViewHandler(new RootViewHandler());
 		
