@@ -73,11 +73,11 @@ public class BootstrapDropdown {
 	private HtmlElement createLink(String id, String href, String text) {
 		T.call(this);
 		
-		HtmlElement semesterLink = dropdownHead.createElement("<a class=\"dropdown-item\" href=\"#\"></a");
+		HtmlElement semesterLink = dropdownHead.createElement("<a></a");
+		semesterLink.setAttribute("class", "dropdown-item");
 		semesterLink.setAttribute("id", id);
 		semesterLink.setAttribute("href", href);
 		semesterLink.text(text);
-		
 		
 		return semesterLink;
 	}

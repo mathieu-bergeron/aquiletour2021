@@ -26,7 +26,9 @@ import static def.jquery.Globals.$;
 
 import static def.dom.Globals.document;
 
-import static def.dom.Globals.history;;
+import static def.dom.Globals.history;
+
+import static def.dom.Globals.window;
 
 public class HtmlElementJSweet extends HtmlElement {
 
@@ -142,14 +144,22 @@ public class HtmlElementJSweet extends HtmlElement {
 		jQueryElement.attr(name, value);
 		
 		if(name.equals("href")) {
+			removeListeners();
 			addEventListener("click", new HtmlEventListener() {
 				@Override
 				public void onEvent() {
 					T.call(this);
 					
-					history.pushState(null, jQueryElement.text(), value);
+					String fullHref = value;
+					
+					if(value.isEmpty() || value.startsWith("?") || value.startsWith("#")) {
+						
+						fullHref = window.location.pathname + value;
+					}
 
-					Ntro.router().sendMessagesFor(Ntro.context(), value);
+					history.pushState(null, jQueryElement.text(), fullHref);
+
+					Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
 				}
 			});
 		}
