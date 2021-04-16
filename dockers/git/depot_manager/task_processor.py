@@ -150,6 +150,8 @@ def hook_task(depot, maria_conn):
                 answer = 'DONE'
         except git.exc.GitCommandError:
             answer = 'DEPOT not accessible on server'
+        #TODO onCloneFail
+        
         #   Not there... Error
         # Fetch / Clone depot
         #   Not possible ... Error

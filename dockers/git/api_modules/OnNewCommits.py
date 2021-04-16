@@ -7,14 +7,18 @@ import re
 import utils.normalize_data
 
 #  {
-#      "_C": "RegisterGitRepo",
-#      "courseId": "nicolas.leduc/IntroProg",
-#      "semesterId": "H2021",
-#      "groupId": "01",
-#      "studentId": "bob.berancourt",
-#      "repoPath": "/Semaine 01"
-#      "repoUrl": "https://github.com/test/test.git",
-#  }
+#       "_C": "ModifyExercise",
+#       "courseId": "mathieu.bergeron/StruDon",
+#       "semesterId": "H2021",
+#       "groupId": "01",
+#       "exercisePath": "/TP1/Exercice 1"
+#       "oldRepoPath": "/TP1"
+#       "oldSourceFolderPath": "/exercice01",
+#       "oldCompletionKeywords": "Exercice 1",
+#       "newRepoPath": "/"
+#       "newSourceFolderPath": "/TP1/exercice01",
+#       "newCompletionKeywords": "Exercice 1",
+#   }
 def process(api_req, maria_conn, lite_conn):
 #    if not 'groupId' in api_req:
 #        api_req['groupId'] = None

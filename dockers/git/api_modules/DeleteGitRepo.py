@@ -7,7 +7,7 @@ import re
 import utils.normalize_data
 
 #  {
-#      "_C": "RegisterGitRepo",
+#      "_C": "DeleteGitRepo",
 #      "courseId": "nicolas.leduc/IntroProg",
 #      "semesterId": "H2021",
 #      "groupId": "01",
@@ -22,22 +22,17 @@ def process(api_req, maria_conn, lite_conn):
         api_req['repoPath'] = '/'
     if maria_conn:
         try:
-            host = 'ZZ'
-            if re.search('gitlab', api_req['repoUrl']):
-                host = 'GL'
-            elif re.search('github', api_req['repoUrl']):
-                host = 'GH'
-            elif re.search('azure', api_req['repoUrl']):
-                host = 'AZ'
+            # host = 'ZZ'
+            # if re.search('gitlab', api_req['repoUrl']):
+            #     host = 'GL'
+            # elif re.search('github', api_req['repoUrl']):
+            #     host = 'GH'
+            # elif re.search('azure', api_req['repoUrl']):
+            #     host = 'AZ'
             maria_cur = maria_conn.cursor()
-            maria_cur.execute('''INSERT INTO repository 
-                VALUES (%s,%s,%s,%s,%s,%s,%s)''',
-                (api_req['repoUrl'], host,
-                utils.normalize_data.normalize_session(api_req['semesterId']),
-                utils.normalize_data.normalize_courseId(api_req['courseId']),
-                utils.normalize_data.normalize_group(api_req['groupId']),
-                utils.normalize_data.normalize_studentId(api_req['studentId']),
-                api_req['repoPath']))
+            maria_cur.execute('''DELETE FROM repository 
+                WHERE repo_url = %s''',
+                (api_req['repoUrl']))
             maria_conn.commit()
             response = JSONResponse()
             response.status_code = status.HTTP_200_OK
