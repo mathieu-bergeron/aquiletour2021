@@ -3,6 +3,7 @@ package ca.ntro.jsweet.dom;
 import java.util.Map;
 import java.util.function.BiFunction;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
@@ -27,14 +28,12 @@ import static def.dom.Globals.document;
 
 import static def.dom.Globals.history;;
 
-
 public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
 	
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
-		
 	}
 
 	@Override
@@ -148,7 +147,9 @@ public class HtmlElementJSweet extends HtmlElement {
 				public void onEvent() {
 					T.call(this);
 					
-					history.pushState(null, "TODO", value);
+					history.pushState(null, jQueryElement.text(), value);
+
+					Ntro.router().sendMessagesFor(Ntro.context(), value);
 				}
 			});
 		}

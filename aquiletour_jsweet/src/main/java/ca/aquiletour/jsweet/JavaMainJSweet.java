@@ -18,9 +18,11 @@
 package ca.aquiletour.jsweet;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.web.AquiletourRouterService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.services.BackendServiceJSweet;
 import ca.ntro.jsweet.services.NtroJSweet;
+import ca.ntro.services.RouterService;
 
 public class JavaMainJSweet {
 
@@ -33,8 +35,10 @@ public class JavaMainJSweet {
 		//        we need a better init sequence
 		//        ideally using a TaskGraph to represent dependancies
 		AquiletourMain.registerSerializableClasses();
+		
+		RouterService routerService = new AquiletourRouterService();
 
-		NtroJSweet.defaultInitializationTask()
+		NtroJSweet.defaultInitializationTask(routerService)
 				  .setOptions(options)
 				  .addNextTask(new AquiletourMainJSweet())
 				  .execute();

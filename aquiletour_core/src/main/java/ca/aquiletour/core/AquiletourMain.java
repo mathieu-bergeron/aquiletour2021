@@ -19,6 +19,7 @@ package ca.aquiletour.core;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.DeRegisterRepo;
@@ -118,8 +119,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		registerViewLoaders();
 
-		NtroContext<User, SessionData> context = createNtroContext();
-
+		@SuppressWarnings("unchecked")
+		NtroContext<User, SessionData> context = (NtroContext<User, SessionData>) Ntro.context();
+		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
@@ -134,18 +136,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 				rootController.changeUser(message.getUser());
 			}
 		});
-	}
-
-	protected static NtroContext<User, SessionData> createNtroContext() {
-		T.call(AquiletourMain.class);
-
-		NtroContext<User, SessionData> context = new NtroContext<>();
-
-		context.registerUser(Ntro.currentUser());
-		context.registerLang(Constants.LANG);
-		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
-
-		return context;
 	}
 	
 	public static void registerSerializableClasses() {
@@ -162,7 +152,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(OpenQueueListModel.class);
 		Ntro.registerSerializableClass(ObservableQueueList.class);
 		Ntro.registerSerializableClass(OpenQueue.class);
-
 		Ntro.registerSerializableClass(CommitListModel.class);
 		Ntro.registerSerializableClass(ObservableCommitList.class);
 		Ntro.registerSerializableClass(Commit.class);
@@ -218,7 +207,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(MoveAppointmentMessage.class);
 		Ntro.registerSerializableClass(TeacherClosesQueueMessage.class);
 		Ntro.registerSerializableClass(TeacherUsesQueueMessage.class);
+
 		Ntro.registerSerializableClass(UserInitiatesLoginMessage.class);
+		Ntro.registerSerializableClass(UserLogsOutMessage.class);
+
 		Ntro.registerSerializableClass(UserSendsLoginCodeMessage.class);
 		Ntro.registerSerializableClass(AddStudentCsvMessage.class);
 		Ntro.registerSerializableClass(AddSubTaskMessage.class);

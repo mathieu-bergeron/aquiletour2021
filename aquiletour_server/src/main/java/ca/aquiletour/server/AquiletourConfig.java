@@ -1,4 +1,4 @@
-package ca.aquiletour.core;
+package ca.aquiletour.server;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

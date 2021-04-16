@@ -6,7 +6,7 @@ import ca.ntro.users.NtroUser;
 public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	
 	private String lang;
-	private S sessionData;
+	private NtroSessionData sessionData;
 
 	// FIXME: authToken should be here
 	//        instead of User
@@ -46,11 +46,12 @@ public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 		return this.lang.equals(otherContext.lang);
 	}
 
-	public void registerSessionData(S sessionData) {
+	public void registerSessionData(NtroSessionData sessionData) {
 		this.sessionData = sessionData;
 	}
 
+	@SuppressWarnings("unchecked")
 	public S sessionData() {
-		return sessionData;
+		return (S) sessionData;
 	}
 }

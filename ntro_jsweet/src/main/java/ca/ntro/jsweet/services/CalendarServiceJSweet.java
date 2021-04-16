@@ -7,12 +7,12 @@ public class CalendarServiceJSweet extends CalendarService {
 
 	@Override
 	public NtroDate fromString(String dateString, String dateFormat) {
-		throw new RuntimeException("TODO");
+		return new NtroDate(0);
 	}
 
 	@Override
 	public String format(long epochSeconds, String dateFormat) {
-		throw new RuntimeException("TODO");
+		return "TODO";
 	}
 
 }

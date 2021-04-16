@@ -8,7 +8,7 @@ public class JavaMainTest {
 		
 		String[] options = new String[] {"--traceLevel","APP"};
 		
-		NtroJSweet.defaultInitializationTask()
+		NtroJSweet.defaultInitializationTask(null)
 				  .setOptions(options)
 				  .addNextTask(new NtroMainTest())
 				  .execute();

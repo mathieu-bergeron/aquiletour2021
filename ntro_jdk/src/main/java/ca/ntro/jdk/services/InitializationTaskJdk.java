@@ -38,6 +38,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ConfigService;
 import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.RouterService;
 import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
@@ -128,13 +129,19 @@ public class InitializationTaskJdk extends InitializationTask {
 
 	@Override
 	protected ConfigService provideConfigService() {
-		throw new RuntimeException("provideConfigService must be re-implemented");
+		throw new RuntimeException("provideConfigService must be overriden");
 	}
 
 
 	@Override
 	protected CalendarService provideCalendarService() {
 		return new CalendarServiceJdk();
+	}
+
+
+	@Override
+	protected RouterService provideRouterService() {
+		throw new RuntimeException("provideConfigService must be overriden");
 	}
 
 

@@ -32,13 +32,22 @@ import ca.ntro.services.JsonService;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.RouterService;
 import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
-import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJSweet extends InitializationTask {
+	
+	private final RouterService routerService;
+	
+	public InitializationTaskJSweet(RouterService routerService) {
+		super();
+		T.call(this);
+
+		this.routerService = routerService;
+	}
 	
 	@Override
 	protected StackAnalyzer provideStackAnalyzer() {
@@ -133,4 +142,8 @@ public class InitializationTaskJSweet extends InitializationTask {
 		return new CalendarServiceJSweet();
 	}
 
+	@Override
+	protected RouterService provideRouterService() {
+		return routerService;
+	}
 }

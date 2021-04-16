@@ -19,6 +19,8 @@ package ca.ntro.core;
 
 public class Constants {
 	
+	public static final String LANG = "fr"; // FIXME
+	
 	public static final String INITIALIZATION_TASK_ID="initializationTask";
 	
 	public static final String SOCKET_PREFIX = "/_socket";

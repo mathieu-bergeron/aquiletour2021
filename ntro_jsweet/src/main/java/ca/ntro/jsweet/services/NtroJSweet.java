@@ -21,10 +21,11 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.Globals;
 import ca.ntro.services.NtroInitializationTask;
+import ca.ntro.services.RouterService;
 
 public class NtroJSweet {
 	
-	public static NtroInitializationTask defaultInitializationTask() {
+	public static NtroInitializationTask defaultInitializationTask(RouterService routerService) {
 		__T.call(NtroJSweet.class, "defaultInitializationTask");
 
 		EarlyInitializationJSweet earlyInitialization = new EarlyInitializationJSweet();
@@ -33,7 +34,7 @@ public class NtroJSweet {
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
 		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
 		
-		InitializationTaskJSweet initJSweet = new InitializationTaskJSweet();
+		InitializationTaskJSweet initJSweet = new InitializationTaskJSweet(routerService);
 
 		// FIXME/TODO
 		//initJSweet.addNextTask(new LoadSourceMapTask("/js/tutoriel02/bundle.js.map"));

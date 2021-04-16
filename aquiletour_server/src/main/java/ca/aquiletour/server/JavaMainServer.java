@@ -20,11 +20,12 @@ package ca.aquiletour.server;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import ca.aquiletour.core.AquiletourConfig;
 import ca.aquiletour.server.backend.AquiletourBackendService;
+import ca.aquiletour.web.AquiletourRouterService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.web.NtroWebServer;
 import ca.ntro.services.ConfigService;
+import ca.ntro.services.RouterService;
 
 public class JavaMainServer {
 	
@@ -37,7 +38,13 @@ public class JavaMainServer {
 		
 		ConfigService config = AquiletourConfig.loadFromJson(configFilepath);
 		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreServer.class, MessageServiceWebserver.class, config)
+		RouterService routerService = new AquiletourRouterService();
+		
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, 
+				                                LocalStoreServer.class, 
+				                                MessageServiceWebserver.class, 
+				                                config, 
+				                                routerService)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();

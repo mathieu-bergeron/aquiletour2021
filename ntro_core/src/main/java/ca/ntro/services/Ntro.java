@@ -21,14 +21,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.assertions.AssertExpression;
+import ca.ntro.core.Constants;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.NtroSession;
+import ca.ntro.users.NtroSessionData;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -44,6 +47,52 @@ public class Ntro {
 	}
 
 	/* </Factory> */
+	
+	
+	
+	
+	
+	/* <Context> */
+	
+	public static NtroContext<?,?> context() {
+		__T.call(Ntro.class, "context");
+
+		NtroContext<?, ?> context = new NtroContext<>();
+
+		context.registerUser(Ntro.currentUser());
+		context.registerLang(Constants.LANG);
+		context.registerSessionData(Ntro.currentSession().getSessionData());
+		
+		return context;
+	}
+
+	/* </Context> */
+	
+	
+	
+	
+	
+	/* <Router> */
+	
+	private static RouterService router;
+
+	static void registerRouterService(RouterService router) {
+		__T.call(Ntro.class, "registerRouterService");
+
+		Ntro.router = router;
+	}
+	
+	public static RouterService router() {
+		__T.call(Ntro.class, "router");
+
+		if(router == null) {
+			Log.fatalError("ConfigService not registered");
+		}
+
+		return router;
+	}
+
+	/* </Router> */
 	
 	
 	

@@ -62,9 +62,9 @@ public abstract class InitializationTask extends NtroTaskSync {
 		Ntro.registerConfigService(provideConfigService());
 		
 		Ntro.registerCalendarService(provideCalendarService());
+		
+		Ntro.registerRouterService(provideRouterService());
 	}
-
-
 
 	protected abstract StackAnalyzer provideStackAnalyzer();
 	protected abstract ResourceLoader provideResourceLoader();
@@ -80,5 +80,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract ValueFormatter provideValueFormatter();
 	protected abstract ConfigService provideConfigService();
 	protected abstract CalendarService provideCalendarService();
+	protected abstract RouterService provideRouterService();
 
 }
