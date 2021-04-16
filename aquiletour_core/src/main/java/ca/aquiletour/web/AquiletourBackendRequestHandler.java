@@ -1,7 +1,5 @@
 package ca.aquiletour.web;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
@@ -30,6 +28,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
+import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -157,6 +156,20 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("semesterId") && parameters.containsKey("courseGroup")) {
 			// add scedule dates
 			
+		} else if(parameters.containsKey("currentSemesterId")) {
+
+			String semesterId = parameters.get("currentSemesterId")[0];
+			boolean currentSemester = false;
+			
+			if(parameters.containsKey("ifSemesterSelected")) {
+				currentSemester = true;
+			}
+
+			SelectCurrentSemester selectCurrentSemester = Ntro.messages().create(SelectCurrentSemester.class);
+			selectCurrentSemester.setSemesterId(semesterId);
+			selectCurrentSemester.setCurrentSemester(currentSemester);
+			Ntro.messages().send(selectCurrentSemester);
+
 		} else if(parameters.containsKey("semesterId")) {
 			// add availibility dates
 		}

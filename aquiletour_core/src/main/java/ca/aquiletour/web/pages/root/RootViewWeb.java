@@ -96,35 +96,28 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		homeLink.setAttribute("href", "/" + Constants.HOME_URL_SEGMENT);
 
-		homeLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-				Ntro.messages().send(Ntro.messages().create(ShowHomeMessage.class));
-			}
-		});
-		
 		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
 
-		/*
-		dashboardLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
+		coursesLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
-				Ntro.messages().send(Ntro.messages().create(ShowDashboardMessage.class));
-			}
-		});*/
-
-		openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
+		openQueueListLink.hide();
+		calendarListLink.hide();
+		groupListLink.hide();
 		
-		openQueueListLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-				Ntro.messages().send(Ntro.messages().create(ShowOpenQueueListMessage.class));
-			}
-		});
+		if(Ntro.currentUser() instanceof Teacher
+				|| Ntro.currentUser() instanceof TeacherGuest) {
+
+			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
+			calendarListLink.show();
+
+			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
+			groupListLink.show();
+			
+		} else {
+
+			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
+			openQueueListLink.show();
+		}
 
 		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
 
@@ -138,31 +131,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
-
-		calendarListLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-				
-				ShowSemesterListMessage showCalendarListMessage = Ntro.messages().create(ShowSemesterListMessage.class);
-				Ntro.messages().send(showCalendarListMessage);
-			}
-		});
-
-		groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
-
-		coursesLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
-
-		coursesLink.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-				
-				ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
-				Ntro.messages().send(showCourseListMessage);
-			}
-		});
 	}
 
 	@Override

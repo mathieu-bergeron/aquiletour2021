@@ -68,4 +68,10 @@ public class SemesterListModel implements NtroModel {
 			Log.warning("Semester not found: " + semesterId);
 		}
 	}
+
+	public void selectCurrentSemester(String semesterId) {
+		T.call(this);
+
+		getCurrentSemesterId().set(semesterId);
+	}
 }

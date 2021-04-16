@@ -4,11 +4,9 @@ package ca.aquiletour.web.pages.semester_list;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterDay;
 import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import static ca.ntro.assertions.Factory.that;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.ntro.core.mvc.NtroContext;
@@ -24,6 +22,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	private HtmlElement semesterIdHeader;
 	private HtmlElements addIdToValue;
 	private HtmlElement weeksTbody;
+	private HtmlElement currentSemesterCheckbox;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -32,9 +31,11 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		semesterIdHeader = this.getRootElement().find("#semester-id").get(0);
 		addIdToValue = this.getRootElement().find(".add-id-to-value");
 		weeksTbody = this.getRootElement().find("#semester-weeks-tbody").get(0);
+		currentSemesterCheckbox = this.getRootElement().find("#current-semester-checkbox").get(0);
 		
 		MustNot.beNull(semesterIdHeader);
 		MustNot.beNull(weeksTbody);
+		MustNot.beNull(currentSemesterCheckbox);
 		Ntro.verify(that(addIdToValue.size() > 0).isTrue());
 	}
 
@@ -49,6 +50,14 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 			value += item.getSemesterId();
 			e.setAttribute("value", value);
 		});
+		
+		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
+		
+		if(sessionData.getCurrentSemester().equals(item.getSemesterId())) {
+			currentSemesterCheckbox.setAttribute("checked", "");
+		}else {
+			currentSemesterCheckbox.removeAttribute("checked");
+		}
 	}
 
 	@Override

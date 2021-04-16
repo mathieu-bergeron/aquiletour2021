@@ -138,6 +138,8 @@ public class DynamicHandler extends AbstractHandler {
 
 		executeBackend(baseRequest, response, path, parameters);
 
+		setCurrentSemester();
+
 		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
 		//boolean ifJSweet = false;
 

@@ -314,4 +314,9 @@ public class HtmlElementJSweet extends HtmlElement {
 	public HtmlElement createTag(String tagName) {
 		return new HtmlElementJSweet($(tagName));
 	}
+
+	@Override
+	public void removeAttribute(String name) {
+		jQueryElement.removeAttr(name);
+	}
 }

@@ -271,4 +271,11 @@ public class HtmlElementJdk extends HtmlElement {
 	public HtmlElement createTag(String tagName) {
 		return new HtmlElementJdk(new Element(Tag.valueOf(tagName),""));
 	}
+
+	@Override
+	public void removeAttribute(String name) {
+		T.call(this);
+		
+		jsoupElement.removeAttr(name);
+	}
 }
