@@ -99,4 +99,8 @@ public abstract class MessageService {
 
 		return handlerTask;
 	}
+	
+	public void sendQueuedMessages() {
+		// XXX: must be redefined on the server
+	}
 }

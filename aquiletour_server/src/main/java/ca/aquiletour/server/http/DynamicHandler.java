@@ -145,9 +145,16 @@ public class DynamicHandler extends AbstractHandler {
 		//NtroWindowServer window = newWindow(true, path);
 
 		if(!ifJSweet) {
+
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
+
+		}else {
+			
+			// FIXME: the taskGraph itself should have a notion
+			//        of queued messages
+			Ntro.messages().sendQueuedMessages();
 		}
-		
+
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
@@ -258,6 +265,8 @@ public class DynamicHandler extends AbstractHandler {
 
 		// NORMAL
 		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, window, context);
+		
+		Ntro.messages().sendQueuedMessages();
 
 		// Client controller executes after
 		// to make sure modifications to the
