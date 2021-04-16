@@ -30,9 +30,9 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
-		HtmlElement semesterDropdownHead = getRootElement().find("#semester-dropdown-head").get(0);
-		HtmlElement semesterDropdownTail = getRootElement().find("#semester-dropdown-tail").get(0);
-		addItemButton = getRootElement().find("#add-course-button").get(0);
+		HtmlElement semesterDropdownHead = getRootElement().find(".semester-dropdown-head").get(0);
+		HtmlElement semesterDropdownTail = getRootElement().find(".semester-dropdown-tail").get(0);
+		addItemButton = getRootElement().find(".add-course-button").get(0);
 		modalTitle = getRootElement().find("#modal-title").get(0);
 		coursesContainer = this.getRootElement().find("#courses-container").get(0);
 		semesterIdInput = this.getRootElement().find("#semester-id-input").get(0);
