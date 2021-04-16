@@ -19,20 +19,22 @@ public class AquiletourConfig extends ConfigService {
 	public static AquiletourConfig loadFromJson(Path configFilepath) {
 		T.call(AquiletourConfig.class);
 		
+		AquiletourConfig config = null;
 		FileReader reader = null;
 
 		try {
 
 			reader = new FileReader(configFilepath.toFile());
-			return gson.fromJson(reader, AquiletourConfig.class);
+			config = gson.fromJson(reader, AquiletourConfig.class);
 
 		} catch (FileNotFoundException e) {
 			
-			System.err.println("Cannot find config file: " + configFilepath.toAbsolutePath());
-			System.exit(0);
+			System.err.println("\n\n[ERROR] Cannot find config file: " + configFilepath.toAbsolutePath() + "\n\n");
+			config = new AquiletourConfig();
+
 		}
 		
-		return null;
+		return config;
 	}
 	
 	private List<String> adminIds = new ArrayList<>();
