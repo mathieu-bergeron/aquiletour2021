@@ -259,6 +259,8 @@ public class HtmlElementJSweet extends HtmlElement {
 		
 		JQuery result = null;
 
+		// FIXME: this will remove duplicate ids
+		//        we cannot use ids in partials
 		Object[] parsedHtml = $.parseHTML(html, document, false);
 
 		if(parsedHtml.length == 1) {
