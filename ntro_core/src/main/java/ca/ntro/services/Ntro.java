@@ -26,6 +26,8 @@ import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.web.interactivity.DomProcessor;
+import ca.ntro.web.interactivity.runtime.InteractivityRuntime;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -41,11 +43,11 @@ public class Ntro {
 	}
 
 	/* </Factory> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <RegEx> */
 
 	private static RegEx regEx;
@@ -67,11 +69,11 @@ public class Ntro {
 	}
 
 	/* </RegEx> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <Introspector> */
 
 	private static Introspector introspector;
@@ -93,15 +95,68 @@ public class Ntro {
 	}
 
 	/* </Introspector> */
-	
-	
-	
-	
-	
+
+	/* <DomProcessor> */
+
+	private static DomProcessor domProcessor;
+
+	public static void registerDomProcessor(DomProcessor domProcessor) {
+		__T.call(Ntro.class, "registerIntrospector");
+
+		Ntro.domProcessor = domProcessor;
+	}
+
+	public static DomProcessor domProcessor() {
+		__T.call(Ntro.class, "dom");
+
+		if (domProcessor == null) {
+			System.err.println("#FATAL | DomProcessor not registered");
+		}
+
+		return domProcessor;
+	}
+
+	/* </DomProcessor> */
+
+	/* <InteractivityRuntime> */
+
+	private static InteractivityRuntime interactivityRuntime;
+
+	public static void registerInteractivityRuntime(InteractivityRuntime interactivityRuntime) {
+		__T.call(Ntro.class, "registerInteractivityRuntime");
+
+		Ntro.interactivityRuntime = interactivityRuntime;
+	}
+
+	public static InteractivityRuntime interactivityRuntime() {
+		__T.call(Ntro.class, "interactivityRuntime");
+
+		if (interactivityRuntime == null) {
+			System.err.println("#FATAL | InteractivityRuntime not registered");
+		}
+
+		return interactivityRuntime;
+	}
+
+	/* </InteractivityRuntime> */
+
+	/* <Constants> */
+
+	private static final NtroConstants ntroConstants = new NtroConstants();
+
+	public static NtroConstants constants() {
+		__T.call(Ntro.class, "constants");
+
+		return ntroConstants;
+	}
+
+
+	/* </Constants> */
+
 	/* <Serializable classes> */
 
 	private static Map<String, Class<?>> serializableClasses = new HashMap<>();
-	
+
 	public static void registerSerializableClass(Class<? extends JsonSerializable> _class) {
 		__T.call(Ntro.class, "registerSerializableClass");
 
@@ -117,11 +172,11 @@ public class Ntro {
 	}
 
 	/* </Serializable classes> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <Logger> */
 
 	private static Logger logger;
@@ -143,13 +198,13 @@ public class Ntro {
 	}
 
 	/* </Logger> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <AppCloser> */
-	
+
 	private static AppCloser appCloser;
 
 	static void registerAppCloser(AppCloser appCloser) {
@@ -169,13 +224,13 @@ public class Ntro {
 	}
 
 	/* </AppCloser> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <ResourceLoader> */
-	
+
 	private static ResourceLoader resourceLoader;
 
 	static void registerResourceLoader(ResourceLoader resourceLoader) {
@@ -194,11 +249,11 @@ public class Ntro {
 	}
 
 	/* </ResourceLoader> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <ViewLoaderWeb> */
 
 	private static Class<? extends ViewLoaderWeb> viewLoaderWebClass;
@@ -216,13 +271,13 @@ public class Ntro {
 	}
 
 	/* </ViewLoaderWeb> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <ThreadService> */
-	
+
 	private static ThreadService threadService;
 
 	static void registerThreadService(ThreadService threadService) {
@@ -238,11 +293,11 @@ public class Ntro {
 	}
 
 	/* </ThreadService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <MessageService> */
 
 	private static Class<? extends MessageService> messageServiceClass;
@@ -268,11 +323,11 @@ public class Ntro {
 	}
 
 	/* </MessageService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <ModelStore> */
 
 	private static Class<? extends ModelStore> modelStoreClass;
@@ -308,11 +363,11 @@ public class Ntro {
 	}
 
 	/* </ModelStore> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <BackendService> */
 
 	private static BackendService backendService;
@@ -330,11 +385,11 @@ public class Ntro {
 	}
 
 	/* </BackendService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <AssertService> */
 
 	private static AssertService assertService;
@@ -344,7 +399,7 @@ public class Ntro {
 
 		Ntro.assertService = assertService;
 	}
-	
+
 	public static AssertService assertService() {
 		__T.call(Ntro.class, "assertService");
 
@@ -352,13 +407,13 @@ public class Ntro {
 	}
 
 	/* </AssertService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <Verify> */
-	
+
 	public static void verify(AssertExpression assertExpression) {
 		__T.call(Ntro.class, "verify");
 
@@ -369,11 +424,11 @@ public class Ntro {
 	}
 
 	/* </Verify> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <JsonService> */
 
 	private static JsonService jsonService;
@@ -383,7 +438,7 @@ public class Ntro {
 
 		Ntro.jsonService = jsonService;
 	}
-	
+
 	public static JsonService jsonService() {
 		__T.call(Ntro.class, "jsonService");
 
@@ -391,11 +446,11 @@ public class Ntro {
 	}
 
 	/* </JsonService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <UserService> */
 
 	private static Class<? extends UserService> userServiceClass;
@@ -421,11 +476,11 @@ public class Ntro {
 	}
 
 	/* </UserService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <CollectionsService> */
 
 	private static CollectionsService collectionsService;
@@ -443,11 +498,11 @@ public class Ntro {
 	}
 
 	/* </CollectionsService> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <ValueFormatter> */
 
 	private static ValueFormatter valueFormatter;
@@ -465,11 +520,11 @@ public class Ntro {
 	}
 
 	/* </ValueFormatter> */
-	
-	
-	
-	
-	
+
+
+
+
+
 	/* <reset> */
 
 	public static void reset() {

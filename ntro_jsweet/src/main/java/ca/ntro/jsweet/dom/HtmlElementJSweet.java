@@ -20,12 +20,13 @@ import def.js.Function;
 import static def.jquery.Globals.$;
 
 import static def.dom.Globals.document;
+import static def.js.Globals.undefined;
 
 
 public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
-	
+
 	public HtmlElementJSweet(JQuery jQueryElement) {
 		this.jQueryElement = jQueryElement;
 	}
@@ -57,10 +58,10 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void removeListeners() {
 		T.call(this);
-		
+
 		jQueryElement.off();
 	}
-	
+
 	@Override
 	public void appendHtml(String html) {
 		T.call(this);
@@ -71,11 +72,11 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void appendElement(HtmlElement element) {
 		T.call(this);
-		
+
 		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
-		
+
 		toAppend.show();
-		
+
 		jQueryElement.append(toAppend);
 	}
 
@@ -103,15 +104,15 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public HtmlElements find(String cssQuery) {
 		T.call(this);
-		
+
 		JQuery foundElements = jQueryElement.find(cssQuery);
-		
+
 		HtmlElementsJSweet result = null;
-		
+
 		if(foundElements.length > 0) {
 			result = new HtmlElementsJSweet(foundElements);
 		}
-		
+
 		return result;
 	}
 
@@ -126,7 +127,11 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String getAttribute(String name) {
 		T.call(this);
 
-		return jQueryElement.attr(name);
+		String result = jQueryElement.attr(name);
+
+		if (result == undefined) {
+			return null;
+		} else return result;
 	}
 
 	@Override
@@ -139,7 +144,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void removeFromDocument() {
 		T.call(this);
-		
+
 		// XXX: the DOM method does not remove event listeners
 		//      (unless the element is garbage collected, which
 		//       it won't be as our jQueryElement as a reference to it)
@@ -183,7 +188,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		for(int i = 0; i < jQueryElement.length; i++) {
 			jQueryElement.get(i).innerHTML = "";
 		}
-		
+
 		if(htmlString != null) {
 			Object[] elementsToAppend = $.parseHTML(htmlString);
 
@@ -217,13 +222,13 @@ public class HtmlElementJSweet extends HtmlElement {
 
 	@Override
 	public void readFileFromInput(HtmlFileListener listener) {
-		
+
 		HTMLInputElement input = (HTMLInputElement) jQueryElement.get(0);
 		FileList fileList = input.files;
 		File firstFile = fileList.$get(0);
-		
+
 		FileReader fileReader = new FileReader();
-		
+
 		fileReader.addEventListener("load", new EventListener() {
 			@Override
 			public void $apply(Event evt) {
@@ -233,10 +238,10 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		fileReader.readAsText(firstFile);
 	}
-	
+
 	public static JQuery parseHtml(String html) {
 		T.call(HtmlElementJSweet.class);
-		
+
 		JQuery result = null;
 
 		Object[] parsedHtml = $.parseHTML(html, document, false);
@@ -256,20 +261,20 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void invoke(String functionName, Object[] args) {
 		T.call(this);
-		
+
 		def.js.Object jQueryObject = (def.js.Object) jQueryElement;
-		
+
 		Function _function = jQueryObject.$get(functionName);
-		
+
 		System.out.println("_function: " + _function);
-		
+
 		_function.apply(jQueryObject, args);
 	}
 
 	@Override
 	public void trigger(String event) {
 		T.call(this);
-		
+
 		jQueryElement.trigger(event);
 	}
 

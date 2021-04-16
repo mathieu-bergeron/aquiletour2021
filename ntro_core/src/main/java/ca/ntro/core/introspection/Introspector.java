@@ -107,8 +107,6 @@ public abstract class Introspector {
 
 		Class<? extends Object> _class = null;
 
-		console.warn(serializableClasses);
-
 		if(serializableClasses.containsKey(className)) {
 
 			_class = serializableClasses.get(className);
@@ -120,7 +118,7 @@ public abstract class Introspector {
 
 			} catch (ClassNotFoundException e) {
 
-				Log.fatalError("Cannot find class " + className, e);
+				Log.error("Cannot find class " + className);
 
 			}
 		}

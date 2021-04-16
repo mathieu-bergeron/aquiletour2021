@@ -1,0 +1,16 @@
+package ca.ntro.web.interactivity.runtime;
+
+import def.js.Promise;
+
+public interface InteractivityRuntime {
+
+    String evaluateExpression(String expression);
+    Promise<String> evaluateExpressionAsync(String expression);
+
+    void addElementToNtroObject(String key, int value);
+    void addElementToNtroObject(String key, float value);
+    void addElementToNtroObject(String key, double value);
+    void addElementToNtroObject(String key, boolean value);
+    void addElementToNtroObject(String key, String value);
+
+}

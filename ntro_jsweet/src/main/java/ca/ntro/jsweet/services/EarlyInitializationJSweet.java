@@ -10,6 +10,11 @@ import ca.ntro.services.AppCloser;
 import ca.ntro.services.CollectionsService;
 import ca.ntro.services.EarlyInitialization;
 import ca.ntro.services.Logger;
+import ca.ntro.web.interactivity.DomProcessor;
+import ca.ntro.jsweet.web.interactivity.builders.FormBuilderJSweet;
+import ca.ntro.jsweet.web.interactivity.builders.LinkBuilderJSweet;
+import ca.ntro.web.interactivity.runtime.InteractivityRuntime;
+import ca.ntro.web.interactivity.runtime.InteractivityRuntimeJSweet;
 
 public class EarlyInitializationJSweet extends EarlyInitialization {
 
@@ -20,6 +25,17 @@ public class EarlyInitializationJSweet extends EarlyInitialization {
 		return new IntrospectorJSweet();
 	}
 
+	@Override
+	protected DomProcessor provideDomProcessor() {
+		T.call(this);
+
+		return new DomProcessor(new LinkBuilderJSweet(), new FormBuilderJSweet());
+	}
+
+	@Override
+	protected InteractivityRuntime provideInteractivityRuntime() {
+		return new InteractivityRuntimeJSweet();
+	}
 
 	@Override
 	protected Logger provideLogger() {
@@ -45,7 +61,7 @@ public class EarlyInitializationJSweet extends EarlyInitialization {
 	@Override
 	protected RegEx provideRegEx() {
 		__T.call(this, "provideRegEx");
-		
+
 		return new RegExJSweet();
 	}
 }

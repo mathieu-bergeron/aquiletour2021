@@ -26,6 +26,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
+import ca.ntro.web.interactivity.runtime.InteractivityRuntimeJSweet;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
@@ -36,6 +37,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement groupsLink;
 	private HtmlElement queuesLink;
 	private HtmlElement loginLink;
+	private HtmlElement expressionBox;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
@@ -45,13 +47,17 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 //		dashboardLink = getRootElement().find("#dashboard-link").get(0);
 		queuesLink = getRootElement().find("#queues-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
+		expressionBox = getRootElement().find("#expression-box").get(0);
 
 		MustNot.beNull(homeLink);
 //		MustNot.beNull(dashboardLink);
 		MustNot.beNull(queuesLink);
 		MustNot.beNull(loginLink);
+		MustNot.beNull(expressionBox);
 
 		initializeLinks();
+
+		displayRandomNumber(context);
 
 		adjustLoginLinkText(context);
 	}
@@ -134,6 +140,19 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		}
 	}
 
+	@Override
+	public void displayRandomNumber(NtroContext<?> context) {
+		if (Ntro.interactivityRuntime() instanceof InteractivityRuntimeJSweet) {
+			Ntro.interactivityRuntime().evaluateExpressionAsync("Math.round(Math.random() * 1000).toString(16);").then(value -> {
+				expressionBox.text(value);
+			});
+
+		} else {
+			String value = Ntro.interactivityRuntime().evaluateExpression("Math.round(Math.random() * 1000).toString(16);");
+
+			expressionBox.text(value);
+		}
+	}
 
 	@Override
 	public void showDashboard(DashboardView dashboardView) {

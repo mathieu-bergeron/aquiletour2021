@@ -11,13 +11,14 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 
 public interface RootView extends NtroView {
-	
+
 	void showDashboard(DashboardView dashboardView);
 	void showQueue(QueueView queueView);
 	void showLogin(LoginView loginView);
 	void showQueues(QueuesView currentView);
 	void showHome(HomeView homeView);
 	void adjustLoginLinkText(NtroContext<?> context);
+	void displayRandomNumber(NtroContext<?> context);
 	void showGit(CommitListView gitView);
 	void showCourse(CourseView currentView);
 }

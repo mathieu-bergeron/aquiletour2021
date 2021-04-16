@@ -1,20 +1,32 @@
 package ca.ntro.web.interactivity;
 
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
-
-import static def.js.Globals.undefined;
+import ca.ntro.web.interactivity.builders.LinkBuilder;
+import ca.ntro.web.interactivity.builders.FormBuilder;
 
 public class DomProcessor {
 
-    public static void processDom(HtmlElement rootElement) {
+    private final LinkBuilder linkBuilder;
+    private final FormBuilder formBuilder;
+
+    public DomProcessor(LinkBuilder linkBuilder, FormBuilder formBuilder) {
+        MustNot.beNull(linkBuilder);
+        MustNot.beNull(formBuilder);
+
+        this.linkBuilder = linkBuilder;
+        this.formBuilder = formBuilder;
+    }
+
+    public void runOnElement(HtmlElement rootElement) {
         InteractiveHtmlElement[] linkElements = getMessageElementsMatching(rootElement, "ntro-link");
 
         for (InteractiveHtmlElement element : linkElements) {
-            LinkBuilder.hookUpLinkElement(element);
+            this.linkBuilder.hookUpLinkElement(element);
         }
 
         InteractiveHtmlElement[] formElements = getMessageElementsMatching(rootElement, "ntro-form");
@@ -22,7 +34,7 @@ public class DomProcessor {
         // TODO process forms
     }
 
-    private static InteractiveHtmlElement[] getMessageElementsMatching(HtmlElement inElement, String withAttribute) {
+    private InteractiveHtmlElement[] getMessageElementsMatching(HtmlElement inElement, String withAttribute) {
         HtmlElements foundElements = inElement.find("*[" + withAttribute + "]");
 
         if (foundElements == null) {
@@ -37,8 +49,7 @@ public class DomProcessor {
             Class<? extends NtroMessage> messageClass = getMessageClassForElement(candidateElement);
 
             if (messageClass == null) {
-                Log.fatalError("[DomProcessor] Could not get message class for element");
-                throw new RuntimeException();
+                Log.error("[DomProcessor] Could not get message class for element");
             } else {
                 InteractiveHtmlElement interactiveHtmlElement = new InteractiveHtmlElement(candidateElement, messageClass);
 
@@ -50,10 +61,10 @@ public class DomProcessor {
         return validElements;
     }
 
-    private static Class<? extends NtroMessage> getMessageClassForElement(HtmlElement element) {
+    private Class<? extends NtroMessage> getMessageClassForElement(HtmlElement element) {
         String messageClassName = element.getAttribute("ntro-message");
 
-        if (messageClassName == undefined) {
+        if (messageClassName == null) {
             return null;
         }
 

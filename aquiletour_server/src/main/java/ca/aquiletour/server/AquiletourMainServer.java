@@ -22,6 +22,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import ca.aquiletour.server.http.ModelHandler;
+import ca.ntro.jdk.web.interactivity.runtime.InteractivityRuntimeJdk;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -49,9 +50,9 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
 
 		ViewLoaderRegistrationWeb.registerViewLoaders();
-		
+
 		AquiletourMain.registerSerializableClasses();
-		
+
 		Ntro.jsonService().setPrettyPrinting(true);
 
 		// Start server
@@ -111,6 +112,9 @@ public class AquiletourMainServer extends NtroTaskAsync {
         System.in.read();
 
         server.stop();
+
+		// When the server is shutting down, release all V8 runtimes
+		((InteractivityRuntimeJdk) Ntro.interactivityRuntime()).releaseAllRuntimes();
 
         server.join();
 	}

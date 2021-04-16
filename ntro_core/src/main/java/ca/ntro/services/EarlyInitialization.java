@@ -20,6 +20,8 @@ import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.Session;
+import ca.ntro.web.interactivity.DomProcessor;
+import ca.ntro.web.interactivity.runtime.InteractivityRuntime;
 
 public abstract class EarlyInitialization {
 
@@ -30,10 +32,16 @@ public abstract class EarlyInitialization {
 		T.__registerIntrospector(introspector);
 		Ntro.registerIntrospector(introspector);
 
+		DomProcessor domProcessor = provideDomProcessor();
+		Ntro.registerDomProcessor(domProcessor);
+
+		InteractivityRuntime interactivityRuntime = provideInteractivityRuntime();
+		Ntro.registerInteractivityRuntime(interactivityRuntime);
+
 		Logger logger = provideLogger();
 		T.__registerLogger(logger);
 		Ntro.registerLogger(logger);
-		
+
 		Ntro.registerAppCloser(provideAppCloser());
 		Ntro.registerRegEx(provideRegEx());
 
@@ -41,6 +49,8 @@ public abstract class EarlyInitialization {
 	}
 
 	protected abstract Introspector provideIntrospector();
+	protected abstract DomProcessor provideDomProcessor();
+	protected abstract InteractivityRuntime provideInteractivityRuntime();
 	protected abstract Logger provideLogger();
 	protected abstract AppCloser provideAppCloser();
 	protected abstract RegEx provideRegEx();

@@ -9,7 +9,7 @@ import ca.ntro.web.dom.HtmlElement;
 public class InteractiveHtmlElement {
 
     private HtmlElement htmlElement;
-    Class<? extends NtroMessage> messageClass;
+    private Class<? extends NtroMessage> messageClass;
 
     public InteractiveHtmlElement(HtmlElement htmlElement, Class<? extends NtroMessage> messageClass) {
         this.htmlElement = htmlElement;
