@@ -57,6 +57,7 @@ import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
+import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -67,6 +68,8 @@ import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.aquiletour.core.pages.group_list.models.GroupDescription;
 import ca.aquiletour.core.pages.group_list.models.GroupListModel;
+import ca.aquiletour.core.pages.group_list.models.ObservableGroupList;
+import ca.aquiletour.core.pages.group_list.models.ObservableStudentList;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
 import ca.aquiletour.core.pages.open_queue_list.values.ObservableQueueList;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
@@ -185,6 +188,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CourseListModel.class);
 		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
 		Ntro.registerSerializableClass(ObservableSemesterIdList.class);
+
+		Ntro.registerSerializableClass(ObservableGroupIdList.class);
+		Ntro.registerSerializableClass(ObservableGroupList.class);
+		Ntro.registerSerializableClass(ObservableStudentList.class);
 
 		Ntro.registerSerializableClass(GroupListModel.class);
 		Ntro.registerSerializableClass(GroupDescription.class);

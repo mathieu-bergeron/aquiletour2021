@@ -1,8 +1,6 @@
 package ca.aquiletour.core.pages.course_list.models;
 
-import java.util.List;
 
-import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 

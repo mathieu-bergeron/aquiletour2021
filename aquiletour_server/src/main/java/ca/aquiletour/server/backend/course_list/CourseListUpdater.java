@@ -1,7 +1,5 @@
 package ca.aquiletour.server.backend.course_list;
 
-import java.util.List;
-
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
@@ -14,10 +12,15 @@ public class CourseListUpdater {
 
 	public static String validateCourseDescription(CourseDescription courseDescription) {
 		T.call(CourseListUpdater.class);
+		
+		String errorMessage = null;
 
-		return null;
+		if(courseDescription.getCourseId().contains(" ")) {
+			errorMessage = "Le code de cours ne doit pas contenir d'espace";
+		}
+			
+		return errorMessage;
 	}
-
 
 	public static void addSemesterForUser(ModelStoreSync modelStore, 
 			                              String semesterId, 

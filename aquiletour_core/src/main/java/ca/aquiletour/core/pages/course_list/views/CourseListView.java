@@ -1,13 +1,7 @@
 package ca.aquiletour.core.pages.course_list.views;
 
-import ca.ntro.core.mvc.NtroView;
+import ca.aquiletour.core.views.ListView;
 
-public interface CourseListView extends NtroView {
-
-	void insertIntoSemesterDropdown(int index, String semesterId);
-	void selectSemester(String semesterId);
-	void identifyCurrentSemester(String semesterId);
-	void appendCourseDescription(CourseDescriptionView courseDescriptionView);
-	void clearCourses();
+public interface CourseListView extends ListView<CourseDescriptionView> {
 
 }

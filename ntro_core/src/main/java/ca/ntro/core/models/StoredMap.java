@@ -9,7 +9,7 @@ import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public abstract class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
+public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
 
 	private List<MapObserver<V>> mapObservers = new ArrayList<>();
 
@@ -91,5 +91,11 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 		T.call(this);
 
 		return getValue().containsKey(key);
+	}
+
+	public void removeObservers() {
+		T.call(this);
+		
+		this.mapObservers.clear();
 	}
 }

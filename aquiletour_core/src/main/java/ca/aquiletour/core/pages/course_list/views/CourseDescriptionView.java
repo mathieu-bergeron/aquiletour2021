@@ -1,9 +1,9 @@
 package ca.aquiletour.core.pages.course_list.views;
 
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
-import ca.ntro.core.mvc.NtroView;
+import ca.aquiletour.core.views.ItemView;
 
-public interface CourseDescriptionView extends NtroView {
+public interface CourseDescriptionView extends ItemView {
 
 	void displayCourseDescription(CourseDescription courseDescription);
 

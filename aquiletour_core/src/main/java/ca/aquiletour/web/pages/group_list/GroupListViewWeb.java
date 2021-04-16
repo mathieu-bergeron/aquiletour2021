@@ -1,21 +1,20 @@
 package ca.aquiletour.web.pages.group_list;
 
-import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
-import ca.aquiletour.core.pages.course_list.views.CourseListView;
+import ca.aquiletour.core.pages.group_list.views.GroupDescriptionView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
-import ca.aquiletour.web.pages.course_list.CourseDescriptionViewWeb;
-import ca.aquiletour.web.widgets.BootstrapDropdown;
-import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.system.assertions.MustNot;
+import ca.aquiletour.web.pages.bases.ListViewWeb;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.mvc.NtroViewWeb;
 
-public class GroupListViewWeb extends NtroViewWeb implements GroupListView {
+public class GroupListViewWeb extends ListViewWeb<GroupDescriptionView> implements GroupListView {
 
 	@Override
-	public void initializeViewWeb(NtroContext<?,?> context) {
+	public void identifyCurrentSemester(String semesterId) {
 		T.call(this);
+		super.identifyCurrentSemester(semesterId);
+
+		String text = "Ajouter un groupe";
+
+		getAddItemButton().text(text);
+		getModelTitle().text(text);
 	}
 }

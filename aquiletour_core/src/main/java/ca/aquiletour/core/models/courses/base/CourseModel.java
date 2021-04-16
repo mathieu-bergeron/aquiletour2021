@@ -118,6 +118,8 @@ public class CourseModel implements NtroModel, TaskGraph {
 		T.call(this);
 
 		tasks.putEntry(nextTask.id(), nextTask);
+		
+		// FIXME: the App should not have to do this!
 		Ntro.modelStore().updateStoreConnections(this);
 	}
 

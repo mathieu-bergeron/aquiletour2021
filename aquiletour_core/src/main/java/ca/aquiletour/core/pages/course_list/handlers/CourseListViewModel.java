@@ -29,7 +29,7 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		if(!message.getSemesterId().equals(currentSemesterId)) {
 			currentSemesterId = message.getSemesterId();
 
-			changeCurrentSemester(currentSemesterId, model, view, subViewLoader);
+			changeCurrentSemester(model, view, subViewLoader);
 		}
 	}
 
@@ -83,10 +83,9 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		});
 	}
 
-	private void changeCurrentSemester(String currentSemesterId, 
-			                            CourseListModel model, 
-			                            CourseListView view, 
-			                            ViewLoader subViewLoader) {
+	private void changeCurrentSemester(CourseListModel model, 
+			                           CourseListView view, 
+			                           ViewLoader subViewLoader) {
 
 		T.call(this);
 		
@@ -94,16 +93,15 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		view.selectSemester(currentSemesterId);
 		view.identifyCurrentSemester(currentSemesterId);
 		
-		observeCourses(currentSemesterId, model, view, subViewLoader);
+		observeCourses(model, view, subViewLoader);
 	}
 
-	protected void observeCourses(String currentSemesterId, 
-			                      CourseListModel model, 
+	protected void observeCourses(CourseListModel model, 
 			                      CourseListView view, 
 			                      ViewLoader subViewLoader) {
 		T.call(this);
 		
-		view.clearCourses();
+		view.clearItems();
 		
 		model.getCourses().removeObservers();
 		model.getCourses().observe(new ListObserver<CourseDescription>() {
@@ -135,7 +133,7 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 					CourseDescriptionView subView = (CourseDescriptionView) subViewLoader.createView();
 					subView.displayCourseDescription(item);
 					
-					view.appendCourseDescription(subView);
+					view.appendItem(subView);
 				}
 			}
 
@@ -157,6 +155,5 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 				
 			}
 		});
-		
 	}
 }

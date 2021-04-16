@@ -8,7 +8,6 @@ import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
-import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
 public class DashboardUpdater {

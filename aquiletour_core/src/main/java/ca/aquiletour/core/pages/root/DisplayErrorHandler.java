@@ -9,6 +9,8 @@ public class DisplayErrorHandler extends ViewMessageHandler<RootView, DisplayErr
 	protected void handle(RootView view, DisplayErrorMessage message) {
 		T.call(this);
 		
+		T.here();
+		
 		view.displayErrorMessage(message.getMessage());
 	}
 

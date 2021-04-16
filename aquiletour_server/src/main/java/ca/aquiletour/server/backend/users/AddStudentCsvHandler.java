@@ -10,6 +10,7 @@ import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
+import ca.aquiletour.server.backend.group_list.GroupListUpdater;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -37,6 +38,14 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                          message.getCourseId(), 
 				                          groupId, 
 				                          message.getUser());
+
+		GroupListUpdater.addGroupForUser(modelStore, 
+				                         message.getSemesterId(), 
+				                         message.getCourseId(), 
+				                         groupId, 
+				                         studentsToAdd,
+				                         message.getUser());
+
 		/*
 		int numberOfStudentAdded = QueueUpdater.addStudentsToQueue(modelStore, queueId, studentsToAdd);
 			
@@ -95,6 +104,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		T.call(this);
 		
 		UserUpdater.addUsers(modelStore, studentsToAdd);
+		
+		/*
 
 		String queueId = message.getCourseId();
 
@@ -102,5 +113,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		CourseDashboard queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
 
 		DashboardUpdater.addQueueForUsers(modelStore, queueSummary, studentsToAdd);
+		*/
 	}
 }

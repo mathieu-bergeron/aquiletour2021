@@ -10,7 +10,7 @@ public class CourseDescription implements NtroModelValue {
 	private String courseId = "";
 	private String courseTitle = "";
 	private String courseDescription = "";
-	private StoredList<String> groupIds = new StoredList<>();
+	private ObservableGroupIdList groupIds = new ObservableGroupIdList();
 
 	public CourseDescription() {
 		T.call(this);
@@ -56,14 +56,13 @@ public class CourseDescription implements NtroModelValue {
 		this.courseDescription = courseDescription;
 	}
 
-	public StoredList<String> getGroupIds() {
+	public ObservableGroupIdList getGroupIds() {
 		return groupIds;
 	}
 
-	public void setGroupIds(StoredList<String> groupIds) {
+	public void setGroupIds(ObservableGroupIdList groupIds) {
 		this.groupIds = groupIds;
 	}
-	
 
 	public void addGroup(String groupId) {
 		T.call(this);

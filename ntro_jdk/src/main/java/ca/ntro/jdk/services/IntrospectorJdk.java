@@ -34,7 +34,6 @@ import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.ConstructorSignature;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;

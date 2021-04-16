@@ -8,7 +8,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
 @SuppressWarnings("serial")   
-public class StoredList<I extends Object> extends StoredProperty<List<I>> {          //implements NtroModelValue {
+public abstract class StoredList<I extends Object> extends StoredProperty<List<I>> { //implements NtroModelValue {
 	                                                                                 // JSWEET??: need to redeclare here event if the superclass StoredValue implements it
 
 	private List<ListObserver<I>> listObservers = new ArrayList<>();
