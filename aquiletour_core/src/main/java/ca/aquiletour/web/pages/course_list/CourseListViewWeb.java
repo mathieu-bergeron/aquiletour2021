@@ -28,4 +28,5 @@ public class CourseListViewWeb extends ListViewWeb<CourseDescriptionView> implem
 			getModelTitle().text(text);
 		}
 	}
+
 }

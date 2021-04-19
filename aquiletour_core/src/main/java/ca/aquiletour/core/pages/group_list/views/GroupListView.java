@@ -4,5 +4,11 @@ import ca.aquiletour.core.views.ListView;
 
 public interface GroupListView extends ListView<GroupDescriptionView> {
 
+	void selectCourse(String courseId);
+	void identifyCurrentCourse(String courseId);
+	void insertIntoCourseDropdown(int index, String courseId);
+	void appendToCourseDropdown(String courseId);
+	void clearCourseDropdown();
+
 
 }

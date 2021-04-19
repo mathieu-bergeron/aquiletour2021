@@ -102,9 +102,15 @@ public class AquiletourRequestHandler {
 		}else {
 			currentSemesterId = sessionData.getCurrentSemester();
 		}
+		
+		String currentCourseId = null;
+		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+			currentCourseId = parameters.get(Constants.COURSE_URL_PARAM)[0];
+		}
 
 		SelectGroupListSubset selectGroupListSubset = Ntro.messages().create(SelectGroupListSubset.class);
 		selectGroupListSubset.setSemesterId(currentSemesterId);
+		selectGroupListSubset.setCourseId(currentCourseId);
 		Ntro.messages().send(selectGroupListSubset);
 	}
 

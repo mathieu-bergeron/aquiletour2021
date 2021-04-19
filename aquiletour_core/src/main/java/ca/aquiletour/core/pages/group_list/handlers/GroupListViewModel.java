@@ -6,6 +6,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
+import ca.aquiletour.core.pages.group_list.models.CourseList;
 import ca.aquiletour.core.pages.group_list.models.GroupDescription;
 import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.aquiletour.core.pages.group_list.views.GroupDescriptionView;
@@ -19,73 +20,66 @@ import ca.ntro.core.system.trace.T;
 public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupListModel, GroupListView, SelectGroupListSubset> {
 	
 	private String currentSemesterId = null;
+	private String currentCourseId = null;
 
 	@Override
 	protected void handle(GroupListModel model, GroupListView view, ViewLoader subViewLoader, SelectGroupListSubset message) {
 		T.call(this);
-
+		
 		if(currentSemesterId == null) {
-			observeSemesterIdList(model, view);
+			observeSemesterCourses(model, view);
 		}
-
-		if(!message.getSemesterId().equals(currentSemesterId)) {
+		
+		if(!message.getSemesterId().equals(currentSemesterId)
+				|| !message.getCourseId().equals(currentCourseId)) {
+			
 			currentSemesterId = message.getSemesterId();
-
-			changeCurrentSemester(model, view, subViewLoader);
+			currentCourseId = message.getCourseId();
+			
+			changeCurrentSelection(model, view, subViewLoader);
 		}
+
 	}
 
-	private void observeSemesterIdList(GroupListModel model, GroupListView view) {
+	private void observeSemesterCourses(GroupListModel model, GroupListView view) {
 		T.call(this);
-
-		model.getSemesters().observe(new ListObserver<String>() {
+		
+		model.getSemesterCourses().observe(new MapObserver<CourseList>() {
 			
 			@Override
-			public void onItemRemoved(int index, String item) {
+			public void onDeleted(Map<String, CourseList> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void onItemUpdated(int index, String item) {
+			public void onValue(Map<String, CourseList> value) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void onItemAdded(int index, String item) {
+			public void onValueChanged(Map<String, CourseList> oldValue, Map<String, CourseList> value) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onEntryRemoved(String key, CourseList value) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onEntryAdded(String key, CourseList value) {
 				T.call(this);
-
-				view.insertIntoSemesterDropdown(index, item);
-			}
-			
-			@Override
-			public void onDeleted(List<String> lastValue) {
-				// TODO Auto-generated method stub
 				
-			}
-			
-			@Override
-			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
+				view.appendToSemesterDropdown(key);
 			}
 		});
 	}
 
-	private void changeCurrentSemester(GroupListModel model, 
+	private void changeCurrentSelection(GroupListModel model, 
 			                           GroupListView view, 
 			                           ViewLoader subViewLoader) {
 
@@ -93,16 +87,27 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		
 		
 		view.selectSemester(currentSemesterId);
+		
+		view.clearCourseDropdown();
+		for(String courseId : model.getSemesterCourses().getValue().get(currentSemesterId).getValue()) {
+			view.appendToCourseDropdown(courseId);
+		}
+		
+		
+		/*
+		view.selectCourse(currentCourseId);
 		view.identifyCurrentSemester(currentSemesterId);
+		view.identifyCurrentCourse(currentCourseId);
 		
 		observeGroups(model, view, subViewLoader);
+		*/
 	}
 
 	private void observeGroups(GroupListModel model, 
 		                       GroupListView view, 
 		                       ViewLoader subViewLoader) {
 		T.call(this);
-
+		
 		view.clearItems();
 
 		model.getGroups().removeObservers();
@@ -128,9 +133,11 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 
 			@Override
 			public void onItemAdded(int index, GroupDescription item) {
+				T.call(this);
 
-				if(item.getSemesterId().equals(currentSemesterId)) {
-					
+				if(item.getSemesterId().equals(currentSemesterId)
+						&& item.getCourseId().equals(currentCourseId)) {
+
 					GroupDescriptionView subView = (GroupDescriptionView) subViewLoader.createView();
 					subView.displayGroupDescription(item);
 
@@ -139,7 +146,6 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 					observeGroupStudents(item, subView);
 				}
 			}
-
 
 			@Override
 			public void onItemUpdated(int index, GroupDescription item) {

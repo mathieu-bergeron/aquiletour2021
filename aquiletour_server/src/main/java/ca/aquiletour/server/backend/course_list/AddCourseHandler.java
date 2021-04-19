@@ -4,6 +4,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.root.DisplayErrorMessage;
+import ca.aquiletour.server.backend.group_list.GroupListUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -38,6 +39,8 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 	public void handleLater(ModelStoreSync modelStore, AddCourseMessage message) {
 		T.call(this);
 		
+		GroupListUpdater.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseDescription().getCourseId(), message.getUser());
+
 		/*
 
 		User teacher = message.getUser();

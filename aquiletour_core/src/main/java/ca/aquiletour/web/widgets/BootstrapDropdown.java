@@ -89,4 +89,18 @@ public class BootstrapDropdown {
 		return semesterLink;
 	}
 
+	public void clear() {
+		T.call(this);
+		
+		dropdownHead.removeChildrenFromDocument();
+		dropdownTail.removeChildrenFromDocument();
+	}
+
+	public int size() {
+		T.call(this);
+		
+		// FIXME
+		return 0;
+	}
+
 }

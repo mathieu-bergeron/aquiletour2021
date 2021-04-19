@@ -59,6 +59,13 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	}
 
 	@Override
+	public void appendToSemesterDropdown(String semesterId) {
+		T.call(this);
+		
+		insertIntoSemesterDropdown(semesterDropdown.size()-1, semesterId);
+	}
+
+	@Override
 	public void selectSemester(String semesterId) {
 		T.call(this);
 		
@@ -87,5 +94,6 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 		coursesContainer.removeChildrenFromDocument();
 		
 	}
+
 
 }

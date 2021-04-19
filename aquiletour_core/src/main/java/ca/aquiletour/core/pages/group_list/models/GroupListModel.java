@@ -3,23 +3,21 @@ package ca.aquiletour.core.pages.group_list.models;
 import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.StoredList;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
 public class GroupListModel implements NtroModel {
 	
-	private ObservableSemesterIdList semesters = new ObservableSemesterIdList();
+	private SemesterCourses semesterCourses = new SemesterCourses();
 	private ObservableGroupList groups = new ObservableGroupList();
 
-	public ObservableSemesterIdList getSemesters() {
-		return semesters;
+	public SemesterCourses getSemesterCourses() {
+		return semesterCourses;
 	}
 
-	public void setSemesters(ObservableSemesterIdList semesters) {
-		this.semesters = semesters;
+	public void setSemesterCourses(SemesterCourses semesterCourses) {
+		this.semesterCourses = semesterCourses;
 	}
 
 	public ObservableGroupList getGroups() {
@@ -40,9 +38,33 @@ public class GroupListModel implements NtroModel {
 		
 		getGroups().addItem(groupDescription);
 
+		groupDescription.addStudents(studentsToAdd);
+
 		// FIXME: the App should not have to do this!
 		Ntro.modelStore().updateStoreConnections(this);
-
-		groupDescription.addStudents(studentsToAdd);
 	}
+	
+	public void addSemester(String semesterId) {
+		T.call(this);
+		
+		getSemesterCourses().addSemester(semesterId);
+
+		// FIXME: the App should not have to do this!
+		Ntro.modelStore().updateStoreConnections(this);
+	}
+
+	public void addCourse(String semesterId, String courseId) {
+		T.call(this);
+		
+		if(!getSemesterCourses().containsKey(semesterId)) {
+			addSemester(semesterId);
+		}
+		
+		getSemesterCourses().addCourse(semesterId, courseId);
+
+		// FIXME: the App should not have to do this!
+		Ntro.modelStore().updateStoreConnections(this);
+	}
+
+
 }

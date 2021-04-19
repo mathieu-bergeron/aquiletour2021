@@ -31,6 +31,7 @@ import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
@@ -107,6 +108,7 @@ public class AquiletourBackendRequestHandler {
 			CourseDescription courseDescription = new CourseDescription(semesterId, courseId, courseTitle);
 			
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
+			addCourseMessage.setSemesterId(semesterId);
 			addCourseMessage.setCourseDescription(courseDescription);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 		}
