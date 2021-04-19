@@ -1,14 +1,16 @@
 package ca.aquiletour.core.models.dates;
 
+import ca.ntro.models.NtroDayOfWeek;
+
 public class CourseDateSemesterDay extends CourseDate {
 	
-	private SemesterDay semesterDay;
+	private NtroDayOfWeek semesterDay;
 
-	public SemesterDay getSemesterDay() {
+	public NtroDayOfWeek getSemesterDay() {
 		return semesterDay;
 	}
 
-	public void setSemesterDay(SemesterDay semesterDay) {
+	public void setSemesterDay(NtroDayOfWeek semesterDay) {
 		this.semesterDay = semesterDay;
 	}
 

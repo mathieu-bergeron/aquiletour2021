@@ -1,12 +1,12 @@
-package ca.aquiletour.core.models.dates;
+package ca.ntro.models;
 
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterDay implements NtroModelValue {
+public class NtroDayOfWeek implements NtroModelValue {
 	
-	// JSWeet: enum does not have a class name
+	// JSWeet: enum does not have class name, hence not a good NtroModelValue
 	public static final int MONDAY     = 0;
 	public static final int TUESDAY    = 1;
 	public static final int WEDNESDAY  = 2;
@@ -17,11 +17,13 @@ public class SemesterDay implements NtroModelValue {
 	
 	private int dayOfWeek = 0;
 	
-	public SemesterDay() {
-		
+	public NtroDayOfWeek() {
+		T.call(this);
 	}
 
-	public SemesterDay(int dayOfWeek) {
+	public NtroDayOfWeek(int dayOfWeek) {
+		T.call(this);
+
 		this.dayOfWeek = dayOfWeek;
 	}
 
@@ -33,8 +35,8 @@ public class SemesterDay implements NtroModelValue {
 		this.dayOfWeek = dayOfWeek;
 	}
 	
-	public static SemesterDay fromString(String dayName) {
-		SemesterDay semesterDay = new SemesterDay();
+	public static NtroDayOfWeek fromString(String dayName) {
+		NtroDayOfWeek semesterDay = new NtroDayOfWeek();
 		
 		if(dayName.equalsIgnoreCase("lundi") || dayName.equalsIgnoreCase("lu")) {
 
@@ -66,7 +68,7 @@ public class SemesterDay implements NtroModelValue {
 
 		}else {
 			
-			Log.warning("[SemesterDay] could not determine dayOfWeek for " + dayName);
+			Log.warning("[NtroDayOfWeek] could not determine dayOfWeek for " + dayName);
 		}
 		
 		
@@ -123,12 +125,10 @@ public class SemesterDay implements NtroModelValue {
 	public boolean equals(Object other) {
 		if(other == null) return false;
 		if(other == this) return true;
-		if(other instanceof SemesterDay) {
-			SemesterDay otherDay = (SemesterDay) other;
+		if(other instanceof NtroDayOfWeek) {
+			NtroDayOfWeek otherDay = (NtroDayOfWeek) other;
 			return otherDay.dayOfWeek == dayOfWeek;
 		}
 		return false;
 	}
-	
-	
 }

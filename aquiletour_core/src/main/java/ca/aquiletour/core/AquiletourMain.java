@@ -41,7 +41,6 @@ import ca.aquiletour.core.models.dates.CalendarDate;
 import ca.aquiletour.core.models.dates.CourseDateClassDay;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
-import ca.aquiletour.core.models.dates.SemesterDay;
 import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Guest;
@@ -86,6 +85,7 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterWeekList;
+import ca.aquiletour.core.pages.semester_list.models.ObservableCourseGroupList;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterList;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
@@ -94,6 +94,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
@@ -177,6 +178,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CourseListModel.class);
 		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
 		Ntro.registerSerializableClass(ObservableSemesterIdList.class);
+		Ntro.registerSerializableClass(ObservableCourseGroupList.class);
 
 		Ntro.registerSerializableClass(ObservableGroupIdList.class);
 		Ntro.registerSerializableClass(ObservableGroupList.class);
@@ -189,7 +191,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CourseDateClassDay.class);
 		Ntro.registerSerializableClass(CourseDateSemesterDay.class);
 		Ntro.registerSerializableClass(SemesterDate.class);
-		Ntro.registerSerializableClass(SemesterDay.class);
 
 		Ntro.registerSerializableClass(User.class);
 		Ntro.registerSerializableClass(Teacher.class);

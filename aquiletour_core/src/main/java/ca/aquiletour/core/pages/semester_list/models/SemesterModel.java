@@ -9,6 +9,7 @@ public class SemesterModel implements NtroModel {
 	
 	private String semesterId = Constants.COURSE_DRAFTS;
 	private ObservableSemesterWeekList weeks = new ObservableSemesterWeekList();
+	private ObservableCourseGroupList courseGroups = new ObservableCourseGroupList();
 
 	public String getSemesterId() {
 		return semesterId;
@@ -25,10 +26,24 @@ public class SemesterModel implements NtroModel {
 	public void setWeeks(ObservableSemesterWeekList weeks) {
 		this.weeks = weeks;
 	}
+	
+	public ObservableCourseGroupList getCourseGroups() {
+		return courseGroups;
+	}
+
+	public void setCourseGroups(ObservableCourseGroupList courseGroups) {
+		this.courseGroups = courseGroups;
+	}
 
 	public void addWeek(SemesterWeek semesterWeek) {
 		T.call(this);
 		
 		weeks.addItem(semesterWeek);
+	}
+
+	public void addCourseGroup(String courseId, String groupId) {
+		T.call(this);
+
+		getCourseGroups().addItem(courseId + "/" + groupId);
 	}
 }

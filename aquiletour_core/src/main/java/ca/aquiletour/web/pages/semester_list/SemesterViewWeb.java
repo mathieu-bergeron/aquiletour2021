@@ -2,7 +2,6 @@ package ca.aquiletour.web.pages.semester_list;
 
 
 import ca.aquiletour.core.models.dates.SemesterDate;
-import ca.aquiletour.core.models.dates.SemesterDay;
 import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
@@ -12,6 +11,7 @@ import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
@@ -23,6 +23,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	private HtmlElement semesterIdHeader;
 	private HtmlElement weeksTbody;
 	private HtmlElement currentSemesterCheckbox;
+	private HtmlElement courseGroupSelect;
 
 	private HtmlElements addIdToValue;
 	private HtmlElements addIdToId;
@@ -36,10 +37,12 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		semesterIdHeader = this.getRootElement().find("#semester-id").get(0);
 		weeksTbody = this.getRootElement().find("#semester-weeks-tbody").get(0);
 		currentSemesterCheckbox = this.getRootElement().find(".current-semester-checkbox").get(0);
+		courseGroupSelect = this.getRootElement().find("#course-group-select").get(0);
 
 		MustNot.beNull(semesterIdHeader);
 		MustNot.beNull(weeksTbody);
 		MustNot.beNull(currentSemesterCheckbox);
+		MustNot.beNull(courseGroupSelect);
 
 		addIdToValue = this.getRootElement().find(".add-id-to-value");
 		addIdToId = this.getRootElement().find(".add-id-to-id");
@@ -90,7 +93,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 			weekOfCell.html(semesterWeek.getMondayDate().format("d MMM"));
 			dataRow.appendElement(weekOfCell);
 			
-			for(int dayOfWeek = SemesterDay.MONDAY; dayOfWeek <= SemesterDay.FRIDAY; dayOfWeek++) {
+			for(int dayOfWeek = NtroDayOfWeek.MONDAY; dayOfWeek <= NtroDayOfWeek.FRIDAY; dayOfWeek++) {
 				SemesterDate day = semesterWeek.getDays().get(dayOfWeek);
 
 				HtmlElement dayCell = dataRow.createTag("td");
@@ -105,5 +108,16 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 			
 			dataRow.insertBefore(lastRow);
 		}
+	}
+
+	@Override
+	public void appendCourseGroupe(String courseGroup) {
+		T.call(this);
+		
+		HtmlElement option = courseGroupSelect.createElement("<option></option>");
+		option.setAttribute("name", "courseGroup");
+		option.text(courseGroup);
+
+		courseGroupSelect.appendElement(option);
 	}
 }

@@ -9,7 +9,6 @@ import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.SemesterDate;
-import ca.aquiletour.core.models.dates.SemesterDay;
 import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.User;
@@ -34,6 +33,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.services.Ntro;
 
 public class AquiletourBackendRequestHandler {
@@ -134,15 +134,15 @@ public class AquiletourBackendRequestHandler {
 			NtroDate mondayDate = Ntro.calendar().fromString(weekOf, "dd/MM/yyyy");
 			semesterWeek.setMondayDate(mondayDate);
 			
-			for(int dayOfWeek = SemesterDay.MONDAY; dayOfWeek <= SemesterDay.FRIDAY; dayOfWeek++) {
+			for(int dayOfWeek = NtroDayOfWeek.MONDAY; dayOfWeek <= NtroDayOfWeek.FRIDAY; dayOfWeek++) {
 				String semesterWeekId = parameters.get("day" + dayOfWeek)[0];
 				String scheduleOf = parameters.get("day" + dayOfWeek + "ScheduleOf")[0];
 				
 				SemesterDate semesterDate = new SemesterDate();
 				semesterDate.setCalendarDate(mondayDate.deltaDays(dayOfWeek));
 				semesterDate.setSemesterWeek(Integer.valueOf(semesterWeekId));
-				semesterDate.setSemesterDay(new SemesterDay(dayOfWeek));
-				semesterDate.setScheduleOf(SemesterDay.fromString(scheduleOf));
+				semesterDate.setSemesterDay(new NtroDayOfWeek(dayOfWeek));
+				semesterDate.setScheduleOf(NtroDayOfWeek.fromString(scheduleOf));
 
 				semesterWeek.addDate(semesterDate);
 			}

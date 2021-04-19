@@ -126,4 +126,40 @@ public class SemesterListUpdater {
 		
 		selectCurrentSemesterForUserId(modelStore, semesterId, currentSemester, user.getId());
 	}
+	
+	
+	public static void addCourseGroupForUserId(ModelStoreSync modelStore, 
+			                                   String semesterId, 
+			                                   String courseId, 
+			                                   String groupId, 
+			                                   String userId) {
+
+		T.call(SemesterListUpdater.class);
+
+		modelStore.updateModel(SemesterListModel.class, 
+							   "admin",
+							   userId,
+							   new ModelUpdater<SemesterListModel>() {
+
+			@Override
+			public void update(SemesterListModel semesterList) {
+				T.call(this);
+
+				semesterList.addCourseGroup(semesterId, courseId, groupId);
+			}
+		});
+	}
+	
+
+	public static void addCourseGroupForUser(ModelStoreSync modelStore, 
+			                                 String semesterId, 
+			                                 String courseId, 
+			                                 String groupId, 
+			                                 User user) {
+
+		T.call(SemesterListUpdater.class);
+		
+		addCourseGroupForUserId(modelStore, semesterId, courseId, groupId, user.getId());
+	}
+		
 }

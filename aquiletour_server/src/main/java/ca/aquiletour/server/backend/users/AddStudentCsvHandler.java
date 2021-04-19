@@ -12,6 +12,7 @@ import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
+import ca.aquiletour.server.backend.semester_list.SemesterListUpdater;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -19,6 +20,7 @@ import ca.ntro.core.system.trace.T;
 public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMessage> {
 	
 	private List<User> studentsToAdd;
+	private String groupId;
 
 	@Override
 	public void handleNow(ModelStoreSync modelStore, AddStudentCsvMessage message) {
@@ -26,11 +28,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		String csvString = message.getCsvString();
 		String csvFilename = message.getCsvFilename();
-		String queueId = message.getCourseId();
-		User teacher = message.getUser();
 		
-		String groupId = groupNameFromCsvFileName(csvFilename);
-		
+		groupId = groupNameFromCsvFileName(csvFilename);
 		studentsToAdd = parseCsv(csvString);
 		
 		CourseListUpdater.addGroupForUser(modelStore, 
@@ -39,12 +38,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                          groupId, 
 				                          message.getUser());
 
-		GroupListUpdater.addGroupForUser(modelStore, 
-				                         message.getSemesterId(), 
-				                         message.getCourseId(), 
-				                         groupId, 
-				                         studentsToAdd,
-				                         message.getUser());
 
 		/*
 		int numberOfStudentAdded = QueueUpdater.addStudentsToQueue(modelStore, queueId, studentsToAdd);
@@ -102,8 +95,22 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) {
 		T.call(this);
-		
+
 		UserUpdater.addUsers(modelStore, studentsToAdd);
+
+		GroupListUpdater.addGroupForUser(modelStore, 
+				                         message.getSemesterId(), 
+				                         message.getCourseId(), 
+				                         groupId, 
+				                         studentsToAdd,
+				                         message.getUser());
+
+		SemesterListUpdater.addCourseGroupForUser(modelStore, 
+				                                  message.getSemesterId(), 
+				                                  message.getCourseId(), 
+				                                  groupId, 
+				                                  message.getUser());
+		
 		
 		/*
 

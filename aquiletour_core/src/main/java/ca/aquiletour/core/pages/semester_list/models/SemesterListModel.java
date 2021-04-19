@@ -28,6 +28,7 @@ public class SemesterListModel implements NtroModel {
 		this.currentSemesterId = currentSemesterId;
 	}
 
+
 	public SemesterModel semesterById(String semesterId) {
 		SemesterModel semester = null;
 		
@@ -73,5 +74,20 @@ public class SemesterListModel implements NtroModel {
 		T.call(this);
 
 		getCurrentSemesterId().set(semesterId);
+	}
+
+	public void addCourseGroup(String semesterId, String courseId, String groupId) {
+		T.call(this);
+
+		SemesterModel semester = semesterById(semesterId);
+		
+		if(semester != null) {
+			
+			semester.addCourseGroup(courseId, groupId);
+			
+		} else {
+			
+			Log.warning("Semester not found: " + semesterId);
+		}
 	}
 }

@@ -116,12 +116,12 @@
             </table>
         </div>
     </div>
-    <a class="accordion-button" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
+    <a class="accordion-button collapsed add-id-to-href" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
         Mon horaire
     </a>
-    <div class="collapse show" id="schedule">
+    <div class="collapse add-id-to-id" id="schedule">
         <div class="card-body mb-2">
-            <form action="" method="post" id="add-schedule-line-form">
+            <form action="" method="post" class="add-id-to-id" id="add-schedule-line-form">
                 <input class="add-id-to-value" name="semesterId" value="" style="display:none;"></input>
             </form>
             <table class="table" id="schdule">
@@ -135,7 +135,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <select  class="form-select" form="add-schedule-line-form" name="day" style="max-width:5rem">
+                        <select  class="form-select add-id-to-form" form="add-schedule-line-form" name="day" style="max-width:5rem">
                             <option name="monday">LU</option>
                             <option name="tuesday">MA</option>
                             <option name="wednesday">ME</option>
@@ -144,24 +144,24 @@
                         </select>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="startTime" style="max-width:5rem"></input>
+                        <input class="form-text add-id-to-form" form="add-schedule-line-form" name="startTime" style="max-width:5rem"></input>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="endTime" style="max-width:5rem"></input>
+                        <input class="form-text add-id-to-form" form="add-schedule-line-form" name="endTime" style="max-width:5rem"></input>
                     </td>
                     <td>
-                        <select class="form-select"  form="add-schedule-line-form" name="courseGroup" style="max-width:5rem">
+                        <select class="form-select add-id-to-form" id="course-group-select" form="add-schedule-line-form" name="courseGroup" style="max-width:5rem">
                         </select>
                     </td>
                     <td>
-                        <select class="form-select"  form="add-schedule-line-form" name="session" style="max-width:5rem">
+                        <select class="form-select add-id-to-form"  form="add-schedule-line-form" name="session" style="max-width:5rem">
                             <option name="1">1ère séance</option>
                             <option name="2">2ième séance</option>
                             <option name="3">3ième séance</option>
                         </select>
                     </td>
                     <td>
-                        <button class="btn btn-secondary btn-sm" form="add-schedule-line-form" type="submit" style="line-height:0px;">
+                        <button class="btn btn-secondary btn-sm add-id-to-form" form="add-schedule-line-form" type="submit" style="line-height:0px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -172,15 +172,15 @@
             </table>
         </div>
     </div>
-    <a class="accordion-button" data-toggle="collapse" href="#schedule" role="button" aria-expanded="false" aria-controls="schedule">
+    <a class="accordion-button collapsed add-id-to-href" data-toggle="collapse" href="#availability" role="button" aria-expanded="false" aria-controls="schedule">
         Mes disponibilitées
     </a>
-    <div class="collapse show" id="schedule">
+    <div class="collapse add-id-to-id" id="availability">
         <div class="card-body mb-2">
-            <form action="" method="post" id="add-availibility-line-form">
+            <form class="add-id-to-id" action="" method="post" id="add-availability-line-form">
                 <input class="add-id-to-value" name="semesterId" value="" style="display:none;"></input>
             </form>
-            <table class="table" id="availibility-table">
+            <table class="table" id="availability-table">
                 <tr>
                     <th>Journée</th>
                     <th>Début</th>
@@ -189,7 +189,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <select  class="form-select" form="add-schedule-line-form" name="day" style="max-width:5rem">
+                        <select class="form-select add-id-to-form" form="add-schedule-line-form" name="day" style="max-width:5rem">
                             <option name="monday">LU</option>
                             <option name="tuesday">MA</option>
                             <option name="wednesday">ME</option>
@@ -198,13 +198,13 @@
                         </select>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="startTime" style="max-width:5rem"></input>
+                        <input class="form-text add-id-to-form" form="add-schedule-line-form" name="startTime" style="max-width:5rem"></input>
                     </td>
                     <td>
-                        <input form="add-schedule-line-form" name="endTime" style="max-width:5rem"></input>
+                        <input class="form-text add-id-to-form" form="add-schedule-line-form" name="endTime" style="max-width:5rem"></input>
                     </td>
                     <td>
-                        <button class="btn btn-secondary btn-sm" form="add-schedule-line-form" type="submit" style="line-height:0px;">
+                        <button class="btn btn-secondary btn-sm add-id-to-form" form="add-schedule-line-form" type="submit" style="line-height:0px;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                                   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>

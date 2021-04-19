@@ -123,7 +123,51 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 		});
 		
 		
-		
+		semester.getCourseGroups().observe(new ListObserver<String>() {
+
+			@Override
+			public void onValueChanged(List<String> oldValue, List<String> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onValue(List<String> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDeleted(List<String> lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemAdded(int index, String item) {
+				T.call(this);
+
+				semesterView.appendCourseGroupe(item);
+			}
+
+			@Override
+			public void onItemUpdated(int index, String item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemRemoved(int index, String item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onClearItems() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 }

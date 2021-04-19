@@ -8,5 +8,6 @@ public interface SemesterView extends NtroView {
 
 	void displaySemester(SemesterModel item);
 	void appendSemesterWeek(SemesterWeek item);
+	void appendCourseGroupe(String courseGroup);
 
 }
