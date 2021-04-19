@@ -7,7 +7,6 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 
 public class CourseModel implements NtroModel, TaskGraph {
 
