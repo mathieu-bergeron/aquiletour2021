@@ -8,9 +8,19 @@
             </nav>
         </div>
         <div class="flex-fill"></div>
+
         <div class="me-3">
-            <a class="btn btn-secondary dropdown-toggle semester-dropdown-head" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-            <div class="dropdown-menu dropdown-menu-right semester-dropdown-tail" aria-labelledby="semester-menu-link">
+            <a class="btn btn-secondary dropdown-toggle" 
+               id="semester-dropdown-head"
+               href="#" 
+               role="button" 
+               data-toggle="dropdown" 
+               aria-haspopup="true" 
+               aria-expanded="false"></a>
+
+            <div class="dropdown-menu dropdown-menu-right" 
+                 aria-labelledby="semester-menu-link" 
+                 id="semester-dropdown-tail">
             </div>
         </div>
     </div>
@@ -19,7 +29,8 @@
     </div>
 
     <div class="mt-3 d-flex justify-content-center">
-        <button class="btn btn-primary add-course-button" 
+        <button class="btn btn-primary" 
+                id="add-item-button"
                 type="button" 
                 data-toggle="modal" 
                 data-target="#add-task-modal"></button>

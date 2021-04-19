@@ -2,6 +2,7 @@ package ca.aquiletour.web.widgets;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 
 public class BootstrapDropdown {
 	
@@ -35,20 +36,26 @@ public class BootstrapDropdown {
 	public void select(String id) {
 		T.call(this);
 
-		HtmlElement link = dropdownTail.find("#" + id).get(0);
+		HtmlElements links = dropdownTail.find("#" + id);
 		
-		if(link != null) {
-			clearSelection();
+		if(links != null) {
+
+			HtmlElement link = links.get(0);
 			
-			String linkId = link.getAttribute("id");
-			String linkHref = link.getAttribute("href");
-			String linkText = link.text();
-			
-			dropdownHead.setAttribute("link-id", linkId);
-			dropdownHead.setAttribute("href", linkHref);
-			dropdownHead.text(linkText);
-			
-			link.removeFromDocument();
+			if(link != null) {
+
+				clearSelection();
+
+				String linkId = link.getAttribute("id");
+				String linkHref = link.getAttribute("href");
+				String linkText = link.text();
+				
+				dropdownHead.setAttribute("link-id", linkId);
+				dropdownHead.setAttribute("href", linkHref);
+				dropdownHead.text(linkText);
+				
+				link.removeFromDocument();
+			}
 		}
 	}
 

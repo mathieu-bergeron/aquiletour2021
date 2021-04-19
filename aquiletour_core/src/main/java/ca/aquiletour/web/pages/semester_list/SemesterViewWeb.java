@@ -15,7 +15,6 @@ import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlUtils;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
@@ -61,10 +60,10 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		
 		semesterIdHeader.text(item.getSemesterId());
 		
-		HtmlUtils.addIdTo(addIdToValue, "value", item.getSemesterId());
-		HtmlUtils.addIdTo(addIdToId, "id", item.getSemesterId());
-		HtmlUtils.addIdTo(addIdToForm, "form", item.getSemesterId());
-		HtmlUtils.addIdTo(addIdToHref, "href", item.getSemesterId());
+		addIdToValue.appendToAttribute("value", item.getSemesterId());
+		addIdToId.appendToAttribute("id", item.getSemesterId());
+		addIdToForm.appendToAttribute("form", item.getSemesterId());
+		addIdToHref.appendToAttribute("href", item.getSemesterId());
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		

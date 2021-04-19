@@ -9,7 +9,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElementLambda;
 import ca.ntro.web.dom.HtmlElements;
 
-public class HtmlElementsJSweet implements HtmlElements {
+public class HtmlElementsJSweet extends HtmlElements {
 	
 	private JQuery jQueryElements;
 	

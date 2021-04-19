@@ -7,6 +7,7 @@ import ca.aquiletour.web.widgets.BootstrapDropdown;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -17,7 +18,7 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	private HtmlElement addItemButton;
 	private HtmlElement modalTitle;
 	private HtmlElement semesterIdInput;
-	
+
 	protected HtmlElement getAddItemButton() {
 		return addItemButton;
 	}
@@ -30,9 +31,9 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
-		HtmlElement semesterDropdownHead = getRootElement().find(".semester-dropdown-head").get(0);
-		HtmlElement semesterDropdownTail = getRootElement().find(".semester-dropdown-tail").get(0);
-		addItemButton = getRootElement().find(".add-course-button").get(0);
+		HtmlElement semesterDropdownHead = getRootElement().find("#semester-dropdown-head").get(0);
+		HtmlElement semesterDropdownTail = getRootElement().find("#semester-dropdown-tail").get(0);
+		addItemButton = getRootElement().find("#add-item-button").get(0);
 		modalTitle = getRootElement().find("#modal-title").get(0);
 		coursesContainer = this.getRootElement().find("#courses-container").get(0);
 		semesterIdInput = this.getRootElement().find("#semester-id-input").get(0);
@@ -44,6 +45,9 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 		MustNot.beNull(coursesContainer);
 		MustNot.beNull(semesterIdInput);
 		
+		semesterDropdownHead.setAttribute("id", "semester-dropdown-head-" + Ntro.introspector().getSimpleNameForClass(getClass()));
+		semesterDropdownTail.setAttribute("id", "semester-dropdown-tail-" + Ntro.introspector().getSimpleNameForClass(getClass()));
+
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 	}
 
