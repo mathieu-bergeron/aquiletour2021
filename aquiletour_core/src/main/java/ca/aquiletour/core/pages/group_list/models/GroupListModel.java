@@ -39,18 +39,12 @@ public class GroupListModel implements NtroModel {
 		getGroups().addItem(groupDescription);
 
 		groupDescription.addStudents(studentsToAdd);
-
-		// FIXME: the App should not have to do this!
-		Ntro.modelStore().updateStoreConnections(this);
 	}
 	
 	public void addSemester(String semesterId) {
 		T.call(this);
 		
 		getSemesterCourses().addSemester(semesterId);
-
-		// FIXME: the App should not have to do this!
-		Ntro.modelStore().updateStoreConnections(this);
 	}
 
 	public void addCourse(String semesterId, String courseId) {
@@ -61,9 +55,6 @@ public class GroupListModel implements NtroModel {
 		}
 		
 		getSemesterCourses().addCourse(semesterId, courseId);
-
-		// FIXME: the App should not have to do this!
-		Ntro.modelStore().updateStoreConnections(this);
 	}
 
 

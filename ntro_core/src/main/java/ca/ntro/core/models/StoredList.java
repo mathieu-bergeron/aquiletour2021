@@ -82,6 +82,8 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		args.add(item);
 		
 		modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
+		
+		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemAdded(getValue().indexOf(item), item);

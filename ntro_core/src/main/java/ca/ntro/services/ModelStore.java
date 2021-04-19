@@ -165,6 +165,19 @@ public abstract class ModelStore {
 		}
 	}
 
+	public void updateStoreConnectionsByPath(DocumentPath modelPath) {
+		NtroModel model = localHeapByPath.get(modelPath);
+
+		if(model != null) {
+
+			ModelFactory.updateStoreConnections(model, this, modelPath);
+
+		}else {
+			
+			Log.warning("No model to update for path: " + modelPath.toString());
+		}
+	}
+
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
