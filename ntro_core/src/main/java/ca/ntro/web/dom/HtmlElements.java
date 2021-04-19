@@ -7,5 +7,5 @@ public interface HtmlElements {
 	int size();
 	
 	void forEach(HtmlElementLambda lambda);
-
+	
 }

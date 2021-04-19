@@ -123,12 +123,18 @@ public class DynamicHandler extends AbstractHandler {
 
 		T.call(this);
 		
-		/*
 		System.out.println("");
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
-		*/
-		
+
+		/*
+		Enumeration<String> names = baseRequest.getParameterNames();
+		while(names.hasMoreElements()) {
+			String paramName = names.nextElement();
+			String paramValue = baseRequest.getParameter(paramName);
+			System.out.println(paramName + " " + paramValue);
+		}*/
+
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
 		setCurrentSemester();
@@ -182,11 +188,6 @@ public class DynamicHandler extends AbstractHandler {
 	private void sendCsvMessage(Request baseRequest) throws IOException {
 		if(Ntro.currentUser() instanceof Teacher) {
 
-			/*
-			Enumeration<String> names = baseRequest.getParameterNames();
-			while(names.hasMoreElements()) {
-				System.out.println(names.nextElement());
-			}*/
 			
 			String semesterId = baseRequest.getParameter("semesterId");
 			String courseId = baseRequest.getParameter("courseId");

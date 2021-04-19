@@ -15,28 +15,41 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlUtils;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 
 	private HtmlElement semesterIdHeader;
-	private HtmlElements addIdToValue;
 	private HtmlElement weeksTbody;
 	private HtmlElement currentSemesterCheckbox;
+
+	private HtmlElements addIdToValue;
+	private HtmlElements addIdToId;
+	private HtmlElements addIdToForm;
+	private HtmlElements addIdToHref;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		semesterIdHeader = this.getRootElement().find("#semester-id").get(0);
-		addIdToValue = this.getRootElement().find(".add-id-to-value");
 		weeksTbody = this.getRootElement().find("#semester-weeks-tbody").get(0);
-		currentSemesterCheckbox = this.getRootElement().find("#current-semester-checkbox").get(0);
-		
+		currentSemesterCheckbox = this.getRootElement().find(".current-semester-checkbox").get(0);
+
 		MustNot.beNull(semesterIdHeader);
 		MustNot.beNull(weeksTbody);
 		MustNot.beNull(currentSemesterCheckbox);
+
+		addIdToValue = this.getRootElement().find(".add-id-to-value");
+		addIdToId = this.getRootElement().find(".add-id-to-id");
+		addIdToForm = this.getRootElement().find(".add-id-to-form");
+		addIdToHref = this.getRootElement().find(".add-id-to-href");
+		
 		Ntro.verify(that(addIdToValue.size() > 0).isTrue());
+		Ntro.verify(that(addIdToId.size() > 0).isTrue());
+		Ntro.verify(that(addIdToForm.size() > 0).isTrue());
+		Ntro.verify(that(addIdToHref.size() > 0).isTrue());
 	}
 
 	@Override
@@ -45,11 +58,10 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		
 		semesterIdHeader.text(item.getSemesterId());
 		
-		addIdToValue.forEach(e -> {
-			String value = e.getAttribute("value");
-			value += item.getSemesterId();
-			e.setAttribute("value", value);
-		});
+		HtmlUtils.addIdTo(addIdToValue, "value", item.getSemesterId());
+		HtmlUtils.addIdTo(addIdToId, "id", item.getSemesterId());
+		HtmlUtils.addIdTo(addIdToForm, "form", item.getSemesterId());
+		HtmlUtils.addIdTo(addIdToHref, "href", item.getSemesterId());
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		
