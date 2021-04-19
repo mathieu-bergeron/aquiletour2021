@@ -3,6 +3,8 @@ window.onload = function(){
         $('.navbar-collapse').collapse('hide');
     });
 
+    /*
+
     $('a').on('click', function(e){
         
         document.getElementById('page-loader').style.display = 'block';
@@ -18,6 +20,19 @@ window.onload = function(){
 
         
     });
+    */
+
+    /*
     document.getElementById('website-directory').innerHTML = window.location.pathname;
     console.log(window.location.pathname);
+    */
+    
+
+
+    
+
+    // from: https://stackoverflow.com/questions/3522090/event-when-window-location-href-changes
+    window.onhashchange = function(e){
+        console.log("newURL " + e.newURL);
+    }
 }

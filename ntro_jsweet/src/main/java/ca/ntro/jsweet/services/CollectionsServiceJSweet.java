@@ -147,4 +147,9 @@ public class CollectionsServiceJSweet extends CollectionsService {
 		return index;
 	}
 
+	@Override
+	public boolean listContainsEquals(List<?> value, Object target) {
+		return indexOfEquals(value, target) != -1;
+	}
+
 }

@@ -29,7 +29,7 @@ public class NtroThreadJdk extends Thread implements NtroThread {
 	}
 
 	@Override
-	public String getThreadId() {
+	public String threadId() {
 		return String.valueOf(javaThread.getId());
 	}
 

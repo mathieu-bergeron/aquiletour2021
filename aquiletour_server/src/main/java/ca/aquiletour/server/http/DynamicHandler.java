@@ -158,7 +158,7 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 	private void sendCsvMessage(Request baseRequest) throws IOException {
-		if(Ntro.userService().currentUser() instanceof Teacher) {
+		if(Ntro.userService().user() instanceof Teacher) {
 			
 			String queueId = baseRequest.getParameter("queueId");
 			Part filePart = null;
@@ -218,7 +218,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		NtroContext<User> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.userService().currentUser());
+		context.registerUser((User) Ntro.userService().user());
 		
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
@@ -287,7 +287,7 @@ public class DynamicHandler extends AbstractHandler {
 	private void setUserCookie(HttpServletResponse response) {
 		T.call(this);
 		
-		User currentUser = (User) Ntro.userService().currentUser();
+		User currentUser = (User) Ntro.userService().user();
 		User sessionUser = currentUser.toSessionUser();
 		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
 	}
@@ -299,12 +299,12 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(baseRequest.getParameter("nojs") != null) {
 			
-			response.addCookie(new Cookie("jsOnly", "false"));
+			setCookie(response, "jsOnly" , "false" );
 			ifJsOnly = false;
 
 		} else if(baseRequest.getParameter("js") != null) {
 			
-			response.addCookie(new Cookie("jsOnly", "true"));
+			setCookie(response, "jsOnly" , "true" );
 			ifJsOnly = true;
 			
 		}else if(hasCookie(baseRequest, "jsOnly")) {

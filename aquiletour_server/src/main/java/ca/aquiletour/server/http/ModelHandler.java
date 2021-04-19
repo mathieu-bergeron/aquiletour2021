@@ -24,7 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ModelHandler extends AbstractHandler {
-    public static ContextHandler createModelHandler(String modelsUrlPrefix, String publicFilesPrefix) {
+    public static ContextHandler createModelHandler(String modelsUrlPrefix) {
         T.call(ModelHandler.class);
 
         // Http handler
@@ -35,22 +35,19 @@ public class ModelHandler extends AbstractHandler {
         dynamicContext.setInitParameter("cacheControl", "no-store,no-cache,must-revalidate,max-age=0,public");
         dynamicContext.setInitParameter("maxCacheSize", "0");
 
-        dynamicContext.setHandler(new ModelHandler(modelsUrlPrefix, publicFilesPrefix));
+        dynamicContext.setHandler(new ModelHandler(modelsUrlPrefix));
 
         return dynamicContext;
     }
 
 
     private String modelsUrlPrefix;
-    private String publicFilesPrefix;
 
-    public ModelHandler(String modelsUrlPrefix,
-                        String publicFilesPrefix) {
+    public ModelHandler(String modelsUrlPrefix) {
 
         T.call(this);
 
         this.modelsUrlPrefix = modelsUrlPrefix;
-        this.publicFilesPrefix = publicFilesPrefix;
     }
 
     private String[] uriParts(String uri) {
@@ -99,7 +96,7 @@ public class ModelHandler extends AbstractHandler {
 	private void handleGetModelMessage(Request baseRequest, HttpServletResponse response,
 			GetModelNtroMessage getModelNtroMessage) throws IOException {
 
-		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
+		DocumentPath documentPath = getModelNtroMessage.documentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
 		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
@@ -122,7 +119,7 @@ public class ModelHandler extends AbstractHandler {
         baseRequest.setHandled(true);
 	}
 
-	private String readBody(Request baseRequest) throws IOException {
+	static String readBody(Request baseRequest) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		BufferedReader reader = baseRequest.getReader();
 		String line;

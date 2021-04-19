@@ -17,6 +17,7 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
@@ -54,7 +55,7 @@ public class LocalStoreNitrite extends ModelStore {
 	}
 	
 	@Override
-	public JsonLoader getJsonLoader(DocumentPath documentPath) {
+	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
 		
 		NitriteCollection models = db.getCollection(documentPath.getCollection());
@@ -85,7 +86,7 @@ public class LocalStoreNitrite extends ModelStore {
 			models.insert(document);
 		}
 		
-		JsonLoader jsonLoader = new JsonLoaderMemory(documentPath, jsonString);
+		JsonLoader jsonLoader = new JsonLoaderMemory(jsonString);
 		
 		return jsonLoader;
 	}
@@ -141,11 +142,6 @@ public class LocalStoreNitrite extends ModelStore {
 		
 	}
 
-	@Override
-	public void registerThatUserObservesModel(NtroUser user, DocumentPath documentPath, NtroModel model) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
@@ -155,6 +151,12 @@ public class LocalStoreNitrite extends ModelStore {
 	@Override
 	protected void deleteDocument(DocumentPath documentPath) {
 		throw new RuntimeException("TODO");
+	}
+
+	@Override
+	protected JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+		// XXX: not supported
+		return null;
 	}
 
 	

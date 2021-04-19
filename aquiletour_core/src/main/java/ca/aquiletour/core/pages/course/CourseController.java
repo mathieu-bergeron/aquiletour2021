@@ -1,33 +1,38 @@
 package ca.aquiletour.core.pages.course;
 
-import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
-import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
+import ca.ntro.core.mvc.ControllerMessageHandler;
+import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public class CourseController extends NtroController<RootController>{
+public abstract class CourseController extends NtroController<RootController>{
 
 	@Override
 	protected void onCreate(NtroContext<?> context) {
 		T.call(this);
 
-		setViewLoader(CourseView.class, "fr");
+		setViewLoader(viewClass(), "fr");
 
 		setModelLoader(new EmptyModelLoader());
 
-		addControllerMessageHandler(ShowCourseMessage.class, new ShowCourseHandler());
+		addControllerMessageHandler(ShowCourseMessage.class, showHandler());
 
-		addSubViewLoader(TaskView.class, context.lang());
+		addSubViewLoader(subViewClass(), context.lang());
 
-		addModelViewSubViewMessageHandler(TaskView.class, ShowTaskMessage.class, new CourseViewModel());
+		addModelViewSubViewMessageHandler(subViewClass(), ShowTaskMessage.class, viewModel());
 	}
+
+	protected abstract Class<? extends CourseView> viewClass();
+	protected abstract Class<? extends TaskView> subViewClass();
+	protected abstract ControllerMessageHandler<?,?,?> showHandler();
+	protected abstract ModelViewSubViewMessageHandler<?,?,?> viewModel();
 
 	@Override
 	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
@@ -40,6 +45,4 @@ public class CourseController extends NtroController<RootController>{
 		T.call(this);
 		
 	}
-
-
 }

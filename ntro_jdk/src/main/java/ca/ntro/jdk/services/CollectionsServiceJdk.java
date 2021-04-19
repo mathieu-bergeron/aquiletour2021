@@ -109,4 +109,9 @@ public class CollectionsServiceJdk extends CollectionsService {
 	public int indexOfEquals(List<?> list, Object target) {
 		return list.indexOf(target);
 	}
+
+	@Override
+	public boolean listContainsEquals(List<?> value, Object target) {
+		return value.contains(target);
+	}
 }

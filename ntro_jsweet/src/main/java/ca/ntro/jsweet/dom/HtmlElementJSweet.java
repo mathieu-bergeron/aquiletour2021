@@ -272,4 +272,9 @@ public class HtmlElementJSweet extends HtmlElement {
 		
 		jQueryElement.trigger(event);
 	}
+
+	@Override
+	public String text() {
+		return jQueryElement.text();
+	}
 }

@@ -10,11 +10,11 @@ import ca.ntro.services.Ntro;
 public class InitializationTaskWebserver extends InitializationTaskJdk {
 	
 	private final Class<? extends BackendServiceServer> backendServiceClass;
-	private final ModelStore localStore;
+	private final Class<? extends ModelStore> modelStoreClass;
 
-	public InitializationTaskWebserver(Class<? extends BackendServiceServer> backendServiceClass, ModelStore localStore) {
+	public InitializationTaskWebserver(Class<? extends BackendServiceServer> backendServiceClass, Class<? extends ModelStore> modelStoreClass) {
 		this.backendServiceClass = backendServiceClass;
-		this.localStore = localStore;
+		this.modelStoreClass = modelStoreClass;
 	}
 
 	@Override
@@ -23,14 +23,12 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 		
 		BackendServiceServer service = Ntro.factory().newInstance(backendServiceClass);
 		
-		service.setModelStore(localStore);
-		
 		return service;
 		
 	}
 
 	@Override
 	protected Class<? extends ModelStore> provideModelStoreClass() {
-		return localStore.getClass();
+		return modelStoreClass;
 	}
 }

@@ -20,6 +20,13 @@ package ca.aquiletour.core;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.git.DeRegisterExercise;
+import ca.aquiletour.core.messages.git.DeRegisterRepo;
+import ca.aquiletour.core.messages.git.GetCommitsForPath;
+import ca.aquiletour.core.messages.git.OnCloneFailed;
+import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.messages.git.RegisterExercise;
+import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -27,9 +34,12 @@ import ca.aquiletour.core.models.users.SuperUser;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course.messages.AddTaskMessage;
+import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
+import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
+import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.ObservableTaskList;
+import ca.aquiletour.core.pages.course.models.ObservableTaskIdList;
+import ca.aquiletour.core.pages.course.models.ObservableTaskMap;
 import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.models.TaskRelation;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
@@ -77,7 +87,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// FIXME
 		Constants.LANG = "fr";
 
-		User currentUser = (User) Ntro.userService().currentUser();
+		User currentUser = (User) Ntro.userService().user();
 		
 		NtroContext<User> context = new NtroContext<>();
 		context.registerUser(currentUser);
@@ -122,7 +132,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(Commit.class);
 
 		Ntro.registerSerializableClass(CourseModel.class);
-		Ntro.registerSerializableClass(ObservableTaskList.class);
+		Ntro.registerSerializableClass(ObservableTaskMap.class);
+		Ntro.registerSerializableClass(ObservableTaskIdList.class);
 		Ntro.registerSerializableClass(Task.class);
 		Ntro.registerSerializableClass(TaskRelation.class);
 
@@ -144,7 +155,16 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(UserInitiatesLoginMessage.class);
 		Ntro.registerSerializableClass(UserSendsLoginCodeMessage.class);
 		Ntro.registerSerializableClass(AddStudentCsvMessage.class);
-		Ntro.registerSerializableClass(AddTaskMessage.class);
+		Ntro.registerSerializableClass(AddSubTaskMessage.class);
+		Ntro.registerSerializableClass(AddPreviousTaskMessage.class);
+		Ntro.registerSerializableClass(AddNextTaskMessage.class);
+		Ntro.registerSerializableClass(RegisterExercise.class);
+		Ntro.registerSerializableClass(DeRegisterExercise.class);
+		Ntro.registerSerializableClass(RegisterRepo.class);
+		Ntro.registerSerializableClass(DeRegisterRepo.class);
+		Ntro.registerSerializableClass(OnClone.class);
+		Ntro.registerSerializableClass(OnCloneFailed.class);
+		Ntro.registerSerializableClass(GetCommitsForPath.class);
 
 	}
 	

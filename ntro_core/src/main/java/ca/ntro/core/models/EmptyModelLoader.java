@@ -5,7 +5,7 @@ import ca.ntro.core.system.trace.T;
 public class EmptyModelLoader extends ModelLoader {
 
 	public EmptyModelLoader() {
-		super(null);
+		super(null, null);
 	}
 
 	@Override

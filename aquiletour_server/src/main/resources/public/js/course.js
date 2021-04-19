@@ -1,5 +1,6 @@
 function initializeCourse(viewRootElement, jSweet){
 
+<<<<<<< HEAD
 $(document).ready(function() {
   
     // get box count
@@ -30,3 +31,8 @@ $(document).ready(function() {
     $(":checkbox").click(countChecked);
   });
 }
+=======
+    console.log("initializeCourse");
+}
+
+>>>>>>> main

@@ -92,16 +92,18 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		T.call(this);
 		
 		int index = Ntro.collections().indexOfEquals(getValue(), item);
-
-		getValue().remove(index);
 		
-		List<Object> args = new ArrayList<>();
-		args.add(item);
+		if(index != -1) {
+			getValue().remove(index);
+			
+			List<Object> args = new ArrayList<>();
+			args.add(item);
 
-		modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
+			modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
 
-		for(ListObserver<I> listObserver : listObservers) {
-			listObserver.onItemRemoved(index, item);
+			for(ListObserver<I> listObserver : listObservers) {
+				listObserver.onItemRemoved(index, item);
+			}
 		}
 	}
 	
@@ -112,7 +114,7 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		//MustNot.beTrue(!removed);
 	}
 
-	public void removeAllObservers() {
+	public void removeObservers() {
 		T.call(this);
 		
 		this.listObservers.clear();
@@ -135,5 +137,9 @@ public class StoredList<I extends Object> extends StoredProperty<List<I>> {     
 		}
 
 		//super.observe(listObserver);
+	}
+
+	public boolean contains(I item) {
+		return Ntro.collections().listContainsEquals(getValue(), item);
 	}
 }

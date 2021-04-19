@@ -66,7 +66,7 @@ public class ModelStoreSync {
 		if(ifModelExists(modelClass, authToken, modelId)) {
 			
 			M model = (M) getModel(modelClass, authToken, modelId);
-
+			
 			updater.update(model);
 			
 			save(model);

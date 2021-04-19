@@ -1,41 +1,113 @@
 <div class='card border mb-3'>
     <div class='card-header bg-transparent border'>
-        <span id="task-name">TP1</span><span style="float:right;">4 avril</span>
+        <a href="#" id="task-title-link"></a><a style="float:right;" id="delete-task-link">⊟</a>
     </div>
     <div class='card-body text'>
         <div>Tâches préalables:</div>
         <div class='card-footer bg-transparent border'>
-            <ul>
-                <li><a href="#">atelier 1</a> ✓
-                <li><a href="#">bonus</a> ☆
-            </ul>
+            <ol id="previous-tasks-container">
+            </ol>
         </div>
-        <span style="float:right;">⊞</span>
+        <a class="add-task-id-to-data-target" id="add-previous-task-button" href="#" data-toggle="modal" data-target="#add-previous-task-modal" style="float:right;">⊞</a>
 
         <br>
 
         <div>Sous-tâches:</div>
         <div class='card-footer bg-transparent border'>
-            <ul>
-                <li><a href="#">créer la vue</a> ✓
-                <li><a href="#">créer le modèle</a> ☆
-                <li><a href="#">créer un test</a> ☆
-            </ul>
+            <ol id="subtasks-container">
+            </ol>
         </div>
-        <span style="float:right;">⊞</span>
+        <a class="add-task-id-to-data-target" id="add-subtask-button" href="#" data-toggle="modal" data-target="#add-subtask-modal" style="float:right;">⊞</a>
 
         <br>
 
         <div>Tâches suivantes:</div>
         <div class='card-footer bg-transparent border'>
-            <ul>
-                <li><a href="#">préparer examen 1</a>
-                <li><a href="#">atelier 4</a>
-            </ul>
+            <ol id="next-tasks-container">
+            </ol>
         </div>
-        <span style="float:right;">⊞</span>
+        <a class="add-task-id-to-data-target" id="add-nexttask-button" href="#" data-toggle="modal" data-target="#add-next-task-modal" style="float:right;">⊞</a>
     </div>
+<<<<<<< HEAD
     
+=======
+
+      <div class="modal fade add-task-id-to-id" id="add-previous-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content dashboard-mContent">
+            <div class="modal-header">
+              <h5 class="modal-title" id="add-previous-task-modal-title">Ajouter une tâche préalable</h5>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body dashboard-mBody">
+              <form action="" method="post">
+                <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+                <label for="title">Nouvelle tâche préalable:</label>
+                <input name="newPreviousTask" id="new-previous-task-input"></input>
+                <label for="title">Lien vers une tâche existante:</label>
+                <input name="previousTask" id="existing-previous-task-input"></input>
+                <div class="modal-footer border-0">         
+                  <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+                </div>  
+              </form>
+            </div>       
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade add-task-id-to-id" id="add-subtask-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content dashboard-mContent">
+            <div class="modal-header">
+              <h5 class="modal-title" id="add-subtask-modal-title">Ajouter une sous-tâche</h5>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body dashboard-mBody">
+              <form action="" method="post" class="add-course-form">
+                <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+                <label for="title">Titre de la nouvelle sous-tâche</label>
+                <input name="newSubTask" id="new-subtask-input"></input>
+                <div class="modal-footer border-0">         
+                  <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+                </div>  
+              </form>
+            </div>       
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade add-task-id-to-id" id="add-next-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content dashboard-mContent">
+            <div class="modal-header">
+              <h5 class="modal-title" id="add-next-task-modal-title">Ajouter une tâche suivante</h5>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body dashboard-mBody">
+              <form action="" method="post">
+                <input name="taskId" class="add-task-id-to-value" style="display:none;"></input>
+                <label for="title">Nouvelle tâche suivante:</label>
+                <input name="newNextTask" id="new-next-task-input"></input>
+                <label for="title">Lien vers une tâche existante:</label>
+                <input name="nextTask" id="existing-next-task-input"></input>
+                <div class="modal-footer border-0">         
+                  <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+                </div>  
+              </form>
+            </div>       
+          </div>
+        </div>
+      </div>
+
+    
+
+>>>>>>> main
 </div>
 
 

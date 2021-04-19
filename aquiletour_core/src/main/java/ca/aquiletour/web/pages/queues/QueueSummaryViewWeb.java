@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.queues;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
@@ -20,8 +21,6 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView
 	private HtmlElement numberOfAnswersToDate;
 	private HtmlElement teacherName;
 	
-	private String queueLinkHref;
-
 	@Override
 	public void initializeViewWeb(NtroContext<?> context) {
 		T.call(this);
@@ -33,8 +32,6 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView
 		MustNot.beNull(queueLink);
 		MustNot.beNull(numberOfAnswersToDate);
 		MustNot.beNull(teacherName);
-		
-		queueLinkHref = queueLink.getAttribute("href");
 	}
 
 	@Override
@@ -42,15 +39,15 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements QueueSummaryView
 		T.call(this);
 		
 		queueLink.html(queue.getId());
-		queueLink.setAttribute("href", queueLinkHref + queue.getId());
+		queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT  + "/" + queue.getId());
 		
 		queueLink.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
 				
-				if(Ntro.userService().currentUser() instanceof Teacher ||
-						Ntro.userService().currentUser() instanceof TeacherGuest) {
+				if(Ntro.userService().user() instanceof Teacher ||
+						Ntro.userService().user() instanceof TeacherGuest) {
 					
 					ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
 					showTeacherQueueMessage.setCourseId(queue.getId());

@@ -28,9 +28,7 @@ public class JavaMainServer {
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		ModelStore localStore = new LocalStoreFiles();
-		
-		NtroWebServer.defaultInitializationTask(BackendServiceTest.class, localStore)
+		NtroWebServer.defaultInitializationTask(BackendServiceTest.class, LocalStoreFiles.class)
 		             .setOptions(args)
 		             .addNextTask(new NtroServerMain())
 		             .execute();
