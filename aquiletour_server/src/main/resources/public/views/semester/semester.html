@@ -125,6 +125,7 @@
                 <input class="add-id-to-value" name="semesterId" value="" style="display:none;"></input>
             </form>
             <table class="table" id="schdule">
+                <thead>
                 <tr>
                     <th>Journée</th>
                     <th>Début</th>
@@ -133,6 +134,8 @@
                     <th>Séance</th>
                     <th>&nbsp;</th>
                 </tr>
+                </thead>
+                <tbody id="schedule-tbody">
                 <tr>
                     <td>
                         <select  class="form-select add-id-to-form" form="add-schedule-line-form" name="scheduleItemDay" style="max-width:5rem">
@@ -169,6 +172,7 @@
                         </button>
                     </td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>

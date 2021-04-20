@@ -44,11 +44,20 @@ public class CourseGroup implements NtroModelValue {
 		path.addName(groupId);
 		return path;
 	}
+
+	@Override
+	public String toString() {
+		T.call(this);
+		
+		String path = toPath().toString();
+		
+		return path.substring(1);
+	}
 	
-	public static CourseGroup formPath(String courseGroupPath) {
+	public static CourseGroup fromString(String courseGroupString) {
 		T.call(CourseGroup.class);
 		
-		Path path = new Path(courseGroupPath);
+		Path path = new Path("/" + courseGroupString);
 		CourseGroup courseGroup = new CourseGroup();
 		
 		courseGroup.setCourseId(path.name(0));

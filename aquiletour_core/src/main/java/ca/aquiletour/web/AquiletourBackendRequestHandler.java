@@ -168,7 +168,7 @@ public class AquiletourBackendRequestHandler {
 			String courseGroupPath = parameters.get("courseGroup")[0];
 			String scheduleItemId = parameters.get("scheduleItemId")[0];
 			
-			CourseGroup courseGroup = CourseGroup.formPath(courseGroupPath);
+			CourseGroup courseGroup = CourseGroup.fromString(courseGroupPath);
 			NtroDayOfWeek itemDay = NtroDayOfWeek.fromString(itemDayString);
 			NtroTimeOfDay startTime = NtroTimeOfDay.fromString(startTimeString);
 			NtroTimeOfDay endTime = NtroTimeOfDay.fromString(endTimeString);
@@ -182,7 +182,7 @@ public class AquiletourBackendRequestHandler {
 			AddScheduleItemMessage addScheduleItemMessage = Ntro.messages().create(AddScheduleItemMessage.class);
 			addScheduleItemMessage.setSemesterId(semesterId);
 			addScheduleItemMessage.setScheduleItem(scheduleItem);
-			Ntro.messages().send(addScheduleItemMessage);
+			Ntro.backendService().sendMessageToBackend(addScheduleItemMessage);
 			
 		} else if(parameters.containsKey("currentSemesterId")) {
 

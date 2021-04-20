@@ -3,13 +3,13 @@ package ca.aquiletour.web.pages.semester_list;
 
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import static ca.ntro.assertions.Factory.that;
 
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
-import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -25,6 +25,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	private HtmlElement weeksTbody;
 	private HtmlElement currentSemesterCheckbox;
 	private HtmlElement courseGroupSelect;
+	private HtmlElement scheduleTbody;
 
 	private HtmlElements addIdToValue;
 	private HtmlElements addIdToId;
@@ -39,11 +40,13 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		weeksTbody = this.getRootElement().find("#semester-weeks-tbody").get(0);
 		currentSemesterCheckbox = this.getRootElement().find(".current-semester-checkbox").get(0);
 		courseGroupSelect = this.getRootElement().find("#course-group-select").get(0);
+		scheduleTbody = this.getRootElement().find("#schedule-tbody").get(0);
 
 		MustNot.beNull(semesterIdHeader);
 		MustNot.beNull(weeksTbody);
 		MustNot.beNull(currentSemesterCheckbox);
 		MustNot.beNull(courseGroupSelect);
+		MustNot.beNull(scheduleTbody);
 
 		addIdToValue = this.getRootElement().find(".add-id-to-value");
 		addIdToId = this.getRootElement().find(".add-id-to-id");
@@ -118,8 +121,43 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		HtmlElement option = courseGroupSelect.createElement("<option></option>");
 		option.setAttribute("name", "courseGroup");
 		
-		option.text(courseGroup.toPath().toString());
+		option.text(courseGroup.toString());
 
 		courseGroupSelect.appendElement(option);
+	}
+
+	@Override
+	public void appendScheduleItem(ScheduleItem item) {
+		T.call(this);
+
+		int numberOfRows = scheduleTbody.find("tr").size();
+
+		if(numberOfRows > 0) {
+
+			HtmlElement lastRow = scheduleTbody.find("tr").get(numberOfRows-1);
+
+			HtmlElement dataRow = scheduleTbody.createTag("tr");
+
+			HtmlElement dayCell = dataRow.createTag("td");
+			HtmlElement startTimeCell = dataRow.createTag("td");
+			HtmlElement endTimeCell = dataRow.createTag("td");
+			HtmlElement courseGroupCell = dataRow.createTag("td");
+			HtmlElement scheduleItemIdCell = dataRow.createTag("td");
+			
+			dayCell.text(item.getDayOfWeek().shortName());
+			startTimeCell.text(item.getStartTime().toString());
+			endTimeCell.text(item.getEndTime().toString());
+			courseGroupCell.text(item.getCourseGroup().toString());
+			scheduleItemIdCell.text(item.getScheduleItemId());
+			
+			dataRow.appendElement(dayCell);
+			dataRow.appendElement(startTimeCell);
+			dataRow.appendElement(endTimeCell);
+			dataRow.appendElement(courseGroupCell);
+			dataRow.appendElement(scheduleItemIdCell);
+			
+			dataRow.insertBefore(lastRow);
+		}
+		
 	}
 }

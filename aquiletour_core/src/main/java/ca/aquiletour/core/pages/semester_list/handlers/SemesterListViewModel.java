@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.semester_list.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
@@ -169,6 +170,54 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 				
 			}
 		});
+		
+		semester.getScheduleItems().observe(new ListObserver<ScheduleItem>() {
+
+			@Override
+			public void onValueChanged(List<ScheduleItem> oldValue, List<ScheduleItem> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onValue(List<ScheduleItem> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDeleted(List<ScheduleItem> lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemAdded(int index, ScheduleItem item) {
+				T.call(this);
+				
+				semesterView.appendScheduleItem(item);
+			}
+
+			@Override
+			public void onItemUpdated(int index, ScheduleItem item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemRemoved(int index, ScheduleItem item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onClearItems() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 	}
 
 }

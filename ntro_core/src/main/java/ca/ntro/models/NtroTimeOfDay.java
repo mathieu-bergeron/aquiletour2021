@@ -44,5 +44,21 @@ public class NtroTimeOfDay implements NtroModelValue {
 		return new NtroTimeOfDay(hour24, minutes);
 	}
 	
+	private String formatNumber(int number) {
+		String result = String.valueOf(number);
+		if(result.length() == 1) {
+			result = "0" + result;
+		}
+
+		return result;
+	}
+	
+	@Override
+	public String toString() {
+		T.call(this);
+
+		return formatNumber(hour24) + ":" + formatNumber(minutes);
+	}
+	
 	
 }
