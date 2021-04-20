@@ -61,6 +61,8 @@ import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
 import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.aquiletour.core.pages.course_list.models.ObservableTaskDescriptions;
+import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
@@ -237,6 +239,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(OnClone.class);
 		Ntro.registerSerializableClass(OnCloneFailed.class);
 		Ntro.registerSerializableClass(GetCommitsForPath.class);
+
+		Ntro.registerSerializableClass(ObservableTaskDescriptions.class);
+		Ntro.registerSerializableClass(TaskDescription.class);
 
 	}
 	

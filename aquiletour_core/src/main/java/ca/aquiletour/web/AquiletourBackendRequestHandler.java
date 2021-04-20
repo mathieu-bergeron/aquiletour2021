@@ -7,6 +7,7 @@ import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
@@ -103,7 +104,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(parameters.containsKey("courseTitle")) {
+		if(parameters.containsKey("courseId") && !parameters.containsKey("taskId")) {
 			
 			String semesterId = parameters.get("semesterId")[0];
 			String courseTitle = parameters.get("courseTitle")[0];
@@ -115,6 +116,31 @@ public class AquiletourBackendRequestHandler {
 			addCourseMessage.setSemesterId(semesterId);
 			addCourseMessage.setCourseDescription(courseDescription);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
+		}
+
+		else if(parameters.containsKey("taskId")) {
+			
+			String teacherId = user.getId();
+			String semesterId = parameters.get("semesterId")[0];
+			String courseId = parameters.get("courseId")[0];
+			
+			String taskId = parameters.get("taskId")[0];
+			String taskTitle = parameters.get("taskId")[0];
+			
+			Path parentPath = new Path("/");
+			Path taskPath = new Path("/" + taskId);
+
+			Task task = new Task();
+			task.setTitle(taskTitle);
+			task.setPath(taskPath);
+			
+			AddSubTaskMessage addSubTaskMessage = Ntro.messages().create(AddSubTaskMessage.class);
+			addSubTaskMessage.setTeacherId(teacherId);
+			addSubTaskMessage.setSemesterId(semesterId);
+			addSubTaskMessage.setCourseId(courseId);
+			addSubTaskMessage.setParentPath(parentPath);
+			addSubTaskMessage.setSubTask(task);
+			Ntro.backendService().sendMessageToBackend(addSubTaskMessage);
 		}
 	}
 
@@ -268,11 +294,12 @@ public class AquiletourBackendRequestHandler {
 																							   parameters,
 																							   sessionData);
 
+			String courseId = parameters.get("courseId")[0];
 			String parentTaskId = parameters.get("taskId")[0];
 			String newSubTaskId = parameters.get("newSubTask")[0];
 			String taskTitle = newSubTaskId;
 			Path newTaskPath = new Path(parentTaskId + "/" + newSubTaskId);
-
+			
 			Task task = new Task();
 			task.setPath(newTaskPath);
 			task.setTitle(taskTitle);

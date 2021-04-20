@@ -127,13 +127,12 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
 
-		/*
 		Enumeration<String> names = baseRequest.getParameterNames();
 		while(names.hasMoreElements()) {
 			String paramName = names.nextElement();
 			String paramValue = baseRequest.getParameter(paramName);
 			System.out.println(paramName + " " + paramValue);
-		}*/
+		}
 
 		sendSessionMessagesAccordingToCookies(baseRequest);
 

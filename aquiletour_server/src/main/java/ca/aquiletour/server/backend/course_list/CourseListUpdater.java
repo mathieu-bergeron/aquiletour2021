@@ -1,8 +1,14 @@
 package ca.aquiletour.server.backend.course_list;
 
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.OnTaskAdded;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
+import ca.aquiletour.core.pages.course_list.models.TaskDescription;
+import ca.aquiletour.server.backend.git.GitMessages;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -114,6 +120,20 @@ public class CourseListUpdater {
 				T.call(this);
 
 				existingModel.addGroup(semesterId, courseId, groupId);
+			}
+		});
+	}
+	
+	
+	public static void addTask(ModelStoreSync modelStore, CoursePath coursePath, TaskDescription task) {
+		T.call(CourseListUpdater.class);
+		
+		modelStore.updateModel(CourseListModel.class, "admin", coursePath.teacherId(), new ModelUpdater<CourseListModel>() {
+			@Override
+			public void update(CourseListModel courseList) {
+				T.call(this);
+				
+				courseList.addTask(coursePath, task);
 			}
 		});
 	}

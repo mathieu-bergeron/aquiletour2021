@@ -10,14 +10,12 @@
         </div>
     </div>
     <div class='card-body text'>
-        <p><a href="#">File d'attente du cours</a></p>
-        <p><a href="#">Étapes du cours</a></p>
-        <ul class="list-group">
-            <li class="list-group-item"><a href="#">Étape 1</a></li>
-            <li class="list-group-item"><a href="#">Étape 2</a></li>
+        <p><a href="#">File d'attente ouverte</a></p>
+        <p><a href="#">3 étapes sur 15 semaines</a></p>
+        <ul class="list-group" id="task-list">
         </ul>
         <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-secondary btn-sm mt-2" style="line-height:0px" data-toggle="modal" data-target="#add-task-modal">
+            <button class="btn btn-secondary btn-sm mt-2" style="line-height:0px" data-toggle="modal" data-target="#add-subtask-modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -25,7 +23,7 @@
             </button>
         </div>
         <div id="group-container">
-            <p>Groupes</p>
+            <p><a href="#">1 groupe (22 étudiants)</a></p>
             <ul class="list-group" id="group-list">
             </ul>
             <div class="d-flex justify-content-end mb-3">
@@ -40,6 +38,40 @@
     </div>
 </div>
 </div>
+
+  <div class="modal fade add-task-id-to-id" id="add-subtask-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content dashboard-mContent">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add-subtask-modal-title">Ajouter une étape</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="modal-body">
+          <form action="" method="post" class="add-subtask-form">
+              <input class="add-semester-id-to-value" name="semesterId" style="display:none;" value=""></input>
+              <input class="add-course-id-to-value" name="courseId" style="display:none;" value=""></input>
+              <div class="form-group row mb-2 mx-2">
+                  <label for="title">Titre de l'étape</label>
+                  <input name="taskTitle" id="task-title-input"></input>
+              </div>
+              <div class="form-group row mb-3 mx-2">
+                  <label for="code">Code de l'étape</label>
+                  <input name="taskId" id="task-id-input"></input>
+                  <div class="d-flex" id="task-id-li-container">
+                      <span class="flex-fill"></span>
+                      <span class=""><i>dans un lien: </i></span><span class="course-code-in-link"></span>
+                  </div>
+              </div>
+            <div class="modal-footer border-0">         
+              <button class="btn btn-primary" type="submit" id="add-subtask-submit-button">Ajouter</button>  
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+            </div>  
+          </form>
+        </div>       
+      </div>
+    </div>
+  </div>
 
 
 <div class="modal fade" id="add-group-modal" tabindex="-1" role="dialog" aria-hidden="true">

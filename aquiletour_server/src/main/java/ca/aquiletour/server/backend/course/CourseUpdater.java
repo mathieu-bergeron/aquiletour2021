@@ -149,7 +149,7 @@ public class CourseUpdater {
 					
 					Task rootTask = new Task();
 					rootTask.setPath(new Path("/"));
-					rootTask.setTitle("FIXME"); // FIXME: we need a real title
+					rootTask.setTitle(coursePath.courseId());
 					course.setRootTask(rootTask);
 					course.setCoursePath(coursePath);
 				}

@@ -6,8 +6,10 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
+import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
+import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
@@ -35,50 +37,13 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 
 	private void observeSemesterIdList(CourseListModel model, CourseListView view) {
 		T.call(this);
-
-		model.getSemesters().observe(new ListObserver<String>() {
-			
-			@Override
-			public void onItemRemoved(int index, String item) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onItemUpdated(int index, String item) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+		
+		model.getSemesters().onItemAdded(new ItemAddedListener<String>() {
 			@Override
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 
 				view.insertIntoSemesterDropdown(index, item);
-			}
-			
-			@Override
-			public void onDeleted(List<String> lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}
@@ -104,56 +69,45 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		view.clearItems();
 		
 		model.getCourses().removeObservers();
-		model.getCourses().observe(new ListObserver<CourseDescription>() {
-
+		model.getCourses().onItemAdded(new ItemAddedListener<CourseDescription>() {
 			@Override
-			public void onValueChanged(List<CourseDescription> oldValue, List<CourseDescription> value) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValue(List<CourseDescription> value) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onDeleted(List<CourseDescription> lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemAdded(int index, CourseDescription item) {
+			public void onItemAdded(int index, CourseDescription description) {
 				T.call(this);
-				
-				if(item.getSemesterId().equals(currentSemesterId)) {
-					
+
+				if(description.getSemesterId().equals(currentSemesterId)) {
+
 					CourseDescriptionView subView = (CourseDescriptionView) subViewLoader.createView();
-					subView.displayCourseDescription(item);
-					
+					subView.displayCourseDescription(description);
+
 					view.appendItem(subView);
+
+					observeCourseDescription(description, subView);
 				}
-			}
-
-			@Override
-			public void onItemUpdated(int index, CourseDescription item) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemRemoved(int index, CourseDescription item) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}
+
+	protected void observeCourseDescription(CourseDescription description, CourseDescriptionView descriptionView) {
+		T.call(this);
+		
+		description.getTasks().onItemAdded(new ItemAddedListener<TaskDescription>() {
+			@Override
+			public void onItemAdded(int index, TaskDescription item) {
+				T.call(this);
+				
+				descriptionView.appendTaskDescription(item);
+			}
+		});
+		
+		description.getGroupIds().onItemAdded(new ItemAddedListener<String>() {
+			@Override
+			public void onItemAdded(int index, String item) {
+				T.call(this);
+				
+				descriptionView.appendGroupId(item);
+			}
+		});
+		
+	}
+
 }

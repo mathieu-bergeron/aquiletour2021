@@ -37,6 +37,18 @@ public class CoursePath extends Path {
 
 		return getNames().get(SEMESTER_INDEX);
 	}
+
+	public String courseId() {
+		T.call(this);
+
+		return getNames().get(COURSE_INDEX);
+	}
+
+	public String teacherId() {
+		T.call(this);
+
+		return getNames().get(TEACHER_INDEX);
+	}
 	
 	public String toId() {
 		T.call(this);

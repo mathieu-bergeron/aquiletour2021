@@ -5,6 +5,7 @@ import ca.aquiletour.core.AquiletourMain;
 import static ca.ntro.assertions.Factory.that;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.models.CourseDescription;
+import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -20,6 +21,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 	private HtmlElement courseTitleSemesterId;
 	private HtmlElement addGroupModalTitle;
 	private HtmlElement groupList;
+	private HtmlElement taskList;
 	private HtmlElement groupContainer;
 	private HtmlElements addSemesterIdToValue;
 	private HtmlElements addCourseIdToValue;
@@ -32,6 +34,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		courseTitleSemesterId = this.getRootElement().find("#course-title-semester-id").get(0);
 		addGroupModalTitle = this.getRootElement().find("#add-group-modal-title").get(0);
 		groupList = this.getRootElement().find("#group-list").get(0);
+		taskList = this.getRootElement().find("#task-list").get(0);
 		groupContainer = this.getRootElement().find("#group-container").get(0);
 		addSemesterIdToValue = this.getRootElement().find(".add-semester-id-to-value");
 		addCourseIdToValue = this.getRootElement().find(".add-course-id-to-value");
@@ -40,6 +43,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		MustNot.beNull(courseTitleSemesterId);
 		MustNot.beNull(addGroupModalTitle);
 		MustNot.beNull(groupList);
+		MustNot.beNull(taskList);
 		MustNot.beNull(groupContainer);
 
 		Ntro.verify(that(addSemesterIdToValue.size() > 0).isTrue());
@@ -68,17 +72,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		courseTitleSemesterId.text(courseDescription.getSemesterId());
 		
 		addGroupModalTitle.text("Ajouter un groupe au cours " + courseDescription.getCourseId());
-		
-		for(String groupId : courseDescription.getGroupIds().getValue()) {
-			HtmlElement groupLi = groupList.createElement("<li class=\"list-group-item\"></li>");
-			groupList.appendElement(groupLi);
 
-			HtmlElement groupAnchor = groupLi.createElement("<a href='#'></a>");
-			groupLi.appendElement(groupAnchor);
-
-			groupAnchor.text(groupId);
-		}
-		
 		addSemesterIdToValue.forEach(e -> {
 			String value = e.getAttribute("value");
 			value += courseDescription.getSemesterId();
@@ -92,4 +86,29 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 		});
 	}
 
+	@Override
+	public void appendTaskDescription(TaskDescription task) {
+		T.call(this);
+
+		HtmlElement taskLi = taskList.createElement("<li class=\"list-group-item\"></li>");
+		taskList.appendElement(taskLi);
+
+		HtmlElement taskLink = taskLi.createElement("<a href='#TODO'></a>");
+		taskLi.appendElement(taskLink);
+
+		taskLink.text(task.getTaskTitle());
+	}
+
+	@Override
+	public void appendGroupId(String groupId) {
+		T.call(this);
+
+		HtmlElement groupLi = groupList.createElement("<li class=\"list-group-item\"></li>");
+		groupList.appendElement(groupLi);
+
+		HtmlElement groupAnchor = groupLi.createElement("<a href='#'></a>");
+		groupLi.appendElement(groupAnchor);
+
+		groupAnchor.text(groupId);
+	}
 }

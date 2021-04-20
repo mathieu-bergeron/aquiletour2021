@@ -1,6 +1,8 @@
 package ca.aquiletour.core.pages.course_list.models;
 
 
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
@@ -63,5 +65,16 @@ public class CourseListModel implements NtroModel {
 		}
 
 		return result;
+	}
+
+	public void addTask(CoursePath coursePath, TaskDescription task) {
+		T.call(this);
+		
+		CourseDescription course = courseById(coursePath.semesterId(), coursePath.courseId());
+		
+		if(course != null) {
+
+			course.addTask(task);
+		}
 	}
 }

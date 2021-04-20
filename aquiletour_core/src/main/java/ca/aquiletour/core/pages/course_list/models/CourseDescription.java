@@ -1,5 +1,6 @@
 package ca.aquiletour.core.pages.course_list.models;
 
+import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredList;
 import ca.ntro.core.system.trace.T;
@@ -11,6 +12,7 @@ public class CourseDescription implements NtroModelValue {
 	private String courseTitle = "";
 	private String courseDescription = "";
 	private ObservableGroupIdList groupIds = new ObservableGroupIdList();
+	private ObservableTaskDescriptions tasks = new ObservableTaskDescriptions();
 
 	public CourseDescription() {
 		T.call(this);
@@ -88,6 +90,18 @@ public class CourseDescription implements NtroModelValue {
 
 		return result;
 	}
-	
-	
+
+	public ObservableTaskDescriptions getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(ObservableTaskDescriptions tasks) {
+		this.tasks = tasks;
+	}
+
+	public void addTask(TaskDescription task) {
+		T.call(this);
+
+		getTasks().addItem(task);
+	}
 }
