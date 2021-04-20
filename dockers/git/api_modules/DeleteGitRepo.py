@@ -18,8 +18,8 @@ import utils.normalize_data
 def process(api_req, maria_conn, lite_conn):
 #    if not 'groupId' in api_req:
 #        api_req['groupId'] = None
-    if not 'repoPath' in api_req:
-        api_req['repoPath'] = '/'
+    # if not 'repoPath' in api_req:
+    #     api_req['repoPath'] = '/'
     if maria_conn:
         try:
             # host = 'ZZ'
@@ -29,10 +29,28 @@ def process(api_req, maria_conn, lite_conn):
             #     host = 'GH'
             # elif re.search('azure', api_req['repoUrl']):
             #     host = 'AZ'
+            # DELETE repository, commit, commit_file
+            #     FROM repository
+            #     INNER JOIN commit_file ON repository.repo_url = commit_file.repo_url
+            #     INNER JOIN commit ON repository.repo_url = commit.repo_url
+            #     WHERE repo_url = %s
             maria_cur = maria_conn.cursor()
-            maria_cur.execute('''DELETE FROM repository 
-                WHERE repo_url = %s''',
-                (api_req['repoUrl']))
+            print( api_req['repoUrl'])
+            maria_cur.execute('''
+                DELETE FROM commit_file WHERE repo_url = %s;
+                ''',
+                (api_req['repoUrl'],),
+                )
+            maria_cur.execute('''
+                DELETE FROM commit WHERE repo_url = %s;
+                ''',
+                (api_req['repoUrl'],),
+                )
+            maria_cur.execute('''
+                DELETE FROM repository WHERE repo_url = %s;
+                ''',
+                (api_req['repoUrl'],),
+                )
             maria_conn.commit()
             response = JSONResponse()
             response.status_code = status.HTTP_200_OK

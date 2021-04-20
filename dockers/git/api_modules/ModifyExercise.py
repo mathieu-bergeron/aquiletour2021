@@ -23,13 +23,6 @@ def process(api_req, maria_conn, lite_conn):
         api_req['repoPath'] = '/'
     if maria_conn:
         try:
-            # host = 'ZZ'
-            # if re.search('gitlab', api_req['repoUrl']):
-            #     host = 'GL'
-            # elif re.search('github', api_req['repoUrl']):
-            #     host = 'GH'
-            # elif re.search('azure', api_req['repoUrl']):
-            #     host = 'AZ'
             maria_cur = maria_conn.cursor()
             maria_cur.execute('''UPDATE exercise 
                 SET session_id = %s, course_id = %s, group_id = %s, exercise_path = %s, repo_path = %s, file_path = %s, completion_kw = %s 

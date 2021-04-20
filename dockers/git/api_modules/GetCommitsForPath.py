@@ -6,15 +6,15 @@ import json
 import re
 import utils.normalize_data
 
-#  {
-#      "_C": "RegisterGitRepo",
-#      "courseId": "nicolas.leduc/IntroProg",
-#      "semesterId": "H2021",
-#      "groupId": "01",
-#      "studentId": "bob.berancourt",
-#      "repoPath": "/Semaine 01"
-#      "repoUrl": "https://github.com/test/test.git",
-#  }
+# {
+#       "_C": "GetCommitsForPath",
+#       "courseId": "mathieu.bergeron/StruDon",
+#       "semesterId": "H2021",
+#       "groupId": "01",
+#       "studentId": "1234500",
+#       "exercisePath": "/Étape 1"
+#   }
+  
 def process(api_req, maria_conn, lite_conn):
 #    if not 'groupId' in api_req:
 #        api_req['groupId'] = None
@@ -22,24 +22,33 @@ def process(api_req, maria_conn, lite_conn):
         api_req['repoPath'] = '/'
     if maria_conn:
         try:
-            host = 'ZZ'
-            if re.search('gitlab', api_req['repoUrl']):
-                host = 'GL'
-            elif re.search('github', api_req['repoUrl']):
-                host = 'GH'
-            elif re.search('azure', api_req['repoUrl']):
-                host = 'AZ'
-            maria_cur = maria_conn.cursor()
-            maria_cur.execute('''INSERT INTO repository 
-                VALUES (%s,%s,%s,%s,%s,%s,%s)''',
-                (api_req['repoUrl'], host,
+            maria_cursor = maria_conn.cursor()
+            maria_cursor.execute('''SELECT commit.* 
+            FROM commit
+            LEFT JOIN repository 
+                ON commit.repo_url = repository.repo_url
+            LEFT JOIN exercise
+                ON repository.repo_path = exercise.repo_path
+            WHERE exercise.session_id = %s AND exercise.course_id = %s AND exercise.group_id = %s AND exercise.exercise_path = %s''',
+                (
                 utils.normalize_data.normalize_session(api_req['semesterId']),
                 utils.normalize_data.normalize_courseId(api_req['courseId']),
                 utils.normalize_data.normalize_group(api_req['groupId']),
-                utils.normalize_data.normalize_studentId(api_req['studentId']),
                 api_req['repoPath']))
-            maria_conn.commit()
-            response = JSONResponse()
+
+            row = maria_cursor.fetch()
+            print('an expedition')
+            while row is not None:
+                print(row)
+                row = maria.fetchone()
+
+            data = {
+                'name': 'Vitor',
+                'location': 'Finland',
+                'is_active': True,
+                'count': 28
+            }   
+            response = JSONResponse(data)
             response.status_code = status.HTTP_200_OK
         except mysql.connector.errors.IntegrityError:
             print('Duplicate depot or invalid data')
