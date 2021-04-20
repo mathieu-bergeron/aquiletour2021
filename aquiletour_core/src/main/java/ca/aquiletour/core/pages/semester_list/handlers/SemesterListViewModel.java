@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.semester_list.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
@@ -123,41 +124,41 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 		});
 		
 		
-		semester.getCourseGroups().observe(new ListObserver<String>() {
+		semester.getCourseGroups().observe(new ListObserver<CourseGroup>() {
 
 			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
+			public void onValueChanged(List<CourseGroup> oldValue, List<CourseGroup> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValue(List<String> value) {
+			public void onValue(List<CourseGroup> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onDeleted(List<String> lastValue) {
+			public void onDeleted(List<CourseGroup> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemAdded(int index, String item) {
+			public void onItemAdded(int index, CourseGroup item) {
 				T.call(this);
-
+				
 				semesterView.appendCourseGroupe(item);
 			}
 
 			@Override
-			public void onItemUpdated(int index, String item) {
+			public void onItemUpdated(int index, CourseGroup item) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemRemoved(int index, String item) {
+			public void onItemRemoved(int index, CourseGroup item) {
 				// TODO Auto-generated method stub
 				
 			}

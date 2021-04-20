@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
@@ -12,6 +13,41 @@ import ca.ntro.core.system.trace.T;
 
 public class SemesterListUpdater {
 
+	public static void addScheduleItemForUser(ModelStoreSync modelStore, 
+			                                  String semesterId, 
+			                                  ScheduleItem scheduleItem,
+			                                  User user) {
+
+		T.call(SemesterListUpdater.class);
+		
+		addScheduleItemForUserId(modelStore, semesterId, scheduleItem, user.getId());
+	}
+
+	public static void addScheduleItemForUserId(ModelStoreSync modelStore, 
+			                                    String semesterId, 
+			                                    ScheduleItem scheduleItem,
+			                                    String userId) {
+
+		T.call(SemesterListUpdater.class);
+
+		modelStore.updateModel(SemesterListModel.class, 
+							   "admin",
+							   userId,
+							   new ModelUpdater<SemesterListModel>() {
+
+			@Override
+			public void update(SemesterListModel semesterList) {
+				T.call(this);
+				
+				semesterList.addScheduleItem(semesterId, scheduleItem);
+			}
+		});
+	}
+
+	
+	
+	
+	
 	public static void addSemesterWeekForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
 			                                  SemesterWeek semesterWeek,
@@ -110,7 +146,7 @@ public class SemesterListUpdater {
 				if(currentSemester) {
 					semesterList.selectCurrentSemester(semesterId);
 				}else {
-					semesterList.selectCurrentSemester(Constants.COURSE_DRAFTS);
+					semesterList.selectCurrentSemester(Constants.DRAFTS_SEMESTER_ID);
 				}
 				
 			}

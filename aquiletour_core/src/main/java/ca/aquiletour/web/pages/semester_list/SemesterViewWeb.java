@@ -4,10 +4,12 @@ package ca.aquiletour.web.pages.semester_list;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import static ca.ntro.assertions.Factory.that;
 
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -110,12 +112,13 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	}
 
 	@Override
-	public void appendCourseGroupe(String courseGroup) {
+	public void appendCourseGroupe(CourseGroup courseGroup) {
 		T.call(this);
 		
 		HtmlElement option = courseGroupSelect.createElement("<option></option>");
 		option.setAttribute("name", "courseGroup");
-		option.text(courseGroup);
+		
+		option.text(courseGroup.toPath().toString());
 
 		courseGroupSelect.appendElement(option);
 	}

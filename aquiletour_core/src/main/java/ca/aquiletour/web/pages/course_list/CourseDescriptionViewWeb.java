@@ -58,7 +58,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + courseDescription.getSemesterId();
 		}
 		
-		if(courseDescription.getSemesterId().equals(Constants.COURSE_DRAFTS)) {
+		if(courseDescription.getSemesterId().equals(Constants.DRAFTS_SEMESTER_ID)) {
 			groupContainer.hide();
 		}
 		

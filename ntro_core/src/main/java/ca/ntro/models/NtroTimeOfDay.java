@@ -34,6 +34,15 @@ public class NtroTimeOfDay implements NtroModelValue {
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
 	}
+
+	public static NtroTimeOfDay fromString(String timeOfDayString) {
+		String[] segments = timeOfDayString.split(":");
+		
+		int hour24 = Integer.parseInt(segments[0]);
+		int minutes = Integer.parseInt(segments[1]);
+		
+		return new NtroTimeOfDay(hour24, minutes);
+	}
 	
 	
 }

@@ -34,7 +34,7 @@ public class Constants {
 	public static final String ADD_SEMESTER_URL_PARAM = "aS";
 	public static final String ADD_COURSE_URL_PARAM = "aC";
 
-	public static final String COURSE_DRAFTS = "Brouillons";
+	public static final String DRAFTS_SEMESTER_ID = "Brouillons";
 	public static final String COURSE_TEMPLATE = "Plan de cours";
 
 	public static final String CREATE_COURSE_TEXT = "Ajouter un cours";

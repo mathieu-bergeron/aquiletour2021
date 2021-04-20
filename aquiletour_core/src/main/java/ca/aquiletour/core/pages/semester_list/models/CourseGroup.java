@@ -1,0 +1,62 @@
+package ca.aquiletour.core.pages.semester_list.models;
+
+import ca.ntro.core.Path;
+import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.system.trace.T;
+
+public class CourseGroup implements NtroModelValue {
+	
+	private String courseId = "";
+	private String groupId = "";
+
+	public CourseGroup() {
+		T.call(this);
+	}
+
+	public CourseGroup(String courseId, String groupId) {
+		T.call(this);
+
+		this.courseId = courseId;
+		this.groupId = groupId;
+	}
+
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public Path toPath() {
+		T.call(this);
+
+		Path path = new Path();
+		path.addName(courseId);
+		path.addName(groupId);
+		return path;
+	}
+	
+	public static CourseGroup formPath(String courseGroupPath) {
+		T.call(CourseGroup.class);
+		
+		Path path = new Path(courseGroupPath);
+		CourseGroup courseGroup = new CourseGroup();
+		
+		courseGroup.setCourseId(path.name(0));
+		courseGroup.setGroupId(path.name(1));
+		
+		return courseGroup;
+	}
+	
+	
+	
+}

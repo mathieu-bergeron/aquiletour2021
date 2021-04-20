@@ -22,7 +22,7 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		T.call(this);
 		
 		if(currentSemesterId == null) {
-			view.insertIntoSemesterDropdown(0, Constants.COURSE_DRAFTS);
+			view.insertIntoSemesterDropdown(0, Constants.DRAFTS_SEMESTER_ID);
 			observeSemesterIdList(model, view);
 		}
 		

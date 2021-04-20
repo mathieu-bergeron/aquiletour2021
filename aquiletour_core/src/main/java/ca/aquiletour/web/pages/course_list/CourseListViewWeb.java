@@ -13,7 +13,7 @@ public class CourseListViewWeb extends ListViewWeb<CourseDescriptionView> implem
 		T.call(this);
 		super.identifyCurrentSemester(semesterId);
 		
-		if(semesterId.equals(Constants.COURSE_DRAFTS)) {
+		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
 			
 			String text = "Ajouter un cours aux brouillons";
 

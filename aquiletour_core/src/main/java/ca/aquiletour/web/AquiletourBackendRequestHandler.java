@@ -10,6 +10,7 @@ import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
@@ -28,6 +29,8 @@ import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
+import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
+import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -35,6 +38,7 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
+import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.Ntro;
 
 public class AquiletourBackendRequestHandler {
@@ -88,7 +92,7 @@ public class AquiletourBackendRequestHandler {
 
 		}else if(path.startsWith(Constants.SEMESTER_LIST_URL_SEGMENT)) {
 
-			sendSemesterMessages(path.subPath(1), parameters);
+			sendSemesterListMessages(path.subPath(1), parameters);
 
 		}else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
 
@@ -114,7 +118,7 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
-	private static void sendSemesterMessages(Path subPath, Map<String, String[]> parameters) {
+	private static void sendSemesterListMessages(Path subPath, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey(Constants.ADD_SEMESTER_URL_PARAM)) {
@@ -155,8 +159,30 @@ public class AquiletourBackendRequestHandler {
 			Ntro.messages().send(addSemesterWeek);
 
 			
-		} else if(parameters.containsKey("semesterId") && parameters.containsKey("courseGroup")) {
-			// add scedule dates
+		} else if(parameters.containsKey("semesterId") && parameters.containsKey("scheduleItemDay")) {
+
+			String semesterId = parameters.get("semesterId")[0];
+			String itemDayString = parameters.get("scheduleItemDay")[0];
+			String startTimeString = parameters.get("startTime")[0];
+			String endTimeString = parameters.get("endTime")[0];
+			String courseGroupPath = parameters.get("courseGroup")[0];
+			String scheduleItemId = parameters.get("scheduleItemId")[0];
+			
+			CourseGroup courseGroup = CourseGroup.formPath(courseGroupPath);
+			NtroDayOfWeek itemDay = NtroDayOfWeek.fromString(itemDayString);
+			NtroTimeOfDay startTime = NtroTimeOfDay.fromString(startTimeString);
+			NtroTimeOfDay endTime = NtroTimeOfDay.fromString(endTimeString);
+			
+			ScheduleItem scheduleItem = new ScheduleItem(scheduleItemId,
+														 courseGroup,
+														 itemDay,
+														 startTime,
+														 endTime);
+			
+			AddScheduleItemMessage addScheduleItemMessage = Ntro.messages().create(AddScheduleItemMessage.class);
+			addScheduleItemMessage.setSemesterId(semesterId);
+			addScheduleItemMessage.setScheduleItem(scheduleItem);
+			Ntro.messages().send(addScheduleItemMessage);
 			
 		} else if(parameters.containsKey("currentSemesterId")) {
 
