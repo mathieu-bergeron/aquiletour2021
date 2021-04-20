@@ -88,9 +88,9 @@ def find_exercise_from_path(exercicePath_list, repo_path_list_ex, file_path_list
     return matched_exPath_list[0]
 
 def find_exercise_from_keyword(exercicePath_list, keyword_list, commit_summary):
-    matched_ex = [None]
+    matched_ex = []
     for exPath, keyword in zip(exercicePath_list, keyword_list):
-        if commit_summary.lower().find(keyword.lower()) < 5:
+        if 0 <= commit_summary.lower().find(keyword.lower()) < 5:
             matched_ex.append(exPath)
     if len(matched_ex) != 1:
         matched_ex = [None]
@@ -175,5 +175,18 @@ def test_exercisePath():
     find_exercise_from_path(ex_path_list, ex_repo_list, ex_dir_list, '/Semaine 3/TP 2', '/src/Etape2/main.java')
     find_exercise_from_path(ex_path_list, ex_repo_list, ex_dir_list, '/Semaine 3', '/src/TravailPratique02/Etape2/main.java')
 
+def test_kwMatch():
+    ex_path = ['/Semaine 1/TravailPratique 1',
+                '/Semaine 1/TravailPratique 2',
+                '/Semaine 2/TravailPratique 3',
+                '/Semaine 3/Exercice01',
+                '/Semaine 3/Exercice02',
+                '/Semaine 5/Examen/Intra']
+    kw = ['TP 1','TP 2','TP 3','Exercice 1','Exercice 2','Examen']
+    print(find_exercise_from_keyword(ex_path,kw,'Test de keyword'))
+    print(find_exercise_from_keyword(ex_path,kw,'TP 2: Test de keyword'))
+    print(find_exercise_from_keyword(ex_path,kw,'[ Exercice 1 ] Test de keyword'))
+
 if __name__=="__main__":
     test_exercisePath()
+    test_kwMatch()
