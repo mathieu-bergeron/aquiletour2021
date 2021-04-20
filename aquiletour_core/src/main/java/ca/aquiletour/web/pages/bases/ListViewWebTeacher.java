@@ -1,14 +1,13 @@
-package ca.aquiletour.web.pages.course_list.student;
+package ca.aquiletour.web.pages.bases;
 
-import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course_list.teacher.views.CourseListViewTeacher;
-import ca.aquiletour.web.pages.course_list.CourseListViewWeb;
+import ca.aquiletour.core.views.ItemView;
+import ca.aquiletour.core.views.ListView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 
-public class CourseListViewWebTeacher extends CourseListViewWeb implements CourseListViewTeacher {
+public abstract class ListViewWebTeacher<IV extends ItemView> extends ListViewWeb<IV> implements ListView<IV> {
 	
 	private HtmlElement addItemButton;
 	private HtmlElement modalTitle;
@@ -42,20 +41,5 @@ public class CourseListViewWebTeacher extends CourseListViewWeb implements Cours
 		super.identifyCurrentSemester(semesterId);
 		
 		semesterIdInput.value(semesterId);
-
-		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
-			
-			String text = "Ajouter un cours aux brouillons";
-
-			getAddItemButton().text(text);
-			getModelTitle().text(text);
-			
-		}else {
-			
-			String text = "Ajouter un cours à la session " + semesterId;
-
-			getAddItemButton().text(text);
-			getModelTitle().text(text);
-		}
 	}
 }

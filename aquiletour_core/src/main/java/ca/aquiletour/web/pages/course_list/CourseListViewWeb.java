@@ -8,25 +8,5 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseListViewWeb extends ListViewWeb<CourseItemView> implements CourseListView {
 
-	@Override
-	public void identifyCurrentSemester(String semesterId) {
-		T.call(this);
-		super.identifyCurrentSemester(semesterId);
-		
-		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
-			
-			String text = "Ajouter un cours aux brouillons";
-
-			getAddItemButton().text(text);
-			getModelTitle().text(text);
-			
-		}else {
-			
-			String text = "Ajouter un cours à la session " + semesterId;
-
-			getAddItemButton().text(text);
-			getModelTitle().text(text);
-		}
-	}
 
 }
