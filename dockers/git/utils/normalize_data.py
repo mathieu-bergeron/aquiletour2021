@@ -101,49 +101,35 @@ def find_exercise(exercicePath_list, repo_path_list_ex, file_path_list_ex, repo_
     matched_exPath_list = []
     max_match_value = 0
     min_match_len = 99
+    exact_repo = False
     if repo_path_commit in repo_path_list_ex:
-        for exPath, repoPath, filePath in zip(exercicePath_list,repo_path_list_ex, file_path_list_ex):
-            if repo_path_commit == repoPath:
-                nb_match, match_len = match_path(filePath, file_path_commit)
-                if nb_match > max_match_value:
-                    max_match_value = nb_match
-                    min_match_len = match_len
-                    matched_exPath_list = [exPath]
-                elif nb_match == max_match_value:
-                    if match_len < min_match_len:
-                        min_match_len = match_len
-                        matched_exPath_list = [exPath]
-                    elif match_len == min_match_len:
-                        matched_exPath_list.append(exPath)
-    else:
-        for exPath, repoPath, filePath in zip(exercicePath_list,repo_path_list_ex, file_path_list_ex):
-            if repoPath.startswith(repo_path_commit):
+        exact_repo = True
+    for exPath, repoPath, filePath in zip(exercicePath_list,repo_path_list_ex, file_path_list_ex):
+        if exact_repo and repo_path_commit == repoPath:
+            pass
+        # fix the commit path or exercise path to include part of repo path
+        elif not exact_repo and repoPath.startswith(repo_path_commit):
                 filePath = str(os.path.join(repoPath.split(repo_path_commit,1)[1], filePath))
-            elif repo_path_commit.startswith(repoPath):
+        elif not exact_repo and repo_path_commit.startswith(repoPath):
                 file_path_commit = str(os.path.join(repo_path_commit.split(repoPath,1)[1], file_path_commit) )
-            else:
-                filePath = None
-            if filePath:
-                nb_match, match_len = match_path(filePath, file_path_commit)
-                if nb_match > max_match_value:
-                    max_match_value = nb_match
+        else:
+            filePath = None
+        if filePath:
+            nb_match, match_len = match_path(filePath, file_path_commit)
+            if nb_match > max_match_value:
+                max_match_value = nb_match
+                min_match_len = match_len
+                matched_exPath_list = [exPath]
+            elif nb_match == max_match_value:
+                if match_len < min_match_len:
                     min_match_len = match_len
                     matched_exPath_list = [exPath]
-                elif nb_match == max_match_value:
-                    if match_len < min_match_len:
-                        min_match_len = match_len
-                        matched_exPath_list = [exPath]
-                    elif match_len == min_match_len:
-                        matched_exPath_list.append(exPath)
-
+                elif match_len == min_match_len:
+                    matched_exPath_list.append(exPath)
     print(matched_exPath_list)
-    # If commit repo in repo_list_ex
-    #   Get the exercice path that get the max match value between file paths
-    # TODO: else Reparer le commit path avec le depot pour essayer de matcher
-    #   Find exercices so repo_commit + file_commit contains all element of repo_ex
-    #   Remove repo_ex from file path
-    #   Get the exercice path that get the max match value between cleaned file paths
-    pass
+    if len(matched_exPath_list) != 1:
+        matched_exPath_list = ['/']
+    return matched_exPath_list[0]
 
 # Some Unit Test
 def test_session():
