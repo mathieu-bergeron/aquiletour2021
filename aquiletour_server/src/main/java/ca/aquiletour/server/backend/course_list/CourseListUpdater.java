@@ -4,7 +4,7 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course_list.models.CourseDescription;
+import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.server.backend.git.GitMessages;
@@ -16,7 +16,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseListUpdater {
 
-	public static String validateCourseDescription(CourseDescription courseDescription) {
+	public static String validateCourseDescription(CourseItem courseDescription) {
 		T.call(CourseListUpdater.class);
 		
 		String errorMessage = null;
@@ -67,7 +67,7 @@ public class CourseListUpdater {
 	}
 	
 
-	public static void addCourseForUser(ModelStoreSync modelStore, CourseDescription courseDescription, User teacher) {
+	public static void addCourseForUser(ModelStoreSync modelStore, CourseItem courseDescription, User teacher) {
 		T.call(CourseListUpdater.class);
 		
 		if(modelStore.ifModelExists(CourseListModel.class, "admin", teacher.getId())) {

@@ -4,10 +4,10 @@ import java.util.List;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
-import ca.aquiletour.core.pages.course_list.models.CourseDescription;
+import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
-import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
+import ca.aquiletour.core.pages.course_list.views.CourseItemView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
@@ -69,14 +69,14 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		view.clearItems();
 		
 		model.getCourses().removeObservers();
-		model.getCourses().onItemAdded(new ItemAddedListener<CourseDescription>() {
+		model.getCourses().onItemAdded(new ItemAddedListener<CourseItem>() {
 			@Override
-			public void onItemAdded(int index, CourseDescription description) {
+			public void onItemAdded(int index, CourseItem description) {
 				T.call(this);
 
 				if(description.getSemesterId().equals(currentSemesterId)) {
 
-					CourseDescriptionView subView = (CourseDescriptionView) subViewLoader.createView();
+					CourseItemView subView = (CourseItemView) subViewLoader.createView();
 					subView.displayCourseDescription(description);
 
 					view.appendItem(subView);
@@ -87,7 +87,7 @@ public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseLi
 		});
 	}
 
-	protected void observeCourseDescription(CourseDescription description, CourseDescriptionView descriptionView) {
+	protected void observeCourseDescription(CourseItem description, CourseItemView descriptionView) {
 		T.call(this);
 		
 		description.getTasks().onItemAdded(new ItemAddedListener<TaskDescription>() {

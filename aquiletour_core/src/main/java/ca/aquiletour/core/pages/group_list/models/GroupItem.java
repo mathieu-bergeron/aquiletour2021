@@ -8,14 +8,14 @@ import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 
-public class GroupDescription implements NtroModelValue {
+public class GroupItem implements NtroModelValue {
 	
 	private String semesterId = "";
 	private String courseId = "";
 	private String groupId = "";
 	private ObservableStudentList students = new ObservableStudentList();
 
-	public GroupDescription() {
+	public GroupItem() {
 		T.call(this);
 	}
 

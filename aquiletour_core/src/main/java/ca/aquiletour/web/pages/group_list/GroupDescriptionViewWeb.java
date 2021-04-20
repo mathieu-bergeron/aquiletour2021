@@ -2,8 +2,8 @@ package ca.aquiletour.web.pages.group_list;
 
 
 import ca.aquiletour.core.models.courses.group.StudentDescription;
-import ca.aquiletour.core.pages.group_list.models.GroupDescription;
-import ca.aquiletour.core.pages.group_list.views.GroupDescriptionView;
+import ca.aquiletour.core.pages.group_list.models.GroupItem;
+import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -14,7 +14,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 import static ca.ntro.assertions.Factory.that;
 
-public class GroupDescriptionViewWeb extends NtroViewWeb implements GroupDescriptionView {
+public class GroupDescriptionViewWeb extends NtroViewWeb implements GroupView {
 	
 	private HtmlElement studentList;
 	private HtmlElements addGroupIdToText;
@@ -32,7 +32,7 @@ public class GroupDescriptionViewWeb extends NtroViewWeb implements GroupDescrip
 	}
 
 	@Override
-	public void displayGroupDescription(GroupDescription groupDescription) {
+	public void displayGroupDescription(GroupItem groupDescription) {
 		T.call(this);
 		
 		addGroupIdToText.forEach(e -> {

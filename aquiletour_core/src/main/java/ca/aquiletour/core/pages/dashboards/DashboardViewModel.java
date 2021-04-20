@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.dashboards;
 
 import java.util.List;
 
-import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
+import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
@@ -15,27 +15,27 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 	protected void handle(DashboardModel model, DashboardView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
-		model.getCourses().observe(new ListObserver<CourseDashboard>() {
+		model.getCourses().observe(new ListObserver<DashboardItem>() {
 			@Override
-			public void onValueChanged(List<CourseDashboard> oldValue, List<CourseDashboard> value) {
+			public void onValueChanged(List<DashboardItem> oldValue, List<DashboardItem> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValue(List<CourseDashboard> value) {
+			public void onValue(List<DashboardItem> value) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onDeleted(List<CourseDashboard> lastValue) {
+			public void onDeleted(List<DashboardItem> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemAdded(int index, CourseDashboard item) {
+			public void onItemAdded(int index, DashboardItem item) {
 				T.call(this);
 
 				DashboardCourseView courseView = (DashboardCourseView) subViewLoader.createView();
@@ -125,13 +125,13 @@ public class DashboardViewModel extends ModelViewSubViewHandler<DashboardModel, 
 			}
 
 			@Override
-			public void onItemUpdated(int index, CourseDashboard item) {
+			public void onItemUpdated(int index, DashboardItem item) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onItemRemoved(int index, CourseDashboard item) {
+			public void onItemRemoved(int index, DashboardItem item) {
 				T.call(this);
 
 				view.deleteCourse(item.getCourseId());

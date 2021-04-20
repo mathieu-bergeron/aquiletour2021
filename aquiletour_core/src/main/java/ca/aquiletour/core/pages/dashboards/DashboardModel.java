@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.dashboards;
 
 
-import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
+import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
 import ca.aquiletour.core.pages.dashboards.values.ObservableDashboardCourseList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
@@ -14,12 +14,12 @@ public class DashboardModel implements NtroModel {
 	public void emptyCourses() {
 		ObservableDashboardCourseList newList = courses;
 		for (int i = 0; i < newList.size(); i++) {
-			CourseDashboard course = newList.item(i);
+			DashboardItem course = newList.item(i);
 			courses.removeItem(course);;
 		}
 	}
 
-	public void addCourse(CourseDashboard course) {
+	public void addCourse(DashboardItem course) {
 		T.call(this);
 		boolean alreadyExists = false;
 		if (courses != null) {
@@ -34,7 +34,7 @@ public class DashboardModel implements NtroModel {
 		}
 	}
 
-	public void deleteCourse(CourseDashboard course) {
+	public void deleteCourse(DashboardItem course) {
 		T.call(this);
 
 		courses.removeItem(course);
@@ -44,7 +44,7 @@ public class DashboardModel implements NtroModel {
 		T.call(this);
 
 		for (int i = 0; i < courses.size(); i++) {
-			CourseDashboard currentCourse = courses.item(i);
+			DashboardItem currentCourse = courses.item(i);
 			if (currentCourse.getTitle().equals(courseId)) {
 				courses.removeItem(currentCourse);
 			}
@@ -61,7 +61,7 @@ public class DashboardModel implements NtroModel {
 
 	public void updateNbAppointmentOfCourse(String courseId, int nbAppointment) {
 		for (int i = 0; i < courses.size(); i++) {
-			CourseDashboard currentCourse = courses.item(i);
+			DashboardItem currentCourse = courses.item(i);
 			if (currentCourse.getTitle().equals(courseId)) {
 				currentCourse.updateNumberOfAppointments(nbAppointment);
 			}
@@ -70,7 +70,7 @@ public class DashboardModel implements NtroModel {
 
 	public void updateMyAppointment(String courseId, Boolean state) {
 		for (int i = 0; i < courses.size(); i++) {
-			CourseDashboard currentCourse = courses.item(i);
+			DashboardItem currentCourse = courses.item(i);
 			if (currentCourse.getCourseId().equals(courseId)) {
 				currentCourse.updateMyAppointment(state);
 			}
@@ -81,7 +81,7 @@ public class DashboardModel implements NtroModel {
 	public boolean doesStudentAlreadyHaveAppointment(String courseId) {
 		boolean myAppointment = false;
 		for (int i = 0; i < courses.size(); i++) {
-			CourseDashboard currentCourse = courses.item(i);
+			DashboardItem currentCourse = courses.item(i);
 			if (currentCourse.getTitle().equals(courseId)) {
 				myAppointment = currentCourse.getMyAppointment().getValue();
 			}
@@ -92,16 +92,16 @@ public class DashboardModel implements NtroModel {
 	
 	public void setTeacherAvailability(String courseId, boolean availabilty) {
 		for (int i = 0; i < courses.size(); i++) {
-			CourseDashboard currentCourse = courses.item(i);
+			DashboardItem currentCourse = courses.item(i);
 			if(currentCourse.getCourseId().equals(courseId)) {
 				currentCourse.updateQueueOpen(availabilty);
 			}
 		}
 	}
 
-	public CourseDashboard findCourseById(String courseId) {
-		CourseDashboard course = null;
-		for(CourseDashboard candidate : courses.getValue()) {
+	public DashboardItem findCourseById(String courseId) {
+		DashboardItem course = null;
+		for(DashboardItem candidate : courses.getValue()) {
 			if(candidate.getCourseId().equals(courseId)) {
 				course = candidate;
 				break;

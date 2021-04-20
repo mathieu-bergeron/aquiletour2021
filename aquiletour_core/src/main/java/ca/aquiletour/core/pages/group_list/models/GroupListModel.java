@@ -31,7 +31,7 @@ public class GroupListModel implements NtroModel {
 	public void addGroup(String semesterId, String courseId, String groupId, List<User> studentsToAdd) {
 		T.call(this);
 		
-		GroupDescription groupDescription = new GroupDescription();
+		GroupItem groupDescription = new GroupItem();
 		groupDescription.setSemesterId(semesterId);
 		groupDescription.setCourseId(courseId);
 		groupDescription.setGroupId(groupId);

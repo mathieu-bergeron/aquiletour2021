@@ -3,7 +3,7 @@ package ca.aquiletour.web.pages.dashboard;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.DashboardCourseView;
-import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
+import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -27,13 +27,13 @@ public abstract class ActiveCourseSummaryViewWeb extends NtroViewWeb implements 
 	}
 
 	@Override
-	public void displaySummary(CourseDashboard course) {
+	public void displaySummary(DashboardItem course) {
 		T.call(this);
 
 		installShowCourseListener(course);
 	}
 
-	private void installShowCourseListener(CourseDashboard course) {
+	private void installShowCourseListener(DashboardItem course) {
 		T.call(this);
 
 		showCourseLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + "/" + course.getCourseId());

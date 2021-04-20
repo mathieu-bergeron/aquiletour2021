@@ -5,7 +5,7 @@ import ca.aquiletour.core.pages.group_list.handlers.ShowGroupListHandler;
 import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
 import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
 import ca.aquiletour.core.pages.group_list.models.GroupListModel;
-import ca.aquiletour.core.pages.group_list.views.GroupDescriptionView;
+import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
@@ -27,9 +27,9 @@ public class GroupListController extends NtroController<RootController> {
 					   context.user().getAuthToken(),
 					   context.user().getId());
 
-		addSubViewLoader(GroupDescriptionView.class, context().lang());
+		addSubViewLoader(GroupView.class, context().lang());
 		
-		addModelViewSubViewMessageHandler(GroupDescriptionView.class, SelectGroupListSubset.class, new GroupListViewModel());
+		addModelViewSubViewMessageHandler(GroupView.class, SelectGroupListSubset.class, new GroupListViewModel());
 	}
 	
 	@Override

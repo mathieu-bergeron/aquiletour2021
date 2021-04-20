@@ -5,7 +5,7 @@ import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredList;
 import ca.ntro.core.system.trace.T;
 
-public class CourseDescription implements NtroModelValue {
+public class CourseItem implements NtroModelValue {
 	
 	private String semesterId = "";
 	private String courseId = "";
@@ -14,11 +14,11 @@ public class CourseDescription implements NtroModelValue {
 	private ObservableGroupIdList groupIds = new ObservableGroupIdList();
 	private ObservableTaskDescriptions tasks = new ObservableTaskDescriptions();
 
-	public CourseDescription() {
+	public CourseItem() {
 		T.call(this);
 	}
 
-	public CourseDescription(String semesterId, String courseId, String courseTitle) {
+	public CourseItem(String semesterId, String courseId, String courseTitle) {
 		T.call(this);
 		
 		this.semesterId = semesterId;

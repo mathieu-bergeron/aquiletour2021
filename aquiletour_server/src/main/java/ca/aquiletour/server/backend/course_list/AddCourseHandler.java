@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.course_list;
 
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.course_list.models.CourseDescription;
+import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.core.pages.root.DisplayErrorMessage;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
 import ca.ntro.BackendMessageHandler;
@@ -18,7 +18,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		User teacher = message.getUser();
 		
-		CourseDescription courseDescription = message.getCourseDescription();
+		CourseItem courseDescription = message.getCourseDescription();
 		
 		String errorMessage = CourseListUpdater.validateCourseDescription(courseDescription);
 		

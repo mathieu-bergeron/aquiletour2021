@@ -1,6 +1,6 @@
 package ca.aquiletour.web.pages.group_list;
 
-import ca.aquiletour.core.pages.group_list.views.GroupDescriptionView;
+import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.web.pages.bases.ListViewWeb;
 import ca.aquiletour.web.widgets.BootstrapDropdown;
@@ -9,7 +9,7 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 
-public class GroupListViewWeb extends ListViewWeb<GroupDescriptionView> implements GroupListView {
+public class GroupListViewWeb extends ListViewWeb<GroupView> implements GroupListView {
 
 	private BootstrapDropdown courseDropdown;
 

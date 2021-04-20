@@ -4,9 +4,9 @@ package ca.aquiletour.web.pages.course_list;
 import ca.aquiletour.core.AquiletourMain;
 import static ca.ntro.assertions.Factory.that;
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course_list.models.CourseDescription;
+import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
-import ca.aquiletour.core.pages.course_list.views.CourseDescriptionView;
+import ca.aquiletour.core.pages.course_list.views.CourseItemView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -15,7 +15,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescriptionView {
+public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
 	
 	private HtmlElement courseTitleLink;
 	private HtmlElement courseTitleSemesterId;
@@ -51,7 +51,7 @@ public class CourseDescriptionViewWeb extends NtroViewWeb implements CourseDescr
 	}
 
 	@Override
-	public void displayCourseDescription(CourseDescription courseDescription) {
+	public void displayCourseDescription(CourseItem courseDescription) {
 		T.call(this);
 		
 		String href = "/" + Constants.COURSE_URL_SEGMENT + 

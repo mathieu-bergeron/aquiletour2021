@@ -6,7 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.values.CourseDashboard;
+import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;

@@ -14,7 +14,7 @@ import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
-import ca.aquiletour.core.pages.course_list.models.CourseDescription;
+import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
