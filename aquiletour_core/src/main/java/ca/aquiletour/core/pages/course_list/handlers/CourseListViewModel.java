@@ -15,12 +15,12 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseListViewModel extends ModelViewSubViewMessageHandler<CourseListModel, CourseListView, SelectCourseListSubset> {
+public class CourseListViewModel<V extends CourseListView> extends ModelViewSubViewMessageHandler<CourseListModel, V, SelectCourseListSubset> {
 	
 	private String currentSemesterId = null;
 
 	@Override
-	protected void handle(CourseListModel model, CourseListView view, ViewLoader subViewLoader, SelectCourseListSubset message) {
+	protected void handle(CourseListModel model, V view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
 		
 		if(currentSemesterId == null) {

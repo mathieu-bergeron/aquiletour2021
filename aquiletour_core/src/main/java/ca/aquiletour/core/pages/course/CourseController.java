@@ -36,13 +36,11 @@ public abstract class CourseController extends NtroController<RootController>{
 
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
-		
 	}
 }

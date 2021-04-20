@@ -26,6 +26,8 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
 import ca.aquiletour.core.pages.course_list.CourseListController;
+import ca.aquiletour.core.pages.course_list.student.CourseListControllerStudent;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
@@ -69,8 +71,6 @@ public class RootController extends NtroRootController {
 		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
 
 		addSubController(SemesterListController.class, Constants.SEMESTER_LIST_URL_SEGMENT);
-
-		addSubController(CourseListController.class, Constants.COURSE_LIST_URL_SEGMENT);
 
 		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
 
@@ -129,6 +129,7 @@ public class RootController extends NtroRootController {
 			addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
 			addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
 			addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
+			addSubController(CourseListControllerTeacher.class, Constants.COURSE_LIST_URL_SEGMENT);
 			
 			ifRoleSpecificSubControllersAdded = true;
 			
@@ -138,6 +139,7 @@ public class RootController extends NtroRootController {
 			addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
 			addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
 			addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
+			addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
 
 			ifRoleSpecificSubControllersAdded = true;
 		}

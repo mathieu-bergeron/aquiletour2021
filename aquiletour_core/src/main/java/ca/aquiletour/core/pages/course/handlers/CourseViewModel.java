@@ -14,7 +14,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel, CourseView, ShowTaskMessage>  {
+public class CourseViewModel<V extends CourseView> extends ModelViewSubViewMessageHandler<CourseModel, V, ShowTaskMessage>  {
 	
 	private Task currentTask;
 	
@@ -23,7 +23,7 @@ public class CourseViewModel extends ModelViewSubViewMessageHandler<CourseModel,
 	}
 
 	@Override
-	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(CourseModel model, V view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 
 		if(currentTask != null) {

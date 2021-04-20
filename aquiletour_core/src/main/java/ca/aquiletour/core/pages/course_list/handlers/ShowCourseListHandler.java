@@ -7,15 +7,12 @@ import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 
 public class ShowCourseListHandler extends ParentViewMessageHandler<RootView,
-                                                                      CourseListView,
-                                                                      ShowCourseListMessage> {
-
+                                                                    CourseListView,
+                                                                    ShowCourseListMessage> {
 	@Override
 	protected void handle(RootView parentView, CourseListView currentView, ShowCourseListMessage message) {
 		T.call(this);
 		
 		parentView.showCourseList(currentView);
 	}
-
-
 }
