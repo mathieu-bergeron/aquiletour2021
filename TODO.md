@@ -1,3 +1,20 @@
+# TODO
+
+1. `/mescours`:   ajout d'une étape
+1. `/cours`:      réparer pour afficher les vraies données
+1. `/cours`:      afficher les dates de calendrier
+1. Réparer le point de vue étudiant (`/mescours`)
+1. Réparer les files d'attente
+
+
+
+
+
+
+
+
+
+
 # Point de vue prof
 
 1. Tableau de bord: `/tableau_de_bord/`

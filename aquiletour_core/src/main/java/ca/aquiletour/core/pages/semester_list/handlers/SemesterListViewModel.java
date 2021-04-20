@@ -1,6 +1,5 @@
 package ca.aquiletour.core.pages.semester_list.handlers;
 
-import java.util.List;
 
 import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
@@ -10,7 +9,6 @@ import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.ntro.core.models.listeners.ItemAddedListener;
-import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
