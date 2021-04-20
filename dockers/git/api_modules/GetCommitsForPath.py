@@ -5,6 +5,8 @@ import sqlite3
 import json
 import re
 import utils.normalize_data
+import time
+import calendar
 
 # {
 #       "_C": "GetCommitsForPath",
@@ -12,7 +14,7 @@ import utils.normalize_data
 #       "semesterId": "H2021",
 #       "groupId": "01",
 #       "studentId": "1234500",
-#       "exercisePath": "/Étape 1"
+#       "exercisePath": "/TP1/Exercice 1"
 #   }
   
 def process(api_req, maria_conn, lite_conn):
@@ -34,21 +36,69 @@ def process(api_req, maria_conn, lite_conn):
                 utils.normalize_data.normalize_session(api_req['semesterId']),
                 utils.normalize_data.normalize_courseId(api_req['courseId']),
                 utils.normalize_data.normalize_group(api_req['groupId']),
-                api_req['repoPath']))
+                api_req['exercisePath']))
 
-            row = maria_cursor.fetch()
-            print('an expedition')
-            while row is not None:
-                print(row)
-                row = maria.fetchone()
+            # print(utils.normalize_data.normalize_session(api_req['semesterId']))
+            # print(utils.normalize_data.normalize_courseId(api_req['courseId']))
+            # print(utils.normalize_data.normalize_group(api_req['groupId']))
+            # print(api_req['exercisePath'])
+            
+            commitListModel= {}
+            commitListModel['_C'] = 'CommitListModel'
+            commitListModel['courseId'] = utils.normalize_data.normalize_session(api_req['semesterId'])
+            commitListModel['semesterId'] = utils.normalize_data.normalize_courseId(api_req['courseId'])
+            commitListModel['groupId'] = utils.normalize_data.normalize_group(api_req['groupId'])
+            commitListModel['studentId'] = api_req['exercisePath']
+            commits = {}
+            commits['_C'] = 'ObservableCommitList'
+            value = []
 
-            data = {
-                'name': 'Vitor',
-                'location': 'Finland',
-                'is_active': True,
-                'count': 28
-            }   
-            response = JSONResponse(data)
+            commitRows = maria_cursor.fetchall()
+            print(commitRows)
+            for commitRow in commitRows:
+                commitData = {}
+                commitData['_C'] = 'Commit'
+                commitData['commitId'] = commitRow[1]
+                commitData['exercisePathIfCompleted'] = commitRow[5]
+                commitData['commitMessageFirstLine'] = commitRow[3] #TODO only show the ? first characters
+                commitData['commitMessage'] = commitRow[3]
+
+
+                maria_cursor.execute('''SELECT unix_timestamp(commit_date) 
+                FROM commit 
+                WHERE commit_id = %s AND repo_url = %s ''',
+                (
+                commitRow[1],
+                commitRow[0]
+                ))
+                timeStampEpoch = maria_cursor.fetchone()
+                commitData['timeStamp'] = str(timeStampEpoch[0])
+
+                maria_cursor.execute('''SELECT commit_file.* 
+                FROM commit_file
+                WHERE commit_file.repo_url = %s AND commit_file.commit_id = %s''',
+                (
+                commitRow[0],
+                commitRow[1]
+                ))
+
+                modifiedFiles = []
+                commitFilesRows = maria_cursor.fetchall()
+                for commitFilesRow in commitFilesRows:
+                    commitFileData = {}
+                    commitFileData['path'] = commitFilesRow[2]
+                    commitFileData['estimatedEffort'] = commitFilesRow[5]
+                    commitFileData['exercisePath'] = commitFilesRow[6]
+                    commitFileData['message'] = "no field in database for now"
+                    modifiedFiles.append(commitFileData)
+
+                commitData['modifiedFiles'] = modifiedFiles
+                value.append(commitData)
+            
+            commits['value'] = value
+            commitListModel['commits'] = commits
+
+            response = JSONResponse(commitListModel)
             response.status_code = status.HTTP_200_OK
         except mysql.connector.errors.IntegrityError:
             print('Duplicate depot or invalid data')

@@ -37,7 +37,7 @@ def process(api_req, maria_conn, lite_conn):
                 utils.normalize_data.normalize_session(api_req['semesterId']),
                 utils.normalize_data.normalize_courseId(api_req['courseId']),
                 utils.normalize_data.normalize_group(api_req['groupId']),
-                api_req['exercisePath'],))
+                api_req['exercisePath']))
             maria_conn.commit()
             response = JSONResponse()
             response.status_code = status.HTTP_200_OK
