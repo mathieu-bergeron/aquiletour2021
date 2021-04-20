@@ -3,6 +3,7 @@ package ca.ntro.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -120,6 +121,56 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		T.call(this);
 		
 		this.listObservers.clear();
+	}
+
+	public void onItemAdded(ItemAddedListener<I> listener) {
+		T.call(this);
+		
+		observe(new ListObserver<I>() {
+
+			@Override
+			public void onValueChanged(List<I> oldValue, List<I> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onValue(List<I> value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDeleted(List<I> lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemAdded(int index, I item) {
+				T.call(this);
+
+				listener.onItemAdded(index, item);
+			}
+
+			@Override
+			public void onItemUpdated(int index, I item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onItemRemoved(int index, I item) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onClearItems() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	public void observe(ListObserver<I> listObserver) {
