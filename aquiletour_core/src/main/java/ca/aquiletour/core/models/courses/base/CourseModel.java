@@ -1,8 +1,7 @@
 package ca.aquiletour.core.models.courses.base;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
-import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
@@ -10,30 +9,11 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class CourseModel implements NtroModel, TaskGraph {
-	
-	/*
-	 *  TODO: how to represent
-	 *  
-	 *  + abstract schedule Vs group-specific schedule
-	 *  + group-specific completion data
-	 *  
-	 *  + (ideally, the group data is not in the student model)
-	 *  
-	 */
 
-	private ObservableSemesterIdList semesters = new ObservableSemesterIdList();
+
 	private CoursePath coursePath = new CoursePath();
+	private StoredString courseTitle = new StoredString();
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
-	private ObservableGroupMap groups = new ObservableGroupMap();
-	private StoredString title = new StoredString();
-
-	public StoredString getTitle() {
-		return title;
-	}
-
-	public void setTitle(StoredString title) {
-		this.title = title;
-	}
 
 	@Override
 	public Task findTaskByPath(Path path) {
@@ -263,22 +243,29 @@ public class CourseModel implements NtroModel, TaskGraph {
 		T.call(this);
 		return coursePath.toFileName();
 	}
-
-	public ObservableGroupMap getGroups() {
-		return groups;
+	
+	public void resolveDates(SemesterSchedule semesterSchedule) {
+		// TODO
+		
 	}
 
-	public void setGroups(ObservableGroupMap groups) {
-		this.groups = groups;
+	public StoredString getCourseTitle() {
+		return courseTitle;
 	}
 
-	public ObservableSemesterIdList getSemesters() {
-		return semesters;
+	public void setCourseTitle(StoredString courseTitle) {
+		this.courseTitle = courseTitle;
+	}
+	
+	public void updateCourseTitle(String courseTitle) {
+		T.call(this);
+
+		getCourseTitle().set(courseTitle);
+
+		Task rootTask = findTaskById("/");
+		rootTask.setTitle(courseTitle);
 	}
 
-	public void setSemesters(ObservableSemesterIdList semesters) {
-		this.semesters = semesters;
-	}
 
 	
 	// TODO: update task description

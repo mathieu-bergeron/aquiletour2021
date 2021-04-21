@@ -73,6 +73,8 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void displayBreadcrumbs(CoursePath coursePath, TaskBreadcrumbs breadcrumps) {
 		T.call(this);
 		
+		breadcrumbsContainer.deleteChildrenForever();
+		
 		breadcrumps.forEachTask(t -> {
 
 			HtmlElement taskLi = taskLi(coursePath, "breadcrumb-item", t);
@@ -93,7 +95,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		task.forEachSibling(t -> {
 			Map<String, String> sibling = new HashMap<>();
 			
-			sibling.put("id", t.name());
+			sibling.put("id", t.getTitle());
 			sibling.put("href", Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + t.id());
 			
 			siblings.add(sibling);

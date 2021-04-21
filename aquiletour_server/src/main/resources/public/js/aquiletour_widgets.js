@@ -20,12 +20,16 @@ function initializeSectionToggles(rootElement){
 
     toggles.each(function(index, element){
         const toggle = $(element);
+        const collapseTarget = rootElement.find(toggle.attr('data-target'));
 
         updateSectionToggle(toggle);
 
         toggle.off();
         toggle.on('click', function(){
+            collapseTarget.collapse("toggle");
             toggleSectionToggle(toggle);
+
+            return false;
         });
     });
 }

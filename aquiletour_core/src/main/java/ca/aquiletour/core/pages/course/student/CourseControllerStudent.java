@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.student;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.student.handlers.CourseViewModelStudent;
+import ca.aquiletour.core.pages.course.student.handlers.ShowCourseHandlerStudent;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -31,7 +32,7 @@ public class CourseControllerStudent extends CourseController {
 	protected ControllerMessageHandler<?, ?, ?> showHandler() {
 		T.call(this);
 
-		return new ShowCourseHandler();
+		return new ShowCourseHandlerStudent();
 	}
 
 	@Override

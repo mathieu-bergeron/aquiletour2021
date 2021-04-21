@@ -38,7 +38,7 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 		
 		view.appendSemester(semesterView);
 		
-		semester.getWeeks().onItemAdded(new ItemAddedListener<SemesterWeek>() {
+		semester.getSemesterSchedule().getWeeks().onItemAdded(new ItemAddedListener<SemesterWeek>() {
 			@Override
 			public void onItemAdded(int index, SemesterWeek item) {
 				T.call(this);
@@ -56,7 +56,7 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 			}
 		});
 		
-		semester.getScheduleItems().onItemAdded(new ItemAddedListener<ScheduleItem>() {
+		semester.getTeacherSchedule().getScheduleItems().onItemAdded(new ItemAddedListener<ScheduleItem>() {
 			@Override
 			public void onItemAdded(int index, ScheduleItem item) {
 				T.call(this);

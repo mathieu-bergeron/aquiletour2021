@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.semester_list;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 

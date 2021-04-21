@@ -2,17 +2,39 @@ package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.SemesterWeek;
-import ca.aquiletour.core.models.schedule.ObservableScheduleItems;
+import ca.aquiletour.core.models.schedule.ScheduleItems;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterModel implements NtroModel {
+public class SemesterModel implements NtroModelValue {
 	
 	private String semesterId = Constants.DRAFTS_SEMESTER_ID;
-	private ObservableSemesterWeekList weeks = new ObservableSemesterWeekList();
+
 	private ObservableCourseGroupList courseGroups = new ObservableCourseGroupList();
-	private ObservableScheduleItems scheduleItems = new ObservableScheduleItems();
+
+	private SemesterSchedule semesterSchedule = new SemesterSchedule();
+
+	private TeacherSchedule teacherSchedule = new TeacherSchedule();
+	
+	public SemesterSchedule getSemesterSchedule() {
+		return semesterSchedule;
+	}
+
+	public void setSemesterSchedule(SemesterSchedule semesterSchedule) {
+		this.semesterSchedule = semesterSchedule;
+	}
+
+	public TeacherSchedule getTeacherSchedule() {
+		return teacherSchedule;
+	}
+
+	public void setTeacherSchedule(TeacherSchedule teacherSchedule) {
+		this.teacherSchedule = teacherSchedule;
+	}
 
 	public String getSemesterId() {
 		return semesterId;
@@ -22,13 +44,6 @@ public class SemesterModel implements NtroModel {
 		this.semesterId = semesterId;
 	}
 
-	public ObservableSemesterWeekList getWeeks() {
-		return weeks;
-	}
-
-	public void setWeeks(ObservableSemesterWeekList weeks) {
-		this.weeks = weeks;
-	}
 	
 	public ObservableCourseGroupList getCourseGroups() {
 		return courseGroups;
@@ -38,18 +53,10 @@ public class SemesterModel implements NtroModel {
 		this.courseGroups = courseGroups;
 	}
 
-	public ObservableScheduleItems getScheduleItems() {
-		return scheduleItems;
-	}
-
-	public void setScheduleItems(ObservableScheduleItems scheduleItems) {
-		this.scheduleItems = scheduleItems;
-	}
-
 	public void addWeek(SemesterWeek semesterWeek) {
 		T.call(this);
 		
-		weeks.addItem(semesterWeek);
+		getSemesterSchedule().addWeek(semesterWeek);
 	}
 
 	public void addCourseGroup(String courseId, String groupId) {
@@ -61,6 +68,6 @@ public class SemesterModel implements NtroModel {
 	public void addScheduleItem(ScheduleItem scheduleItem) {
 		T.call(this);
 		
-		getScheduleItems().addItem(scheduleItem);
+		getTeacherSchedule().addScheduleItem(scheduleItem);
 	}
 }

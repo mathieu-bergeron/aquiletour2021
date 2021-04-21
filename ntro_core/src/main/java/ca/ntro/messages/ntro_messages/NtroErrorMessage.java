@@ -1,8 +1,8 @@
-package ca.aquiletour.core.pages.root;
+package ca.ntro.messages.ntro_messages;
 
 import ca.ntro.messages.NtroMessage;
 
-public class DisplayErrorMessage extends NtroMessage {
+public class NtroErrorMessage extends NtroMessage {
 	
 	private String message;
 

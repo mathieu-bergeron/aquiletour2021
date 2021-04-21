@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
@@ -17,8 +18,8 @@ public class Task implements NtroModelValue, TaskNode {
 	private Path path = new Path();
 	private String title = "";
 	
-	private long startTime = -1;
-	private long endTime = -1;
+	private SemesterDate startTime = new SemesterDate();
+	private SemesterDate endTime = new SemesterDate();
 
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
@@ -215,10 +216,6 @@ public class Task implements NtroModelValue, TaskNode {
 		return getPath().toString();
 	}
 
-	public String name() {
-		return getPath().lastName();
-	}
-
 	public void forEachStartTaskLocal(TaskLambda lambda) {
 		T.call(this);
 
@@ -334,20 +331,19 @@ public class Task implements NtroModelValue, TaskNode {
 		nextTasks.removeItem(taskId);
 	}
 
-	public long getStartTime() {
+	public SemesterDate getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(long startTime) {
+	public void setStartTime(SemesterDate startTime) {
 		this.startTime = startTime;
 	}
 
-	public long getEndTime() {
+	public SemesterDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(long endTime) {
+	public void setEndTime(SemesterDate endTime) {
 		this.endTime = endTime;
 	}
-
 }

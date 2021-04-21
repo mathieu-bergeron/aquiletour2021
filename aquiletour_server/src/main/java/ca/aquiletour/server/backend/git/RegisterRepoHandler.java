@@ -1,7 +1,7 @@
 package ca.aquiletour.server.backend.git;
 
 import ca.aquiletour.core.messages.git.RegisterRepo;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 

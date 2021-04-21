@@ -5,7 +5,7 @@ import ca.ntro.services.Ntro;
 
 public class NtroDate implements NtroModelValue {
 	
-	private long epochSeconds;
+	private long epochSeconds = -1;
 
 	public NtroDate() {
 	}
@@ -28,5 +28,9 @@ public class NtroDate implements NtroModelValue {
 
 	public String format(String dateFormat) {
 		return Ntro.calendar().format(epochSeconds, dateFormat);
+	}
+	
+	public boolean isDefined() {
+		return epochSeconds >= 0;
 	}
 }

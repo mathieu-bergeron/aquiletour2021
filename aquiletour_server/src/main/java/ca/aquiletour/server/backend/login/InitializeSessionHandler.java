@@ -5,7 +5,7 @@ import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;

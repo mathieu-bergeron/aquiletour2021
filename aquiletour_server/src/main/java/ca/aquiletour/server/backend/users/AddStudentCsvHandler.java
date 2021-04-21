@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
+import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
-import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.semester_list.SemesterListUpdater;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
@@ -95,6 +95,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) {
 		T.call(this);
+		
+		User teacher = message.getUser();
 
 		UserUpdater.addUsers(modelStore, studentsToAdd);
 
@@ -103,13 +105,27 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                         message.getCourseId(), 
 				                         groupId, 
 				                         studentsToAdd,
-				                         message.getUser());
+				                         teacher);
 
 		SemesterListUpdater.addCourseGroupForUser(modelStore, 
 				                                  message.getSemesterId(), 
 				                                  message.getCourseId(), 
 				                                  groupId, 
-				                                  message.getUser());
+				                                  teacher);
+		
+		CourseItem courseItem = CourseListUpdater.getCourseItem(modelStore, 
+				                                                message.getSemesterId(),
+				                                                message.getCourseId(),
+				                                                teacher.getId());
+		
+		for(User student : studentsToAdd) {
+			CoursePath coursePath = new CoursePath(student.getId(), message.getSemesterId(), message.getCourseId());
+
+			CourseUpdater.createCourseForUser(modelStore, CourseModelStudent.class, coursePath, courseItem.getCourseTitle(), student);
+
+			CourseListUpdater.addSemesterForUser(modelStore, courseItem.getSemesterId(), student);
+			CourseListUpdater.addCourseForUser(modelStore, courseItem, student);
+		}
 		
 		
 		/*

@@ -6,8 +6,8 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.users.NtroUser;
@@ -66,13 +66,13 @@ public class ModelHandler extends AbstractHandler {
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, readBody(baseRequest));
 			
-			if(message instanceof GetModelNtroMessage) {
+			if(message instanceof NtroGetModelMessage) {
 
-				handleGetModelMessage(baseRequest, response, (GetModelNtroMessage) message);
+				handleGetModelMessage(baseRequest, response, (NtroGetModelMessage) message);
 
-			} else if(message instanceof SetModelNtroMessage) {
+			} else if(message instanceof NtroSetModelMessage) {
 
-				handleSetModelMessage(baseRequest, response, (SetModelNtroMessage) message);
+				handleSetModelMessage(baseRequest, response, (NtroSetModelMessage) message);
 				
 			}else {
 
@@ -94,7 +94,7 @@ public class ModelHandler extends AbstractHandler {
 
 	@SuppressWarnings("unchecked")
 	private void handleGetModelMessage(Request baseRequest, HttpServletResponse response,
-			GetModelNtroMessage getModelNtroMessage) throws IOException {
+			NtroGetModelMessage getModelNtroMessage) throws IOException {
 
 		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
 		NtroUser user = getModelNtroMessage.getUser();
@@ -130,7 +130,7 @@ public class ModelHandler extends AbstractHandler {
 	}
 
 	private void handleSetModelMessage(Request baseRequest, HttpServletResponse response,
-			SetModelNtroMessage setModelNtroMessage) throws IOException {
+			NtroSetModelMessage setModelNtroMessage) throws IOException {
 
 		DocumentPath documentPath = setModelNtroMessage.getDocumentPath();
 		NtroModel model = setModelNtroMessage.getModel();

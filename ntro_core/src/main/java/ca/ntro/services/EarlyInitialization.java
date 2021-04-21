@@ -11,11 +11,12 @@ import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
-import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
+import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
+import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
+import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
@@ -58,11 +59,12 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(NtroTimeOfDay.class);
 		Ntro.registerSerializableClass(NtroDayOfWeek.class);
 
-		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
-		Ntro.registerSerializableClass(GetModelNtroMessage.class);
-		Ntro.registerSerializableClass(SetModelNtroMessage.class);
-		Ntro.registerSerializableClass(SetUserNtroMessage.class);
-		Ntro.registerSerializableClass(InvokeValueMethodNtroMessage.class);
+		Ntro.registerSerializableClass(NtroRegisterSocketMessage.class);
+		Ntro.registerSerializableClass(NtroGetModelMessage.class);
+		Ntro.registerSerializableClass(NtroSetModelMessage.class);
+		Ntro.registerSerializableClass(NtroSetUserMessage.class);
+		Ntro.registerSerializableClass(NtroInvokeValueMethodMessage.class);
+		Ntro.registerSerializableClass(NtroErrorMessage.class);
 
 		Ntro.registerSerializableClass(Path.class);
 		Ntro.registerSerializableClass(DocumentPath.class);

@@ -1,38 +1,43 @@
 package ca.aquiletour.server.backend.course_list;
 
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseItem;
-import ca.aquiletour.core.pages.root.DisplayErrorMessage;
+import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.Ntro;
 
 public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AddCourseMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddCourseMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 		
 		User teacher = message.getUser();
 		
-		CourseItem courseDescription = message.getCourseDescription();
+		CourseItem item = message.getCourseDescription();
 		
-		String errorMessage = CourseListUpdater.validateCourseDescription(courseDescription);
+		CoursePath path = new CoursePath(teacher.getId(), item.getSemesterId(), item.getCourseId());
 		
-		if(errorMessage != null) {
+		CourseListUpdater.validateCourseDescription(item);
 			
-			DisplayErrorMessage displayErrorMessage = Ntro.messages().create(DisplayErrorMessage.class);
-			displayErrorMessage.setMessage(errorMessage);
-			Ntro.messages().send(displayErrorMessage);
-			
-		}else {
-			
-			CourseListUpdater.addCourseForUser(modelStore, message.getCourseDescription(), teacher);
-			
-		}
+		CourseListUpdater.addCourseForUser(modelStore, item, teacher);
+		
+		CourseUpdater.createCourseForUser(modelStore, 
+				                          CourseModelTeacher.class, 
+				                          path,
+				                          item.getCourseTitle(),
+				                          teacher);
+
+		CourseUpdater.updateCourseTitle(modelStore, CourseModelTeacher.class, path, item.getCourseTitle());
+
 	}
 
 	@Override

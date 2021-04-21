@@ -85,7 +85,7 @@ public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitL
 		
 		if(task != null) {
 
-			deadline = task.getEndTime();
+			deadline = task.getEndTime().getCalendarDate().getEpochSeconds();
 			
 		}else {
 			

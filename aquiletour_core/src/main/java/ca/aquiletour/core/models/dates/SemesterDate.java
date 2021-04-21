@@ -7,10 +7,11 @@ import ca.ntro.models.NtroDayOfWeek;
 public class SemesterDate implements NtroModelValue {
 	
 	private int semesterWeek;                                    // typically 1-15
+
 	private NtroDayOfWeek semesterDay = new NtroDayOfWeek();     // monday-friday
 	private NtroDayOfWeek scheduleOf  = new NtroDayOfWeek();     // monday-friday
 
-	private NtroDate calendarDate;       // actual date
+	private NtroDate calendarDate = new NtroDate();              // actual date, when known
 
 	public int getSemesterWeek() {
 		return semesterWeek;
@@ -47,4 +48,11 @@ public class SemesterDate implements NtroModelValue {
 	public boolean hasDifferentSchedule() {
 		return !getScheduleOf().equals(getSemesterDay());
 	}
+
+	public void resolveDatesForSemester() {
+		
+	}
+	
+
+
 }

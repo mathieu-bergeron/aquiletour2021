@@ -26,12 +26,12 @@ import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessag
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
-import ca.aquiletour.core.pages.root.DisplayErrorMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.Ntro;
 
 public class AquiletourRequestHandler {

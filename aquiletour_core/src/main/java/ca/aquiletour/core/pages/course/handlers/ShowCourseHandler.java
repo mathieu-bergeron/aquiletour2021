@@ -8,13 +8,12 @@ import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerMessageHandler;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class ShowCourseHandler extends ControllerMessageHandler<CourseController,
-                                                                CourseView,
-                                                                ShowCourseMessage> {
+public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseController,
+                                                                         CourseView,
+                                                                         ShowCourseMessage> {
 	
 	private Path currentCoursePath;
 
@@ -27,7 +26,7 @@ public class ShowCourseHandler extends ControllerMessageHandler<CourseController
 		// XXX: change model only when needed
 		if(!coursePath.equals(currentCoursePath)) {
 			String authToken = currentController.context().user().getAuthToken();
-			currentController.setModelLoader(CourseModel.class, authToken, coursePath);
+			currentController.setModelLoader(modelClass(), authToken, coursePath);
 			currentCoursePath = coursePath;
 
 			ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
@@ -38,4 +37,6 @@ public class ShowCourseHandler extends ControllerMessageHandler<CourseController
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showCourse(currentView);
 	}
+	
+	protected abstract Class<? extends CourseModel> modelClass();
 }

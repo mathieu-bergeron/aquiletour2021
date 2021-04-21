@@ -37,12 +37,24 @@ import ca.aquiletour.core.models.courses.base.TaskRelation;
 import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
+import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
+import ca.aquiletour.core.models.courses.student.CourseModelStudent;
+import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.courses.teacher.CompletionsByGroup;
+import ca.aquiletour.core.models.courses.teacher.CompletionsByStudent;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.teacher.DateByTaskId;
+import ca.aquiletour.core.models.courses.teacher.GroupTaskCompletions;
+import ca.aquiletour.core.models.courses.teacher.InfoByStudent;
+import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
 import ca.aquiletour.core.models.dates.CalendarDate;
 import ca.aquiletour.core.models.dates.CourseDateClassDay;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
-import ca.aquiletour.core.models.schedule.ObservableScheduleItems;
+import ca.aquiletour.core.models.schedule.ScheduleItems;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Guest;
@@ -101,7 +113,7 @@ import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
-import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
@@ -138,9 +150,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		rootController.execute();
 		
-		Ntro.backendService().handleMessageFromBackend(SetUserNtroMessage.class, new MessageHandler<SetUserNtroMessage>() {
+		Ntro.backendService().handleMessageFromBackend(NtroSetUserMessage.class, new MessageHandler<NtroSetUserMessage>() {
 			@Override
-			public void handle(SetUserNtroMessage message) {
+			public void handle(NtroSetUserMessage message) {
 				Ntro.currentSession().setUser(message.getUser());
 				rootController.changeUser(message.getUser());
 			}
@@ -182,6 +194,20 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableSemesterWeekList.class);
 		Ntro.registerSerializableClass(SemesterWeek.class);
 
+		Ntro.registerSerializableClass(SemesterSchedule.class);
+		Ntro.registerSerializableClass(TeacherSchedule.class);
+
+		Ntro.registerSerializableClass(CourseModelTeacher.class);
+		Ntro.registerSerializableClass(CourseModelStudent.class);
+		Ntro.registerSerializableClass(CompletionsByGroup.class);
+		Ntro.registerSerializableClass(CompletionsByStudent.class);
+		Ntro.registerSerializableClass(DateByTaskId.class);
+		Ntro.registerSerializableClass(GroupTaskCompletions.class);
+		Ntro.registerSerializableClass(InfoByStudent.class);
+		Ntro.registerSerializableClass(TaskDatesByGroupId.class);
+		Ntro.registerSerializableClass(TaskCompletion.class);
+		Ntro.registerSerializableClass(CompletionByTaskId.class);
+
 		Ntro.registerSerializableClass(CourseItem.class);
 		Ntro.registerSerializableClass(CourseListModel.class);
 		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
@@ -203,7 +229,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterDate.class);
 
 		Ntro.registerSerializableClass(ScheduleItem.class);
-		Ntro.registerSerializableClass(ObservableScheduleItems.class);
+		Ntro.registerSerializableClass(ScheduleItems.class);
 		Ntro.registerSerializableClass(CourseGroup.class);
 		Ntro.registerSerializableClass(AddScheduleItemMessage.class);
 

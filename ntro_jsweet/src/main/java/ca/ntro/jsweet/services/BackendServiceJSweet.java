@@ -7,7 +7,7 @@ import java.util.Map;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
 import def.dom.WebSocket;
@@ -50,7 +50,7 @@ public class BackendServiceJSweet extends BackendService {
 
 			// FIXME: there is no guarantee  that MessageFactory.registerUser has been called
 			//        we must use initialization tasks
-			RegisterSocketNtroMessage registerSocketNtroMessage = Ntro.messages().create(RegisterSocketNtroMessage.class);
+			NtroRegisterSocketMessage registerSocketNtroMessage = Ntro.messages().create(NtroRegisterSocketMessage.class);
 
 			sendMessageToBackend(registerSocketNtroMessage);
 			

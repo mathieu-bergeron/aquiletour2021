@@ -9,10 +9,10 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserUpdater;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.users.NtroSession;
@@ -46,7 +46,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		Ntro.currentSession().setUser(userToRegister);
 
-		SetUserNtroMessage setUserNtroMessage = Ntro.messages().create(SetUserNtroMessage.class);
+		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 	}

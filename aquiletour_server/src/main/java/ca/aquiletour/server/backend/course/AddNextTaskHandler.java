@@ -1,7 +1,8 @@
 package ca.aquiletour.server.backend.course;
 
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
@@ -13,7 +14,7 @@ public class AddNextTaskHandler extends BackendMessageHandler<AddNextTaskMessage
 		
 		String courseId = message.getCourseId();
 		
-		CourseUpdater.addNextTask(modelStore, courseId, message.getPreviousPath(), message.getNextTask());
+		CourseUpdater.addNextTask(modelStore, CourseModelTeacher.class, courseId, message.getPreviousPath(), message.getNextTask());
 	}
 
 	@Override

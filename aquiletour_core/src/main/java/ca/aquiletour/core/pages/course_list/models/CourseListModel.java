@@ -35,8 +35,10 @@ public class CourseListModel implements NtroModel {
 
 	public void addSemesterId(String semesterId) {
 		T.call(this);
-		
-		semesters.addItem(semesterId);
+
+		if(!semesters.contains(semesterId)) {
+			semesters.addItem(semesterId);
+		}
 	}
 
 	public void addGroup(String semesterId, String courseId, String groupId) {
@@ -49,7 +51,7 @@ public class CourseListModel implements NtroModel {
 		}
 	}
 
-	private CourseItem courseById(String semesterId, String courseId) {
+	public CourseItem courseById(String semesterId, String courseId) {
 		T.call(this);
 		
 		CourseItem result = null;

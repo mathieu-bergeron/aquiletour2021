@@ -4,7 +4,7 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.stores.DocumentPath;
 
-public class SetModelNtroMessage extends NtroMessage {
+public class NtroSetModelMessage extends NtroMessage {
 	
 	private DocumentPath documentPath;
 	private NtroModel model;
