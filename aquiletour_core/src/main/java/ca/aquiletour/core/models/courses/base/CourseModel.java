@@ -10,6 +10,16 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class CourseModel implements NtroModel, TaskGraph {
+	
+	/*
+	 *  TODO: how to represent
+	 *  
+	 *  + abstract schedule Vs group-specific schedule
+	 *  + group-specific completion data
+	 *  
+	 *  + (ideally, the group data is not in the student model)
+	 *  
+	 */
 
 	private ObservableSemesterIdList semesters = new ObservableSemesterIdList();
 	private CoursePath coursePath = new CoursePath();
