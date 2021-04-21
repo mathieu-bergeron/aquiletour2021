@@ -294,7 +294,6 @@ public class AquiletourBackendRequestHandler {
 																							   parameters,
 																							   sessionData);
 
-			String courseId = parameters.get("courseId")[0];
 			String parentTaskId = parameters.get("taskId")[0];
 			String newSubTaskId = parameters.get("newSubTask")[0];
 			String taskTitle = newSubTaskId;

@@ -142,6 +142,8 @@ public class CourseUpdater {
 
 		}else {
 			
+			// FIXME: this should be created when creating the course
+			//        that way we can set rootTask.title to courseTitle
 			modelStore.createModel(CourseModel.class, "admin", coursePath, new ModelInitializer<CourseModel>() {
 				@Override
 				public void initialize(CourseModel course) {

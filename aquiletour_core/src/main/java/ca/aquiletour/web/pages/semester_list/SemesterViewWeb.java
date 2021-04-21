@@ -31,6 +31,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	private HtmlElements addIdToId;
 	private HtmlElements addIdToForm;
 	private HtmlElements addIdToHref;
+	private HtmlElements addIdToDataTarget;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -52,11 +53,13 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		addIdToId = this.getRootElement().find(".add-id-to-id");
 		addIdToForm = this.getRootElement().find(".add-id-to-form");
 		addIdToHref = this.getRootElement().find(".add-id-to-href");
+		addIdToDataTarget = this.getRootElement().find(".add-id-to-data-target");
 		
 		Ntro.verify(that(addIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addIdToId.size() > 0).isTrue());
 		Ntro.verify(that(addIdToForm.size() > 0).isTrue());
 		Ntro.verify(that(addIdToHref.size() > 0).isTrue());
+		Ntro.verify(that(addIdToDataTarget.size() > 0).isTrue());
 	}
 
 	@Override
@@ -69,6 +72,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 		addIdToId.appendToAttribute("id", item.getSemesterId());
 		addIdToForm.appendToAttribute("form", item.getSemesterId());
 		addIdToHref.appendToAttribute("href", item.getSemesterId());
+		addIdToDataTarget.appendToAttribute("data-target", item.getSemesterId());
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		

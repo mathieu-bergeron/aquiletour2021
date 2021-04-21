@@ -187,7 +187,6 @@ public class Task implements NtroModelValue, TaskNode {
 		List<Task> trunk = null;
 		Task parent = parent();
 		
-		
 		if(parent != null) {
 
 			trunk = parent.trunk();
@@ -216,6 +215,9 @@ public class Task implements NtroModelValue, TaskNode {
 		return getPath().toString();
 	}
 
+	public String name() {
+		return getPath().lastName();
+	}
 
 	public void forEachStartTaskLocal(TaskLambda lambda) {
 		T.call(this);
@@ -290,6 +292,20 @@ public class Task implements NtroModelValue, TaskNode {
 				lambda.execute(rt);
 			});
 		});
+	}
+
+	public void forEachPreviousTaskInOrder(TaskLambda lambda) {
+		T.call(this);
+		
+		// TODO: order according to the graph
+		forEachPreviousTask(lambda);
+	}
+
+	public void forEachNextTaskInOrder(TaskLambda lambda) {
+		T.call(this);
+		
+		// TODO: order according to the graph
+		forEachNextTask(lambda);
 	}
 
 	public void removeTask(String taskId) {

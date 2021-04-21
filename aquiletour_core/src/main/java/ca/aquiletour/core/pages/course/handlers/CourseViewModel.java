@@ -1,9 +1,6 @@
 package ca.aquiletour.core.pages.course.handlers;
 
-
 import java.util.List;
-
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -34,8 +31,8 @@ public class CourseViewModel<V extends CourseView> extends ModelViewSubViewMessa
 		
 		if(currentTask != null) {
 			
-			view.identifyCurrentTask(model.courseId(), currentTask);
-			view.displayBreadcrumbs(model.courseId(), currentTask.breadcrumbs());
+			view.identifyCurrentTask(model.getCoursePath(), currentTask);
+			view.displayBreadcrumbs(model.getCoursePath(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, view, subViewLoader);
 		}
@@ -43,7 +40,63 @@ public class CourseViewModel<V extends CourseView> extends ModelViewSubViewMessa
 
 	private void observeCurrentTask(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
-		
+
+		observePreviousTasks(model, view, subViewLoader);
+		observeSubTasks(model, view, subViewLoader);
+		observeNextTasks(model, view, subViewLoader);
+	}
+
+
+	private void observePreviousTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+		T.call(this);
+
+		currentTask.getPreviousTasks().observe(new ListObserver<String>() {
+			
+			@Override
+			public void onItemRemoved(int index, String item) {
+				T.call(this);
+
+				displayPreviousTasksInOrder(model, view, subViewLoader);
+			}
+			
+			@Override
+			public void onItemUpdated(int index, String item) {
+				T.call(this);
+
+				displayPreviousTasksInOrder(model, view, subViewLoader);
+			}
+			
+			@Override
+			public void onItemAdded(int index, String taskId) {
+				T.call(this);
+
+				displayPreviousTasksInOrder(model, view, subViewLoader);
+			}
+			
+			@Override
+			public void onDeleted(List<String> lastValue) {
+			}
+			
+			@Override
+			public void onValue(List<String> value) {
+			}
+			
+			@Override
+			public void onValueChanged(List<String> oldValue, List<String> value) {
+			}
+			
+			@Override
+			public void onClearItems() {
+				T.call(this);
+
+				displayPreviousTasksInOrder(model, view, subViewLoader);
+			}
+		});
+	}
+
+	private void observeSubTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+		T.call(this);
+
 		currentTask.getSubTasks().observe(new ListObserver<String>() {
 			
 			@Override
@@ -55,8 +108,9 @@ public class CourseViewModel<V extends CourseView> extends ModelViewSubViewMessa
 			
 			@Override
 			public void onItemUpdated(int index, String item) {
-				// TODO Auto-generated method stub
-				
+				T.call(this);
+
+				displaySubtasksInOrder(model, view, subViewLoader);
 			}
 			
 			@Override
@@ -83,182 +137,94 @@ public class CourseViewModel<V extends CourseView> extends ModelViewSubViewMessa
 			
 			@Override
 			public void onClearItems() {
+				T.call(this);
+
+				displaySubtasksInOrder(model, view, subViewLoader);
+			}
+		});
+	}
+
+	private void observeNextTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+		T.call(this);
+
+		currentTask.getNextTasks().observe(new ListObserver<String>() {
+			
+			@Override
+			public void onItemRemoved(int index, String item) {
+				T.call(this);
+
+				displayNextTasksInOrder(model, view, subViewLoader);
+			}
+			
+			@Override
+			public void onItemUpdated(int index, String item) {
+				T.call(this);
+
+				displayNextTasksInOrder(model, view, subViewLoader);
+			}
+			
+			@Override
+			public void onItemAdded(int index, String taskId) {
+				T.call(this);
+
+				displaySubtasksInOrder(model, view, subViewLoader);
+			}
+			
+			@Override
+			public void onDeleted(List<String> lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
+			
+			@Override
+			public void onValue(List<String> value) {
+			}
+			
+			@Override
+			public void onValueChanged(List<String> oldValue, List<String> value) {
+			}
+
+			
+			@Override
+			public void onClearItems() {
+				T.call(this);
+
+				displayNextTasksInOrder(model, view, subViewLoader);
+			}
+		});
+	}
+
+	private void displayPreviousTasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+		T.call(this);
+
+		view.clearPreviousTasks();
+		
+		currentTask.forEachPreviousTaskInOrder(pt -> {
+			view.appendPreviousTask(model.getCoursePath(), pt);
 		});
 	}
 
 	private void displaySubtasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
-		view.clearTasks();
+		view.clearSubtasks();
 		
 		currentTask.forEachSubTaskInOrder(st -> {
 
 			TaskView taskView = (TaskView) subViewLoader.createView();
-			view.appendTask(taskView);
+			view.appendSubtask(taskView);
 
-			displayTask(model.getCoursePath(), st, taskView);
-
-			observeSubTask(st, model.getCoursePath(), taskView);
+			taskView.displayTask(model.getCoursePath(), st);
 		});
 	}
 
-	private void displayTask(CoursePath coursePath, Task st, TaskView taskView) {
+	private void displayNextTasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
-		taskView.clear();
-		taskView.displayTask(coursePath, st);
-	}
+		view.clearNextTasks();
 
-	private void observeSubTask(Task st, CoursePath coursePath, TaskView taskView) {
-		T.call(this);
-		
-		st.getPreviousTasks().removeObservers();
-		st.getSubTasks().removeObservers();
-		st.getNextTasks().removeObservers();
-		
-		st.getPreviousTasks().observe(new ListObserver<String>() {
-			
-			@Override
-			public void onItemRemoved(int index, String item) {
-				T.call(this);
-
-				displayTask(coursePath, st, taskView);
-			}
-			
-			@Override
-			public void onItemUpdated(int index, String item) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onItemAdded(int index, String item) {
-				T.call(this);
-
-				displayTask(coursePath, st, taskView);
-			}
-			
-			@Override
-			public void onDeleted(List<String> lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		st.getSubTasks().observe(new ListObserver<String>() {
-
-			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onDeleted(List<String> lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemAdded(int index, String item) {
-				T.call(this);
-
-				displayTask(coursePath, st, taskView);
-			}
-
-			@Override
-			public void onItemUpdated(int index, String item) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemRemoved(int index, String item) {
-				T.call(this);
-
-				displayTask(coursePath, st, taskView);
-			}
-
-			@Override
-			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		st.getNextTasks().observe(new ListObserver<String>() {
-
-			@Override
-			public void onValueChanged(List<String> oldValue, List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValue(List<String> value) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onDeleted(List<String> lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemAdded(int index, String item) {
-				T.call(this);
-
-				displayTask(coursePath, st, taskView);
-			}
-
-			@Override
-			public void onItemUpdated(int index, String item) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onItemRemoved(int index, String item) {
-				T.call(this);
-
-				displayTask(coursePath, st, taskView);
-			}
-
-			@Override
-			public void onClearItems() {
-				// TODO Auto-generated method stub
-				
-			}
+		currentTask.forEachNextTaskInOrder(st -> {
+			view.appendNextTask(model.getCoursePath(), st);
 		});
 	}
-
 }

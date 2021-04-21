@@ -205,4 +205,11 @@ public class Path implements JsonSerializable {
 		getNames().add(name);
 	}
 
+	public String lastName() {
+		T.call(this);
+
+		int nameCount = nameCount();
+		return name(nameCount-1);
+	}
+
 }

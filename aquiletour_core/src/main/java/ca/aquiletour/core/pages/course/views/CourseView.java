@@ -1,17 +1,23 @@
 package ca.aquiletour.core.pages.course.views;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.ntro.core.mvc.NtroView;
 
 public interface CourseView extends NtroView  {
 
-	void displayBreadcrumbs(String courseId, TaskBreadcrumbs breadcrumps);
+	void displayBreadcrumbs(CoursePath coursePath, TaskBreadcrumbs breadcrumps);
 
-	void insertTask(int index, TaskView taskView);
-	void appendTask(TaskView taskView);
+	void clearSubtasks();
+	void insertSubtask(int index, TaskView taskView);
+	void appendSubtask(TaskView taskView);
 
-	void identifyCurrentTask(String courseId, Task task);
+	void identifyCurrentTask(CoursePath coursePath, Task task);
 
-	void clearTasks();
+	void clearPreviousTasks();
+	void appendPreviousTask(CoursePath coursePath, Task previousTask);
+
+	void clearNextTasks();
+	void appendNextTask(CoursePath coursePath, Task nextTask);
 }

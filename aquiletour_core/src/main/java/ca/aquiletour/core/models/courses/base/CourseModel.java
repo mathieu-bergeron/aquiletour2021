@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -14,6 +15,15 @@ public class CourseModel implements NtroModel, TaskGraph {
 	private CoursePath coursePath = new CoursePath();
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
 	private ObservableGroupMap groups = new ObservableGroupMap();
+	private StoredString title = new StoredString();
+
+	public StoredString getTitle() {
+		return title;
+	}
+
+	public void setTitle(StoredString title) {
+		this.title = title;
+	}
 
 	@Override
 	public Task findTaskByPath(Path path) {

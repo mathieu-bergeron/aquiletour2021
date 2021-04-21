@@ -1,5 +1,7 @@
 function initializeSemester(viewRootElement, jSweet){
 
+    initializeWidgets(viewRootElement);
+
     const weekOfInputs = viewRootElement.find(".week-of-input");
     const currentSemesterCheckboxes = viewRootElement.find(".current-semester-checkbox");
 

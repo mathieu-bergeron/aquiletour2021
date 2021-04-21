@@ -1,5 +1,4 @@
 function initializeView(viewName, viewRootElement, jSweet){
-    console.log(viewName);
 
     if(viewName === "TeacherQueueViewWeb"){
 

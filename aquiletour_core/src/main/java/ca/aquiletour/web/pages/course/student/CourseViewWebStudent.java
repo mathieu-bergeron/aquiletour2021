@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.course.student;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
@@ -32,17 +33,17 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void identifyCurrentTask(String courseId, Task task) {
+	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
-		super.identifyCurrentTask(courseId, task);
+		super.identifyCurrentTask(coursePath, task);
 		
 		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
-				                                + "/" + courseId 
+				                                + coursePath.toUrlPath()
 				                                + task.id()
 												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
-												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
+												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId());
 
-		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + courseId + task.id());
+		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + coursePath.toUrlPath() + task.id());
 	}
 
 	@Override
