@@ -14,7 +14,7 @@ function initializeCommitList(viewRootElement, jSweet) {
     var modifiedFilesOfEachCommit = [];//
 
     var colors = [];// for deadlines
-    var deadlines = [1715215942, 2715215941, 2015215942, 2215215942, 2615215941, 2515215941];
+    var deadlines = [1715215942 * 1000, 2715215941* 1000, 2015215942* 1000, 2215215942* 1000, 2615215941* 1000, 2515215941* 1000];
     setAllCommitInfo();
     changeColors();
     var annotations = deadlines.map(function(epoch, index) {
@@ -194,7 +194,15 @@ function initializeCommitList(viewRootElement, jSweet) {
             var modifiedFilesText = $(modifiedFilesSpan).text();
             exercisePathText = exercisePathText.replace(/ /g, '');//there's a big empty space, this removes it
             modifiedFilesText = modifiedFilesText.replace(/ /g, '');//
-
+            
+            timeStampInt *= 1000;
+            $(timeStampSpan).text((new Date(timeStampInt).toLocaleDateString('fr-ca', {
+                year: "numeric",
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric'
+            })).toString());
             timeStamps.push(timeStampInt);
             estimatedEfforts.push(estimatedEffortInt);
             if(commitMessageText.length > 40){//cannot show more than 40 characters

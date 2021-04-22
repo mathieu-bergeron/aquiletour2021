@@ -6,9 +6,11 @@ public class Constants {
 	
 	public static final String HOST = "http://localhost:8080";
 	
+	public static final String GITHOST = "http://localhost:8000";
+	
 	public static final String GIT_API_URL_PATH = "/_git_api";
 	
-	public static final String GIT_API_URL = HOST + GIT_API_URL_PATH  + "/";
+	public static final String GIT_API_URL = GITHOST + GIT_API_URL_PATH;
 	
 	
 	public static final String DASHBOARD_URL_SEGMENT = "tableau_de_bord";

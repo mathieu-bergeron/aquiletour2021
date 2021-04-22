@@ -11,7 +11,7 @@ import utils.normalize_data
 #      "courseId": "mathieu.bergeron/StruDon",
 #      "semesterId": "H2021",
 #      "groupId": "01",
-#      "studentId": "bob.berancourt",
+#      "studentId": "1234500",
 #      "repoPath": "/TP1",
 #      "repoUrl": "https://github.com/test/test.git"
 #  }

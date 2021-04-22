@@ -39,19 +39,27 @@ public class CommitViewWeb extends NtroViewWeb implements CommitView {
 		MustNot.beNull(commitId);
 		
 		commitMessage.appendHtml(commit.getCommitMessage());
-		exercicePath.appendHtml(commit.getExercisePath());
+		exercicePath.appendHtml(commit.getExercisePathIfCompleted());
 		estimatedEffort.appendHtml(Integer.toString(commit.getEstimatedEffort()));
 		timestamp.appendHtml(commit.getTimeStamp());
 		
-		//commitId.appendHtml(Integer.toString(CommitViewWeb.commitId));
 		commitId.setAttribute("id", "commit-" + CommitViewWeb.commitId);
 		CommitViewWeb.commitId ++;
 		
 		for (int i = 0; i < commit.getModifiedFiles().size(); i++) {
 			if(i == commit.getModifiedFiles().size() - 1) {
-				modifiedFiles.appendHtml(commit.getModifiedFiles().get(i));
+				modifiedFiles.appendHtml("Chemin : " + commit.getModifiedFiles().get(i).getPath() + "<br>"
+						+ "Effort estim&#233 : " + commit.getModifiedFiles().get(i).getEstimatedEffort() + "<br>"
+						+ "Chemin de l'exercise : " + commit.getModifiedFiles().get(i).getExercisePath() + "<br>"
+						+ "Message : " + commit.getModifiedFiles().get(i).getMessage() + "<br>"
+						);
 			}else {
-				modifiedFiles.appendHtml(commit.getModifiedFiles().get(i) + ", ");
+				modifiedFiles.appendHtml("Chemin : " + commit.getModifiedFiles().get(i).getPath() + "<br>"
+						+ "Effort estim&#233 : " + commit.getModifiedFiles().get(i).getEstimatedEffort() + "<br>"
+						+ "Chemin de l'exercise : " + commit.getModifiedFiles().get(i).getExercisePath() + "<br>"
+						+ "Message : " + commit.getModifiedFiles().get(i).getMessage() + "<br>"
+						+ "--------- <br>"
+						);
 			}
 		}
 	}

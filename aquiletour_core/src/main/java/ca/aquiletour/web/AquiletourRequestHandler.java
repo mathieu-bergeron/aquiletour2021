@@ -75,9 +75,9 @@ public class AquiletourRequestHandler {
 			}
 
 			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
-			showGitMessage.setCourseId(courseId);
-			showGitMessage.setExercisePath(exerciseId);
-			showGitMessage.setStudentId(user.getId());
+			showGitMessage.setCourseId("mathieu.bergeron/StruDon");
+			showGitMessage.setExercisePath("/TP1/Exercice 1");
+			showGitMessage.setStudentId("1234500");
 			showGitMessage.setGroupId("01"); // TODO
 			showGitMessage.setSemesterId("H2021"); // TODO
 			Ntro.messages().send(showGitMessage);
