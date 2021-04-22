@@ -34,7 +34,7 @@
     <div class="d-flex flex-wrap justify-content-around align-items-end mt-5">
         <div class='card border mb-3 mt-3' id="previous-task-container">
             <div class='card-header border'>
-                Étapes préalables
+               Étapes préalables
             </div>
             <div class='card-body'>
                 <ul class="list-group" id="previous-task-list">
@@ -52,8 +52,8 @@
 
         <div class="d-flex flex-column w-50">
         <div class="mt-3 card border">
-            <div class='card-header  border'>
-                <h5 id="task-title"></h5>
+            <div class='card-header border'>
+                <h5 class="mt-1 mb-1" id="task-title"></h5>
             </div>
             <div class='card-body bg-transparent border'>
                 <h6><u>Date de remise</u></h6>
@@ -87,13 +87,21 @@
                     </button>
                 </div>
 
+                <h6 class="mt-5"><u>Historiques (lorsque groupe sélectionné)</u></h6>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#">Historique des questions</a></li>
+                    <li class="list-group-item"><a href="#">Historique des remises</a></li>
+                    <li class="list-group-item"><a href="#">Historique des messages</a></li>
+                    <li class="list-group-item"><a href="#">Tout</a></li>
+                </ul>
+
 
             </div>
         </div>
 
         <div class="mt-3 card">
             <div class="card-header">
-                <h5>Sous-étapes</h5>
+                <h5 class="mt-0 mb-0" >Sous-étapes</h5>
             </div>
             <div class="card-body">
                 <div class="mt-3 d-flex flex-wrap justify-content-around" id="subtask-container">
