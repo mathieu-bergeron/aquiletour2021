@@ -1,5 +1,7 @@
 package ca.ntro.jsweet.dom;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import ca.ntro.core.system.trace.T;
@@ -262,7 +264,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		// FIXME: this will remove duplicate ids
 		//        we cannot use ids in partials
 		Object[] parsedHtml = $.parseHTML(html, document, false);
-
+		
 		if(parsedHtml.length == 1) {
 			result = $(parsedHtml[0]);
 		}else {

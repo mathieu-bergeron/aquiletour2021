@@ -1,6 +1,7 @@
 package ca.ntro.jdk.dom;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -224,13 +225,21 @@ public class HtmlElementJdk extends HtmlElement {
 		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
 
 		List<Node> childNodes = jsoupDocument.body().childNodes();
+		
+		List<Element> elements = new ArrayList<>();
+		
+		for(Node childNode : childNodes) {
+			if(childNode instanceof Element) {
+				elements.add((Element) childNode);
+			}
+		}
 
-		if(childNodes.size() == 1) {
-			result = (Element) childNodes.get(0);
+		if(elements.size() == 1) {
+			result = elements.get(0).clone();
 		}else {
-			result = new Element("span");
-			for(Node childNode : childNodes) {
-				result.appendChild(childNode.clone());
+			result = new Element("div");
+			for(Element childElement : elements) {
+				result.appendChild(childElement.clone());
 			}
 		}
 
