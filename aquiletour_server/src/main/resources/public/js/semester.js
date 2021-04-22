@@ -1,9 +1,6 @@
 function initializeSemester(viewRootElement, jSweet){
 
-    initializeWidgets(viewRootElement);
-
     const weekOfInputs = viewRootElement.find(".week-of-input");
-    const currentSemesterCheckboxes = viewRootElement.find(".current-semester-checkbox");
 
     weekOfInputs.datepicker({
             'closeText': "Fermer",
@@ -23,13 +20,6 @@ function initializeSemester(viewRootElement, jSweet){
             'isRTL': false,
             'showMonthAfterYear': false,
             'yearSuffix': ""
-    });
-
-    currentSemesterCheckboxes.on('click', function(){
-        const thisCheckbox = $(this);
-        const formId = $(this).attr("form");
-        const form = viewRootElement.find("#" + formId);
-        form.submit();
     });
 }
 

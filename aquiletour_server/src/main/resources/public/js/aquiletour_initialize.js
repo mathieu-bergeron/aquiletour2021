@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    initializeWidgets($(document));
+});
+
 function initializeView(viewName, viewRootElement, jSweet){
 
     if(viewName === "TeacherQueueViewWeb"){
@@ -19,5 +23,10 @@ function initializeView(viewName, viewRootElement, jSweet){
     }else if(viewName === "SemesterViewWeb"){
 
         initializeSemester(viewRootElement, jSweet);
+
+    }else if(viewName === "SemesterViewWeb"){
+
+        initializeCourseItem(viewRootElement, jSweet);
     }
 }
+

@@ -1,6 +1,22 @@
 function initializeWidgets(viewRootElement){
+    initializeCheckboxes(viewRootElement);
     initializeSectionToggles(viewRootElement);
 }
+
+function initializeCheckboxes(rootElement){
+
+    const checkboxes = rootElement.find(".aquiletour-checkbox");
+
+    checkboxes.off();
+    checkboxes.on('click', function(){
+        const thisCheckbox = $(this);
+        const formId = $(this).attr("form");
+        const form = rootElement.find("#" + formId);
+        form.submit();
+    });
+}
+
+
 
 const caretUp = `
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up" viewBox="0 0 16 16">

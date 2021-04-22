@@ -23,8 +23,15 @@ public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
 	private HtmlElement groupList;
 	private HtmlElement taskList;
 	private HtmlElement groupContainer;
+	private HtmlElement tasksSummary;
+	private HtmlElement groupsSummary;
+	private HtmlElement queueLink;
+	private HtmlElement queueCheckbox;
+
 	private HtmlElements addSemesterIdToValue;
 	private HtmlElements addCourseIdToValue;
+	private HtmlElements addCourseIdToId;
+	private HtmlElements addCourseIdToForm;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -36,8 +43,15 @@ public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
 		groupList = this.getRootElement().find("#group-list").get(0);
 		taskList = this.getRootElement().find("#task-list").get(0);
 		groupContainer = this.getRootElement().find("#group-container").get(0);
+		tasksSummary = this.getRootElement().find("#tasks-summary").get(0);
+		groupsSummary = this.getRootElement().find("#groups-summary").get(0);
+		queueLink = this.getRootElement().find("#queue-link").get(0);
+		queueCheckbox = this.getRootElement().find(".aquiletour-checkbox").get(0);
+
 		addSemesterIdToValue = this.getRootElement().find(".add-semester-id-to-value");
 		addCourseIdToValue = this.getRootElement().find(".add-course-id-to-value");
+		addCourseIdToId = this.getRootElement().find(".add-course-id-to-id");
+		addCourseIdToForm = this.getRootElement().find(".add-course-id-to-form");
 
 		MustNot.beNull(courseTitleLink);
 		MustNot.beNull(courseTitleSemesterId);
@@ -45,45 +59,44 @@ public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
 		MustNot.beNull(groupList);
 		MustNot.beNull(taskList);
 		MustNot.beNull(groupContainer);
+		MustNot.beNull(tasksSummary);
+		MustNot.beNull(groupsSummary);
+		MustNot.beNull(queueLink);
+		MustNot.beNull(queueCheckbox);
 
 		Ntro.verify(that(addSemesterIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addCourseIdToValue.size() > 0).isTrue());
+		Ntro.verify(that(addCourseIdToId.size() > 0).isTrue());
+		Ntro.verify(that(addCourseIdToForm.size() > 0).isTrue());
 	}
 
 	@Override
-	public void displayCourseDescription(CourseItem courseDescription) {
+	public void displayCourseDescription(CourseItem courseItem) {
 		T.call(this);
 		
 		String href = "/" + Constants.COURSE_URL_SEGMENT + 
 		              "/" + Ntro.currentUser().getId() + 
-		              "/" + courseDescription.getCourseId();
+		              "/" + courseItem.getCourseId();
 		
-		if(!AquiletourMain.currentSemester().equals(courseDescription.getSemesterId())) {
-			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + courseDescription.getSemesterId();
+		if(!AquiletourMain.currentSemester().equals(courseItem.getSemesterId())) {
+			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + courseItem.getSemesterId();
 		}
 		
-		if(courseDescription.getSemesterId().equals(Constants.DRAFTS_SEMESTER_ID)) {
+		if(courseItem.getSemesterId().equals(Constants.DRAFTS_SEMESTER_ID)) {
 			groupContainer.hide();
 		}
 		
-		courseTitleLink.text(courseDescription.getCourseId());
+		courseTitleLink.text(courseItem.getCourseId());
 		courseTitleLink.setAttribute("href", href);
 		
-		courseTitleSemesterId.text(courseDescription.getSemesterId());
+		courseTitleSemesterId.text(courseItem.getSemesterId());
 		
-		addGroupModalTitle.text("Ajouter un groupe au cours " + courseDescription.getCourseId());
-
-		addSemesterIdToValue.forEach(e -> {
-			String value = e.getAttribute("value");
-			value += courseDescription.getSemesterId();
-			e.setAttribute("value", value);
-		});
-
-		addCourseIdToValue.forEach(e -> {
-			String value = e.getAttribute("value");
-			value += courseDescription.getCourseId();
-			e.setAttribute("value", value);
-		});
+		addGroupModalTitle.text("Ajouter un groupe au cours " + courseItem.getCourseId());
+		
+		addSemesterIdToValue.appendToAttribute("value", courseItem.getSemesterId());
+		addCourseIdToValue.appendToAttribute("value", courseItem.getCourseId());
+		addCourseIdToId.appendToAttribute("id", courseItem.getCourseId());
+		addCourseIdToForm.appendToAttribute("form", courseItem.getCourseId());
 	}
 
 	@Override
@@ -110,5 +123,36 @@ public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
 		groupLi.appendElement(groupAnchor);
 
 		groupAnchor.text(groupId);
+	}
+
+	@Override
+	public void displayTasksSummary(String tasksSummaryText) {
+		T.call(this);
+		
+		tasksSummary.text(tasksSummaryText);
+	}
+
+	@Override
+	public void displayGroupsSummary(String groupsSummaryText) {
+		T.call(this);
+		
+		groupsSummary.text(groupsSummaryText);
+	}
+
+	@Override
+	public void displayQueueLink(boolean queueOpen, String text, String href) {
+		T.call(this);
+		
+		if(queueOpen) {
+			
+			queueCheckbox.setAttribute("checked","true");
+			
+		}else {
+			
+			queueCheckbox.removeAttribute("checked");
+		}
+		
+		queueLink.text(text);
+		queueLink.setAttribute("href", href);
 	}
 }

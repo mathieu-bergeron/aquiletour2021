@@ -3,6 +3,7 @@ $(document).ready(function(){
     const viewRootElement = $(document);
     const jSweet = false;
 
+
     initializeView("RootViewWeb", viewRootElement, jSweet);
     initializeView("TeacherDashboardViewWeb", viewRootElement, jSweet);
     initializeView("TeacherCourseSummaryViewWeb", viewRootElement, jSweet);
@@ -15,4 +16,7 @@ $(document).ready(function(){
     initializeView("CourseViewWeb", viewRootElement, jSweet);
     initializeView("CommitListViewWeb", viewRootElement, jSweet);
     initializeView("SemesterViewWeb", viewRootElement, jSweet);
+    initializeView("CourseItemViewWeb", viewRootElement, jSweet);
+
+    initializeWidgets(viewRootElement);
 });

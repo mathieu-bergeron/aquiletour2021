@@ -9,5 +9,8 @@ public interface CourseItemView extends ItemView {
 	void displayCourseDescription(CourseItem courseDescription);
 	void appendTaskDescription(TaskDescription task);
 	void appendGroupId(String groupId);
+	void displayTasksSummary(String tasksSummaryText);
+	void displayGroupsSummary(String groupsSummaryText);
+	void displayQueueLink(boolean queueOpen, String text, String href);
 
 }

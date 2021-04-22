@@ -1,6 +1,5 @@
 package ca.aquiletour.core.pages.course_list.handlers;
 
-import java.util.List;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
@@ -10,7 +9,7 @@ import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseItemView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.ntro.core.models.listeners.ItemAddedListener;
-import ca.ntro.core.models.listeners.ListObserver;
+import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -38,6 +37,7 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 	private void observeSemesterIdList(CourseListModel model, CourseListView view) {
 		T.call(this);
 		
+		model.getSemesters().removeObservers();
 		model.getSemesters().onItemAdded(new ItemAddedListener<String>() {
 			@Override
 			public void onItemAdded(int index, String item) {
@@ -87,27 +87,67 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		});
 	}
 
-	protected void observeCourseDescription(CourseItem description, CourseItemView descriptionView) {
+	protected void observeCourseDescription(CourseItem courseItem, CourseItemView itemView) {
 		T.call(this);
 		
-		description.getTasks().onItemAdded(new ItemAddedListener<TaskDescription>() {
+		itemView.displayTasksSummary(courseItem.getTasksSummary());
+		itemView.displayGroupsSummary(courseItem.getGroupsSummary());
+		
+		courseItem.getTasks().removeObservers();
+		courseItem.getTasks().onItemAdded(new ItemAddedListener<TaskDescription>() {
 			@Override
 			public void onItemAdded(int index, TaskDescription item) {
 				T.call(this);
 				
-				descriptionView.appendTaskDescription(item);
+				itemView.appendTaskDescription(item);
 			}
 		});
 		
-		description.getGroupIds().onItemAdded(new ItemAddedListener<String>() {
+		courseItem.getGroupIds().onItemAdded(new ItemAddedListener<String>() {
 			@Override
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 				
-				descriptionView.appendGroupId(item);
+				itemView.appendGroupId(item);
 			}
 		});
 		
+		courseItem.getQueueOpen().removeObservers();
+		courseItem.getQueueOpen().observe(new ValueObserver<Boolean>() {
+			@Override
+			public void onDeleted(Boolean lastValue) {
+			}
+			
+			@Override
+			public void onValue(Boolean value) {
+				T.call(this);
+
+				displayOpenQueueMessage(value, courseItem.getTeacherId(), courseItem.getCourseId(),  itemView);
+			}
+			
+			@Override
+			public void onValueChanged(Boolean oldValue, Boolean value) {
+				T.call(this);
+
+				displayOpenQueueMessage(value, courseItem.getTeacherId(), courseItem.getCourseId(),  itemView);
+			}
+		});
+		
+	}
+	
+	private void displayOpenQueueMessage(boolean queueOpen, String teacherId, String courseId, CourseItemView itemView) {
+		T.call(this);
+		
+		String queueHref = "/" + Constants.QUEUE_URL_SEGMENT + "/" + teacherId + "/" + courseId;
+		
+		if(queueOpen) {
+			
+			itemView.displayQueueLink(queueOpen, "ouverte", queueHref);
+			
+		}else {
+
+			itemView.displayQueueLink(queueOpen, "fermée", queueHref);
+		}
 	}
 
 }

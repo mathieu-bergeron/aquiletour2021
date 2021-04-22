@@ -25,6 +25,7 @@ import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
@@ -134,6 +135,25 @@ public class AquiletourRequestHandler {
 		SelectCourseListSubset selectCourseListSubset = Ntro.messages().create(SelectCourseListSubset.class);
 		selectCourseListSubset.setSemesterId(currentSemesterId);
 		Ntro.messages().send(selectCourseListSubset);
+		
+		if(parameters.containsKey("openQueueCourseId")) {
+			
+			String courseId = parameters.get("openQueueCourseId")[0];
+			
+			if(parameters.containsKey("ifQueueOpen")
+					&& parameters.get("ifQueueOpen")[0].equals("on")) {
+				
+				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
+				teacherUsesQueueMessage.setCourseId(courseId);
+				Ntro.messages().send(teacherUsesQueueMessage);
+				
+			}else {
+				
+				TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
+				teacherClosesQueueMessage.setCourseId(courseId);
+				Ntro.messages().send(teacherClosesQueueMessage);
+			}
+		}
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {

@@ -24,11 +24,11 @@
             </button>
             <div class="flex-fill ms-2 me-2"/>
                 <div class="d-flex align-items-center">
-                    <span class="me-2">fermée</span>
+                    <span class="me-2"><a href="#" id="queue-link">ouverte</a></span>
                     <div class="form-check form-switch">
-                        <form class="add-id-to-id" action="" method="post" id="open-queue-form">
-                            <input class="add-id-to-value" name="currentSemesterId" value="" style="display:none;"></input>
-                            <input class="form-check-input current-semester-checkbox add-id-to-form" name="ifSemesterSelected" type="checkbox" form="select-current-semester-form">
+                        <form class="add-course-id-to-id" action="" method="post" id="open-queue-form">
+                            <input class="add-course-id-to-value" name="openQueueCourseId" style="display:none;"></input>
+                            <input class="form-check-input aquiletour-checkbox add-course-id-to-form" name="ifQueueOpen" type="checkbox" form="open-queue-form">
                         </form>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     </svg>
                 </button>
                 <div class="flex-fill ms-2 me-2"/>
-                    <div class="me-2" id="tasks-summary">5 étapes (60 sous-étapes)</div>
+                    <div class="me-2" id="tasks-summary"></div>
                 </div>
 
                 <div class="collapse add-id-to-id" id="tasks">
@@ -86,7 +86,7 @@
                             </svg>
                         </button>
                         <div class="flex-fill ms-2 me-2"/>
-                            <div class="me-2" id="group-summary">3 groupes (67 étudiant.es)</div>
+                            <div class="me-2" id="groups-summary"></div>
                         </div>
 
                         <div class="collapse add-id-to-id" id="groups">

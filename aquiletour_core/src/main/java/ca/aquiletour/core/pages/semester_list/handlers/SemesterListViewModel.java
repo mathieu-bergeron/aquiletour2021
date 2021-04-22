@@ -34,19 +34,22 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 
 		SemesterView semesterView = (SemesterView) subViewLoader.createView();
 
-		semesterView.displaySemester(semester);
+		displaySemester(semester, semesterView);
 		
 		view.appendSemester(semesterView);
 		
+		semester.getSemesterSchedule().getWeeks().removeObservers();
 		semester.getSemesterSchedule().getWeeks().onItemAdded(new ItemAddedListener<SemesterWeek>() {
 			@Override
 			public void onItemAdded(int index, SemesterWeek item) {
 				T.call(this);
 
 				semesterView.appendSemesterWeek(item);
+				semesterView.displaySemesterSummary(semester.semesterSummary());
 			}
 		});
 		
+		semester.getCourseGroups().removeObservers();
 		semester.getCourseGroups().onItemAdded(new ItemAddedListener<CourseGroup>() {
 			@Override
 			public void onItemAdded(int index, CourseGroup item) {
@@ -56,13 +59,24 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 			}
 		});
 		
+		semester.getTeacherSchedule().getScheduleItems().removeObservers();
 		semester.getTeacherSchedule().getScheduleItems().onItemAdded(new ItemAddedListener<ScheduleItem>() {
 			@Override
 			public void onItemAdded(int index, ScheduleItem item) {
 				T.call(this);
 
 				semesterView.appendScheduleItem(item);
+				semesterView.displayScheduleSummary(semester.scheduleSummary());
 			}
 		});
+	}
+
+	private void displaySemester(SemesterModel semester, SemesterView semesterView) {
+		T.call(this);
+
+		semesterView.displaySemester(semester);
+		semesterView.displaySemesterSummary(semester.semesterSummary());
+		semesterView.displayScheduleSummary(semester.scheduleSummary());
+		semesterView.displayAvailabilitySummary(semester.availabilitySummary());
 	}
 }

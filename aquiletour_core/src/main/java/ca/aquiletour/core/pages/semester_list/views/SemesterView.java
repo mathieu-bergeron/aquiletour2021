@@ -12,5 +12,8 @@ public interface SemesterView extends NtroView {
 	void appendSemesterWeek(SemesterWeek item);
 	void appendCourseGroupe(CourseGroup courseGroup);
 	void appendScheduleItem(ScheduleItem item);
+	void displaySemesterSummary(String semesterSummaryText);
+	void displayScheduleSummary(String scheduleSummaryText);
+	void displayAvailabilitySummary(String availabilitySummaryText);
 
 }

@@ -3,25 +3,29 @@ package ca.aquiletour.core.pages.course_list.models;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredList;
 import ca.ntro.core.system.trace.T;
 
 public class CourseItem implements NtroModelValue {
 	
+	private String teacherId = "";
 	private String semesterId = "";
 	private String courseId = "";
 	private String courseTitle = "";
 	private String courseDescription = "";
 	private ObservableGroupIdList groupIds = new ObservableGroupIdList();
 	private ObservableTaskDescriptions tasks = new ObservableTaskDescriptions();
+	private StoredBoolean queueOpen = new StoredBoolean();
 
 	public CourseItem() {
 		T.call(this);
 	}
 
-	public CourseItem(String semesterId, String courseId, String courseTitle) {
+	public CourseItem(String teacherId, String semesterId, String courseId, String courseTitle) {
 		T.call(this);
 		
+		this.teacherId = teacherId;
 		this.semesterId = semesterId;
 		this.courseId = courseId;
 		this.courseTitle = courseTitle;
@@ -104,5 +108,37 @@ public class CourseItem implements NtroModelValue {
 		T.call(this);
 
 		getTasks().addItem(task);
+	}
+
+	public String getTasksSummary() {
+		T.call(this);
+
+		String summary = "0 étapes";
+
+		return summary;
+	}
+
+	public String getGroupsSummary() {
+		T.call(this);
+
+		String summary = "0 groupes";
+
+		return summary;
+	}
+
+	public StoredBoolean getQueueOpen() {
+		return queueOpen;
+	}
+
+	public void setQueueOpen(StoredBoolean queueOpen) {
+		this.queueOpen = queueOpen;
+	}
+
+	public String getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(String teacherId) {
+		this.teacherId = teacherId;
 	}
 }

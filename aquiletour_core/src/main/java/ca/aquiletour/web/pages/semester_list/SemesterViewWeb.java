@@ -26,6 +26,9 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	private HtmlElement currentSemesterCheckbox;
 	private HtmlElement courseGroupSelect;
 	private HtmlElement scheduleTbody;
+	private HtmlElement calendarSummary;
+	private HtmlElement scheduleSummary;
+	private HtmlElement availabilitySummary;
 
 	private HtmlElements addIdToValue;
 	private HtmlElements addIdToId;
@@ -38,9 +41,12 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 
 		semesterIdHeader = this.getRootElement().find("#semester-id").get(0);
 		weeksTbody = this.getRootElement().find("#semester-weeks-tbody").get(0);
-		currentSemesterCheckbox = this.getRootElement().find(".current-semester-checkbox").get(0);
+		currentSemesterCheckbox = this.getRootElement().find(".aquiletour-checkbox").get(0);
 		courseGroupSelect = this.getRootElement().find("#course-group-select").get(0);
 		scheduleTbody = this.getRootElement().find("#schedule-tbody").get(0);
+		calendarSummary = this.getRootElement().find("#calendar-summary").get(0);
+		scheduleSummary = this.getRootElement().find("#schedule-summary").get(0);
+		availabilitySummary = this.getRootElement().find("#availability-summary").get(0);
 
 		MustNot.beNull(semesterIdHeader);
 		MustNot.beNull(weeksTbody);
@@ -159,5 +165,26 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 			dataRow.insertBefore(lastRow);
 		}
 		
+	}
+
+	@Override
+	public void displaySemesterSummary(String semesterSummaryText) {
+		T.call(this);
+		
+		calendarSummary.text(semesterSummaryText);
+	}
+
+	@Override
+	public void displayScheduleSummary(String scheduleSummaryText) {
+		T.call(this);
+		
+		scheduleSummary.text(scheduleSummaryText);
+	}
+
+	@Override
+	public void displayAvailabilitySummary(String availabilitySummaryText) {
+		T.call(this);
+		
+		availabilitySummary.text(availabilitySummaryText);
 	}
 }

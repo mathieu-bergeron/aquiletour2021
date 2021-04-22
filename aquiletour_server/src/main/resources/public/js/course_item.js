@@ -1,0 +1,4 @@
+function initializeCourseItem(viewRootElement, jSweet){
+
+}
+

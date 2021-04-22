@@ -79,4 +79,9 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 		observer.onValue(getValue());
 	}
 
+	public void removeObservers() {
+		T.call(this);
+		
+		this.observers.clear();
+	}
 }

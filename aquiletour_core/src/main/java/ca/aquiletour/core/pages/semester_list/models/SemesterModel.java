@@ -9,6 +9,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 
 public class SemesterModel implements NtroModelValue {
 	
@@ -69,5 +70,30 @@ public class SemesterModel implements NtroModelValue {
 		T.call(this);
 		
 		getTeacherSchedule().addScheduleItem(scheduleItem);
+	}
+
+	public String semesterSummary() {
+		T.call(this);
+		
+		String summary = "0 semaines";
+		
+
+		return summary;
+	}
+
+	public String scheduleSummary() {
+		T.call(this);
+		
+		String summary = "0 heures";
+
+		return summary;
+	}
+
+	public String availabilitySummary() {
+		T.call(this);
+		
+		String summary = "0 heures";
+		
+		return summary;
 	}
 }
