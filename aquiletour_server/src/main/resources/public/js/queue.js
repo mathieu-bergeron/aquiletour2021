@@ -3,6 +3,12 @@ function initializeQueue(viewRootElement, jSweet){
     const appointmentList = viewRootElement.find("#appointment-list");
 
     appointmentList.sortable({
+        handle:'.handle'
+    });
+
+    return;
+
+    appointmentList.sortable({
         handle:'.handle',
         update: function(event, ui){
 

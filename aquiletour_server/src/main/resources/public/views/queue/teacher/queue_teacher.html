@@ -1,7 +1,115 @@
-<span style="display:none;" id="queue-id"></span>
+<div class="mt-3 ms-0 me-0 w-100">
+    <div class="row w-100">
+        <div class="col">
+            <form>
+                <div class="ms-0">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-end">
+                                Prochain rendez-vous
+                            </div>
+                        </div>
+                        <div class="col">
+                            <input name="" value style="max-width:6rem;"></input>
+                            <button class="ms-3 btn btn-secondary btn-sm" style="line-height:0px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                </svg>
+                            </button>
+                            <button class="ms-1 btn btn-secondary btn-sm" style="line-height:0px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="d-flex justify-content-end">
+                                Temps par rendez-vous
+                            </div>
+                        </div>
+                        <div class="col">
+                            <input name="" value style="max-width:6rem;"></input>
+                            <button class="ms-3 btn btn-secondary btn-sm" style="line-height:0px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                </svg>
+                            </button>
+                            <button class="ms-1 btn btn-secondary btn-sm" style="line-height:0px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
 
-<ul id="appointment-list" class="list-group queue"></ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col">
+            <div class="d-flex justify-content-center">
+                <h3>Alice Awama</h3>
+            </div>
+            <div class="d-flex justify-content-center">
+                <h3>Heure locale</h3>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-flex justify-content-end">
+                <div class="me-3">
+                    <a class="btn btn-secondary dropdown-toggle" 
+                       id="semester-dropdown-head"
+                       href="#" 
+                       role="button" 
+                       data-toggle="dropdown" 
+                       aria-haspopup="true" 
+                       aria-expanded="false">StruDon</a>
+
+                    <div class="dropdown-menu dropdown-menu-right" 
+                         aria-labelledby="semester-menu-link" 
+                         id="semester-dropdown-tail">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">&nbsp;</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col col-md-auto">
+            <div class="flex-fill" style="width:5rem;"></div>
+        </div>
+        <div class="col">
+            <h3>Heure annoncée</h3>
+        </div>
+        <div class="col">
+            <h3>Étudiant.e</h3>
+        </div>
+        <div class="col">
+            <h3>Catégorie</h3>
+        </div>
+        <div class="col col-6">
+            <h3>Question</h3>
+        </div>
+        <div class="col col-md-auto" style="width:5rem;">
+        </div>
+    </div>
+    <ul class="appointment-list" id="appointment-list">
+    </ul>
+</div>
+
+
+<!--
+<ul class="list-group queue mt-5" id="appointment-list" ></ul> -->
 
 <div class="mt-5 d-flex justify-content-center">
-  <a class="btn btn-primary" href="#" role="button" id="close-queue-button">Fermer la file d'attente</a>
+    <a class="btn btn-primary" href="#" role="button" id="close-queue-button">Fermer la file d'attente</a>
 </div>
+
+<span style="display:none;" id="queue-id"></span>

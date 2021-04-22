@@ -12,7 +12,7 @@ import ca.ntro.core.system.trace.T;
 
 public class DashboardUpdater {
 
-	public static DashboardItem createQueueSummary(String queueId, String queueTitle) {
+	public static DashboardItem createDashboardItem(String queueId, String queueTitle) {
 		T.call(DashboardUpdater.class);
 
 		DashboardItem courseSummary = new DashboardItem();

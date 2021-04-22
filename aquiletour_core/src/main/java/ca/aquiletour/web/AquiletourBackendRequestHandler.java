@@ -180,11 +180,9 @@ public class AquiletourBackendRequestHandler {
 
 				}catch(NumberFormatException e) {
 					
-					String message = "";
-
 					throw new UserInputError("SVP entrer un nombre pour chaque jour (p.ex. 4 indique qu'il s'agit du lundi de la semaine 4)");
-
 				}
+
 				semesterDate.setSemesterDay(new NtroDayOfWeek(dayOfWeek));
 				semesterDate.setScheduleOf(NtroDayOfWeek.fromString(scheduleOf));
 

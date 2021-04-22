@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserUpdater;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -60,21 +61,29 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			existingUser = modelStore.getModel(User.class, "TODO", userId);
 
 		}else {
+
+			User newUser = null;
 			
 			if(session.getUser() instanceof TeacherGuest) {
 
-				existingUser = new Teacher();
+				newUser = new Teacher();
 
 			} else if(session.getUser() instanceof StudentGuest) {
 
-				existingUser = new Student();
+				newUser = new Student();
 			}
 			
-			existingUser.copyPublicInfomation((User) session.getUser());
-			existingUser.setName(userId);
-			existingUser.setId(userId);
+			newUser.copyPublicInfomation((User) session.getUser());
+			newUser.setName(userId);
+			newUser.setId(userId);
 
-			UserUpdater.addUser(modelStore, existingUser);
+			UserUpdater.addUser(modelStore, newUser);
+			
+			if(newUser instanceof Teacher) {
+				QueueUpdater.createQueue(modelStore, newUser.getId(), newUser.getId());
+			}
+			
+			existingUser = newUser;
 		}
 
 		User sessionUser = existingUser.toSessionUser();
