@@ -51,6 +51,7 @@ import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
+import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
@@ -61,6 +62,7 @@ import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
@@ -177,7 +179,16 @@ public class DynamicHandler extends AbstractHandler {
 
 		NtroContext<User, SessionData> context = createNtroContext();
 
-		AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
+		try {
+
+			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
+
+		}catch(UserInputError e) {
+
+			NtroErrorMessage displayErrorMessage = Ntro.messages().create(NtroErrorMessage.class);
+			displayErrorMessage.setMessage(e.getMessage());
+			Ntro.messages().send(displayErrorMessage);
+		}
 
 		setSessionCookie(response);
 

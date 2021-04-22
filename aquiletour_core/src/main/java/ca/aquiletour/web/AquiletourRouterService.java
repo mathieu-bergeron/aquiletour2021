@@ -3,9 +3,12 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.User;
+import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
+import ca.ntro.services.Ntro;
 import ca.ntro.services.RouterService;
 
 public class AquiletourRouterService extends RouterService {
@@ -27,6 +30,15 @@ public class AquiletourRouterService extends RouterService {
 		@SuppressWarnings("unchecked")
 		NtroContext<User, SessionData> aquiletourContext = (NtroContext<User, SessionData>) context;
 
-		AquiletourBackendRequestHandler.sendMessages(aquiletourContext, path, parameters);
+		try {
+
+			AquiletourBackendRequestHandler.sendMessages(aquiletourContext, path, parameters);
+
+		}catch(UserInputError e) {
+
+			NtroErrorMessage displayErrorMessage = Ntro.messages().create(NtroErrorMessage.class);
+			displayErrorMessage.setMessage(e.getMessage());
+			Ntro.messages().send(displayErrorMessage);
+		}
 	}
 }

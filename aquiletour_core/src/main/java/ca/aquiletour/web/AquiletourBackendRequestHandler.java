@@ -33,6 +33,8 @@ import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
+import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.log.Log;
@@ -44,7 +46,7 @@ import ca.ntro.services.Ntro;
 
 public class AquiletourBackendRequestHandler {
 	
-	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
+	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("userId")) {
@@ -144,7 +146,7 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
-	private static void sendSemesterListMessages(Path subPath, Map<String, String[]> parameters) {
+	private static void sendSemesterListMessages(Path subPath, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey(Constants.ADD_SEMESTER_URL_PARAM)) {
@@ -172,7 +174,15 @@ public class AquiletourBackendRequestHandler {
 				
 				SemesterDate semesterDate = new SemesterDate();
 				semesterDate.setCalendarDate(mondayDate.deltaDays(dayOfWeek));
-				semesterDate.setSemesterWeek(Integer.valueOf(semesterWeekId));
+				try {
+
+					semesterDate.setSemesterWeek(Integer.valueOf(semesterWeekId));
+
+				}catch(NumberFormatException e) {
+
+					throw new UserInputError("SVP entrer un nombre pour la semaine (p.ex. 4)");
+
+				}
 				semesterDate.setSemesterDay(new NtroDayOfWeek(dayOfWeek));
 				semesterDate.setScheduleOf(NtroDayOfWeek.fromString(scheduleOf));
 
