@@ -1,5 +1,27 @@
 # TODO
 
+1. *UNE* file d'attente par prof
+    * on repriorise selon un sélecteur
+
+1. Messages:
+    * Un MessageModel par cours (prof/session/cours)
+    * MessageModel qui stoque les messages par Id de tâche
+
+1. Logs
+    * Un LogModel par cours (prof/session/cours)
+    * Stoquer pas mal toute les actions des étudiants (billets, complétions, etc.)
+
+1. La rootTask est la page où modifier les détails du cours (titre/description)
+
+
+
+
+
+1. Messages: stoqués par tâches
+    * dans un modèle à part (à charger comme un sous-modèle)
+    * prof/session/cours/
+
+
 1. `/mescours`:   ajout d'une étape
 1. `/cours`:      réparer pour afficher les vraies données
 1. `/cours`:      afficher les dates de calendrier
