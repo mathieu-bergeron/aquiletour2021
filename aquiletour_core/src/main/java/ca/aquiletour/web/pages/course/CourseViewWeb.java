@@ -82,7 +82,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 			breadcrumbsContainer.appendElement(taskLi);
 
 			if(t.parent() != null) {
-				taskLi.setAttribute("siblings", siblingsJson(coursePath, t));
+				taskLi.setAttribute("siblings", siblingsJson(coursePath, t).replace("\"", "'"));
 			}
 		});
 	}
@@ -95,7 +95,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		task.forEachSibling(t -> {
 			Map<String, String> sibling = new HashMap<>();
 			
-			sibling.put("id", t.getTitle());
+			sibling.put("text", t.getTitle());
 			sibling.put("href", Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + t.id());
 			
 			siblings.add(sibling);

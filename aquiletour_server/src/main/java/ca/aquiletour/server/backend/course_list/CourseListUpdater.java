@@ -15,6 +15,8 @@ public class CourseListUpdater {
 
 	public static void validateCourseDescription(CourseItem courseDescription) throws BackendMessageHandlerError {
 		T.call(CourseListUpdater.class);
+		
+		// forbidden chars: ' " ¤ /
 
 		if(courseDescription.getCourseId().contains(" ")) {
 			throw new BackendMessageHandlerError("Le code de cours ne doit pas contenir d'espace");
