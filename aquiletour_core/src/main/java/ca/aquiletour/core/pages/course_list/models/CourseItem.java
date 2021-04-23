@@ -134,6 +134,12 @@ public class CourseItem implements NtroModelValue {
 		this.queueOpen = queueOpen;
 	}
 
+	public void updateQueueOpen(boolean queueOpen) {
+		T.call(this);
+
+		getQueueOpen().set(queueOpen);
+	}
+
 	public String getTeacherId() {
 		return teacherId;
 	}

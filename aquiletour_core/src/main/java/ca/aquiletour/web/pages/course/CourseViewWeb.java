@@ -171,4 +171,32 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		nextTaskContainer.appendElement(taskLi(coursePath, "list-group-item", nextTask));
 	}
 
+	@Override
+	public void hidePreviousTasks() {
+		T.call(this);
+		
+		previousTaskContainer.hide();
+	}
+
+	@Override
+	public void showPreviousTasks() {
+		T.call(this);
+		
+		previousTaskContainer.show();
+	}
+
+	@Override
+	public void hideNextTasks() {
+		T.call(this);
+		
+		nextTaskContainer.hide();
+	}
+
+	@Override
+	public void showNextTasks() {
+		T.call(this);
+		
+		nextTaskContainer.show();
+	}
+
 }

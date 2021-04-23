@@ -78,4 +78,26 @@ public class CourseListModel implements NtroModel {
 			course.addTask(task);
 		}
 	}
+
+	public void openQueue(String semesterId, String courseId) {
+		T.call(this);
+
+		CourseItem course = courseById(semesterId, courseId);
+		
+		if(course != null) {
+
+			course.updateQueueOpen(true);
+		}
+	}
+
+	public void closeQueue(String semesterId, String courseId) {
+		T.call(this);
+
+		CourseItem course = courseById(semesterId, courseId);
+		
+		if(course != null) {
+
+			course.updateQueueOpen(false);
+		}
+	}
 }

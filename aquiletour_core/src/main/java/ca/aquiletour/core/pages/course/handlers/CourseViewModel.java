@@ -41,9 +41,29 @@ public class CourseViewModel<V extends CourseView> extends ModelViewSubViewMessa
 	private void observeCurrentTask(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
-		observePreviousTasks(model, view, subViewLoader);
+		if(currentTask.isRootTask()) {
+
+			view.hidePreviousTasks();
+
+		}else {
+
+			view.showPreviousTasks();
+			observePreviousTasks(model, view, subViewLoader);
+		}
+
+
 		observeSubTasks(model, view, subViewLoader);
-		observeNextTasks(model, view, subViewLoader);
+
+		
+		if(currentTask.isRootTask()) {
+			
+			view.hideNextTasks();
+
+		}else {
+
+			view.showNextTasks();
+			observeNextTasks(model, view, subViewLoader);
+		}
 	}
 
 

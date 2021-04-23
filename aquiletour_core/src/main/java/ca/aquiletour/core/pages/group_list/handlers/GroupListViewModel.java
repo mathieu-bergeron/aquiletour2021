@@ -4,6 +4,7 @@ package ca.aquiletour.core.pages.group_list.handlers;
 import java.util.List;
 import java.util.Map;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
 import ca.aquiletour.core.pages.group_list.models.ObservableCourseList;
@@ -33,9 +34,10 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		if(!message.getSemesterId().equals(currentSemesterId)
 				|| !message.getCourseId().equals(currentCourseId)) {
 			
+			
 			currentSemesterId = message.getSemesterId();
 			currentCourseId = message.getCourseId();
-			
+
 			changeCurrentSelection(model, view, subViewLoader);
 		}
 
@@ -94,22 +96,20 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		
 		if(courseList != null) {
 			for(String courseId : courseList.getValue()) {
-				view.appendToCourseDropdown(courseId);
+				view.appendToCourseDropdown(courseId, "/" + Constants.GROUP_LIST_URL_SEGMENT + "?" + Constants.COURSE_URL_PARAM + "=" + courseId);
 			}
 		}
 		
-		/*
 		view.selectCourse(currentCourseId);
 		view.identifyCurrentSemester(currentSemesterId);
 		view.identifyCurrentCourse(currentCourseId);
 		
 		observeGroups(model, view, subViewLoader);
-		*/
 	}
 
 	private void observeGroups(GroupListModel model, 
 		                       GroupListView view, 
-		                       ViewLoader subViewLoader) {
+	                       ViewLoader subViewLoader) {
 		T.call(this);
 		
 		view.clearItems();

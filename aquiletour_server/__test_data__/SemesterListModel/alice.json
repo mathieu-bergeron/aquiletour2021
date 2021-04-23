@@ -1,0 +1,180 @@
+{
+  "_C": "SemesterListModel",
+  "semesters": {
+    "_C": "ObservableSemesterList",
+    "value": [
+      {
+        "semesterId": "H2021",
+        "_C": "SemesterModel",
+        "semesterSchedule": {
+          "weeks": {
+            "_C": "ObservableSemesterWeekList",
+            "value": [
+              {
+                "weekId": 0,
+                "_C": "SemesterWeek",
+                "days": [
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1617249600
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1617336000
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1617422400
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1617508800
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 2,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1617595200
+                    }
+                  }
+                ],
+                "mondayDate": {
+                  "_C": "NtroDate",
+                  "epochSeconds": 1617249600
+                }
+              }
+            ]
+          },
+          "_C": "SemesterSchedule"
+        },
+        "teacherSchedule": {
+          "semesterId": "",
+          "scheduleItems": {
+            "_C": "ScheduleItems",
+            "value": [
+              {
+                "dayOfWeek": {
+                  "dayOfWeek": 0,
+                  "_C": "NtroDayOfWeek"
+                },
+                "_C": "ScheduleItem",
+                "scheduleItemId": "1ère séance",
+                "startTime": {
+                  "_C": "NtroTimeOfDay",
+                  "minutes": 25,
+                  "hour24": 12
+                },
+                "endTime": {
+                  "_C": "NtroTimeOfDay",
+                  "minutes": 0,
+                  "hour24": 15
+                },
+                "courseGroup": {
+                  "_C": "CourseGroup",
+                  "groupId": "01",
+                  "courseId": "StruDon"
+                }
+              },
+              {
+                "dayOfWeek": {
+                  "dayOfWeek": 2,
+                  "_C": "NtroDayOfWeek"
+                },
+                "_C": "ScheduleItem",
+                "scheduleItemId": "2ième séance",
+                "startTime": {
+                  "_C": "NtroTimeOfDay",
+                  "minutes": 0,
+                  "hour24": 8
+                },
+                "endTime": {
+                  "_C": "NtroTimeOfDay",
+                  "minutes": 40,
+                  "hour24": 10
+                },
+                "courseGroup": {
+                  "_C": "CourseGroup",
+                  "groupId": "01",
+                  "courseId": "StruDon"
+                }
+              }
+            ]
+          },
+          "teacherId": "",
+          "_C": "TeacherSchedule"
+        },
+        "courseGroups": {
+          "_C": "ObservableCourseGroupList",
+          "value": [
+            {
+              "_C": "CourseGroup",
+              "groupId": "01",
+              "courseId": "StruDon"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "currentSemesterId": {
+    "_C": "StoredString",
+    "value": "H2021"
+  }
+}

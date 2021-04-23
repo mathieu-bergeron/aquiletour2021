@@ -1,13 +1,13 @@
 {
   "courses": {
-    "_C": "ObservableCourseList",
+    "_C": "ObservableDashboardCourseList",
     "value": [
       {
         "numberOfAppointments": {
           "_C": "StoredInteger",
           "value": 0
         },
-        "_C": "CourseSummary",
+        "_C": "DashboardItem",
         "isQueueOpen": {
           "_C": "StoredBoolean",
           "value": false
@@ -20,8 +20,8 @@
           "_C": "StoredInteger",
           "value": 0
         },
-        "title": "StruDon",
-        "courseId": "StruDon"
+        "title": "alice",
+        "courseId": "alice"
       }
     ]
   },

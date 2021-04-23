@@ -15,9 +15,15 @@ public interface CourseView extends NtroView  {
 
 	void identifyCurrentTask(CoursePath coursePath, Task task);
 
+	void hidePreviousTasks();
+	void showPreviousTasks();
 	void clearPreviousTasks();
 	void appendPreviousTask(CoursePath coursePath, Task previousTask);
 
+	void hideNextTasks();
+	void showNextTasks();
 	void clearNextTasks();
 	void appendNextTask(CoursePath coursePath, Task nextTask);
+
+
 }

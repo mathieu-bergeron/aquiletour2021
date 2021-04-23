@@ -22,9 +22,9 @@ public  class QueueControllerTeacher extends QueueController {
 		T.call(this);
 		
 		addControllerMessageHandler(ShowTeacherQueueMessage.class, new ShowTeacherQueueHandler());
-		addSubViewLoader(TeacherAppointmentView.class, context().lang());
+		addSubViewLoader(AppointmentViewTeacher.class, context().lang());
 		
-		addModelViewSubViewHandler(TeacherAppointmentView.class, new QueueViewModel()); 
+		addModelViewSubViewHandler(AppointmentViewTeacher.class, new QueueViewModel()); 
 	}
 
 }

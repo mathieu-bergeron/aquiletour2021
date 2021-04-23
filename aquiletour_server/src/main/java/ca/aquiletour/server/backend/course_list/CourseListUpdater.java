@@ -119,6 +119,63 @@ public class CourseListUpdater {
 		});
 	}
 
+	public static void closeQueueForUserId(ModelStoreSync modelStore, 
+									       String semesterId,
+			                               String courseId, 
+			                               String userId) {
+
+		T.call(CourseListUpdater.class);
+
+		modelStore.updateModel(CourseListModel.class, "admin", userId, new ModelUpdater<CourseListModel>() {
+			@Override
+			public void update(CourseListModel existingModel) {
+				T.call(this);
+				
+				existingModel.closeQueue(semesterId, courseId);
+			}
+		});
+	}
+	
+	public static void closeQueueForUser(ModelStoreSync modelStore, 
+										 String semesterId,
+			                             String courseId, 
+			                             User user) {
+
+		T.call(CourseListUpdater.class);
+		
+		closeQueueForUserId(modelStore, semesterId, courseId, user.getId());
+	}
+	
+
+	public static void openQueueForUserId(ModelStoreSync modelStore, 
+									      String semesterId,
+			                              String courseId, 
+			                              String userId) {
+
+		T.call(CourseListUpdater.class);
+
+		modelStore.updateModel(CourseListModel.class, "admin", userId, new ModelUpdater<CourseListModel>() {
+			@Override
+			public void update(CourseListModel existingModel) {
+				T.call(this);
+				
+				existingModel.openQueue(semesterId, courseId);
+
+			}
+		});
+	}
+	
+	public static void openQueueForUser(ModelStoreSync modelStore, 
+										String semesterId,
+			                            String courseId, 
+			                            User user) {
+
+		T.call(CourseListUpdater.class);
+		
+		openQueueForUserId(modelStore, semesterId, courseId, user.getId());
+	}
+	
+
 	public static String getCourseTitle(ModelStoreSync modelStore, 
 			                            String semesterId, 
 			                            String courseId, 

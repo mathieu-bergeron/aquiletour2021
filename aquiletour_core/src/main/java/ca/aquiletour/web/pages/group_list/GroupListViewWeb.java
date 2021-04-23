@@ -48,10 +48,10 @@ public class GroupListViewWeb extends ListViewWebTeacher<GroupView> implements G
 	}
 
 	@Override
-	public void insertIntoCourseDropdown(int index, String courseId) {
+	public void insertIntoCourseDropdown(int index, String courseId, String href) {
 		T.call(this);
 		
-		courseDropdown.insert(index, courseId, "#TODO", courseId);
+		courseDropdown.insert(index, courseId, href, courseId);
 	}
 
 	@Override
@@ -62,10 +62,10 @@ public class GroupListViewWeb extends ListViewWebTeacher<GroupView> implements G
 	}
 
 	@Override
-	public void appendToCourseDropdown(String courseId) {
+	public void appendToCourseDropdown(String courseId, String href) {
 		T.call(this);
 		
-		insertIntoCourseDropdown(courseDropdown.size(), courseId);
+		insertIntoCourseDropdown(courseDropdown.size(), courseId, href);
 		
 	}
 }

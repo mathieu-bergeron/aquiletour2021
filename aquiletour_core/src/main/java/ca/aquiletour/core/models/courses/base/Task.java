@@ -346,4 +346,8 @@ public class Task implements NtroModelValue, TaskNode {
 	public void setEndTime(SemesterDate endTime) {
 		this.endTime = endTime;
 	}
+
+	public boolean isRootTask() {
+		return parent() == null;
+	}
 }

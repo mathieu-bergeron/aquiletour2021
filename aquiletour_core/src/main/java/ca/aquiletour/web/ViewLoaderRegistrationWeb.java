@@ -22,9 +22,9 @@ import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
-import ca.aquiletour.core.pages.queue.student.StudentAppointmentView;
+import ca.aquiletour.core.pages.queue.student.AppointmentViewStudent;
 import ca.aquiletour.core.pages.queue.student.StudentQueueView;
-import ca.aquiletour.core.pages.queue.teacher.TeacherAppointmentView;
+import ca.aquiletour.core.pages.queue.teacher.AppointmentViewTeacher;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
@@ -46,14 +46,14 @@ import ca.aquiletour.web.pages.dashboard.teacher.DashboardItemViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.teacher.DashboardViewWebTeacher;
 import ca.aquiletour.web.pages.git.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.CommitViewWeb;
-import ca.aquiletour.web.pages.group_list.GroupDescriptionViewWeb;
+import ca.aquiletour.web.pages.group_list.GroupViewWeb;
 import ca.aquiletour.web.pages.group_list.GroupListViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
-import ca.aquiletour.web.pages.queue.student.StudentAppointmentViewWeb;
-import ca.aquiletour.web.pages.queue.student.StudentQueueViewWeb;
-import ca.aquiletour.web.pages.queue.teacher.TeacherAppointmentViewWeb;
-import ca.aquiletour.web.pages.queue.teacher.TeacherQueueViewWeb;
+import ca.aquiletour.web.pages.queue.student.AppointmentViewWebStudent;
+import ca.aquiletour.web.pages.queue.student.QueueViewWebStudent;
+import ca.aquiletour.web.pages.queue.teacher.AppointmentViewWebTeacher;
+import ca.aquiletour.web.pages.queue.teacher.QueueViewWebTeacher;
 import ca.aquiletour.web.pages.queues.QueueSummaryViewWeb;
 import ca.aquiletour.web.pages.queues.QueuesViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
@@ -114,7 +114,7 @@ public class ViewLoaderRegistrationWeb {
 				.setHtmlUrl("/views/queue/student/queue_student.html")
 				.setCssUrl("/views/queue/student/queue_student.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(StudentQueueViewWeb.class));
+				.setTargetClass(QueueViewWebStudent.class));
 		
 		ViewLoaders.registerViewLoader(TeacherQueueView.class,
 				"fr"
@@ -122,7 +122,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setHtmlUrl("/views/queue/teacher/queue_teacher.html")
 			     	.setCssUrl("/views/queue/teacher/queue_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(TeacherQueueViewWeb.class));
+			     	.setTargetClass(QueueViewWebTeacher.class));
 
 		ViewLoaders.registerViewLoader(OpenQueueListView.class,
 				"fr"
@@ -140,21 +140,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(QueueSummaryViewWeb.class));
 
-		ViewLoaders.registerViewLoader(TeacherAppointmentView.class,
+		ViewLoaders.registerViewLoader(AppointmentViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 				.setHtmlUrl("/partials/appointment/teacher/appointment_teacher.html")
 				.setCssUrl("/partials/appointment/teacher/appointment_teacher.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(TeacherAppointmentViewWeb.class));
+				.setTargetClass(AppointmentViewWebTeacher.class));
 		
-		ViewLoaders.registerViewLoader(StudentAppointmentView.class,
+		ViewLoaders.registerViewLoader(AppointmentViewStudent.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/partials/appointment/student/appointment_student.html")
 			     	.setCssUrl("/partials/appointment/student/appointment_student.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(StudentAppointmentViewWeb.class));
+			     	.setTargetClass(AppointmentViewWebStudent.class));
 
 		ViewLoaders.registerViewLoader(LoginView.class,
 				"fr"
@@ -283,7 +283,7 @@ public class ViewLoaderRegistrationWeb {
 				.setHtmlUrl("/partials/group_item/group_item.html")
 		     	.setCssUrl("/partials/group_item/group_item.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(GroupDescriptionViewWeb.class));
+				.setTargetClass(GroupViewWeb.class));
 		
 	}
 }
