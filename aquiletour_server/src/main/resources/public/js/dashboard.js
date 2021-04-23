@@ -1,16 +1,9 @@
 function initializeDashboard(viewRootElement, jSweet){
 
-<<<<<<< HEAD
-    var buttonAvailable = document.getElementById("buttonAvailable");
-    var available = document.getElementById("teacherAvailable");
-    var availableLink = document.getElementById("availableLink");
-    var buttonAddCourse = document.getElementById("add-course-submit-button");
-=======
     var buttonAvailable = viewRootElement.find("#buttonAvailable");
     var available = viewRootElement.find("#teacherAvailable");
     var availableLink = viewRootElement.find("#availableLink");
     var buttonAddCourse = viewRootElement.find("#add-course-submit-button");
->>>>>>> main
 
     $(function() {
       
@@ -53,13 +46,6 @@ function initializeDashboard(viewRootElement, jSweet){
         
     });
     
-<<<<<<< HEAD
-    
-    const buttonAvailable = viewRootElement.find("#buttonAvailable");
-    const available = viewRootElement.find("#teacherAvailable");
-    const availableLink = viewRootElement.find("#availableLink");
-    const coursesContainer = viewRootElement.find("#courses-container");
-=======
     $(document).ready(function() {
   
       // get box count
@@ -88,7 +74,6 @@ function initializeDashboard(viewRootElement, jSweet){
       countChecked();
       $(":checkbox").click(countChecked);
     });
->>>>>>> main
 
     buttonAvailable.onclick = function() {
       if (available.style.background == "green") {
@@ -132,15 +117,7 @@ function initializeDashboard(viewRootElement, jSweet){
           document.getElementById("shimmering").className = "";
         },2500);
     }    
-<<<<<<< HEAD
     coursesContainer.sortable({
       handle:'.handle'
     });
-=======
-
-    /*
-    coursesContainer.sortable({
-      handle:'.handle'
-    });*/
->>>>>>> main
 }

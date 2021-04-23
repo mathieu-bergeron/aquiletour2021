@@ -16,5 +16,8 @@ function initializeView(viewName, viewRootElement, jSweet){
     }else if(viewName === "CourseViewWeb"){
 
         initializeCourse(viewRootElement, jSweet);
+    }else if(viewName === "RootViewWeb"){
+
+        initializeCourse(viewRootElement, jSweet);
     }
 }

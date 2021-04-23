@@ -126,7 +126,7 @@ function initializeCommitList(viewRootElement, jSweet) {
 		});
 		const colors = ["#EF1010","#F05410","#F08A10","#F0B010","#F0E610","#B6F010","#68F010","#10F043","#10F0ED" ];
 		var counter = 0;
-		for (i = 0; i < commitsChart.data.datasets[0].data.length; i++) {
+		for (var i = 0; i < commitsChart.data.datasets[0].data.length; i++) {
 			if(counter <= colors.length - 1){
 				pointBackgroundColors.push(colors[counter]);
 				counter ++;

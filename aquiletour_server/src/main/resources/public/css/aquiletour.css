@@ -373,6 +373,7 @@ body {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  position: relative !important;
 }
 
 /* Style to change separator  */

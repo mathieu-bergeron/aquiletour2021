@@ -362,6 +362,7 @@ body{
 }
 .breadcrumb {
   width: fit-content;
+  position: relative!important;
 }
 /* Style to change separator  */
 .breadcrumb-item + .breadcrumb-item::before {
