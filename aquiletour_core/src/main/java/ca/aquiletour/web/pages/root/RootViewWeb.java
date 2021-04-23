@@ -52,6 +52,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement calendarListLink;
 	private HtmlElement loginLink;
 	private BootstrapAlert alertDanger;
+	private BootstrapAlert alertPrimary;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -66,6 +67,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		groupListLink = getRootElement().find("#group-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
+		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
 
 		MustNot.beNull(subViewContainer);
 		MustNot.beNull(homeLink);
@@ -75,8 +77,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginLink);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(alertDangerElement);
+		MustNot.beNull(alertPrimaryElement);
 
 		alertDanger = new BootstrapAlert(alertDangerElement);
+		alertPrimary = new BootstrapAlert(alertPrimaryElement);
 
 		initializeLinks();
 
@@ -89,6 +93,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		alertDanger.hide();
+		alertPrimary.hide();
 	}
 
 	private void initializeLinks() {
@@ -283,6 +288,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		alertDanger.displayMessage(message);
+		
+	}
+
+	@Override
+	public void displayPrimaryMessage(String message) {
+		T.call(this);
+		
+		alertPrimary.displayMessage(message);
 		
 	}
 
