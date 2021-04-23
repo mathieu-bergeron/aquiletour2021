@@ -89,10 +89,14 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		view.selectSemester(currentSemesterId);
 		
 		view.clearCourseDropdown();
-		for(String courseId : model.getSemesterCourses().getValue().get(currentSemesterId).getValue()) {
-			view.appendToCourseDropdown(courseId);
-		}
 		
+		ObservableCourseList courseList = model.getSemesterCourses().getValue().get(currentSemesterId);
+		
+		if(courseList != null) {
+			for(String courseId : courseList.getValue()) {
+				view.appendToCourseDropdown(courseId);
+			}
+		}
 		
 		/*
 		view.selectCourse(currentCourseId);

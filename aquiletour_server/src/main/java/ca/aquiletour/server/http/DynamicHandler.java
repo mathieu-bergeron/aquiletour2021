@@ -361,7 +361,7 @@ public class DynamicHandler extends AbstractHandler {
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		boolean ifJSweet = true;
+		boolean ifJSweet = false;
 
 		if(baseRequest.getParameter("nojsweet") != null) {
 			
