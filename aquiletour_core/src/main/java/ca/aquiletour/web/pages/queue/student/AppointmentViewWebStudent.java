@@ -16,6 +16,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	private HtmlElement deleteAppointmentButton;
 	private HtmlElement modifyAppointmentButton;
 	private HtmlElement deleteAppointmentForm;
+	private HtmlElement chatButton;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -25,6 +26,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		deleteAppointmentButton = this.getRootElement().find("#delete-appointment-button").get(0);
 		deleteAppointmentForm = this.getRootElement().find("#delete-appointment-form").get(0);
 		modifyAppointmentButton = this.getRootElement().find("#modify-appointment-button").get(0);
+		chatButton = this.getRootElement().find("#chat-button").get(0);
 
 		MustNot.beNull(deleteAppointmentButton);
 		MustNot.beNull(deleteAppointmentForm);
@@ -32,6 +34,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		
 		deleteAppointmentForm.hide();
 		modifyAppointmentButton.hide();
+		chatButton.hide();
 	}
 
 	@Override
@@ -40,6 +43,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		super.displayAppointement(queueId, userId, appointment);
 		
 		if(appointment.getStudentId().equals(userId)) {
+			chatButton.show();
 			modifyAppointmentButton.show();
 			deleteAppointmentForm.show();
 			deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {

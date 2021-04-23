@@ -375,3 +375,20 @@ body{
     -o-user-select: none;
     user-select: none;    
 }
+
+
+.dot-container{
+    display:inline;
+    position:relative;
+}
+
+.dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: red;
+    border-radius: 50%;
+    position:absolute;
+    right:0rem;
+    bottom:-0.5rem;
+}
+
