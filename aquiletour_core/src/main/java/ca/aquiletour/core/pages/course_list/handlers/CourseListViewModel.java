@@ -142,11 +142,11 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		
 		if(queueOpen) {
 			
-			itemView.displayQueueLink(queueOpen, "ouverte", queueHref);
+			itemView.displayQueueLink(queueOpen, "ouvert", queueHref);
 			
 		}else {
 
-			itemView.displayQueueLink(queueOpen, "fermée", queueHref);
+			itemView.displayQueueLink(queueOpen, "fermé", queueHref);
 		}
 	}
 
