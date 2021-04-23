@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.aquiletour.core.pages.queue.values.ObservableAppointmentList;
+import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
@@ -19,6 +20,10 @@ public class QueueModel implements NtroModel {
 	
 	private StoredString currentCourseId = new StoredString();
 	private StoredString currentGroupId = new StoredString();
+	
+	// TODO: the queue is open for some courseGroups
+	private List<CourseGroup> openForCourseGroups = new ArrayList<>();
+	private List<CourseGroup> selectedCourseGroupes = new ArrayList<>();
 
 	public void removeStudentFromClass(String studentId) {
 		T.call(this);
