@@ -1,13 +1,11 @@
 package ca.aquiletour.web.pages.course.teacher;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.aquiletour.web.widgets.BootstrapDropdown;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 
 public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTeacher {

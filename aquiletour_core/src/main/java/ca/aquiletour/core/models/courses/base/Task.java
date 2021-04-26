@@ -25,7 +25,7 @@ public class Task implements NtroModelValue, TaskNode {
 	private StoredString description = new StoredString();
 	private ObservableCourseDate endTime = new ObservableCourseDate();
 
-	private ObservableTaskType taskType = new ObservableTaskType();
+	private ObservableTaskTypeList taskTypes = new ObservableTaskTypeList();
 	
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
@@ -356,7 +356,10 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
-		updateTaskType(TaskType.fromDescription(description));
+		getTaskTypes().clearItems();
+		for(TaskType taskType : TaskType.typesFromDescription(description)) {
+			getTaskTypes().addItem(taskType);
+		}
 	}
 	
 	public void updateTitle(String title) {
@@ -379,18 +382,11 @@ public class Task implements NtroModelValue, TaskNode {
 		this.endTime = endTime;
 	}
 
-	public ObservableTaskType getTaskType() {
-		return taskType;
+	public ObservableTaskTypeList getTaskTypes() {
+		return taskTypes;
 	}
 
-	public void setTaskType(ObservableTaskType taskType) {
-		this.taskType = taskType;
+	public void setTaskTypes(ObservableTaskTypeList taskTypes) {
+		this.taskTypes = taskTypes;
 	}
-	
-	public void updateTaskType(TaskType taskType) {
-		T.call(this);
-		
-		getTaskType().set(taskType);
-	}
-	
 }

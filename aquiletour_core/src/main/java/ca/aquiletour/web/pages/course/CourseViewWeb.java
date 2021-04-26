@@ -36,7 +36,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement taskEndTimeWeek;
 	private HtmlElement taskEndTimeScheduleItem;
 	private HtmlElement taskTypeContainer;
-	private HtmlElement taskTypeElement;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -55,7 +54,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		taskEndTimeWeek = this.getRootElement().find("#task-endtime-week").get(0);
 		taskEndTimeScheduleItem = this.getRootElement().find("#task-endtime-schedule-item").get(0);
 		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
-		taskTypeElement = this.getRootElement().find("#task-type").get(0);
 
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
@@ -70,9 +68,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(taskEndTimeWeek);
 		MustNot.beNull(taskEndTimeScheduleItem);
 		MustNot.beNull(taskTypeContainer);
-		MustNot.beNull(taskTypeElement);
-		
-		taskTypeContainer.hide();
 	}
 
 	@Override
@@ -260,19 +255,18 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void displayTaskType(TaskType taskType) {
+	public void appendTaskType(TaskType item) {
 		T.call(this);
 		
+		String taskTypeText = taskTypeContainer.text();
 		
-		if(taskType.getClass().equals(TaskType.class)) {
-
-			taskTypeContainer.hide();
+		if(taskTypeText.isEmpty()) {
+			
+			taskTypeContainer.text(item.toString());
 
 		}else {
 
-			taskTypeContainer.show();
-			taskTypeElement.text(taskType.toString());
+			taskTypeContainer.text(taskTypeText + ", " + item.toString());
 		}
-		
 	}
 }

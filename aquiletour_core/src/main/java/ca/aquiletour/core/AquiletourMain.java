@@ -33,7 +33,7 @@ import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.ObservableCourseDate;
 import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
-import ca.aquiletour.core.models.courses.base.ObservableTaskType;
+import ca.aquiletour.core.models.courses.base.ObservableTaskTypeList;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskRelation;
 import ca.aquiletour.core.models.courses.group.Group;
@@ -275,7 +275,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(TaskDescription.class);
 
 		Ntro.registerSerializableClass(ObservableCourseDate.class);
-		Ntro.registerSerializableClass(ObservableTaskType.class);
+		Ntro.registerSerializableClass(ObservableTaskTypeList.class);
 		Ntro.registerSerializableClass(TaskType.class);
 		Ntro.registerSerializableClass(GitRepoTask.class);
 		Ntro.registerSerializableClass(GitExerciseTask.class);

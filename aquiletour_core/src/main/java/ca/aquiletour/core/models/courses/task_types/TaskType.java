@@ -1,31 +1,29 @@
 package ca.aquiletour.core.models.courses.task_types;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
 public class TaskType implements NtroModelValue {
 
-	public static TaskType fromDescription(String description) {
+	public static List<TaskType> typesFromDescription(String description) {
 		T.call(TaskType.class);
 		
-		TaskType type = null;
-		
+		List<TaskType> types = new ArrayList<>();
+
 		if(description.contains("{dépôtGit}")) {
 			
-			type = new GitRepoTask();
-			System.out.println("dépôtGit");
+			types.add(new GitRepoTask());
+		}
 
-		}else if(description.contains("{remiseGit}")) {
+		if(description.contains("{remiseGit}")) {
 			
-			type = new GitExerciseTask();
-			System.out.println("remiseGit");
-
-		}else {
-			
-			type = new TaskType();
+			types.add(new GitExerciseTask());
 		}
 		
-		return type;
+		return types;
 	}
 
 }

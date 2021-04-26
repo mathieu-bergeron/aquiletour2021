@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
+import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
@@ -57,7 +58,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
 		observeCurrentTaskEndTime(view);
-		observeCurrentTaskType(view);
+		observeCurrentTaskTypes(view);
 
 		observeSubTasks(model, view, subViewLoader);
 		
@@ -101,32 +102,17 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 	}
 
-	private void observeCurrentTaskType(CourseView view) {
+	private void observeCurrentTaskTypes(CourseView view) {
 		T.call(this);
 		
-		currentTask.getTaskType().observe(new ValueObserver<TaskType>() {
-
+		currentTask.getTaskTypes().onItemAdded(new ItemAddedListener<TaskType>() {
 			@Override
-			public void onValue(TaskType value) {
+			public void onItemAdded(int index, TaskType item) {
 				T.call(this);
 				
-				view.displayTaskType(value);
-			}
-
-			@Override
-			public void onDeleted(TaskType lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValueChanged(TaskType oldValue, TaskType value) {
-				T.call(this);
-				
-				view.displayTaskType(value);
+				view.appendTaskType(item);
 			}
 		});
-
 	}
 		
 
