@@ -4,7 +4,9 @@ import def.jquery.JQuery;
 
 import static def.jquery.Globals.$;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElementLambda;
 import ca.ntro.web.dom.HtmlElements;
 
 public class HtmlElementsJSweet implements HtmlElements {
@@ -23,6 +25,15 @@ public class HtmlElementsJSweet implements HtmlElements {
 	@Override
 	public int size() {
 		return (int) jQueryElements.length;
+	}
+
+	@Override
+	public void forEach(HtmlElementLambda lambda) {
+		T.call(this);
+		
+		for(int i = 0; i < jQueryElements.length; i++) {
+			lambda.execute(new HtmlElementJSweet($(jQueryElements.get(i))));
+		}
 	}
 
 }

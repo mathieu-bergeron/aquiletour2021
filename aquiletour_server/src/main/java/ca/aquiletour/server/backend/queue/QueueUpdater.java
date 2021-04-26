@@ -229,4 +229,22 @@ public class QueueUpdater {
 		
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}
+
+	public static void moveAppointment(ModelStoreSync modelStore, 
+			                           String queueId, 
+			                           String appointmentId, 
+			                           String destinationId,
+			                           String beforeOrAfter) {
+
+		T.call(QueueUpdater.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+
+				queue.moveAppointment(appointmentId, destinationId, beforeOrAfter);
+			}
+		});
+	}
 }

@@ -8,30 +8,22 @@ import java.util.List;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.stores.DocumentPath;
 
 public class JsonLoaderFiles extends JsonLoader {
 
-	private DocumentPath documentPath;
 	private File modelFile;
 	private String jsonString;
 	
-	public JsonLoaderFiles(DocumentPath documentPath, File modelFile) {
+	public JsonLoaderFiles(File modelFile) {
 		super();
 		T.call(this);
 		
-		this.documentPath = documentPath;
 		this.modelFile = modelFile;
 	}
 
 	@Override
 	public String getJsonString() {
 		return jsonString;
-	}
-
-	@Override
-	public DocumentPath getDocumentPath() {
-		return documentPath;
 	}
 
 	@Override

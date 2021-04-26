@@ -1,5 +1,6 @@
 package ca.ntro.services;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredDouble;
@@ -55,6 +56,7 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(SetUserNtroMessage.class);
 		Ntro.registerSerializableClass(InvokeValueMethodNtroMessage.class);
 
+		Ntro.registerSerializableClass(Path.class);
 		Ntro.registerSerializableClass(DocumentPath.class);
 		Ntro.registerSerializableClass(ValuePath.class);
 

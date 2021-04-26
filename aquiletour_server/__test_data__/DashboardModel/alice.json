@@ -1,0 +1,29 @@
+{
+  "courses": {
+    "_C": "ObservableCourseList",
+    "value": [
+      {
+        "numberOfAppointments": {
+          "_C": "StoredInteger",
+          "value": 0
+        },
+        "_C": "CourseSummary",
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "myAppointment": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "numberOfStudents": {
+          "_C": "StoredInteger",
+          "value": 3
+        },
+        "title": "StruDon",
+        "courseId": "StruDon"
+      }
+    ]
+  },
+  "_C": "DashboardModel"
+}

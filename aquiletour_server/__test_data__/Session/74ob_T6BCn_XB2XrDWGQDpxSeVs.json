@@ -1,0 +1,14 @@
+{
+  "_C": "Session",
+  "loginCode": "",
+  "user": {
+    "phoneNumber": "",
+    "_C": "Guest",
+    "surname": "",
+    "authToken": "74ob_T6BCn_XB2XrDWGQDpxSeVs",
+    "name": "Visiteur",
+    "id": "74ob_T6BCn_XB2XrDWGQDpxSeVs",
+    "email": ""
+  },
+  "timeToLiveMiliseconds": 30000
+}

@@ -6,14 +6,12 @@ import ca.ntro.stores.DocumentPath;
 public class JsonLoaderMemory extends JsonLoader {
 	
 	private String jsonString;
-	private DocumentPath documentPath;
 	
-	public JsonLoaderMemory(DocumentPath documentPath, String jsonString) {
+	public JsonLoaderMemory(String jsonString) {
 		super();
 		T.call(this);
 		
 		this.jsonString = jsonString;
-		this.documentPath = documentPath;
 	}
 
 	@Override
@@ -34,12 +32,5 @@ public class JsonLoaderMemory extends JsonLoader {
 		T.call(this);
 		
 		return jsonString;
-	}
-
-	@Override
-	public DocumentPath getDocumentPath() {
-		T.call(this);
-
-		return documentPath;
 	}
 }

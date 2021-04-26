@@ -14,5 +14,4 @@ public class TeacherUsesQueueMessage extends NtroUserMessage<User> {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
-
 }

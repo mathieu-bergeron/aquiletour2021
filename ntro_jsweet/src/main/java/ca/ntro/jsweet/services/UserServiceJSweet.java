@@ -11,7 +11,7 @@ import static def.es6.Globals.encodeURI;
 public class UserServiceJSweet extends UserService {
 
 	@Override
-	public NtroUser currentUser() {
+	public NtroUser user() {
 
 		String urlEncodedUserString = Cookies.get("user");
 		NtroUser user = null;

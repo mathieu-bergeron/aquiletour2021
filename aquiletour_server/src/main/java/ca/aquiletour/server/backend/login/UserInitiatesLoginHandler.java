@@ -5,7 +5,6 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.aquiletour.server.email.TestEmail;
 import ca.ntro.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -25,8 +24,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		String providedId = message.getProvidedId();
 		User userToRegister = null;
 
-		T.values("providedId", providedId);
-		
 		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
@@ -80,7 +77,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				//TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
 			}
 
 			@Override

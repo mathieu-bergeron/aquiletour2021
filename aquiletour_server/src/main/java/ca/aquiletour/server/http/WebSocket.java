@@ -6,6 +6,8 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
 import ca.aquiletour.server.RegisteredSockets;
+import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
 import ca.ntro.services.Ntro;
@@ -25,7 +27,6 @@ public class WebSocket extends WebSocketAdapter {
     @Override
     public void onWebSocketText(String messageText){
         super.onWebSocketText(messageText);
-        
         NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
 
         if(message instanceof RegisterSocketNtroMessage) {
