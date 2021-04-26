@@ -1,3 +1,143 @@
+<div class="mt-3 d-flex justify-content-end align-items-start">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col col-2">
+                Repousser les rendez-vous
+            </div>
+            <div class="col col-1">
+                <input class="me-0" name="" value style="max-width:6rem;"></input>
+            </div>
+            <div class="col">
+                <button class="mt-2 ms-3 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                    </svg>
+                </button>
+                <button class="mt-2 ms-1 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-2">
+                Espacer les rendez-vous
+            </div>
+            <div class="col col-1">
+                <input class="me-0" name="" value style="max-width:6rem;"></input>
+            </div>
+            <div class="col">
+                <button class="mt-2 ms-3 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                    </svg>
+                </button>
+                <button class="mt-2 ms-1 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="flex-fill"></div>
+
+    <div class="btn-group me-3">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="user-profile-name">La file est fermée</button>
+        <div class="dropdown-menu dropdown-menu-right" >
+            <a href="#" class="dropdown-item" style="min-width:14rem;">Ouvrir pour tous</a>
+            <a href="#" class="dropdown-item" style="min-width:14rem;">Mode étudiant</a>
+            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link">Déconnexion</a>
+        </div>
+    </div>
+</div>
+<div class="mt-3 d-flex justify-content-end">
+    <a class="btn btn-secondary me-3" href="#" role="button" id="close-queue-button">Gérer l'accès</a>
+</div>
+<!--
+<div class="mt-3 d-flex justify-content-center">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h5>File ouverte</h5>
+            </div>
+            <div class="col">
+                <h5>Prochain rendez-vous</h5>
+            </div>
+            <div class="col">
+                <h5>Heure actuelle</h5>
+            </div>
+            <div class="col">
+                <h5>Temps d'un rendez-vous</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-secondary">
+                    Gérer l'accès
+                </button>
+            </div>
+            <div class="col">
+                <input class="me-0" name="" value style="max-width:6rem;"></input>
+            </div>
+            <div class="col">
+                <h5>13:30</h5>
+            </div>
+            <div class="col">
+                <input class="me-0" name="" value style="max-width:6rem;"></input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <button class="mt-2 ms-3 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                    </svg>
+                </button>
+                <button class="mt-2 ms-1 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <button class="mt-2 ms-3 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                    </svg>
+                </button>
+                <button class="mt-2 ms-1 btn btn-secondary btn-sm" style="line-height:0px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+-->
+
+<!--
+    <div class="ms-3 card">
+        <div class="card-header d-flex justify-content-center">
+            <h5>File ouverte</h5>
+        </div>
+        <div class="card-body">
+            <button class="btn btn-secondary">
+                Gérer l'accès
+            </button>
+        </div>
+
+    </div>
+-->
+
+<!--
+
 <form class="mt-3 ms-3 me-3">
     <div class="d-flex justify-content-start">
         <div class="me-3">
@@ -68,6 +208,8 @@
     </div>
 </form>
 
+-->
+
 
 <div class="mt-5">&nbsp;</div>
 
@@ -101,12 +243,9 @@
 <!--
     <ul class="list-group queue mt-5" id="appointment-list" ></ul> -->
 
-    <div class="mt-5 d-flex justify-content-center">
-        La file est ouverte pour XXX
-    </div>
-    <div class="mt-2 d-flex justify-content-center">
-        <a class="btn btn-primary" href="#" role="button" id="close-queue-button">Gérer l'accès à la file d'attente</a>
-    </div>
+
+
+
 
     <span style="display:none;" id="queue-id"></span>
 

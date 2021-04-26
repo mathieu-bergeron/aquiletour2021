@@ -8,7 +8,6 @@ import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -71,7 +70,7 @@ public class AquiletourBackendRequestHandler {
 			
 			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
 			updateUserInfoMessage.setScreenName(screenName);
-			Ntro.messages().send(updateUserInfoMessage);
+			Ntro.backendService().sendMessageToBackend(updateUserInfoMessage);
 
 		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 

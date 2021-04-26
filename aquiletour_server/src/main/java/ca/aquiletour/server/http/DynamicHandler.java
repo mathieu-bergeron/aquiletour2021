@@ -350,14 +350,6 @@ public class DynamicHandler extends AbstractHandler {
 		setCookie(response, "session", Ntro.jsonService().toString(session));
 	}
 
-	private void setSemesterCookie(HttpServletResponse response) {
-		T.call(this);
-		
-		User currentUser = (User) Ntro.currentUser();
-		User sessionUser = currentUser.toSessionUser();
-		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
-	}
-	
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
