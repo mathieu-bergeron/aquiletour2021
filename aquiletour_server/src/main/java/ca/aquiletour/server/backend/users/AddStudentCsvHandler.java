@@ -100,6 +100,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		User teacher = message.getUser();
 
+		CoursePath coursePath = new CoursePath(teacher.getId(), message.getSemesterId(), message.getCourseId());
+
 		UserUpdater.addUsers(modelStore, studentsToAdd);
 
 		GroupListUpdater.addGroupForUser(modelStore, 
@@ -121,20 +123,23 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                                                teacher.getId());
 		
 		for(User student : studentsToAdd) {
-			CoursePath coursePath = new CoursePath(student.getId(), message.getSemesterId(), message.getCourseId());
+			CoursePath studentCoursePath = new CoursePath(student.getId(), message.getSemesterId(), message.getCourseId());
 
-			CourseUpdater.createCourseForUser(modelStore, CourseModelStudent.class, coursePath, courseItem.getCourseTitle(), student);
+			CourseUpdater.createCourseForUser(modelStore, CourseModelStudent.class, studentCoursePath, courseItem.getCourseTitle(), student);
 
 			CourseListUpdater.addSemesterForUser(modelStore, courseItem.getSemesterId(), student);
 			CourseListUpdater.addCourseForUser(modelStore, courseItem, student);
 		}
 		
-		
 		String queueId = message.getUser().getId();
-		// FIXME: we need the courseTitle
 
+		// FIXME: we need the courseTitle
 		DashboardItem dashboardItem = DashboardUpdater.createDashboardItem(queueId, queueId);
 
 		DashboardUpdater.addQueueForUsers(modelStore, dashboardItem, studentsToAdd);
+		
+		CourseUpdater.addGroup(modelStore, 
+							   coursePath,
+							   groupId);
 	}
 }

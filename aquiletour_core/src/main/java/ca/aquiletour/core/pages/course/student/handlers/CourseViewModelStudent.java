@@ -1,17 +1,17 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
-import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseViewModelStudent extends CourseViewModel<CourseViewStudent> {
+public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, CourseViewStudent> {
 
 	@Override
-	protected void handle(CourseModel model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(CourseModelStudent model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 		

@@ -23,7 +23,7 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		T.call(this);
 		
 		if(currentSemesterId == null) {
-			view.insertIntoSemesterDropdown(0, Constants.DRAFTS_SEMESTER_ID);
+			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, view);
 			observeSemesterIdList(model, view);
 		}
 		
@@ -34,7 +34,20 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		}
 	}
 
-	private void observeSemesterIdList(CourseListModel model, CourseListView view) {
+	private void appendToSemesterDropdown(String semesterId, V view) {
+		T.call(this);
+		
+		String href = "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId;
+		String text = semesterId;
+		
+		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
+			text = Constants.DRAFTS_SEMESTER_TEXT;
+		}
+		
+		view.appendToSemesterDropdown(semesterId, href, text);
+	}
+
+	private void observeSemesterIdList(CourseListModel model, V view) {
 		T.call(this);
 		
 		model.getSemesters().removeObservers();
@@ -42,8 +55,8 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 			@Override
 			public void onItemAdded(int index, String item) {
 				T.call(this);
-
-				view.insertIntoSemesterDropdown(index, item);
+				
+				appendToSemesterDropdown(item, view);
 			}
 		});
 	}

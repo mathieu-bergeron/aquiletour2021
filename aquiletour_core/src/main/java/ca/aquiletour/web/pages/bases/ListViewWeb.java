@@ -35,17 +35,17 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	}
 
 	@Override
-	public void insertIntoSemesterDropdown(int index, String semesterId) {
+	public void insertIntoSemesterDropdown(int index, String semesterId, String href, String text) {
 		T.call(this);
-		
-		semesterDropdown.insert(index, semesterId,  "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId, semesterId);
+
+		semesterDropdown.insert(index, semesterId, href, text);
 	}
 
 	@Override
-	public void appendToSemesterDropdown(String semesterId) {
+	public void appendToSemesterDropdown(String semesterId, String href, String text) {
 		T.call(this);
-		
-		insertIntoSemesterDropdown(semesterDropdown.size()-1, semesterId);
+
+		semesterDropdown.append(semesterId, href, text);
 	}
 
 	@Override

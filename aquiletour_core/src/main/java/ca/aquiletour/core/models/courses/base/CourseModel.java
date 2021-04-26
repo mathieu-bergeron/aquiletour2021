@@ -2,6 +2,7 @@ package ca.aquiletour.core.models.courses.base;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
@@ -10,9 +11,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseModel implements NtroModel, TaskGraph {
 
-
 	private CoursePath coursePath = new CoursePath();
-	private StoredString courseTitle = new StoredString();
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
 
 	@Override
@@ -248,23 +247,14 @@ public class CourseModel implements NtroModel, TaskGraph {
 		// TODO
 		
 	}
-
-	public StoredString getCourseTitle() {
-		return courseTitle;
-	}
-
-	public void setCourseTitle(StoredString courseTitle) {
-		this.courseTitle = courseTitle;
-	}
 	
 	public void updateCourseTitle(String courseTitle) {
 		T.call(this);
 
-		getCourseTitle().set(courseTitle);
-
 		Task rootTask = findTaskById("/");
 		rootTask.setTitle(courseTitle);
 	}
+
 
 
 	

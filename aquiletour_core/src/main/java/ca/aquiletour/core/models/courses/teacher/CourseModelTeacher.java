@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.ntro.core.system.trace.T;
 
 
 public class CourseModelTeacher extends CourseModel {
@@ -59,6 +60,12 @@ public class CourseModelTeacher extends CourseModel {
 
 	public void resolveDates(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		// TODO
+	}
+
+	public void addGroup(String groupId) {
+		T.call(this);
+
+		getGroups().addItem(groupId);
 	}
 
 }

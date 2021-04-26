@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.Path;
@@ -207,4 +208,22 @@ public class CourseUpdater {
 		
 		createCourseForUserId(modelStore, courseModelClass, coursePath, courseTitle, user.getId());
 	}
+
+	public static void addGroup(ModelStoreSync modelStore, 
+			                    CoursePath coursePath,
+			                    String groupId) {
+
+		T.call(CourseUpdater.class);
+
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
+			@Override
+			public void update(CourseModelTeacher course) {
+				T.call(this);
+
+				course.addGroup(groupId);
+			}
+		});
+	}
+	
+	
 }

@@ -76,9 +76,18 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 			public void onEntryAdded(String key, ObservableCourseList value) {
 				T.call(this);
 				
-				view.appendToSemesterDropdown(key);
+				appendToSemesterDropdown(key, view);
 			}
 		});
+	}
+
+	private void appendToSemesterDropdown(String semesterId, GroupListView view) {
+		T.call(this);
+		
+		String href = "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId;
+		String text = semesterId;
+		
+		view.appendToSemesterDropdown(semesterId, href, text);
 	}
 
 	private void changeCurrentSelection(GroupListModel model, 
@@ -93,10 +102,14 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		view.clearCourseDropdown();
 		
 		ObservableCourseList courseList = model.getSemesterCourses().getValue().get(currentSemesterId);
-		
+
+		// FIXME: should be an observer
 		if(courseList != null) {
 			for(String courseId : courseList.getValue()) {
 				view.appendToCourseDropdown(courseId, "/" + Constants.GROUP_LIST_URL_SEGMENT + "?" + Constants.COURSE_URL_PARAM + "=" + courseId);
+				if(currentCourseId == null) {
+					currentCourseId = courseId;
+				}
 			}
 		}
 		

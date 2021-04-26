@@ -16,6 +16,12 @@ public class BootstrapDropdown {
 		this.dropdownTail = dropdownTail;
 	}
 
+	public void append(String groupId, String href, String text) {
+		T.call(this);
+		
+		insert(size()-1, groupId, href, text);
+	}
+
 	public void insert(int index, String id, String href, String text) {
 		T.call(this);
 		
@@ -35,7 +41,7 @@ public class BootstrapDropdown {
 
 	public void select(String id) {
 		T.call(this);
-
+		
 		HtmlElements links = dropdownTail.find("#" + id);
 		
 		if(links != null) {
@@ -96,11 +102,12 @@ public class BootstrapDropdown {
 		dropdownTail.removeChildrenFromDocument();
 	}
 
-	public int size() {
+	private int size() {
 		T.call(this);
-		
+
 		// FIXME
-		return 0;
+		return 1;
 	}
+
 
 }

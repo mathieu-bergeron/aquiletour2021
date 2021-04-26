@@ -65,7 +65,6 @@ public class GroupListViewWeb extends ListViewWebTeacher<GroupView> implements G
 	public void appendToCourseDropdown(String courseId, String href) {
 		T.call(this);
 		
-		insertIntoCourseDropdown(courseDropdown.size(), courseId, href);
-		
+		courseDropdown.append(courseId, href, courseId);
 	}
 }
