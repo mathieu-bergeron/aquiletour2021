@@ -31,6 +31,7 @@ import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
@@ -154,6 +155,24 @@ public class AquiletourBackendRequestHandler {
 			addSubTaskMessage.setParentPath(parentPath);
 			addSubTaskMessage.setSubTask(task);
 			Ntro.backendService().sendMessageToBackend(addSubTaskMessage);
+
+		} else if(parameters.containsKey("openQueueCourseId")) {
+			
+			String courseId = parameters.get("openQueueCourseId")[0];
+			
+			if(parameters.containsKey("ifQueueOpen")
+					&& parameters.get("ifQueueOpen")[0].equals("on")) {
+				
+				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
+				teacherUsesQueueMessage.setCourseId(courseId);
+				Ntro.messages().send(teacherUsesQueueMessage);
+				
+			}else {
+				
+				TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
+				teacherClosesQueueMessage.setCourseId(courseId);
+				Ntro.messages().send(teacherClosesQueueMessage);
+			}
 		}
 	}
 

@@ -136,24 +136,6 @@ public class AquiletourRequestHandler {
 		selectCourseListSubset.setSemesterId(currentSemesterId);
 		Ntro.messages().send(selectCourseListSubset);
 		
-		if(parameters.containsKey("openQueueCourseId")) {
-			
-			String courseId = parameters.get("openQueueCourseId")[0];
-			
-			if(parameters.containsKey("ifQueueOpen")
-					&& parameters.get("ifQueueOpen")[0].equals("on")) {
-				
-				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-				teacherUsesQueueMessage.setCourseId(courseId);
-				Ntro.messages().send(teacherUsesQueueMessage);
-				
-			}else {
-				
-				TeacherClosesQueueMessage teacherClosesQueueMessage = Ntro.messages().create(TeacherClosesQueueMessage.class);
-				teacherClosesQueueMessage.setCourseId(courseId);
-				Ntro.messages().send(teacherClosesQueueMessage);
-			}
-		}
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
