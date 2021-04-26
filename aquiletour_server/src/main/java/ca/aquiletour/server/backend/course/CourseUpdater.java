@@ -211,7 +211,8 @@ public class CourseUpdater {
 
 	public static void addGroup(ModelStoreSync modelStore, 
 			                    CoursePath coursePath,
-			                    String groupId) {
+			                    String groupId,
+			                    User user) {
 
 		T.call(CourseUpdater.class);
 

@@ -140,6 +140,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		CourseUpdater.addGroup(modelStore, 
 							   coursePath,
-							   groupId);
+							   groupId,
+							   teacher);
 	}
 }
