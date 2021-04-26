@@ -41,45 +41,46 @@ def process(api_req, maria_conn, lite_conn):
             commitListModel['groupId'] = utils.normalize_data.normalize_group(api_req['groupId'])
             commitListModel['exercisePath'] = api_req['exercisePath']
             commitListModel['studentId'] = utils.normalize_data.normalize_studentId(api_req['studentId'])
+
+            print(commitRows)
             commits = {}
             commits['_C'] = 'ObservableCommitList'
             value = []
+            commitIdAlreadyParsed = []
 
-            print(commitRows)
             for commitRow in commitRows:
-                commitData = {}
-                commitData['_C'] = 'Commit'
-                commitData['commitId'] = commitRow[1]
-                commitData['exercisePathIfCompleted'] = commitRow[5]
-                commitData['commitMessageFirstLine'] = commitRow[3] #TODO only show the ? first characters
-                commitData['commitMessage'] = commitRow[3]
+                if commitRow[1] not in commitIdAlreadyParsed:
+                    commitIdAlreadyParsed.append(commitRow[1])
+                    commitData = {}
+                    commitData['_C'] = 'Commit'
+                    commitData['commitId'] = commitRow[1]
+                    commitData['exercisePathIfCompleted'] = commitRow[5]
+                    commitData['commitMessageFirstLine'] = commitRow[3]
+                    commitData['commitMessage'] = commitRow[4]
+                    commitData['timeStamp'] = str(commitRow[6])
 
-                maria_cursor = getTimeStampEpoch(maria_cursor, commitRow)
-                timeStampEpoch = maria_cursor.fetchone()
-                commitData['timeStamp'] = str(timeStampEpoch[0])
+                    estimatedEffortAverage = 0
+                    index = 0
 
-                estimatedEffortAverage = 0
-                index = 0
+                    modifiedFiles = []
+                    print("bana")
+                    for commitFileRow in commitRows:
+                        if commitRow[1] == commitFileRow[8]:
+                            print("lala")
+                            commitFileData = {}
+                            commitFileData['_C'] = 'CommitFile'
+                            commitFileData['path'] = commitFileRow[9]
+                            commitFileData['estimatedEffort'] = commitFileRow[12]
+                            estimatedEffortAverage += commitFileRow[12]
+                            index += 1
+                            commitFileData['exercisePath'] = commitFileRow[13]
+                            commitFileData['message'] = "no field in database for now"
+                            modifiedFiles.append(commitFileData)
 
-                maria_cursor = getCommitFileInfo(maria_cursor, commitRow)
+                    commitData['estimatedEffort'] = estimatedEffortAverage = estimatedEffortAverage / index 
+                    commitData['modifiedFiles'] = modifiedFiles
+                    value.append(commitData)
 
-                modifiedFiles = []
-                commitFilesRows = maria_cursor.fetchall()
-                for commitFilesRow in commitFilesRows:
-                    commitFileData = {}
-                    commitFileData['_C'] = 'CommitFile'
-                    commitFileData['path'] = commitFilesRow[2]
-                    commitFileData['estimatedEffort'] = commitFilesRow[5]
-                    estimatedEffortAverage += commitFilesRow[5]
-                    index += 1
-                    commitFileData['exercisePath'] = commitFilesRow[6]
-                    commitFileData['message'] = "no field in database for now"
-                    modifiedFiles.append(commitFileData)
-
-                commitData['estimatedEffort'] = estimatedEffortAverage = estimatedEffortAverage / index 
-                commitData['modifiedFiles'] = modifiedFiles
-                value.append(commitData)
-            
             commits['value'] = value
             commitListModel['commits'] = commits
 
@@ -103,26 +104,26 @@ def process(api_req, maria_conn, lite_conn):
 
 def getCommitInfo(maria_cursor, api_req):
     if api_req['courseId'] == '*':
-        maria_cursor.execute('''SELECT commit.* 
+        maria_cursor.execute('''SELECT commit.*, unix_timestamp(commit.commit_date), commit_file.*
         FROM commit
         LEFT JOIN repository 
             ON commit.repo_url = repository.repo_url
-        LEFT JOIN exercise
-            ON repository.repo_path = exercise.repo_path
-        WHERE exercise.session_id = %s AND exercise.exercise_path = %s AND repository.student = %s''',
+        LEFT JOIN commit_file
+            ON commit.commit_id = commit_file.commit_id AND commit.repo_url = commit_file.repo_url
+        WHERE repository.session_id = %s AND commit_file.exercise_path = %s AND repository.student = %s''',
         (
         utils.normalize_data.normalize_session(api_req['semesterId']),
         api_req['exercisePath'],
         utils.normalize_data.normalize_studentId(api_req['studentId'])) 
         )
     else:
-        maria_cursor.execute('''SELECT commit.* 
+        maria_cursor.execute('''SELECT commit.*, unix_timestamp(commit.commit_date), commit_file.*
         FROM commit
         LEFT JOIN repository 
             ON commit.repo_url = repository.repo_url
-        LEFT JOIN exercise
-            ON repository.repo_path = exercise.repo_path
-        WHERE exercise.session_id = %s AND exercise.course_id = %s AND exercise.group_id = %s AND exercise.exercise_path = %s AND repository.student = %s''',
+        LEFT JOIN commit_file
+            ON commit.commit_id = commit_file.commit_id AND commit.repo_url = commit_file.repo_url
+        WHERE repository.session_id = %s AND repository.course_id = %s AND repository.group_id = %s AND commit_file.exercise_path = %s AND repository.student = %s''',
         (
         utils.normalize_data.normalize_session(api_req['semesterId']),
         utils.normalize_data.normalize_courseId(api_req['courseId']),
@@ -131,27 +132,5 @@ def getCommitInfo(maria_cursor, api_req):
         utils.normalize_data.normalize_studentId(api_req['studentId'])
         ))
     
-    return maria_cursor
-
-def getTimeStampEpoch(maria_cursor, commitRow):
-    maria_cursor.execute('''SELECT unix_timestamp(commit_date) 
-        FROM commit 
-        WHERE commit_id = %s AND repo_url = %s ''',
-        (
-        commitRow[1],
-        commitRow[0]
-        ))
-
-    return maria_cursor
-
-def getCommitFileInfo(maria_cursor, commitRow):
-    maria_cursor.execute('''SELECT commit_file.* 
-        FROM commit_file
-        WHERE commit_file.repo_url = %s AND commit_file.commit_id = %s''',
-        (
-        commitRow[0],
-        commitRow[1]
-        ))
-
     return maria_cursor
 
