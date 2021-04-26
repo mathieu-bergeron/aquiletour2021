@@ -3,6 +3,8 @@ package ca.aquiletour.web.pages.course.student;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;
@@ -15,7 +17,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 	private HtmlElement gitRepoForm;
 	private HtmlElement gitProgressionLink;
-	
+
 	private String gitProgressionText;
 
 	@Override
@@ -35,7 +37,6 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	@Override
 	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
-		super.identifyCurrentTask(coursePath, task);
 		
 		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
 				                                + coursePath.toUrlPath()
@@ -58,5 +59,11 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 
 		gitRepoForm.hide();
+	}
+
+	@Override
+	public void displayTaskEndTime(AquiletourDate endTime) {
+		T.call(this);
+		
 	}
 }

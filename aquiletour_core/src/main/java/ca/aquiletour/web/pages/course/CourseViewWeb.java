@@ -10,8 +10,6 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
-import ca.aquiletour.core.models.dates.CourseDate;
-import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
@@ -21,21 +19,18 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseViewWeb extends NtroViewWeb implements CourseView {
+public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 	private HtmlElement taskTitle;
-	private HtmlElement taskTitleInput;
-	private HtmlElement taskDescriptionInput;
-	private HtmlElement taskIdInput;
 	private HtmlElement subTaskContainer;
 	private HtmlElement breadcrumbsContainer;
 	private HtmlElement previousTaskContainer;
 	private HtmlElement previousTaskList;
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
-	private HtmlElement taskEndTimeWeek;
-	private HtmlElement taskEndTimeScheduleItem;
 	private HtmlElement taskTypeContainer;
+	
+	
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -43,30 +38,20 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 		subTaskContainer = this.getRootElement().find("#subtask-container").get(0);
 		breadcrumbsContainer = this.getRootElement().find("#breadcrumbs-container").get(0);
-		taskIdInput = this.getRootElement().find("#task-id-input").get(0);
 		taskTitle = this.getRootElement().find("#task-title").get(0);
-		taskTitleInput = this.getRootElement().find("#task-title-input").get(0);
-		taskDescriptionInput = this.getRootElement().find("#task-description-input").get(0);
 		previousTaskContainer = this.getRootElement().find("#previous-task-container").get(0);
-		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskContainer= this.getRootElement().find("#next-task-container").get(0);
+		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
-		taskEndTimeWeek = this.getRootElement().find("#task-endtime-week").get(0);
-		taskEndTimeScheduleItem = this.getRootElement().find("#task-endtime-schedule-item").get(0);
 		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
 
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
-		MustNot.beNull(taskIdInput);
 		MustNot.beNull(taskTitle);
-		MustNot.beNull(taskTitleInput);
-		MustNot.beNull(taskDescriptionInput);
 		MustNot.beNull(previousTaskList);
 		MustNot.beNull(previousTaskContainer);
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
-		MustNot.beNull(taskEndTimeWeek);
-		MustNot.beNull(taskEndTimeScheduleItem);
 		MustNot.beNull(taskTypeContainer);
 	}
 
@@ -122,12 +107,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		return Ntro.jsonService().toString(siblings);
 	}
 
-	@Override
-	public void identifyCurrentTask(CoursePath coursePath, Task task) {
-		T.call(this);
-		
-		taskIdInput.value(task.id());
-	}
 
 	@Override
 	public void clearSubtasks() {
@@ -221,37 +200,12 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		T.call(this);
 
 		taskTitle.text(title);
-		taskTitleInput.value(title);
 	}
 
 	@Override
 	public void displayTaskDescription(String description) {
 		T.call(this);
 		
-		taskDescriptionInput.text(description);
-	}
-
-	@Override
-	public void displayTaskEndTime(CourseDate endTime) {
-		T.call(this);
-		
-		CourseDateScheduleItem endTimeScheduleItem = (CourseDateScheduleItem) endTime;
-		
-		taskEndTimeWeek.children("*").forEach(e -> {
-			if(String.valueOf(endTime.getSemesterWeek()).equals(e.getAttribute("name"))){
-				e.setAttribute("selected", "true");
-			}else {
-				e.removeAttribute("selected");
-			}
-		});
-		
-		taskEndTimeScheduleItem.children("*").forEach(e->{
-			if(endTimeScheduleItem.getScheduleItemId().equals(e.getAttribute("name"))){
-				e.setAttribute("selected", "true");
-			}else {
-				e.removeAttribute("selected");
-			}
-		});
 	}
 
 	@Override

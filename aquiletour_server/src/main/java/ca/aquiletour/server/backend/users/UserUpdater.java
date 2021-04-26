@@ -5,6 +5,7 @@ import java.util.List;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -37,5 +38,19 @@ public class UserUpdater {
 			documentPath.setDocumentId(user.getId());
 			modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(new DashboardModel()));
 		}
+	}
+
+	public static void updateScreenName(ModelStoreSync modelStore, String screenName, User user) {
+		T.call(UserUpdater.class);
+		
+		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
+			@Override
+			public void update(User existingModel) {
+				T.call(this);
+				
+				existingModel.setName(screenName);
+				existingModel.setSurname("");
+			}
+		});
 	}
 }

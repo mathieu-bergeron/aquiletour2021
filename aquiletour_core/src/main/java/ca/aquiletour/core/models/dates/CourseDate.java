@@ -1,9 +1,8 @@
 package ca.aquiletour.core.models.dates;
 
-import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class CourseDate implements NtroModelValue {
+public class CourseDate extends AquiletourDate {
 
 	private int semesterWeek;            // typically 1-15
 

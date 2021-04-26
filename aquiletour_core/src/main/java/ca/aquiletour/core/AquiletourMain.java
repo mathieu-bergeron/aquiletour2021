@@ -52,7 +52,7 @@ import ca.aquiletour.core.models.courses.teacher.DateByTaskId;
 import ca.aquiletour.core.models.courses.teacher.GroupTaskCompletions;
 import ca.aquiletour.core.models.courses.teacher.InfoByStudent;
 import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
-import ca.aquiletour.core.models.dates.CalendarDate;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -228,7 +228,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableCourseList.class);
 		Ntro.registerSerializableClass(GroupItem.class);
 
-		Ntro.registerSerializableClass(CalendarDate.class);
+		Ntro.registerSerializableClass(AquiletourDate.class);
 		Ntro.registerSerializableClass(CourseDateScheduleItem.class);
 		Ntro.registerSerializableClass(CourseDateSemesterDay.class);
 		Ntro.registerSerializableClass(SemesterDate.class);
