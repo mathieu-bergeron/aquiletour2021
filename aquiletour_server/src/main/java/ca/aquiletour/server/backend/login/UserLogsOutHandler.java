@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.messages.UserLogsOutMessage;
+import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;

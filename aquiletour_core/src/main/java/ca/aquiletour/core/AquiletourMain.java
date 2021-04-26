@@ -18,9 +18,6 @@
 package ca.aquiletour.core;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
-import ca.aquiletour.core.messages.UserLogsOutMessage;
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.DeRegisterRepo;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
@@ -28,6 +25,9 @@ import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserLogsOutMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.ObservableCourseDate;

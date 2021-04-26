@@ -3,10 +3,10 @@ package ca.aquiletour.server.backend;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
-import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
-import ca.aquiletour.core.messages.UserLogsOutMessage;
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserLogsOutMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;

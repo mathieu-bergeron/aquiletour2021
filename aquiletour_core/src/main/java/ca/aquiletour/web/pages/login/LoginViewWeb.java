@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.login;
 
-import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;

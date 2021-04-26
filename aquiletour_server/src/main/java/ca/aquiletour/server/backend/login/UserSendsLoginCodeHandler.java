@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;

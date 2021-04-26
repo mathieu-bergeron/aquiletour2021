@@ -1,4 +1,4 @@
-package ca.aquiletour.core.messages;
+package ca.aquiletour.core.messages.user;
 
 import ca.ntro.messages.NtroUserMessage;
 

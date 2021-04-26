@@ -50,7 +50,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement groupListLink;
 	private HtmlElement openQueueListLink;
 	private HtmlElement calendarListLink;
+	private HtmlElement queueLink;
 	private HtmlElement loginLink;
+	private HtmlElement logoutLink;
+	private HtmlElement userProfileName;
+	private HtmlElement userProfileNameInput;
+	private HtmlElement userProfile;
 	private BootstrapAlert alertDanger;
 	private BootstrapAlert alertPrimary;
 
@@ -66,6 +71,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
+		logoutLink = getRootElement().find("#logout-link").get(0);
+		queueLink = getRootElement().find("#queue-link").get(0);
+		userProfile = getRootElement().find("#user-profile").get(0);
+		userProfileName = getRootElement().find("#user-profile-name").get(0);
+		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
 
@@ -76,6 +86,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(calendarListLink);
 		MustNot.beNull(loginLink);
 		MustNot.beNull(groupListLink);
+		MustNot.beNull(queueLink);
+		MustNot.beNull(userProfile);
+		MustNot.beNull(userProfileName);
+		MustNot.beNull(userProfileNameInput);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
@@ -108,6 +122,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		openQueueListLink.hide();
 		calendarListLink.hide();
 		groupListLink.hide();
+		queueLink.hide();
 		
 		if(Ntro.currentUser() instanceof Teacher
 				|| Ntro.currentUser() instanceof TeacherGuest) {
@@ -118,6 +133,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
 			groupListLink.show();
 			
+			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + Ntro.currentUser().getId());
+			queueLink.show();
+			
 		} else {
 
 			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
@@ -125,6 +143,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		}
 
 		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+
 
 		loginLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -136,19 +155,21 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
+		logoutLink.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
 	}
 
 	@Override
 	public void adjustLoginLinkText(NtroContext<?,?> context) {
 		T.call(this);
+		
+		userProfile.hide();
 
 		User user = (User) context.user();
 		String userName = user.getName();
 
 		if(context.user() instanceof Guest) {
 
-			String linkText = userName + " (se connecter)";
-			loginLink.html(linkText);
+			loginLink.html("Connexion");
 
 		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
 
@@ -158,12 +179,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
 			userName += " " + user.getSurname();
 			
-			loginLink.html(userName + " (se déconnecter)");
-			loginLink.removeListeners();
-			loginLink.setAttribute("href", "/deconnexion");
-
-			//HtmlElement nameElement = loginLink.newElement("<span class=\"nav-link\">" + userName + "&nbsp;</span>");
-			//loginLink.insertBefore(nameElement);
+			loginLink.hide();
+			userProfile.show();
+			
+			userProfileName.text(userName);
+			userProfileNameInput.value(userName);
 		}
 	}
 

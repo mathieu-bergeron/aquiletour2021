@@ -12,14 +12,8 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link" id="dashboard-link">Tableau de bord</a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" id="queue-link">Ma file d'attente</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link ms-1" id="courses-link">Mes cours</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link ms-1" id="group-list-link">Mes groupes</a>
+                <li class="nav-item ms-1">
+                    <a href="#" class="nav-link connect" id="queue-link">File d'attente</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link ms-1" id="open-queue-list-link">Profs disponibles</a>
@@ -31,29 +25,39 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item">
+                    <a href="#" class="nav-link ms-1" id="courses-link">Mes cours</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link ms-1" id="group-list-link">Mes groupes</a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link ms-1" id="calendar-list-link">Planifier une session</a>
                 </li>
+                <!--
                 <li class="nav-item ms-1">
                     <a href="#" class="nav-link connect" id="login-link">Connexion</a>
                 </li>
+                -->
             </ul>
 
             <ul class="nav navbar-nav navbar-right me-2">
-                <li class="nav-item ms-1" id="teacher-profile">
+                <li class="nav-item ms-1" id="login-button">
+                    <a href="" type="button" class="btn btn-secondary" id="login-link">Connexion</a>
+                </li>
+                <li class="nav-item ms-1" id="user-profile">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">mathieu.bergeron</button>
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="user-profile-name"></button>
                         <div class="dropdown-menu dropdown-menu-right" >
                             <form action="" method="post" class="px-4 py-3">
                                 <div class="row">
-                                    <input name="userName" value="mathieu.bergeron"></input>
+                                    <input name="userName" value="" id="user-profile-name-input"></input>
                                     <button type="submit" class="btn btn-secondary btn-sm">Modifier</button>
                                 </div>
                             </form>
                             <a href="#" class="dropdown-item" style="min-width:14rem;">Mode étudiant</a>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;">Déconnexion</a>
+                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link">Déconnexion</a>
                         </div>
                     </div>
-
                 </li>
             </ul>
         </div>

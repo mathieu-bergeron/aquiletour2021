@@ -3,10 +3,11 @@ package ca.aquiletour.web;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
-import ca.aquiletour.core.messages.UserLogsOutMessage;
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
+import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserLogsOutMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
@@ -62,6 +63,14 @@ public class AquiletourBackendRequestHandler {
 			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
 			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
 			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
+
+		} else if(parameters.containsKey("userName")) {
+			
+			String screenName = parameters.get("userName")[0];
+			
+			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
+			updateUserInfoMessage.setScreenName(screenName);
+			Ntro.messages().send(updateUserInfoMessage);
 
 		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 
