@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.handlers;
 import java.util.List;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -56,9 +57,9 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
 		observeCurrentTaskEndTime(view);
+		observeCurrentTaskType(view);
 
 		observeSubTasks(model, view, subViewLoader);
-
 		
 		if(currentTask.isRootTask()) {
 			
@@ -99,6 +100,35 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 
 	}
+
+	private void observeCurrentTaskType(CourseView view) {
+		T.call(this);
+		
+		currentTask.getTaskType().observe(new ValueObserver<TaskType>() {
+
+			@Override
+			public void onValue(TaskType value) {
+				T.call(this);
+				
+				view.displayTaskType(value);
+			}
+
+			@Override
+			public void onDeleted(TaskType lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onValueChanged(TaskType oldValue, TaskType value) {
+				T.call(this);
+				
+				view.displayTaskType(value);
+			}
+		});
+
+	}
+		
 
 	private void observeCurrentTaskEndTime(CourseView view) {
 		T.call(this);

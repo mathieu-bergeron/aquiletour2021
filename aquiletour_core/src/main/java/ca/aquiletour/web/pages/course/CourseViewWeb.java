@@ -9,6 +9,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
+import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -34,6 +35,8 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement nextTaskContainer;
 	private HtmlElement taskEndTimeWeek;
 	private HtmlElement taskEndTimeScheduleItem;
+	private HtmlElement taskTypeContainer;
+	private HtmlElement taskTypeElement;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -51,6 +54,8 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
 		taskEndTimeWeek = this.getRootElement().find("#task-endtime-week").get(0);
 		taskEndTimeScheduleItem = this.getRootElement().find("#task-endtime-schedule-item").get(0);
+		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
+		taskTypeElement = this.getRootElement().find("#task-type").get(0);
 
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
@@ -64,6 +69,10 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(nextTaskContainer);
 		MustNot.beNull(taskEndTimeWeek);
 		MustNot.beNull(taskEndTimeScheduleItem);
+		MustNot.beNull(taskTypeContainer);
+		MustNot.beNull(taskTypeElement);
+		
+		taskTypeContainer.hide();
 	}
 
 	@Override
@@ -248,5 +257,22 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 				e.removeAttribute("selected");
 			}
 		});
+	}
+
+	@Override
+	public void displayTaskType(TaskType taskType) {
+		T.call(this);
+		
+		
+		if(taskType.getClass().equals(TaskType.class)) {
+
+			taskTypeContainer.hide();
+
+		}else {
+
+			taskTypeContainer.show();
+			taskTypeElement.text(taskType.toString());
+		}
+		
 	}
 }

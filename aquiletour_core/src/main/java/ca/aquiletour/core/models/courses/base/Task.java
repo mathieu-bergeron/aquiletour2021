@@ -356,7 +356,7 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
-		getTaskType().set(TaskType.fromDescription(description));
+		updateTaskType(TaskType.fromDescription(description));
 	}
 	
 	public void updateTitle(String title) {
@@ -385,6 +385,12 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void setTaskType(ObservableTaskType taskType) {
 		this.taskType = taskType;
+	}
+	
+	public void updateTaskType(TaskType taskType) {
+		T.call(this);
+		
+		getTaskType().set(taskType);
 	}
 	
 }
