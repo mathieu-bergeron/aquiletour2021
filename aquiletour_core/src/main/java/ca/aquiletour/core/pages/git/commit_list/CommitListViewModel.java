@@ -85,7 +85,8 @@ public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitL
 		
 		if(task != null) {
 
-			deadline = task.getEndTime().getCalendarDate().getEpochSeconds();
+			// FIXME: has to involve student schedule
+			//deadline = task.getEndTime().getValue().getCalendarDate().getEpochSeconds();
 			
 		}else {
 			

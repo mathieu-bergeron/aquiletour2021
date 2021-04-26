@@ -9,6 +9,7 @@ import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
@@ -21,6 +22,7 @@ import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseItem;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
@@ -133,7 +135,7 @@ public class AquiletourBackendRequestHandler {
 			Path taskPath = new Path("/" + taskId);
 
 			Task task = new Task();
-			task.setTitle(taskTitle);
+			task.updateTitle(taskTitle);
 			task.setPath(taskPath);
 			
 			AddSubTaskMessage addSubTaskMessage = Ntro.messages().create(AddSubTaskMessage.class);
@@ -294,7 +296,7 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
-	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, SessionData sessionData) {
+	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, SessionData sessionData) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("newSubTask")) {
@@ -311,7 +313,7 @@ public class AquiletourBackendRequestHandler {
 			
 			Task task = new Task();
 			task.setPath(newTaskPath);
-			task.setTitle(taskTitle);
+			task.updateTitle(taskTitle);
 
 			addSubTaskMessage.setParentPath(new Path(parentTaskId));
 			addSubTaskMessage.setSubTask(task);
@@ -336,7 +338,7 @@ public class AquiletourBackendRequestHandler {
 
 			Task newPreviousTask = new Task();
 			newPreviousTask.setPath(newPreviousTaskPath);
-			newPreviousTask.setTitle(taskTitle);
+			newPreviousTask.updateTitle(taskTitle);
 
 			addPreviousTaskMessage.setNextPath(nextPath);
 			addPreviousTaskMessage.setPreviousTask(newPreviousTask);
@@ -381,7 +383,7 @@ public class AquiletourBackendRequestHandler {
 
 			Task newNextTask = new Task();
 			newNextTask.setPath(newNextTaskPath);
-			newNextTask.setTitle(taskTitle);
+			newNextTask.updateTitle(taskTitle);
 
 			addNextTaskMessage.setPreviousPath(previousPath);
 			addNextTaskMessage.setNextTask(newNextTask);
@@ -478,6 +480,36 @@ public class AquiletourBackendRequestHandler {
 			removeNextTaskMessage.setTaskToRemove(toRemovePath);
 
 			Ntro.messages().send(removeNextTaskMessage);
+
+		}else if(parameters.containsKey("endTimeWeek")) {
+
+			UpdateTaskInfoMessage updateTaskInfo = AquiletourRequestHandler.createCourseMessage(UpdateTaskInfoMessage.class,
+																					            path,
+																					            parameters,
+																					            sessionData);
+			String title = parameters.get("taskTitle")[0];
+			String description = parameters.get("taskDescription")[0];
+			String endTimeWeekText = parameters.get("endTimeWeek")[0];
+			String endTimeScheduleItemId = parameters.get("endTimeScheduleItem")[0];
+
+			updateTaskInfo.setTaskTitle(title);
+			updateTaskInfo.setTaskDescription(description);
+
+			int endTimeWeek = 0;
+			
+			try {
+
+				endTimeWeek = Integer.parseInt(endTimeWeekText);
+				
+			}catch(NumberFormatException e) {
+				throw new UserInputError("SVP entrer un nombre pour la semaine");
+			}
+
+			CourseDateScheduleItem endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId);
+			
+			updateTaskInfo.setEndTime(endTime);
+			
+			Ntro.messages().send(updateTaskInfo);
 
 		} else if(parameters.containsKey("registerGitRepo")) {
 				

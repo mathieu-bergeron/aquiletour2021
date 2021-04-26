@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.models.StoredProperty;
+import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -16,22 +19,16 @@ public class Task implements NtroModelValue, TaskNode {
 	private TaskGraph graph;
 	
 	private Path path = new Path();
-	private String title = "";
-	
-	private SemesterDate startTime = new SemesterDate();
-	private SemesterDate endTime = new SemesterDate();
+
+	private StoredString title = new StoredString();
+	private StoredString description = new StoredString();
+
+	private ObservableCourseDate endTime = new ObservableCourseDate();
 
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
 
 	public ObservableTaskIdList getPreviousTasks() {
 		return previousTasks;
@@ -331,23 +328,50 @@ public class Task implements NtroModelValue, TaskNode {
 		nextTasks.removeItem(taskId);
 	}
 
-	public SemesterDate getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(SemesterDate startTime) {
-		this.startTime = startTime;
-	}
-
-	public SemesterDate getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(SemesterDate endTime) {
-		this.endTime = endTime;
-	}
 
 	public boolean isRootTask() {
 		return parent() == null;
+	}
+
+	public StoredString getTitle() {
+		return title;
+	}
+
+	public void setTitle(StoredString title) {
+		this.title = title;
+	}
+
+	public StoredString getDescription() {
+		return description;
+	}
+
+	public void setDescription(StoredString description) {
+		this.description = description;
+	}
+
+	public void updateDescription(String description) {
+		T.call(this);
+		
+		getDescription().set(description);
+	}
+	
+	public void updateTitle(String title) {
+		T.call(this);
+		
+		getTitle().set(title);
+	}
+	
+	public void updateEndTime(CourseDate endTime) {
+		T.call(this);
+		
+		getEndTime().set(endTime);
+	}
+
+	public ObservableCourseDate getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(ObservableCourseDate endTime) {
+		this.endTime = endTime;
 	}
 }

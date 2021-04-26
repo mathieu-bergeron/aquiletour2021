@@ -30,6 +30,7 @@ import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.ObservableCourseDate;
 import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
 import ca.aquiletour.core.models.courses.base.Task;
@@ -48,7 +49,7 @@ import ca.aquiletour.core.models.courses.teacher.GroupTaskCompletions;
 import ca.aquiletour.core.models.courses.teacher.InfoByStudent;
 import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
 import ca.aquiletour.core.models.dates.CalendarDate;
-import ca.aquiletour.core.models.dates.CourseDateClassDay;
+import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.SemesterWeek;
@@ -224,7 +225,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(GroupItem.class);
 
 		Ntro.registerSerializableClass(CalendarDate.class);
-		Ntro.registerSerializableClass(CourseDateClassDay.class);
+		Ntro.registerSerializableClass(CourseDateScheduleItem.class);
 		Ntro.registerSerializableClass(CourseDateSemesterDay.class);
 		Ntro.registerSerializableClass(SemesterDate.class);
 
@@ -269,6 +270,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableTaskDescriptions.class);
 		Ntro.registerSerializableClass(TaskDescription.class);
 
+		Ntro.registerSerializableClass(ObservableCourseDate.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

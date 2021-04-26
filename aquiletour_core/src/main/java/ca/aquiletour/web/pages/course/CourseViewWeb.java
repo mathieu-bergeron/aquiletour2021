@@ -9,6 +9,8 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
+import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
@@ -21,6 +23,8 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 	private HtmlElement taskTitle;
+	private HtmlElement taskTitleInput;
+	private HtmlElement taskDescriptionInput;
 	private HtmlElement taskIdInput;
 	private HtmlElement subTaskContainer;
 	private HtmlElement breadcrumbsContainer;
@@ -28,6 +32,8 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement previousTaskList;
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
+	private HtmlElement taskEndTimeWeek;
+	private HtmlElement taskEndTimeScheduleItem;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -37,19 +43,27 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		breadcrumbsContainer = this.getRootElement().find("#breadcrumbs-container").get(0);
 		taskIdInput = this.getRootElement().find("#task-id-input").get(0);
 		taskTitle = this.getRootElement().find("#task-title").get(0);
+		taskTitleInput = this.getRootElement().find("#task-title-input").get(0);
+		taskDescriptionInput = this.getRootElement().find("#task-description-input").get(0);
 		previousTaskContainer = this.getRootElement().find("#previous-task-container").get(0);
 		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskContainer= this.getRootElement().find("#next-task-container").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
+		taskEndTimeWeek = this.getRootElement().find("#task-endtime-week").get(0);
+		taskEndTimeScheduleItem = this.getRootElement().find("#task-endtime-schedule-item").get(0);
 
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
 		MustNot.beNull(taskIdInput);
 		MustNot.beNull(taskTitle);
+		MustNot.beNull(taskTitleInput);
+		MustNot.beNull(taskDescriptionInput);
 		MustNot.beNull(previousTaskList);
 		MustNot.beNull(previousTaskContainer);
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
+		MustNot.beNull(taskEndTimeWeek);
+		MustNot.beNull(taskEndTimeScheduleItem);
 	}
 
 	@Override
@@ -95,7 +109,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		task.forEachSibling(t -> {
 			Map<String, String> sibling = new HashMap<>();
 			
-			sibling.put("text", t.getTitle());
+			sibling.put("text", t.getTitle().getValue());
 			sibling.put("href", Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + t.id());
 			
 			siblings.add(sibling);
@@ -108,7 +122,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
 		
-		taskTitle.text(task.getTitle());
 		taskIdInput.value(task.id());
 	}
 
@@ -151,7 +164,7 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		HtmlElement anchor = taskLi.createElement("<a></a>");
 		taskLi.appendElement(anchor);
 
-		anchor.text(task.getTitle());
+		anchor.text(task.getTitle().getValue());
 		anchor.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + task.id());
 		
 		return taskLi;
@@ -199,4 +212,43 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 		nextTaskContainer.show();
 	}
 
+	@Override
+	public void displayTaskTitle(String title) {
+		T.call(this);
+
+		taskTitle.text(title);
+		taskTitleInput.value(title);
+	}
+
+	@Override
+	public void displayTaskDescription(String description) {
+		T.call(this);
+		
+		taskDescriptionInput.text(description);
+	}
+
+	@Override
+	public void displayTaskEndTime(CourseDate endTime) {
+		T.call(this);
+		
+		System.out.println("endWeek: " + endTime.getSemesterWeek());
+		
+		CourseDateScheduleItem endTimeScheduleItem = (CourseDateScheduleItem) endTime;
+		
+		taskEndTimeWeek.children("*").forEach(e -> {
+			if(String.valueOf(endTime.getSemesterWeek()).equals(e.getAttribute("name"))){
+				e.setAttribute("selected", "true");
+			}else {
+				e.removeAttribute("selected");
+			}
+		});
+		
+		taskEndTimeScheduleItem.children("*").forEach(e->{
+			if(endTimeScheduleItem.getScheduleItemId().equals(e.getAttribute("name"))){
+				e.setAttribute("selected", "true");
+			}else {
+				e.removeAttribute("selected");
+			}
+		});
+	}
 }

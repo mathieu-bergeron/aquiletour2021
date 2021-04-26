@@ -34,16 +34,16 @@ public class Constants {
 	public static final String ADD_SEMESTER_URL_PARAM = "aS";
 	public static final String ADD_COURSE_URL_PARAM = "aC";
 
-	public static final String DRAFTS_SEMESTER_ID = "__brouillons";
+	public static final String DRAFTS_SEMESTER_ID = "_b";
 	public static final String DRAFTS_SEMESTER_TEXT = "Brouillons";
 
-	public static final String COURSE_STRUCTURE_ID = "__structure";
+	public static final String COURSE_STRUCTURE_ID = "_s";
 	public static final String COURSE_STRUCTURE_TEXT = "Structure du cours";
 
-	public static final String ALL_GROUPS_ID = "__groupes";
+	public static final String ALL_GROUPS_ID = "_g";
 	public static final String ALL_GROUPS_TEXT = "Tous les groupes";
 
-	public static final String ALL_COURSES_ID = "__cours";
+	public static final String ALL_COURSES_ID = "_c";
 	public static final String ALL_COURSES_TEXT = "Tous les cours";
 
 	public static final String CREATE_COURSE_TEXT = "Ajouter un cours";

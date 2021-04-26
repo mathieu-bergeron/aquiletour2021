@@ -1,6 +1,7 @@
 package ca.aquiletour.core.models.courses.base;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.ntro.core.Path;
@@ -252,13 +253,28 @@ public class CourseModel implements NtroModel, TaskGraph {
 		T.call(this);
 
 		Task rootTask = findTaskById("/");
-		rootTask.setTitle(courseTitle);
+		rootTask.updateTitle(courseTitle);
 	}
 
+	public void updateTaskInfo(Path taskPath, String taskTitle, String taskDescription, CourseDate endTime) {
+		T.call(this);
 
+		Task task = findTaskByPath(taskPath);
+		
+		if(task != null) {
+			
+			task.updateTitle(taskTitle);
+			task.updateDescription(taskDescription);
+			task.updateEndTime(endTime);
+			
+		}else {
+			
+			Log.warning("Task not found: " + taskPath.toString());
+		}
+		
+		
+		
+	}
 
-	
-	// TODO: update task description
-	//       can also change task type
 
 }

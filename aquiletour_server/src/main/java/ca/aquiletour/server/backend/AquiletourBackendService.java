@@ -14,6 +14,7 @@ import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -32,6 +33,7 @@ import ca.aquiletour.server.backend.course.DeleteTaskHandler;
 import ca.aquiletour.server.backend.course.RemoveNextTaskHandler;
 import ca.aquiletour.server.backend.course.RemovePreviousTaskHandler;
 import ca.aquiletour.server.backend.course.RemoveSubTaskHandler;
+import ca.aquiletour.server.backend.course.UpdateTaskInfoHandler;
 import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
 import ca.aquiletour.server.backend.git.RegisterRepoHandler;
@@ -81,6 +83,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(AddSemesterWeekMessage.class, new AddSemesterWeekHandler());
 		addBackendMessageHandler(SelectCurrentSemester.class, new SelectCurrentSemesterHandler());
 		addBackendMessageHandler(AddScheduleItemMessage.class, new AddScheduleItemHandler());
+		addBackendMessageHandler(UpdateTaskInfoMessage.class, new UpdateTaskInfoHandler());
 	}
 
 }

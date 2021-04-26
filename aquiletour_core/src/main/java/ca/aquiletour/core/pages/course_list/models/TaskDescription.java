@@ -29,7 +29,7 @@ public class TaskDescription implements NtroModelValue {
 		T.call(TaskDescription.class);
 
 		TaskDescription description = new TaskDescription();
-		description.setTaskTitle(task.getTitle());
+		description.setTaskTitle(task.getTitle().getValue());
 		
 		int nameCount = task.getPath().nameCount();
 		String id = task.getPath().name(nameCount-1);

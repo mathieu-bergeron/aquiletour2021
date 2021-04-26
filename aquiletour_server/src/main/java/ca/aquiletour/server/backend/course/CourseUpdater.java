@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.Path;
@@ -171,7 +172,7 @@ public class CourseUpdater {
 				
 				course.updateCourseTitle(courseTitle);
 				Task rootTask = course.findTaskByPath(new Path("/"));
-				rootTask.setTitle(courseTitle);
+				rootTask.updateTitle(courseTitle);
 			}
 		});
 	}
@@ -224,6 +225,28 @@ public class CourseUpdater {
 				course.addGroup(groupId);
 			}
 		});
+	}
+
+	public static  <CM extends CourseModel> void updateTaskInfo(ModelStoreSync modelStore, 
+			                                                    Class<CM> courseModelClass, 
+			                                                    CoursePath coursePath, 
+			                                                    Path taskPath, 
+			                                                    String taskTitle, 
+			                                                    String taskDescription, 
+			                                                    CourseDate endTime, 
+			                                                    User user) {
+		
+		T.call(CourseUpdater.class);
+
+		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+			@Override
+			public void update(CM course) {
+				T.call(this);
+				
+				course.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime);
+			}
+		});
+
 	}
 	
 	

@@ -4,7 +4,7 @@ import ca.aquiletour.core.messages.course.CourseMessage;
 import ca.ntro.core.Path;
 
 public class RemoveNextTaskMessage extends CourseMessage {
-	
+
 	private Path taskToModify;
 	private Path taskToRemove;
 
@@ -23,8 +23,6 @@ public class RemoveNextTaskMessage extends CourseMessage {
 	public void setTaskToRemove(Path taskToRemove) {
 		this.taskToRemove = taskToRemove;
 	}
-	
-	
 	
 
 }
