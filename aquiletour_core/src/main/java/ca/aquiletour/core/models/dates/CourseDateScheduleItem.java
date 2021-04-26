@@ -4,7 +4,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseDateScheduleItem extends CourseDate {
 
-	private String scheduleItemId;
+	private String scheduleItemId = "";
 
 	public CourseDateScheduleItem() {
 		T.call(this);

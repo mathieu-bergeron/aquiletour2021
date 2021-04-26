@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.ntro.core.Path;
@@ -22,9 +23,10 @@ public class Task implements NtroModelValue, TaskNode {
 
 	private StoredString title = new StoredString();
 	private StoredString description = new StoredString();
-
 	private ObservableCourseDate endTime = new ObservableCourseDate();
 
+	private ObservableTaskType taskType = new ObservableTaskType();
+	
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
@@ -353,6 +355,8 @@ public class Task implements NtroModelValue, TaskNode {
 		T.call(this);
 		
 		getDescription().set(description);
+		
+		getTaskType().set(TaskType.fromDescription(description));
 	}
 	
 	public void updateTitle(String title) {
@@ -374,4 +378,13 @@ public class Task implements NtroModelValue, TaskNode {
 	public void setEndTime(ObservableCourseDate endTime) {
 		this.endTime = endTime;
 	}
+
+	public ObservableTaskType getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(ObservableTaskType taskType) {
+		this.taskType = taskType;
+	}
+	
 }

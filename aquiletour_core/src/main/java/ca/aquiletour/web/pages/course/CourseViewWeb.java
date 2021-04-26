@@ -231,8 +231,6 @@ public class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void displayTaskEndTime(CourseDate endTime) {
 		T.call(this);
 		
-		System.out.println("endWeek: " + endTime.getSemesterWeek());
-		
 		CourseDateScheduleItem endTimeScheduleItem = (CourseDateScheduleItem) endTime;
 		
 		taskEndTimeWeek.children("*").forEach(e -> {

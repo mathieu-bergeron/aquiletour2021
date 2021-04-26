@@ -11,9 +11,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UpdateTaskInfoMessage message) {
 		T.call(this);
-		
-		T.here();
-		
+
 		CourseUpdater.updateTaskInfo(modelStore, 
 				                     CourseModelTeacher.class, 
 				                     message.coursePath(), 
