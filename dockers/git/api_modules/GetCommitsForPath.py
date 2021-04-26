@@ -46,40 +46,45 @@ def process(api_req, maria_conn, lite_conn):
             commits = {}
             commits['_C'] = 'ObservableCommitList'
             value = []
-            commitIdAlreadyParsed = []
 
-            for commitRow in commitRows:
-                if commitRow[1] not in commitIdAlreadyParsed:
-                    commitIdAlreadyParsed.append(commitRow[1])
-                    commitData = {}
-                    commitData['_C'] = 'Commit'
-                    commitData['commitId'] = commitRow[1]
-                    commitData['exercisePathIfCompleted'] = commitRow[5]
-                    commitData['commitMessageFirstLine'] = commitRow[3]
-                    commitData['commitMessage'] = commitRow[4]
-                    commitData['timeStamp'] = str(commitRow[6])
+            commitIndex = 0
+            stopSearch = False
+            while commitIndex < len(commitRows):
+                commitRow = commitRows[commitIndex]
+                commitData = {}
+                modifiedFiles = []
+                estimatedEffortAverage = 0
+                effortIndex = 0
 
-                    estimatedEffortAverage = 0
-                    index = 0
+                commitData['_C'] = 'Commit'
+                commitData['commitId'] = commitRow[1]
+                commitData['exercisePathIfCompleted'] = commitRow[5]
+                commitData['commitMessageFirstLine'] = commitRow[3]
+                commitData['commitMessage'] = commitRow[4]
+                commitData['timeStamp'] = str(commitRow[6]) # commit info
+                print(commitRows[commitIndex])
+                print(commitIndex)
+                commitId = commitRows[commitIndex][1]
+                while commitRow[1] == commitId: 
+                    commitFileData = {}
+                    commitFileData['_C'] = 'CommitFile'
+                    commitFileData['path'] = commitRow[9]
+                    commitFileData['estimatedEffort'] = commitRow[12]
+                    estimatedEffortAverage += commitRow[12]
+                    effortIndex += 1
+                    commitFileData['exercisePath'] = commitRow[13]
+                    commitFileData['message'] = "no field in database for now"
+                    modifiedFiles.append(commitFileData)
+                    commitIndex += 1
+                    if commitIndex >= len(commitRows):
+                        commitId = ''  # null so the while finishes
+                    else:
+                        print(commitIndex)
+                        commitId = commitRows[commitIndex][1]
 
-                    modifiedFiles = []
-                    print("bana")
-                    for commitFileRow in commitRows:
-                        if commitRow[1] == commitFileRow[8]:
-                            print("lala")
-                            commitFileData = {}
-                            commitFileData['_C'] = 'CommitFile'
-                            commitFileData['path'] = commitFileRow[9]
-                            commitFileData['estimatedEffort'] = commitFileRow[12]
-                            estimatedEffortAverage += commitFileRow[12]
-                            index += 1
-                            commitFileData['exercisePath'] = commitFileRow[13]
-                            commitFileData['message'] = "no field in database for now"
-                            modifiedFiles.append(commitFileData)
-
-                    commitData['estimatedEffort'] = estimatedEffortAverage = estimatedEffortAverage / index 
-                    commitData['modifiedFiles'] = modifiedFiles
-                    value.append(commitData)
+                commitData['estimatedEffort'] = estimatedEffortAverage = estimatedEffortAverage / effortIndex 
+                commitData['modifiedFiles'] = modifiedFiles
+                value.append(commitData)
 
             commits['value'] = value
             commitListModel['commits'] = commits
@@ -110,7 +115,8 @@ def getCommitInfo(maria_cursor, api_req):
             ON commit.repo_url = repository.repo_url
         LEFT JOIN commit_file
             ON commit.commit_id = commit_file.commit_id AND commit.repo_url = commit_file.repo_url
-        WHERE repository.session_id = %s AND commit_file.exercise_path = %s AND repository.student = %s''',
+        WHERE repository.session_id = %s AND commit_file.exercise_path = %s AND repository.student = %s
+        ORDER BY commit.commit_id''',
         (
         utils.normalize_data.normalize_session(api_req['semesterId']),
         api_req['exercisePath'],
@@ -123,7 +129,8 @@ def getCommitInfo(maria_cursor, api_req):
             ON commit.repo_url = repository.repo_url
         LEFT JOIN commit_file
             ON commit.commit_id = commit_file.commit_id AND commit.repo_url = commit_file.repo_url
-        WHERE repository.session_id = %s AND repository.course_id = %s AND repository.group_id = %s AND commit_file.exercise_path = %s AND repository.student = %s''',
+        WHERE repository.session_id = %s AND repository.course_id = %s AND repository.group_id = %s AND commit_file.exercise_path = %s AND repository.student = %s
+        ORDER BY commit.commit_id''',
         (
         utils.normalize_data.normalize_session(api_req['semesterId']),
         utils.normalize_data.normalize_courseId(api_req['courseId']),
