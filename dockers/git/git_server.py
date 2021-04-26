@@ -91,7 +91,7 @@ async def read_hook(request: Request):
         # Process Hook
 #        print(hook)
         req = {}
-        req['type'] = 'hook'
+        req['_C'] = 'HookTask'
         req['depot'] = None
         if 'repository' in hook:
             if 'git_http_url' in hook['repository']:                # GITLAB
