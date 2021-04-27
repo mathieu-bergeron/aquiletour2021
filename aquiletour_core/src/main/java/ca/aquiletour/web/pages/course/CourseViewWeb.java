@@ -53,6 +53,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
 		MustNot.beNull(taskTypeContainer);
+		
+		previousTaskContainer.hide();
+		nextTaskContainer.hide();
 	}
 
 	@Override
@@ -128,14 +131,14 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void clearPreviousTasks() {
 		T.call(this);
 		
-		previousTaskContainer.deleteChildrenForever();
+		previousTaskList.deleteChildrenForever();
 	}
 
 	@Override
 	public void appendPreviousTask(CoursePath coursePath, Task previousTask) {
 		T.call(this);
 		
-		previousTaskContainer.appendElement(taskLi(coursePath, "list-group-item", previousTask));
+		previousTaskList.appendElement(taskLi(coursePath, "list-group-item", previousTask));
 	}
 	
 	private HtmlElement taskLi(CoursePath coursePath, String styleClass, Task task) {
@@ -157,14 +160,14 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void clearNextTasks() {
 		T.call(this);
 		
-		nextTaskContainer.deleteChildrenForever();
+		nextTaskList.deleteChildrenForever();
 	}
 
 	@Override
 	public void appendNextTask(CoursePath coursePath, Task nextTask) {
 		T.call(this);
 		
-		nextTaskContainer.appendElement(taskLi(coursePath, "list-group-item", nextTask));
+		nextTaskList.appendElement(taskLi(coursePath, "list-group-item", nextTask));
 	}
 
 	@Override
@@ -213,8 +216,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		T.call(this);
 		
 		String taskTypeText = taskTypeContainer.text();
-		
-		System.out.println("taskTypeText: " + taskTypeText);
 		
 		if(taskTypeText == null || taskTypeText.isEmpty()) {
 			
