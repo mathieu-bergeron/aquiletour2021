@@ -248,9 +248,18 @@ public class AquiletourRequestHandler {
 	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, User user, SessionData sessionData) {
 		T.call(AquiletourRequestHandler.class);
 		
-		if(path.nameCount() >= 2) {//TODO 
+		if(path.nameCount() >= 2) {
 
 			ShowCourseMessage showCourseMessage = createCourseMessage(ShowCourseMessage.class, path, parameters, sessionData);
+			
+			String groupId = Constants.COURSE_STRUCTURE_ID;
+
+			if(parameters.containsKey(Constants.GROUP_URL_PARAM)) {
+				groupId = parameters.get(Constants.GROUP_URL_PARAM)[0];
+			}
+			
+			showCourseMessage.setGroupId(groupId);
+			
 			Ntro.messages().send(showCourseMessage);
 		}
 	}

@@ -23,16 +23,19 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 
 		Path coursePath = message.coursePath();
 
+		System.out.println(coursePath.toString());
+
 		// XXX: change model only when needed
 		if(!coursePath.equals(currentCoursePath)) {
 			String authToken = currentController.context().user().getAuthToken();
 			currentController.setModelLoader(modelClass(), authToken, coursePath);
 			currentCoursePath = coursePath;
-
-			ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
-			showTaskMessage.setTaskPath(message.getTaskPath());
-			Ntro.messages().send(showTaskMessage);
 		}
+
+		ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
+		showTaskMessage.setTaskPath(message.getTaskPath());
+		showTaskMessage.setGroupId(message.getGroupId());
+		Ntro.messages().send(showTaskMessage);
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showCourse(currentView);

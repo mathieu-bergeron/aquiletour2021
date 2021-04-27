@@ -214,7 +214,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		
 		String taskTypeText = taskTypeContainer.text();
 		
-		if(taskTypeText.isEmpty()) {
+		System.out.println("taskTypeText: " + taskTypeText);
+		
+		if(taskTypeText == null || taskTypeText.isEmpty()) {
 			
 			taskTypeContainer.text(item.toString());
 
@@ -222,5 +224,13 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 			taskTypeContainer.text(taskTypeText + ", " + item.toString());
 		}
+	}
+
+	@Override
+	public void clearTaskTypes() {
+		T.call(this);
+
+		taskTypeContainer.deleteChildrenForever();
+		taskTypeContainer.text("");
 	}
 }

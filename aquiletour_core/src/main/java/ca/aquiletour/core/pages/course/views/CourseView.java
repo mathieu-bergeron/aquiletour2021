@@ -32,6 +32,7 @@ public interface CourseView extends NtroView  {
 	void displayTaskDescription(String description);
 	void displayTaskEndTime(AquiletourDate endTime);
 
+	void clearTaskTypes();
 	void appendTaskType(TaskType item);
 
 }

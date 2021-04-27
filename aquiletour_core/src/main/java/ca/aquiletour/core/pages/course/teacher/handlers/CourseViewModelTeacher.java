@@ -17,11 +17,15 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 	protected void handle(CourseModelTeacher model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
+
+		String groupId = message.getGroupId();
 		
 		if(!initialized) {
 			initialized = true;
 			initializeDropdowns(model, view);
 		}
+		
+		view.selectGroup(groupId);
 	}
 
 	private void initializeDropdowns(CourseModelTeacher model, CourseViewTeacher view) {

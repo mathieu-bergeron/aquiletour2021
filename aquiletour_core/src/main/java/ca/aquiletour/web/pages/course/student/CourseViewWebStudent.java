@@ -66,4 +66,5 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		
 	}
+
 }

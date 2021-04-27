@@ -28,7 +28,7 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	public void displayTask(CoursePath coursePath, Task task) {
 		T.call(this);
 		
-		taskTitleLink.html(task.getTitle().getValue());
+		taskTitleLink.text(task.getTitle().getValue());
 		
 		String href = "/" + Constants.COURSE_URL_SEGMENT  +
 	                  coursePath.toUrlPath() + 

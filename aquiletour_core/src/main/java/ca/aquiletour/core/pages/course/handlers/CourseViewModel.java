@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
+import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
@@ -26,9 +27,11 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 	@Override
 	protected void handle(M model, V view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
-
+		
+		String groupId = message.getGroupId();
+		
 		if(currentTask != null) {
-			currentTask.removeObservers();
+			removeAllObservers();
 		}
 		
 		currentTask = model.findTaskByPath(message.getTaskPath());
@@ -38,11 +41,24 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 			view.identifyCurrentTask(model.getCoursePath(), currentTask);
 			view.displayBreadcrumbs(model.getCoursePath(), currentTask.breadcrumbs());
 
-			observeCurrentTask(model, view, subViewLoader);
+			observeCurrentTask(model, groupId, view, subViewLoader);
 		}
 	}
 
-	private void observeCurrentTask(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void removeAllObservers() {
+		T.call(this);
+
+		currentTask.removeObservers();
+		currentTask.getPreviousTasks().removeObservers();
+		currentTask.getSubTasks().removeObservers();
+		currentTask.getNextTasks().removeObservers();
+		currentTask.getDescription().removeObservers();
+		currentTask.getEndTime().removeObservers();
+		currentTask.getTaskTypes().removeObservers();
+		currentTask.getTitle().removeObservers();
+	}
+
+	private void observeCurrentTask(CourseModel model, String groupId, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
 		if(currentTask.isRootTask()) {
@@ -104,13 +120,22 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 	private void observeCurrentTaskTypes(CourseView view) {
 		T.call(this);
-		
+
+		view.clearTaskTypes();
+		currentTask.getTaskTypes().removeObservers();
 		currentTask.getTaskTypes().onItemAdded(new ItemAddedListener<TaskType>() {
 			@Override
 			public void onItemAdded(int index, TaskType item) {
 				T.call(this);
 				
 				view.appendTaskType(item);
+			}
+		});
+		
+		currentTask.getTaskTypes().onClearItems(new ClearItemsListener() {
+			@Override
+			public void onClearItems() {
+				view.clearTaskTypes();
 			}
 		});
 	}
@@ -175,7 +200,9 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 	private void observePreviousTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
-
+		
+		view.clearPreviousTasks();
+		currentTask.getPreviousTasks().removeObservers();
 		currentTask.getPreviousTasks().observe(new ListObserver<String>() {
 			
 			@Override
@@ -222,7 +249,9 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 	private void observeSubTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
-
+		
+		view.clearSubtasks();
+		currentTask.getSubTasks().removeObservers();
 		currentTask.getSubTasks().observe(new ListObserver<String>() {
 			
 			@Override
@@ -272,7 +301,9 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 	private void observeNextTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
-
+		
+		view.clearNextTasks();
+		currentTask.getNextTasks().removeObservers();
 		currentTask.getNextTasks().observe(new ListObserver<String>() {
 			
 			@Override

@@ -73,6 +73,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseItem;
@@ -282,6 +283,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(GitExerciseTask.class);
 
 		Ntro.registerSerializableClass(UpdateUserInfoMessage.class);
+		Ntro.registerSerializableClass(UpdateTaskInfoMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
