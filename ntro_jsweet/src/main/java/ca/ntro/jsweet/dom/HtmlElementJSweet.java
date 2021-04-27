@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import com.google.javascript.jscomp.NodeTraversal;
+
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -327,18 +329,30 @@ public class HtmlElementJSweet extends HtmlElement {
 	public static JQuery parseHtml(String html) {
 		T.call(HtmlElementJSweet.class);
 		
-		JQuery result = null;
+		JQuery result = $(document.createElement("div"));
 
 		// FIXME: this will remove duplicate ids
 		//        we cannot use ids in partials
-		Object[] parsedHtml = $.parseHTML(html, document, false);
+		Object[] nodes = $.parseHTML(html, document, false);
 		
-		if(parsedHtml.length == 1) {
-			result = $(parsedHtml[0]);
-		}else {
-			result = $(document.createElement("span"));
-			for(Object parsedElement : parsedHtml) {
-				result.append($(parsedElement));
+		List<Element> elements = new ArrayList<>();
+		for(Object nodeObject : nodes) {
+			if(nodeObject instanceof Element) {
+				Element element = (Element) nodeObject;
+				if(element.nodeType == 1 ) {
+					elements.add(element);
+				}
+			}
+		}
+		
+		if(elements.size() == 1) {
+
+			result = $(nodes[0]);
+
+		}else if(elements.size() > 0) {
+
+			for(Element element  : elements) {
+				result.append($(element));
 			}
 		}
 

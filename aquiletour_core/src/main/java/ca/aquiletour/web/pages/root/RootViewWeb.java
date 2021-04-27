@@ -325,4 +325,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		showSubView(groupListView);
 	}
+
+	@Override
+	public void displayUserScreenName(String screenName) {
+		T.call(this);
+		
+		userProfileName.text(screenName);
+	}
 }

@@ -17,6 +17,7 @@ public abstract class ViewMessageHandler<V extends NtroView,
 		T.call(this);
 
 		mainTask = new ViewMessageHandlerTask<V, MSG>(this, messageId);
+		mainTask.setTaskId(messageId);
 	}
 
 	@Override

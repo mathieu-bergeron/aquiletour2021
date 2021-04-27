@@ -28,4 +28,6 @@ public interface RootView extends NtroView {
 	void displayErrorMessage(String message);
 	void displayPrimaryMessage(String message);
 	void showGroupList(GroupListView currentView);
+
+	void displayUserScreenName(String screenName);
 }

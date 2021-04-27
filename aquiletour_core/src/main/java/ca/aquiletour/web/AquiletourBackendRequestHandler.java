@@ -74,7 +74,7 @@ public class AquiletourBackendRequestHandler {
 			
 			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
 			updateUserInfoMessage.setScreenName(screenName);
-			Ntro.backendService().sendMessageToBackend(updateUserInfoMessage);
+			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
 
 		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 
