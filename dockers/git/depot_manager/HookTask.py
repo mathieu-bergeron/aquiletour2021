@@ -5,6 +5,8 @@ import mysql.connector
 import json
 import utils.normalize_data
 import git
+import utils.task_utils
+import utils.data_matcher
 
 def process(task_req, maria_conn, lite_conn):
     return hook_task(task_req['depot'], maria_conn)
@@ -26,7 +28,7 @@ def process(task_req, maria_conn, lite_conn):
 # >>> rep.git.status()
 # rep.commit().diff('HEAD~1')[1].a_blob.data_stream.read() # ou b_blob
 #rep.commit().tree.trees[0].blobs[1].data_stream.read() # parcourir un commit...
-def update_commit_db(depot, depotPath, maria_conn):
+def update_commit_db(semester, course, group, repo_path, depot, depotPath, maria_conn):
     repo = git.Repo(depotPath)
     cur = maria_conn.cursor()
     # Trouver dernier commit du depot
@@ -37,23 +39,26 @@ def update_commit_db(depot, depotPath, maria_conn):
         last_commit = last_commit[0] + '..'
         cur.fetchall()
 #    last_commit = '4091faf65b9d875d3c23dc7b373e02ae858b21b7' + '..'
+    ex_list, rp_list, fp_list, kw_list = utils.task_utils.find_exercise_for_course(semester,course,group,maria_conn)
     repo = git.Repo(depotPath)
     for commit in repo.iter_commits(last_commit, reverse = True):
-        print(commit)
+#        print(commit)
         commit_id = commit.hexsha
         commit_sum = commit.summary
         commit_msg = commit.message
         commit_date = commit.authored_datetime
-        completed_ex = None # TODO: Match des exercices keyword avec summary
+        completed_ex = utils.data_matcher.find_exercise_from_keyword(ex_list, kw_list, commit_sum)
+        # None # TODO: Match des exercices keyword avec summary
         cur.execute('INSERT INTO commit VALUES (%s,%s,%s,%s,%s,%s)',
             (depot, commit_id, commit_date, commit_sum, commit_msg, completed_ex))
         maria_conn.commit()
         for file_name,stat in commit.stats.files.items():
-            print(file_name)
             insert = stat['insertions']
             delete = stat['deletions']
             effort = insert + delete # TODO: Utiliser JPlag pour calculer l'effort
-            exercice = '/' # TODO: Determiner le chemin de l'exercice qui correspond au fichier
+            exercice = utils.data_matcher.find_exercise_from_path(ex_list, rp_list, fp_list, repo_path, file_name)
+            # '/' # TODO: Determiner le chemin de l'exercice qui correspond au fichier
+#            print(file_name + ' : ' + exercice)
             cur.execute('INSERT INTO commit_file VALUES (%s,%s,%s,%s,%s,%s,%s)',
                 (depot, commit_id, file_name, insert, delete, effort, exercice))
             maria_conn.commit()
@@ -64,7 +69,6 @@ def update_commit_db(depot, depotPath, maria_conn):
     # Pour chaque fichier du Commit
     # Extraire les infos
     # Calculer l'effort (utiliser diff pour recuperer les fichiers)
-    pass
 
 def hook_task(depot, maria_conn):
     maria_cur = maria_conn.cursor()
@@ -83,7 +87,7 @@ def hook_task(depot, maria_conn):
             else :
                 print(depotPath + ' exists, pulling!')
                 git.Repo(depotPath).remotes.origin.pull()
-            answer = update_commit_db(depot, depotPath, maria_conn)
+            answer = update_commit_db(record[2],record[3],record[4],record[6],depot, depotPath, maria_conn)
             if not answer:
                 answer = 'DONE'
         except git.exc.GitCommandError:

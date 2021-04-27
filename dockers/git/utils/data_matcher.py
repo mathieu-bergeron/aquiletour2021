@@ -25,16 +25,21 @@ def clean_path(path):
 
 def match_tuples(tuple1, tuple2):
     match = False
-    edits = le.editops(tuple1[0], tuple2[0])
-    edits_counts = {}
-    for edit,_,_ in edits:
-        edits_counts[edit] = edits_counts.get(edit, 0) + 1
-    inserts = edits_counts.get('insert',0) + edits_counts.get('replace',0)
-    deletes = edits_counts.get('delete',0) + edits_counts.get('replace',0)
+    if tuple1[0] is not None and tuple2[0] is not None:
+        edits = le.editops(tuple1[0], tuple2[0])
+        edits_counts = {}
+        for edit,_,_ in edits:
+            edits_counts[edit] = edits_counts.get(edit, 0) + 1
+        inserts = edits_counts.get('insert',0) + edits_counts.get('replace',0)
+        deletes = edits_counts.get('delete',0) + edits_counts.get('replace',0)
     # if only insert and max 1 delete or replace
     # OR if only delete with max 1 insert or replace
-    if (inserts <= 1 or deletes <= 1) and tuple1[1] == tuple2[1]: 
+        if inserts <= 1 or deletes <= 1: 
+            match = True
+    else:
         match = True
+    if tuple1[1] != tuple2[1]:
+        match = False
     return match
 
 def match_path(file_path_ex, file_path_commit):
@@ -90,7 +95,7 @@ def find_exercise_from_path(exercicePath_list, repo_path_list_ex, file_path_list
 def find_exercise_from_keyword(exercicePath_list, keyword_list, commit_summary):
     matched_ex = []
     for exPath, keyword in zip(exercicePath_list, keyword_list):
-        if 0 <= commit_summary.lower().find(keyword.lower()) < 5:
+        if keyword is not None and len(keyword) > 0 and 0 <= commit_summary.lower().find(keyword.lower()) < 10:
             matched_ex.append(exPath)
     if len(matched_ex) != 1:
         matched_ex = [None]
@@ -181,8 +186,11 @@ def test_kwMatch():
                 '/Semaine 2/TravailPratique 3',
                 '/Semaine 3/Exercice01',
                 '/Semaine 3/Exercice02',
+                '/Semaine 3/Exercice05',
+                '/Semaine 7/Exercice06',
+                '/Semaine 8/Exercice07',
                 '/Semaine 5/Examen/Intra']
-    kw = ['TP 1','TP 2','TP 3','Exercice 1','Exercice 2','Examen']
+    kw = ['TP 1','TP 2','TP 3','Exercice 1','Exercice 2', None, '', 'Ex06','Examen']
     print(find_exercise_from_keyword(ex_path,kw,'Test de keyword'))
     print(find_exercise_from_keyword(ex_path,kw,'TP 2: Test de keyword'))
     print(find_exercise_from_keyword(ex_path,kw,'[ Exercice 1 ] Test de keyword'))
