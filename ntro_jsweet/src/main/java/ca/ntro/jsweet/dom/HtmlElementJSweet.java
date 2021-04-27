@@ -1,9 +1,12 @@
 package ca.ntro.jsweet.dom;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+
+import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
@@ -75,7 +78,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		jQueryElement.append(parseHtml(html));
+		appendElement(new HtmlElementJSweet(parseHtml(html)));
 	}
 
 	@Override
@@ -85,8 +88,80 @@ public class HtmlElementJSweet extends HtmlElement {
 		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
 		
 		toAppend.show();
+
 		
 		jQueryElement.append(toAppend);
+
+		installFormAutosubmit(toAppend);
+	}
+
+	private void installFormAutosubmit(JQuery toAppend) {
+		T.call(this);
+
+		JQuery forms = toAppend.find("form");
+		forms.each(new BiFunction<Integer, Element, Object>() {
+			@Override
+			public Object apply(Integer t, Element formElement) {
+				T.call(this);
+
+				JQuery form = $(formElement);
+				form.off();
+				form.on("submit", new BiFunction<JQueryEventObject, Object, Object>() {
+					@Override
+					public Object apply(JQueryEventObject t, Object u) {
+						T.call(this);
+
+						t.preventDefault();
+						
+						String href = form.attr("action");
+						if(href == null || href.isEmpty()) {
+							href = window.location.pathname;
+						}else if(!href.startsWith("/")) {
+							href = window.location.pathname + href;
+						}
+						
+						Map<String, String[]> parameters = new HashMap<>();
+						JQuery formInputs = form.find("[name]");
+						putInputParameters(parameters, formInputs);
+
+						String formId = form.attr("id");
+						if(formId != null && !formId.isEmpty()) {
+							JQuery otherInputs = $(document).find("[form='"+formId+"']");
+							putInputParameters(parameters, otherInputs);
+							
+						}else {
+							formId = "unknownForm";
+						}
+
+						history.pushState(null, formId, href);
+						
+						Ntro.router().sendMessagesFor(Ntro.context(), new Path(href), parameters);
+
+						return null;
+					}
+				});
+				return null;
+			}
+		});
+	}
+
+	private void putInputParameters(Map<String, String[]> parameters, JQuery formInputs) {
+		T.call(this);
+
+		for(int i = 0; i < formInputs.length; i++) {
+			 JQuery formInput = $(formInputs.get(i));
+			 putInputParameter(formInput, parameters);
+		}
+	}
+
+	private void putInputParameter(JQuery formInput, Map<String, String[]> parameters) {
+		T.call(this);
+
+		String name = formInput.attr("name");
+		String value = formInput.val().toString();
+		if(value != null) {
+			parameters.put(name, new String[] {value});
+		}
 	}
 
 	@Override
@@ -209,20 +284,13 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void html(String htmlString) {
 
-		// XXX: this would remove listeners
-		//jQueryElement.html("");
+		// XXX: jQueryElement.html("") would remove listeners
 		for(int i = 0; i < jQueryElement.length; i++) {
 			jQueryElement.get(i).innerHTML = "";
 		}
-		
-		if(htmlString != null) {
-			Object[] elementsToAppend = $.parseHTML(htmlString);
 
-			if(elementsToAppend != null) {
-				for(Object newElement : $.parseHTML(htmlString)) {
-					jQueryElement.append(newElement);
-				}
-			}
+		if(htmlString != null) {
+			appendElement(new HtmlElementJSweet(parseHtml(htmlString)));
 		}
 	}
 

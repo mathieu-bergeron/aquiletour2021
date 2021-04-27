@@ -25,6 +25,7 @@ import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
@@ -279,6 +280,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(TaskType.class);
 		Ntro.registerSerializableClass(GitRepoTask.class);
 		Ntro.registerSerializableClass(GitExerciseTask.class);
+
+		Ntro.registerSerializableClass(UpdateUserInfoMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
