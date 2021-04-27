@@ -13,7 +13,6 @@ import ca.ntro.web.dom.HtmlEventListener;
 
 public class QueueViewWebTeacher extends QueueViewWeb implements QueueView {
 
-	private HtmlElement closeQueueButton;
 	private HtmlElement queueId;
 
 	@Override
@@ -21,10 +20,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueView {
 		super.initializeViewWeb(context);
 		T.call(this);
 
-		closeQueueButton = this.getRootElement().find("#close-queue-button").get(0);
 		queueId = this.getRootElement().find("#queue-id").get(0);
 
-		MustNot.beNull(closeQueueButton);
 		MustNot.beNull(queueId);
 	}
 	
@@ -34,19 +31,6 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueView {
 		T.call(this);
 		
 		queueId.html(courseId);
-		
-		closeQueueButton.setAttribute("href", "?closeQueue=" + courseId);
-
-		closeQueueButton.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-
-				sendCloseQueueMessage(courseId);
-				sendShowDashboardMessage();
-			}
-		});
-		
 	}
 
 	private void sendCloseQueueMessage(String courseId) {
