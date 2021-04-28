@@ -147,4 +147,12 @@ public class CourseItem implements NtroModelValue {
 	public void setTeacherId(String teacherId) {
 		this.teacherId = teacherId;
 	}
+
+	public CoursePath coursePath() {
+		T.call(this);
+		
+		CoursePath path = new CoursePath(getTeacherId(), getSemesterId(), getCourseId());
+
+		return path;
+	}
 }

@@ -1,8 +1,10 @@
 package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
@@ -56,7 +58,7 @@ public class SemesterListModel implements NtroModel {
 		}
 	}
 
-	public void addSemesterWeek(String semesterId, SemesterWeek semesterWeek) {
+	public void addSemesterWeek(String semesterId, CalendarWeek semesterWeek) {
 		T.call(this);
 		
 		SemesterModel semester = semesterById(semesterId);
@@ -106,5 +108,41 @@ public class SemesterListModel implements NtroModel {
 			Log.warning("Semester not found: " + semesterId);
 		}
 		
+	}
+
+	public SemesterSchedule semesterSchedule(String semesterId) {
+		T.call(this);
+
+		SemesterModel semester = semesterById(semesterId);
+		SemesterSchedule schedule = null;
+		
+		if(semester != null) {
+			
+			schedule = semester.getSemesterSchedule();
+			
+		} else {
+			
+			Log.warning("Semester not found: " + semesterId);
+		}
+		
+		return schedule;
+	}
+
+	public TeacherSchedule teacherSchedule(String semesterId) {
+		T.call(this);
+
+		SemesterModel semester = semesterById(semesterId);
+		TeacherSchedule schedule = null;
+		
+		if(semester != null) {
+			
+			schedule = semester.getTeacherSchedule();
+			
+		} else {
+			
+			Log.warning("Semester not found: " + semesterId);
+		}
+		
+		return schedule;
 	}
 }

@@ -10,6 +10,7 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
@@ -29,8 +30,20 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
 	private HtmlElement taskTypeContainer;
+	private HtmlElement editableEndtime;
+	private HtmlElement uneditableEndtime;
+
+	private HtmlElement editableDescription;
+	private HtmlElement uneditableDescription;
+
 	
-	
+	protected HtmlElement editableEndtime() {
+		return editableEndtime;
+	}
+
+	protected HtmlElement uneditableEndtime() {
+		return uneditableEndtime;
+	}
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -44,6 +57,10 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
 		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
+		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
+		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
+		editableDescription = this.getRootElement().find("#editable-description").get(0);
+		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
@@ -53,9 +70,35 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
 		MustNot.beNull(taskTypeContainer);
+		MustNot.beNull(uneditableEndtime);
+		MustNot.beNull(editableEndtime);
+		MustNot.beNull(editableDescription);
+		MustNot.beNull(uneditableDescription);
 		
 		previousTaskContainer.hide();
 		nextTaskContainer.hide();
+	}
+
+	@Override
+	public void displayEditableComponents(boolean editable) {
+		T.call(this);
+		
+		if(editable) {
+
+			editableEndtime.show();
+			editableDescription.show();
+
+			uneditableEndtime.hide();
+			uneditableDescription.hide();
+			
+		}else {
+
+			editableEndtime.hide();
+			editableDescription.hide();
+
+			uneditableEndtime.show();
+			uneditableDescription.show();
+		}
 	}
 
 	@Override
@@ -199,16 +242,17 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void displayTaskTitle(String title) {
+	public void displayTaskTitle(String title, boolean editable) {
 		T.call(this);
 
 		taskTitle.text(title);
 	}
 
 	@Override
-	public void displayTaskDescription(String description) {
+	public void displayTaskDescription(String description, boolean editable) {
 		T.call(this);
-		
+
+		uneditableDescription.text(description);
 	}
 
 	@Override
@@ -233,5 +277,12 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 		taskTypeContainer.deleteChildrenForever();
 		taskTypeContainer.text("");
+	}
+
+	@Override
+	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+		T.call(this);
+
+		uneditableEndtime.text(endTime.toString());
 	}
 }

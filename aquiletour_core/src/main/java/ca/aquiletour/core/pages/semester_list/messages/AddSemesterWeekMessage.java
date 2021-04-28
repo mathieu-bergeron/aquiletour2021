@@ -1,13 +1,13 @@
 package ca.aquiletour.core.pages.semester_list.messages;
 
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.users.User;
 import ca.ntro.messages.NtroUserMessage;
 
 public class AddSemesterWeekMessage extends NtroUserMessage<User> {
 	
 	private String semesterId;
-	private SemesterWeek semesterWeek;
+	private CalendarWeek semesterWeek;
 
 	public String getSemesterId() {
 		return semesterId;
@@ -17,11 +17,11 @@ public class AddSemesterWeekMessage extends NtroUserMessage<User> {
 		this.semesterId = semesterId;
 	}
 
-	public SemesterWeek getSemesterWeek() {
+	public CalendarWeek getSemesterWeek() {
 		return semesterWeek;
 	}
 
-	public void setSemesterWeek(SemesterWeek semesterWeek) {
+	public void setSemesterWeek(CalendarWeek semesterWeek) {
 		this.semesterWeek = semesterWeek;
 	}
 }

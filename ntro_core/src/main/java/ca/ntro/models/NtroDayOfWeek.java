@@ -115,6 +115,48 @@ public class NtroDayOfWeek implements NtroModelValue {
 		
 		return shortName;
 	}
+
+	@Override
+	public String toString() {
+		T.call(this);
+		
+		String name = "";
+		
+		switch(dayOfWeek) {
+			case MONDAY:
+				name = "lundi";
+				break;
+
+			case TUESDAY:
+				name = "mardi";
+				break;
+
+			case WEDNESDAY:
+				name = "mecredi";
+				break;
+
+			case THURSDAY:
+				name = "jeudi";
+				break;
+
+			case FRIDAY:
+				name = "vendredi";
+				break;
+
+			case SATURDAY:
+				name = "samedi";
+				break;
+
+			case SUNDAY:
+				name = "dimanche";
+				break;
+				
+			default:
+				Log.warning("Unknown dayOfWeek: " + dayOfWeek);
+		}
+		
+		return name;
+	}
 	
 	@Override
 	public int hashCode() {

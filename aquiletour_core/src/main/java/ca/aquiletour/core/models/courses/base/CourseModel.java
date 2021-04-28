@@ -1,16 +1,18 @@
 package ca.aquiletour.core.models.courses.base;
 
+import java.util.Map;
+
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
-import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModel implements NtroModel, TaskGraph {
+public abstract class CourseModel implements NtroModel, TaskGraph {
 
 	private CoursePath coursePath = new CoursePath();
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
@@ -244,10 +246,6 @@ public class CourseModel implements NtroModel, TaskGraph {
 		return coursePath.toFileName();
 	}
 	
-	public void resolveDates(SemesterSchedule semesterSchedule) {
-		// TODO
-		
-	}
 	
 	public void updateCourseTitle(String courseTitle) {
 		T.call(this);
@@ -276,5 +274,40 @@ public class CourseModel implements NtroModel, TaskGraph {
 		
 	}
 
+	public AquiletourDate taskEndTimeForGroup(String groupId, String taskId) {
+		T.call(this);
+		
+		AquiletourDate endTime = null;
 
+		Task task = findTaskById(taskId);
+		
+		if(task != null) {
+			
+			endTime = task.getEndTime().getValue();
+
+		}else {
+			
+			Log.warning("Task not found: " + taskId);
+		}
+		
+		return endTime;
+	}
+
+	public void updateSchedule(SemesterSchedule semesterSchedule) {
+		T.call(this);
+		
+		for(Task task : tasks.getValue().values()) {
+			task.updateDate(semesterSchedule);
+		}
+	}
+
+	public void updateSchedule(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
+		T.call(this);
+		
+		updateSchedule(semesterSchedule);
+		updateGroupSchedules(semesterSchedule, teacherSchedule);
+	}
+
+	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
+	
 }

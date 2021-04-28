@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItems;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -54,7 +54,7 @@ public class SemesterModel implements NtroModelValue {
 		this.courseGroups = courseGroups;
 	}
 
-	public void addWeek(SemesterWeek semesterWeek) {
+	public void addWeek(CalendarWeek semesterWeek) {
 		T.call(this);
 		
 		getSemesterSchedule().addWeek(semesterWeek);

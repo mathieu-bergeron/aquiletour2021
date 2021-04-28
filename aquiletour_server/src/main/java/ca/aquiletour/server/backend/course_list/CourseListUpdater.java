@@ -1,5 +1,8 @@
 package ca.aquiletour.server.backend.course_list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseItem;
@@ -209,6 +212,24 @@ public class CourseListUpdater {
 				courseList.addTask(coursePath, task);
 			}
 		});
+	}
+
+	public static List<CoursePath> getCourseList(ModelStoreSync modelStore, String semesterId, User user) {
+		T.call(CourseListUpdater.class);
+
+		List<CoursePath> courses = new ArrayList<>();
+		
+		if(modelStore.ifModelExists(CourseListModel.class, "admin", user.getId())) {
+			
+			CourseListModel model = modelStore.getModel(CourseListModel.class, "admin", user.getId());
+			
+			for(CourseItem item :  model.getCourses().getValue()) {
+
+				courses.add(item.coursePath());
+			}
+		}
+
+		return courses;
 	}
 
 }

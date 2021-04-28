@@ -78,6 +78,12 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 				
 				appendToSemesterDropdown(key, view);
 			}
+
+			@Override
+			public void onClearEntries() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 	}
 

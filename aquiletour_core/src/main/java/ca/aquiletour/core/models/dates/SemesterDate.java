@@ -1,7 +1,9 @@
 package ca.aquiletour.core.models.dates;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
+import ca.ntro.models.NtroTimeOfDay;
 
 public class SemesterDate extends AquiletourDate {
 	
@@ -48,9 +50,41 @@ public class SemesterDate extends AquiletourDate {
 		return !getScheduleOf().equals(getSemesterDay());
 	}
 
-	public void resolveDatesForSemester() {
+	public SemesterDate toSemesterDate() {
+		T.call(this);
 		
+		SemesterDate date = new SemesterDate();
+
+		date.setCalendarDate(getCalendarDate());
+		date.setSemesterWeek(semesterWeek);
+		date.setScheduleOf(scheduleOf);
+		date.setSemesterDay(getSemesterDay());
+		
+		return date;
 	}
+	
+	@Override
+	public String toString() {
+		T.call(this);
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(getCalendarDate().format("EEE d MMM HH:mm"));
+		if(hasDifferentSchedule()) {
+			builder.append(" (horaire du ");
+			builder.append(getScheduleOf().shortName());
+			builder.append(")");
+		}
+		
+		return builder.toString();
+	}
+
+	public void adjustTime(NtroTimeOfDay time) {
+		T.call(this);
+		
+		getCalendarDate().adjustTime(time);
+	}
+
 	
 
 

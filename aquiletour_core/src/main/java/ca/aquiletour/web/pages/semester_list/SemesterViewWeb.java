@@ -2,7 +2,7 @@ package ca.aquiletour.web.pages.semester_list;
 
 
 import ca.aquiletour.core.models.dates.SemesterDate;
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
@@ -86,7 +86,7 @@ public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 	}
 
 	@Override
-	public void appendSemesterWeek(SemesterWeek semesterWeek) {
+	public void appendSemesterWeek(CalendarWeek semesterWeek) {
 		T.call(this);
 		
 		// Insert before the second to last (the form takes two rows)

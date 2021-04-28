@@ -28,11 +28,12 @@ public interface CourseView extends NtroView  {
 	void clearNextTasks();
 	void appendNextTask(CoursePath coursePath, Task nextTask);
 
-	void displayTaskTitle(String title);
-	void displayTaskDescription(String description);
-	void displayTaskEndTime(AquiletourDate endTime);
+	void displayTaskTitle(String title, boolean editable);
+	void displayTaskDescription(String description, boolean editable);
+	void displayTaskEndTime(AquiletourDate endTime, boolean editable);
 
 	void clearTaskTypes();
 	void appendTaskType(TaskType item);
 
+	void displayEditableComponents(boolean editable);
 }

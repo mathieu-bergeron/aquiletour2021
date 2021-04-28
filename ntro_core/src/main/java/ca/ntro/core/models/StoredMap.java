@@ -99,4 +99,14 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		
 		this.mapObservers.clear();
 	}
+
+	public void clear() {
+		T.call(this);
+		
+		getValue().clear();
+
+		for(MapObserver<V> mapObserver : mapObservers) {
+			mapObserver.onClearEntries();
+		}
+	}
 }

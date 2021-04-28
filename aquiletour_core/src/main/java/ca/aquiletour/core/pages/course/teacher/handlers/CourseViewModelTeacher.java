@@ -8,24 +8,24 @@ import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, CourseViewTeacher> {
 	
-	private boolean initialized = false;
+	@Override
+	protected boolean isEditable() {
+		String courseOwnerId = currentCoursePath().teacherId();
+		return courseOwnerId.equals(Ntro.currentUser().getId());
+	}
 
 	@Override
 	protected void handle(CourseModelTeacher model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
+		
+		initializeDropdowns(model, view);
 
-		String groupId = message.getGroupId();
-		
-		if(!initialized) {
-			initialized = true;
-			initializeDropdowns(model, view);
-		}
-		
-		view.selectGroup(groupId);
+		view.selectGroup(currentGroupId());
 	}
 
 	private void initializeDropdowns(CourseModelTeacher model, CourseViewTeacher view) {
@@ -84,6 +84,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		T.call(this);
 		
 		String href = "?" + Constants.GROUP_URL_PARAM + "=" + groupId;
+
 		String text = "Groupe " + groupId;
 		
 		if(groupId.equals(Constants.COURSE_STRUCTURE_ID)) {

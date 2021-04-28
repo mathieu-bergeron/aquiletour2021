@@ -8,11 +8,14 @@ import java.util.Set;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
 public class Task implements NtroModelValue, TaskNode {
@@ -388,5 +391,32 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void setTaskTypes(ObservableTaskTypeList taskTypes) {
 		this.taskTypes = taskTypes;
+	}
+
+	public void updateDate(SemesterSchedule semesterSchedule) {
+		T.call(this);
+		
+		CourseDate endTimeDate = endTime.getValue();
+		
+		boolean updated = endTimeDate.updateDate(semesterSchedule);
+		
+		if(updated) {
+			endTime.set(endTimeDate);
+		}
+	}
+
+	public SemesterDate resolveDate(String courseId, 
+			                        String groupId, 
+			                        SemesterSchedule semesterSchedule, 
+			                        TeacherSchedule teacherSchedule) {
+		T.call(this);
+		
+		SemesterDate date = null;
+
+		CourseDate endTimeDate = endTime.getValue();
+		
+		date = endTimeDate.resolveDate(courseId, groupId, semesterSchedule, teacherSchedule);
+
+		return date;
 	}
 }

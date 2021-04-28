@@ -49,7 +49,7 @@ import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.courses.teacher.CompletionsByGroup;
 import ca.aquiletour.core.models.courses.teacher.CompletionsByStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
-import ca.aquiletour.core.models.courses.teacher.DateByTaskId;
+import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
 import ca.aquiletour.core.models.courses.teacher.GroupTaskCompletions;
 import ca.aquiletour.core.models.courses.teacher.InfoByStudent;
 import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
@@ -57,7 +57,7 @@ import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItems;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
@@ -199,7 +199,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterListModel.class);
 		Ntro.registerSerializableClass(ObservableSemesterList.class);
 		Ntro.registerSerializableClass(ObservableSemesterWeekList.class);
-		Ntro.registerSerializableClass(SemesterWeek.class);
+		Ntro.registerSerializableClass(CalendarWeek.class);
 
 		Ntro.registerSerializableClass(SemesterSchedule.class);
 		Ntro.registerSerializableClass(TeacherSchedule.class);
@@ -208,7 +208,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CourseModelStudent.class);
 		Ntro.registerSerializableClass(CompletionsByGroup.class);
 		Ntro.registerSerializableClass(CompletionsByStudent.class);
-		Ntro.registerSerializableClass(DateByTaskId.class);
+		Ntro.registerSerializableClass(EndTimeByTaskId.class);
 		Ntro.registerSerializableClass(GroupTaskCompletions.class);
 		Ntro.registerSerializableClass(InfoByStudent.class);
 		Ntro.registerSerializableClass(TaskDatesByGroupId.class);

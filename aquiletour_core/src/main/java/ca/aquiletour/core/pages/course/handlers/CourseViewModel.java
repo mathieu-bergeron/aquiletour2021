@@ -1,9 +1,12 @@
 package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
+
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -18,18 +21,39 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseViewModel<M extends CourseModel, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
+	private CoursePath currentCoursePath;
 	private Task currentTask;
+	private String currentGroupId;
 	
-	protected Task getCurrentTask() {
+	protected Task currentTask() {
 		return currentTask;
+	}
+	
+	protected String currentGroupId() {
+		return currentGroupId;
+	}
+	
+	protected CoursePath currentCoursePath() {
+		return currentCoursePath;
+	}
+
+	protected boolean isEditable() {
+		return false;
 	}
 
 	@Override
 	protected void handle(M model, V view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		
-		String groupId = message.getGroupId();
-		
+		if(!message.getGroupId().equals(currentGroupId)) {
+			currentGroupId = message.getGroupId();
+		}
+
+		if(!model.getCoursePath().equals(currentCoursePath)) {
+			currentCoursePath = model.getCoursePath();
+			System.out.println("currentCoursePath: " + currentCoursePath.toString());
+		}
+
 		if(currentTask != null) {
 			removeAllObservers();
 		}
@@ -38,11 +62,13 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		
 		if(currentTask != null) {
 			
-			view.identifyCurrentTask(model.getCoursePath(), currentTask);
-			view.displayBreadcrumbs(model.getCoursePath(), currentTask.breadcrumbs());
+			view.identifyCurrentTask(currentCoursePath(), currentTask);
+			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
 
-			observeCurrentTask(model, groupId, view, subViewLoader);
+			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
 		}
+		
+		view.displayEditableComponents(isEditable());
 	}
 
 	private void removeAllObservers() {
@@ -73,7 +99,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
-		observeCurrentTaskEndTime(view);
+		observeCurrentTaskEndTime(model, view);
 		observeCurrentTaskTypes(view);
 
 		observeSubTasks(model, view, subViewLoader);
@@ -98,24 +124,35 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 			public void onValue(String value) {
 				T.call(this);
 				
-				view.displayTaskDescription(value);
+				displayTaskDescription(view, value);
 			}
+
 
 			@Override
 			public void onDeleted(String lastValue) {
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void onValueChanged(String oldValue, String value) {
 				T.call(this);
 				
-				view.displayTaskDescription(value);
+				displayTaskDescription(view, value);
 			}
 		});
+	}
 
+	private void displayTaskDescription(CourseView view, String value) {
+		T.call(this);
 
+		String description = value;
+		
+		if(!isEditable()) {
+			
+			description = TaskType.removeTypesFromDescription(value);
+
+		}
+
+		view.displayTaskDescription(description, isEditable());
 	}
 
 	private void observeCurrentTaskTypes(CourseView view) {
@@ -141,7 +178,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 	}
 		
 
-	private void observeCurrentTaskEndTime(CourseView view) {
+	private void observeCurrentTaskEndTime(CourseModel model, CourseView view) {
 		T.call(this);
 		
 		currentTask.getEndTime().observe(new ValueObserver<CourseDate>() {
@@ -150,8 +187,9 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 			public void onValue(CourseDate value) {
 				T.call(this);
 				
-				view.displayTaskEndTime(value);
+				displayCurrentTaskEndTime(model, view);
 			}
+
 
 			@Override
 			public void onDeleted(CourseDate lastValue) {
@@ -163,10 +201,18 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 			public void onValueChanged(CourseDate oldValue, CourseDate value) {
 				T.call(this);
 				
-				view.displayTaskEndTime(value);
+				displayCurrentTaskEndTime(model, view);
 			}
 		});
 
+	}
+
+	private void displayCurrentTaskEndTime(CourseModel model, CourseView view) {
+		T.call(this);
+		
+		AquiletourDate endTime = model.taskEndTimeForGroup(currentGroupId(), currentTask.id());
+
+		view.displayTaskEndTime(endTime, isEditable());
 	}
 
 
@@ -185,14 +231,14 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 			public void onValue(String value) {
 				T.call(this);
 				
-				view.displayTaskTitle(value);
+				view.displayTaskTitle(value, isEditable());
 			}
 			
 			@Override
 			public void onValueChanged(String oldValue, String value) {
 				T.call(this);
 
-				view.displayTaskTitle(value);
+				view.displayTaskTitle(value, isEditable());
 			}
 		});
 	}

@@ -1,6 +1,7 @@
 package ca.ntro.models;
 
 import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
 public class NtroDate implements NtroModelValue {
@@ -32,5 +33,24 @@ public class NtroDate implements NtroModelValue {
 	
 	public boolean isDefined() {
 		return epochSeconds >= 0;
+	}
+
+	public boolean biggerThan(NtroDate other) {
+		T.call(this);
+		
+		if(other == null || !other.isDefined()) {
+
+			return true;
+
+		}else {
+			
+			return epochSeconds > other.epochSeconds;
+		}
+	}
+
+	public void adjustTime(NtroTimeOfDay time) {
+		T.call(this);
+
+		Ntro.calendar().setTimeOfDay(this, time);
 	}
 }

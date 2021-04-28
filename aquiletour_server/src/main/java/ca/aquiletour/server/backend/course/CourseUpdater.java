@@ -7,6 +7,8 @@ import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.Path;
@@ -247,6 +249,27 @@ public class CourseUpdater {
 			}
 		});
 
+	}
+
+	public static <CM extends CourseModel> void updateCourseSchedule(ModelStoreSync modelStore, 
+			                                                         Class<CM> courseModelClass, 
+                         										     CoursePath coursePath,
+						                         				     SemesterSchedule semesterSchedule, 
+                         										     TeacherSchedule teacherSchedule, 
+						                         				     User user) {
+		T.call(CourseUpdater.class);
+		
+		System.out.println("updateCourseSchedule: " + coursePath.toString());
+
+		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+			@Override
+			public void update(CM course) {
+				T.call(this);
+				
+				course.updateSchedule(semesterSchedule, teacherSchedule);
+			}
+		});
+		
 	}
 	
 	

@@ -62,9 +62,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void displayTaskEndTime(AquiletourDate endTime) {
+	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 		
 	}
+
 
 }

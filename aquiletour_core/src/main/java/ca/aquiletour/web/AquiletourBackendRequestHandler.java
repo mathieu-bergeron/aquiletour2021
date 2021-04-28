@@ -11,7 +11,7 @@ import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.User;
@@ -196,7 +196,7 @@ public class AquiletourBackendRequestHandler {
 			String semesterId = parameters.get("semesterId")[0];
 			String weekOf = parameters.get("weekOf")[0];
 			
-			SemesterWeek semesterWeek = new SemesterWeek();
+			CalendarWeek semesterWeek = new CalendarWeek();
 			
 			NtroDate mondayDate = Ntro.calendar().fromString(weekOf, "dd/MM/yyyy");
 			semesterWeek.setMondayDate(mondayDate);
@@ -522,6 +522,7 @@ public class AquiletourBackendRequestHandler {
 			String description = parameters.get("taskDescription")[0];
 			String endTimeWeekText = parameters.get("endTimeWeek")[0];
 			String endTimeScheduleItemId = parameters.get("endTimeScheduleItem")[0];
+			String endTimeStartOrEnd = parameters.get("endTimeStartOrEnd")[0];
 
 			updateTaskInfo.setTaskTitle(title);
 			updateTaskInfo.setTaskDescription(description);
@@ -536,7 +537,7 @@ public class AquiletourBackendRequestHandler {
 				throw new UserInputError("SVP entrer un nombre pour la semaine");
 			}
 
-			CourseDateScheduleItem endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId);
+			CourseDateScheduleItem endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId, endTimeStartOrEnd);
 			
 			updateTaskInfo.setEndTime(endTime);
 			

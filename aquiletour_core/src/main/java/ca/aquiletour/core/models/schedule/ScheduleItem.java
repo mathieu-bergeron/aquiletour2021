@@ -71,4 +71,12 @@ public class ScheduleItem implements NtroModelValue {
 	public void setScheduleItemId(String scheduleItemId) {
 		this.scheduleItemId = scheduleItemId;
 	}
+
+	public boolean matches(String courseId, String groupId, String scheduleItemId) {
+		T.call(this);
+		
+		return getCourseGroup().getCourseId().equals(courseId)
+				&& getCourseGroup().getGroupId().equals(groupId)
+				&& this.scheduleItemId.equals(scheduleItemId);
+	}
 }

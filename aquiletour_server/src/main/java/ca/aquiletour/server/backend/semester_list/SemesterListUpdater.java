@@ -1,8 +1,10 @@
 package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
@@ -50,7 +52,7 @@ public class SemesterListUpdater {
 	
 	public static void addSemesterWeekForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
-			                                  SemesterWeek semesterWeek,
+			                                  CalendarWeek semesterWeek,
 			                                  User user) {
 
 		T.call(SemesterListUpdater.class);
@@ -60,7 +62,7 @@ public class SemesterListUpdater {
 
 	public static void addSemesterWeekForUserId(ModelStoreSync modelStore, 
 			                                    String semesterId, 
-			                                    SemesterWeek semesterWeek,
+			                                    CalendarWeek semesterWeek,
 			                                    String userId) {
 		T.call(SemesterListUpdater.class);
 
@@ -196,6 +198,40 @@ public class SemesterListUpdater {
 		T.call(SemesterListUpdater.class);
 		
 		addCourseGroupForUserId(modelStore, semesterId, courseId, groupId, user.getId());
+	}
+
+	public static SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
+			                                           String semesterId, 
+			                                           User user) {
+		T.call(SemesterListUpdater.class);
+		
+		SemesterSchedule schedule = null;
+		
+		if(modelStore.ifModelExists(SemesterListModel.class, "admin", user.getId())) {
+			
+			SemesterListModel model = modelStore.getModel(SemesterListModel.class, "admin", user.getId());
+			
+			schedule = model.semesterSchedule(semesterId);
+		}
+
+		return schedule;
+	}
+
+	public static TeacherSchedule getTeacherSchedule(ModelStoreSync modelStore, 
+			                                         String semesterId, 
+			                                         User user) {
+		T.call(SemesterListUpdater.class);
+
+		TeacherSchedule schedule = null;
+		
+		if(modelStore.ifModelExists(SemesterListModel.class, "admin", user.getId())) {
+			
+			SemesterListModel model = modelStore.getModel(SemesterListModel.class, "admin", user.getId());
+			
+			schedule = model.teacherSchedule(semesterId);
+		}
+
+		return schedule;
 	}
 		
 }

@@ -2,6 +2,7 @@ package ca.aquiletour.core.models.schedule;
 
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDayOfWeek;
 
 public class TeacherSchedule implements NtroModel {
 	
@@ -37,5 +38,20 @@ public class TeacherSchedule implements NtroModel {
 		T.call(this);
 
 		getScheduleItems().addItem(scheduleItem);
+	}
+
+	public ScheduleItem findScheduleItem(String courseId, String groupId, String scheduleItemId) {
+		T.call(this);
+		
+		ScheduleItem item = null;
+		
+		for(ScheduleItem candidate : scheduleItems.getValue()) {
+			if(candidate.matches(courseId, groupId, scheduleItemId)) {
+				item = candidate;
+				break;
+			}
+		}
+
+		return item;
 	}
 }

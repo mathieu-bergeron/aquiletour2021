@@ -10,6 +10,7 @@ import ca.aquiletour.web.widgets.BootstrapDropdown;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 import ca.ntro.web.dom.HtmlElement;
 
 public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTeacher {
@@ -19,6 +20,10 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement taskIdInput;
 	private HtmlElement taskEndTimeWeek;
 	private HtmlElement taskEndTimeScheduleItem;
+	private HtmlElement taskEndTimeStartOrEnd;
+	private HtmlElement weekOfContainer;
+	private HtmlElement weekOfElement;
+	private HtmlElement saveButtonContainer;
 
 	private BootstrapDropdown semesterDropdown;
 	private BootstrapDropdown groupDropdown;
@@ -38,6 +43,10 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		taskDescriptionInput = this.getRootElement().find("#task-description-input").get(0);
 		taskEndTimeWeek = this.getRootElement().find("#task-endtime-week").get(0);
 		taskEndTimeScheduleItem = this.getRootElement().find("#task-endtime-schedule-item").get(0);
+		taskEndTimeStartOrEnd = this.getRootElement().find("#task-endtime-start-or-end").get(0);
+		saveButtonContainer = this.getRootElement().find("#save-button-container").get(0);
+		weekOfContainer = this.getRootElement().find("#week-of-container").get(0);
+		weekOfElement = this.getRootElement().find("#week-of").get(0);
 		
 		MustNot.beNull(semesterDropdownHead);
 		MustNot.beNull(semesterDropdownTail);
@@ -45,12 +54,33 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(groupDropdownTail);
 		MustNot.beNull(taskEndTimeWeek);
 		MustNot.beNull(taskEndTimeScheduleItem);
+		MustNot.beNull(taskEndTimeStartOrEnd);
 		MustNot.beNull(taskIdInput);
 		MustNot.beNull(taskTitleInput);
 		MustNot.beNull(taskDescriptionInput);
+		MustNot.beNull(saveButtonContainer);
+		MustNot.beNull(weekOfContainer);
+		MustNot.beNull(weekOfElement);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
+		
+	}
+
+	@Override
+	public void displayEditableComponents(boolean editable) {
+		T.call(this);
+		super.displayEditableComponents(editable);
+		
+		if(editable) {
+			
+			saveButtonContainer.show();
+			
+		} else {
+
+			saveButtonContainer.hide();
+			
+		}
 	}
 
 	@Override
@@ -106,44 +136,76 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void displayTaskTitle(String title) {
+	public void displayTaskTitle(String title, boolean editable) {
 		T.call(this);
-		super.displayTaskTitle(title);
+		super.displayTaskTitle(title, editable);
 
 		taskTitleInput.value(title);
 	}
 
 	@Override
-	public void displayTaskDescription(String description) {
+	public void displayTaskDescription(String description, boolean editable) {
 		T.call(this);
 		
-		taskDescriptionInput.text(description);
-	}
-
-	@Override
-	public void displayTaskEndTime(AquiletourDate endTime) {
-		T.call(this);
-		
-		if(endTime instanceof CourseDateScheduleItem) {
-
-			CourseDateScheduleItem endTimeScheduleItem = (CourseDateScheduleItem) endTime;
+		if(!editable) {
 			
-			taskEndTimeWeek.children("*").forEach(e -> {
-				if(String.valueOf(endTimeScheduleItem.getSemesterWeek()).equals(e.getAttribute("name"))){
-					e.setAttribute("selected", "true");
-				}else {
-					e.removeAttribute("selected");
-				}
-			});
+			super.displayTaskDescription(description, editable);
 			
-			taskEndTimeScheduleItem.children("*").forEach(e->{
-				if(endTimeScheduleItem.getScheduleItemId().equals(e.getAttribute("name"))){
-					e.setAttribute("selected", "true");
-				}else {
-					e.removeAttribute("selected");
-				}
-			});
+		}else {
+
+			taskDescriptionInput.text(description);
+
 		}
 	}
 
+	@Override
+	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+		T.call(this);
+		
+		if(!editable) {
+
+			super.displayTaskEndTime(endTime, editable);
+
+		}else if(endTime instanceof CourseDateScheduleItem) {
+			
+			displayEditableCourseDate((CourseDateScheduleItem) endTime);
+		}
+	}
+
+	private void displayEditableCourseDate(CourseDateScheduleItem endTime) {
+		T.call(this);
+		
+		NtroDate weekOf = endTime.getWeekOf();
+		if(weekOf.isDefined()) {
+			weekOfContainer.show();
+			weekOfElement.text(weekOf.format("d MMM"));
+			
+		}else {
+			weekOfContainer.hide();
+		}
+		
+		taskEndTimeWeek.children("*").forEach(e -> {
+			if(String.valueOf(endTime.getSemesterWeek()).equals(e.getAttribute("name"))){
+				e.setAttribute("selected", "true");
+			}else {
+				e.removeAttribute("selected");
+			}
+		});
+		
+		taskEndTimeScheduleItem.children("*").forEach(e->{
+			if(endTime.getScheduleItemId().equals(e.getAttribute("name"))){
+				e.setAttribute("selected", "true");
+			}else {
+				e.removeAttribute("selected");
+			}
+		});
+
+		taskEndTimeStartOrEnd.children("*").forEach(e->{
+			if(endTime.getStartOrEnd().equals(e.getAttribute("name"))){
+				e.setAttribute("selected", "true");
+			}else {
+				e.removeAttribute("selected");
+			}
+		});
+	}
 }

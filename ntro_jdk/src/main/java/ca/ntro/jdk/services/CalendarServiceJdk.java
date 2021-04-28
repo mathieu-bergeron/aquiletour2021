@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import java.util.Locale;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.CalendarService;
 
 public class CalendarServiceJdk extends CalendarService {
@@ -57,6 +59,20 @@ public class CalendarServiceJdk extends CalendarService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat, Locale.CANADA_FRENCH);
 
 		return dateTime.format(formatter);
+	}
+
+	@Override
+	public void setTimeOfDay(NtroDate ntroDate, NtroTimeOfDay time) {
+		T.call(this);
+
+		LocalDateTime dateTime = LocalDateTime.ofEpochSecond(ntroDate.getEpochSeconds(), 0, localZoneOffset());
+		LocalDate date = dateTime.toLocalDate();
+		LocalDateTime startOfDay = date.atStartOfDay();
+		
+		long epochDateSeconds = startOfDay.toEpochSecond(localZoneOffset());
+		long epochDateTimeSeconds = epochDateSeconds + time.getHour24() * 60 * 60 + time.getMinutes() * 60;
+		
+		ntroDate.setEpochSeconds(epochDateTimeSeconds);
 	}
 
 }

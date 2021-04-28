@@ -1,6 +1,7 @@
 package ca.ntro.jsweet.services;
 
 import ca.ntro.models.NtroDate;
+import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.CalendarService;
 
 public class CalendarServiceJSweet extends CalendarService {
@@ -13,6 +14,11 @@ public class CalendarServiceJSweet extends CalendarService {
 	@Override
 	public String format(long epochSeconds, String dateFormat) {
 		return "TODO";
+	}
+
+	@Override
+	public void setTimeOfDay(NtroDate ntroDate, NtroTimeOfDay time) {
+		// TODO
 	}
 
 }

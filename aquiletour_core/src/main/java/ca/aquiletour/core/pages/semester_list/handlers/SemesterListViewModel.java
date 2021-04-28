@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.semester_list.handlers;
 
 
-import ca.aquiletour.core.models.dates.SemesterWeek;
+import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
@@ -39,9 +39,9 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 		view.appendSemester(semesterView);
 		
 		semester.getSemesterSchedule().getWeeks().removeObservers();
-		semester.getSemesterSchedule().getWeeks().onItemAdded(new ItemAddedListener<SemesterWeek>() {
+		semester.getSemesterSchedule().getWeeks().onItemAdded(new ItemAddedListener<CalendarWeek>() {
 			@Override
-			public void onItemAdded(int index, SemesterWeek item) {
+			public void onItemAdded(int index, CalendarWeek item) {
 				T.call(this);
 
 				semesterView.appendSemesterWeek(item);
