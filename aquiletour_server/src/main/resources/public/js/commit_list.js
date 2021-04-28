@@ -194,8 +194,7 @@ function initializeCommitList(viewRootElement, jSweet) {
             var modifiedFilesText = $(modifiedFilesSpan).text();
             exercisePathText = exercisePathText.replace(/ /g, '');//there's a big empty space, this removes it
             modifiedFilesText = modifiedFilesText.replace(/ /g, '');//
-            
-            timeStampInt *= 1000;
+
             $(timeStampSpan).text((new Date(timeStampInt).toLocaleDateString('fr-ca', {
                 year: "numeric",
                 month: 'short',

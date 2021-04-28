@@ -109,7 +109,7 @@ def process(api_req, maria_conn, lite_conn):
 
 def getCommitInfo(maria_cursor, api_req):
     if api_req['courseId'] == '*':
-        maria_cursor.execute('''SELECT commit.*, unix_timestamp(commit.commit_date), commit_file.*
+        maria_cursor.execute('''SELECT commit.*, unix_timestamp(commit.commit_date) * 1000, commit_file.*
         FROM commit
         LEFT JOIN repository 
             ON commit.repo_url = repository.repo_url
@@ -123,7 +123,7 @@ def getCommitInfo(maria_cursor, api_req):
         utils.normalize_data.normalize_studentId(api_req['studentId'])) 
         )
     else:
-        maria_cursor.execute('''SELECT commit.*, unix_timestamp(commit.commit_date), commit_file.*
+        maria_cursor.execute('''SELECT commit.*, unix_timestamp(commit.commit_date) * 1000 , commit_file.*
         FROM commit
         LEFT JOIN repository 
             ON commit.repo_url = repository.repo_url

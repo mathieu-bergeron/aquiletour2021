@@ -15,6 +15,15 @@ import utils.normalize_data
 #      "repoPath": "/TP1",
 #      "repoUrl": "https://github.com/test/test.git"
 #  }
+#  {
+#      "_C": "RegisterGitRepo",
+#      "courseId": "mathieu.bergeron/StruDon",
+#      "semesterId": "H2021",
+#      "groupId": "01",
+#      "studentId": "2345600",
+#      "repoPath": "/TP1",
+#      "repoUrl": "https://github.com/test1/test1.git"
+#  }
 def process(api_req, maria_conn, lite_conn):
 #    if not 'groupId' in api_req:
 #        api_req['groupId'] = None
