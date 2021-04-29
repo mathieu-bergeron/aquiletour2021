@@ -1,19 +1,17 @@
 package ca.aquiletour.server.backend.course_list;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.course_list.models.CourseItem;
+import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.server.backend.course.CourseUpdater;
+import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.NtroErrorMessage;
-import ca.ntro.services.Ntro;
 
 public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 
@@ -23,7 +21,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		User teacher = message.getUser();
 		
-		CourseItem item = message.getCourseDescription();
+		CourseListItem item = message.getCourseListItem();
 		
 		CoursePath path = new CoursePath(teacher.getId(), item.getSemesterId(), item.getCourseId());
 		
@@ -44,7 +42,10 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 	public void handleLater(ModelStoreSync modelStore, AddCourseMessage message) {
 		T.call(this);
 		
-		GroupListUpdater.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseDescription().getCourseId(), message.getUser());
+		GroupListUpdater.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseListItem().getCourseId(), message.getUser());
+		
+		DashboardUpdater.addDashboardItemForUser(modelStore, message.getCourseListItem(), message.getUser());
+			
 
 		/*
 

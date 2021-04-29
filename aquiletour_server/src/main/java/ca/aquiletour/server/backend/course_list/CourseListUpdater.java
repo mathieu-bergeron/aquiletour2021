@@ -5,7 +5,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course_list.models.CourseItem;
+import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.ntro.backend.BackendMessageHandlerError;
@@ -16,7 +16,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseListUpdater {
 
-	public static void validateCourseDescription(CourseItem courseDescription) throws BackendMessageHandlerError {
+	public static void validateCourseDescription(CourseListItem courseDescription) throws BackendMessageHandlerError {
 		T.call(CourseListUpdater.class);
 		
 		// forbidden chars: ' " ¤ /
@@ -69,7 +69,7 @@ public class CourseListUpdater {
 
 	public static <CLM extends CourseListModel> void addCourseForUser(ModelStoreSync modelStore, 
 			 														  Class<CLM> courseListModelClass,
-			                                                          CourseItem courseDescription, 
+			                                                          CourseListItem courseDescription, 
 			                                                          User teacher) {
 		T.call(CourseListUpdater.class);
 		
@@ -199,7 +199,7 @@ public class CourseListUpdater {
 		return getCourseItem(modelStore, courseListModelClass, semesterId, courseId, userId).getCourseTitle();
 	}
 
-	public static <CLM extends CourseListModel> CourseItem getCourseItem(ModelStoreSync modelStore, 
+	public static <CLM extends CourseListModel> CourseListItem getCourseItem(ModelStoreSync modelStore, 
 																         Class<CLM> courseListModelClass, 
 																         String semesterId, 
 																         String courseId, 
@@ -240,7 +240,7 @@ public class CourseListUpdater {
 			
 			CLM model = modelStore.getModel(courseListModelClass, "admin", user.getId());
 			
-			for(CourseItem item :  model.getCourses().getValue()) {
+			for(CourseListItem item :  model.getCourses().getValue()) {
 
 				courses.add(item.coursePath());
 			}

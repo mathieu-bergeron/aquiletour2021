@@ -1,29 +1,17 @@
 package ca.aquiletour.core.pages.course_list.messages;
 
-import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course_list.models.CourseItem;
-import ca.ntro.core.json.JsonSerializable;
-import ca.ntro.messages.NtroUserMessage;
+import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 
-                                                             // FIXME: should not be necessary
-public class AddCourseMessage extends NtroUserMessage<User> implements JsonSerializable {
+public class AddCourseMessage extends CourseMessage {
 
-	private CourseItem courseDescription;
-	private String semesterId;
+	private CourseListItem courseListItem;
 
-	public CourseItem getCourseDescription() {
-		return courseDescription;
+	public CourseListItem getCourseListItem() {
+		return courseListItem;
 	}
 
-	public void setCourseDescription(CourseItem courseDescription) {
-		this.courseDescription = courseDescription;
-	}
-
-	public String getSemesterId() {
-		return semesterId;
-	}
-
-	public void setSemesterId(String semesterId) {
-		this.semesterId = semesterId;
+	public void setCourseListItem(CourseListItem courseListItem) {
+		this.courseListItem = courseListItem;
 	}
 }

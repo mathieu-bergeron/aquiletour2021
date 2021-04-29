@@ -25,7 +25,7 @@ import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.course_list.models.CourseItem;
+import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
@@ -128,11 +128,11 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("courseTitle")[0];
 			String courseId = parameters.get("newCourseId")[0];
 			
-			CourseItem courseDescription = new CourseItem(user.getId(), semesterId, courseId, courseTitle);
+			CourseListItem courseDescription = new CourseListItem(user.getId(), semesterId, courseId, courseTitle);
 			
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setSemesterId(semesterId);
-			addCourseMessage.setCourseDescription(courseDescription);
+			addCourseMessage.setCourseListItem(courseDescription);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 		}
 

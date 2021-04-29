@@ -53,10 +53,6 @@ public class QueueUpdater {
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
-
-		DashboardUpdater.deleteQueueForUser(modelStore, queueId, queue.getTeacherId());
-		
-		DashboardUpdater.deleteQueueForUsers(modelStore, queueId, queue.getStudentIds());
 	
 		modelStore.delete(queue);
 	}
@@ -71,10 +67,6 @@ public class QueueUpdater {
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
-
-		DashboardUpdater.openQueueForUser(modelStore, queueId, queue.getTeacherId());
-		
-		DashboardUpdater.openQueueForUsers(modelStore, queueId, queue.getStudentIds());
 		
 		modelStore.closeWithoutSaving(queue);
 
@@ -98,12 +90,6 @@ public class QueueUpdater {
 				queue.clearQueue();
 			}
 		});
-		
-
-		DashboardUpdater.closeQueueForUser(modelStore, queueId, queue.getTeacherId());
-		
-		DashboardUpdater.closeQueueForUsers(modelStore, queueId, queue.getStudentIds());
-		
 	}
 
 	public static int addStudentsToQueue(ModelStoreSync modelStore, 
@@ -141,8 +127,6 @@ public class QueueUpdater {
 			                                 User user) {
 
 		T.call(QueueUpdater.class);
-
-		DashboardUpdater.setMyAppointmentForUser(modelStore, queueId, user, true);
 
 		Appointment appointment = createAppointment(user);
 		
@@ -188,11 +172,6 @@ public class QueueUpdater {
 		List<String> studentIds = queue.getStudentIds();
 
 		modelStore.closeWithoutSaving(queue);
-		
-		DashboardUpdater.setNumberOfAppointmentsForUser(modelStore, queueId, teacherId, nbAppointment);
-
-		DashboardUpdater.setNumberOfAppointmentsForUserIds(modelStore, queueId, studentIds, nbAppointment);
-
 	}
 
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
@@ -224,8 +203,6 @@ public class QueueUpdater {
 		T.call(QueueUpdater.class);
 		
 		String appointmentOwnerId = deletedAppointment.getStudentId();
-		
-		DashboardUpdater.setMyAppointmentForUserId(modelStore, queueId, appointmentOwnerId, false);
 		
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}

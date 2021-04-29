@@ -78,7 +78,7 @@ import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.course_list.models.CourseItem;
+import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
 import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
@@ -93,7 +93,7 @@ import ca.aquiletour.core.pages.course_list.teacher.messages.ShowCourseListMessa
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
-import ca.aquiletour.core.pages.dashboards.values.ObservableDashboardCourseList;
+import ca.aquiletour.core.pages.dashboards.values.DashboardItems;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
@@ -178,7 +178,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		T.call(AquiletourMain.class);
 
 		Ntro.registerSerializableClass(DashboardModel.class);
-		Ntro.registerSerializableClass(ObservableDashboardCourseList.class);
+		Ntro.registerSerializableClass(DashboardItems.class);
 		Ntro.registerSerializableClass(DashboardItem.class);
 
 		Ntro.registerSerializableClass(QueueModel.class);
@@ -219,7 +219,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(TaskCompletion.class);
 		Ntro.registerSerializableClass(CompletionByTaskId.class);
 
-		Ntro.registerSerializableClass(CourseItem.class);
+		Ntro.registerSerializableClass(CourseListItem.class);
 		Ntro.registerSerializableClass(CourseListModelTeacher.class);
 		Ntro.registerSerializableClass(CourseListModelStudent.class);
 		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);

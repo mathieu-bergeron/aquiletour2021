@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.course_list.handlers;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
-import ca.aquiletour.core.pages.course_list.models.CourseItem;
+import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseItemView;
@@ -84,9 +84,9 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		view.clearItems();
 		
 		model.getCourses().removeObservers();
-		model.getCourses().onItemAdded(new ItemAddedListener<CourseItem>() {
+		model.getCourses().onItemAdded(new ItemAddedListener<CourseListItem>() {
 			@Override
-			public void onItemAdded(int index, CourseItem description) {
+			public void onItemAdded(int index, CourseListItem description) {
 				T.call(this);
 
 				if(description.getSemesterId().equals(currentSemesterId)) {
@@ -102,7 +102,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		});
 	}
 
-	protected void observeCourseDescription(CourseItem courseItem, CourseItemView itemView) {
+	protected void observeCourseDescription(CourseListItem courseItem, CourseItemView itemView) {
 		T.call(this);
 		
 		itemView.displayTasksSummary(courseItem.getTasksSummary());

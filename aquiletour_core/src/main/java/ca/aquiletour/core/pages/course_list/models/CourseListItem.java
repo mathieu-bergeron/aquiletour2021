@@ -7,7 +7,7 @@ import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredList;
 import ca.ntro.core.system.trace.T;
 
-public class CourseItem implements NtroModelValue {
+public class CourseListItem implements NtroModelValue {
 	
 	private String teacherId = "";
 	private String semesterId = "";
@@ -18,11 +18,11 @@ public class CourseItem implements NtroModelValue {
 	private ObservableTaskDescriptions tasks = new ObservableTaskDescriptions();
 	private StoredBoolean queueOpen = new StoredBoolean();
 
-	public CourseItem() {
+	public CourseListItem() {
 		T.call(this);
 	}
 
-	public CourseItem(String teacherId, String semesterId, String courseId, String courseTitle) {
+	public CourseListItem(String teacherId, String semesterId, String courseId, String courseTitle) {
 		T.call(this);
 		
 		this.teacherId = teacherId;

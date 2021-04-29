@@ -39,7 +39,7 @@ import ca.aquiletour.web.pages.course_list.student.CourseListViewWebTeacher;
 import ca.aquiletour.web.pages.course_list.teacher.CourseItemViewWebStudent;
 import ca.aquiletour.web.pages.course_list.teacher.CourseListViewWebStudent;
 import ca.aquiletour.web.pages.course_list.CourseItemViewWeb;
-import ca.aquiletour.web.pages.dashboard.ActiveCourseSummaryViewWeb;
+import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.DashboardItemViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.student.DashboardViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.teacher.DashboardItemViewWebTeacher;

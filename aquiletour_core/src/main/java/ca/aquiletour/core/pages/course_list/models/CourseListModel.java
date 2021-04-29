@@ -27,7 +27,7 @@ public abstract class CourseListModel implements NtroModel {
 	}
 
 
-	public void addCourse(CourseItem courseDescription) {
+	public void addCourse(CourseListItem courseDescription) {
 		T.call(this);
 		
 		courses.addItem(courseDescription);
@@ -44,19 +44,19 @@ public abstract class CourseListModel implements NtroModel {
 	public void addGroup(String semesterId, String courseId, String groupId) {
 		T.call(this);
 		
-		CourseItem course = courseById(semesterId, courseId);
+		CourseListItem course = courseById(semesterId, courseId);
 		
 		if(course != null) {
 			course.addGroup(groupId);
 		}
 	}
 
-	public CourseItem courseById(String semesterId, String courseId) {
+	public CourseListItem courseById(String semesterId, String courseId) {
 		T.call(this);
 		
-		CourseItem result = null;
+		CourseListItem result = null;
 		
-		for(CourseItem candidate : getCourses().getValue()) {
+		for(CourseListItem candidate : getCourses().getValue()) {
 			if(candidate.getSemesterId().equals(semesterId)
 					&& candidate.getCourseId().equals(courseId)) {
 				
@@ -71,7 +71,7 @@ public abstract class CourseListModel implements NtroModel {
 	public void addTask(CoursePath coursePath, TaskDescription task) {
 		T.call(this);
 		
-		CourseItem course = courseById(coursePath.semesterId(), coursePath.courseId());
+		CourseListItem course = courseById(coursePath.semesterId(), coursePath.courseId());
 		
 		if(course != null) {
 
@@ -82,7 +82,7 @@ public abstract class CourseListModel implements NtroModel {
 	public void openQueue(String semesterId, String courseId) {
 		T.call(this);
 
-		CourseItem course = courseById(semesterId, courseId);
+		CourseListItem course = courseById(semesterId, courseId);
 		
 		if(course != null) {
 
@@ -93,7 +93,7 @@ public abstract class CourseListModel implements NtroModel {
 	public void closeQueue(String semesterId, String courseId) {
 		T.call(this);
 
-		CourseItem course = courseById(semesterId, courseId);
+		CourseListItem course = courseById(semesterId, courseId);
 		
 		if(course != null) {
 

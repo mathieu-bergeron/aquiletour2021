@@ -1,28 +1,9 @@
-<div class='card border mb-3'>
+<div class='card border mb-3' style="min-width:20rem;">
     <div class='card-header bg-transparent border'>
-        <a href="#" class="course-title" id="course-title-link"></a>
+        <a href="#" class="" id="course-title-link"></a>
     </div>
-    <div class='card-body text'>
-        <span>Nombre de rendez-vous: <span id="number-of-appointments"></span></span><br>
-        <span>Nombre d'étudiants inscrits: <span id="number-of-students"></span></span><br>
-        <br>
-        <a id='close-queue-link' href='#'>Fermer la file d'attente</a>
-        <br>
-        <br>
-        <span>Ajouter des étudiants (fichier .csv de ColNet)</span><br>
-        <div class='card-footer bg-transparent border' id="nbAppointment">
-
-        <form action="/mescours" method="post" enctype="multipart/form-data">
-            <input type="file" name="csvFile" id="csv-file-input"/><br>
-              <input type="hidden" name="queueId" value="" id="csv-file-queue-id"/>
-              <input type="submit" id="csv-file-submit"/>
-        </form>
-        </div>
-        <br>
-        <a id='show-course-link' href='#'>Afficher les tâches du cours</a><br>
-        <br>
-        <a id='delete-queue-link' href='#'>Supprimer la file d'attente</a>
+    <div class="card-body">
+        <ul class="list-group" id="task-list">
+        </ul>
     </div>
-    
 </div>
-

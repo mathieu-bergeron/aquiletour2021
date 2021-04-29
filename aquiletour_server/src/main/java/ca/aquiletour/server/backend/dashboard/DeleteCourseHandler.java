@@ -15,8 +15,6 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 		
 		User teacher = message.getUser();
 		String courseId = message.getCourseId();
-
-		DashboardUpdater.deleteQueueForUser(modelStore, courseId, teacher.getId());
 	}
 
 	@Override
