@@ -1,21 +1,16 @@
 package ca.aquiletour.core.pages.course.teacher.handlers;
 
-import java.util.Map;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
 import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.courses.model.GroupDescription;
-import ca.aquiletour.core.models.courses.model.GroupTaskCompletions;
-import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
-import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;

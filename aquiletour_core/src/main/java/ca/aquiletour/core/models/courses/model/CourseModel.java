@@ -169,7 +169,7 @@ public class CourseModel extends CourseModelBase {
 		
 		String groupId = groupIdForStudent(studentId);
 
-		studentCompletions.putEntry(taskId, new TaskCompletion(studentId, groupId));
+		studentCompletions.putEntry(studentId, new TaskCompletion(studentId, groupId));
 	}
 	
 	public String groupIdForStudent(String studentId) {

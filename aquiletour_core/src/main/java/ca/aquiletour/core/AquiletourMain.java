@@ -42,12 +42,11 @@ import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.models.courses.group_description.ObservableGroupDescriptionList;
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
-import ca.aquiletour.core.models.courses.model.CompletionsByGroup;
-import ca.aquiletour.core.models.courses.model.CompletionsByStudent;
+import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
+import ca.aquiletour.core.models.courses.model.CompletionsByTaskId;
 import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.courses.model.EndTimeByTaskId;
 import ca.aquiletour.core.models.courses.model.GroupDescription;
-import ca.aquiletour.core.models.courses.model.GroupTaskCompletions;
 import ca.aquiletour.core.models.courses.model.TaskDatesByGroupId;
 import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
@@ -215,10 +214,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(CourseModel.class);
 		Ntro.registerSerializableClass(CourseModelStudent.class);
-		Ntro.registerSerializableClass(CompletionsByGroup.class);
-		Ntro.registerSerializableClass(CompletionsByStudent.class);
 		Ntro.registerSerializableClass(EndTimeByTaskId.class);
-		Ntro.registerSerializableClass(GroupTaskCompletions.class);
 		Ntro.registerSerializableClass(TaskDatesByGroupId.class);
 		Ntro.registerSerializableClass(TaskCompletion.class);
 		Ntro.registerSerializableClass(CompletionByTaskId.class);
@@ -304,6 +300,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(GroupDescription.class);
 		Ntro.registerSerializableClass(StudentIdList.class);
 		Ntro.registerSerializableClass(ObservableGroupDescriptionList.class);
+
+		Ntro.registerSerializableClass(CompletionByStudentId.class);
+		Ntro.registerSerializableClass(CompletionsByTaskId.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

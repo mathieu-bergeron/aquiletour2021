@@ -35,6 +35,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitRepoForm = this.getRootElement().find("#git-repo-form").get(0);
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
+		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
 
 		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
@@ -43,6 +44,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(gitRepoForm);
 		MustNot.beNull(gitProgressionLink);
 		MustNot.beNull(taskCompletedContainer);
+		MustNot.beNull(taskCompletedCheckbox);
 
 		Ntro.verify(that(addTaskIdToForm.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
@@ -99,6 +101,20 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		}else {
 
 			taskCompletedContainer.hide();
+		}
+	}
+
+	@Override
+	public void checkCompletion(boolean check) {
+		T.call(this);
+		
+		if(check) {
+			
+			taskCompletedCheckbox.setAttribute("checked", "true");
+			
+		}else {
+
+			taskCompletedCheckbox.removeAttribute("checked");
 		}
 	}
 
