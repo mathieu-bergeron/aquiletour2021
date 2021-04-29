@@ -4,9 +4,9 @@ import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.views.ItemView;
 
-public interface CourseItemView extends ItemView {
+public interface CourseListItemView extends ItemView {
 
-	void displayCourseDescription(CourseListItem courseDescription);
+	void displayCourseListItem(CourseListItem courseDescription);
 	void appendTaskDescription(TaskDescription task);
 	void appendGroupId(String groupId);
 	void displayTasksSummary(String tasksSummaryText);

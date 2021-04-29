@@ -6,7 +6,7 @@ import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
-import ca.aquiletour.core.pages.course_list.views.CourseItemView;
+import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ValueObserver;
@@ -91,8 +91,8 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 
 				if(description.getSemesterId().equals(currentSemesterId)) {
 
-					CourseItemView subView = (CourseItemView) subViewLoader.createView();
-					subView.displayCourseDescription(description);
+					CourseListItemView subView = (CourseListItemView) subViewLoader.createView();
+					subView.displayCourseListItem(description);
 
 					view.appendItem(subView);
 
@@ -102,7 +102,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		});
 	}
 
-	protected void observeCourseDescription(CourseListItem courseItem, CourseItemView itemView) {
+	protected void observeCourseDescription(CourseListItem courseItem, CourseListItemView itemView) {
 		T.call(this);
 		
 		itemView.displayTasksSummary(courseItem.getTasksSummary());
@@ -150,7 +150,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		
 	}
 	
-	private void displayOpenQueueMessage(boolean queueOpen, String teacherId, String courseId, CourseItemView itemView) {
+	private void displayOpenQueueMessage(boolean queueOpen, String teacherId, String courseId, CourseListItemView itemView) {
 		T.call(this);
 		
 		String queueHref = "/" + Constants.QUEUE_URL_SEGMENT + "/" + teacherId + "/" + courseId;

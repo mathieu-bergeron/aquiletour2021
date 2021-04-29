@@ -116,7 +116,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 		String text = "Groupe " + groupId;
 		
 		if(groupId.equals(Constants.COURSE_STRUCTURE_ID)) {
-
+			
 			text = Constants.COURSE_STRUCTURE_TEXT;
 
 		}else if(groupId.equals(Constants.ALL_GROUPS_ID)) {

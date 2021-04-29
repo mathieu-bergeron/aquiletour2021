@@ -245,15 +245,9 @@ public class AquiletourRequestHandler {
 		MSG message = Ntro.messages().create(messageClass);
 
 		String teacherId = path.name(0);
-		String courseId = path.name(1);
-		Path taskPath = path.subPath(2);
-
-		String semesterId = null;
-		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
-			semesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
-		}else {
-			semesterId = sessionData.getCurrentSemester();
-		}
+		String semesterId = path.name(1);
+		String courseId = path.name(2);
+		Path taskPath = path.subPath(3);
 
 		message.setTeacherId(teacherId);
 		message.setCourseId(courseId);

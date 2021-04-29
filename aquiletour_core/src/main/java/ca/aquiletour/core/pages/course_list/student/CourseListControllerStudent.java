@@ -10,7 +10,7 @@ import ca.aquiletour.core.pages.course_list.student.handlers.CourseListViewModel
 import ca.aquiletour.core.pages.course_list.student.handlers.ShowCourseListHandlerStudent;
 import ca.aquiletour.core.pages.course_list.student.messages.SelectCourseListSubsetStudent;
 import ca.aquiletour.core.pages.course_list.student.messages.ShowCourseListMessageStudent;
-import ca.aquiletour.core.pages.course_list.student.views.CourseItemViewStudent;
+import ca.aquiletour.core.pages.course_list.student.views.CourseListItemViewStudent;
 import ca.aquiletour.core.pages.course_list.student.views.CourseListViewStudent;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.trace.T;
@@ -28,7 +28,7 @@ public class CourseListControllerStudent extends CourseListController {
 	protected Class<? extends NtroView> subViewClass() {
 		T.call(this);
 		
-		return CourseItemViewStudent.class;
+		return CourseListItemViewStudent.class;
 	}
 
 	@Override

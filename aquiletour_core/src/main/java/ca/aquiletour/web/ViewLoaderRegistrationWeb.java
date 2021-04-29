@@ -5,11 +5,11 @@ import ca.aquiletour.core.pages.course.student.views.TaskViewStudent;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
-import ca.aquiletour.core.pages.course_list.student.views.CourseItemViewStudent;
+import ca.aquiletour.core.pages.course_list.student.views.CourseListItemViewStudent;
 import ca.aquiletour.core.pages.course_list.student.views.CourseListViewStudent;
-import ca.aquiletour.core.pages.course_list.teacher.views.CourseItemViewTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.views.CourseListItemViewTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListViewTeacher;
-import ca.aquiletour.core.pages.course_list.views.CourseItemView;
+import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.aquiletour.core.pages.dashboards.student.DashboardCourseViewStudent;
 import ca.aquiletour.core.pages.dashboards.student.DashboardViewStudent;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardCourseViewTeacher;
@@ -34,11 +34,11 @@ import ca.aquiletour.web.pages.course.student.TaskViewWebStudent;
 import ca.aquiletour.web.pages.course.teacher.CourseViewWebTeacher;
 import ca.aquiletour.web.pages.course.teacher.TaskViewWebTeacher;
 import ca.aquiletour.web.pages.course_list.CourseListViewWeb;
-import ca.aquiletour.web.pages.course_list.student.CourseItemViewWebTeacher;
+import ca.aquiletour.web.pages.course_list.student.CourseListItemViewWebTeacher;
 import ca.aquiletour.web.pages.course_list.student.CourseListViewWebTeacher;
-import ca.aquiletour.web.pages.course_list.teacher.CourseItemViewWebStudent;
+import ca.aquiletour.web.pages.course_list.teacher.CourseListItemViewWebStudent;
 import ca.aquiletour.web.pages.course_list.teacher.CourseListViewWebStudent;
-import ca.aquiletour.web.pages.course_list.CourseItemViewWeb;
+import ca.aquiletour.web.pages.course_list.CourseListItemViewWeb;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
 import ca.aquiletour.web.pages.dashboard.student.DashboardItemViewWebStudent;
 import ca.aquiletour.web.pages.dashboard.student.DashboardViewWebStudent;
@@ -253,21 +253,21 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CourseListViewWebStudent.class));
 		
-		ViewLoaders.registerViewLoader(CourseItemViewTeacher.class,
+		ViewLoaders.registerViewLoader(CourseListItemViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 				.setHtmlUrl("/partials/course_item/teacher/course_item_teacher.html")
 		     	.setCssUrl("/partials/course_item/teacher/course_item_teacher.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(CourseItemViewWebTeacher.class));
+				.setTargetClass(CourseListItemViewWebTeacher.class));
 
-		ViewLoaders.registerViewLoader(CourseItemViewStudent.class,
+		ViewLoaders.registerViewLoader(CourseListItemViewStudent.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 				.setHtmlUrl("/partials/course_item/student/course_item_student.html")
 		     	.setCssUrl("/partials/course_item/student/course_item_student.css")
 				.setTranslationsUrl("/i18n/fr/string.json")
-				.setTargetClass(CourseItemViewWebStudent.class));
+				.setTargetClass(CourseListItemViewWebStudent.class));
 
 		ViewLoaders.registerViewLoader(GroupListView.class,
 				"fr"

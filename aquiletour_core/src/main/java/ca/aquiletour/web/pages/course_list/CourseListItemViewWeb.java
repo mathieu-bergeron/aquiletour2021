@@ -1,12 +1,11 @@
 package ca.aquiletour.web.pages.course_list;
 
 
-import ca.aquiletour.core.AquiletourMain;
 import static ca.ntro.assertions.Factory.that;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
-import ca.aquiletour.core.pages.course_list.views.CourseItemView;
+import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -15,7 +14,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
+public class CourseListItemViewWeb extends NtroViewWeb implements CourseListItemView {
 	
 	private HtmlElement courseTitleLink;
 	private HtmlElement courseTitleSemesterId;
@@ -71,32 +70,26 @@ public class CourseItemViewWeb extends NtroViewWeb implements CourseItemView {
 	}
 
 	@Override
-	public void displayCourseDescription(CourseListItem courseItem) {
+	public void displayCourseListItem(CourseListItem courseListItem) {
 		T.call(this);
 		
-		String href = "/" + Constants.COURSE_URL_SEGMENT + 
-		              "/" + Ntro.currentUser().getId() + 
-		              "/" + courseItem.getCourseId();
+		String href = "/" + Constants.COURSE_URL_SEGMENT + courseListItem.coursePath().toUrlPath();
 		
-		if(!AquiletourMain.currentSemester().equals(courseItem.getSemesterId())) {
-			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + courseItem.getSemesterId();
-		}
-		
-		if(courseItem.getSemesterId().equals(Constants.DRAFTS_SEMESTER_ID)) {
+		if(courseListItem.getSemesterId().equals(Constants.DRAFTS_SEMESTER_ID)) {
 			groupContainer.hide();
 		}
 		
-		courseTitleLink.text(courseItem.getCourseId());
+		courseTitleLink.text(courseListItem.getCourseId());
 		courseTitleLink.setAttribute("href", href);
 		
-		courseTitleSemesterId.text(courseItem.getSemesterId());
+		courseTitleSemesterId.text(courseListItem.getSemesterId());
 		
-		addGroupModalTitle.text("Ajouter un groupe au cours " + courseItem.getCourseId());
+		addGroupModalTitle.text("Ajouter un groupe au cours " + courseListItem.getCourseId());
 		
-		addSemesterIdToValue.appendToAttribute("value", courseItem.getSemesterId());
-		addCourseIdToValue.appendToAttribute("value", courseItem.getCourseId());
-		addCourseIdToId.appendToAttribute("id", courseItem.getCourseId());
-		addCourseIdToForm.appendToAttribute("form", courseItem.getCourseId());
+		addSemesterIdToValue.appendToAttribute("value", courseListItem.getSemesterId());
+		addCourseIdToValue.appendToAttribute("value", courseListItem.getCourseId());
+		addCourseIdToId.appendToAttribute("id", courseListItem.getCourseId());
+		addCourseIdToForm.appendToAttribute("form", courseListItem.getCourseId());
 	}
 
 	@Override

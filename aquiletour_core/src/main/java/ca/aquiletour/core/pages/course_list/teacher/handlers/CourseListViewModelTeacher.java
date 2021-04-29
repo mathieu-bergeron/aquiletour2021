@@ -13,8 +13,6 @@ public class CourseListViewModelTeacher extends CourseListViewModel<CourseListMo
 	protected void handle(CourseListModelTeacher model, CourseListViewTeacher view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
-		
-		System.err.println("CourseListViewModelTeacher");
 	}
 
 }
