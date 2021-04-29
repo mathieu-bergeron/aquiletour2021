@@ -60,14 +60,6 @@ public class Task implements NtroModelValue, TaskNode {
 		this.nextTasks = nextTasks;
 	}
 
-	public void removeObservers() {
-		T.call(this);
-		
-		getPreviousTasks().removeObservers();
-		getSubTasks().removeObservers();
-		getNextTasks().removeObservers();
-	}
-
 	public Path getPath() {
 		return path;
 	}

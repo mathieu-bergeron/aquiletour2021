@@ -35,26 +35,9 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 		view.showUneditableComponents(!isEditable());
 		view.showEditableComponents(isEditable());
 		
-		model.getCompletions().removeObservers();
-		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByStudentId>() {
-			@Override
-			public void onEntryAdded(String taskId, CompletionByStudentId value) {
-				T.call(this);
-				
-				value.removeObservers();
-				if(currentTask() != null && currentTask().id().equals(taskId)) {
-					value.onEntryAdded(new EntryAddedListener<TaskCompletion>() {
-						@Override
-						public void onEntryAdded(String studentId, TaskCompletion value) {
-							T.call(this);
-							
-							view.appendCompletion(studentId);
-						}
-					});
-				}
-			}
-		});
 	}
+
+
 
 	private void initializeDropdowns(CourseModel model, CourseViewTeacher view) {
 		T.call(this);
@@ -126,4 +109,12 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 		
 		view.appendToGroupDropdown(groupId, href, text);
 	}
+
+	@Override
+	protected void displayStudentCompletion(String studentId, TaskCompletion completion, CourseViewTeacher view) {
+		T.call(this);
+		
+		view.appendCompletion(studentId);
+	}
+
 }

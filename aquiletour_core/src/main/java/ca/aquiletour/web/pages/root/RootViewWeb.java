@@ -46,7 +46,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private HtmlElement homeLink;
 	private HtmlElement dashboardLink;
-	private HtmlElement coursesLink;
+	private HtmlElement coursesLinkTeacher;
+	private HtmlElement coursesLinkStudent;
 	private HtmlElement groupListLink;
 	private HtmlElement openQueueListLink;
 	private HtmlElement calendarListLink;
@@ -67,7 +68,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
 		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
-		coursesLink = getRootElement().find("#courses-link").get(0);
+		coursesLinkTeacher = getRootElement().find("#courses-link-teacher").get(0);
+		coursesLinkStudent = getRootElement().find("#courses-link-student").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
 		loginLink = getRootElement().find("#login-link").get(0);
@@ -90,6 +92,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(userProfile);
 		MustNot.beNull(userProfileName);
 		MustNot.beNull(userProfileNameInput);
+		MustNot.beNull(coursesLinkTeacher);
+		MustNot.beNull(coursesLinkStudent);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
@@ -117,8 +121,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
 
-		coursesLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
+		coursesLinkTeacher.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
+		coursesLinkStudent.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
+		coursesLinkTeacher.hide();
 		openQueueListLink.hide();
 		calendarListLink.hide();
 		groupListLink.hide();
@@ -135,6 +141,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			
 			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + Ntro.currentUser().getId());
 			queueLink.show();
+			
+			coursesLinkStudent.hide();
+			coursesLinkTeacher.show();
 			
 		} else {
 

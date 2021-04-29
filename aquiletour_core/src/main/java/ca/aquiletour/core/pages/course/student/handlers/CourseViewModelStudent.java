@@ -26,30 +26,15 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModel, CourseV
 			view.showCompletionCheckbox(false);
 
 		}
-		
-		
-		model.getCompletions().removeObservers();
-		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByStudentId>() {
-			@Override
-			public void onEntryAdded(String taskId, CompletionByStudentId value) {
-				T.call(this);
-				
-				value.removeObservers();
-				if(currentTask() != null && currentTask().id().equals(taskId)) {
-					value.onEntryAdded(new EntryAddedListener<TaskCompletion>() {
-						@Override
-						public void onEntryAdded(String studentId, TaskCompletion value) {
-							T.call(this);
-							
-							if(studentId.equals(Ntro.currentUser().getId())) {
-								
-								view.checkCompletion(true);
-							}
-						}
-					});
-				}
-			}
-		});
-		
+	}
+
+	@Override
+	protected void displayStudentCompletion(String studentId, TaskCompletion completion, CourseViewStudent view) {
+		T.call(this);
+
+		if(studentId.equals(Ntro.currentUser().getId())) {
+			
+			view.checkCompletion(true);
+		}
 	}
 }
