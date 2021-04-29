@@ -57,6 +57,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement userProfileName;
 	private HtmlElement userProfileNameInput;
 	private HtmlElement userProfile;
+	private HtmlElement toggleStudentModeButton;
 	private BootstrapAlert alertDanger;
 	private BootstrapAlert alertPrimary;
 
@@ -78,6 +79,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		userProfile = getRootElement().find("#user-profile").get(0);
 		userProfileName = getRootElement().find("#user-profile-name").get(0);
 		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
+		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
 
@@ -94,6 +96,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(userProfileNameInput);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
+		MustNot.beNull(toggleStudentModeButton);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
@@ -130,8 +133,15 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		groupListLink.hide();
 		queueLink.hide();
 		
-		if(Ntro.currentUser() instanceof Teacher
-				|| Ntro.currentUser() instanceof TeacherGuest) {
+		if(Ntro.currentUser() instanceof Teacher) {
+			toggleStudentModeButton.show();
+		}else {
+			toggleStudentModeButton.hide();
+		}
+		
+		if(((User) Ntro.currentUser()).actsAsTeacher()) {
+			
+			toggleStudentModeButton.text("Mode étudiant");
 
 			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
 			calendarListLink.show();
@@ -147,12 +157,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			
 		} else {
 
+			toggleStudentModeButton.text("Mode enseignant");
+
 			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
 			openQueueListLink.show();
 		}
 
 		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
-
 
 		loginLink.addEventListener("click", new HtmlEventListener() {
 			@Override

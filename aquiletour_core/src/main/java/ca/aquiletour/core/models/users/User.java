@@ -1,5 +1,6 @@
 package ca.aquiletour.core.models.users;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.users.NtroUser;
 
 public class User extends NtroUser {
@@ -7,12 +8,11 @@ public class User extends NtroUser {
 	private String name = "";
 	private String surname = "";
 	private String email = "";
-	private String phoneNumber = "";	
 
 	public User() {
-		
+
 	}
-	
+
 	public User(String email) {
 		this.email = email;
 	}
@@ -38,13 +38,6 @@ public class User extends NtroUser {
 		this.email = email;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
 
 	public void copyPublicInfomation(User user) {
 		setName(user.getName());
@@ -67,6 +60,10 @@ public class User extends NtroUser {
 		sessionUser.setSurname(getSurname());
 		sessionUser.setEmail(getEmail());
 	}
-	
-	
+
+	public boolean actsAsTeacher() {
+		T.call(this);
+		
+		return false;
+	}
 }

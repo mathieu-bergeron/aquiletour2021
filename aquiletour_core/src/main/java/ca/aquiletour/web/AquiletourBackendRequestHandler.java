@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
@@ -69,13 +70,15 @@ public class AquiletourBackendRequestHandler {
 			
 			String screenName = parameters.get("userName")[0];
 
-			User user = (User) Ntro.currentSession().getUser();
-			user.setName(screenName);
-			user.setSurname("");
 			
 			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
 			updateUserInfoMessage.setScreenName(screenName);
 			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
+
+		} else if(parameters.containsKey("toggleStudentMode")) {
+			
+			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
+			Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()
 
 		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 

@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.users;
 
 import java.util.List;
 
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.ntro.core.models.ModelStoreSync;
@@ -52,5 +53,22 @@ public class UserUpdater {
 				existingModel.setSurname("");
 			}
 		});
+	}
+
+	public static void toggleStudentMode(ModelStoreSync modelStore, User user) {
+		T.call(UserUpdater.class);
+
+		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
+			@Override
+			public void update(User userModel) {
+				T.call(this);
+				
+				if(userModel instanceof Teacher) {
+					Teacher teacher = (Teacher) userModel;
+					teacher.setStudentMode(!teacher.getStudentMode());
+				}
+			}
+		});
+		
 	}
 }

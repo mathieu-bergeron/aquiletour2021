@@ -86,6 +86,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				String[] cutBySeparator = line.split(";");
 				newUser.setSurname(cutBySeparator[0]);//FamilleA
 				newUser.setName(cutBySeparator[1]);//PrenomA
+				// FIXME: hide DA
+				//        use a SHA1 digest as userId
 				newUser.setId(cutBySeparator[2].substring(2));//DA 
 				newUser.setProgramId(cutBySeparator[3]);//program number
 //					newUser.setName(cutBySeparator[4]);//?

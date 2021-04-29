@@ -5,6 +5,7 @@ import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
@@ -56,6 +57,7 @@ import ca.aquiletour.server.backend.semester_list.AddSemesterWeekHandler;
 import ca.aquiletour.server.backend.semester_list.SelectCurrentSemesterHandler;
 import ca.aquiletour.server.backend.time.TimePassesHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
+import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.messages.NtroMessage;
@@ -93,6 +95,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());
 		addBackendMessageHandler(TaskCompletedMessage.class, new TaskCompletedHandler());
 		addBackendMessageHandler(TimePassesMessage.class, new TimePassesHandler());
+		addBackendMessageHandler(ToggleStudentModeMessage.class, new ToggleStudentModeHandler());
 	}
 
 }

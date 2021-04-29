@@ -131,7 +131,7 @@ public class AquiletourRequestHandler {
 		
 		ShowCourseListMessage showCourseListMessage = null;
 		
-		if(user instanceof Teacher) {
+		if(user.actsAsTeacher()) {
 			showCourseListMessage = Ntro.messages().create(ShowCourseListMessageTeacher.class);
 		}else {
 			showCourseListMessage = Ntro.messages().create(ShowCourseListMessageStudent.class);
