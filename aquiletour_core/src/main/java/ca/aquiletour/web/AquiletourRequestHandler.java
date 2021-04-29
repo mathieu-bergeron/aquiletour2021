@@ -210,13 +210,13 @@ public class AquiletourRequestHandler {
 		T.call(AquiletourRequestHandler.class);
 		
 
-		if(user instanceof Teacher) {
+		if(user instanceof Teacher && user.actsAsTeacher()) {
 
 			ShowTeacherDashboardMessage showTeacherDashboardMessage = Ntro.messages().create(ShowTeacherDashboardMessage.class);
 			Ntro.messages().send(showTeacherDashboardMessage);
 
 			
-		}else if(user instanceof Student){
+		}else if(user instanceof Student || (user instanceof Teacher && !user.actsAsTeacher())){
 			
 			ShowStudentDashboardMessage showStudentDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
 			Ntro.messages().send(showStudentDashboardMessage);
@@ -309,7 +309,8 @@ public class AquiletourRequestHandler {
 				Ntro.messages().send(showLoginDialogMessage);
 
 			}else if(user instanceof Teacher 
-					&& user.getId().equals(teacherId)) {
+					&& user.getId().equals(teacherId)
+					&& user.actsAsTeacher()) {
 
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				teacherUsesQueueMessage.setCourseId(teacherId);

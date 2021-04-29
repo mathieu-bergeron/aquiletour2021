@@ -69,7 +69,6 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("userName")) {
 			
 			String screenName = parameters.get("userName")[0];
-
 			
 			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
 			updateUserInfoMessage.setScreenName(screenName);
