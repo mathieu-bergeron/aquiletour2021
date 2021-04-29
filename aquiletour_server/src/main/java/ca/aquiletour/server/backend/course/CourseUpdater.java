@@ -1,5 +1,7 @@
 package ca.aquiletour.server.backend.course;
 
+import java.util.List;
+
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
@@ -8,6 +10,7 @@ import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.Path;
@@ -212,6 +215,7 @@ public class CourseUpdater {
 	public static void addGroup(ModelStoreSync modelStore, 
 			                    CoursePath coursePath,
 			                    String groupId,
+			                    List<User> studentsToAdd,
 			                    User user) {
 
 		T.call(CourseUpdater.class);
@@ -221,7 +225,7 @@ public class CourseUpdater {
 			public void update(CourseModel course) {
 				T.call(this);
 
-				course.addGroup(groupId);
+				course.addGroup(groupId, studentsToAdd);
 			}
 		});
 	}

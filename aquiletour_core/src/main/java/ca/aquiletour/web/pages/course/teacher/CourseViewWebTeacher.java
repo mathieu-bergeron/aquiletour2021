@@ -26,6 +26,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement saveButtonContainer;
 	private HtmlElement editableEndtime;
 	private HtmlElement editableDescription;
+	private HtmlElement uneditableCompletions;
 
 	private BootstrapDropdown semesterDropdown;
 	private BootstrapDropdown groupDropdown;
@@ -51,6 +52,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		weekOfElement = this.getRootElement().find("#week-of").get(0);
 		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
 		editableDescription = this.getRootElement().find("#editable-description").get(0);
+		uneditableCompletions = this.getRootElement().find("#uneditable-completions").get(0);
 		
 		MustNot.beNull(semesterDropdownHead);
 		MustNot.beNull(semesterDropdownTail);
@@ -67,6 +69,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(weekOfElement);
 		MustNot.beNull(editableEndtime);
 		MustNot.beNull(editableDescription);
+		MustNot.beNull(uneditableCompletions);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
@@ -214,5 +217,24 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 				e.removeAttribute("selected");
 			}
 		});
+	}
+
+	@Override
+	public void appendCompletion(String studentId) {
+		T.call(this);
+		
+		String list = uneditableCompletions.text();
+		
+		if(list == null || list.isEmpty()) {
+			
+			list = studentId;
+			
+		}else {
+			
+			list += ", " + studentId;
+			
+		}
+
+		uneditableCompletions.text(list);
 	}
 }

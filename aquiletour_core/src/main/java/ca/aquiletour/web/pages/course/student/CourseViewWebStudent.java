@@ -19,6 +19,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement gitRepoForm;
 	private HtmlElement gitProgressionLink;
 	private HtmlElement taskCompletedContainer;
+	private HtmlElement taskCompletedCheckbox;
 
 	private HtmlElements addTaskIdToForm;
 	private HtmlElements addTaskIdToValue;

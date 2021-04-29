@@ -18,6 +18,10 @@ import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseItem;
+import ca.aquiletour.core.pages.course_list.student.messages.SelectCourseListSubsetStudent;
+import ca.aquiletour.core.pages.course_list.student.messages.ShowCourseListMessageStudent;
+import ca.aquiletour.core.pages.course_list.teacher.messages.SelectCourseListSubsetTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.messages.ShowCourseListMessageTeacher;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.messages.ShowCommitListMessage;
@@ -125,7 +129,14 @@ public class AquiletourRequestHandler {
 
 		T.call(AquiletourRequestHandler.class);
 		
-		ShowCourseListMessage showCourseListMessage = Ntro.messages().create(ShowCourseListMessage.class);
+		ShowCourseListMessage showCourseListMessage = null;
+		
+		if(user instanceof Teacher) {
+			showCourseListMessage = Ntro.messages().create(ShowCourseListMessageTeacher.class);
+		}else {
+			showCourseListMessage = Ntro.messages().create(ShowCourseListMessageStudent.class);
+		}
+
 		Ntro.messages().send(showCourseListMessage);
 		
 		String currentSemesterId = null;
@@ -135,7 +146,14 @@ public class AquiletourRequestHandler {
 			currentSemesterId = sessionData.getCurrentSemester();
 		}
 
-		SelectCourseListSubset selectCourseListSubset = Ntro.messages().create(SelectCourseListSubset.class);
+		SelectCourseListSubset selectCourseListSubset = null;
+
+		if(user instanceof Teacher) {
+			selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetTeacher.class);
+		}else {
+			selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetStudent.class);
+		}
+
 		selectCourseListSubset.setSemesterId(currentSemesterId);
 		Ntro.messages().send(selectCourseListSubset);
 		

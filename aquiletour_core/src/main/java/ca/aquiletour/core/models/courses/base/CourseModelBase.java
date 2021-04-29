@@ -22,7 +22,7 @@ public abstract class CourseModelBase implements NtroModel, TaskGraph {
 		return findTaskById(pathToId(path));
 	}
 
-	private String pathToId(Path path) {
+	protected String pathToId(Path path) {
 		return path.toString();
 	}
 
@@ -308,9 +308,5 @@ public abstract class CourseModelBase implements NtroModel, TaskGraph {
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
 
-	public void taskCompletedByStudent(Path taskPath, String id) {
-		T.call(this);
-		
-	}
 
 }

@@ -1,6 +1,5 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;

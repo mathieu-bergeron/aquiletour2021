@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.queue;
 
 
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.ntro.backend.BackendMessageHandler;
@@ -17,7 +18,11 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		
-		CourseListUpdater.openQueueForUser(modelStore, sessionData.getCurrentSemester(), message.getCourseId(), message.getUser());
+		CourseListUpdater.openQueueForUser(modelStore, 
+				                           CourseListModelTeacher.class,
+				                           sessionData.getCurrentSemester(), 
+				                           message.getCourseId(), 
+				                           message.getUser());
 	}
 
 	@Override

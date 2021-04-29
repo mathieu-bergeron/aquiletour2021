@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.semester_list;
 
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
@@ -20,7 +21,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 	public void handleLater(ModelStoreSync modelStore, AddSemesterMessage message) {
 		T.call(this);
 		
-		CourseListUpdater.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
+		CourseListUpdater.addSemesterForUser(modelStore, CourseListModelTeacher.class, message.getSemesterId(), message.getUser());
 		GroupListUpdater.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
 	}
 

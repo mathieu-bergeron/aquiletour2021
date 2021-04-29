@@ -6,7 +6,7 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 
-public class ShowCourseListHandler extends ParentViewMessageHandler<RootView,
+public abstract class ShowCourseListHandler extends ParentViewMessageHandler<RootView,
                                                                     CourseListView,
                                                                     ShowCourseListMessage> {
 	@Override

@@ -177,45 +177,50 @@ public class CourseListUpdater {
 		});
 	}
 	
-	public static void openQueueForUser(ModelStoreSync modelStore, 
-										String semesterId,
-			                            String courseId, 
-			                            User user) {
+	public static <CLM extends CourseListModel> void openQueueForUser(ModelStoreSync modelStore, 
+																      Class<CLM> courseListModelClass, 
+																      String semesterId, 
+																      String courseId, 
+																      User user) {
 
 		T.call(CourseListUpdater.class);
 		
-		openQueueForUserId(modelStore, semesterId, courseId, user.getId());
+		openQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
 	}
 	
 
-	public static String getCourseTitle(ModelStoreSync modelStore, 
-			                            String semesterId, 
-			                            String courseId, 
-			                            String userId) {
-
+	public static <CLM extends CourseListModel> String getCourseTitle(ModelStoreSync modelStore, 
+																      Class<CLM> courseListModelClass, 
+																      String semesterId, 
+																      String courseId, 
+																      String userId) { 
 		T.call(CourseListUpdater.class);
 		
-		return getCourseItem(modelStore, semesterId, courseId, userId).getCourseTitle();
+		return getCourseItem(modelStore, courseListModelClass, semesterId, courseId, userId).getCourseTitle();
 	}
 
-	public static CourseItem getCourseItem(ModelStoreSync modelStore, 
-			                           String semesterId, 
-			                           String courseId, 
-			                           String userId) {
+	public static <CLM extends CourseListModel> CourseItem getCourseItem(ModelStoreSync modelStore, 
+																         Class<CLM> courseListModelClass, 
+																         String semesterId, 
+																         String courseId, 
+																         String userId) {
 
 		T.call(CourseListUpdater.class);
 		
-		CourseListModel model = modelStore.getModel(CourseListModel.class, "admin", userId);
+		CourseListModel model = modelStore.getModel(courseListModelClass, "admin", userId);
 		
 		return model.courseById(semesterId, courseId);
 	}
 	
-	public static void addTask(ModelStoreSync modelStore, CoursePath coursePath, TaskDescription task) {
+	public static <CLM extends CourseListModel> void addTask(ModelStoreSync modelStore, 
+			 												 Class<CLM> courseListModelClass,
+			                                                 CoursePath coursePath, 
+			                                                 TaskDescription task) {
 		T.call(CourseListUpdater.class);
 		
-		modelStore.updateModel(CourseListModel.class, "admin", coursePath.teacherId(), new ModelUpdater<CourseListModel>() {
+		modelStore.updateModel(courseListModelClass, "admin", coursePath.teacherId(), new ModelUpdater<CLM>() {
 			@Override
-			public void update(CourseListModel courseList) {
+			public void update(CLM courseList) {
 				T.call(this);
 				
 				courseList.addTask(coursePath, task);
@@ -223,14 +228,17 @@ public class CourseListUpdater {
 		});
 	}
 
-	public static List<CoursePath> getCourseList(ModelStoreSync modelStore, String semesterId, User user) {
+	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
+																			   Class<CLM> courseListModelClass, 
+																			   String semesterId, 
+																			   User user) {
 		T.call(CourseListUpdater.class);
 
 		List<CoursePath> courses = new ArrayList<>();
 		
-		if(modelStore.ifModelExists(CourseListModel.class, "admin", user.getId())) {
+		if(modelStore.ifModelExists(courseListModelClass, "admin", user.getId())) {
 			
-			CourseListModel model = modelStore.getModel(CourseListModel.class, "admin", user.getId());
+			CLM model = modelStore.getModel(courseListModelClass, "admin", user.getId());
 			
 			for(CourseItem item :  model.getCourses().getValue()) {
 

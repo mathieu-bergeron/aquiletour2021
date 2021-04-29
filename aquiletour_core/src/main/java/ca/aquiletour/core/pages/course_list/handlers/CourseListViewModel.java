@@ -14,13 +14,15 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseListViewModel<V extends CourseListView> extends ModelViewSubViewMessageHandler<CourseListModel, V, SelectCourseListSubset> {
+public abstract class CourseListViewModel<M extends CourseListModel, V extends CourseListView> extends ModelViewSubViewMessageHandler<M, V, SelectCourseListSubset> {
 	
 	private String currentSemesterId = null;
 
 	@Override
-	protected void handle(CourseListModel model, V view, ViewLoader subViewLoader, SelectCourseListSubset message) {
+	protected void handle(M model, V view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
+		
+		System.out.println("CourseListViewModel");
 		
 		if(currentSemesterId == null) {
 			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, view);
@@ -47,7 +49,7 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		view.appendToSemesterDropdown(semesterId, href, text);
 	}
 
-	private void observeSemesterIdList(CourseListModel model, V view) {
+	private void observeSemesterIdList(M model, V view) {
 		T.call(this);
 		
 		model.getSemesters().removeObservers();
@@ -61,8 +63,8 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		});
 	}
 
-	private void changeCurrentSemester(CourseListModel model, 
-			                           CourseListView view, 
+	private void changeCurrentSemester(M model, 
+			                           V view, 
 			                           ViewLoader subViewLoader) {
 
 		T.call(this);
@@ -74,8 +76,8 @@ public class CourseListViewModel<V extends CourseListView> extends ModelViewSubV
 		observeCourses(model, view, subViewLoader);
 	}
 
-	protected void observeCourses(CourseListModel model, 
-			                      CourseListView view, 
+	protected void observeCourses(M model, 
+			                      V view, 
 			                      ViewLoader subViewLoader) {
 		T.call(this);
 		

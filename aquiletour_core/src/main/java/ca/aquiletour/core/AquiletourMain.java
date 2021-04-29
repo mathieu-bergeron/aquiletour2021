@@ -40,12 +40,14 @@ import ca.aquiletour.core.models.courses.base.TaskRelation;
 import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
+import ca.aquiletour.core.models.courses.group_description.ObservableGroupDescriptionList;
+import ca.aquiletour.core.models.courses.group_description.StudentIdList;
 import ca.aquiletour.core.models.courses.model.CompletionsByGroup;
 import ca.aquiletour.core.models.courses.model.CompletionsByStudent;
 import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.courses.model.EndTimeByTaskId;
+import ca.aquiletour.core.models.courses.model.GroupDescription;
 import ca.aquiletour.core.models.courses.model.GroupTaskCompletions;
-import ca.aquiletour.core.models.courses.model.InfoByStudent;
 import ca.aquiletour.core.models.courses.model.TaskDatesByGroupId;
 import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
@@ -83,6 +85,12 @@ import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableTaskDescriptions;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
+import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
+import ca.aquiletour.core.pages.course_list.student.messages.SelectCourseListSubsetStudent;
+import ca.aquiletour.core.pages.course_list.student.messages.ShowCourseListMessageStudent;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.messages.SelectCourseListSubsetTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.messages.ShowCourseListMessageTeacher;
 import ca.aquiletour.core.pages.dashboards.DashboardModel;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
@@ -211,13 +219,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CompletionsByStudent.class);
 		Ntro.registerSerializableClass(EndTimeByTaskId.class);
 		Ntro.registerSerializableClass(GroupTaskCompletions.class);
-		Ntro.registerSerializableClass(InfoByStudent.class);
 		Ntro.registerSerializableClass(TaskDatesByGroupId.class);
 		Ntro.registerSerializableClass(TaskCompletion.class);
 		Ntro.registerSerializableClass(CompletionByTaskId.class);
 
 		Ntro.registerSerializableClass(CourseItem.class);
-		Ntro.registerSerializableClass(CourseListModel.class);
+		Ntro.registerSerializableClass(CourseListModelTeacher.class);
+		Ntro.registerSerializableClass(CourseListModelStudent.class);
 		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
 		Ntro.registerSerializableClass(ObservableSemesterIdList.class);
 		Ntro.registerSerializableClass(ObservableCourseGroupList.class);
@@ -286,10 +294,19 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(UpdateUserInfoMessage.class);
 		Ntro.registerSerializableClass(UpdateTaskInfoMessage.class);
 		Ntro.registerSerializableClass(TaskCompletedMessage.class);
+
+		Ntro.registerSerializableClass(ShowCourseListMessageTeacher.class);
+		Ntro.registerSerializableClass(ShowCourseListMessageStudent.class);
+
+		Ntro.registerSerializableClass(SelectCourseListSubsetTeacher.class);
+		Ntro.registerSerializableClass(SelectCourseListSubsetStudent.class);
+
+		Ntro.registerSerializableClass(GroupDescription.class);
+		Ntro.registerSerializableClass(StudentIdList.class);
+		Ntro.registerSerializableClass(ObservableGroupDescriptionList.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
-	
 
 	@Override
 	protected void onFailure(Exception e) {

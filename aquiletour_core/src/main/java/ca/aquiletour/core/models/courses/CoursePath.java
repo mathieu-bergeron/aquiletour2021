@@ -28,6 +28,7 @@ public class CoursePath extends Path {
 
 		Path path = new Path();
 		path.addName(getNames().get(TEACHER_INDEX));
+		path.addName(getNames().get(SEMESTER_INDEX));
 		path.addName(getNames().get(COURSE_INDEX));
 		return path;
 	}

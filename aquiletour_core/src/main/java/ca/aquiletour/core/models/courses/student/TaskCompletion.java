@@ -1,17 +1,37 @@
 package ca.aquiletour.core.models.courses.student;
 
 import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredBoolean;
+import ca.ntro.core.system.trace.T;
 
 public class TaskCompletion implements NtroModelValue {
 	
-	private StoredBoolean completed = new StoredBoolean(false);
+	String studentId = "";
+	String groupId = "";
 
-	public StoredBoolean getCompleted() {
-		return completed;
+	public TaskCompletion() {
+		T.call(this);
 	}
 
-	public void setCompleted(StoredBoolean completed) {
-		this.completed = completed;
+	public TaskCompletion(String studentId, String groupId) {
+		T.call(this);
+		
+		this.studentId = studentId;
+		this.groupId = groupId;
+	}
+
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 }

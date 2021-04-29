@@ -1,24 +1,30 @@
 package ca.aquiletour.core.models.courses.model;
 
+import java.util.List;
+
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.group_description.ObservableGroupDescriptionList;
+import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
+import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
 public class CourseModel extends CourseModelBase {
 
 	private ObservableSemesterIdList otherSemesters = new ObservableSemesterIdList();
-	private ObservableGroupIdList groups = new ObservableGroupIdList();
+
+	private ObservableGroupDescriptionList groups = new ObservableGroupDescriptionList();
 
 	private TaskDatesByGroupId scheduledDates = new TaskDatesByGroupId();
 	private TaskDatesByGroupId overridenDates = new TaskDatesByGroupId();
-
-	private CompletionsByGroup groupCompletions = new CompletionsByGroup();
+	
+	private CompletionsByTaskId completions = new CompletionsByTaskId();
 	
 	public ObservableSemesterIdList getOtherSemesters() {
 		return otherSemesters;
@@ -27,12 +33,12 @@ public class CourseModel extends CourseModelBase {
 	public void setOtherSemesters(ObservableSemesterIdList otherSemesters) {
 		this.otherSemesters = otherSemesters;
 	}
-	
-	public ObservableGroupIdList getGroups() {
+
+	public ObservableGroupDescriptionList getGroups() {
 		return groups;
 	}
 
-	public void setGroups(ObservableGroupIdList groups) {
+	public void setGroups(ObservableGroupDescriptionList groups) {
 		this.groups = groups;
 	}
 
@@ -51,19 +57,27 @@ public class CourseModel extends CourseModelBase {
 	public void setOverridenDates(TaskDatesByGroupId overridenDates) {
 		this.overridenDates = overridenDates;
 	}
-
-	public CompletionsByGroup getGroupCompletions() {
-		return groupCompletions;
+	
+	
+	public CompletionsByTaskId getCompletions() {
+		return completions;
 	}
 
-	public void setGroupCompletions(CompletionsByGroup groupCompletions) {
-		this.groupCompletions = groupCompletions;
+	public void setCompletions(CompletionsByTaskId completions) {
+		this.completions = completions;
 	}
 
-	public void addGroup(String groupId) {
+	public void addGroup(String groupId, List<User> studentsToAdd) {
 		T.call(this);
+		
+		T.here();
+		
+		GroupDescription group = new GroupDescription();
 
-		getGroups().addItem(groupId);
+		getGroups().addItem(group);
+		
+		group.setGroupId(groupId);
+		group.addStudents(studentsToAdd);
 	}
 	
 	
@@ -109,9 +123,9 @@ public class CourseModel extends CourseModelBase {
 
 		scheduledDates.clear();
 		
-		for(String groupId : groups.getValue()) {
+		for(GroupDescription group : groups.getValue()) {
 			updateGroupSchedule(getCoursePath().courseId(), 
-					            groupId, 
+					            group.getGroupId(), 
 					            semesterSchedule, 
 					            teacherSchedule);
 		}
@@ -139,6 +153,37 @@ public class CourseModel extends CourseModelBase {
 				taskDates.putEntry(task.id(), date);
 			}
 		}
+	}
 
+	public void taskCompletedByStudent(Path taskPath, String studentId) {
+		T.call(this);
+		
+		String taskId = pathToId(taskPath);
+		
+		CompletionByStudentId studentCompletions = getCompletions().valueOf(taskId);
+		
+		if(studentCompletions == null) {
+			studentCompletions = new CompletionByStudentId();
+			getCompletions().putEntry(taskId, studentCompletions);
+		}
+		
+		String groupId = groupIdForStudent(studentId);
+
+		studentCompletions.putEntry(taskId, new TaskCompletion(studentId, groupId));
+	}
+	
+	public String groupIdForStudent(String studentId) {
+		T.call(this);
+		
+		String groupId = null;
+		
+		for(GroupDescription group : groups.getValue()) {
+			if(group.getStudents().contains(studentId)) {
+				groupId = group.getGroupId();
+				break;
+			}
+		}
+		
+		return groupId;
 	}
 }

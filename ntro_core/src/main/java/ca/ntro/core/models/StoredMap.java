@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -109,4 +110,36 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 			mapObserver.onClearEntries();
 		}
 	}
+	
+	public void onEntryAdded(EntryAddedListener<V> listener) {
+		T.call(this);
+		
+		this.observe(new MapObserver<V>() {
+			@Override
+			public void onValueChanged(Map<String, V> oldValue, Map<String, V> value) {
+			}
+
+			@Override
+			public void onValue(Map<String, V> value) {
+			}
+
+			@Override
+			public void onDeleted(Map<String, V> lastValue) {
+			}
+
+			@Override
+			public void onClearEntries() {
+			}
+
+			@Override
+			public void onEntryAdded(String key, V value) {
+				listener.onEntryAdded(key, value);
+			}
+
+			@Override
+			public void onEntryRemoved(String key, V value) {
+			}
+		});
+	}
+	
 }
