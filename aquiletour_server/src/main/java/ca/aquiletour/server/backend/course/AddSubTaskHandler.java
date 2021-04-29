@@ -14,7 +14,7 @@ public class AddSubTaskHandler extends BackendMessageHandler<AddSubTaskMessage> 
 	public void handleNow(ModelStoreSync modelStore, AddSubTaskMessage message) {
 		T.call(this);
 		
-		CourseUpdater.addSubTask(modelStore, CourseModel.class, message.coursePath(), message.getParentPath(), message.getSubTask());
+		CourseUpdater.addSubTask(modelStore, message.coursePath(), message.getParentPath(), message.getSubTask());
 		CourseListUpdater.addTask(modelStore, 
 								  message.coursePath(),
 								  TaskDescription.fromTask(message.getSubTask()));

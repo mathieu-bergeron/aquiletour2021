@@ -26,13 +26,14 @@ public class CourseListUpdater {
 		}
 	}
 
-	public static void addSemesterForUser(ModelStoreSync modelStore, 
-			                              String semesterId, 
-			                              User user) {
+	public static <CLM extends CourseListModel> void addSemesterForUser(ModelStoreSync modelStore, 
+																	    Class<CLM> courseListModelClass,
+			                                                            String semesterId, 
+			                                                            User user) {
 
 		T.call(CourseListUpdater.class);
 		
-		addSemesterForUserId(modelStore,CourseListModel.class, semesterId, user.getId());
+		addSemesterForUserId(modelStore,courseListModelClass, semesterId, user.getId());
 	}
 	
 	public static <CLM extends CourseListModel> void addSemesterForUserId(ModelStoreSync modelStore, 
@@ -66,14 +67,17 @@ public class CourseListUpdater {
 	}
 	
 
-	public static void addCourseForUser(ModelStoreSync modelStore, CourseItem courseDescription, User teacher) {
+	public static <CLM extends CourseListModel> void addCourseForUser(ModelStoreSync modelStore, 
+			 														  Class<CLM> courseListModelClass,
+			                                                          CourseItem courseDescription, 
+			                                                          User teacher) {
 		T.call(CourseListUpdater.class);
 		
-		if(modelStore.ifModelExists(CourseListModel.class, "admin", teacher.getId())) {
+		if(modelStore.ifModelExists(courseListModelClass, "admin", teacher.getId())) {
 			
-			modelStore.updateModel(CourseListModel.class, "admin", teacher.getId(), new ModelUpdater<CourseListModel>() {
+			modelStore.updateModel(courseListModelClass, "admin", teacher.getId(), new ModelUpdater<CLM>() {
 				@Override
-				public void update(CourseListModel existingModel) {
+				public void update(CLM existingModel) {
 					T.call(this);
 					
 					existingModel.addCourse(courseDescription);
@@ -82,40 +86,42 @@ public class CourseListUpdater {
 
 		}else {
 			
-			modelStore.createModel(CourseListModel.class, "admin", teacher.getId(), new ModelInitializer<CourseListModel>() {
+			modelStore.createModel(courseListModelClass, "admin", teacher.getId(), new ModelInitializer<CLM>() {
 				@Override
-				public void initialize(CourseListModel newModel) {
+				public void initialize(CLM newModel) {
 					T.call(this);
 				}
 			});
 			
-			addCourseForUser(modelStore, courseDescription, teacher);
+			addCourseForUser(modelStore, courseListModelClass, courseDescription, teacher);
 		}
 	}
 
-	public static void addGroupForUser(ModelStoreSync modelStore, 
-			                           String semesterId, 
-			                           String courseId, 
-			                           String groupId, 
-			                           User user) {
+	public static <CLM extends CourseListModel> void addGroupForUser(ModelStoreSync modelStore, 
+																     Class<CLM> courseListModelClass, 
+																     String semesterId, 
+																     String courseId, 
+																     String groupId, 
+																     User user) {
 
 		T.call(CourseListUpdater.class);
 		
-		addGroupForUserId(modelStore, semesterId, courseId, groupId, user.getId());
+		addGroupForUserId(modelStore, courseListModelClass, semesterId, courseId, groupId, user.getId());
 		
 	}
 
-	public static void addGroupForUserId(ModelStoreSync modelStore, 
-			                             String semesterId, 
-			                             String courseId, 
-			                             String groupId,
-			                             String userId) {
+	public static <CLM extends CourseListModel> void addGroupForUserId(ModelStoreSync modelStore, 
+																	   Class<CLM> courseListModelClass, 
+																	   String semesterId, 
+																	   String courseId, 
+																	   String groupId, 
+																	   String userId) {
 
 		T.call(CourseListUpdater.class);
 
-		modelStore.updateModel(CourseListModel.class, "admin", userId, new ModelUpdater<CourseListModel>() {
+		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
 			@Override
-			public void update(CourseListModel existingModel) {
+			public void update(CLM existingModel) {
 				T.call(this);
 
 				existingModel.addGroup(semesterId, courseId, groupId);
@@ -123,16 +129,17 @@ public class CourseListUpdater {
 		});
 	}
 
-	public static void closeQueueForUserId(ModelStoreSync modelStore, 
-									       String semesterId,
-			                               String courseId, 
-			                               String userId) {
+	public static <CLM extends CourseListModel> void closeQueueForUserId(ModelStoreSync modelStore, 
+																		 Class<CLM> courseListModelClass, 
+																		 String semesterId, 
+																		 String courseId, 
+																		 String userId) {
 
 		T.call(CourseListUpdater.class);
 
-		modelStore.updateModel(CourseListModel.class, "admin", userId, new ModelUpdater<CourseListModel>() {
+		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
 			@Override
-			public void update(CourseListModel existingModel) {
+			public void update(CLM existingModel) {
 				T.call(this);
 				
 				existingModel.closeQueue(semesterId, courseId);
@@ -140,27 +147,28 @@ public class CourseListUpdater {
 		});
 	}
 	
-	public static void closeQueueForUser(ModelStoreSync modelStore, 
-										 String semesterId,
-			                             String courseId, 
-			                             User user) {
-
+	public static <CLM extends CourseListModel> void closeQueueForUser(ModelStoreSync modelStore, 
+			 														   Class<CLM> courseListModelClass, 
+			 														   String semesterId, 
+			 														   String courseId, 
+			 														   User user) { 
 		T.call(CourseListUpdater.class);
 		
-		closeQueueForUserId(modelStore, semesterId, courseId, user.getId());
+		closeQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
 	}
 	
 
-	public static void openQueueForUserId(ModelStoreSync modelStore, 
-									      String semesterId,
-			                              String courseId, 
-			                              String userId) {
+	public static <CLM extends CourseListModel> void openQueueForUserId(ModelStoreSync modelStore, 
+			 															Class<CLM> courseListModelClass, 
+			 															String semesterId, 
+			 															String courseId, 
+			 															String userId) {
 
 		T.call(CourseListUpdater.class);
 
-		modelStore.updateModel(CourseListModel.class, "admin", userId, new ModelUpdater<CourseListModel>() {
+		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
 			@Override
-			public void update(CourseListModel existingModel) {
+			public void update(CLM existingModel) {
 				T.call(this);
 				
 				existingModel.openQueue(semesterId, courseId);

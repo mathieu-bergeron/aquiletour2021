@@ -16,7 +16,6 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 		T.call(this);
 		
 		CourseUpdater.updateTaskInfo(modelStore, 
-				                     CourseModel.class, 
 				                     message.coursePath(), 
 				                     message.getTaskPath(),
 				                     message.getTaskTitle(),
@@ -33,7 +32,6 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 				                                                                 message.getUser());
 
 		CourseUpdater.updateCourseSchedule(modelStore,
-										   CourseModel.class,
 										   message.coursePath(),
 										   semesterSchedule,
 										   teacherSchedule,

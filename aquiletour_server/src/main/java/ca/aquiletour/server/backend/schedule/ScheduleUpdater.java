@@ -35,7 +35,6 @@ public class ScheduleUpdater {
 		
 		for(CoursePath coursePath : teacherCourses) {
 			CourseUpdater.updateCourseSchedule(modelStore,
-											   CourseModel.class,
 											   coursePath,
 											   semesterSchedule,
 											   teacherSchedule,

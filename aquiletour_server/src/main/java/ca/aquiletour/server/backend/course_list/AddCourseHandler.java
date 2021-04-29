@@ -31,12 +31,11 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		CourseListUpdater.addCourseForUser(modelStore, item, teacher);
 		
 		CourseUpdater.createCourseForUser(modelStore, 
-				                          CourseModel.class, 
 				                          path,
 				                          item.getCourseTitle(),
 				                          teacher);
 
-		CourseUpdater.updateCourseTitle(modelStore, CourseModel.class, path, item.getCourseTitle());
+		CourseUpdater.updateCourseTitle(modelStore, path, item.getCourseTitle());
 
 	}
 

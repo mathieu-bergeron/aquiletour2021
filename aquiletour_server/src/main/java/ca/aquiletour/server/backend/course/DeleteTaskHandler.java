@@ -14,7 +14,7 @@ public class DeleteTaskHandler extends BackendMessageHandler<DeleteTaskMessage> 
 		
 		String courseId = message.getCourseId();
 
-		CourseUpdater.deleteTask(modelStore, CourseModel.class, courseId, message.getTaskToDelete());
+		CourseUpdater.deleteTask(modelStore, courseId, message.getTaskToDelete());
 	}
 
 	@Override

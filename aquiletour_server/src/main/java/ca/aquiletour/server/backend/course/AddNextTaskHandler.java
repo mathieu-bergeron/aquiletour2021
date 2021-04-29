@@ -14,7 +14,7 @@ public class AddNextTaskHandler extends BackendMessageHandler<AddNextTaskMessage
 		
 		String courseId = message.getCourseId();
 		
-		CourseUpdater.addNextTask(modelStore, CourseModel.class, courseId, message.getPreviousPath(), message.getNextTask());
+		CourseUpdater.addNextTask(modelStore, courseId, message.getPreviousPath(), message.getNextTask());
 	}
 
 	@Override

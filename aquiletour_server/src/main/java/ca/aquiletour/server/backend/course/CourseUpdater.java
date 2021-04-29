@@ -1,7 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
@@ -19,63 +18,62 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseUpdater {
 
-	public static <CM extends CourseModelBase> void removeNextTask(ModelStoreSync modelStore, 
-								                               Class<CM> courseModelClass,
-			                                                   String courseId, 
-			                                                   Path taskToModify,
-			                                                   Path taskToDelete) {
+	public static void removeNextTask(ModelStoreSync modelStore, 
+			                          String courseId, 
+			                          Path taskToModify,
+                                      Path taskToDelete) {
+
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", courseId, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				course.removeNextTask(taskToModify, taskToDelete);
 			}
 		});
 	}
 
-	public static <CM extends CourseModelBase> void removeSubTask(ModelStoreSync modelStore, 
-			                                                  Class<CM> courseModelClass, 
-			                                                  CoursePath coursePath, 
-			                                                  Path taskToModify, 
-			                                                  Path taskToDelete) {
+	public static void removeSubTask(ModelStoreSync modelStore, 
+			                         CoursePath coursePath, 
+			                         Path taskToModify, 
+			                         Path taskToDelete) {
+
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				course.removeSubTask(taskToModify, taskToDelete);
 			}
 		});
 	}
 
-	public static <CM extends CourseModelBase> void removePreviousTask(ModelStoreSync modelStore, 
-			                                                       Class<CM> courseModelClass,
-			                                                       String courseId, 
-			                                                       Path taskToModify, 
-			                                                       Path taskToDelete) {
+	public static void removePreviousTask(ModelStoreSync modelStore, 
+			                              String courseId, 
+			                              Path taskToModify, 
+			                              Path taskToDelete) {
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", courseId, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				course.removePreviousTask(taskToModify, taskToDelete);
 			}
 		});
 	}
 
-	public static <CM extends CourseModelBase> void deleteTask(ModelStoreSync modelStore, 
-			                                               Class<CM> courseModelClass,
-			                                               String courseId, 
-			                                               Path taskToDelete) {
+	public static void deleteTask(ModelStoreSync modelStore, 
+			                      String courseId, 
+			                      Path taskToDelete) {
+
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", courseId, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				course.deleteTask(taskToDelete, new OnTaskRemoved() {
 					@Override
@@ -96,9 +94,9 @@ public class CourseUpdater {
 
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", courseId, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 
 				course.addPreviousTaskTo(nextPath, previousTask, new OnTaskAdded() {

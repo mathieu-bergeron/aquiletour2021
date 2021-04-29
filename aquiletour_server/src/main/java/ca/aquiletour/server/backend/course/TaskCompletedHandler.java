@@ -14,7 +14,6 @@ public class TaskCompletedHandler extends BackendMessageHandler<TaskCompletedMes
 		T.call(this);
 		
 		CourseUpdater.taskCompletedByUser(modelStore,
-										  CourseModel.class, 
 				                          message.coursePath(), 
 				                          message.getTaskPath(), 
 				                          message.getUser());
