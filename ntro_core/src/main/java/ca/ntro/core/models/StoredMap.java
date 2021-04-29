@@ -42,7 +42,7 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		args.add(key);
 		args.add(value);
 		
-		modelStore().onValueMethodInvoked(valuePath(),"addEntry",args);
+		modelStore().onValueMethodInvoked(valuePath(),"putEntry",args);
 
 		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 		
