@@ -25,7 +25,6 @@ public class ToggleStudentModeHandler extends BackendMessageHandler<ToggleStuden
 	@Override
 	public void handleLater(ModelStoreSync modelStore, ToggleStudentModeMessage message) {
 		T.call(this);
-		
 	}
 	
 }
