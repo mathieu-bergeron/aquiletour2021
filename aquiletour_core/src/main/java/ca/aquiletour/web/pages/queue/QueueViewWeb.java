@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
-import ca.aquiletour.core.pages.queue.AppointmentView;
-import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;

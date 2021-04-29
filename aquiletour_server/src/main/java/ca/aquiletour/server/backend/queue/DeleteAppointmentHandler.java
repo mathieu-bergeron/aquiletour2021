@@ -3,10 +3,10 @@ package ca.aquiletour.server.backend.queue;
 import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
-import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
+import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
-import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;

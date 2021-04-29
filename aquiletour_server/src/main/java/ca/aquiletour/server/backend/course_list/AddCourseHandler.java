@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
@@ -44,8 +45,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		GroupListUpdater.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseListItem().getCourseId(), message.getUser());
 		
-		DashboardUpdater.addDashboardItemForUser(modelStore, message.getCourseListItem(), message.getUser());
-			
+		DashboardUpdater.addDashboardItemForUser(modelStore, DashboardModelTeacher.class, message.getCourseListItem(), message.getUser());
 
 		/*
 

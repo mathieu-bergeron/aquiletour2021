@@ -1,8 +1,8 @@
 package ca.aquiletour.web.pages.dashboard;
 
-import ca.aquiletour.core.pages.dashboards.DashboardItemView;
-import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.views.DashboardItemView;
+import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;

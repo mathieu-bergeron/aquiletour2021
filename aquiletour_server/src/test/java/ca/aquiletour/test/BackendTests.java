@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.MessageServiceWebserver;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;

@@ -1,8 +1,8 @@
 package ca.aquiletour.web.pages.queue.student;
 
-import ca.aquiletour.core.pages.queue.AppointmentView;
+import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
-import ca.aquiletour.core.pages.queue.values.Appointment;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;

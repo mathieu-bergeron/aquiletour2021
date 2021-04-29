@@ -11,7 +11,8 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
-import ca.aquiletour.core.pages.dashboards.values.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
@@ -129,9 +130,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		for(User student : studentsToAdd) {
 			CourseListUpdater.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
 			CourseListUpdater.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
+			DashboardUpdater.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
 		}
-		
-		String queueId = message.getUser().getId();
 		
 		CourseUpdater.addGroup(modelStore, 
 							   coursePath,

@@ -1,6 +1,6 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
-import ca.aquiletour.core.pages.dashboards.teacher.DashboardCourseViewTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;

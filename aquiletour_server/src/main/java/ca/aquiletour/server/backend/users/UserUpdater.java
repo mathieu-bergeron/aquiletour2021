@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.users;
 import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.DashboardModel;
+import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;

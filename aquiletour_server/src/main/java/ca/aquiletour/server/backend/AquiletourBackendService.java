@@ -4,6 +4,7 @@ package ca.aquiletour.server.backend;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
@@ -18,7 +19,7 @@ import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
+import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
@@ -53,6 +54,7 @@ import ca.aquiletour.server.backend.semester_list.AddScheduleItemHandler;
 import ca.aquiletour.server.backend.semester_list.AddSemesterHandler;
 import ca.aquiletour.server.backend.semester_list.AddSemesterWeekHandler;
 import ca.aquiletour.server.backend.semester_list.SelectCurrentSemesterHandler;
+import ca.aquiletour.server.backend.time.TimePassesHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
@@ -90,6 +92,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(UpdateTaskInfoMessage.class, new UpdateTaskInfoHandler());
 		addBackendMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());
 		addBackendMessageHandler(TaskCompletedMessage.class, new TaskCompletedHandler());
+		addBackendMessageHandler(TimePassesMessage.class, new TimePassesHandler());
 	}
 
 }

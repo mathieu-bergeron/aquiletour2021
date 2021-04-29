@@ -2,13 +2,13 @@ package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
-import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
-import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;

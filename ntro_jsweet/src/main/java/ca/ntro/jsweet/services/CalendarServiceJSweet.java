@@ -8,7 +8,7 @@ public class CalendarServiceJSweet extends CalendarService {
 
 	@Override
 	public NtroDate fromString(String dateString, String dateFormat) {
-		return new NtroDate(0);
+		return new NtroDate();
 	}
 
 	@Override
@@ -19,6 +19,11 @@ public class CalendarServiceJSweet extends CalendarService {
 	@Override
 	public void setTimeOfDay(NtroDate ntroDate, NtroTimeOfDay time) {
 		// TODO
+	}
+
+	@Override
+	public NtroDate now() {
+		return new NtroDate();
 	}
 
 }

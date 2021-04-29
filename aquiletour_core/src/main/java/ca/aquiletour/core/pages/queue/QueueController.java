@@ -1,5 +1,7 @@
 package ca.aquiletour.core.pages.queue;
 
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;

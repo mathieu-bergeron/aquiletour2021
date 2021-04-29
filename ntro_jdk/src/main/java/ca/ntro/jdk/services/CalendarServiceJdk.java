@@ -75,4 +75,13 @@ public class CalendarServiceJdk extends CalendarService {
 		ntroDate.setEpochSeconds(epochDateTimeSeconds);
 	}
 
+	@Override
+	public NtroDate now() {
+		T.call(this);
+
+		LocalDateTime dateTime = LocalDateTime.now(localZoneOffset());
+		
+		return new NtroDate(dateTime.toEpochSecond(localZoneOffset()));
+	}
+
 }
