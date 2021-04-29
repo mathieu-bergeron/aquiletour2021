@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -14,7 +14,7 @@ public class DeleteTaskHandler extends BackendMessageHandler<DeleteTaskMessage> 
 		
 		String courseId = message.getCourseId();
 
-		CourseUpdater.deleteTask(modelStore, CourseModelTeacher.class, courseId, message.getTaskToDelete());
+		CourseUpdater.deleteTask(modelStore, CourseModel.class, courseId, message.getTaskToDelete());
 	}
 
 	@Override

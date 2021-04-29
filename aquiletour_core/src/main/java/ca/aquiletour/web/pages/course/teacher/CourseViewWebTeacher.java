@@ -24,6 +24,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement weekOfContainer;
 	private HtmlElement weekOfElement;
 	private HtmlElement saveButtonContainer;
+	private HtmlElement editableEndtime;
+	private HtmlElement editableDescription;
 
 	private BootstrapDropdown semesterDropdown;
 	private BootstrapDropdown groupDropdown;
@@ -47,6 +49,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		saveButtonContainer = this.getRootElement().find("#save-button-container").get(0);
 		weekOfContainer = this.getRootElement().find("#week-of-container").get(0);
 		weekOfElement = this.getRootElement().find("#week-of").get(0);
+		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
+		editableDescription = this.getRootElement().find("#editable-description").get(0);
 		
 		MustNot.beNull(semesterDropdownHead);
 		MustNot.beNull(semesterDropdownTail);
@@ -61,25 +65,28 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(saveButtonContainer);
 		MustNot.beNull(weekOfContainer);
 		MustNot.beNull(weekOfElement);
+		MustNot.beNull(editableEndtime);
+		MustNot.beNull(editableDescription);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
-		
 	}
 
 	@Override
-	public void displayEditableComponents(boolean editable) {
+	public void showEditableComponents(boolean show) {
 		T.call(this);
-		super.displayEditableComponents(editable);
 		
-		if(editable) {
+		if(show) {
 			
+			editableDescription.show();
+			editableDescription.show();
 			saveButtonContainer.show();
 			
 		} else {
 
+			editableDescription.hide();
+			editableDescription.hide();
 			saveButtonContainer.hide();
-			
 		}
 	}
 

@@ -7,10 +7,13 @@ import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseMessage;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
+import ca.aquiletour.core.pages.course.student.messages.ShowCourseMessageStudent;
+import ca.aquiletour.core.pages.course.teacher.messages.ShowCourseMessageTeacher;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
@@ -249,8 +252,24 @@ public class AquiletourRequestHandler {
 		T.call(AquiletourRequestHandler.class);
 		
 		if(path.nameCount() >= 2) {
+			
+			String teacherId = path.name(0);
+			
+			ShowCourseMessage showCourseMessage = null;
+			
+			if(user.getId().equals(teacherId)) {
 
-			ShowCourseMessage showCourseMessage = createCourseMessage(ShowCourseMessage.class, path, parameters, sessionData);
+				showCourseMessage = createCourseMessage(ShowCourseMessageTeacher.class, path, parameters, sessionData);
+
+			}else if(user instanceof Teacher){
+				
+				showCourseMessage = createCourseMessage(ShowCourseMessageTeacher.class, path, parameters, sessionData);
+				
+			}else {
+				
+				showCourseMessage = createCourseMessage(ShowCourseMessageStudent.class, path, parameters, sessionData);
+
+			}
 			
 			String groupId = Constants.COURSE_STRUCTURE_ID;
 
@@ -270,30 +289,30 @@ public class AquiletourRequestHandler {
 		
 		if(path.nameCount() >= 1) {//TODO 
 
-			String courseId = path.name(0);
-			
-			if(user instanceof Teacher) {
+			String teacherId = path.name(0);
 
-				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-				teacherUsesQueueMessage.setCourseId(courseId);
-				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
-
-				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
-				showTeacherQueueMessage.setCourseId(courseId);
-				Ntro.messages().send(showTeacherQueueMessage);
-
-			}else if(user instanceof Student){
-				
-				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
-				showStudentQueueMessage.setCourseId(courseId);
-				Ntro.messages().send(showStudentQueueMessage);
-
-			}else {
+			if(user instanceof Guest){
 				
 				ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
 				Ntro.messages().send(showLoginDialogMessage);
-			}
 
+			}else if(user instanceof Teacher 
+					&& user.getId().equals(teacherId)) {
+
+				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
+				teacherUsesQueueMessage.setCourseId(teacherId);
+				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
+
+				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
+				showTeacherQueueMessage.setCourseId(teacherId);
+				Ntro.messages().send(showTeacherQueueMessage);
+
+			}else {
+				
+				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
+				showStudentQueueMessage.setCourseId(teacherId);
+				Ntro.messages().send(showStudentQueueMessage);
+			}
 		}
 	}
 }

@@ -124,11 +124,18 @@ public class RootController extends NtroRootController {
 
 	private void addRoleSpecificSubControllers(NtroContext<?,?> context) {
 		T.call(this);
+
 		
 		if(ifRoleSpecificSubControllersAdded) return;
+		
+		// FIXME: does this work? Would be useful
+		//        to display the student version even 
+		//        when logged in as teacher
 
+		/*
 		if(context.user() instanceof Teacher
 				|| context.user() instanceof TeacherGuest) {
+		*/
 			
 			addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
 			addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
@@ -137,8 +144,10 @@ public class RootController extends NtroRootController {
 			
 			ifRoleSpecificSubControllersAdded = true;
 			
+		/*
 		}else if(context.user() instanceof Student
 				|| context.user() instanceof StudentGuest){
+		*/
 
 			addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
 			addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
@@ -146,7 +155,10 @@ public class RootController extends NtroRootController {
 			addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
 
 			ifRoleSpecificSubControllersAdded = true;
+
+		/*
 		}
+		*/
 	}
 
 	@Override

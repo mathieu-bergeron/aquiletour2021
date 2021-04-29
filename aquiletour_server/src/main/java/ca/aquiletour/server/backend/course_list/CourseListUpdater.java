@@ -32,31 +32,32 @@ public class CourseListUpdater {
 
 		T.call(CourseListUpdater.class);
 		
-		addSemesterForUserId(modelStore, semesterId, user.getId());
+		addSemesterForUserId(modelStore,CourseListModel.class, semesterId, user.getId());
 	}
 	
-	public static void addSemesterForUserId(ModelStoreSync modelStore, 
-			                              String semesterId, 
-			                              String userId) {
+	public static <CLM extends CourseListModel> void addSemesterForUserId(ModelStoreSync modelStore, 
+			                                                              Class<CLM> courseListModelClass,
+			                                                              String semesterId, 
+			                                                              String userId) {
 
 		T.call(CourseListUpdater.class);
 		
-		if(!modelStore.ifModelExists(CourseListModel.class, "admin", userId)) {
-			modelStore.createModel(CourseListModel.class, "admin", userId, new ModelInitializer<CourseListModel>() {
+		if(!modelStore.ifModelExists(courseListModelClass, "admin", userId)) {
+			modelStore.createModel(courseListModelClass, "admin", userId, new ModelInitializer<CLM>() {
 				@Override
-				public void initialize(CourseListModel newModel) {
+				public void initialize(CLM newModel) {
 					T.call(this);
 				}
 			});
 		}
 
-		modelStore.updateModel(CourseListModel.class, 
+		modelStore.updateModel(courseListModelClass, 
 							   "admin",
 							   userId,
-							   new ModelUpdater<CourseListModel>() {
+							   new ModelUpdater<CLM>() {
 
 			@Override
-			public void update(CourseListModel courseListModel) {
+			public void update(CLM courseListModel) {
 				T.call(this);
 				
 				courseListModel.addSemesterId(semesterId);

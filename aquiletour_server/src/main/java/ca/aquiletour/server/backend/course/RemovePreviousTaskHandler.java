@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -14,7 +14,7 @@ public class RemovePreviousTaskHandler extends BackendMessageHandler<RemovePrevi
 		
 		String courseId = message.getCourseId();
 
-		CourseUpdater.removePreviousTask(modelStore, CourseModelTeacher.class, courseId, message.getTaskToModify(), message.getTaskToRemove());
+		CourseUpdater.removePreviousTask(modelStore, CourseModel.class, courseId, message.getTaskToModify(), message.getTaskToRemove());
 	}
 
 	@Override

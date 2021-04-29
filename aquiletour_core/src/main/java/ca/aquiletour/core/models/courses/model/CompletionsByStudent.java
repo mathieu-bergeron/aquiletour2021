@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.teacher;
+package ca.aquiletour.core.models.courses.model;
 
 import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
 import ca.ntro.core.models.StoredMap;

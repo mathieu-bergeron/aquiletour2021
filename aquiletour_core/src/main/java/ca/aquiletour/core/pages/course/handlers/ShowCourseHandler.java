@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.course.handlers;
 
-import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -22,17 +22,19 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 		T.call(this);
 
 		Path coursePath = message.coursePath();
-
-		System.out.println(coursePath.toString());
+		
+		System.out.println("coursePath: " + message.coursePath());
 
 		// XXX: change model only when needed
 		if(!coursePath.equals(currentCoursePath)) {
 			String authToken = currentController.context().user().getAuthToken();
+
 			currentController.setModelLoader(modelClass(), authToken, coursePath);
+
 			currentCoursePath = coursePath;
 		}
 
-		ShowTaskMessage showTaskMessage = Ntro.messages().create(ShowTaskMessage.class);
+		ShowTaskMessage showTaskMessage = Ntro.messages().create(showTaskMessageClass());
 		showTaskMessage.setTaskPath(message.getTaskPath());
 		showTaskMessage.setGroupId(message.getGroupId());
 		Ntro.messages().send(showTaskMessage);
@@ -41,5 +43,7 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 		rootView.showCourse(currentView);
 	}
 	
-	protected abstract Class<? extends CourseModel> modelClass();
+	
+	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
+	protected abstract Class<? extends CourseModelBase> modelClass();
 }

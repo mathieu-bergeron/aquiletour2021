@@ -22,6 +22,7 @@ import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseItem;
@@ -556,6 +557,21 @@ public class AquiletourBackendRequestHandler {
 				registerRepoMessage.setExercisePath(taskId);
 
 				Ntro.backendService().sendMessageToBackend(registerRepoMessage);
+
+		} else if(parameters.containsKey("taskCompletedId")) {
+				
+				String taskId = parameters.get("taskCompletedId")[0];
+				Path taskPath = new Path();
+				taskPath.parseFileName(taskId);
+
+				TaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseMessage(TaskCompletedMessage.class,
+																						                 path,
+																							             parameters,
+             																							 sessionData);
+
+				taskCompletedMessage.setTaskPath(taskPath);
+				
+				Ntro.messages().send(taskCompletedMessage);
 			}
 	}
 

@@ -1,7 +1,5 @@
 package ca.aquiletour.core.models.courses.base;
 
-import java.util.Map;
-
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
@@ -12,7 +10,7 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseModel implements NtroModel, TaskGraph {
+public abstract class CourseModelBase implements NtroModel, TaskGraph {
 
 	private CoursePath coursePath = new CoursePath();
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
@@ -309,5 +307,10 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 	}
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
-	
+
+	public void taskCompletedByStudent(Path taskPath, String id) {
+		T.call(this);
+		
+	}
+
 }

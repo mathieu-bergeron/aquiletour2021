@@ -242,7 +242,7 @@ public abstract class ModelStore {
 		
 		if(documentPath == null) {
 
-			Log.warning("Model was already saved and removed from memory: " + existingModel);
+			Log.warning("was already saved and removed from memory: " + existingModel);
 
 		}else {
 			

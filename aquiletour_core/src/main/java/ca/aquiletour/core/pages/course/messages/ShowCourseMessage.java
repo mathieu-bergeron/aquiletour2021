@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.course.messages;
 
 import ca.aquiletour.core.messages.course.CourseMessage;
 
-public class ShowCourseMessage extends CourseMessage {
+public abstract class ShowCourseMessage extends CourseMessage {
 	
 	private String groupId;
 

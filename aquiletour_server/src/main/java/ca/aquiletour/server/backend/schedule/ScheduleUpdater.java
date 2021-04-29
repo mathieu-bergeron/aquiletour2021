@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.schedule;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.users.User;
@@ -35,7 +35,7 @@ public class ScheduleUpdater {
 		
 		for(CoursePath coursePath : teacherCourses) {
 			CourseUpdater.updateCourseSchedule(modelStore,
-											   CourseModelTeacher.class,
+											   CourseModel.class,
 											   coursePath,
 											   semesterSchedule,
 											   teacherSchedule,

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ca.aquiletour.core.models.courses.task_types.GitRepoTask;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -418,5 +419,21 @@ public class Task implements NtroModelValue, TaskNode {
 		date = endTimeDate.resolveDate(courseId, groupId, semesterSchedule, teacherSchedule);
 
 		return date;
+	}
+	
+	public boolean hasType(Class<? extends TaskType> type) {
+		T.call(this);
+		
+		boolean hasType = false;
+		
+		for(TaskType candidate : taskTypes.getValue()) {
+			if(candidate.getClass().equals(type)) {
+				hasType = true;
+				break;
+			}
+		}
+		
+		return hasType;
+		
 	}
 }

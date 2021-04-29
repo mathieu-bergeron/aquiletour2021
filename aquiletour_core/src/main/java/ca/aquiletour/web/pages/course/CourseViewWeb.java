@@ -30,20 +30,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
 	private HtmlElement taskTypeContainer;
-	private HtmlElement editableEndtime;
-	private HtmlElement uneditableEndtime;
 
-	private HtmlElement editableDescription;
 	private HtmlElement uneditableDescription;
-
-	
-	protected HtmlElement editableEndtime() {
-		return editableEndtime;
-	}
-
-	protected HtmlElement uneditableEndtime() {
-		return uneditableEndtime;
-	}
+	private HtmlElement uneditableEndtime;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -57,10 +46,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
 		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
-		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
 		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
-		editableDescription = this.getRootElement().find("#editable-description").get(0);
 		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
+
 
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
@@ -71,8 +59,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(nextTaskContainer);
 		MustNot.beNull(taskTypeContainer);
 		MustNot.beNull(uneditableEndtime);
-		MustNot.beNull(editableEndtime);
-		MustNot.beNull(editableDescription);
 		MustNot.beNull(uneditableDescription);
 		
 		previousTaskContainer.hide();
@@ -80,24 +66,18 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void displayEditableComponents(boolean editable) {
+	public void showUneditableComponents(boolean show) {
 		T.call(this);
 		
-		if(editable) {
-
-			editableEndtime.show();
-			editableDescription.show();
-
-			uneditableEndtime.hide();
-			uneditableDescription.hide();
-			
-		}else {
-
-			editableEndtime.hide();
-			editableDescription.hide();
+		if(show) {
 
 			uneditableEndtime.show();
 			uneditableDescription.show();
+
+		}else {
+
+			uneditableEndtime.hide();
+			uneditableDescription.hide();
 		}
 	}
 

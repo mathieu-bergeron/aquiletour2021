@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course.teacher.handlers;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
@@ -10,7 +10,7 @@ import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, CourseViewTeacher> {
+public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseViewTeacher> {
 	
 	@Override
 	protected boolean isEditable() {
@@ -19,23 +19,26 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 	}
 
 	@Override
-	protected void handle(CourseModelTeacher model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(CourseModel model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 		
 		initializeDropdowns(model, view);
 
 		view.selectGroup(currentGroupId());
+		
+		view.showUneditableComponents(!isEditable());
+		view.showEditableComponents(isEditable());
 	}
 
-	private void initializeDropdowns(CourseModelTeacher model, CourseViewTeacher view) {
+	private void initializeDropdowns(CourseModel model, CourseViewTeacher view) {
 		T.call(this);
 		
 		initializeSemesterDropdown(model, view);
 		initializeGroupDropdown(model, view);
 	}
 
-	private void initializeGroupDropdown(CourseModelTeacher model, CourseViewTeacher view) {
+	private void initializeGroupDropdown(CourseModel model, CourseViewTeacher view) {
 		T.call(this);
 
 		appendToGroupDropdown(Constants.COURSE_STRUCTURE_ID, view);
@@ -53,7 +56,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		view.selectGroup(Constants.COURSE_STRUCTURE_ID);
 	}
 
-	private void initializeSemesterDropdown(CourseModelTeacher model, CourseViewTeacher view) {
+	private void initializeSemesterDropdown(CourseModel model, CourseViewTeacher view) {
 		T.call(this);
 
 		String semesterId = model.getCoursePath().semesterId();

@@ -35,5 +35,6 @@ public interface CourseView extends NtroView  {
 	void clearTaskTypes();
 	void appendTaskType(TaskType item);
 
-	void displayEditableComponents(boolean editable);
+	void showUneditableComponents(boolean show);
+
 }

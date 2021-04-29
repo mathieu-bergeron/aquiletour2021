@@ -22,16 +22,18 @@ public abstract class CourseController extends NtroController<RootController>{
 
 		setModelLoader(new EmptyModelLoader());
 
-		addControllerMessageHandler(ShowCourseMessage.class, showHandler());
+		addControllerMessageHandler(showMessageClass(), showHandler());
 
 		addSubViewLoader(subViewClass(), context.lang());
 
-		addModelViewSubViewMessageHandler(subViewClass(), ShowTaskMessage.class, viewModel());
+		addModelViewSubViewMessageHandler(subViewClass(), showTaskMessageClass(), viewModel());
 	}
 
 	protected abstract Class<? extends CourseView> viewClass();
 	protected abstract Class<? extends TaskView> subViewClass();
+	protected abstract Class<? extends ShowCourseMessage> showMessageClass();
 	protected abstract ControllerMessageHandler<?,?,?> showHandler();
+	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
 	protected abstract ModelViewSubViewMessageHandler<?,?,?> viewModel();
 
 	@Override

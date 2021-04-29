@@ -6,5 +6,6 @@ public interface CourseViewStudent extends CourseView  {
 	
 	void displayGitRepoForm();
 	void hideGitRepoForm();
+	void showCompletionCheckbox(boolean show);
 
 }

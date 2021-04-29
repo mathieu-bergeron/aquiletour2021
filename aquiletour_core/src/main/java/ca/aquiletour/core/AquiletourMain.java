@@ -30,7 +30,7 @@ import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.ObservableCourseDate;
 import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
@@ -40,19 +40,19 @@ import ca.aquiletour.core.models.courses.base.TaskRelation;
 import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
+import ca.aquiletour.core.models.courses.model.CompletionsByGroup;
+import ca.aquiletour.core.models.courses.model.CompletionsByStudent;
+import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.EndTimeByTaskId;
+import ca.aquiletour.core.models.courses.model.GroupTaskCompletions;
+import ca.aquiletour.core.models.courses.model.InfoByStudent;
+import ca.aquiletour.core.models.courses.model.TaskDatesByGroupId;
 import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.models.courses.task_types.GitExerciseTask;
 import ca.aquiletour.core.models.courses.task_types.GitRepoTask;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
-import ca.aquiletour.core.models.courses.teacher.CompletionsByGroup;
-import ca.aquiletour.core.models.courses.teacher.CompletionsByStudent;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
-import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
-import ca.aquiletour.core.models.courses.teacher.GroupTaskCompletions;
-import ca.aquiletour.core.models.courses.teacher.InfoByStudent;
-import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
@@ -73,6 +73,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
+import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
@@ -184,7 +185,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableCommitList.class);
 		Ntro.registerSerializableClass(Commit.class);
 
-		Ntro.registerSerializableClass(CourseModel.class);
+		Ntro.registerSerializableClass(CourseModelBase.class);
 		Ntro.registerSerializableClass(CoursePath.class);
 		Ntro.registerSerializableClass(ObservableTaskMap.class);
 		Ntro.registerSerializableClass(ObservableTaskIdList.class);
@@ -204,7 +205,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterSchedule.class);
 		Ntro.registerSerializableClass(TeacherSchedule.class);
 
-		Ntro.registerSerializableClass(CourseModelTeacher.class);
+		Ntro.registerSerializableClass(CourseModel.class);
 		Ntro.registerSerializableClass(CourseModelStudent.class);
 		Ntro.registerSerializableClass(CompletionsByGroup.class);
 		Ntro.registerSerializableClass(CompletionsByStudent.class);
@@ -284,6 +285,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(UpdateUserInfoMessage.class);
 		Ntro.registerSerializableClass(UpdateTaskInfoMessage.class);
+		Ntro.registerSerializableClass(TaskCompletedMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

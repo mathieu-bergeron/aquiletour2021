@@ -1,11 +1,11 @@
 package ca.aquiletour.server.backend.course;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
@@ -19,7 +19,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseUpdater {
 
-	public static <CM extends CourseModel> void removeNextTask(ModelStoreSync modelStore, 
+	public static <CM extends CourseModelBase> void removeNextTask(ModelStoreSync modelStore, 
 								                               Class<CM> courseModelClass,
 			                                                   String courseId, 
 			                                                   Path taskToModify,
@@ -35,7 +35,7 @@ public class CourseUpdater {
 		});
 	}
 
-	public static <CM extends CourseModel> void removeSubTask(ModelStoreSync modelStore, 
+	public static <CM extends CourseModelBase> void removeSubTask(ModelStoreSync modelStore, 
 			                                                  Class<CM> courseModelClass, 
 			                                                  CoursePath coursePath, 
 			                                                  Path taskToModify, 
@@ -51,7 +51,7 @@ public class CourseUpdater {
 		});
 	}
 
-	public static <CM extends CourseModel> void removePreviousTask(ModelStoreSync modelStore, 
+	public static <CM extends CourseModelBase> void removePreviousTask(ModelStoreSync modelStore, 
 			                                                       Class<CM> courseModelClass,
 			                                                       String courseId, 
 			                                                       Path taskToModify, 
@@ -67,7 +67,7 @@ public class CourseUpdater {
 		});
 	}
 
-	public static <CM extends CourseModel> void deleteTask(ModelStoreSync modelStore, 
+	public static <CM extends CourseModelBase> void deleteTask(ModelStoreSync modelStore, 
 			                                               Class<CM> courseModelClass,
 			                                               String courseId, 
 			                                               Path taskToDelete) {
@@ -89,11 +89,11 @@ public class CourseUpdater {
 		});
 	}
 	
-	public static <CM extends CourseModel> void addPreviousTask(ModelStoreSync modelStore, 
-																Class<CM> courseModelClass,
-			                                                    String courseId, 
-			                                                    Path nextPath, 
-			                                                    Task previousTask) {
+	public static void addPreviousTask(ModelStoreSync modelStore, 
+			                           String courseId, 
+			                           Path nextPath, 
+			                           Task previousTask) {
+
 		T.call(CourseUpdater.class);
 		
 		modelStore.updateModel(courseModelClass, "admin", courseId, new ModelUpdater<CM>() {
@@ -113,16 +113,16 @@ public class CourseUpdater {
 		});
 	}
 
-	public static <CM extends CourseModel> void addNextTask(ModelStoreSync modelStore, 
-															Class<CM> courseModelClass,
-			                                                String courseId, 
-			                                                Path previousPath, 
-			                                                Task nextTask) {
+	public static void addNextTask(ModelStoreSync modelStore, 
+			                       String courseId, 
+			                       Path previousPath, 
+			                       Task nextTask) {
+
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", courseId, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", courseId, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 
 				course.addNextTaskTo(previousPath, nextTask, new OnTaskAdded() {
@@ -138,16 +138,16 @@ public class CourseUpdater {
 	}
 	
 
-	public static <CM extends CourseModel> void addSubTask(ModelStoreSync modelStore, 
-			 											   Class<CM> courseModelClass,
-			                                               CoursePath coursePath, 
-			                                               Path parentTaskPath, 
-			                                               Task task) {
+	public static void addSubTask(ModelStoreSync modelStore, 
+			                      CoursePath coursePath, 
+			                      Path parentTaskPath, 
+			                      Task task) {
+
 		T.call(CourseUpdater.class);
 		
-		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 
 				course.addSubTaskTo(parentTaskPath, task, new OnTaskAdded() {
@@ -161,15 +161,16 @@ public class CourseUpdater {
 			}
 		});
 	}
-	public static <CM extends CourseModel> void updateCourseTitle(ModelStoreSync modelStore, 
-			 											          Class<CM> courseModelClass,
-			                                                      CoursePath coursePath, 
-			                                                      String courseTitle) {
+
+	public static void updateCourseTitle(ModelStoreSync modelStore, 
+			                             CoursePath coursePath, 
+			                             String courseTitle) {
+
 		T.call(CourseUpdater.class);
 
-		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				
 				course.updateCourseTitle(courseTitle);
@@ -179,16 +180,15 @@ public class CourseUpdater {
 		});
 	}
 
-	public static <CM extends CourseModel> void createCourseForUserId(ModelStoreSync modelStore, 
-			                                                          Class<CM> courseModelClass, 
-			                                                          CoursePath coursePath,
-			                                                          String courseTitle,
-			                                                          String userId) {
+	public static void createCourseForUserId(ModelStoreSync modelStore, 
+			                                 CoursePath coursePath,
+			                                 String courseTitle,
+			                                 String userId) {
 		T.call(CourseUpdater.class);
 
-		modelStore.createModel(courseModelClass, "admin", coursePath, new ModelInitializer<CM>() {
+		modelStore.createModel(CourseModel.class, "admin", coursePath, new ModelInitializer<CourseModel>() {
 			@Override
-			public void initialize(CM course) {
+			public void initialize(CourseModel course) {
 				T.call(this);
 				
 				Task rootTask = new Task();
@@ -202,14 +202,13 @@ public class CourseUpdater {
 
 	}
 
-	public static <CM extends CourseModel> void createCourseForUser(ModelStoreSync modelStore, 
-			                                                        Class<CM> courseModelClass, 
-			                                                        CoursePath coursePath,
-			                                                        String courseTitle,
-			                                                        User user) {
+	public static void createCourseForUser(ModelStoreSync modelStore, 
+			                               CoursePath coursePath,
+			                               String courseTitle,
+			                               User user) {
 		T.call(CourseUpdater.class);
 		
-		createCourseForUserId(modelStore, courseModelClass, coursePath, courseTitle, user.getId());
+		createCourseForUserId(modelStore, coursePath, courseTitle, user.getId());
 	}
 
 	public static void addGroup(ModelStoreSync modelStore, 
@@ -219,9 +218,9 @@ public class CourseUpdater {
 
 		T.call(CourseUpdater.class);
 
-		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CourseModelTeacher course) {
+			public void update(CourseModel course) {
 				T.call(this);
 
 				course.addGroup(groupId);
@@ -229,20 +228,19 @@ public class CourseUpdater {
 		});
 	}
 
-	public static  <CM extends CourseModel> void updateTaskInfo(ModelStoreSync modelStore, 
-			                                                    Class<CM> courseModelClass, 
-			                                                    CoursePath coursePath, 
-			                                                    Path taskPath, 
-			                                                    String taskTitle, 
-			                                                    String taskDescription, 
-			                                                    CourseDate endTime, 
-			                                                    User user) {
+	public static void updateTaskInfo(ModelStoreSync modelStore, 
+			                          CoursePath coursePath, 
+		                              Path taskPath, 
+	                                  String taskTitle, 
+			                          String taskDescription, 
+			                          CourseDate endTime, 
+			                          User user) {
 		
 		T.call(CourseUpdater.class);
 
-		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				
 				course.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime);
@@ -251,26 +249,36 @@ public class CourseUpdater {
 
 	}
 
-	public static <CM extends CourseModel> void updateCourseSchedule(ModelStoreSync modelStore, 
-			                                                         Class<CM> courseModelClass, 
-                         										     CoursePath coursePath,
-						                         				     SemesterSchedule semesterSchedule, 
-                         										     TeacherSchedule teacherSchedule, 
-						                         				     User user) {
+	public static void updateCourseSchedule(ModelStoreSync modelStore, 
+                         	                CoursePath coursePath,
+						                    SemesterSchedule semesterSchedule, 
+						                    TeacherSchedule teacherSchedule, 
+						                    User user) {
 		T.call(CourseUpdater.class);
 		
-		System.out.println("updateCourseSchedule: " + coursePath.toString());
-
-		modelStore.updateModel(courseModelClass, "admin", coursePath, new ModelUpdater<CM>() {
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
-			public void update(CM course) {
+			public void update(CourseModel course) {
 				T.call(this);
 				
 				course.updateSchedule(semesterSchedule, teacherSchedule);
 			}
 		});
-		
 	}
-	
-	
+
+	public static void taskCompletedByUser(ModelStoreSync modelStore, 
+			                               CoursePath coursePath, 
+			                               Path taskPath, 
+			                               User user) {
+		T.call(CourseUpdater.class);
+
+		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
+			@Override
+			public void update(CourseModel course) {
+				T.call(this);
+				
+				course.taskCompletedByStudent(taskPath, user.getId());
+			}
+		});
+	}
 }

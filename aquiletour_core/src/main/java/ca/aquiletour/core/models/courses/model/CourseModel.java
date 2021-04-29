@@ -1,6 +1,6 @@
-package ca.aquiletour.core.models.courses.teacher;
+package ca.aquiletour.core.models.courses.model;
 
-import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -10,7 +10,7 @@ import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModelTeacher extends CourseModel {
+public class CourseModel extends CourseModelBase {
 
 	private ObservableSemesterIdList otherSemesters = new ObservableSemesterIdList();
 	private ObservableGroupIdList groups = new ObservableGroupIdList();
@@ -19,7 +19,7 @@ public class CourseModelTeacher extends CourseModel {
 	private TaskDatesByGroupId overridenDates = new TaskDatesByGroupId();
 
 	private CompletionsByGroup groupCompletions = new CompletionsByGroup();
-
+	
 	public ObservableSemesterIdList getOtherSemesters() {
 		return otherSemesters;
 	}

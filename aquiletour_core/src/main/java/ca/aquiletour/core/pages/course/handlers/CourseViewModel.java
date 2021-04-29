@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.course.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -19,7 +19,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseViewModel<M extends CourseModel, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
+public class CourseViewModel<M extends CourseModelBase, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
 	private CoursePath currentCoursePath;
 	private Task currentTask;
@@ -51,7 +51,6 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 		if(!model.getCoursePath().equals(currentCoursePath)) {
 			currentCoursePath = model.getCoursePath();
-			System.out.println("currentCoursePath: " + currentCoursePath.toString());
 		}
 
 		if(currentTask != null) {
@@ -67,8 +66,6 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
 		}
-		
-		view.displayEditableComponents(isEditable());
 	}
 
 	private void removeAllObservers() {
@@ -84,7 +81,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		currentTask.getTitle().removeObservers();
 	}
 
-	private void observeCurrentTask(CourseModel model, String groupId, CourseView view, ViewLoader subViewLoader) {
+	private void observeCurrentTask(CourseModelBase model, String groupId, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
 		if(currentTask.isRootTask()) {
@@ -178,7 +175,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 	}
 		
 
-	private void observeCurrentTaskEndTime(CourseModel model, CourseView view) {
+	private void observeCurrentTaskEndTime(CourseModelBase model, CourseView view) {
 		T.call(this);
 		
 		currentTask.getEndTime().observe(new ValueObserver<CourseDate>() {
@@ -189,7 +186,6 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 				
 				displayCurrentTaskEndTime(model, view);
 			}
-
 
 			@Override
 			public void onDeleted(CourseDate lastValue) {
@@ -207,7 +203,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 
 	}
 
-	private void displayCurrentTaskEndTime(CourseModel model, CourseView view) {
+	private void displayCurrentTaskEndTime(CourseModelBase model, CourseView view) {
 		T.call(this);
 		
 		AquiletourDate endTime = model.taskEndTimeForGroup(currentGroupId(), currentTask.id());
@@ -244,7 +240,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 	}
 
 
-	private void observePreviousTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void observePreviousTasks(CourseModelBase model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
 		view.clearPreviousTasks();
@@ -293,7 +289,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		});
 	}
 
-	private void observeSubTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void observeSubTasks(CourseModelBase model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
 		view.clearSubtasks();
@@ -345,7 +341,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		});
 	}
 
-	private void observeNextTasks(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void observeNextTasks(CourseModelBase model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
 		view.clearNextTasks();
@@ -397,7 +393,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		});
 	}
 
-	private void displayPreviousTasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void displayPreviousTasksInOrder(CourseModelBase model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
 		view.clearPreviousTasks();
@@ -407,7 +403,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		});
 	}
 
-	private void displaySubtasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void displaySubtasksInOrder(CourseModelBase model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
 		view.clearSubtasks();
@@ -421,7 +417,7 @@ public class CourseViewModel<M extends CourseModel, V extends CourseView> extend
 		});
 	}
 
-	private void displayNextTasksInOrder(CourseModel model, CourseView view, ViewLoader subViewLoader) {
+	private void displayNextTasksInOrder(CourseModelBase model, CourseView view, ViewLoader subViewLoader) {
 		T.call(this);
 
 		view.clearNextTasks();

@@ -13,4 +13,5 @@ public interface CourseViewTeacher extends CourseView, SemesterDropdown {
 
 	void identifyCurrentTask(CoursePath coursePath, Task task);
 
+	void showEditableComponents(boolean show);
 }

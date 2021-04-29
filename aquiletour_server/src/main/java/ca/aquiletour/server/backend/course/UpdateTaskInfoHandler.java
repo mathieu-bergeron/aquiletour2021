@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
@@ -16,7 +16,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 		T.call(this);
 		
 		CourseUpdater.updateTaskInfo(modelStore, 
-				                     CourseModelTeacher.class, 
+				                     CourseModel.class, 
 				                     message.coursePath(), 
 				                     message.getTaskPath(),
 				                     message.getTaskTitle(),
@@ -33,7 +33,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 				                                                                 message.getUser());
 
 		CourseUpdater.updateCourseSchedule(modelStore,
-										   CourseModelTeacher.class,
+										   CourseModel.class,
 										   message.coursePath(),
 										   semesterSchedule,
 										   teacherSchedule,
