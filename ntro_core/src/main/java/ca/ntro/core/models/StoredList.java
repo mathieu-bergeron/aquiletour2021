@@ -43,12 +43,14 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		T.call(this);
 		
 		getValue().add(index, item);
+		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 
 		List<Object> args = new ArrayList<>();
 		args.add(index);
 		args.add(item);
 		
 		modelStore().onValueMethodInvoked(valuePath(),"insertItem",args);
+
 		
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemAdded(index, item);
@@ -79,12 +81,12 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 	
 	public void addItem(I item) {
 		T.call(this);
+
 		getValue().add(item);
+		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 		
 		List<Object> args = new ArrayList<>();
 		args.add(item);
-		
-		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 
 		modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
 
@@ -109,11 +111,12 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		I item = item(index);
 
 		getValue().remove(index);
+		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 		
 		List<Object> args = new ArrayList<>();
-		args.add(item);
+		args.add(index);
 
-		modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
+		modelStore().onValueMethodInvoked(valuePath(),"removeItemAtIndex",args);
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemRemoved(index, item);

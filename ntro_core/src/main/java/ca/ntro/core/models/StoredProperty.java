@@ -9,7 +9,7 @@ import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.system.trace.T;
 
 public abstract class StoredProperty<V extends Object> extends StoredValue {
-	
+
 	private V value;
 
 	private ValueListener<V> valueListener;

@@ -165,12 +165,14 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("openQueueCourseId")) {
 			
 			String courseId = parameters.get("openQueueCourseId")[0];
+			String semesterId = ((SessionData) Ntro.currentSession().getSessionData()).getCurrentSemester();
 			
 			if(parameters.containsKey("ifQueueOpen")
 					&& parameters.get("ifQueueOpen")[0].equals("on")) {
 				
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				teacherUsesQueueMessage.setCourseId(courseId);
+				teacherUsesQueueMessage.setSemesterId(semesterId);
 				Ntro.messages().send(teacherUsesQueueMessage);
 				
 			}else {

@@ -25,6 +25,7 @@ import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
@@ -108,6 +109,8 @@ import ca.aquiletour.core.pages.group_list.models.SemesterCourses;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
 import ca.aquiletour.core.pages.open_queue_list.values.ObservableQueueList;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurations;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimes;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.ObservableTime;
 import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
@@ -311,6 +314,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(ObservableTime.class);
 		Ntro.registerSerializableClass(ObservableTags.class);
+
+		Ntro.registerSerializableClass(ModifyAppointmentDurations.class);
+		Ntro.registerSerializableClass(ModifyAppointmentTimes.class);
+		Ntro.registerSerializableClass(ToggleStudentModeMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

@@ -51,9 +51,8 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 			userName += " " + appointment.getStudentSurname();
 		}
 		
-		studentName.text(userName + "  " + appointment.getId());
+		studentName.text(userName);
 
-		
 		appointmentIdInput.value(appointment.getId());
 
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());

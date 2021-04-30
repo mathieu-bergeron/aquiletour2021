@@ -98,6 +98,7 @@ public class QueueModel implements NtroModel {
 		}
 		
 		appointments.removeItemAtIndex(0);
+
 		recomputeAppointmentTimes();
 	}
 
