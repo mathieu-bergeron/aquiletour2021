@@ -1,6 +1,7 @@
 package ca.aquiletour.core.messages.git;
 
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsModel;
+import ca.aquiletour.core.pages.git.late_students.messages.ShowLateStudentsMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
@@ -8,7 +9,7 @@ import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class GetCommitsForPath extends StudentExerciseMessage implements NtroModelMessage {
+public class GetLateStudents extends ShowLateStudentsMessage implements NtroModelMessage {
 	
 
 	@Override
@@ -16,7 +17,7 @@ public class GetCommitsForPath extends StudentExerciseMessage implements NtroMod
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();
-		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(CommitListModel.class));
+		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(LateStudentsModel.class));
 
 		documentPath.setDocumentId(documentIdAsPath().toFileName());
 
@@ -25,17 +26,20 @@ public class GetCommitsForPath extends StudentExerciseMessage implements NtroMod
 	
 	protected Path documentIdAsPath() {
 		T.call(this);
+
 		System.out.println(getExercisePath());
+		System.out.println(getCourseId());
 		Path exercisePath = new Path(getExercisePath());
 
 		Path path = new Path();
 		path.getNames().add(getCourseId());
 		path.getNames().add(getSemesterId());
 		path.getNames().add(getGroupId());
-		path.getNames().add(getStudentId());
+		path.getNames().add(getDeadline());
 		for(int i = 0; i < exercisePath.nameCount(); i++) {
 			path.getNames().add(exercisePath.name(i));
 		}
+		System.out.println(getCourseId() + getSemesterId() + getGroupId() + getDeadline() + getExercisePath());
 		
 		return path;
 	}
@@ -44,6 +48,6 @@ public class GetCommitsForPath extends StudentExerciseMessage implements NtroMod
 	public Class<? extends NtroModel> targetClass() {
 		T.call(this);
 		
-		return CommitListModel.class;
+		return LateStudentsModel.class;
 	}
 }

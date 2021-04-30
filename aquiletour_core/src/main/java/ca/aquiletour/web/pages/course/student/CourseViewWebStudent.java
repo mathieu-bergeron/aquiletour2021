@@ -36,7 +36,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		super.identifyCurrentTask(courseId, task);
 		
-		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
+		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_COMMIT_LIST_URL_SEGMENT 
 				                                + "/" + courseId 
 				                                + task.id()
 												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()

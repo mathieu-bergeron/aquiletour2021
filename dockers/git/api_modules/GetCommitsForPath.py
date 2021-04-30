@@ -48,7 +48,6 @@ def process(api_req, maria_conn, lite_conn):
             value = []
 
             commitIndex = 0
-            stopSearch = False
             while commitIndex < len(commitRows):
                 commitRow = commitRows[commitIndex]
                 commitData = {}

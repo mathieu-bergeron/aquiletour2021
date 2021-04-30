@@ -1,4 +1,4 @@
-package ca.aquiletour.web.pages.git;
+package ca.aquiletour.web.pages.git.commit_list;
 
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;

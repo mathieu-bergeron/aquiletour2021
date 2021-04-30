@@ -49,6 +49,7 @@ import ca.aquiletour.core.pages.dashboards.values.CourseSummary;
 import ca.aquiletour.core.pages.dashboards.values.ObservableCourseList;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsModel;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.CommitFile;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
@@ -132,6 +133,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableCommitList.class);
 		Ntro.registerSerializableClass(Commit.class);
 		Ntro.registerSerializableClass(CommitFile.class);
+		
+		Ntro.registerSerializableClass(LateStudentsModel.class);
 
 		Ntro.registerSerializableClass(CourseModel.class);
 		Ntro.registerSerializableClass(ObservableTaskMap.class);

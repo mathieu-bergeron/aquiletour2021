@@ -8,7 +8,7 @@ import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class GetCommitsForPath extends StudentExerciseMessage implements NtroModelMessage {
+public class GetStudentSummaries extends StudentExerciseMessage implements NtroModelMessage {
 	
 
 	@Override
@@ -25,7 +25,7 @@ public class GetCommitsForPath extends StudentExerciseMessage implements NtroMod
 	
 	protected Path documentIdAsPath() {
 		T.call(this);
-		System.out.println(getExercisePath());
+
 		Path exercisePath = new Path(getExercisePath());
 
 		Path path = new Path();

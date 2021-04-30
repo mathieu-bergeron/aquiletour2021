@@ -1,14 +1,14 @@
 package ca.aquiletour.core.pages.git.late_students;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredBoolean;
-import ca.ntro.core.system.trace.T;
 
 public class LateStudentsModel implements NtroModel {
 	
-	String semesterId, deadline, groupId, exercisePath;
-	String[] studentIds;
+	String semesterId, deadline, groupId, exercisePath, courseId;
+	private List<String> studentIds = new ArrayList<>();
 
 
 	public String getSemesterId() {
@@ -43,13 +43,24 @@ public class LateStudentsModel implements NtroModel {
 		this.deadline = deadline;
 	}
 
-	public String[] getStudentIds() {
+	public List<String> getStudentIds() {
 		return studentIds;
 	}
 
-	public void setStudentIds(String[] studentIds) {
+	public void setStudentIds(List<String> studentIds) {
 		this.studentIds = studentIds;
 	}
+
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	
+
 	
 	
 

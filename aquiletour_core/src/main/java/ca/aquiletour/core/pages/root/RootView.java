@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.root;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -18,6 +19,8 @@ public interface RootView extends NtroView {
 	void showQueues(QueuesView currentView);
 	void showHome(HomeView homeView);
 	void adjustLoginLinkText(NtroContext<?> context);
-	void showGit(CommitListView gitView);
+	void showGitCommitList(CommitListView gitCommitListView);
+	void showGitLateStudents(LateStudentsView gitLateStudentsView);
+//	void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView);
 	void showCourse(CourseView currentView);
 }

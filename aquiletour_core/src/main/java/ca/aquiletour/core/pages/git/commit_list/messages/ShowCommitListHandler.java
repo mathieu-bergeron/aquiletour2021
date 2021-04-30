@@ -1,4 +1,4 @@
-package ca.aquiletour.core.pages.git.messages;
+package ca.aquiletour.core.pages.git.commit_list.messages;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
@@ -25,6 +25,6 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		currentController.setSubModelLoader(CourseModel.class, Ntro.userService().user().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showGit(currentView);
+		rootView.showGitCommitList(currentView);
 	}
 }

@@ -109,7 +109,7 @@ def getCommitInfo(maria_cursor, api_req):
             AND commit_file.exercise_path = %s 
             AND repository.course_id = %s
             AND repository.group_id = %s 
-            ORDER BY repository.student, commit.commit_id;''',
+            ORDER BY repository.student, commit.commit_id, commit_commit_date''',
                 (
                 utils.normalize_data.normalize_session(api_req['semesterId']),
                 api_req['exercisePath'],
