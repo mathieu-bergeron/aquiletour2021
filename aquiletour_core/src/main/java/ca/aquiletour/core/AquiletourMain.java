@@ -139,6 +139,7 @@ import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
+import ca.ntro.users.NtroSession;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 	
@@ -187,15 +188,16 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			public void handle(ToggleStudentModeMessage message) {
 				T.call(this);
 				
-				User user = (User) Ntro.currentSession().getUser();
+				NtroSession session = Ntro.currentSession();
+				User user = (User) session.getUser();
+
 				if(user instanceof Teacher) {
+
 					Teacher teacher = (Teacher) user;
 					teacher.toggleStudentMode();
 					
-					System.out.println("studentMode: " + teacher.getStudentMode());
-
-					Ntro.currentSession().setUser(teacher);
-					Ntro.sessionService().registerCurrentSession(Ntro.currentSession()); // XXX: saves session
+					session.setUser(teacher);
+					Ntro.sessionService().registerCurrentSession(session); // XXX: saves session
 
 					rootController.changeUser(teacher);
 				}

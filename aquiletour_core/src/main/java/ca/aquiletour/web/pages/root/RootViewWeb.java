@@ -105,7 +105,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		initializeLinks();
 
-		adjustLoginLinkText(context);
+		onContextChange(context);
 		
 		initializeAlerts();
 	}
@@ -127,41 +127,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLinkTeacher.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 		coursesLinkStudent.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
-		coursesLinkTeacher.hide();
-		openQueueListLink.hide();
-		calendarListLink.hide();
-		groupListLink.hide();
-		queueLink.hide();
-		
-		if(Ntro.currentUser() instanceof Teacher) {
-			toggleStudentModeButton.show();
-		}else {
-			toggleStudentModeButton.hide();
-		}
-		
-		if(((User) Ntro.currentUser()).actsAsTeacher()) {
-			
-			toggleStudentModeButton.text("Mode étudiant");
-
-			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
-			calendarListLink.show();
-
-			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
-			groupListLink.show();
-			
-			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + Ntro.currentUser().getId());
-			queueLink.show();
-			
-			coursesLinkStudent.hide();
-			coursesLinkTeacher.show();
-			
-		} else {
-
-			toggleStudentModeButton.text("Mode enseignant");
-
-			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
-			openQueueListLink.show();
-		}
 
 		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
 
@@ -179,7 +144,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void adjustLoginLinkText(NtroContext<?,?> context) {
+	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
 		userProfile.hide();
@@ -205,6 +170,43 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			userProfileName.text(userName);
 			userProfileNameInput.value(userName);
 		}
+		
+		coursesLinkTeacher.hide();
+		openQueueListLink.hide();
+		calendarListLink.hide();
+		groupListLink.hide();
+		queueLink.hide();
+		
+		if(context.user() instanceof Teacher) {
+			toggleStudentModeButton.show();
+		}else {
+			toggleStudentModeButton.hide();
+		}
+		
+		if(((User)context.user()).actsAsTeacher()) {
+			
+			toggleStudentModeButton.text("Mode étudiant");
+
+			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
+			calendarListLink.show();
+
+			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
+			groupListLink.show();
+			
+			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + Ntro.currentUser().getId());
+			queueLink.show();
+			
+			coursesLinkStudent.hide();
+			coursesLinkTeacher.show();
+			
+		} else {
+
+			toggleStudentModeButton.text("Mode enseignant");
+
+			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
+			openQueueListLink.show();
+		}
+		
 	}
 
 

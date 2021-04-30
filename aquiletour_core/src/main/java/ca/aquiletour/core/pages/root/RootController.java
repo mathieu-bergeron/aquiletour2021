@@ -120,7 +120,7 @@ public class RootController extends NtroRootController {
 		
 		RootView view = (RootView) getView();
 
-		view.adjustLoginLinkText(context);
+		view.onContextChange(context);
 		
 		addRoleSpecificSubControllers(context);
 	}
