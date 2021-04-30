@@ -40,11 +40,9 @@ import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
-import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
@@ -636,7 +634,7 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
-	private static void sendModifyAppointmentDurationsMessage(long incrementSeconds) {
+	private static void sendModifyAppointmentDurationsMessage(int incrementSeconds) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		ModifyAppointmentDurations modifyAppointmentDurations = Ntro.messages().create(ModifyAppointmentDurations.class);
@@ -644,7 +642,7 @@ public class AquiletourBackendRequestHandler {
 		Ntro.messages().send(modifyAppointmentDurations);
 	}
 
-	private static void sendModifyAppointmentTimesMessage(long incrementSeconds) {
+	private static void sendModifyAppointmentTimesMessage(int incrementSeconds) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		ModifyAppointmentTimes modifyAppointmentTimes = Ntro.messages().create(ModifyAppointmentTimes.class);

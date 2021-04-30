@@ -109,7 +109,7 @@ public class Appointment implements NtroModelValue {
 		getTime().set(time);
 	}
 
-	public void modifyAppointmentTime(long timeIncrementSeconds) {
+	public void incrementTimeSeconds(long timeIncrementSeconds) {
 		T.call(this);
 		
 		NtroDate time = getTime().getValue();

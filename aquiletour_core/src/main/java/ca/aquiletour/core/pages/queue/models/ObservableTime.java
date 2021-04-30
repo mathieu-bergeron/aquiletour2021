@@ -15,4 +15,10 @@ public class ObservableTime extends StoredProperty<NtroDate> {
 		super(date);
 		T.call(this);
 	}
+
+	public void incrementBySeconds(int incrementSeconds) {
+		T.call(this);
+		
+		setValue(getValue().deltaSeconds(incrementSeconds));
+	}
 }

@@ -5,13 +5,13 @@ import ca.ntro.messages.NtroUserMessage;
 
 public class ModifyAppointmentDurations extends NtroUserMessage<User> {
 	
-	private long durationIncrementSeconds;
+	private int durationIncrementSeconds;
 
-	public long getDurationIncrementSeconds() {
+	public int getDurationIncrementSeconds() {
 		return durationIncrementSeconds;
 	}
 
-	public void setDurationIncrementSeconds(long durationIncrementSeconds) {
+	public void setDurationIncrementSeconds(int durationIncrementSeconds) {
 		this.durationIncrementSeconds = durationIncrementSeconds;
 	}
 }

@@ -99,16 +99,24 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		int index = Ntro.collections().indexOfEquals(getValue(), item);
 		
 		if(index != -1) {
-			getValue().remove(index);
-			
-			List<Object> args = new ArrayList<>();
-			args.add(item);
+			removeItemAtIndex(index);
+		}
+	}
 
-			modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
+	public void removeItemAtIndex(int index) {
+		T.call(this);
+		
+		I item = item(index);
 
-			for(ListObserver<I> listObserver : listObservers) {
-				listObserver.onItemRemoved(index, item);
-			}
+		getValue().remove(index);
+		
+		List<Object> args = new ArrayList<>();
+		args.add(item);
+
+		modelStore().onValueMethodInvoked(valuePath(),"removeItem",args);
+
+		for(ListObserver<I> listObserver : listObservers) {
+			listObserver.onItemRemoved(index, item);
 		}
 	}
 	

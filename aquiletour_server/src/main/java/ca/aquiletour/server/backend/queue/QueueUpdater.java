@@ -5,7 +5,6 @@ import java.util.List;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
@@ -181,10 +180,8 @@ public class QueueUpdater {
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
 		
-		Appointment appointment = queue.findAppointmentById(appointmentId);
+		Appointment appointment = queue.appointmentById(appointmentId);
 
-		modelStore.closeWithoutSaving(queue);
-		
 		return appointment;
 	}
 
@@ -227,7 +224,7 @@ public class QueueUpdater {
 		});
 	}
 
-	public static void modifyAppointmentTimes(ModelStoreSync modelStore, long timeIncrementSeconds, User user) {
+	public static void modifyAppointmentTimes(ModelStoreSync modelStore, int timeIncrementSeconds, User user) {
 		T.call(QueueUpdater.class);
 		
 		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
@@ -235,12 +232,12 @@ public class QueueUpdater {
 			public void update(QueueModel queue) {
 				T.call(this);
 				
-				queue.modifyAppointmentTimes(timeIncrementSeconds);
+				queue.incrementAppointmentTimesSeconds(timeIncrementSeconds);
 			}
 		});
 	}
 
-	public static void modifyAppointmentDurations(ModelStoreSync modelStore, long durationIncrementSeconds, User user) {
+	public static void modifyAppointmentDurations(ModelStoreSync modelStore, int durationIncrementSeconds, User user) {
 		T.call(QueueUpdater.class);
 		
 		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
