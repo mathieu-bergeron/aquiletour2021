@@ -437,8 +437,7 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCookie(HttpServletResponse response, String name, String value) {
 		T.call(this);
 		
-		//String trimmedValue = value.replace(" ", "");
-		String trimmedValue = value;
+		String trimmedValue = value.replace(" ", "%20");
 
 		String urlEncodedString = UrlEncoded.encodeString(trimmedValue);
 		

@@ -3,12 +3,16 @@ package ca.aquiletour.core.pages.queue.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 
 public class QueueModel implements NtroModel {
+	
+	private long appointmentDurationSeconds = Constants.APPOINTMENT_DURATION_MINUTES * 60;
 	
 	private ObservableTime currentTime = new ObservableTime();
 
@@ -54,6 +58,11 @@ public class QueueModel implements NtroModel {
 		String appointmentId = Integer.toString(getMaxId());
 		appointment.setId(appointmentId);
 		appointments.addItem(appointment);
+		
+		Appointment latestAppointment = findLatestAppointment();
+		if(latestAppointment != null) {
+			appointment.updateTime(latestAppointment.getTime().getValue().deltaMinutes(Constants.APPOINTMENT_DURATION_MINUTES));
+		}
 	}
 
 	public void deleteAppointment(String appointmentId) {
@@ -224,6 +233,70 @@ public class QueueModel implements NtroModel {
 
 	public void modifyAppointmentDurations(long durationIncrementSeconds) {
 		T.call(this);
-
+		
+		Appointment first = findEarliestAppointment();
+		
+		if(first != null) {
+			appointmentDurationSeconds += durationIncrementSeconds;
+			
+			// FIXME: not that simple!
+			forEachAppointmentInOrder(a -> {
+				a.updateTime(a.getTime().getValue().deltaSeconds(durationIncrementSeconds));
+			});
+		}
 	}
+	
+	private void forEachAppointmentInOrder(AppointmentLambda lambda) {
+		T.call(this);
+
+		// TODO: sort appointment in time order
+		for(Appointment appointment : getAppointments().getValue()) {
+			lambda.execute(appointment);
+		}
+	}
+
+	private Appointment findEarliestAppointment() {
+		T.call(this);
+		
+		Appointment current = null;
+
+		for(Appointment candidate : getAppointments().getValue()) {
+			if(current == null) {
+				current = candidate;
+			}else {
+				NtroDate candidateTime = candidate.getTime().getValue();
+				NtroDate currentTime = current.getTime().getValue();
+				
+				if(candidateTime.smallerThan(currentTime)) {
+					current = candidate;
+				}
+			}
+		}
+		
+		return current;
+	}
+
+	private Appointment findLatestAppointment() {
+		T.call(this);
+
+		Appointment current = null;
+
+		for(Appointment candidate : getAppointments().getValue()) {
+			if(current == null) {
+				current = candidate;
+			}else {
+				NtroDate candidateTime = candidate.getTime().getValue();
+				NtroDate currentTime = current.getTime().getValue();
+				
+				if(candidateTime.biggerThan(currentTime)) {
+					current = candidate;
+				}
+			}
+		}
+		
+		return current;
+	}
+	
+	
+	
 }

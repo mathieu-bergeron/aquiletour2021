@@ -620,21 +620,19 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("decrementAppointmentTimes")) {
 			
-			sendModifyAppointmentTimesMessage(-5*60);
+			sendModifyAppointmentTimesMessage(-Constants.APPOINTMENT_TIME_INCREMENT_SECONDS);
 			
 		} else if(parameters.containsKey("incrementAppointmentTimes")) {
 
-			ModifyAppointmentTimes modifyAppointmentTimes = Ntro.messages().create(ModifyAppointmentTimes.class);
-			modifyAppointmentTimes.setTimeIncrementSeconds(5 * 60);
-			Ntro.messages().send(modifyAppointmentTimes);
+			sendModifyAppointmentTimesMessage(+Constants.APPOINTMENT_TIME_INCREMENT_SECONDS);
 
 		} else if(parameters.containsKey("decreaseAppointmentDuration")) {
 			
-			sendModifyAppointmentDurationsMessage(-1*60);
+			sendModifyAppointmentDurationsMessage(-Constants.APPOINTMENT_DURATION_INCREMENT_SECONDS);
 
 		} else if(parameters.containsKey("increaseAppointmentDuration")) {
-			
-			sendModifyAppointmentDurationsMessage(1*60);
+
+			sendModifyAppointmentDurationsMessage(+Constants.APPOINTMENT_DURATION_INCREMENT_SECONDS);
 		}
 	}
 
