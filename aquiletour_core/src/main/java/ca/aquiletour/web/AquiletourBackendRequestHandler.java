@@ -15,6 +15,7 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -70,11 +71,16 @@ public class AquiletourBackendRequestHandler {
 			
 			String screenName = parameters.get("userName")[0];
 			
+			
 			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
 			updateUserInfoMessage.setScreenName(screenName);
 			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
 
 		} else if(parameters.containsKey("toggleStudentMode")) {
+
+			// XXX: must be here in the frontend
+			Teacher teacher = (Teacher) Ntro.currentSession().getUser();
+			teacher.toggleStudentMode();
 			
 			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
 			Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()

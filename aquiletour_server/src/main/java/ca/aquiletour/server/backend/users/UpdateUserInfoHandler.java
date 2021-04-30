@@ -14,9 +14,6 @@ public class UpdateUserInfoHandler extends BackendMessageHandler<UpdateUserInfoM
 	public void handleNow(ModelStoreSync modelStore, UpdateUserInfoMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 
-		User user = (User) Ntro.currentSession().getUser();
-		user.setName(message.getScreenName());
-		user.setSurname("");
 	}
 
 	@Override

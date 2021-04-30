@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 function initializeView(viewName, viewRootElement, jSweet){
 
-    if(viewName === "TeacherQueueViewWeb"){
+    if(viewName === "QueueViewWebTeacher"){
 
         initializeQueue(viewRootElement, jSweet);
         

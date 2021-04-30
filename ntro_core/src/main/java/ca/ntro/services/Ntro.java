@@ -518,6 +518,12 @@ public class Ntro {
 	public static NtroSession currentSession() {
 		__T.call(Ntro.class, "currentSession");
 
+		return sessionService().session();
+	}
+
+	public static SessionService sessionService() {
+		__T.call(Ntro.class, "sessionService");
+
 		SessionService service = sessionServices.get(threadService().currentThread().threadId());
 
 		if(service == null) {
@@ -525,7 +531,7 @@ public class Ntro {
 			sessionServices.put(threadService().currentThread().threadId(), service);
 		}
 
-		return service.session();
+		return service;
 	}
 
 	/* </SessionService> */

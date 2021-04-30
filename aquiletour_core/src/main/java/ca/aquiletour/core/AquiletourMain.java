@@ -176,7 +176,29 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			@Override
 			public void handle(NtroSetUserMessage message) {
 				Ntro.currentSession().setUser(message.getUser());
+				Ntro.sessionService().registerCurrentSession(Ntro.currentSession()); // XXX: saves session
+
 				rootController.changeUser(message.getUser());
+			}
+		});
+		
+		Ntro.messages().registerHandler(ToggleStudentModeMessage.class, new MessageHandler<ToggleStudentModeMessage>() {
+			@Override
+			public void handle(ToggleStudentModeMessage message) {
+				T.call(this);
+				
+				User user = (User) Ntro.currentSession().getUser();
+				if(user instanceof Teacher) {
+					Teacher teacher = (Teacher) user;
+					teacher.toggleStudentMode();
+					
+					System.out.println("studentMode: " + teacher.getStudentMode());
+
+					Ntro.currentSession().setUser(teacher);
+					Ntro.sessionService().registerCurrentSession(Ntro.currentSession()); // XXX: saves session
+
+					rootController.changeUser(teacher);
+				}
 			}
 		});
 	}

@@ -65,7 +65,7 @@ public class UserUpdater {
 				
 				if(userModel instanceof Teacher) {
 					Teacher teacher = (Teacher) userModel;
-					teacher.setStudentMode(!teacher.getStudentMode());
+					teacher.toggleStudentMode();
 				}
 			}
 		});

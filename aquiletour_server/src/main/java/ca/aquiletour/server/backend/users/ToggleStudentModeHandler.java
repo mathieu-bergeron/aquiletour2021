@@ -6,7 +6,6 @@ import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 
 public class ToggleStudentModeHandler extends BackendMessageHandler<ToggleStudentModeMessage>{
 
@@ -14,11 +13,8 @@ public class ToggleStudentModeHandler extends BackendMessageHandler<ToggleStuden
 	public void handleNow(ModelStoreSync modelStore, ToggleStudentModeMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 		
-		if(Ntro.currentUser() instanceof Teacher) {
-			Teacher teacher = (Teacher) Ntro.currentSession().getUser();
-			teacher.toggleStudentMode();
-
-			UserUpdater.toggleStudentMode(modelStore, teacher);
+		if(message.getUser() instanceof Teacher) {
+			UserUpdater.toggleStudentMode(modelStore, message.getUser());
 		}
 	}
 

@@ -30,7 +30,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueView {
 	public void initializeCloseQueueButton(String courseId) {
 		T.call(this);
 		
-		queueId.html(courseId);
+		queueId.text(courseId);
 	}
 
 	private void sendCloseQueueMessage(String courseId) {
