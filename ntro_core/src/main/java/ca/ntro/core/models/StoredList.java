@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
+import ca.ntro.core.models.listeners.ItemRemovedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -231,5 +232,40 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 
 	public boolean contains(I item) {
 		return Ntro.collections().listContainsEquals(getValue(), item);
+	}
+
+	public void onItemRemoved(ItemRemovedListener<I> listener) {
+		T.call(this);
+		
+		observe(new ListObserver<I>() {
+			@Override
+			public void onValueChanged(List<I> oldValue, List<I> value) {
+			}
+
+			@Override
+			public void onValue(List<I> value) {
+			}
+
+			@Override
+			public void onDeleted(List<I> lastValue) {
+			}
+
+			@Override
+			public void onItemAdded(int index, I item) {
+			}
+
+			@Override
+			public void onItemUpdated(int index, I item) {
+			}
+
+			@Override
+			public void onItemRemoved(int index, I item) {
+				listener.onItemRemoved(index, item);
+			}
+
+			@Override
+			public void onClearItems() {
+			}
+		});
 	}
 }

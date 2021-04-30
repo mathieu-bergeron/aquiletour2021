@@ -28,6 +28,8 @@ import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurations;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimes;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
@@ -581,14 +583,7 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("makeAppointment")) {
-			
-			// FIXME: we need a Ntro service for dates
-			/*
-			Calendar rightNow = Calendar.getInstance();
-			int hour = rightNow.get(Calendar.HOUR_OF_DAY);
-			int minute = rightNow.get(Calendar.MINUTE);
-			String time = hour + ":" + minute;
-			 */
+
 			AddAppointmentMessage addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
 			addAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
@@ -603,7 +598,7 @@ public class AquiletourBackendRequestHandler {
 			deleteAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
 
-		} else if(parameters.containsKey("move")) { // /billetterie/IdDuCours?move=Id1&before=Id2
+		} else if(parameters.containsKey("move")) {
 
 			String appointmentId = parameters.get("move")[0];
 			String destinationId = null;
@@ -623,6 +618,39 @@ public class AquiletourBackendRequestHandler {
 			moveAppointmentMessage.setBeforeOrAfter(beforeOrAfter);
 			Ntro.messages().send(moveAppointmentMessage);
 
-		} 
+		} else if(parameters.containsKey("decrementAppointmentTimes")) {
+			
+			sendModifyAppointmentTimesMessage(-5*60);
+			
+		} else if(parameters.containsKey("incrementAppointmentTimes")) {
+
+			ModifyAppointmentTimes modifyAppointmentTimes = Ntro.messages().create(ModifyAppointmentTimes.class);
+			modifyAppointmentTimes.setTimeIncrementSeconds(5 * 60);
+			Ntro.messages().send(modifyAppointmentTimes);
+
+		} else if(parameters.containsKey("decreaseAppointmentDuration")) {
+			
+			sendModifyAppointmentDurationsMessage(-1*60);
+
+		} else if(parameters.containsKey("increaseAppointmentDuration")) {
+			
+			sendModifyAppointmentDurationsMessage(1*60);
+		}
+	}
+
+	private static void sendModifyAppointmentDurationsMessage(long incrementSeconds) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		ModifyAppointmentDurations modifyAppointmentDurations = Ntro.messages().create(ModifyAppointmentDurations.class);
+		modifyAppointmentDurations.setDurationIncrementSeconds(incrementSeconds);
+		Ntro.messages().send(modifyAppointmentDurations);
+	}
+
+	private static void sendModifyAppointmentTimesMessage(long incrementSeconds) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		ModifyAppointmentTimes modifyAppointmentTimes = Ntro.messages().create(ModifyAppointmentTimes.class);
+		modifyAppointmentTimes.setTimeIncrementSeconds(incrementSeconds);
+		Ntro.messages().send(modifyAppointmentTimes);
 	}
 }

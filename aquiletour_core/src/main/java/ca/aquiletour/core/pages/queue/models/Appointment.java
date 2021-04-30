@@ -1,27 +1,33 @@
 package ca.aquiletour.core.pages.queue.models;
 
-import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.models.NtroModelValue;
+import ca.ntro.core.models.StoredString;
+import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 
-public class Appointment implements JsonSerializable {
+public class Appointment implements NtroModelValue {
 	
 	private String id = "";
 	private String studentId = "";
 	private String studentName = "";
 	private String studentSurname = "";
+	
+	private ObservableTime time = new ObservableTime();
+	private StoredString courseTitle = new StoredString();
+	private StoredString taskTitle = new StoredString();
+	private ObservableTags tags = new ObservableTags();
+	private StoredString message = new StoredString();
+
 	//private User user;
 
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getStudentId() {
-		return studentId;
-	}
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
+
 	public String getStudentName() {
 		return studentName;
 	}
@@ -47,5 +53,69 @@ public class Appointment implements JsonSerializable {
 		}
 		
 		return false;
+	}
+
+	public ObservableTime getTime() {
+		return time;
+	}
+
+	public void setTime(ObservableTime time) {
+		this.time = time;
+	}
+
+	public StoredString getCourseTitle() {
+		return courseTitle;
+	}
+
+	public void setCourseTitle(StoredString courseTitle) {
+		this.courseTitle = courseTitle;
+	}
+
+	public StoredString getTaskTitle() {
+		return taskTitle;
+	}
+
+	public void setTaskTitle(StoredString taskTitle) {
+		this.taskTitle = taskTitle;
+	}
+
+	public ObservableTags getTags() {
+		return tags;
+	}
+
+	public void setTags(ObservableTags tags) {
+		this.tags = tags;
+	}
+
+	public StoredString getMessage() {
+		return message;
+	}
+
+	public void setMessage(StoredString message) {
+		this.message = message;
+	}
+
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+	
+	public void updateTime(NtroDate time) {
+		T.call(this);
+		
+		getTime().set(time);
+	}
+
+	public void modifyAppointmentTime(long timeIncrementSeconds) {
+		T.call(this);
+		
+		NtroDate time = getTime().getValue();
+		
+		time = time.deltaSeconds(timeIncrementSeconds);
+		
+		updateTime(time);
 	}
 }

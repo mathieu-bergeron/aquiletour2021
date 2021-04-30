@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -12,6 +13,13 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 
 	private HtmlElement studentName;
 	private HtmlElement appointmentIdInput;
+
+	private HtmlElement time;
+	private HtmlElement courseTitleElement;
+	private HtmlElement taskTitleElement;
+	private HtmlElement tags;
+	private HtmlElement messageElement;
+	
 	
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -20,8 +28,20 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		studentName = this.getRootElement().find("#student-name").get(0);
 		appointmentIdInput = this.getRootElement().find("#appointment-id-input").get(0);
 
+		time = this.getRootElement().find("#time").get(0);
+		courseTitleElement = this.getRootElement().find("#course-title").get(0);
+		taskTitleElement = this.getRootElement().find("#task-title").get(0);
+		tags = this.getRootElement().find("#tags").get(0);
+		messageElement = this.getRootElement().find("#message").get(0);
+
 		MustNot.beNull(studentName);
 		MustNot.beNull(appointmentIdInput);
+
+		MustNot.beNull(time);
+		MustNot.beNull(courseTitleElement);
+		MustNot.beNull(taskTitleElement);
+		MustNot.beNull(tags);
+		MustNot.beNull(messageElement);
 	}
 
 	@Override
@@ -36,5 +56,50 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		appointmentIdInput.value(appointment.getId());
 
 		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
+	}
+
+	@Override
+	public void displayCourseTitle(String courseTitle) {
+		T.call(this);
+		
+		courseTitleElement.text(courseTitle);
+	}
+
+	@Override
+	public void displayTaskTitle(String taskTitle) {
+		T.call(this);
+		
+		taskTitleElement.text(taskTitle);
+	}
+
+	@Override
+	public void displayMessage(String message) {
+		T.call(this);
+		
+		messageElement.text(message);
+	}
+
+	@Override
+	public void appendTag(String tag) {
+		T.call(this);
+		
+		HtmlElement tagDiv = tags.createElement("<div class=\"card p-1\"></div>");
+		tags.appendElement(tagDiv);
+		
+		tagDiv.text("#" + tag);
+	}
+
+	@Override
+	public void clearTags() {
+		T.call(this);
+		
+		tags.deleteChildrenForever();
+	}
+
+	@Override
+	public void dislayTime(NtroDate appointmentTime) {
+		T.call(this);
+		
+		time.text(appointmentTime.format("HH:mm"));
 	}
 }

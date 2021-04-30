@@ -10,7 +10,7 @@ import ca.ntro.core.system.trace.T;
 
 public class QueueModel implements NtroModel {
 	
-	private CurrentTime currentTime = new CurrentTime();
+	private ObservableTime currentTime = new ObservableTime();
 
 	private ObservableAppointmentList appointments = new ObservableAppointmentList();
 	private List<String> studentIds = new ArrayList<>();
@@ -206,11 +206,24 @@ public class QueueModel implements NtroModel {
 		this.currentGroupId = currentGroupId;
 	}
 
-	public CurrentTime getCurrentTime() {
+	public ObservableTime getCurrentTime() {
 		return currentTime;
 	}
 
-	public void setCurrentTime(CurrentTime currentTime) {
+	public void setCurrentTime(ObservableTime currentTime) {
 		this.currentTime = currentTime;
+	}
+
+	public void modifyAppointmentTimes(long timeIncrementSeconds) {
+		T.call(this);
+
+		for(Appointment appointment : getAppointments().getValue()) {
+			appointment.modifyAppointmentTime(timeIncrementSeconds);
+		}
+	}
+
+	public void modifyAppointmentDurations(long durationIncrementSeconds) {
+		T.call(this);
+
 	}
 }

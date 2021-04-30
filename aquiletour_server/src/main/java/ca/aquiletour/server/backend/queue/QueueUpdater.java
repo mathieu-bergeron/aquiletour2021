@@ -11,6 +11,7 @@ import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class QueueUpdater {
 
@@ -145,6 +146,7 @@ public class QueueUpdater {
 
 		Appointment appointment = new Appointment();
 
+		appointment.updateTime(Ntro.calendar().now());
 		appointment.setStudentId(user.getId());
 		appointment.setStudentName(user.getName());
 		appointment.setStudentSurname(user.getSurname());
@@ -221,6 +223,32 @@ public class QueueUpdater {
 				T.call(this);
 
 				queue.moveAppointment(appointmentId, destinationId, beforeOrAfter);
+			}
+		});
+	}
+
+	public static void modifyAppointmentTimes(ModelStoreSync modelStore, long timeIncrementSeconds, User user) {
+		T.call(QueueUpdater.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.modifyAppointmentTimes(timeIncrementSeconds);
+			}
+		});
+	}
+
+	public static void modifyAppointmentDurations(ModelStoreSync modelStore, long durationIncrementSeconds, User user) {
+		T.call(QueueUpdater.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.modifyAppointmentDurations(durationIncrementSeconds);
 			}
 		});
 	}
