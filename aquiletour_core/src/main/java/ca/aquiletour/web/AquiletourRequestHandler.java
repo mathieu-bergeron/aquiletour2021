@@ -12,6 +12,7 @@ import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboard
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.git.late_students.messages.ShowLateStudentsMessage;
+import ca.aquiletour.core.pages.git.student_summaries.messages.ShowStudentSummariesMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
@@ -122,12 +123,12 @@ public class AquiletourRequestHandler {
 				exerciseId = subPath.subPath(1).toString();
 			}
 			
-			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
+			ShowStudentSummariesMessage showGitMessage = Ntro.messages().create(ShowStudentSummariesMessage.class);
 			showGitMessage.setCourseId("mathieu.bergeron/StruDon");
 			showGitMessage.setExercisePath("/TP1/Exercice 1");
-			showGitMessage.setStudentId("1234500");
 			showGitMessage.setGroupId("01"); // TODO
 			showGitMessage.setSemesterId("H2021"); // TODO
+			showGitMessage.setDeadline("1615215942");
 			Ntro.messages().send(showGitMessage);
 		}
 	}

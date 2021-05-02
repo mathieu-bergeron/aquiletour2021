@@ -17,11 +17,10 @@ import ca.ntro.core.system.trace.T;
 public class LateStudentsViewModel extends ModelViewSubViewHandler<LateStudentsModel, LateStudentsView>  {
 	
 
+
 	@Override
 	protected void handle(LateStudentsModel model, LateStudentsView view, ViewLoader subViewLoader) {
-		T.call(this);
-		T.here();
-		view.displayLateStudents(model);
-		
+		// TODO Auto-generated method stub
+		 view.displayLateStudents(model);
 	}
 }

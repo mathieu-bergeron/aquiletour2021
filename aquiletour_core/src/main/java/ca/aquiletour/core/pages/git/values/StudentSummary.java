@@ -6,8 +6,9 @@ import ca.ntro.core.system.trace.T;
 
 public class StudentSummary implements NtroModelValue {
 
-	String studentId, lastCommit;
-	boolean exerciceCompleted;
+	String studentId;
+	int lastCommitBeforeDeadline, lastCommitAfterDealine;
+	boolean exerciceCompleted, exerciseCompletedBeforeDeadline;
 
 	public String getStudentId() {
 		return studentId;
@@ -17,14 +18,6 @@ public class StudentSummary implements NtroModelValue {
 		this.studentId = studentId;
 	}
 
-	public String getLastCommit() {
-		return lastCommit;
-	}
-
-	public void setLastCommit(String lastCommit) {
-		this.lastCommit = lastCommit;
-	}
-
 	public boolean isExerciceCompleted() {
 		return exerciceCompleted;
 	}
@@ -32,5 +25,31 @@ public class StudentSummary implements NtroModelValue {
 	public void setExerciceCompleted(boolean exerciceCompleted) {
 		this.exerciceCompleted = exerciceCompleted;
 	}
+
+	public int getLastCommitBeforeDeadline() {
+		return lastCommitBeforeDeadline;
+	}
+
+	public void setLastCommitBeforeDeadline(int lastCommitBeforeDeadline) {
+		this.lastCommitBeforeDeadline = lastCommitBeforeDeadline;
+	}
+
+	public int getLastCommitAfterDealine() {
+		return lastCommitAfterDealine;
+	}
+
+	public void setLastCommitAfterDealine(int lastCommitAfterDealine) {
+		this.lastCommitAfterDealine = lastCommitAfterDealine;
+	}
+
+	public boolean isExerciseCompletedBeforeDeadline() {
+		return exerciseCompletedBeforeDeadline;
+	}
+
+	public void setExerciseCompletedBeforeDeadline(boolean exerciseCompletedBeforeDeadline) {
+		this.exerciseCompletedBeforeDeadline = exerciseCompletedBeforeDeadline;
+	}
+	
+	
 
 }

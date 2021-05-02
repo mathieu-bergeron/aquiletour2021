@@ -13,6 +13,8 @@ import ca.aquiletour.core.pages.dashboards.teacher.TeacherDashboardView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.queue.student.StudentAppointmentView;
@@ -33,6 +35,8 @@ import ca.aquiletour.web.pages.dashboard.teacher.TeacherDashboardViewWeb;
 import ca.aquiletour.web.pages.git.commit_list.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.commit_list.CommitViewWeb;
 import ca.aquiletour.web.pages.git.late_students.LateStudentsViewWeb;
+import ca.aquiletour.web.pages.git.student_summaries.StudentSummariesViewWeb;
+import ca.aquiletour.web.pages.git.student_summaries.StudentSummaryViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
 import ca.aquiletour.web.pages.login.LoginViewWeb;
 import ca.aquiletour.web.pages.queue.student.StudentAppointmentViewWeb;
@@ -170,6 +174,22 @@ public class ViewLoaderRegistrationWeb {
 			     	.setCssUrl("/views/git/commit/commit.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CommitViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(StudentSummariesView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+				.setHtmlUrl("/views/git/studentsummaries/student_summaries.html")
+				.setCssUrl("/views/git/studentsummaries/student_summaries.css")
+				.setTranslationsUrl("/i18n/fr/string.json")
+				.setTargetClass(StudentSummariesViewWeb.class));
+		
+		ViewLoaders.registerViewLoader(StudentSummaryView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+				.setHtmlUrl("/views/git/studentsummary/student_summary.html")
+				.setCssUrl("/views/git/studentsummary/student_summary.css")
+				.setTranslationsUrl("/i18n/fr/string.json")
+				.setTargetClass(StudentSummaryViewWeb.class));
 		
 		ViewLoaders.registerViewLoader(LateStudentsView.class,
 				"fr"

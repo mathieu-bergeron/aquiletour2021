@@ -35,13 +35,20 @@ public class LateStudentsViewWeb extends NtroViewWeb implements LateStudentsView
 		MustNot.beNull(groupId);
 		MustNot.beNull(deadline);
 		
-		semesterId.appendHtml(lateStudentsModel.getSemesterId());
-		courseId.appendHtml(lateStudentsModel.getCourseId());
-		exercisePath.appendHtml(lateStudentsModel.getExercisePath());
-		groupId.appendHtml(lateStudentsModel.getGroupId());
-		semesterId.appendHtml(lateStudentsModel.getSemesterId());
+		semesterId.text(lateStudentsModel.getSemesterId());
+		courseId.text(lateStudentsModel.getCourseId());
+		exercisePath.text(lateStudentsModel.getExercisePath());
+		groupId.text(lateStudentsModel.getGroupId());
+		deadline.text(lateStudentsModel.getDeadline());
 		for (int i = 0; i < lateStudentsModel.getStudentIds().size(); i++) {
-			studentIds.appendHtml(lateStudentsModel.getStudentIds().get(i) + ", ");
-		}
+			
+			studentIds.appendHtml(lateStudentsModel.getStudentIds().get(i));
+			
+			if(i == lateStudentsModel.getStudentIds().size() - 1) {
+				studentIds.appendHtml(".");  
+			}else {
+				studentIds.appendHtml(", ");
+			}
+		} 
 	}
 }

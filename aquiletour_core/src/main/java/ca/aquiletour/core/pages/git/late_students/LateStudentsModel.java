@@ -58,10 +58,6 @@ public class LateStudentsModel implements NtroModel {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
-
-	
-
-	
 	
 
 }

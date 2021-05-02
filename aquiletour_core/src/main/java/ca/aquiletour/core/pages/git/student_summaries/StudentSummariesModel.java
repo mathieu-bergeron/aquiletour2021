@@ -1,12 +1,15 @@
 package ca.aquiletour.core.pages.git.student_summaries;
 
+import ca.aquiletour.core.pages.git.values.ObservableCommitList;
+import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.ntro.core.models.NtroModel;
 
 public class StudentSummariesModel implements NtroModel {
 	
-	String semesterId, groupId, exercisePath, deadline;
-	StudentSummary[] summaries;
+	String semesterId, groupId, exercisePath;
+	private ObservableStudentSummaryList summaries = new ObservableStudentSummaryList();
+	
 	public String getSemesterId() {
 		return semesterId;
 	}
@@ -31,21 +34,14 @@ public class StudentSummariesModel implements NtroModel {
 		this.groupId = groupId;
 	}
 
-	public String getDeadline() {
-		return deadline;
-	}
-
-	public void setDeadline(String deadline) {
-		this.deadline = deadline;
-	}
-
-	public StudentSummary[] getSummaries() {
+	public ObservableStudentSummaryList getSummaries() {
 		return summaries;
 	}
 
-	public void setSummaries(StudentSummary[] summaries) {
+	public void setSummaries(ObservableStudentSummaryList summaries) {
 		this.summaries = summaries;
 	}
+
 	
 	
 }

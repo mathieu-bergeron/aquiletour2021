@@ -54,7 +54,7 @@ def process(api_req, maria_conn, lite_conn):
                             #FINAL COMMIT FOUND
                             finalCommitFound = True
                             studentSummary['exerciseCompleted'] = True
-                            if commitRows[index][2] <= api_req['deadline']:
+                            if int(commitRows[index][2]) <= int(api_req['deadline']):
                                 studentSummary['exerciseCompletedBeforeDeadline'] = True
                             else:
                                 studentSummary['exerciseCompletedBeforeDeadline'] = False
@@ -62,9 +62,9 @@ def process(api_req, maria_conn, lite_conn):
                             studentSummary['exerciseCompleted'] = False
                             studentSummary['exerciseCompletedBeforeDeadline'] = False
 
-                    if commitRows[index][2] <= api_req['deadline'] and commitRows[index][2] > lastCommitBeforeDeadline:
+                    if int(commitRows[index][2]) <= int(api_req['deadline']) and int(commitRows[index][2]) > lastCommitBeforeDeadline:
                         lastCommitBeforeDeadline = commitRows[index][2]
-                    elif commitRows[index][2] > api_req['deadline'] and commitRows[index][2] > lastCommitAfterDeadline:
+                    elif int(commitRows[index][2]) > int(api_req['deadline']) and int(commitRows[index][2]) > lastCommitAfterDeadline:
                         lastCommitAfterDeadline = commitRows[index][2]  
 
                     index += 1
@@ -109,7 +109,7 @@ def getCommitInfo(maria_cursor, api_req):
             AND commit_file.exercise_path = %s 
             AND repository.course_id = %s
             AND repository.group_id = %s 
-            ORDER BY repository.student, commit.commit_id, commit_commit_date''',
+            ORDER BY repository.student, commit.commit_id''',
                 (
                 utils.normalize_data.normalize_session(api_req['semesterId']),
                 api_req['exercisePath'],

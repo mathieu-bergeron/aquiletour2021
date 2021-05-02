@@ -1,6 +1,7 @@
 package ca.aquiletour.core.messages.git;
 
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesModel;
+import ca.aquiletour.core.pages.git.student_summaries.messages.ShowStudentSummariesMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
@@ -8,7 +9,7 @@ import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class GetStudentSummaries extends StudentExerciseMessage implements NtroModelMessage {
+public class GetStudentSummaries extends ShowStudentSummariesMessage implements NtroModelMessage {
 	
 
 	@Override
@@ -16,7 +17,7 @@ public class GetStudentSummaries extends StudentExerciseMessage implements NtroM
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();
-		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(CommitListModel.class));
+		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(StudentSummariesModel.class));
 
 		documentPath.setDocumentId(documentIdAsPath().toFileName());
 
@@ -26,13 +27,15 @@ public class GetStudentSummaries extends StudentExerciseMessage implements NtroM
 	protected Path documentIdAsPath() {
 		T.call(this);
 
+		System.out.println(getExercisePath());
+		System.out.println(getCourseId());
 		Path exercisePath = new Path(getExercisePath());
 
 		Path path = new Path();
 		path.getNames().add(getCourseId());
 		path.getNames().add(getSemesterId());
 		path.getNames().add(getGroupId());
-		path.getNames().add(getStudentId());
+		path.getNames().add(getDeadline());
 		for(int i = 0; i < exercisePath.nameCount(); i++) {
 			path.getNames().add(exercisePath.name(i));
 		}
@@ -44,6 +47,6 @@ public class GetStudentSummaries extends StudentExerciseMessage implements NtroM
 	public Class<? extends NtroModel> targetClass() {
 		T.call(this);
 		
-		return CommitListModel.class;
+		return StudentSummariesModel.class;
 	}
 }
