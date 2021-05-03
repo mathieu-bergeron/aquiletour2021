@@ -91,7 +91,7 @@ async def read_hook(request: Request):
         # Process Hook
 #        print(hook)
         req = {}
-        req['type'] = 'hook'
+        req['_C'] = 'HookTask'
         req['depot'] = None
         if 'repository' in hook:
             if 'git_http_url' in hook['repository']:                # GITLAB
@@ -155,9 +155,9 @@ if __name__=="__main__":
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
 #            VALUES (5,DateTime('now','localtime'),"req1")''')
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (5,DateTime('now','localtime'),"{""type"": ""hok""}")''')
+#            VALUES (5,DateTime('now','localtime'),"{""_C"": ""HookTask"", ""depot"": ""https://gitlab.com/LeducNic/coursmo.git""}")''')
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (9,DateTime('now','localtime'),"req3")''')
+#            VALUES (9,DateTime('now','localtime'),"{""_C"": ""UpdateTask"", ""semesterId"": ""H2021"", ""courseId"": ""nicolas.leduc/420-ZF5"", ""groupId"": ""02""}")''')
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
 #            VALUES (1,DateTime('now','localtime'),"req4")''')
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
@@ -168,6 +168,7 @@ if __name__=="__main__":
         cur2.execute('DELETE FROM commit_file')
         cur2.execute('DELETE FROM commit')
         cur2.execute('DELETE FROM repository')
+        cur2.execute('DELETE FROM exercise')
         conn2.commit()
         cur2.execute('''INSERT INTO repository 
             VALUES ('https://gitlab.com/LeducNic/coursmo.git','GL','H2021','nicolas.leduc/420-ZF5','02',2055573, '/')''')
@@ -179,6 +180,18 @@ if __name__=="__main__":
             VALUES ('https://github.com/LeducNic/TestZF52.git','GH','H2021','mathieu.bergeron/420-ZF5','01',1822273, '/')''')
 #        cur2.execute('''INSERT INTO repository 
 #            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','GL','H2021','alain.pilon/420-C65','02',1788895, '/')''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/', '/', '/', NULL)''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 1/Travail 1', '/', '/420-ZF5/TP01', 'TP1')''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 2/Atelier 1', '/', '/420-ZF5/AT01', 'AT01')''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 3/Atelier 4', '/', '/420-ZF5/AT04', 'AT04')''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('H2021','nicolas.leduc/420-ZF5','03', '/Semaine 3/Atelier 2', '/', '/420-ZF5/AT02', 'Atelier 2')''')
+#        cur2.execute('''INSERT INTO exercise 
+#            VALUES ('H2021','nicolas.leduc/420-ZF5','03', '/Semaine 15/Reprise', '/', '/420-ZF5/TPRE', 'TPRE')''')
         conn2.commit()
         conn2.close()
 # TEST DATA - End

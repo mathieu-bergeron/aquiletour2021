@@ -41,33 +41,9 @@ def normalize_studentId(student_arg):
         student_str = None
     return student_str
 
-def clean_path(path):
-    # Clean path (remove space,-,_)
-    # Lowercase path
-    # Split path by word and number
-    # Create 2-tuple (word, number)  number may be None if 2 consecutive words
-    pass
+def transpose(list_of_lines):
+    return list(map(list, zip(*list_of_lines)))
 
-def match_tuples(tuple1, tuple2):
-    # Levenstein compare the two words (1st element)
-    # if only insert and max 1 delete or replace
-    # OR if only delete with max 1 insert ore replace
-    #   Compare number (2nd element)
-    #   if same then tuple match
-    # tuples doesn't match
-    pass
-
-def path_match(exercicePath, depotPath, filePath):
-    
-    # Match and remove depotPath from exercicePath
-    # Clean exercicePath and filePath
-    # filePath tuple = 0
-    # For each tuple in exercicePath tuples
-    #   find the matching tuple from the last match in filePath tuples
-    #   if no more tuple in filePath then path doesn't match
-    # if all exercicePath tuple match then path match
-    # return the match level (# of tuples matched) : max match is the exercice path for the file
-    pass
 
 # Some Unit Test
 def test_session():
@@ -115,8 +91,12 @@ def test_student():
     print(normalize_studentId('nicolas.leduc') + ' = nicolas.leduc')
     print(normalize_studentId('Pierre-Paul.Bois-Page') + ' = pierre-paul.bois-page')
 
+def test_transpose():
+    print(transpose([[1,2,3],[4,5,6],[7,8,9],['a','b','c']]))
+
 if __name__=="__main__":
     test_session()
     test_course()
     test_group()
     test_student()
+    test_transpose()
