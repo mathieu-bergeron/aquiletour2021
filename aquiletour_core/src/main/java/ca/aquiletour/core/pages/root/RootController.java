@@ -29,7 +29,9 @@ import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
-import ca.aquiletour.core.pages.git.CommitListController;
+import ca.aquiletour.core.pages.git.commit_list.CommitListController;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsController;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
@@ -63,7 +65,10 @@ public class RootController extends NtroRootController {
 		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);
 
-		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
+		addSubController(CommitListController.class, Constants.GIT_COMMIT_LIST_URL_SEGMENT);
+		
+		addSubController(LateStudentsController.class, Constants.GIT_LATE_STUDENTS_URL_SEGMENT);
+		addSubController(StudentSummariesController.class, Constants.GIT_STUDENT_SUMMARIES_URL_SEGMENT);
 
 		addWindowViewHandler(new RootViewHandler());
 		

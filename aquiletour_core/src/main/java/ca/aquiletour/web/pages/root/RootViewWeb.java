@@ -10,7 +10,9 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.dashboards.DashboardView;
-import ca.aquiletour.core.pages.git.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.CommitListView;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.queue.QueueView;
@@ -188,16 +190,33 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showGit(CommitListView commitListView) {
-		T.call(this);
-		
-		showSubView(commitListView);
-	}
-
-	@Override
 	public void showCourse(CourseView courseView) {
 		T.call(this);
 
 		showSubView(courseView);
+	}
+
+	@Override
+	public void showGitCommitList(CommitListView gitCommitListView) {
+		T.call(this);
+		
+		showSubView(gitCommitListView);
+		
+	}
+
+	@Override
+	public void showGitLateStudents(LateStudentsView gitLateStudentsView) {
+		T.call(this);
+		
+		showSubView(gitLateStudentsView);
+		
+	}
+
+	@Override
+	public void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView) {
+		T.call(this);
+		
+		showSubView(gitStudentSummariesView);
+		
 	}
 }

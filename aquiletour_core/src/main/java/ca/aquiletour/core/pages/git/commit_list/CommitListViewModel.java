@@ -4,7 +4,6 @@ import java.util.List;
 
 import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.ListObserver;
