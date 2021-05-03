@@ -19,8 +19,11 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 	
 	@Override
 	protected boolean isEditable() {
-		String courseOwnerId = currentCoursePath().teacherId();
-		return courseOwnerId.equals(Ntro.currentUser().getId());
+		boolean isOwner = currentCoursePath().teacherId().equals(Ntro.currentUser().getId());
+		
+		boolean isStructure = currentGroupId().equals(Constants.COURSE_STRUCTURE_ID);
+		
+		return isOwner && isStructure;
 	}
 
 	@Override
@@ -34,7 +37,6 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 		
 		view.showUneditableComponents(!isEditable());
 		view.showEditableComponents(isEditable());
-		
 	}
 
 

@@ -24,6 +24,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurations;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimes;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentComment;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
@@ -50,6 +51,7 @@ import ca.aquiletour.server.backend.login.UserSendsLoginCodeHandler;
 import ca.aquiletour.server.backend.login.UserLogsOutHandler;
 import ca.aquiletour.server.backend.queue.AddAppointmentHandler;
 import ca.aquiletour.server.backend.queue.DeleteAppointmentHandler;
+import ca.aquiletour.server.backend.queue.ModifyAppointmentCommentHandler;
 import ca.aquiletour.server.backend.queue.ModifyAppointmentDurationsHandler;
 import ca.aquiletour.server.backend.queue.ModifyAppointmentTimesHandler;
 import ca.aquiletour.server.backend.queue.MoveAppointmentHandler;
@@ -102,6 +104,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(ToggleStudentModeMessage.class, new ToggleStudentModeHandler());
 		addBackendMessageHandler(ModifyAppointmentDurations.class, new ModifyAppointmentDurationsHandler());
 		addBackendMessageHandler(ModifyAppointmentTimes.class, new ModifyAppointmentTimesHandler());
+		addBackendMessageHandler(ModifyAppointmentComment.class, new ModifyAppointmentCommentHandler());
 	}
 
 }

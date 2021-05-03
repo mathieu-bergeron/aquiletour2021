@@ -10,7 +10,7 @@ public interface AppointmentView extends NtroView {
 
 	void displayCourseTitle(String courseTitle);
 	void displayTaskTitle(String taskTitle);
-	void displayMessage(String message);
+	void displayComment(String comment);
 
 	void appendTag(String tag);
 	void clearTags();

@@ -8,6 +8,7 @@ import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
 import ca.ntro.core.models.StoredString;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
@@ -32,28 +33,6 @@ public class QueueModel implements NtroModel {
 	// TODO: the queue is open for some courseGroups
 	private List<CourseGroup> openForCourseGroups = new ArrayList<>();
 	private List<CourseGroup> selectedCourseGroupes = new ArrayList<>();
-
-	public void removeStudentFromClass(String studentId) {
-		T.call(this);
-		for (int i = 0; i < studentIds.size(); i++) {
-			if (studentIds.get(i).equals(studentId)) {
-				studentIds.remove(i);
-			}
-		}
-	}
-
-	public void addStudentToClass(String studentId) {
-		T.call(this);
-		boolean alreadyExists = false;
-		for (int i = 0; i < studentIds.size() && !alreadyExists; i++) {
-			if (studentIds.get(i).equals(studentId)) {
-				alreadyExists = true;
-			}
-		}
-		if (!alreadyExists) {
-			studentIds.add(studentId);
-		}
-	}
 
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
@@ -80,6 +59,21 @@ public class QueueModel implements NtroModel {
 		
 		for(int i = 0; i < getAppointments().size(); i++) {
 			if(getAppointments().item(i).getId().equals(appointmentId)) {
+				index = i;
+				break;
+			}
+		}
+		
+		return index;
+	}
+
+	public int appointmentIndexByStudentId(String studentId) {
+		T.call(this);
+		
+		int index = -1;
+		
+		for(int i = 0; i < getAppointments().size(); i++) {
+			if(getAppointments().item(i).getStudentId().equals(studentId)) {
 				index = i;
 				break;
 			}
@@ -223,6 +217,20 @@ public class QueueModel implements NtroModel {
 		return result;
 	}
 
+	public Appointment appointmentByStudentId(String studentId) {
+		T.call(this);
+		
+		Appointment result = null;
+		
+		int index = appointmentIndexByStudentId(studentId);
+		
+		if(isValidAppointmentIndex(index)) {
+			result = getAppointments().item(index);
+		}
+		
+		return result;
+	}
+
 	private boolean isValidAppointmentIndex(int index) {
 		T.call(this);
 
@@ -332,6 +340,18 @@ public class QueueModel implements NtroModel {
 	public void setFirstAppointmentTime(ObservableTime firstAppointmentTime) {
 		this.firstAppointmentTime = firstAppointmentTime;
 	}
-	
-	
+
+	public void modifyAppointmentComment(String studentId, String comment) {
+		T.call(this);
+		
+		Appointment appointment = appointmentByStudentId(studentId);
+		
+		if(appointment != null) {
+
+			appointment.updateComment(comment);
+
+		}else {
+			Log.warning("Appointment not found for student: " + studentId);
+		}
+	}
 }

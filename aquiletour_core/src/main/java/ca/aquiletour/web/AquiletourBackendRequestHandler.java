@@ -32,6 +32,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurations;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimes;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentComment;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
@@ -639,6 +640,14 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("increaseAppointmentDuration")) {
 
 			sendModifyAppointmentDurationsMessage(+Constants.APPOINTMENT_DURATION_INCREMENT_SECONDS);
+
+		} else if(parameters.containsKey("modifyCommentForQueueId")) {
+			
+			String queueId = parameters.get("modifyCommentForQueueId")[0];
+
+			ModifyAppointmentComment modifyAppointmentComment = Ntro.messages().create(ModifyAppointmentComment.class);
+			modifyAppointmentComment.setQueueId(queueId);
+			Ntro.messages().send(modifyAppointmentComment);
 		}
 	}
 

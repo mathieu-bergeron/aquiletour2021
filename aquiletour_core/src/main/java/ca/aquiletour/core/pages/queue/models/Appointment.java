@@ -16,7 +16,7 @@ public class Appointment implements NtroModelValue {
 	private StoredString courseTitle = new StoredString();
 	private StoredString taskTitle = new StoredString();
 	private ObservableTags tags = new ObservableTags();
-	private StoredString message = new StoredString();
+	private StoredString comment = new StoredString();
 
 	//private User user;
 
@@ -87,13 +87,6 @@ public class Appointment implements NtroModelValue {
 		this.tags = tags;
 	}
 
-	public StoredString getMessage() {
-		return message;
-	}
-
-	public void setMessage(StoredString message) {
-		this.message = message;
-	}
 
 	public String getStudentId() {
 		return studentId;
@@ -118,4 +111,19 @@ public class Appointment implements NtroModelValue {
 		
 		updateTime(time);
 	}
+
+	public StoredString getComment() {
+		return comment;
+	}
+
+	public void setComment(StoredString comment) {
+		this.comment = comment;
+	}
+
+	public void updateComment(String comment) {
+		T.call(this);
+		
+		getComment().set(comment);
+	}
 }
+

@@ -26,6 +26,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement saveButtonContainer;
 	private HtmlElement editableEndtime;
 	private HtmlElement editableDescription;
+	private HtmlElement editableTitle;
 	private HtmlElement uneditableCompletions;
 
 	private BootstrapDropdown semesterDropdown;
@@ -53,6 +54,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
 		editableDescription = this.getRootElement().find("#editable-description").get(0);
 		uneditableCompletions = this.getRootElement().find("#uneditable-completions").get(0);
+		editableTitle = this.getRootElement().find("#editable-title").get(0);
 		
 		MustNot.beNull(semesterDropdownHead);
 		MustNot.beNull(semesterDropdownTail);
@@ -70,6 +72,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(editableEndtime);
 		MustNot.beNull(editableDescription);
 		MustNot.beNull(uneditableCompletions);
+		MustNot.beNull(editableTitle);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
@@ -82,14 +85,16 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		if(show) {
 			
 			editableDescription.show();
-			editableDescription.show();
+			editableEndtime.show();
 			saveButtonContainer.show();
+			editableTitle.show();
 			
 		} else {
 
 			editableDescription.hide();
-			editableDescription.hide();
+			editableEndtime.hide();
 			saveButtonContainer.hide();
+			editableTitle.hide();
 		}
 	}
 
@@ -237,4 +242,5 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 
 		uneditableCompletions.text(list);
 	}
+
 }

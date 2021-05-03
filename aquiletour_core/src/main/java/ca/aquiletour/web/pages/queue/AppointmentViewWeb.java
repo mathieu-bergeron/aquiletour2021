@@ -73,10 +73,10 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	}
 
 	@Override
-	public void displayMessage(String message) {
+	public void displayComment(String comment) {
 		T.call(this);
 		
-		messageElement.text(message);
+		messageElement.text(comment);
 	}
 
 	@Override

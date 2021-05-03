@@ -158,13 +158,13 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 	private void observeMessage(Appointment appointment, AppointmentView appointmentView) {
 		T.call(this);
 
-		appointment.getMessage().observe(new ValueObserver<String>() {
+		appointment.getComment().observe(new ValueObserver<String>() {
 
 			@Override
 			public void onValue(String value) {
 				T.call(this);
 				
-				appointmentView.displayMessage(value);
+				appointmentView.displayComment(value);
 			}
 
 			@Override
@@ -177,7 +177,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueVie
 			public void onValueChanged(String oldValue, String value) {
 				T.call(this);
 				
-				appointmentView.displayMessage(value);
+				appointmentView.displayComment(value);
 			}
 		});
 	}

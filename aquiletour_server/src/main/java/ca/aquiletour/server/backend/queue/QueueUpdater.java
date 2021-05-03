@@ -249,4 +249,21 @@ public class QueueUpdater {
 			}
 		});
 	}
+
+	public static void modifyAppointmentComment(ModelStoreSync modelStore, 
+			                                    String queueId, 
+			                                    String comment, 
+			                                    User student) {
+		T.call(QueueUpdater.class);
+
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.modifyAppointmentComment(student.getId(), comment);
+			}
+		});
+		
+	}
 }
