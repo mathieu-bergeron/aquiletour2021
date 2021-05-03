@@ -3,10 +3,10 @@
     "_C": "ObservableCourseDescriptionList",
     "value": [
       {
-        "courseTitle": "Structure de données",
+        "courseTitle": "Math 101",
         "semesterId": "H2021",
-        "teacherId": "alice",
-        "_C": "CourseItem",
+        "teacherId": "charles",
+        "_C": "CourseListItem",
         "queueOpen": {
           "_C": "StoredBoolean",
           "value": false
@@ -19,20 +19,24 @@
           ]
         },
         "courseDescription": "",
-        "courseId": "StruDon",
+        "courseId": "math101",
         "tasksSummary": "0 étapes",
         "tasks": {
           "_C": "ObservableTaskDescriptions",
-          "value": []
+          "value": [
+            {
+              "_C": "TaskDescription",
+              "taskTitle": "Exercice1",
+              "taskId": "Exercice1"
+            }
+          ]
         }
       }
     ]
   },
-  "_C": "CourseListModel",
+  "_C": "CourseListModelTeacher",
   "semesters": {
     "_C": "ObservableSemesterIdList",
-    "value": [
-      "H2021"
-    ]
+    "value": []
   }
 }

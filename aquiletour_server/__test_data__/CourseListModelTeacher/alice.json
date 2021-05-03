@@ -6,7 +6,7 @@
         "courseTitle": "Structure de données",
         "semesterId": "H2021",
         "teacherId": "alice",
-        "_C": "CourseItem",
+        "_C": "CourseListItem",
         "queueOpen": {
           "_C": "StoredBoolean",
           "value": false
@@ -19,16 +19,22 @@
           ]
         },
         "courseDescription": "",
-        "courseId": "StruDon",
+        "courseId": "strudon",
         "tasksSummary": "0 étapes",
         "tasks": {
           "_C": "ObservableTaskDescriptions",
-          "value": []
+          "value": [
+            {
+              "_C": "TaskDescription",
+              "taskTitle": "Atelier1",
+              "taskId": "Atelier1"
+            }
+          ]
         }
       }
     ]
   },
-  "_C": "CourseListModel",
+  "_C": "CourseListModelTeacher",
   "semesters": {
     "_C": "ObservableSemesterIdList",
     "value": [

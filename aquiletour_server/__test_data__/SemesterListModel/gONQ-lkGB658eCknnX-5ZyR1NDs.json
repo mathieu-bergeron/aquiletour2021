@@ -1,0 +1,11 @@
+{
+  "_C": "SemesterListModel",
+  "semesters": {
+    "_C": "ObservableSemesterList",
+    "value": []
+  },
+  "currentSemesterId": {
+    "_C": "StoredString",
+    "value": "_b"
+  }
+}

@@ -193,54 +193,31 @@
           "_C": "SemesterSchedule"
         },
         "teacherSchedule": {
-          "semesterId": "H2021",
+          "semesterId": "",
           "scheduleItems": {
             "_C": "ScheduleItems",
             "value": [
               {
                 "dayOfWeek": {
-                  "dayOfWeek": 2,
+                  "dayOfWeek": 1,
                   "_C": "NtroDayOfWeek"
                 },
                 "_C": "ScheduleItem",
                 "scheduleItemId": "1",
                 "startTime": {
                   "_C": "NtroTimeOfDay",
-                  "minutes": 0,
-                  "hour24": 9
-                },
-                "endTime": {
-                  "_C": "NtroTimeOfDay",
-                  "minutes": 0,
+                  "minutes": 35,
                   "hour24": 12
                 },
-                "courseGroup": {
-                  "_C": "CourseGroup",
-                  "groupId": "01",
-                  "courseId": "strudon"
-                }
-              },
-              {
-                "dayOfWeek": {
-                  "dayOfWeek": 4,
-                  "_C": "NtroDayOfWeek"
-                },
-                "_C": "ScheduleItem",
-                "scheduleItemId": "2",
-                "startTime": {
-                  "_C": "NtroTimeOfDay",
-                  "minutes": 20,
-                  "hour24": 15
-                },
                 "endTime": {
                   "_C": "NtroTimeOfDay",
-                  "minutes": 0,
-                  "hour24": 18
+                  "minutes": 15,
+                  "hour24": 15
                 },
                 "courseGroup": {
                   "_C": "CourseGroup",
                   "groupId": "01",
-                  "courseId": "strudon"
+                  "courseId": "math101"
                 }
               }
             ]
@@ -254,12 +231,7 @@
             {
               "_C": "CourseGroup",
               "groupId": "01",
-              "courseId": "strudon"
-            },
-            {
-              "_C": "CourseGroup",
-              "groupId": "01",
-              "courseId": "strudon"
+              "courseId": "math101"
             }
           ]
         }

@@ -7,10 +7,5 @@ import ca.aquiletour.core.views.ItemView;
 public interface CourseListItemView extends ItemView {
 
 	void displayCourseListItem(CourseListItem courseDescription);
-	void appendTaskDescription(TaskDescription task);
-	void appendGroupId(String groupId);
-	void displayTasksSummary(String tasksSummaryText);
-	void displayGroupsSummary(String groupsSummaryText);
-	void displayQueueLink(boolean queueOpen, String text, String href);
 
 }

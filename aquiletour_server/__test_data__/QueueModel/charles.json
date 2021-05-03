@@ -20,7 +20,7 @@
         "studentName": "Bob",
         "comment": {
           "_C": "StoredString",
-          "value": "Étape 10 #éval"
+          "value": "Je suis bloqué "
         },
         "id": "1",
         "taskTitle": {
@@ -31,14 +31,12 @@
           "_C": "ObservableTime",
           "value": {
             "_C": "NtroDate",
-            "epochSeconds": 1620061145
+            "epochSeconds": 1620061117
           }
         },
         "tags": {
           "_C": "ObservableTags",
-          "value": [
-            "éval"
-          ]
+          "value": []
         }
       },
       {
@@ -52,7 +50,7 @@
         "studentName": "Nicolas",
         "comment": {
           "_C": "StoredString",
-          "value": "Module 2 #débogage"
+          "value": "Labo 2 #éval"
         },
         "id": "2",
         "taskTitle": {
@@ -63,13 +61,13 @@
           "_C": "ObservableTime",
           "value": {
             "_C": "NtroDate",
-            "epochSeconds": 1620061445
+            "epochSeconds": 1620061417
           }
         },
         "tags": {
           "_C": "ObservableTags",
           "value": [
-            "débogage"
+            "éval"
           ]
         }
       }
@@ -80,7 +78,7 @@
     "_C": "StoredString",
     "value": ""
   },
-  "teacherId": "alice",
+  "teacherId": "charles",
   "_C": "QueueModel",
   "currentGroupId": {
     "_C": "StoredString",
@@ -89,12 +87,11 @@
   "firstAppointmentTime": {
     "_C": "ObservableTime",
     "value": {
-      "_C": "NtroDate",
-      "epochSeconds": 1620061145
+      "_R": "/appointments/value/0/time/value"
     }
   },
   "studentIds": [],
-  "courseId": "alice",
+  "courseId": "charles",
   "appointmentDurationSeconds": {
     "_C": "StoredInteger",
     "value": 300

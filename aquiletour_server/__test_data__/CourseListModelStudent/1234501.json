@@ -1,0 +1,92 @@
+{
+  "courses": {
+    "_C": "ObservableCourseDescriptionList",
+    "value": [
+      {
+        "courseTitle": "Math 101",
+        "semesterId": "H2021",
+        "teacherId": "charles",
+        "_C": "CourseListItem",
+        "queueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "groupsSummary": "0 groupes",
+        "groupIds": {
+          "_C": "ObservableGroupIdList",
+          "value": [
+            "01"
+          ]
+        },
+        "courseDescription": "",
+        "courseId": "math101",
+        "tasksSummary": "0 étapes",
+        "tasks": {
+          "_C": "ObservableTaskDescriptions",
+          "value": []
+        }
+      },
+      {
+        "courseTitle": "Structure de données",
+        "semesterId": "H2021",
+        "teacherId": "alice",
+        "_C": "CourseListItem",
+        "queueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "groupsSummary": "0 groupes",
+        "groupIds": {
+          "_C": "ObservableGroupIdList",
+          "value": [
+            "01"
+          ]
+        },
+        "courseDescription": "",
+        "courseId": "strudon",
+        "tasksSummary": "0 étapes",
+        "tasks": {
+          "_C": "ObservableTaskDescriptions",
+          "value": []
+        }
+      },
+      {
+        "courseTitle": "Structure de données",
+        "semesterId": "H2021",
+        "teacherId": "alice",
+        "_C": "CourseListItem",
+        "queueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "groupsSummary": "0 groupes",
+        "groupIds": {
+          "_C": "ObservableGroupIdList",
+          "value": [
+            "01"
+          ]
+        },
+        "courseDescription": "",
+        "courseId": "strudon",
+        "tasksSummary": "0 étapes",
+        "tasks": {
+          "_C": "ObservableTaskDescriptions",
+          "value": [
+            {
+              "_C": "TaskDescription",
+              "taskTitle": "Atelier1",
+              "taskId": "Atelier1"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "_C": "CourseListModelStudent",
+  "semesters": {
+    "_C": "ObservableSemesterIdList",
+    "value": [
+      "H2021"
+    ]
+  }
+}
