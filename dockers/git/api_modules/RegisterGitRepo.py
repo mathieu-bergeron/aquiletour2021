@@ -8,21 +8,12 @@ import utils.normalize_data
 
 #  {
 #      "_C": "RegisterGitRepo",
-#      "courseId": "mathieu.bergeron/StruDon",
+#      "courseId": "nicolas.leduc/IntroProg",
 #      "semesterId": "H2021",
 #      "groupId": "01",
-#      "studentId": "1234500",
-#      "repoPath": "/TP1",
+#      "studentId": "bob.berancourt",
+#      "repoPath": "/Semaine 01",
 #      "repoUrl": "https://github.com/test/test.git"
-#  }
-#  {
-#      "_C": "RegisterGitRepo",
-#      "courseId": "mathieu.bergeron/StruDon",
-#      "semesterId": "H2021",
-#      "groupId": "01",
-#      "studentId": "2345600",
-#      "repoPath": "/TP1",
-#      "repoUrl": "https://github.com/test1/test1.git"
 #  }
 def process(api_req, maria_conn, lite_conn):
 #    if not 'groupId' in api_req:
