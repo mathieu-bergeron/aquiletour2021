@@ -26,8 +26,8 @@ public class StudentSummaryViewWeb extends NtroViewWeb implements StudentSummary
 		T.call(this);
 		
 		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
-		HtmlElement lastCommitBeforeDealine = this.getRootElement().find("#lastCommitBeforeDealine").get(0);
-		HtmlElement lastCommitAfterDealine = this.getRootElement().find("#lastCommitAfterDealine").get(0);
+		HtmlElement lastCommitBeforeDealine = this.getRootElement().find("#lastCommitBeforeDeadline").get(0);
+		HtmlElement lastCommitAfterDealine = this.getRootElement().find("#lastCommitAfterDeadline").get(0);
 		HtmlElement exerciseCompleted = this.getRootElement().find("#exerciseCompleted").get(0);
 		HtmlElement exerciseCompletedBeforeDeadline = this.getRootElement().find("#exerciseCompletedBeforeDeadline").get(0);
 
