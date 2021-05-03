@@ -4,10 +4,10 @@ import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardModelStudent extends DashboardModel {
+public class DashboardModelStudent extends DashboardModel<CurrentTaskStudent> {
 
 	@Override
-	protected DashboardItem createDashboardItem() {
+	protected DashboardItem<CurrentTaskStudent> createDashboardItem() {
 		T.call(this);
 		
 		return new DashboardItemStudent();

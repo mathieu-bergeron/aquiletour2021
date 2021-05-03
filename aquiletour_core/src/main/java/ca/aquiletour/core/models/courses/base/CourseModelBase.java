@@ -40,7 +40,7 @@ public abstract class CourseModelBase implements NtroModel, TaskGraph {
 		this.tasks = tasks;
 	}
 
-	public void setRootTask(Task rootTask) {
+	public void registerRootTask(Task rootTask) {
 		T.call(this);
 		
 		rootTask.setGraph(asGraph());
@@ -248,8 +248,19 @@ public abstract class CourseModelBase implements NtroModel, TaskGraph {
 	public void updateCourseTitle(String courseTitle) {
 		T.call(this);
 
+		rootTask().updateTitle(courseTitle);
+	}
+
+	protected Task rootTask() {
+		T.call(this);
+
 		Task rootTask = findTaskById("/");
-		rootTask.updateTitle(courseTitle);
+		
+		if(rootTask == null) {
+			Log.warning("rootTask should always exists");
+		}
+
+		return rootTask;
 	}
 
 	public void updateTaskInfo(Path taskPath, String taskTitle, String taskDescription, CourseDate endTime) {

@@ -195,7 +195,7 @@ public class CourseUpdater {
 				Task rootTask = new Task();
 				rootTask.setPath(new Path("/"));
 
-				course.setRootTask(rootTask);
+				course.registerRootTask(rootTask);
 				course.setCoursePath(coursePath);
 				course.updateCourseTitle(courseTitle);
 			}
@@ -282,5 +282,11 @@ public class CourseUpdater {
 				course.taskCompletedByStudent(taskPath, user.getId());
 			}
 		});
+	}
+
+	public static CourseModel getCourse(ModelStoreSync modelStore, Class<CourseModel> courseModelClass, CoursePath coursePath) {
+		T.call(CourseUpdater.class);
+		
+		return modelStore.getModel(courseModelClass, "admin", coursePath);
 	}
 }

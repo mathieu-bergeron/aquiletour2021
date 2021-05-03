@@ -41,6 +41,10 @@ public class ModelStoreSync {
 		return model;
 	}
 
+	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, Path modelPath) {
+		return getModel(modelClass, authToken, modelStore.documentId(modelPath));
+	}
+
 	public void save(NtroModel model) {
 		T.call(this);
 

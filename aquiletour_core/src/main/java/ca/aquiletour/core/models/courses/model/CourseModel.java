@@ -1,5 +1,6 @@
 package ca.aquiletour.core.models.courses.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
@@ -185,5 +186,18 @@ public class CourseModel extends CourseModelBase {
 		}
 		
 		return groupId;
+	}
+
+	public List<Task> currentTasksForStudentId(String id) {
+		T.call(this);
+		
+		List<Task> tasks = new ArrayList<>();
+		
+		// FIXME: actually check the graph
+		//        and return the next tasks
+		//        the user hasn't completed
+		tasks.add(rootTask());
+		
+		return tasks;
 	}
 }
