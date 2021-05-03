@@ -193,6 +193,13 @@ public class CourseModel extends CourseModelBase {
 		
 		List<Task> tasks = new ArrayList<>();
 		
+		/* TODO:
+		 * 
+		 * visit the graph
+		 * stop when a task is not completed (and memorize it)
+		 * 
+		 */
+		
 		// FIXME: actually check the graph
 		//        and return the next tasks
 		//        the user hasn't completed
