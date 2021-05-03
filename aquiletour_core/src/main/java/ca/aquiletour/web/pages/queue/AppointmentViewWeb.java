@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
 import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.models.ObservableTags;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -18,7 +19,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	private HtmlElement courseTitleElement;
 	private HtmlElement taskTitleElement;
 	private HtmlElement tags;
-	private HtmlElement messageElement;
+	private HtmlElement commentElement;
 	
 	
 	@Override
@@ -32,7 +33,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		courseTitleElement = this.getRootElement().find("#course-title").get(0);
 		taskTitleElement = this.getRootElement().find("#task-title").get(0);
 		tags = this.getRootElement().find("#tags").get(0);
-		messageElement = this.getRootElement().find("#message").get(0);
+		commentElement = this.getRootElement().find("#message").get(0);
 
 		MustNot.beNull(studentName);
 		MustNot.beNull(appointmentIdInput);
@@ -41,7 +42,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		MustNot.beNull(courseTitleElement);
 		MustNot.beNull(taskTitleElement);
 		MustNot.beNull(tags);
-		MustNot.beNull(messageElement);
+		MustNot.beNull(commentElement);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void displayComment(String comment) {
 		T.call(this);
 		
-		messageElement.text(comment);
+		commentElement.text(ObservableTags.removeTags(comment));
 	}
 
 	@Override

@@ -123,6 +123,9 @@ public class Appointment implements NtroModelValue {
 	public void updateComment(String comment) {
 		T.call(this);
 		
+		tags.clearItems();
+		tags.addTagsFromComment(comment);
+		
 		getComment().set(comment);
 	}
 }

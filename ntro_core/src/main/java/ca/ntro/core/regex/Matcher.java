@@ -17,8 +17,12 @@
 
 package ca.ntro.core.regex;
 
+import java.util.List;
+
 public abstract class Matcher {
 	
 	public abstract boolean matches();
+	public abstract String replaceAll(String replacement);
+	public abstract List<String> allMatches();
 
 }

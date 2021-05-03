@@ -9,7 +9,9 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
+import static ca.ntro.assertions.Factory.that;
 
 public class AppointmentViewWebStudent extends AppointmentViewWeb implements AppointmentView {
 
@@ -18,6 +20,9 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	private HtmlElement deleteAppointmentForm;
 	private HtmlElement chatButton;
 	private HtmlElement commentTextarea;
+	
+	private HtmlElements addQueueIdToValue;
+	
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -28,12 +33,16 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		deleteAppointmentForm = this.getRootElement().find("#delete-appointment-form").get(0);
 		modifyAppointmentButton = this.getRootElement().find("#modify-appointment-button").get(0);
 		chatButton = this.getRootElement().find("#chat-button").get(0);
-		chatButton = this.getRootElement().find("#comment-textarea").get(0);
+		commentTextarea = this.getRootElement().find("#comment-textarea").get(0);
 
 		MustNot.beNull(deleteAppointmentButton);
 		MustNot.beNull(deleteAppointmentForm);
 		MustNot.beNull(modifyAppointmentButton);
 		MustNot.beNull(commentTextarea);
+
+		addQueueIdToValue = this.getRootElement().find(".add-queue-id-to-value");
+
+		Ntro.verify(that(addQueueIdToValue.size() > 0).isTrue());
 		
 		deleteAppointmentForm.hide();
 		modifyAppointmentButton.hide();
@@ -44,6 +53,8 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	public void displayAppointement(String queueId, String userId, Appointment appointment) {
 		T.call(this);
 		super.displayAppointement(queueId, userId, appointment);
+		
+		addQueueIdToValue.appendToAttribute("value", queueId);
 		
 		if(appointment.getStudentId().equals(userId)) {
 			chatButton.show();

@@ -644,9 +644,11 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("modifyCommentForQueueId")) {
 			
 			String queueId = parameters.get("modifyCommentForQueueId")[0];
+			String comment = parameters.get("comment")[0];
 
 			ModifyAppointmentComment modifyAppointmentComment = Ntro.messages().create(ModifyAppointmentComment.class);
 			modifyAppointmentComment.setQueueId(queueId);
+			modifyAppointmentComment.setComment(comment);
 			Ntro.messages().send(modifyAppointmentComment);
 		}
 	}
