@@ -7,8 +7,8 @@ import ca.ntro.core.system.trace.T;
 public class StudentSummary implements NtroModelValue {
 
 	String studentId;
-	int lastCommitBeforeDeadline, lastCommitAfterDealine;
-	boolean exerciceCompleted, exerciseCompletedBeforeDeadline;
+	long lastCommitBeforeDeadline, lastCommitAfterDeadline;
+	boolean exerciseCompleted, exerciseCompletedBeforeDeadline;
 
 	public String getStudentId() {
 		return studentId;
@@ -18,36 +18,36 @@ public class StudentSummary implements NtroModelValue {
 		this.studentId = studentId;
 	}
 
-	public boolean isExerciceCompleted() {
-		return exerciceCompleted;
-	}
-
-	public void setExerciceCompleted(boolean exerciceCompleted) {
-		this.exerciceCompleted = exerciceCompleted;
-	}
-
-	public int getLastCommitBeforeDeadline() {
-		return lastCommitBeforeDeadline;
-	}
-
-	public void setLastCommitBeforeDeadline(int lastCommitBeforeDeadline) {
-		this.lastCommitBeforeDeadline = lastCommitBeforeDeadline;
-	}
-
-	public int getLastCommitAfterDealine() {
-		return lastCommitAfterDealine;
-	}
-
-	public void setLastCommitAfterDealine(int lastCommitAfterDealine) {
-		this.lastCommitAfterDealine = lastCommitAfterDealine;
-	}
-
 	public boolean isExerciseCompletedBeforeDeadline() {
 		return exerciseCompletedBeforeDeadline;
 	}
 
 	public void setExerciseCompletedBeforeDeadline(boolean exerciseCompletedBeforeDeadline) {
 		this.exerciseCompletedBeforeDeadline = exerciseCompletedBeforeDeadline;
+	}
+
+	public boolean isExerciseCompleted() {
+		return exerciseCompleted;
+	}
+
+	public void setExerciseCompleted(boolean exerciseCompleted) {
+		this.exerciseCompleted = exerciseCompleted;
+	}
+
+	public long getLastCommitBeforeDeadline() {
+		return lastCommitBeforeDeadline;
+	}
+
+	public void setLastCommitBeforeDeadline(long lastCommitBeforeDeadline) {
+		this.lastCommitBeforeDeadline = lastCommitBeforeDeadline;
+	}
+
+	public long getLastCommitAfterDeadline() {
+		return lastCommitAfterDeadline;
+	}
+
+	public void setLastCommitAfterDeadline(long lastCommitAfterDeadline) {
+		this.lastCommitAfterDeadline = lastCommitAfterDeadline;
 	}
 	
 	

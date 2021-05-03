@@ -54,6 +54,7 @@ import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesModel;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.CommitFile;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
+import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -140,6 +141,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		
 		Ntro.registerSerializableClass(StudentSummariesModel.class);
 		Ntro.registerSerializableClass(StudentSummary.class);	
+		Ntro.registerSerializableClass(ObservableStudentSummaryList.class);	
 
 		Ntro.registerSerializableClass(CourseModel.class);
 		Ntro.registerSerializableClass(ObservableTaskMap.class);

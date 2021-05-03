@@ -1,7 +1,5 @@
 package ca.aquiletour.core.pages.git.student_summaries;
 
-import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListHandler;
-import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.git.student_summaries.messages.ShowStudentSummariesHandler;
 import ca.aquiletour.core.pages.git.student_summaries.messages.ShowStudentSummariesMessage;
 import ca.aquiletour.core.pages.root.RootController;

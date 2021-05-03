@@ -4,18 +4,18 @@ import ca.ntro.messages.NtroMessage;
 
 public class ShowStudentSummariesMessage extends NtroMessage {
 	
-	String courseId, semesterId, groupId, exercisePath, deadline;
-
-	public String getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
-	}
+	String courseBlaId, semesterId, groupId, exercisePath, deadline;
 
 	public String getSemesterId() {
 		return semesterId;
+	}
+
+	public String getCourseId() {
+		return courseBlaId;
+	}
+
+	public void setCourseId(String courseBlaId) {
+		this.courseBlaId = courseBlaId;
 	}
 
 	public void setSemesterId(String semesterId) {

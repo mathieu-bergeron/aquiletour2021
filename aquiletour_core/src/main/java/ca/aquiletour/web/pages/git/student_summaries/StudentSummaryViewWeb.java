@@ -38,9 +38,9 @@ public class StudentSummaryViewWeb extends NtroViewWeb implements StudentSummary
 		MustNot.beNull(exerciseCompletedBeforeDeadline);
 		
 		studentId.appendHtml(studentSummary.getStudentId());
-		lastCommitBeforeDealine.appendHtml(Integer.toString(studentSummary.getLastCommitBeforeDeadline()));
-		lastCommitAfterDealine.appendHtml(Integer.toString(studentSummary.getLastCommitAfterDealine()));
-		if(studentSummary.isExerciceCompleted()) {
+		lastCommitBeforeDealine.appendHtml(Long.toString(studentSummary.getLastCommitBeforeDeadline()));
+		lastCommitAfterDealine.appendHtml(Long.toString(studentSummary.getLastCommitAfterDeadline()));
+		if(studentSummary.isExerciseCompleted()) {
 			exerciseCompleted.appendHtml("true");
 		} else {
 			exerciseCompleted.appendHtml("false");

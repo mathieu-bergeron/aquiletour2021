@@ -22,12 +22,13 @@ def process(api_req, maria_conn, lite_conn):
             maria_cursor = getCommitInfo(maria_cursor, api_req)
 
             studentSummariesModel = {}
-            studentSummariesModel['_C'] = 'LateStudentsModel'
+            studentSummariesModel['_C'] = 'StudentSummariesModel'
             studentSummariesModel['semesterId'] = api_req['semesterId']
             studentSummariesModel['groupId'] = api_req['groupId']
             studentSummariesModel['exercisePath'] = api_req['exercisePath']
-            summaries = []
-             
+            summaries = {}
+            summaries['_C'] = 'ObservableStudentSummaryList'
+            value = []
             commitRows = maria_cursor.fetchall()
             studentIds = []
             index = 0
@@ -76,8 +77,9 @@ def process(api_req, maria_conn, lite_conn):
 
                 studentSummary['lastCommitBeforeDeadline'] = lastCommitBeforeDeadline
                 studentSummary['lastCommitAfterDeadline'] = lastCommitAfterDeadline
-                summaries.append(studentSummary)  
+                value.append(studentSummary)  
 
+            summaries['value'] = value
             studentSummariesModel['summaries'] = summaries
   
             response = JSONResponse(studentSummariesModel)

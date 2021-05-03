@@ -20,6 +20,8 @@ public class StudentSummariesViewModel extends ModelViewSubViewHandler<StudentSu
 	protected void handle(StudentSummariesModel model, StudentSummariesView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
+		view.displayStudentSummaries(model);
+		
 		model.getSummaries().observe(new ListObserver<StudentSummary>() {
 			
 			@Override
@@ -43,8 +45,6 @@ public class StudentSummariesViewModel extends ModelViewSubViewHandler<StudentSu
 				studentSummaryView.displayStudentSummary(item);
 				
 				view.appendStudentSummary(item, studentSummaryView);
-
-				view.displayStudentSummaries(model);
 			}
 			
 			@Override
