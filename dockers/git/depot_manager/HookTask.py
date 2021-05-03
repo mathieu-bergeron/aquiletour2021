@@ -8,6 +8,10 @@ import git
 import utils.task_utils
 import utils.data_matcher
 
+#  {
+#      "_C": "HookTask",
+#      "depot": "https://github.com/test/test.git",
+#  }
 def process(task_req, maria_conn, lite_conn):
     return hook_task(task_req['depot'], maria_conn)
 
