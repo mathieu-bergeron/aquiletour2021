@@ -25,7 +25,7 @@ public class ModelLoader extends NtroTaskAsync {
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
-
+		
 		//JsonLoader jsonLoader = (JsonLoader) getPreviousTask(JsonLoader.class, "JsonLoader");
 		JsonLoader jsonLoader = (JsonLoader) getSubTask(JsonLoader.class, "JsonLoader");
 		

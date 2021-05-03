@@ -3,6 +3,7 @@ package ca.aquiletour.core.models.users;
 public class Student extends User {
 
 	private String programId = "";
+	private String phoneNumber = "";	
 
 	public String getProgramId() {
 		return programId;
@@ -10,6 +11,14 @@ public class Student extends User {
 
 	public void setProgramId(String programId) {
 		this.programId = programId;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	@Override

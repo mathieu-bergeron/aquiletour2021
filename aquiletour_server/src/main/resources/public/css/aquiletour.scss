@@ -1,3 +1,6 @@
+$primary: purple;
+
+
 //DASHBOARD
 .flex-container {
   /* We first create a flex layout context */
@@ -340,12 +343,14 @@ body{
   
 }
 
+/*
 .modal-content{
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
+*/
 
 #page-loader {
   position: absolute;
@@ -361,3 +366,29 @@ body{
   background-color: rgba(255, 255, 255, 0.7); 
 }
 /* For chatbox feature*/
+
+
+.disable-text-selection{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;    
+}
+
+
+.dot-container{
+    display:inline;
+    position:relative;
+}
+
+.dot {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: red;
+    border-radius: 50%;
+    position:absolute;
+    right:0rem;
+    bottom:-0.5rem;
+}
+

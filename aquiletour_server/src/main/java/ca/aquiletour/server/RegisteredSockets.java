@@ -13,10 +13,11 @@ import org.eclipse.jetty.websocket.api.Session;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import ca.aquiletour.core.models.users.User;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
@@ -92,7 +93,7 @@ public class RegisteredSockets {
 
 			for(String authToken : observers) {
 
-				InvokeValueMethodNtroMessage message = Ntro.messages().create(InvokeValueMethodNtroMessage.class);
+				NtroInvokeValueMethodMessage message = Ntro.messages().create(NtroInvokeValueMethodMessage.class);
 				message.setValuePath(valuePath);
 				message.setMethodName(methodName);
 				message.setArgs(args);

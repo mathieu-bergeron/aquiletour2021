@@ -8,7 +8,7 @@ import ca.ntro.core.system.trace.T;
 public class HomeController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(HomeView.class, "fr");
@@ -17,7 +17,7 @@ public class HomeController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		// TODO Auto-generated method stub
 		
 	}

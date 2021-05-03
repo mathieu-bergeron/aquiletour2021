@@ -6,6 +6,7 @@ import ca.ntro.messages.NtroUserMessage;
 public class TeacherUsesQueueMessage extends NtroUserMessage<User> {
 	
 	private String courseId;
+	private String semesterId;
 
 	public String getCourseId() {
 		return courseId;
@@ -13,5 +14,13 @@ public class TeacherUsesQueueMessage extends NtroUserMessage<User> {
 
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
+	}
+
+	public String getSemesterId() {
+		return semesterId;
+	}
+
+	public void setSemesterId(String semesterId) {
+		this.semesterId = semesterId;
 	}
 }

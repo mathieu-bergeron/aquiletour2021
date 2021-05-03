@@ -1,20 +1,22 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserUpdater;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
@@ -26,10 +28,15 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		User userToRegister = null;
 
-		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
+		SessionData sessionData = null;
 		
-		if(session != null 
-				&& session.getLoginCode().equals(loginCode)) {
+		if(session != null) {
+			sessionData = (SessionData) session.getSessionData();
+		}
+		
+		if(sessionData != null 
+				&& sessionData.getLoginCode().equals(loginCode)) {
 			
 			userToRegister = registerStudentOrTeacher(modelStore, authToken,  userId, session);
 			
@@ -38,14 +45,14 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			userToRegister = (User) message.getUser();
 		}
 
-		Ntro.userService().registerCurrentUser(userToRegister);
+		Ntro.currentSession().setUser(userToRegister);
 
-		SetUserNtroMessage setUserNtroMessage = Ntro.messages().create(SetUserNtroMessage.class);
+		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 	}
 
-	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, Session session) {
+	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
 
 		User existingUser = null;
 
@@ -54,21 +61,29 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			existingUser = modelStore.getModel(User.class, "TODO", userId);
 
 		}else {
+
+			User newUser = null;
 			
 			if(session.getUser() instanceof TeacherGuest) {
 
-				existingUser = new Teacher();
+				newUser = new Teacher();
 
 			} else if(session.getUser() instanceof StudentGuest) {
 
-				existingUser = new Student();
+				newUser = new Student();
 			}
 			
-			existingUser.copyPublicInfomation((User) session.getUser());
-			existingUser.setName(userId);
-			existingUser.setId(userId);
+			newUser.copyPublicInfomation((User) session.getUser());
+			newUser.setName(userId);
+			newUser.setId(userId);
 
-			UserUpdater.addUser(modelStore, existingUser);
+			UserUpdater.addUser(modelStore, newUser);
+			
+			if(newUser instanceof Teacher) {
+				QueueUpdater.createQueue(modelStore, newUser.getId(), newUser.getId());
+			}
+			
+			existingUser = newUser;
 		}
 
 		User sessionUser = existingUser.toSessionUser();

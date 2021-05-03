@@ -26,7 +26,7 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	private NtroTaskImpl parentTask;
 	
 	private TaskState state = INIT;
-	private GraphTraceImpl trace;
+	private GraphTrace trace;
 	
 	private Map<String, NtroTask> previousTasks = Ntro.collections().concurrentMap(new HashMap<>());
 	private Map<String, NtroTask> subTasks = Ntro.collections().concurrentMap(new HashMap<>());
@@ -503,15 +503,16 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	public GraphTraceConnector execute() {
 
 		if(trace == null) {
-			trace = new GraphTraceImpl();
+			//trace = new GraphTraceImpl();
+			trace = new GraphTraceEmpty();
 		}
 		
 		execute(trace);
 		
-		return trace;
+		return (GraphTraceConnector) trace;
 	}
 	
-	private void execute(GraphTraceImpl trace) {
+	private void execute(GraphTrace trace) {
 
 		appendCurrentStateToTrace(trace, this);
 		
@@ -550,7 +551,7 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	}
 
 	
-	private void resumeExecutionIfPossible(GraphTraceImpl trace) {
+	private void resumeExecutionIfPossible(GraphTrace trace) {
 		this.trace = trace;
 		
 		switch(state) {
@@ -702,7 +703,7 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 		}
 
 		boolean shouldExecuteReplacement = (state != INIT);
-		GraphTraceImpl trace = this.trace;
+		GraphTrace trace = this.trace;
 
 		replacementTask.resetTask(INIT);
 

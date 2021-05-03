@@ -17,7 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import ca.aquiletour.core.pages.queue.QueueModel;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.server.MessageServiceWebserver;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelStoreSync;
@@ -44,7 +45,7 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreFiles.class)
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreFiles.class, MessageServiceWebserver.class, null, null)
 		             .execute();
 	}
 	

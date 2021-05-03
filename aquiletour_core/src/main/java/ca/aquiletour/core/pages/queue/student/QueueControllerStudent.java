@@ -1,12 +1,12 @@
 package ca.aquiletour.core.pages.queue.student;
 
 import ca.aquiletour.core.pages.queue.QueueController;
-import ca.aquiletour.core.pages.queue.QueueView;
-import ca.aquiletour.core.pages.queue.QueueViewModel;
+import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueHandler;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueHandler;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.system.trace.T;
 
 public  class QueueControllerStudent extends QueueController {
@@ -24,9 +24,9 @@ public  class QueueControllerStudent extends QueueController {
 		T.call(this);
 		
 		addControllerMessageHandler(ShowStudentQueueMessage.class, new ShowStudentQueueHandler());
-		addSubViewLoader(StudentAppointmentView.class, context().lang());
+		addSubViewLoader(AppointmentViewStudent.class, context().lang());
 		
-		addModelViewSubViewHandler(StudentAppointmentView.class, new QueueViewModel()); //TODO doesn't do anything
+		addModelViewSubViewHandler(AppointmentViewStudent.class, new QueueViewModel()); //TODO doesn't do anything
 	}
 
 }

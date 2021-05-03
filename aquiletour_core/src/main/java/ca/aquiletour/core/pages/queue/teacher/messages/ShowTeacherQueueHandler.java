@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.queue.teacher.messages;
 
 import ca.aquiletour.core.pages.queue.QueueController;
-import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.QueueView;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.assertions.MustNot;

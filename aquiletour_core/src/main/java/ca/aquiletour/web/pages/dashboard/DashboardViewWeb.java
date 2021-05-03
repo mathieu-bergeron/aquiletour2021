@@ -1,7 +1,8 @@
 package ca.aquiletour.web.pages.dashboard;
 
-import ca.aquiletour.core.pages.dashboards.CourseSummaryView;
-import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.views.DashboardItemView;
+import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -10,44 +11,23 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardView {
 
-	private HtmlElement container;
+	private HtmlElement dashboardItemContainer;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
-		container = this.getRootElement().find("#courses-container").get(0);
+		dashboardItemContainer = this.getRootElement().find("#dashboard-item-container").get(0);
 
-		MustNot.beNull(container);
+		MustNot.beNull(dashboardItemContainer);
 	}
 
 	@Override
-	public void appendCourse(String queueId, CourseSummaryView courseView) {
-		T.call(this);
-
-		CourseSummaryViewWeb courseViewWeb = (CourseSummaryViewWeb) courseView;
-		
-		HtmlElement courseViewRoot = courseViewWeb.getRootElement();
-		
-		courseViewRoot.setAttribute("id", queueId);
-
-		container.appendElement(courseViewWeb.getRootElement());
-	}
-
-	@Override
-	public void clearCourses() {
-
-		HtmlElement container = this.getRootElement().find("#courses-container").get(0);
-		
-		MustNot.beNull(container);
-		
-		container.empty();
-	}
-
-	@Override
-	public void deleteCourse(String queueId) {
+	public void appendDashboardItem(DashboardItemView itemView) {
 		T.call(this);
 		
-		container.find("#" + queueId).get(0).deleteForever();
+		DashboardItemViewWeb subView = (DashboardItemViewWeb) itemView;
+
+		dashboardItemContainer.appendElement(subView.getRootElement());
 	}
 }

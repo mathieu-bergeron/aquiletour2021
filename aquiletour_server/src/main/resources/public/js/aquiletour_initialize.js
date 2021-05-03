@@ -1,7 +1,10 @@
-function initializeView(viewName, viewRootElement, jSweet){
-    //console.log(viewName);
+$(document).ready(function(){
+    initializeWidgets($(document));
+});
 
-    if(viewName === "TeacherQueueViewWeb"){
+function initializeView(viewName, viewRootElement, jSweet){
+
+    if(viewName === "QueueViewWebTeacher"){
 
         initializeQueue(viewRootElement, jSweet);
         
@@ -11,10 +14,19 @@ function initializeView(viewName, viewRootElement, jSweet){
 
     }else if(viewName === "CommitListViewWeb"){
 
-        initializeCommitList(viewRootElement, jSweet);
+        //initializeCommitList(viewRootElement, jSweet);
 
     }else if(viewName === "CourseViewWeb"){
 
         initializeCourse(viewRootElement, jSweet);
+
+    }else if(viewName === "SemesterViewWeb"){
+
+        initializeSemester(viewRootElement, jSweet);
+
+    }else if(viewName === "SemesterViewWeb"){
+
+        initializeCourseItem(viewRootElement, jSweet);
     }
 }
+

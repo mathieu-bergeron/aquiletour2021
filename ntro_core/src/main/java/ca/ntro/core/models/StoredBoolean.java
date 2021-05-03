@@ -14,4 +14,5 @@ public class StoredBoolean extends StoredProperty<Boolean> {
 		T.call(this);
 	}
 
+
 }

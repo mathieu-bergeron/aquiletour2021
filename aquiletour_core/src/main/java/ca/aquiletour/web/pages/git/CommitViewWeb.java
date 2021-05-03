@@ -2,8 +2,8 @@ package ca.aquiletour.web.pages.git;
 
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
-import ca.aquiletour.core.pages.queue.AppointmentView;
-import ca.aquiletour.core.pages.queue.values.Appointment;
+import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -15,7 +15,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public class CommitViewWeb extends NtroViewWeb implements CommitView {
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 	}
 
 

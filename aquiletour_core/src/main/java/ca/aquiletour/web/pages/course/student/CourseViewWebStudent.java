@@ -1,7 +1,9 @@
 package ca.aquiletour.web.pages.course.student;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course.models.Task;
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;
@@ -9,40 +11,63 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
+import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
 
 	private HtmlElement gitRepoForm;
 	private HtmlElement gitProgressionLink;
-	
+	private HtmlElement taskCompletedContainer;
+	private HtmlElement taskCompletedCheckbox;
+
+	private HtmlElements addTaskIdToForm;
+	private HtmlElements addTaskIdToValue;
+	private HtmlElements addTaskIdToId;
+
 	private String gitProgressionText;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 
 		gitRepoForm = this.getRootElement().find("#git-repo-form").get(0);
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
+		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
+		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
+
+		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
+		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
+		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
 
 		MustNot.beNull(gitRepoForm);
 		MustNot.beNull(gitProgressionLink);
+		MustNot.beNull(taskCompletedContainer);
+		MustNot.beNull(taskCompletedCheckbox);
+
+		Ntro.verify(that(addTaskIdToForm.size() > 0).isTrue());
+		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
+		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
 		
 		gitProgressionText = gitProgressionLink.text();
 	}
 
 	@Override
-	public void identifyCurrentTask(String courseId, Task task) {
+	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
-		super.identifyCurrentTask(courseId, task);
+
+		addTaskIdToForm.appendToAttribute("form", task.getPath().toFileName());
+		addTaskIdToValue.appendToAttribute("value", task.getPath().toFileName());
+		addTaskIdToId.appendToAttribute("id", task.getPath().toFileName());
 		
 		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
-				                                + "/" + courseId 
+				                                + coursePath.toUrlPath()
 				                                + task.id()
-												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
-												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
+												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
+												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId());
 
-		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + courseId + task.id());
+		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + coursePath.toUrlPath() + task.id());
 	}
 
 	@Override
@@ -58,4 +83,41 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		gitRepoForm.hide();
 	}
+
+	@Override
+	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+		T.call(this);
+		
+	}
+
+	@Override
+	public void showCompletionCheckbox(boolean show) {
+		T.call(this);
+		
+		if(show) {
+
+			taskCompletedContainer.show();
+
+		}else {
+
+			taskCompletedContainer.hide();
+		}
+	}
+
+	@Override
+	public void checkCompletion(boolean check) {
+		T.call(this);
+		
+		if(check) {
+			
+			taskCompletedCheckbox.setAttribute("checked", "true");
+			
+		}else {
+
+			taskCompletedCheckbox.removeAttribute("checked");
+		}
+	}
+
+
+
 }

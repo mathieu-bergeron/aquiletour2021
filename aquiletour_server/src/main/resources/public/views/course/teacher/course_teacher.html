@@ -1,45 +1,226 @@
 <div class="mt-3 courses-container">
 
-  <div class="mt-3" style="margin-left:30px;">
-      <nav aria-label="breadcrumb">
-      <ol class="breadcrumb breadcrumbs-ol" id="breadcrumbs-container">
-      </ol>
-      </nav>
-  </div>
-
-  <div class="mt-3 flex-container" id="tasks-container">
-  </div>
-
-  <div class="mt-3 d-flex justify-content-center">
-    <button class="btn-primary btn-add-course" 
-            type="button" 
-            id="add-task-button" 
-            data-toggle="modal" 
-            data-target="#add-task-modal">Ajouter une tâche</button>
-  </div>
-
-  <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content dashboard-mContent">
-        <div class="modal-header">
-          <h5 class="modal-title">Ajouter une tâche</h5>
-          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+    <div class="mt-3 d-flex justify-content-start align-items-end">
+        <div>
+            <nav class="ms-3" aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumbs-ol" id="breadcrumbs-container">
+                </ol>
+            </nav>
         </div>
-        
-        <div class="modal-body dashboard-mBody">
-          <form action="" method="post" class="add-course-form">
-            <input name="taskId" id="task-id-input" style="display:none;"></input>
-            <label for="title">Titre de la nouvelle tâche:</label>
-            <input name="newSubTask" id="new-subtask-input"></input>
-            <div class="modal-footer border-0">         
-              <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
-            </div>  
-          </form>
-        </div>       
-      </div>
+        <div class="flex-fill"></div>
+        <div class="me-1">
+            <a class="btn btn-secondary dropdown-toggle" 
+               id="group-dropdown-head-courseview" 
+               href="#" 
+               role="button" 
+               data-toggle="dropdown" 
+               aria-haspopup="true" 
+               aria-expanded="false">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" 
+                 id="group-dropdown-tail-courseview"
+                 aria-labelledby="group-dropdown-tail">
+            </div>
+        </div>
+        <div class="me-3">
+            <a class="btn btn-secondary dropdown-toggle" 
+               id="semester-dropdown-head-courseview" 
+               href="#" 
+               role="button" 
+               data-toggle="dropdown" 
+               aria-haspopup="true" 
+               aria-expanded="false">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" 
+                 id="semester-dropdown-tail-courseview"
+                 aria-labelledby="semester-dropdown-tail">
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div class="d-flex flex-wrap justify-content-around align-items-end mt-3">
+
+        <div class='card border mb-3 mt-3' id="previous-task-container">
+            <div class='card-header border'>
+                Étapes préalables
+            </div>
+            <div class='card-body'>
+                <ul class="list-group" id="previous-task-list">
+                </ul>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-secondary btn-sm mt-2" style="line-height:0px" data-toggle="modal" data-target="#add-task-modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-flex flex-column w-50">
+            <div class="card border">
+                <div class='card-header border'>
+                    <div class="d-flex justify-content-start">
+                        <h5 class="mt-1 mb-1" id="task-title"></h5>
+                        <div class="flex-fill"></div>
+                        <div id="task-type-container"></div>
+                    </div>
+                </div>
+                <div class='card-body bg-transparent border'>
+                    <h6><u>Date de remise</u></h6>
+                    <form class="mt-3" action="" method="post">
+                        <div id="editable-endtime">
+                            <div id="editable-endtime-coursedate">
+                                <div class="d-flex justify-content-start align-items-baseline">
+                                    <div class="me-2">Semaine</div>
+                                    <select class="form-select" name="endTimeWeek" id="task-endtime-week" style="max-width:4rem;">
+                                        <option name="1">1</option>
+                                        <option name="2">2</option>
+                                        <option name="3">3</option>
+                                        <option name="4">4</option>
+                                        <option name="5">5</option>
+                                        <option name="6">6</option>
+                                        <option name="7">7</option>
+                                        <option name="8">8</option>
+                                        <option name="9">9</option>
+                                        <option name="10">10</option>
+                                        <option name="11">11</option>
+                                        <option name="12">12</option>
+                                        <option name="13">13</option>
+                                        <option name="14">14</option>
+                                        <option name="15">15</option>
+                                    </select>
+                                    <div class="ms-2 me-1 d-inline" id="week-of-container">
+                                        (<span id="week-of"></span>)
+                                    </div>
+                                    <div class="me-2">, </div>
+                                    <select class="form-select" name="endTimeStartOrEnd" id="task-endtime-start-or-end" style="max-width:7rem;">
+                                        <option name="end" value="end">à la fin</option>
+                                        <option name="start" value="start">au début</option>
+                                    </select>
+                                    <div class="ms-2 me-2">de la séance</div>
+                                    <select class="form-select" name="endTimeScheduleItem" id="task-endtime-schedule-item" style="max-width:5rem;">
+                                        <option name="1">1</option>
+                                        <option name="2">2</option>
+                                        <option name="3">3</option>
+                                        <option name="4">4</option>
+                                        <option name="5">5</option>
+                                        <option name="6">6</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="editable-endtime-coursedate">
+                            </div>
+                        </div>
+                        <div id="uneditable-endtime">
+                        </div>
+
+                        <div id="editable-title">
+                            <h6 class="mt-3"><u>Titre</u></h6>
+                            <input class="form-text" id="task-title-input" name="taskTitle"></textarea>
+                        </div>
+
+                    <h6 class="mt-3"><u>Description</u></h6>
+                    <div id="editable-description">
+                        <textarea class="form-text  w-100" id="task-description-input" name="taskDescription"></textarea>
+                    </div>
+                    <div id="uneditable-description">
+                    </div>
+
+                    <h6 class="mt-3"><u>Étudiants ayant terminé</u></h6>
+                    <div id="uneditable-completions">
+                    </div>
+
+                    <div class="mt-5 d-flex justify-content-end align-items-baseline" id="save-button-container">
+                        <button class="btn btn-secondary btn-sm mt-2" style="line-height:1.5rem">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                            </svg> Sauvegarder
+                        </button>
+                    </div>
+                    </form>
+
+
+                    <div id="logs-container" style="display:none;">
+                        <h6 class="mt-5"><u>Historiques</u></h6>
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="#">Historique des questions</a></li>
+                            <li class="list-group-item"><a href="#">Historique des remises</a></li>
+                            <li class="list-group-item"><a href="#">Historique des messages</a></li>
+                            <li class="list-group-item"><a href="#">Tout</a></li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="mt-3 card">
+                <div class="card-header">
+                    <h5 class="mt-0 mb-0" >Sous-étapes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mt-3 d-flex flex-wrap justify-content-around" id="subtask-container">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class='card border mb-3 mt-3' id='next-task-container'>
+            <div class='card-header border'>
+                Étapes suivantes
+            </div>
+            <div class='card-body'>
+                <ul class="list-group" id='next-task-list'>
+                </ul>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-secondary btn-sm mt-2" style="line-height:0px" data-toggle="modal" data-target="#add-task-modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-3 d-flex justify-content-center">
+        <button class="btn btn-primary" 
+                type="button" 
+                id="add-task-button" 
+                data-toggle="modal" 
+                data-target="#add-task-modal">Ajouter une sous-étape</button>
+    </div>
+
+    <div class="modal fade" id="add-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content dashboard-mContent">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter une tâche</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body dashboard-mBody">
+                    <form action="" method="post" class="add-course-form">
+                        <input name="taskId" id="task-id-input" style="display:none;"></input>
+                        <label for="title">Titre de la nouvelle tâche:</label>
+                        <input name="newSubTask" id="new-subtask-input"></input>
+                        <div class="modal-footer border-0">         
+                            <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+                        </div>  
+                    </form>
+                </div>       
+            </div>
+        </div>
+    </div>
 
 
 

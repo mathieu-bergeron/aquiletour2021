@@ -15,34 +15,34 @@ import ca.ntro.core.system.trace.T;
 public abstract class CourseController extends NtroController<RootController>{
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(viewClass(), "fr");
 
 		setModelLoader(new EmptyModelLoader());
 
-		addControllerMessageHandler(ShowCourseMessage.class, showHandler());
+		addControllerMessageHandler(showMessageClass(), showHandler());
 
 		addSubViewLoader(subViewClass(), context.lang());
 
-		addModelViewSubViewMessageHandler(subViewClass(), ShowTaskMessage.class, viewModel());
+		addModelViewSubViewMessageHandler(subViewClass(), showTaskMessageClass(), viewModel());
 	}
 
 	protected abstract Class<? extends CourseView> viewClass();
 	protected abstract Class<? extends TaskView> subViewClass();
+	protected abstract Class<? extends ShowCourseMessage> showMessageClass();
 	protected abstract ControllerMessageHandler<?,?,?> showHandler();
+	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
 	protected abstract ModelViewSubViewMessageHandler<?,?,?> viewModel();
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
-		// TODO Auto-generated method stub
-		
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
+		T.call(this);
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
 		T.call(this);
-		
 	}
 }

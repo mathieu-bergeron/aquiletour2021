@@ -11,15 +11,20 @@ import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
-import ca.ntro.messages.ntro_messages.SetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
+import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
+import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
+import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.models.NtroDate;
+import ca.ntro.models.NtroDayOfWeek;
+import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
+import ca.ntro.users.NtroSessionData;
 
 public abstract class EarlyInitialization {
 
@@ -46,15 +51,20 @@ public abstract class EarlyInitialization {
 	protected abstract RegEx provideRegEx();
 	protected abstract CollectionsService provideCollectionsService();
 
-	private void registerSerializableClasses() {
+	protected void registerSerializableClasses() {
 		Ntro.registerSerializableClass(NtroUser.class);
-		Ntro.registerSerializableClass(Session.class);
+		Ntro.registerSerializableClass(NtroSession.class);
+		Ntro.registerSerializableClass(NtroSessionData.class);
+		Ntro.registerSerializableClass(NtroDate.class);
+		Ntro.registerSerializableClass(NtroTimeOfDay.class);
+		Ntro.registerSerializableClass(NtroDayOfWeek.class);
 
-		Ntro.registerSerializableClass(RegisterSocketNtroMessage.class);
-		Ntro.registerSerializableClass(GetModelNtroMessage.class);
-		Ntro.registerSerializableClass(SetModelNtroMessage.class);
-		Ntro.registerSerializableClass(SetUserNtroMessage.class);
-		Ntro.registerSerializableClass(InvokeValueMethodNtroMessage.class);
+		Ntro.registerSerializableClass(NtroRegisterSocketMessage.class);
+		Ntro.registerSerializableClass(NtroGetModelMessage.class);
+		Ntro.registerSerializableClass(NtroSetModelMessage.class);
+		Ntro.registerSerializableClass(NtroSetUserMessage.class);
+		Ntro.registerSerializableClass(NtroInvokeValueMethodMessage.class);
+		Ntro.registerSerializableClass(NtroErrorMessage.class);
 
 		Ntro.registerSerializableClass(Path.class);
 		Ntro.registerSerializableClass(DocumentPath.class);

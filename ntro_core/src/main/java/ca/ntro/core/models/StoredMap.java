@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public abstract class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
+public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
 
 	private List<MapObserver<V>> mapObservers = new ArrayList<>();
 
@@ -33,16 +35,23 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 		return getValue().size();
 	}
 
-	public void addEntry(String key, V value) {
+	public void putEntry(String key, V value) {
 		
 		getValue().put(key, value);
 		
-		List<Object> args = new ArrayList<>();
-		args.add(key);
-		args.add(value);
-		
-		modelStore().onValueMethodInvoked(valuePath(),"addEntry",args);
-		
+		if(ifStoredConnected()) {
+
+			modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
+
+			List<Object> args = new ArrayList<>();
+			args.add(key);
+			args.add(value);
+			modelStore().onValueMethodInvoked(valuePath(),"putEntry",args);
+
+		}else {
+			
+			Log.warning("putEntry invoked while not connected to modelStore");
+		}
 		
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onEntryAdded(key, value);
@@ -61,7 +70,14 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 		List<Object> args = new ArrayList<>();
 		args.add(key);
 		
-		modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
+		if(ifStoredConnected()) {
+
+			modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
+
+		}else {
+
+			Log.warning("removeEntry invoked while not connected to modelStore");
+		}
 		
 		if(value != null) {
 			for(MapObserver<V> mapObserver : mapObservers) {
@@ -92,4 +108,52 @@ public abstract class StoredMap<V extends Object> extends StoredProperty<Map<Str
 
 		return getValue().containsKey(key);
 	}
+
+	public void removeObservers() {
+		T.call(this);
+		
+		this.mapObservers.clear();
+	}
+
+	public void clear() {
+		T.call(this);
+		
+		getValue().clear();
+
+		for(MapObserver<V> mapObserver : mapObservers) {
+			mapObserver.onClearEntries();
+		}
+	}
+	
+	public void onEntryAdded(EntryAddedListener<V> listener) {
+		T.call(this);
+		
+		this.observe(new MapObserver<V>() {
+			@Override
+			public void onValueChanged(Map<String, V> oldValue, Map<String, V> value) {
+			}
+
+			@Override
+			public void onValue(Map<String, V> value) {
+			}
+
+			@Override
+			public void onDeleted(Map<String, V> lastValue) {
+			}
+
+			@Override
+			public void onClearEntries() {
+			}
+
+			@Override
+			public void onEntryAdded(String key, V value) {
+				listener.onEntryAdded(key, value);
+			}
+
+			@Override
+			public void onEntryRemoved(String key, V value) {
+			}
+		});
+	}
+	
 }

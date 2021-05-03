@@ -7,7 +7,7 @@ import java.util.Map;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
 import def.dom.WebSocket;
@@ -19,7 +19,7 @@ public class BackendServiceJSweet extends BackendService {
 	
 	private final Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
 	
-	public BackendServiceJSweet(String connectionPath) {
+	public BackendServiceJSweet() {
 		super();
 		__T.call(this, "<init>");
 
@@ -28,7 +28,7 @@ public class BackendServiceJSweet extends BackendService {
 			protocol = "wss";
 		}
 
-		String connectionString = protocol + "://" + window.location.host + connectionPath;
+		String connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
 
 		webSocket = new WebSocket(connectionString);
 
@@ -50,7 +50,7 @@ public class BackendServiceJSweet extends BackendService {
 
 			// FIXME: there is no guarantee  that MessageFactory.registerUser has been called
 			//        we must use initialization tasks
-			RegisterSocketNtroMessage registerSocketNtroMessage = Ntro.messages().create(RegisterSocketNtroMessage.class);
+			NtroRegisterSocketMessage registerSocketNtroMessage = Ntro.messages().create(NtroRegisterSocketMessage.class);
 
 			sendMessageToBackend(registerSocketNtroMessage);
 			
@@ -70,6 +70,12 @@ public class BackendServiceJSweet extends BackendService {
 		__T.call(this, "handleMessageFromBackend");
 
 		handlers.put(messageClass, handler);
+	}
+
+	@Override
+	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
+		// Always true: all messages are sent on the socket
+		return true;
 	}
 
 }

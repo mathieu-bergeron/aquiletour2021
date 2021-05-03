@@ -48,18 +48,22 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.registerThreadService(provideThreadService());
 		Ntro.registerMessageServiceClass(provideMessageServiceClass());
-		Ntro.registerBackendService(provideBackendService());
+		Ntro.registerBackendServiceClass(provideBackendServiceClass());
 
 		Ntro.registerAssertService(provideAssertService());
 		Ntro.registerJsonService(provideJsonService());
 
+		Ntro.registerSessionServiceClass(provideSessionServiceClass());
 		
-		Ntro.registerUserServiceClass(provideUserServiceClass());
-		
-		Ntro.registerModelStoreClass(provideModelStoreClass());
-		
+		Ntro.registerModelStore(provideModelStore());
 		
 		Ntro.registerValueFormatter(provideValueFormatter());
+		
+		Ntro.registerConfigService(provideConfigService());
+		
+		Ntro.registerCalendarService(provideCalendarService());
+		
+		Ntro.registerRouterService(provideRouterService());
 	}
 
 	protected abstract StackAnalyzer provideStackAnalyzer();
@@ -68,11 +72,14 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract JsonParser provideJsonParser();
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
-	protected abstract BackendService provideBackendService();
+	protected abstract Class<? extends BackendService> provideBackendServiceClass();
 	protected abstract AssertService provideAssertService();
 	protected abstract JsonService provideJsonService();
-	protected abstract Class<? extends UserService> provideUserServiceClass();
-	protected abstract Class<? extends ModelStore> provideModelStoreClass();
+	protected abstract Class<? extends SessionService> provideSessionServiceClass();
+	protected abstract ModelStore provideModelStore();
 	protected abstract ValueFormatter provideValueFormatter();
+	protected abstract ConfigService provideConfigService();
+	protected abstract CalendarService provideCalendarService();
+	protected abstract RouterService provideRouterService();
 
 }

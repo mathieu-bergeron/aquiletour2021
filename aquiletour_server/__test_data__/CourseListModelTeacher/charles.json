@@ -1,0 +1,42 @@
+{
+  "courses": {
+    "_C": "ObservableCourseDescriptionList",
+    "value": [
+      {
+        "courseTitle": "Math 101",
+        "semesterId": "H2021",
+        "teacherId": "charles",
+        "_C": "CourseListItem",
+        "queueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "groupsSummary": "0 groupes",
+        "groupIds": {
+          "_C": "ObservableGroupIdList",
+          "value": [
+            "01"
+          ]
+        },
+        "courseDescription": "",
+        "courseId": "math101",
+        "tasksSummary": "0 étapes",
+        "tasks": {
+          "_C": "ObservableTaskDescriptions",
+          "value": [
+            {
+              "_C": "TaskDescription",
+              "taskTitle": "Exercice1",
+              "taskId": "Exercice1"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "_C": "CourseListModelTeacher",
+  "semesters": {
+    "_C": "ObservableSemesterIdList",
+    "value": []
+  }
+}

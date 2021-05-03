@@ -8,8 +8,8 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jsweet.json.JsonLoaderJSweet;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroModelMessage;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
-import ca.ntro.messages.ntro_messages.InvokeValueMethodNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -24,9 +24,9 @@ public class NetworkStoreJSweet extends ModelStore {
 
 	public NetworkStoreJSweet() {
 		
-		Ntro.backendService().handleMessageFromBackend(InvokeValueMethodNtroMessage.class, new MessageHandler<InvokeValueMethodNtroMessage>(){
+		Ntro.backendService().handleMessageFromBackend(NtroInvokeValueMethodMessage.class, new MessageHandler<NtroInvokeValueMethodMessage>(){
 			@Override
-			public void handle(InvokeValueMethodNtroMessage message) {
+			public void handle(NtroInvokeValueMethodMessage message) {
 				invokeValueMethod(message.getValuePath(), message.getMethodName(), message.getArgs());
 			}
 		});
@@ -46,8 +46,8 @@ public class NetworkStoreJSweet extends ModelStore {
 		T.call(this);
 		
 		String serviceUrl = Constants.MODELS_URL_PREFIX + "/";
-		GetModelNtroMessage request = new GetModelNtroMessage();
-		request.setUser(Ntro.userService().user());
+		NtroGetModelMessage request = new NtroGetModelMessage();
+		request.setUser(Ntro.currentUser());
 		request.setDocumentPath(documentPath);
 		request.registerTargetClass(targetClass);
 		

@@ -1,26 +1,17 @@
 package ca.aquiletour.core.pages.course.messages;
 
-import ca.ntro.core.Path;
-import ca.ntro.messages.NtroMessage;
 
-public class ShowCourseMessage extends NtroMessage {
+import ca.aquiletour.core.messages.course.CourseMessage;
+
+public abstract class ShowCourseMessage extends CourseMessage {
 	
-	private String courseId;
-	private Path taskPath = new Path("/");
+	private String groupId;
 
-	public String getCourseId() {
-		return courseId;
+	public String getGroupId() {
+		return groupId;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
-	}
-
-	public Path getTaskPath() {
-		return taskPath;
-	}
-
-	public void setTaskPath(Path taskPath) {
-		this.taskPath = taskPath;
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 }

@@ -1,7 +1,6 @@
 package ca.ntro.users;
 
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.system.trace.T;
 
 public class NtroUser implements NtroModel {
 	
@@ -14,27 +13,6 @@ public class NtroUser implements NtroModel {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getAuthToken() {
-		return authToken;
-	}
-
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
-	}
-
-	public boolean isValid(String queryToken) {
-		T.call(this);
-		
-		boolean isValid = false;
-		
-		if(authToken != null) {
-			
-			isValid = authToken.equals(queryToken);
-		}
-		
-		return isValid;
 	}
 
 	@Override
@@ -53,5 +31,13 @@ public class NtroUser implements NtroModel {
 		}
 		
 		return false;
+	}
+
+	public String getAuthToken() {
+		return authToken;
+	}
+
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 }

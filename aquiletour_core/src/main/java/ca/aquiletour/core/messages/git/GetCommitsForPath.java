@@ -12,7 +12,7 @@ public class GetCommitsForPath extends StudentExerciseMessage implements NtroMod
 	
 
 	@Override
-	public DocumentPath documentPath() {
+	public DocumentPath getDocumentPath() {
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();

@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.login;
 
-import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
-import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
@@ -25,7 +25,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 	private HtmlElement loginMessage;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		loginFormStep1 = getRootElement().find("#login-form-step1").get(0);
@@ -85,7 +85,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 
 	// FIXME: we would prefer that logic in the controller
 	@Override
-	public void selectLoginStep(NtroContext<?> context) {
+	public void selectLoginStep(NtroContext<?,?> context) {
 		T.call(this);
 
 		if(context.user() instanceof Guest) {

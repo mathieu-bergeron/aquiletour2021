@@ -19,27 +19,34 @@ package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.ShowDashboardMessage;
+import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
-import ca.aquiletour.core.pages.dashboards.student.DashboardControllerStudent;
-import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
-import ca.aquiletour.core.pages.dashboards.teacher.DashboardControllerTeacher;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.course_list.CourseListController;
+import ca.aquiletour.core.pages.course_list.student.CourseListControllerStudent;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListControllerTeacher;
+import ca.aquiletour.core.pages.dashboard.student.DashboardControllerStudent;
+import ca.aquiletour.core.pages.dashboard.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.teacher.DashboardControllerTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.CommitListController;
+import ca.aquiletour.core.pages.group_list.GroupListController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
+import ca.aquiletour.core.pages.open_queue_list.OpenQueueListController;
 import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
 import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
-import ca.aquiletour.core.pages.queues.QueuesController;
+import ca.aquiletour.core.pages.semester_list.SemesterListController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.Ntro;
 
 public class RootController extends NtroRootController {
@@ -49,7 +56,7 @@ public class RootController extends NtroRootController {
 	private boolean ifRoleSpecificSubControllersAdded = false;
 	
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 		
 		setViewLoader(RootView.class, context.lang());
@@ -58,15 +65,23 @@ public class RootController extends NtroRootController {
 		//        two models of the same kind (or with the same DocumentPath)
 		addRoleSpecificSubControllers(context);
 
-		addSubController(QueuesController.class, Constants.QUEUES_URL_SEGMENT);
+		addSubController(OpenQueueListController.class, Constants.QUEUES_URL_SEGMENT);
 	
 		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);
 
 		addSubController(CommitListController.class, Constants.GIT_PROGRESS_URL_SEGMENT);
 
+		addSubController(SemesterListController.class, Constants.SEMESTER_LIST_URL_SEGMENT);
+
+		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
+
 		addWindowViewHandler(new RootViewHandler());
 		
+		addViewMessageHandler(NtroErrorMessage.class, new NtroErrorHandler());
+
+		addViewMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());
+
 		// FIXME: could be in main. Not specific to Controller
 		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());
 		
@@ -97,39 +112,56 @@ public class RootController extends NtroRootController {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
+		
+		System.out.println("onContextChange: " + context.user());
+		System.out.println(context.user());
 		
 		RootView view = (RootView) getView();
 
-		view.adjustLoginLinkText(context);
+		view.onContextChange(context);
 		
 		addRoleSpecificSubControllers(context);
 	}
 
-	private void addRoleSpecificSubControllers(NtroContext<?> context) {
+	private void addRoleSpecificSubControllers(NtroContext<?,?> context) {
 		T.call(this);
+
 		
 		if(ifRoleSpecificSubControllersAdded) return;
+		
+		// FIXME: does this work? Would be useful
+		//        to display the student version even 
+		//        when logged in as teacher
 
+		/*
 		if(context.user() instanceof Teacher
 				|| context.user() instanceof TeacherGuest) {
+		*/
 			
 			addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
 			addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
 			addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
+			addSubController(CourseListControllerTeacher.class, Constants.COURSE_LIST_URL_SEGMENT);
 			
 			ifRoleSpecificSubControllersAdded = true;
 			
+		/*
 		}else if(context.user() instanceof Student
 				|| context.user() instanceof StudentGuest){
+		*/
 
 			addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
 			addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
 			addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
+			addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
 
 			ifRoleSpecificSubControllersAdded = true;
+
+		/*
 		}
+		*/
 	}
 
 	@Override

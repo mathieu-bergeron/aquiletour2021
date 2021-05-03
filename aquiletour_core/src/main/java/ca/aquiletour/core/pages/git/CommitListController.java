@@ -13,8 +13,23 @@ import ca.ntro.core.system.trace.T;
 public class CommitListController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
+		
+		/* Il faut faire mieux comme API
+		 * 
+		 * - pour commencer, uniquement
+		 *     
+		 *                      Controller -->
+		 *     ShowCommitListMessage.class --> ShowCommitListHandler
+		 *     
+		 * - une fois le ShowCommitListMessage rȩcu, on ajoute:
+		 * 
+		 *   ViewLoader()       -->
+		 *   SubViewLoader()    -->    CommitListViewModel
+		 *   ModelLoader()      -->     
+		 *   SubModelLoader()   -->
+		 */
 
 		setViewLoader(CommitListView.class, "fr");
 
@@ -34,7 +49,7 @@ public class CommitListController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> oldContext, NtroContext<?,?> context) {
 		// TODO Auto-generated method stub
 		
 	}

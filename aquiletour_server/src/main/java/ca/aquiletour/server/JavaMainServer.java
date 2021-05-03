@@ -17,16 +17,34 @@
 
 package ca.aquiletour.server;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import ca.aquiletour.server.backend.AquiletourBackendService;
+import ca.aquiletour.web.AquiletourRouterService;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.web.NtroWebServer;
+import ca.ntro.services.ConfigService;
+import ca.ntro.services.RouterService;
 
 public class JavaMainServer {
 	
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreServer.class)
+		String userHome = System.getProperty("user.home");
+		
+		Path configFilepath = Paths.get(userHome, ".aiguilleur", "config.json");
+		
+		ConfigService config = AquiletourConfig.loadFromJson(configFilepath);
+		
+		RouterService routerService = new AquiletourRouterService();
+		
+		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, 
+				                                LocalStoreServer.class, 
+				                                MessageServiceWebserver.class, 
+				                                config, 
+				                                routerService)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
 		             .execute();

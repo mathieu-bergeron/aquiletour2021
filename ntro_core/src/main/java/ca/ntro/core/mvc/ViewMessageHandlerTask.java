@@ -27,14 +27,14 @@ public class ViewMessageHandlerTask<V extends NtroView,
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		ViewLoader viewLoader = (ViewLoader) getPreviousTask(ViewLoader.class, VIEW_LOADER_TASK_ID);
+		ViewCreatorTask viewCreator = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
 
-		MustNot.beNull(viewLoader);
+		MustNot.beNull(viewCreator);
 		MustNot.beNull(messageHandler);
 
 		@SuppressWarnings("unchecked")
-		V view = (V) viewLoader.createView();
+		V view = (V) viewCreator.getView();
 		
 		MustNot.beNull(view);
 

@@ -1,9 +1,9 @@
 package ca.aquiletour.server.backend.dashboard;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboards.teacher.messages.DeleteCourseMessage;
+import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
-import ca.ntro.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
@@ -15,8 +15,6 @@ public class DeleteCourseHandler extends BackendMessageHandler<DeleteCourseMessa
 		
 		User teacher = message.getUser();
 		String courseId = message.getCourseId();
-
-		DashboardUpdater.deleteQueueForUser(modelStore, courseId, teacher.getId());
 	}
 
 	@Override
