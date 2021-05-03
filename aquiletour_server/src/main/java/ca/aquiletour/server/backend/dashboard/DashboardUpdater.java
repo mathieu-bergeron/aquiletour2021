@@ -16,22 +16,26 @@ public class DashboardUpdater {
 																		   CourseListItem courseListItem, 
 																		   User user) {
 		T.call(DashboardUpdater.class);
-		
-		if(!modelStore.ifModelExists(dashboardModelClass,"admin", user.getId())) {
-			modelStore.createModel(dashboardModelClass, "admin", user.getId(), new ModelInitializer<DM>() {
-				@Override
-				public void initialize(DM newModel) {
-					T.call(this);
-				}
-			});
-		}
-		
+
 		modelStore.updateModel(dashboardModelClass, "admin", user.getId(), new ModelUpdater<DM>() {
 			@Override
 			public void update(DM dashboardModel) {
 				T.call(this);
 				
 				dashboardModel.addDashboardItem(courseListItem);
+			}
+		});
+	}
+
+	public static <DM extends DashboardModel> void createDashboardForUser(ModelStoreSync modelStore, 
+																	      Class<DM> dashboardModelClass,
+			 														      User user) {
+		T.call(DashboardUpdater.class);
+
+		modelStore.createModel(dashboardModelClass, "admin", user.getId(), new ModelInitializer<DM>() {
+			@Override
+			public void initialize(DM newModel) {
+				T.call(this);
 			}
 		});
 	}

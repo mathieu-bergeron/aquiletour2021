@@ -91,11 +91,15 @@ import ca.aquiletour.core.pages.course_list.student.messages.ShowCourseListMessa
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.messages.SelectCourseListSubsetTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.messages.ShowCourseListMessageTeacher;
-import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTasks;
 import ca.aquiletour.core.pages.dashboard.models.DashboardItems;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
+import ca.aquiletour.core.pages.dashboard.student.models.DashboardItemStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
+import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardItemTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.values.Commit;
@@ -211,7 +215,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(DashboardModelTeacher.class);
 		Ntro.registerSerializableClass(DashboardModelStudent.class);
 		Ntro.registerSerializableClass(DashboardItems.class);
-		Ntro.registerSerializableClass(DashboardItem.class);
 
 		Ntro.registerSerializableClass(QueueModel.class);
 		Ntro.registerSerializableClass(ObservableAppointmentList.class);
@@ -342,6 +345,12 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ModifyAppointmentDurations.class);
 		Ntro.registerSerializableClass(ModifyAppointmentTimes.class);
 		Ntro.registerSerializableClass(ToggleStudentModeMessage.class);
+
+		Ntro.registerSerializableClass(DashboardItemStudent.class);
+		Ntro.registerSerializableClass(DashboardItemTeacher.class);
+		Ntro.registerSerializableClass(CurrentTasks.class);
+		Ntro.registerSerializableClass(CurrentTaskStudent.class);
+		Ntro.registerSerializableClass(CurrentTaskTeacher.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

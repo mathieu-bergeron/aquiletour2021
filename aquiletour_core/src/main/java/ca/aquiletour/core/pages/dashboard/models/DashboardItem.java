@@ -5,10 +5,11 @@ import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardItem implements NtroModelValue {
+public abstract class DashboardItem<CT extends CurrentTask> implements NtroModelValue {
 	
-	private StoredString courseTitle = new StoredString();
 	private CoursePath coursePath = new CoursePath();
+	private StoredString courseTitle = new StoredString();
+	private CurrentTasks<CT> currentTasks = new CurrentTasks<CT>();
 
 	public DashboardItem() {
 		super();
@@ -36,7 +37,13 @@ public class DashboardItem implements NtroModelValue {
 		
 		this.courseTitle.set(courseTitle);
 	}
-	
-	
+
+	public CurrentTasks<CT> getCurrentTasks() {
+		return currentTasks;
+	}
+
+	public void setCurrentTasks(CurrentTasks<CT> currentTasks) {
+		this.currentTasks = currentTasks;
+	}
 	
 }
