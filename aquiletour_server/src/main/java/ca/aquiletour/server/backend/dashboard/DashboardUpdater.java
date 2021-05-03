@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.ntro.core.models.ModelInitializer;
@@ -45,14 +46,15 @@ public class DashboardUpdater {
 		});
 	}
 
-	public static <DM extends DashboardModel<?>> void updateCurrentTasksForUser(ModelStoreSync modelStore, 
+	public static <DM extends DashboardModel<CT>, CT extends CurrentTask> void updateCurrentTasksForUserId(ModelStoreSync modelStore, 
 																	         Class<DM> dashboardModelClass,
+																	         Class<CT> currentTaskClass,
 																	         CoursePath coursePath,
-																	         List<Task> currentTasks,
-			 														         User user) {
+																	         List<CT> currentTasks,
+			 														         String userId) {
 		T.call(DashboardUpdater.class);
 
-		modelStore.updateModel(dashboardModelClass, "admin", user.getId(), new ModelUpdater<DM>() {
+		modelStore.updateModel(dashboardModelClass, "admin", userId, new ModelUpdater<DM>() {
 			@Override
 			public void update(DM dashboardModel) {
 				T.call(this);
@@ -60,5 +62,17 @@ public class DashboardUpdater {
 				dashboardModel.updateCurrentTasks(coursePath, currentTasks);
 			}
 		});
+
+	}
+
+	public static <DM extends DashboardModel<CT>, CT extends CurrentTask> void updateCurrentTasksForUser(ModelStoreSync modelStore, 
+																	         Class<DM> dashboardModelClass,
+																	         Class<CT> currentTaskClass,
+																	         CoursePath coursePath,
+																	         List<CT> currentTasks,
+			 														         User user) {
+		T.call(DashboardUpdater.class);
+		
+		updateCurrentTasksForUserId(modelStore, dashboardModelClass, currentTaskClass, coursePath, currentTasks, user.getId());
 	}
 }

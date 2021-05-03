@@ -13,6 +13,8 @@ import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
+import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
@@ -70,8 +72,6 @@ public class CourseModel extends CourseModelBase {
 
 	public void addGroup(String groupId, List<User> studentsToAdd) {
 		T.call(this);
-		
-		T.here();
 		
 		GroupDescription group = new GroupDescription();
 
@@ -188,10 +188,10 @@ public class CourseModel extends CourseModelBase {
 		return groupId;
 	}
 
-	public List<Task> currentTasksForStudentId(String id) {
+	public List<CurrentTaskStudent> currentTasksStudent(String studentId) {
 		T.call(this);
 		
-		List<Task> tasks = new ArrayList<>();
+		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
 		
 		/* TODO:
 		 * 
@@ -200,11 +200,56 @@ public class CourseModel extends CourseModelBase {
 		 * 
 		 */
 		
-		// FIXME: actually check the graph
-		//        and return the next tasks
-		//        the user hasn't completed
-		tasks.add(rootTask());
+		// FIXME: we need to visit the graph
+		for(Task task : getTasks().getValue().values()) {
+
+
+			CompletionByStudentId completions = getCompletions().valueOf(task.id());
+			if(completions == null
+					|| (completions != null && completions.containsKey(studentId))){
+
+				CurrentTaskStudent currentTaskStudent = new CurrentTaskStudent();
+				currentTaskStudent.setTaskPath(task.getPath());
+				currentTaskStudent.updateEndTime(task.getEndTime().getValue());
+				currentTasks.add(currentTaskStudent);
+			}
+		}
 		
-		return tasks;
+		return currentTasks;
+	}
+
+	private int numberOfStudents() {
+		
+		int numberOfStudents = 0;
+		
+		for(GroupDescription group : getGroups().getValue()) {
+			numberOfStudents += group.getStudents().size();
+		}
+		
+		return numberOfStudents;
+	}
+
+	public List<CurrentTaskTeacher> currentTasksTeacher() {
+		T.call(this);
+		
+		List<CurrentTaskTeacher> currentTasks = new ArrayList<>();
+		
+		for(Task task : getTasks().getValue().values()) {
+			
+			CompletionByStudentId completions = getCompletions().valueOf(task.id());
+			
+			int numberOfIncompletes = numberOfStudents();
+			if(completions != null) {
+				numberOfIncompletes -= completions.size();
+			}
+				
+			CurrentTaskTeacher currentTaskTeacher = new CurrentTaskTeacher();
+			currentTaskTeacher.setTaskPath(task.getPath());
+			currentTaskTeacher.updateNumberOfStudents(numberOfIncompletes); 
+
+			currentTasks.add(currentTaskTeacher);
+		}
+		
+		return currentTasks;
 	}
 }

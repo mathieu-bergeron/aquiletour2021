@@ -7,7 +7,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CurrentTaskStudent extends CurrentTask {
 	
-	private StoredAquiletourDate endTime;
+	private StoredAquiletourDate endTime = new StoredAquiletourDate();
 
 	public StoredAquiletourDate getEndTime() {
 		return endTime;
@@ -20,6 +20,6 @@ public class CurrentTaskStudent extends CurrentTask {
 	public void updateEndTime(CourseDate endTime) {
 		T.call(this);
 
-		this.endTime.set(endTime);
+		getEndTime().set(endTime);
 	}
 }

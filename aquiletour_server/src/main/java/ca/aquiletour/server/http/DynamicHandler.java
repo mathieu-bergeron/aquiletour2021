@@ -212,6 +212,7 @@ public class DynamicHandler extends AbstractHandler {
 				
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
 
+				addStudentCsvMessage.setTeacherId(Ntro.currentUser().getId());
 				addStudentCsvMessage.setSemesterId(semesterId);
 				addStudentCsvMessage.setCourseId(courseId);
 				addStudentCsvMessage.setCsvString(fileContent);

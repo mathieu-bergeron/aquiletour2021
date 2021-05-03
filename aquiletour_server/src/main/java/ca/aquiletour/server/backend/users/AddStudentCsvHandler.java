@@ -5,16 +5,16 @@ import java.util.List;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.model.CourseModel;
-import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
-import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
+import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
@@ -131,6 +131,12 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                                                message.getCourseId(),
 				                                                teacher.getId());
 
+		CourseUpdater.addGroup(modelStore, 
+							   coursePath,
+							   groupId,
+							   studentsToAdd,
+							   teacher);
+
 		CourseModel course = CourseUpdater.getCourse(modelStore, 
 													 CourseModel.class,
 													 message.coursePath());
@@ -140,15 +146,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 			CourseListUpdater.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
 			DashboardUpdater.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
 			
-			List<Task> currentTasks = course.currentTasksForStudentId(student.getId());
+			List<CurrentTaskStudent> currentTasksStudent = course.currentTasksStudent(student.getId());
 			
-			DashboardUpdater.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, message.coursePath(), currentTasks, student);
+			DashboardUpdater.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, CurrentTaskStudent.class, message.coursePath(), currentTasksStudent, student);
 		}
 		
-		CourseUpdater.addGroup(modelStore, 
-							   coursePath,
-							   groupId,
-							   studentsToAdd,
-							   teacher);
+		List<CurrentTaskTeacher> currentTasksTeacher = course.currentTasksTeacher();
+		
+		DashboardUpdater.updateCurrentTasksForUserId(modelStore, DashboardModelTeacher.class, CurrentTaskTeacher.class, message.coursePath(), currentTasksTeacher, message.getTeacherId());
 	}
 }

@@ -49,7 +49,14 @@ public abstract class DashboardItem<CT extends CurrentTask> implements NtroModel
 		this.currentTasks = currentTasks;
 	}
 
-	protected abstract void updateCurrentTasks(List<Task> currentTasks);
+	protected void updateCurrentTasks(List<CT> currentTasks) {
+		T.call(this);
+
+		getCurrentTasks().clearItems();
+		for(CT currentTask : currentTasks) {
+			getCurrentTasks().addItem(currentTask);
+		}
+	}
 
 	public boolean matches(CoursePath coursePath) {
 		T.call(this);

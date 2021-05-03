@@ -65,7 +65,7 @@ public abstract class DashboardModel<CT extends CurrentTask> implements NtroMode
 		return item;
 	}
 
-	public void updateCurrentTasks(CoursePath coursePath, List<Task> currentTasks) {
+	public void updateCurrentTasks(CoursePath coursePath, List<CT> currentTasks) {
 		T.call(this);
 
 		DashboardItem<CT> item = dashboardItemByCoursePath(coursePath);
