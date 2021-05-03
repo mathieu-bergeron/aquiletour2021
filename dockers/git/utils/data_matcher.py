@@ -21,6 +21,8 @@ def clean_path(path):
             number_part = int(match.group(2))
             tuple_list.append((dir_part, str(number_part) + match.group(3)))
             dir_part = None
+    if dir_part:
+        tuple_list.append((dir_part, None))
     return tuple_list
 
 def match_tuples(tuple1, tuple2):
@@ -176,9 +178,29 @@ def test_exercisePath():
                     '/Semaine 5/TP02/Etape 5/Exercice 1',
                     '/Semaine 5/TP02/Etape 6',
                     ]
+    ex_path_list2 = ['/',
+                    '/TP 01',
+                    '/TP RE',
+                    '/AT 01',
+                    '/AT 04',
+                    ]
+    ex_repo_list2 = ['/',
+                    '/',
+                    '/',
+                    '/',
+                    '/',
+                    ]
+    ex_dir_list2 = ['/',
+                    '/420-ZF5/TP01',
+                    '/420-ZF5/TPRE',
+                    '/420-ZF5/AT01',
+                    '/420-ZF5/AT04',
+                    ]
     find_exercise_from_path(ex_path_list, ex_repo_list, ex_dir_list, '/', '/Sem2/TP02/main.java')
     find_exercise_from_path(ex_path_list, ex_repo_list, ex_dir_list, '/Semaine 3/TP 2', '/src/Etape2/main.java')
     find_exercise_from_path(ex_path_list, ex_repo_list, ex_dir_list, '/Semaine 3', '/src/TravailPratique02/Etape2/main.java')
+    find_exercise_from_path(ex_path_list2, ex_repo_list2, ex_dir_list2, '/', '420-ZF5/src/_Enseignant_/AT05/AT05E01Base.java')
+    find_exercise_from_path(ex_path_list2, ex_repo_list2, ex_dir_list2, '/', 'Outils/ParseMoodleZIP/ParseMoodle.py')
 
 def test_kwMatch():
     ex_path = ['/Semaine 1/TravailPratique 1',
