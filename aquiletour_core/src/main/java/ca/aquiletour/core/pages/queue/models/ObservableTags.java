@@ -10,12 +10,22 @@ import ca.ntro.services.Ntro;
 
 public class ObservableTags extends StoredList<String> {
 
-	private static Pattern tagPattern = Ntro.regEx().compilePattern("#\\p{IsLatin}+\\s?");
+	private static Pattern tagPattern = null;
+	
+	private static Pattern tagPattern() {
+		T.call(ObservableTags.class);
+
+		if(tagPattern == null) {
+			tagPattern = Ntro.regEx().compilePattern("#\\p{IsLatin}+\\s?");
+		}
+
+		return tagPattern;
+	}
 
 	public void addTagsFromComment(String comment) {
 		T.call(this);
 
-		Matcher matcher = tagPattern.matcher(comment);
+		Matcher matcher = tagPattern().matcher(comment);
 
 		List<String> tags = matcher.allMatches();
 		
@@ -31,7 +41,7 @@ public class ObservableTags extends StoredList<String> {
 	public static String removeTags(String comment) {
 		T.call(ObservableTags.class);
 		
-		Matcher matcher = tagPattern.matcher(comment);
+		Matcher matcher = tagPattern().matcher(comment);
 		
 		return matcher.replaceAll(" ");
 	}
