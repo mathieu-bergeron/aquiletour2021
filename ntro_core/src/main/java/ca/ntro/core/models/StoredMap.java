@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -38,13 +39,19 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		
 		getValue().put(key, value);
 		
-		List<Object> args = new ArrayList<>();
-		args.add(key);
-		args.add(value);
-		
-		modelStore().onValueMethodInvoked(valuePath(),"putEntry",args);
+		if(ifStoredConnected()) {
 
-		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
+			modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
+
+			List<Object> args = new ArrayList<>();
+			args.add(key);
+			args.add(value);
+			modelStore().onValueMethodInvoked(valuePath(),"putEntry",args);
+
+		}else {
+			
+			Log.warning("putEntry invoked while not connected to modelStore");
+		}
 		
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onEntryAdded(key, value);
@@ -63,7 +70,14 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		List<Object> args = new ArrayList<>();
 		args.add(key);
 		
-		modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
+		if(ifStoredConnected()) {
+
+			modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
+
+		}else {
+
+			Log.warning("removeEntry invoked while not connected to modelStore");
+		}
 		
 		if(value != null) {
 			for(MapObserver<V> mapObserver : mapObservers) {

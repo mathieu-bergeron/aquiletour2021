@@ -7,6 +7,7 @@ import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ItemRemovedListener;
 import ca.ntro.core.models.listeners.ListObserver;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -43,14 +44,20 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		T.call(this);
 		
 		getValue().add(index, item);
-		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
-
-		List<Object> args = new ArrayList<>();
-		args.add(index);
-		args.add(item);
 		
-		modelStore().onValueMethodInvoked(valuePath(),"insertItem",args);
+		if(ifStoredConnected()) {
 
+			modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
+
+			List<Object> args = new ArrayList<>();
+			args.add(index);
+			args.add(item);
+			modelStore().onValueMethodInvoked(valuePath(),"insertItem",args);
+			
+		}else {
+			
+			Log.warning("insertItem invoked while model store not connected");
+		}
 		
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemAdded(index, item);
@@ -70,8 +77,15 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		getValue().clear();
 		
 		List<Object> args = new ArrayList<>();
+		
+		if(ifStoredConnected()) {
+			
+			modelStore().onValueMethodInvoked(valuePath(),"clearItems",args);
 
-		modelStore().onValueMethodInvoked(valuePath(),"clearItems",args);
+		}else {
+
+			Log.warning("clearItems invoked while model store not connected");
+		}
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onClearItems();
@@ -83,12 +97,19 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		T.call(this);
 
 		getValue().add(item);
-		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 		
-		List<Object> args = new ArrayList<>();
-		args.add(item);
+		if(ifStoredConnected()) {
 
-		modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
+			modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
+			
+			List<Object> args = new ArrayList<>();
+			args.add(item);
+			modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
+			
+		}else {
+
+			Log.warning("addItem invoked while model store not connected");
+		}
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemAdded(getValue().indexOf(item), item);
@@ -111,12 +132,19 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		I item = item(index);
 
 		getValue().remove(index);
-		modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 		
-		List<Object> args = new ArrayList<>();
-		args.add(index);
+		if(ifStoredConnected()) {
 
-		modelStore().onValueMethodInvoked(valuePath(),"removeItemAtIndex",args);
+			modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
+
+			List<Object> args = new ArrayList<>();
+			args.add(index);
+			modelStore().onValueMethodInvoked(valuePath(),"removeItemAtIndex",args);
+
+		}else {
+			
+			Log.warning("removeItemAtIndex invoked while model store not connected");
+		}
 
 		for(ListObserver<I> listObserver : listObservers) {
 			listObserver.onItemRemoved(index, item);

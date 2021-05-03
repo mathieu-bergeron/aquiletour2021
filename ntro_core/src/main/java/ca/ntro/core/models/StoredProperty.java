@@ -6,14 +6,13 @@ import java.util.List;
 import ca.ntro.core.models.listeners.DeletionListener;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.models.listeners.ValueObserver;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class StoredProperty<V extends Object> extends StoredValue {
 
 	private V value;
 
-	private ValueListener<V> valueListener;
-	private DeletionListener<V> deletionListener;
 	private List<ValueObserver<V>> observers = new ArrayList<>();
 
 	public StoredProperty() {
@@ -61,16 +60,22 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 		V oldValue = value;
 		value = newValue;
 
-		if(modelStore() != null) {
+		if(ifStoredConnected()) {
+
 			List<Object> args = new ArrayList<>();
 			args.add(newValue);
 			modelStore().onValueMethodInvoked(valuePath(),"set",args);
+
+		}else {
+
+			Log.warning("set invoked while model store not connected");
 		}
 		
 		for(ValueObserver<V> observer : observers) {
 			observer.onValueChanged(oldValue, newValue);
 		}
 	}
+
 	
 	public void observe(ValueObserver<V> observer) {
 		T.call(this);
