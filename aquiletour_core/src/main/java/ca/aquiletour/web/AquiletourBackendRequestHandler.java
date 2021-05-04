@@ -56,10 +56,16 @@ public class AquiletourBackendRequestHandler {
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("userId")) {
+		if(parameters.containsKey("studentId") && !parameters.get("studentId")[0].isEmpty()) {
 			
 			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
-			userInitiatesLoginMessage.setProvidedId(parameters.get("userId")[0]);
+			userInitiatesLoginMessage.setProvidedId(parameters.get("studentId")[0]);
+			Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
+
+		} else if(parameters.containsKey("teacherId") && !parameters.get("teacherId")[0].isEmpty()) {
+			
+			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
+			userInitiatesLoginMessage.setProvidedId(parameters.get("teacherId")[0]);
 			Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
 
 		} else if(parameters.containsKey("loginCode")) {
