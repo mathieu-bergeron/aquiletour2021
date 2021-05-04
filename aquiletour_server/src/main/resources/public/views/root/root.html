@@ -53,36 +53,57 @@
                                 aria-expanded="false" 
                                 id="login-button">Connexion</button>
                         <div class="p-3 dropdown-menu dropdown-menu-right" id="login-dropdown">
-                            <div id="role-container" class="role-container">
-                                <a role="button" 
-                                   id="roleStudent"
-                                   data-toggle="collapse"
-                                   data-target="#student-login-collapse">Étudiant</a>
-                                <a role="button" 
-                                   data-toggle="collapse"
-                                   data-target="#teacher-login-collapse"
-                                   id="roleTeacher">Prof</a>
-                            </div>
-                            <form action="/usagers" method="post" class="login-form">
-                                <div class="collapse show" id="student-login-collapse">
-                                        <label id="userRole" for="email">No de DA</label>
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-1">20</div>
-                                            <input class="form-text" name="email"></input>
+                            <div id="login-tabs" class="d-flex justify-content-around disable-text-selection">
+                                <div class="login-tab login-tab-selected" id="login-tab-student">
+                                    <a class="login-tab-link"
+                                       role="button" 
+                                       data-toggle="collapse"
+                                       data-target="#student-login-collapse">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="ms-2 me-2">Étudiant.e</div>
                                         </div>
+                                    </a>
+                                </div>
+                                <div class="login-tab" id="login-tab-teacher">
+                                        <a class="login-tab-link" 
+                                           role="button" 
+                                           data-toggle="collapse"
+                                           data-target="#teacher-login-collapse">
+                                            <div class="d-flex justify-content-center">
+                                                <div class="ms-2 me-2">Prof</div>
+                                            </div></a>
+                                </div>
+                            </div>
+                            <form action="" method="post" class="login-form">
+                                <div class="collapse show" id="student-login-collapse">
+                                        <div class="form-group row mb-3 mx-2">
+                                            <label for="userId">No de DA</label>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-1">20</div>
+                                                <input class="form-text" name="userId"></input>
+                                            </div>
+                                        </div>
+                                        <!--
                                         <label for="Password">Mot de passe</label>
                                         <input class="userInput" name="password"></input>
+                                        -->
                                 </div>
                                 <div class="collapse" id="teacher-login-collapse">
-                                        <label id="userRole" for="email">No de DA</label>
-                                        <div class="d-flex align-items-center">
-                                            <input class="form-text" name="email"></input>
-                                            <div class="me-1">@cmontmorency.qc.ca</div>
+                                        <div class="form-group row mb-3 mx-2">
+                                            <label id="userRole" for="userId">Courriel</label>
+                                            <div class="d-flex align-items-center">
+                                                <input class="form-text" name="userId"></input>
+                                                <div class="me-1">@cmontmorency.qc.ca</div>
+                                            </div>
                                         </div>
+                                        <!--
                                         <label for="Password">Mot de passe</label>
                                         <input class="userInput" name="password"></input>
+                                        -->
                                 </div>
-                               <button class="btn btn-primary btn-small" form="">Se connecter</button>
+                                <div class="d-flex justify-content-end">
+                                   <input type="submit" class="mt-3 me-3 btn btn-primary btn-small" value="Se connecter"></input>
+                                </div>
                             </form>
                             <!--
                                 <div id="role-container" class="role-container">
