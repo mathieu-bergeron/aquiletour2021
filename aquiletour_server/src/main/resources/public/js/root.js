@@ -1,5 +1,7 @@
 function initializeRoot(viewRootElement, jSweet){
 
+    //const testToast = viewRootElement.find('#test-toast');
+
     const navBarA = viewRootElement.find('.navbar-nav>li>a');
     const loginDropdown = viewRootElement.find('#login-dropdown');
 
@@ -8,6 +10,8 @@ function initializeRoot(viewRootElement, jSweet){
 
     const studentLoginCollapse = viewRootElement.find('#student-login-collapse');
     const teacherLoginCollapse = viewRootElement.find('#teacher-login-collapse');
+
+    //testToast.toast('show');
 
     navBarA.on('click', function(){
         $('.navbar-collapse').collapse('hide');
