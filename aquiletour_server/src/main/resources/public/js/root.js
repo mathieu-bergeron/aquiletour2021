@@ -3,36 +3,17 @@ window.onload = function(){
         $('.navbar-collapse').collapse('hide');
     });
 
-    /*
+    $('#login-dropdown').on('click', function(e){
+        e.stopPropagation();
+    })
 
-    $('a').on('click', function(e){
-        
-        document.getElementById('page-loader').style.display = 'block';
-        e.preventDefault();
-        var destination = this.href;
-        setTimeout(function() {
-            window.location = destination;
-        },1000);
+    $('#roleStudent').on('click', function(e){
+        $('#student-login-collapse').collapse('show');
+        $('#teacher-login-collapse').collapse('hide');
+    })
 
-        $('<iframe>').hide().appendTo('body').load(function() {
-            window.location = destination;
-        }).attr('src', destination);
-
-        
-    });
-    */
-
-    /*
-    document.getElementById('website-directory').innerHTML = window.location.pathname;
-    console.log(window.location.pathname);
-    */
-    
-
-
-    
-
-    // from: https://stackoverflow.com/questions/3522090/event-when-window-location-href-changes
-    window.onhashchange = function(e){
-        console.log("newURL " + e.newURL);
-    }
+    $('#roleTeacher').on('click', function(e){
+        $('#student-login-collapse').collapse('hide');
+        $('#teacher-login-collapse').collapse('show');
+    })
 }
