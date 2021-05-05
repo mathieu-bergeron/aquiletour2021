@@ -287,4 +287,18 @@ public class HtmlElementJdk extends HtmlElement {
 		
 		jsoupElement.removeAttr(name);
 	}
+
+	@Override
+	public void addClass(String styleClass) {
+		T.call(this);
+		
+		jsoupElement.addClass(styleClass);
+	}
+
+	@Override
+	public void removeClass(String styleClass) {
+		T.call(this);
+
+		jsoupElement.removeClass(styleClass);
+	}
 }

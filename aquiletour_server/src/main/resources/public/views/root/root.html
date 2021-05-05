@@ -53,6 +53,7 @@
                                 aria-expanded="false" 
                                 id="login-button">Connexion</button>
                         <div class="p-3 dropdown-menu dropdown-menu-right" id="login-dropdown">
+                            <div id="login-menu-enter-id">
                             <div id="login-tabs" class="d-flex justify-content-around disable-text-selection">
                                 <div class="login-tab login-tab-selected" id="login-tab-student">
                                     <a class="login-tab-link"
@@ -102,7 +103,7 @@
                                     -->
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <input type="submit" class="mt-3 me-3 btn btn-primary btn-small" value="Se connecter"></input>
+                                    <input type="submit" class="mt-3 me-3 btn btn-primary" value="Se connecter"></input>
                                 </div>
                             </form>
                             <!--
@@ -114,24 +115,34 @@
                                 </div>
                             -->
                         </div>
-                    </div>
-                </li>
-
-                <li class="nav-item ms-1" id="login-button">
-                    <a href="" type="button" class="btn btn-secondary" id="login-link">Connexion</a>
-                </li>
-                <li class="nav-item ms-1" id="user-profile">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="user-profile-name"></button>
-                        <div class="dropdown-menu dropdown-menu-right" >
+                        <div id="login-menu-enter-password">
+                        </div>
+                        <div id="login-menu-enter-code">
+                            <form action="" method="post">
+                                <div class="form-group row mb-3 mx-2">
+                                    <label for="loginCode">Code reçu par courriel</label>
+                                    <input name="loginCode" id="login-input-step2"></input>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="mt-3 me-3 btn btn-primary" id="login-button-step2">Valider mon identité</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="login-menu-add-password">
+                        </div>
+                        <div id="login-menu-student-profile">
+                            <a href="#" class="dropdown-item" style="min-width:14rem;">Modifier mon mot de passe</a>
+                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link-student">Déconnexion</a>
+                        </div>
+                        <div id="login-menu-teacher-profile">
                             <form action="" method="post" class="px-4 py-3">
                                 <div class="row">
                                     <input name="userName" value="" id="user-profile-name-input"></input>
                                     <button type="submit" class="btn btn-secondary btn-sm">Modifier</button>
                                 </div>
                             </form>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;">Ajouter/modifier un mot de passe</a>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link">Déconnexion</a>
+                            <a href="#" class="dropdown-item" style="min-width:14rem;">Modifier mon mot de passe</a>
+                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link-teacher">Déconnexion</a>
                             <div class="d-flex justify-content-end">
                                 <form action="" method="post" class="mt-3 me-3">
                                     <input name="toggleStudentMode" style="display:none;"></input>

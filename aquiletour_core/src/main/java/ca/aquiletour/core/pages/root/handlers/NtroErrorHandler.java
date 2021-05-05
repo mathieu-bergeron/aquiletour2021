@@ -1,5 +1,6 @@
-package ca.aquiletour.core.pages.root;
+package ca.aquiletour.core.pages.root.handlers;
 
+import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;

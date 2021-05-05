@@ -3,7 +3,9 @@ function initializeRoot(viewRootElement, jSweet){
     //const testToast = viewRootElement.find('#test-toast');
 
     const navBarA = viewRootElement.find('.navbar-nav>li>a');
+
     const loginDropdown = viewRootElement.find('#login-dropdown');
+    const loginButton = viewRootElement.find('#login-button');
 
     const loginTabStudent = viewRootElement.find('#login-tab-student');
     const loginTabTeacher = viewRootElement.find('#login-tab-teacher');
@@ -16,6 +18,11 @@ function initializeRoot(viewRootElement, jSweet){
     navBarA.on('click', function(){
         $('.navbar-collapse').collapse('hide');
     });
+
+    if(loginDropdown.hasClass('show')){
+        loginDropdown.removeClass('show');
+        loginButton.click();
+    }
 
     loginDropdown.on('click', function(e){
         e.stopPropagation();

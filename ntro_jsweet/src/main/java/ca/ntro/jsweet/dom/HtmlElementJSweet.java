@@ -415,4 +415,18 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void removeAttribute(String name) {
 		jQueryElement.removeAttr(name);
 	}
+
+	@Override
+	public void addClass(String styleClass) {
+		T.call(this);
+		
+		jQueryElement.addClass(styleClass);
+	}
+
+	@Override
+	public void removeClass(String styleClass) {
+		T.call(this);
+
+		jQueryElement.removeClass(styleClass);
+	}
 }

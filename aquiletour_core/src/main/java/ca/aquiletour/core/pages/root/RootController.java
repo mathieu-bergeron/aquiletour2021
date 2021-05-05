@@ -37,10 +37,18 @@ import ca.aquiletour.core.pages.git.CommitListController;
 import ca.aquiletour.core.pages.group_list.GroupListController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
+import ca.aquiletour.core.pages.login.ShowLoginHandler;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListController;
 import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
 import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
+import ca.aquiletour.core.pages.root.handlers.NtroErrorHandler;
+import ca.aquiletour.core.pages.root.handlers.QuitMessageHandler;
+import ca.aquiletour.core.pages.root.handlers.RootViewHandler;
+import ca.aquiletour.core.pages.root.handlers.ShowLoginMenuHandler;
+import ca.aquiletour.core.pages.root.handlers.UpdateUserInfoHandler;
+import ca.aquiletour.core.pages.root.messages.QuitMessage;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.SemesterListController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
@@ -81,6 +89,8 @@ public class RootController extends NtroRootController {
 		addViewMessageHandler(NtroErrorMessage.class, new NtroErrorHandler());
 
 		addViewMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());
+
+		addViewMessageHandler(ShowLoginMenuMessage.class, new ShowLoginMenuHandler());
 
 		// FIXME: could be in main. Not specific to Controller
 		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());

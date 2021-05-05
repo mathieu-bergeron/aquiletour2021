@@ -52,12 +52,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement openQueueListLink;
 	private HtmlElement calendarListLink;
 	private HtmlElement queueLink;
-	private HtmlElement loginLink;
-	private HtmlElement logoutLink;
-	private HtmlElement userProfileName;
+
+	private HtmlElement loginDropdown;
+	private HtmlElement loginButton;
+	private HtmlElement loginMenuEnterId;
+	private HtmlElement loginMenuEnterPassword;
+	private HtmlElement loginMenuEnterCode;
+	private HtmlElement loginMenuAddPassword;
+	private HtmlElement loginMenuStudentProfile;
+	private HtmlElement loginMenuTeacherProfile;
 	private HtmlElement userProfileNameInput;
-	private HtmlElement userProfile;
 	private HtmlElement toggleStudentModeButton;
+	private HtmlElement logoutLinkStudent;
+	private HtmlElement logoutLinkTeacher;
+
 	private BootstrapAlert alertDanger;
 	private BootstrapAlert alertPrimary;
 
@@ -73,11 +81,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLinkStudent = getRootElement().find("#courses-link-student").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
-		loginLink = getRootElement().find("#login-link").get(0);
-		logoutLink = getRootElement().find("#logout-link").get(0);
+
+		loginDropdown = getRootElement().find("#login-dropdown").get(0);
+		loginButton = getRootElement().find("#login-button").get(0);
+		loginMenuEnterId = getRootElement().find("#login-menu-enter-id").get(0);
+		loginMenuEnterPassword = getRootElement().find("#login-menu-enter-password").get(0);
+		loginMenuEnterCode = getRootElement().find("#login-menu-enter-code").get(0);
+		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
+		loginMenuStudentProfile = getRootElement().find("#login-menu-student-profile").get(0);
+		loginMenuTeacherProfile = getRootElement().find("#login-menu-teacher-profile").get(0);
+
+		logoutLinkStudent = getRootElement().find("#logout-link-student").get(0);
+		logoutLinkTeacher = getRootElement().find("#logout-link-teacher").get(0);
+
 		queueLink = getRootElement().find("#queue-link").get(0);
-		userProfile = getRootElement().find("#user-profile").get(0);
-		userProfileName = getRootElement().find("#user-profile-name").get(0);
 		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
 		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
@@ -88,11 +105,18 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(openQueueListLink);
 		MustNot.beNull(calendarListLink);
-		MustNot.beNull(loginLink);
+		MustNot.beNull(loginButton);
+		MustNot.beNull(loginDropdown);
+		MustNot.beNull(loginMenuEnterId);
+		MustNot.beNull(loginMenuEnterPassword);
+		MustNot.beNull(loginMenuEnterCode);
+		MustNot.beNull(loginMenuAddPassword);
+		MustNot.beNull(loginMenuStudentProfile);
+		MustNot.beNull(loginMenuTeacherProfile);
+		MustNot.beNull(logoutLinkStudent);
+		MustNot.beNull(logoutLinkTeacher);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
-		MustNot.beNull(userProfile);
-		MustNot.beNull(userProfileName);
 		MustNot.beNull(userProfileNameInput);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
@@ -128,9 +152,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLinkStudent.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
 
-		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
 
-		loginLink.addEventListener("click", new HtmlEventListener() {
+		loginButton.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
@@ -140,35 +164,47 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		logoutLink.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		logoutLinkStudent.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		logoutLinkTeacher.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
 	}
 
 	@Override
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
-		userProfile.hide();
-
 		User user = (User) context.user();
 		String userName = user.getName();
 
+		loginMenuEnterId.hide();
+		loginMenuEnterPassword.hide();
+		loginMenuEnterCode.hide();
+		loginMenuAddPassword.hide();
+		loginMenuStudentProfile.hide();
+		loginMenuTeacherProfile.hide();
+
 		if(context.user() instanceof Guest) {
 
-			loginLink.html("Connexion");
+			loginButton.html("Connexion");
+			loginMenuEnterId.show();
 
 		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
 
 			String linkText = "Valider " + user.getEmail();
-			loginLink.html(linkText);
+			loginButton.html(linkText);
+			loginMenuEnterCode.show();
 
-		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
+		}else if(context.user() instanceof Teacher) {
 			userName += " " + user.getSurname();
 			
-			loginLink.hide();
-			userProfile.show();
-			
-			userProfileName.text(userName);
+			loginButton.text(userName);
+			loginMenuTeacherProfile.show();
 			userProfileNameInput.value(userName);
+
+		}else if(context.user() instanceof Student) {
+			userName += " " + user.getSurname();
+			
+			loginButton.text(userName);
+			loginMenuStudentProfile.show();
 		}
 		
 		coursesLinkTeacher.hide();
@@ -176,12 +212,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		calendarListLink.hide();
 		groupListLink.hide();
 		queueLink.hide();
-		
-		if(context.user() instanceof Teacher) {
-			toggleStudentModeButton.show();
-		}else {
-			toggleStudentModeButton.hide();
-		}
 		
 		if(((User)context.user()).actsAsTeacher()) {
 			
@@ -352,6 +382,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void displayUserScreenName(String screenName) {
 		T.call(this);
 		
-		userProfileName.text(screenName);
+		loginButton.text(screenName);
+	}
+
+	@Override
+	public void showLoginMenu() {
+		T.call(this);
+
+		loginDropdown.addClass("show");
 	}
 }

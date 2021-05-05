@@ -5,8 +5,8 @@ import ca.ntro.core.mvc.ParentViewMessageHandler;
 import ca.ntro.core.system.trace.T;
 
 public class ShowLoginHandler extends ParentViewMessageHandler<RootView,
-                                                                  LoginView,
-                                                                  ShowLoginMessage> {
+                                                               LoginView,
+                                                               ShowLoginMessage> {
 
 	@Override
 	protected void handle(RootView parentView, 
