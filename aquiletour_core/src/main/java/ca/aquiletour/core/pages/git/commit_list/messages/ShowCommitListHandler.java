@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.git.commit_list.messages;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
+import ca.aquiletour.core.messages.git.GetCommitsForPathAndTimePeriod;
 import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitListController;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
@@ -18,7 +19,7 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 	protected void handle(CommitListController currentController, CommitListView currentView, ShowCommitListMessage message) {
 		T.call(this);
 		
-		GetCommitsForPath getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
+		GetCommitsForPathAndTimePeriod getCommitListMessage = Ntro.messages().create(GetCommitsForPathAndTimePeriod.class);
 		getCommitListMessage.loadStudentExerciseInfo(message);
 
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 

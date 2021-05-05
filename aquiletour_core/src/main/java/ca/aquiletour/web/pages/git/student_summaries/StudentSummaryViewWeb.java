@@ -1,5 +1,9 @@
 package ca.aquiletour.web.pages.git.student_summaries;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;
 import ca.aquiletour.core.pages.git.values.Commit;
@@ -38,17 +42,19 @@ public class StudentSummaryViewWeb extends NtroViewWeb implements StudentSummary
 		MustNot.beNull(exerciseCompletedBeforeDeadline);
 		
 		studentId.appendHtml(studentSummary.getStudentId());
-		lastCommitBeforeDealine.appendHtml(Long.toString(studentSummary.getLastCommitBeforeDeadline()));
-		lastCommitAfterDealine.appendHtml(Long.toString(studentSummary.getLastCommitAfterDeadline()));
+		LocalDate dateBefore = Instant.ofEpochMilli(studentSummary.getLastCommitBeforeDeadline()).atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate dateAfter = Instant.ofEpochMilli(studentSummary.getLastCommitAfterDeadline()).atZone(ZoneId.systemDefault()).toLocalDate();
+		lastCommitBeforeDealine.appendHtml(dateBefore.toString());
+		lastCommitAfterDealine.appendHtml(dateAfter.toString());
 		if(studentSummary.isExerciseCompleted()) {
-			exerciseCompleted.appendHtml("true");
+			exerciseCompleted.appendHtml("Vrai");
 		} else {
-			exerciseCompleted.appendHtml("false");
+			exerciseCompleted.appendHtml("Faux");
 		}
 		if(studentSummary.isExerciseCompletedBeforeDeadline()) {
-			exerciseCompletedBeforeDeadline.appendHtml("true");
+			exerciseCompletedBeforeDeadline.appendHtml("Vrai");
 		} else {
-			exerciseCompletedBeforeDeadline.appendHtml("false");
+			exerciseCompletedBeforeDeadline.appendHtml("Faux");
 		}
 	}
 }

@@ -6,5 +6,5 @@ import ca.ntro.core.mvc.NtroView;
 public interface CommitListView extends NtroView  {
 	
 	void appendCommit(Commit commit, CommitView commitView);
-	void displayCommitList(CommitListModel commitListModel);
+	void displayCommitList(CommitListModel commitListModel, long deadline);
 }

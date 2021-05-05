@@ -44,10 +44,8 @@ public class LateStudentsViewWeb extends NtroViewWeb implements LateStudentsView
 			
 			studentIds.appendHtml(lateStudentsModel.getStudentIds().get(i));
 			
-			if(i == lateStudentsModel.getStudentIds().size() - 1) {
-				studentIds.appendHtml(".");  
-			}else {
-				studentIds.appendHtml(", ");
+			if(i != lateStudentsModel.getStudentIds().size() - 1) {
+				studentIds.appendHtml("<br>");  
 			}
 		} 
 	}
