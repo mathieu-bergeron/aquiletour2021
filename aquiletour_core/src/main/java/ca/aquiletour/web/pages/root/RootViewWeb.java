@@ -39,7 +39,9 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
 	
-	private long ANIMATION_LENGTH = 100;
+	private long FADE_OUT_LENGTH = 100;
+	private long FADE_INT_LENGTH = 100;
+	private long LOGIN_MENU_MESSAGE_DURATION = 1000*5;
 	
 	private HtmlElement subViewContainer;
 	private NtroViewWeb currentSubView;
@@ -55,6 +57,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private HtmlElement loginDropdown;
 	private HtmlElement loginButton;
+	private HtmlElement loginMenuMessage;
+	private HtmlElement loginMenuMessageText;
 	private HtmlElement loginMenuEnterId;
 	private HtmlElement loginMenuEnterPassword;
 	private HtmlElement loginMenuEnterCode;
@@ -84,6 +88,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		loginDropdown = getRootElement().find("#login-dropdown").get(0);
 		loginButton = getRootElement().find("#login-button").get(0);
+		loginMenuMessage = getRootElement().find("#login-menu-message").get(0);
+		loginMenuMessageText = getRootElement().find("#login-menu-message-text").get(0);
 		loginMenuEnterId = getRootElement().find("#login-menu-enter-id").get(0);
 		loginMenuEnterPassword = getRootElement().find("#login-menu-enter-password").get(0);
 		loginMenuEnterCode = getRootElement().find("#login-menu-enter-code").get(0);
@@ -107,6 +113,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(calendarListLink);
 		MustNot.beNull(loginButton);
 		MustNot.beNull(loginDropdown);
+		MustNot.beNull(loginMenuMessage);
+		MustNot.beNull(loginMenuMessageText);
 		MustNot.beNull(loginMenuEnterId);
 		MustNot.beNull(loginMenuEnterPassword);
 		MustNot.beNull(loginMenuEnterCode);
@@ -175,6 +183,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		User user = (User) context.user();
 		String userName = user.getName();
 
+		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
 		loginMenuEnterPassword.hide();
 		loginMenuEnterCode.hide();
@@ -255,7 +264,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			Map<String, Object> properties = new HashMap<>();
 			properties.put("opacity", 0.0);
 			currentSubView.getRootElement().animate(properties, 
-					                                ANIMATION_LENGTH, 
+					                                FADE_OUT_LENGTH, 
 					                                new AnimationListener() {
 				@Override
 				public void animationFinished() {
@@ -288,7 +297,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("opacity", 1.0);
 		subViewElement.animate(properties, 
-				               ANIMATION_LENGTH, 
+				               FADE_OUT_LENGTH, 
 				               new AnimationListener() {
 			@Override
 			public void animationFinished() {
@@ -386,9 +395,37 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showLoginMenu() {
+	public void showLoginMenu(String messageToUser) {
 		T.call(this);
 
 		loginDropdown.addClass("show");
+		if(messageToUser != null && !messageToUser.isEmpty()) {
+			loginMenuMessage.show();
+			loginMenuMessageText.text(messageToUser);
+
+			/*
+			loginMenuMessage.animate(new HashMap<>(), 
+									 LOGIN_MENU_MESSAGE_DURATION,
+					                 new AnimationListener() {
+				@Override
+				public void animationFinished() {
+					T.call(this);
+
+					Map<String, Object> properties = new HashMap<>();
+					properties.put("opacity", 0.0);
+
+					loginMenuMessage.animate(new HashMap<>(), 
+											 FADE_OUT_LENGTH,
+											 new AnimationListener() {
+						@Override
+						public void animationFinished() {
+							T.call(this);
+							loginMenuMessage.hide();
+							loginMenuMessage.css("opacity", 1.0);
+						}
+					});
+				}
+			});*/
+		}
 	}
 }

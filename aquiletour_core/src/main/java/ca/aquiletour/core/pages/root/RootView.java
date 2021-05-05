@@ -32,5 +32,5 @@ public interface RootView extends NtroView {
 	void showGroupList(GroupListView currentView);
 
 	void displayUserScreenName(String screenName);
-	void showLoginMenu();
+	void showLoginMenu(String messageToUser);
 }

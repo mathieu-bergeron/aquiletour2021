@@ -231,6 +231,7 @@ public class AquiletourRequestHandler {
 		}else {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP se connecter pour voir le tableau de bord.");
 			Ntro.messages().send(showLoginMenuMessage);
 		}
 	}

@@ -5,7 +5,6 @@ import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.root.handlers.ShowLoginMenuHandler;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.backend.BackendMessageHandler;
@@ -46,6 +45,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		
 		ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+		showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
 		Ntro.messages().send(showLoginMenuMessage);
 	}
 

@@ -53,8 +53,11 @@
                                 aria-expanded="false" 
                                 id="login-button">Connexion</button>
                         <div class="p-3 dropdown-menu dropdown-menu-right" id="login-dropdown">
-                            <div id="login-menu-message">
-                                adf
+                            <div class="d-flex alert alert-info" id="login-menu-message" role="alert">
+                                    <span class="flex-fill"></span>
+                                    <span id="login-menu-message-text"></span>
+                                    <span class="flex-fill"></span>
+                                    <!--<button class="btn btn-close" type="button" class="close" data-dismiss="alert" data-target="#login-menu-message" aria-label="Close"></button>-->
                             </div>
                             <div id="login-menu-enter-id">
                             <div id="login-tabs" class="d-flex justify-content-around disable-text-selection">
@@ -123,7 +126,7 @@
                         <div id="login-menu-enter-code">
                             <form action="" method="post">
                                 <div class="form-group row mb-3 mx-2">
-                                    <label for="loginCode">Code reçu par courriel</label>
+                                    <label for="loginCode">Code</label>
                                     <input name="loginCode" id="login-input-step2"></input>
                                 </div>
                                 <div class="d-flex justify-content-end">
@@ -184,7 +187,7 @@
     <span class="flex-fill"></span>
     <span class="message-text"></span>
     <span class="flex-fill"></span>
-    <button class="btn btn-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <button class="btn btn-close" type="button" class="close" data-dismiss="alert" data-target="#alert-danger" aria-label="Close">
     </button>
 </div>
 

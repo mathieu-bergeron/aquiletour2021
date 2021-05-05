@@ -11,7 +11,7 @@ public class ShowLoginMenuHandler extends ViewMessageHandler<RootView, ShowLogin
 	protected void handle(RootView view, ShowLoginMenuMessage message) {
 		T.call(this);
 		
-		view.showLoginMenu();
+		view.showLoginMenu(message.getMessageToUser());
 	}
 
 }
