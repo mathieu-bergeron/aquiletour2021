@@ -70,10 +70,7 @@ input[type="checkbox"] {
 }
 
 
-.mb-3{
-  margin-bottom: 2rem!important;
-}
-  /*Defines the circle inside a card*/
+/*Defines the circle inside a card*/
 .color {
   height: 20px;
   width: 20px;
@@ -285,18 +282,6 @@ input[type="checkbox"] {
   top: 25rem!important;
 }
 
-.role-container{
-  border-style: solid;
-  border-color: #63999C;
-  border-width: 2px;
-  font-size: 1.2rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  width: fit-content;
-  letter-spacing: 0.5px;
-  
-}
 
 .home-mBody{
   text-align: justify;
@@ -315,20 +300,45 @@ input[type="checkbox"] {
   }
 }
 
-#roleStudent{
+#login-tabs{
+  border-style: solid;
+  border-color: #63999C;
+  border-width: 2px;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.login-tab {
+    width:100%;
+}
+
+.login-tab-link {
+    text-decoration:none;
+    color:black;
+}
+
+.login-tab-selected {
+    background-color: lightgray;
+}
+
+#login-tab-student{
   border-right: 2px #63999C;
   border-style: solid;
   border-top: none;
   border-bottom: none;
   border-left: none;
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
-#roleTeacher{
-  padding-left: 1rem;
-  padding-right: 1rem;
+#login-tab-teacher{
+  border-left: 2px #63999C;
+  border-style: solid;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
 }
+
 //WHOLE SITE
 html, body{
   min-height: 100%;

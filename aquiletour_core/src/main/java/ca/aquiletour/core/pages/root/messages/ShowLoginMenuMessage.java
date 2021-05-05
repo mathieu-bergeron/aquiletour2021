@@ -1,23 +1,21 @@
-package ca.aquiletour.core.messages.user;
+package ca.aquiletour.core.pages.root.messages;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.users.User;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.NtroUserMessage;
 
-public class UserSendsLoginCodeMessage extends NtroUserMessage<User> {
+public class ShowLoginMenuMessage extends NtroMessage {
 	
-	private String loginCode;
+	private String messageToUser;
 	private List<NtroMessage> delayedMessages = new ArrayList<>();
 
-	public String getLoginCode() {
-		return loginCode;
+	public String getMessageToUser() {
+		return messageToUser;
 	}
 
-	public void setLoginCode(String loginCode) {
-		this.loginCode = loginCode;
+	public void setMessageToUser(String messageToUser) {
+		this.messageToUser = messageToUser;
 	}
 
 	public List<NtroMessage> getDelayedMessages() {

@@ -15,18 +15,34 @@ import javax.mail.internet.MimeMessage;
 public class TestEmail {
 
 	public static void main(String[] args) {
-		sendCode("143 567", "Mathieu", "mathieu.bergeron@cmontmorency.qc.ca");
+		if(args.length > 0) {
+			sendCode("143 567", "Mathieu", args[0]);
+		}else {
+			System.out.println("Usage: ./gradlew testEmail adresseDestinataire");
+		}
 	}
 
 	public static void sendCode(String loginCode, String userName, String toEmail) {
-		final String username = "aiguilleur.ca@gmail.com";
-		final String password = "Momo!1234";
+		//final String fromEmail = "aiguilleur.ca@gmail.com";
+		final String fromEmail = "mailagent@aiguilleur.ca";
+
+		//final String username = "aiguilleur.ca@gmail.com";
+		final String username = "mailagent@aiguilleur.ca";
+
+		//final String password = "Momo!1234";
+		final String password = "qwe123";
 
 		Properties prop = new Properties();
+		/*
 		prop.put("mail.smtp.host", "smtp.gmail.com");
 		prop.put("mail.smtp.port", "587");
 		prop.put("mail.smtp.auth", "true");
 		prop.put("mail.smtp.starttls.enable", "true"); //TLS
+		*/
+		
+		prop.put("mail.smtp.host", "mail.aiguilleur.ca");
+		prop.put("mail.smtp.port", "25");
+		prop.put("mail.smtp.auth", "true");
 		
 		Session session = Session.getInstance(prop,
 		        new javax.mail.Authenticator() {
@@ -38,7 +54,7 @@ public class TestEmail {
 		try {
 
 		    Message message = new MimeMessage(session);
-		    message.setFrom(new InternetAddress("aiguilleur.ca@gmail.com"));
+		    message.setFrom(new InternetAddress(fromEmail));
 		    message.setRecipients(
 		            Message.RecipientType.TO,
 		            InternetAddress.parse(toEmail));

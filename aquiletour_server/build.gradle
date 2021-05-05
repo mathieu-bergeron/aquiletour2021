@@ -76,6 +76,10 @@ task testEmail (type:JavaExec) {
     //jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm 
     jvmArgs('-Dfile.encoding=UTF-8') 
     standardInput = System.in
+
+    if(project.hasProperty('recipient')){
+        args(recipient)
+    }
 }
 
 

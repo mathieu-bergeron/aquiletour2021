@@ -34,7 +34,7 @@ import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
-import ca.aquiletour.core.pages.root.ShowLoginDialogMessage;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -128,35 +128,43 @@ public class AquiletourRequestHandler {
 			                                   SessionData sessionData) {
 
 		T.call(AquiletourRequestHandler.class);
-		
-		ShowCourseListMessage showCourseListMessage = null;
-		
-		if(user.actsAsTeacher()) {
-			showCourseListMessage = Ntro.messages().create(ShowCourseListMessageTeacher.class);
-		}else {
-			showCourseListMessage = Ntro.messages().create(ShowCourseListMessageStudent.class);
+
+		if(user instanceof Guest){
+			
+			ShowLoginMenuMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginDialogMessage.setMessageToUser("SVP vous connecter pour voir vos cours");
+			Ntro.messages().send(showLoginDialogMessage);
+
+		} else {
+			
+			ShowCourseListMessage showCourseListMessage = null;
+			
+			if(user.actsAsTeacher()) {
+				showCourseListMessage = Ntro.messages().create(ShowCourseListMessageTeacher.class);
+			}else {
+				showCourseListMessage = Ntro.messages().create(ShowCourseListMessageStudent.class);
+			}
+
+			Ntro.messages().send(showCourseListMessage);
+			
+			String currentSemesterId = null;
+			if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+				currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+			}else {
+				currentSemesterId = sessionData.getCurrentSemester();
+			}
+
+			SelectCourseListSubset selectCourseListSubset = null;
+
+			if(user instanceof Teacher) {
+				selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetTeacher.class);
+			}else {
+				selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetStudent.class);
+			}
+
+			selectCourseListSubset.setSemesterId(currentSemesterId);
+			Ntro.messages().send(selectCourseListSubset);
 		}
-
-		Ntro.messages().send(showCourseListMessage);
-		
-		String currentSemesterId = null;
-		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
-			currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
-		}else {
-			currentSemesterId = sessionData.getCurrentSemester();
-		}
-
-		SelectCourseListSubset selectCourseListSubset = null;
-
-		if(user instanceof Teacher) {
-			selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetTeacher.class);
-		}else {
-			selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetStudent.class);
-		}
-
-		selectCourseListSubset.setSemesterId(currentSemesterId);
-		Ntro.messages().send(selectCourseListSubset);
-		
 	}
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
@@ -222,10 +230,10 @@ public class AquiletourRequestHandler {
 			Ntro.messages().send(showStudentDashboardMessage);
 
 		}else {
-			
-			Map<String, String[]> newParams = new HashMap<>();
-			newParams.put("message", new String[] {"SVP entrer votre DA pour voir vos cours"});
-			sendLoginMessages(path, newParams);
+
+			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP vous connecter pour voir votre tableau bord.");
+			Ntro.messages().send(showLoginMenuMessage);
 		}
 	}
 
@@ -303,12 +311,8 @@ public class AquiletourRequestHandler {
 
 			String teacherId = path.name(0);
 
-			if(user instanceof Guest){
-				
-				ShowLoginDialogMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginDialogMessage.class);
-				Ntro.messages().send(showLoginDialogMessage);
 
-			}else if(user instanceof Teacher 
+			if(user instanceof Teacher 
 					&& user.getId().equals(teacherId)
 					&& user.actsAsTeacher()) {
 

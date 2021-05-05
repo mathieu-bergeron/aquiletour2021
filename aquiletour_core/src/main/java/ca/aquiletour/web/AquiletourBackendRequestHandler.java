@@ -1,9 +1,12 @@
 package ca.aquiletour.web;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
@@ -15,7 +18,10 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Guest;
+import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -37,6 +43,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
@@ -46,6 +53,7 @@ import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
@@ -55,38 +63,10 @@ public class AquiletourBackendRequestHandler {
 	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
+		
+		sendRootMessages(context, path, parameters);
 
-		if(parameters.containsKey("userId")) {
-			
-			UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
-			userInitiatesLoginMessage.setProvidedId(parameters.get("userId")[0]);
-			Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
-
-		} else if(parameters.containsKey("loginCode")) {
-			
-			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
-			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
-			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
-
-		} else if(parameters.containsKey("userName")) {
-			
-			String screenName = parameters.get("userName")[0];
-			
-			
-			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
-			updateUserInfoMessage.setScreenName(screenName);
-			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
-
-		} else if(parameters.containsKey("toggleStudentMode")) {
-
-			// XXX: must be here in the frontend
-			Teacher teacher = (Teacher) Ntro.currentSession().getUser();
-			teacher.toggleStudentMode();
-			
-			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
-			Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()
-
-		} else if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
+		if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 
 			Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserLogsOutMessage.class));
 
@@ -127,6 +107,84 @@ public class AquiletourBackendRequestHandler {
 			sendCourseListMessages(path.subPath(1), parameters, context.user());
 		}
 	}
+
+	public static void sendRootMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		if(parameters.containsKey("studentId") && !parameters.get("studentId")[0].isEmpty()) {
+			
+			String userId = parameters.get("studentId")[0];
+			
+			sendLoginMessage(userId, parameters);
+
+		} else if(parameters.containsKey("teacherId") && !parameters.get("teacherId")[0].isEmpty()) {
+			
+			String userId = parameters.get("teacherId")[0];
+			
+			sendLoginMessage(userId, parameters);
+
+		} else if(parameters.containsKey("itsNotMe")) {
+			
+			ItsNotMeMessage itsNotMeMessage = Ntro.messages().create(ItsNotMeMessage.class);
+			itsNotMeMessage.setDelayedMessages(delayedMessages(parameters));
+			Ntro.messages().send(itsNotMeMessage);
+
+		} else if(parameters.containsKey("loginCode")) {
+
+			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
+			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
+			userSendsLoginCodeMessage.setDelayedMessages(delayedMessages(parameters));
+			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
+
+		} else if(parameters.containsKey("userName")) {
+			
+			String screenName = parameters.get("userName")[0];
+			
+			UpdateUserInfoMessage updateUserInfoMessage = Ntro.messages().create(UpdateUserInfoMessage.class);
+			updateUserInfoMessage.setScreenName(screenName);
+			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
+
+		} else if(parameters.containsKey("toggleStudentMode")) {
+
+			// XXX: must be here in the frontend
+			Teacher teacher = (Teacher) Ntro.currentSession().getUser();
+			teacher.toggleStudentMode();
+			
+			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
+			Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static List<NtroMessage> delayedMessages(Map<String, String[]> parameters) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		List<NtroMessage> delayedMessages = null;
+
+		String delayedMessagesText = parameters.get("delayedMessages")[0];
+		
+		if(delayedMessagesText.isEmpty()) {
+			
+			delayedMessages = new ArrayList<>();
+			
+		}else {
+
+			delayedMessagesText = delayedMessagesText.replaceAll("\\\"","\"");
+			delayedMessages = (List<NtroMessage>) Ntro.jsonService().fromString(List.class, delayedMessagesText);
+		}
+
+		return delayedMessages;
+	}
+
+	private static void sendLoginMessage(String userId, Map<String, String[]> parameters) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
+		userInitiatesLoginMessage.setProvidedId(userId);
+		userInitiatesLoginMessage.setDelayedMessages(delayedMessages(parameters));
+		Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
+	}
+
 
 	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
@@ -594,6 +652,7 @@ public class AquiletourBackendRequestHandler {
 			AddAppointmentMessage addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
 			addAppointmentMessage.setCourseId(courseId);
 			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
+			
 			
 		} else if(parameters.containsKey("deleteAppointment")){
 			

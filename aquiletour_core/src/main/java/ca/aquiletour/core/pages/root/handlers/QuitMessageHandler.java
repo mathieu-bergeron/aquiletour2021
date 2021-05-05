@@ -1,5 +1,6 @@
-package ca.aquiletour.core.pages.root;
+package ca.aquiletour.core.pages.root.handlers;
 
+import ca.aquiletour.core.pages.root.messages.QuitMessage;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;

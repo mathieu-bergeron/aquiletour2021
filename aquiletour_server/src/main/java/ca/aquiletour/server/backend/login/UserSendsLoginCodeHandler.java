@@ -7,12 +7,14 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserUpdater;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -50,6 +52,10 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		
+		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+			Ntro.messages().send(delayedMessage);
+		}
 	}
 
 	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {

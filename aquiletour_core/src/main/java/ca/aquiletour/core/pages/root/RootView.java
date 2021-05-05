@@ -1,5 +1,7 @@
 package ca.aquiletour.core.pages.root;
 
+import java.util.List;
+
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
@@ -12,6 +14,7 @@ import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
+import ca.ntro.messages.NtroMessage;
 
 public interface RootView extends NtroView {
 	
@@ -32,4 +35,5 @@ public interface RootView extends NtroView {
 	void showGroupList(GroupListView currentView);
 
 	void displayUserScreenName(String screenName);
+	void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages);
 }

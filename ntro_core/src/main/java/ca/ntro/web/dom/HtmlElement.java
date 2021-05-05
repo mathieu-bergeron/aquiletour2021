@@ -97,4 +97,6 @@ public abstract class HtmlElement {
 	public abstract void css(String property, String value);
 	public abstract void css(String property, double value);
 
+	public abstract void addClass(String styleClass);
+	public abstract void removeClass(String styleClass);
 }

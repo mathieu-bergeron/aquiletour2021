@@ -1,6 +1,10 @@
 package ca.aquiletour.web.pages.root;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import static ca.ntro.assertions.Factory.that;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
@@ -19,6 +23,7 @@ import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.web.widgets.BootstrapAlert;
@@ -31,15 +36,20 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElementLambda;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
 	
-	private long ANIMATION_LENGTH = 100;
+	private long FADE_OUT_LENGTH = 100;
+	private long FADE_INT_LENGTH = 100;
+	private long LOGIN_MENU_MESSAGE_DURATION = 1000*5;
 	
 	private HtmlElement subViewContainer;
 	private NtroViewWeb currentSubView;
@@ -52,12 +62,23 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement openQueueListLink;
 	private HtmlElement calendarListLink;
 	private HtmlElement queueLink;
-	private HtmlElement loginLink;
-	private HtmlElement logoutLink;
-	private HtmlElement userProfileName;
+
+	private HtmlElement loginDropdown;
+	private HtmlElement loginButton;
+	private HtmlElement loginMenuMessage;
+	private HtmlElement loginMenuMessageText;
+	private HtmlElement loginMenuEnterId;
+	private HtmlElement loginMenuEnterPassword;
+	private HtmlElement loginMenuEnterCode;
+	private HtmlElement loginMenuAddPassword;
+	private HtmlElement loginMenuStudentProfile;
+	private HtmlElement loginMenuTeacherProfile;
 	private HtmlElement userProfileNameInput;
-	private HtmlElement userProfile;
 	private HtmlElement toggleStudentModeButton;
+	
+	private HtmlElements logoutLinks;
+	private HtmlElements addDelayedMessagesToValue;
+
 	private BootstrapAlert alertDanger;
 	private BootstrapAlert alertPrimary;
 
@@ -73,11 +94,22 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLinkStudent = getRootElement().find("#courses-link-student").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
-		loginLink = getRootElement().find("#login-link").get(0);
-		logoutLink = getRootElement().find("#logout-link").get(0);
+
+		loginDropdown = getRootElement().find("#login-dropdown").get(0);
+		loginButton = getRootElement().find("#login-button").get(0);
+		loginMenuMessage = getRootElement().find("#login-menu-message").get(0);
+		loginMenuMessageText = getRootElement().find("#login-menu-message-text").get(0);
+		loginMenuEnterId = getRootElement().find("#login-menu-enter-id").get(0);
+		loginMenuEnterPassword = getRootElement().find("#login-menu-enter-password").get(0);
+		loginMenuEnterCode = getRootElement().find("#login-menu-enter-code").get(0);
+		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
+		loginMenuStudentProfile = getRootElement().find("#login-menu-student-profile").get(0);
+		loginMenuTeacherProfile = getRootElement().find("#login-menu-teacher-profile").get(0);
+
+		logoutLinks = getRootElement().find(".logout-link");
+		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
+
 		queueLink = getRootElement().find("#queue-link").get(0);
-		userProfile = getRootElement().find("#user-profile").get(0);
-		userProfileName = getRootElement().find("#user-profile-name").get(0);
 		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
 		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
@@ -88,17 +120,27 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(openQueueListLink);
 		MustNot.beNull(calendarListLink);
-		MustNot.beNull(loginLink);
+		MustNot.beNull(loginButton);
+		MustNot.beNull(loginDropdown);
+		MustNot.beNull(loginMenuMessage);
+		MustNot.beNull(loginMenuMessageText);
+		MustNot.beNull(loginMenuEnterId);
+		MustNot.beNull(loginMenuEnterPassword);
+		MustNot.beNull(loginMenuEnterCode);
+		MustNot.beNull(loginMenuAddPassword);
+		MustNot.beNull(loginMenuStudentProfile);
+		MustNot.beNull(loginMenuTeacherProfile);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
-		MustNot.beNull(userProfile);
-		MustNot.beNull(userProfileName);
 		MustNot.beNull(userProfileNameInput);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
 		MustNot.beNull(toggleStudentModeButton);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
+
+		Ntro.verify(that(logoutLinks.size() > 0).isTrue());
+		Ntro.verify(that(addDelayedMessagesToValue.size() > 0).isTrue());
 
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
@@ -109,6 +151,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		initializeAlerts();
 	}
+
 
 	private void initializeAlerts() {
 		T.call(this);
@@ -128,9 +171,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLinkStudent.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 
 
-		loginLink.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
 
-		loginLink.addEventListener("click", new HtmlEventListener() {
+		loginButton.addEventListener("click", new HtmlEventListener() {
 			@Override
 			public void onEvent() {
 				T.call(this);
@@ -140,35 +183,49 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		logoutLink.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		logoutLinks.forEach(e -> {
+			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		});
 	}
 
 	@Override
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
-		userProfile.hide();
-
 		User user = (User) context.user();
 		String userName = user.getName();
 
+		loginMenuMessage.hide();
+		loginMenuEnterId.hide();
+		loginMenuEnterPassword.hide();
+		loginMenuEnterCode.hide();
+		loginMenuAddPassword.hide();
+		loginMenuStudentProfile.hide();
+		loginMenuTeacherProfile.hide();
+
 		if(context.user() instanceof Guest) {
 
-			loginLink.html("Connexion");
+			loginButton.html("Connexion");
+			loginMenuEnterId.show();
 
 		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
 
 			String linkText = "Valider " + user.getEmail();
-			loginLink.html(linkText);
+			loginButton.html(linkText);
+			loginMenuEnterCode.show();
 
-		}else if(context.user() instanceof Teacher || context.user() instanceof Student) {
+		}else if(context.user() instanceof Teacher) {
 			userName += " " + user.getSurname();
 			
-			loginLink.hide();
-			userProfile.show();
-			
-			userProfileName.text(userName);
+			loginButton.text(userName);
+			loginMenuTeacherProfile.show();
 			userProfileNameInput.value(userName);
+
+		}else if(context.user() instanceof Student) {
+			userName += " " + user.getSurname();
+			
+			loginButton.text(userName);
+			loginMenuStudentProfile.show();
 		}
 		
 		coursesLinkTeacher.hide();
@@ -176,12 +233,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		calendarListLink.hide();
 		groupListLink.hide();
 		queueLink.hide();
-		
-		if(context.user() instanceof Teacher) {
-			toggleStudentModeButton.show();
-		}else {
-			toggleStudentModeButton.hide();
-		}
 		
 		if(((User)context.user()).actsAsTeacher()) {
 			
@@ -225,7 +276,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			Map<String, Object> properties = new HashMap<>();
 			properties.put("opacity", 0.0);
 			currentSubView.getRootElement().animate(properties, 
-					                                ANIMATION_LENGTH, 
+					                                FADE_OUT_LENGTH, 
 					                                new AnimationListener() {
 				@Override
 				public void animationFinished() {
@@ -258,7 +309,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("opacity", 1.0);
 		subViewElement.animate(properties, 
-				               ANIMATION_LENGTH, 
+				               FADE_OUT_LENGTH, 
 				               new AnimationListener() {
 			@Override
 			public void animationFinished() {
@@ -352,6 +403,55 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void displayUserScreenName(String screenName) {
 		T.call(this);
 		
-		userProfileName.text(screenName);
+		loginButton.text(screenName);
+	}
+
+	@Override
+	public void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages) {
+		T.call(this);
+
+		loginDropdown.addClass("show");
+
+		String delayedMessagesText = delayedMessagesText(delayedMessages);
+
+		addDelayedMessagesToValue.setAttribute("value", delayedMessagesText);
+		
+		if(messageToUser != null && !messageToUser.isEmpty()) {
+			loginMenuMessage.show();
+			loginMenuMessageText.text(messageToUser);
+
+			/*
+			loginMenuMessage.animate(new HashMap<>(), 
+									 LOGIN_MENU_MESSAGE_DURATION,
+					                 new AnimationListener() {
+				@Override
+				public void animationFinished() {
+					T.call(this);
+
+					Map<String, Object> properties = new HashMap<>();
+					properties.put("opacity", 0.0);
+
+					loginMenuMessage.animate(new HashMap<>(), 
+											 FADE_OUT_LENGTH,
+											 new AnimationListener() {
+						@Override
+						public void animationFinished() {
+							T.call(this);
+							loginMenuMessage.hide();
+							loginMenuMessage.css("opacity", 1.0);
+						}
+					});
+				}
+			});*/
+		}
+	}
+
+	private String delayedMessagesText(List<NtroMessage> delayedMessages) {
+		T.call(this);
+
+		String delayedMessagesText = Ntro.jsonService().toString(delayedMessages);
+		delayedMessagesText = delayedMessagesText.replaceAll("\"", "\\\"");
+
+		return delayedMessagesText;
 	}
 }

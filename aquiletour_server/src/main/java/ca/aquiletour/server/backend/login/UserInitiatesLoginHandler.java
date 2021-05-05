@@ -5,12 +5,14 @@ import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.random.SecureRandomString;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
@@ -41,6 +43,19 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		
+		if(message.getDelayedMessages().isEmpty()) {
+
+			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
+			Ntro.messages().send(showLoginMenuMessage);
+			
+		}else {
+
+			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+				Ntro.messages().send(delayedMessage);
+			}
+		}
 	}
 
 	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, NtroSession session) {

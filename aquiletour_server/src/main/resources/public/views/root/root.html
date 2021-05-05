@@ -37,34 +37,137 @@
                     <a href="#" class="nav-link ms-1" id="calendar-list-link">Planifier une session</a>
                 </li>
                 <!--
-                <li class="nav-item ms-1">
+                    <li class="nav-item ms-1">
                     <a href="#" class="nav-link connect" id="login-link">Connexion</a>
-                </li>
+                    </li>
                 -->
             </ul>
 
             <ul class="nav navbar-nav navbar-right me-2">
-                <li class="nav-item ms-1" id="login-button">
-                    <a href="" type="button" class="btn btn-secondary" id="login-link">Connexion</a>
-                </li>
-                <li class="nav-item ms-1" id="user-profile">
+                <li class="nav-item ms-1" id="login-container">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="user-profile-name"></button>
-                        <div class="dropdown-menu dropdown-menu-right" >
+                        <button type="button" 
+                                class="btn btn-secondary dropdown-toggle" 
+                                data-toggle="dropdown"
+                                data-target="#login-dropdown"
+                                aria-haspopup="true" 
+                                aria-expanded="false" 
+                                id="login-button">Connexion</button>
+                        <div class="p-3 dropdown-menu dropdown-menu-right" id="login-dropdown">
+                            <div class="d-flex alert alert-info" id="login-menu-message" role="alert">
+                                    <span class="flex-fill"></span>
+                                    <span id="login-menu-message-text"></span>
+                                    <span class="flex-fill"></span>
+                                    <!--<button class="btn btn-close" type="button" class="close" data-dismiss="alert" data-target="#login-menu-message" aria-label="Close"></button>-->
+                            </div>
+                            <div id="login-menu-enter-id">
+                            <div id="login-tabs" class="d-flex justify-content-around disable-text-selection">
+                                <div class="login-tab login-tab-selected" id="login-tab-student">
+                                    <a class="login-tab-link"
+                                       role="button" 
+                                       data-toggle="collapse"
+                                       data-target="#student-login-collapse">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="ms-2 me-2">Étudiant.e</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="login-tab" id="login-tab-teacher">
+                                    <a class="login-tab-link" 
+                                       role="button" 
+                                       data-toggle="collapse"
+                                       data-target="#teacher-login-collapse">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="ms-2 me-2">Prof</div>
+                                        </div></a>
+                                </div>
+                            </div>
+                            <form action="" method="post" class="login-form">
+                                <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
+                                <div class="collapse show" id="student-login-collapse">
+                                    <div class="form-group row mb-3 mx-2">
+                                        <label for="studentId">No de DA</label>
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-1">20</div>
+                                            <input class="form-text" name="studentId"></input>
+                                        </div>
+                                    </div>
+                                    <!--
+                                        <label for="Password">Mot de passe</label>
+                                        <input class="userInput" name="password"></input>
+                                    -->
+                                </div>
+                                <div class="collapse" id="teacher-login-collapse">
+                                    <div class="form-group row mb-3 mx-2">
+                                        <label id="userRole" for="teacherId">Courriel</label>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-text" name="teacherId"></input>
+                                            <div class="me-1">@cmontmorency.qc.ca</div>
+                                        </div>
+                                    </div>
+                                    <!--
+                                        <label for="Password">Mot de passe</label>
+                                        <input class="userInput" name="password"></input>
+                                    -->
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <input type="submit" class="mt-3 me-3 btn btn-primary" value="Se connecter"></input>
+                                </div>
+                            </form>
+                            <!--
+                                <div id="role-container" class="role-container">
+                                <a role="button" id="roleStudent">Étudiant</a>
+                                <a role="button" id="roleTeacher">Employé</a>
+                                </div>
+                                <div class="login-container">
+                                </div>
+                            -->
+                        </div>
+                        <div id="login-menu-enter-password">
+                        </div>
+                        <div id="login-menu-enter-code">
+                            <form action="" method="post">
+                                <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
+                                <div class="form-group row mb-3 mx-2">
+                                    <label for="loginCode">Code reçu par courriel</label>
+                                    <input name="loginCode" id="login-input-step2"></input>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="mt-3 me-3 btn btn-primary" id="login-button-step2">Valider mon identité</button>
+                                </div>
+                            </form>
+                            <div class="d-flex me-3 justify-content-end">
+                                <div class="mt-2">
+                                    <form action="" method="post" id="its-not-me-form">
+                                        <input name="itsNotMe" style="display:none;"></input>
+                                        <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
+                                    </form>
+                                    <a href="#" class="logout-link" id="its-not-me-link" style="min-width:14rem;" form="its-not-me-form">(ce n'est pas moi)</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="login-menu-add-password">
+                        </div>
+                        <div id="login-menu-student-profile">
+                            <a href="#" class="dropdown-item" style="min-width:14rem;">Modifier mon mot de passe</a>
+                            <a href="#" class="dropdown-item logout-link" style="min-width:14rem;">Déconnexion</a>
+                        </div>
+                        <div id="login-menu-teacher-profile">
                             <form action="" method="post" class="px-4 py-3">
                                 <div class="row">
                                     <input name="userName" value="" id="user-profile-name-input"></input>
                                     <button type="submit" class="btn btn-secondary btn-sm">Modifier</button>
                                 </div>
                             </form>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;">Ajouter/modifier un mot de passe</a>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link">Déconnexion</a>
+                            <a href="#" class="dropdown-item" style="min-width:14rem;">Modifier mon mot de passe</a>
+                            <a href="#" class="dropdown-item logout-link" style="min-width:14rem;">Déconnexion</a>
                             <div class="d-flex justify-content-end">
-                            <form action="" method="post" class="mt-3 me-3">
-                                <input name="toggleStudentMode" style="display:none;"></input>
-                                <button type="submit" class="btn btn-secondary btn-sm" id="toggle-student-mode-button">Mode étudiant</button>
-                            </form>
+                                <form action="" method="post" class="mt-3 me-3">
+                                    <input name="toggleStudentMode" style="display:none;"></input>
+                                    <button type="submit" class="btn btn-secondary btn-sm" id="toggle-student-mode-button">Mode étudiant</button>
+                                </form>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </li>
@@ -73,13 +176,55 @@
     </nav>
 </div>
 
+<!--
+<div class="d-flex justify-content-center">
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="mr-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="ml-2 mb-1 close btn btn-secondary btn-sm" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+</div>
+-->
+                            
+
+
 <div class="d-flex alert alert-danger align-items-center" role="alert" id="alert-danger">
     <span class="flex-fill"></span>
     <span class="message-text"></span>
     <span class="flex-fill"></span>
-    <button class="btn btn-close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <button class="btn btn-close" type="button" class="close" data-dismiss="alert" data-target="#alert-danger" aria-label="Close">
     </button>
 </div>
+
+
+<!--
+<div class="toast" 
+     id="test-toast"
+     role="alert" 
+     aria-live="assertive" 
+     aria-atomic="true" 
+     data-autohide="false">
+    <div class="toast-header">
+        <img src="..." class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Hello, world! This is a toast message.
+    </div>
+</div>
+-->
+
 
 
 <div id="page-container">

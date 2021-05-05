@@ -18,4 +18,12 @@ public abstract class HtmlElements {
 			e.setAttribute(name, value);
 		});
 	}
+
+	public void setAttribute(String name, String value) {
+		T.call(this);
+
+		this.forEach(e -> {
+			e.setAttribute(name, value);
+		});
+	}
 }
