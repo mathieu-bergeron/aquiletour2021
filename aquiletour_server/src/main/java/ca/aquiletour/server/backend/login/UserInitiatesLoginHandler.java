@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.email.TestEmail;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -93,7 +94,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				//TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
 			}
 
 			@Override
