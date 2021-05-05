@@ -19,8 +19,18 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 	protected void handle(CommitListController currentController, CommitListView currentView, ShowCommitListMessage message) {
 		T.call(this);
 		
-		GetCommitsForPathAndTimePeriod getCommitListMessage = Ntro.messages().create(GetCommitsForPathAndTimePeriod.class);
-		getCommitListMessage.loadStudentExerciseInfo(message);
+		GetCommitsForPath getCommitListMessage = null;
+		if (message instanceof ShowCommitListForTimePeriodMessage) {
+			
+			GetCommitsForPathAndTimePeriod getMessage = Ntro.messages().create(GetCommitsForPathAndTimePeriod.class);		
+			getMessage.loadStudentExerciseInfo(message);
+			getCommitListMessage = getMessage;
+			
+		} else {
+			
+			getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
+			getCommitListMessage.loadStudentExerciseInfo(message);
+		}
 
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
 		currentController.setSubModelLoader(CourseModel.class, Ntro.userService().user().getAuthToken(), message.getCourseId());

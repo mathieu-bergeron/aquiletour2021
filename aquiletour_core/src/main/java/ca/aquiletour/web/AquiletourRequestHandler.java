@@ -10,6 +10,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.dashboards.student.messages.ShowStudentDashboardMessage;
 import ca.aquiletour.core.pages.dashboards.teacher.messages.ShowTeacherDashboardMessage;
+import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListForTimePeriodMessage;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.git.late_students.messages.ShowLateStudentsMessage;
 import ca.aquiletour.core.pages.git.student_summaries.messages.ShowStudentSummariesMessage;
@@ -82,8 +83,15 @@ public class AquiletourRequestHandler {
 			if (subPath.nameCount() > 1) {
 				exerciseId = subPath.subPath(1).toString();
 			}
+			ShowCommitListMessage showGitMessage = null;
+			if (true/*parameters.con TODO*/) {
+				ShowCommitListForTimePeriodMessage message = Ntro.messages().create(ShowCommitListForTimePeriodMessage.class);
+				//TODO
+				showGitMessage = message;
+			}else {
+				showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
+			}
 
-			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
 			showGitMessage.setCourseId("mathieu.bergeron/StruDon");
 			showGitMessage.setExercisePath("/TP1/Exercice 1");
 			showGitMessage.setStudentId("1234500");

@@ -1,5 +1,7 @@
 package ca.aquiletour.core.pages.git.commit_list;
 
+import ca.aquiletour.core.messages.git.OnNewCommits;
+import ca.aquiletour.core.pages.git.commit_list.messages.OnNewCommitsHandler;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListHandler;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.root.RootController;
@@ -20,6 +22,8 @@ public class CommitListController extends NtroController<RootController> {
 		setSubModelLoader(new EmptyModelLoader());
 
 		addControllerMessageHandler(ShowCommitListMessage.class, new ShowCommitListHandler());
+		addModelViewSubViewMessageHandler(CommitView.class, OnNewCommits.class, new OnNewCommitsHandler());
+		
 		addSubViewLoader(CommitView.class, context.lang());
 		addModelSubModelViewSubViewHandler(CommitView.class, new CommitListViewModel());
 	}

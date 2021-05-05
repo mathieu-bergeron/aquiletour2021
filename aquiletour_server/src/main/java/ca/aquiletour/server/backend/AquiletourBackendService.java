@@ -6,6 +6,7 @@ import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
 import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.UserLogsOutMessage;
 import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.git.OnNewCommits;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -30,6 +31,7 @@ import ca.aquiletour.server.backend.course.RemovePreviousTaskHandler;
 import ca.aquiletour.server.backend.course.RemoveSubTaskHandler;
 import ca.aquiletour.server.backend.dashboard.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
+import ca.aquiletour.server.backend.git.OnNewCommitsHandler;
 import ca.aquiletour.server.backend.git.RegisterRepoHandler;
 import ca.aquiletour.server.backend.login.AuthenticateSessionUserHandler;
 import ca.aquiletour.server.backend.login.UserInitiatesLoginHandler;
@@ -68,5 +70,6 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(RemoveSubTaskMessage.class, new RemoveSubTaskHandler());
 		addBackendMessageHandler(RemoveNextTaskMessage.class, new RemoveNextTaskHandler());
 		addBackendMessageHandler(RegisterRepo.class, new RegisterRepoHandler());
+		addBackendMessageHandler(OnNewCommits.class, new OnNewCommitsHandler());
 	}
 }
