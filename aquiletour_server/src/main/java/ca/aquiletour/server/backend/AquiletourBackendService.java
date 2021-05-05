@@ -5,6 +5,7 @@ import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
@@ -46,6 +47,7 @@ import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
 import ca.aquiletour.server.backend.git.RegisterRepoHandler;
 import ca.aquiletour.server.backend.login.InitializeSessionHandler;
+import ca.aquiletour.server.backend.login.ItsNotMeHandler;
 import ca.aquiletour.server.backend.login.UserInitiatesLoginHandler;
 import ca.aquiletour.server.backend.login.UserSendsLoginCodeHandler;
 import ca.aquiletour.server.backend.login.UserLogsOutHandler;
@@ -105,6 +107,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(ModifyAppointmentDurations.class, new ModifyAppointmentDurationsHandler());
 		addBackendMessageHandler(ModifyAppointmentTimes.class, new ModifyAppointmentTimesHandler());
 		addBackendMessageHandler(ModifyAppointmentComment.class, new ModifyAppointmentCommentHandler());
+		addBackendMessageHandler(ItsNotMeMessage.class, new ItsNotMeHandler());
 	}
 
 }

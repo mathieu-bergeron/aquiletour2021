@@ -6,6 +6,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
@@ -122,6 +123,12 @@ public class AquiletourBackendRequestHandler {
 			
 			sendLoginMessage(userId, parameters);
 
+		} else if(parameters.containsKey("itsNotMe")) {
+			
+			ItsNotMeMessage itsNotMeMessage = Ntro.messages().create(ItsNotMeMessage.class);
+			itsNotMeMessage.setDelayedMessages(delayedMessages(parameters));
+			Ntro.messages().send(itsNotMeMessage);
+
 		} else if(parameters.containsKey("loginCode")) {
 
 			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
@@ -148,14 +155,23 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static List<NtroMessage> delayedMessages(Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
+		
+		List<NtroMessage> delayedMessages = null;
 
 		String delayedMessagesText = parameters.get("delayedMessages")[0];
-		delayedMessagesText = delayedMessagesText.replaceAll("\\\"","\"");
+		
+		if(delayedMessagesText.isEmpty()) {
+			
+			delayedMessages = new ArrayList<>();
+			
+		}else {
 
-		@SuppressWarnings("unchecked")
-		List<NtroMessage> delayedMessages= (List<NtroMessage>) Ntro.jsonService().fromString(List.class, delayedMessagesText);
+			delayedMessagesText = delayedMessagesText.replaceAll("\\\"","\"");
+			delayedMessages = (List<NtroMessage>) Ntro.jsonService().fromString(List.class, delayedMessagesText);
+		}
 
 		return delayedMessages;
 	}

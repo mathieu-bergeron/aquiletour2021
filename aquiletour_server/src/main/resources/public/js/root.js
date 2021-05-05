@@ -4,8 +4,11 @@ function initializeRoot(viewRootElement, jSweet){
 
     const navBarA = viewRootElement.find('.navbar-nav>li>a');
 
+    const itsNotMeLink = viewRootElement.find('#its-not-me-link');
+
     const loginDropdown = viewRootElement.find('#login-dropdown');
     const loginButton = viewRootElement.find('#login-button');
+    const loginMenuMessage = viewRootElement.find('#login-menu-message');
 
     const loginTabStudent = viewRootElement.find('#login-tab-student');
     const loginTabTeacher = viewRootElement.find('#login-tab-teacher');
@@ -26,7 +29,11 @@ function initializeRoot(viewRootElement, jSweet){
 
     loginDropdown.on('click', function(e){
         e.stopPropagation();
-    })
+    });
+
+    loginDropdown.on('hidden.bs.dropdown', function(){
+        loginMenuMessage.hide();
+    });
 
     loginTabStudent.on('click', function(e){
         studentLoginCollapse.collapse('show');
@@ -34,7 +41,7 @@ function initializeRoot(viewRootElement, jSweet){
 
         loginTabStudent.addClass('login-tab-selected');
         loginTabTeacher.removeClass('login-tab-selected');
-    })
+    });
 
     loginTabTeacher.on('click', function(e){
         studentLoginCollapse.collapse('hide');
@@ -42,5 +49,13 @@ function initializeRoot(viewRootElement, jSweet){
 
         loginTabStudent.removeClass('login-tab-selected');
         loginTabTeacher.addClass('login-tab-selected');
-    })
+    });
+
+    itsNotMeLink.on('click', function(e){
+        e.preventDefault();
+        const formId = itsNotMeLink.attr("form");
+        const form = viewRootElement.find("#" + formId);
+        form.submit();
+    });
+
 }

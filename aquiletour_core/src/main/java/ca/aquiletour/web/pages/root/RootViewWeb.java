@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.root;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.web.widgets.BootstrapAlert;
@@ -143,13 +145,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
 
-
 		initializeLinks();
 
 		onContextChange(context);
 		
 		initializeAlerts();
 	}
+
 
 	private void initializeAlerts() {
 		T.call(this);
@@ -409,11 +411,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 
 		loginDropdown.addClass("show");
-		
-		String delayedMessagesText = Ntro.jsonService().toString(delayedMessages);
-		delayedMessagesText = delayedMessagesText.replaceAll("\"", "\\\"");
 
-		addDelayedMessagesToValue.appendToAttribute("value", delayedMessagesText);
+		String delayedMessagesText = delayedMessagesText(delayedMessages);
+
+		addDelayedMessagesToValue.setAttribute("value", delayedMessagesText);
 		
 		if(messageToUser != null && !messageToUser.isEmpty()) {
 			loginMenuMessage.show();
@@ -443,5 +444,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				}
 			});*/
 		}
+	}
+
+	private String delayedMessagesText(List<NtroMessage> delayedMessages) {
+		T.call(this);
+
+		String delayedMessagesText = Ntro.jsonService().toString(delayedMessages);
+		delayedMessagesText = delayedMessagesText.replaceAll("\"", "\\\"");
+
+		return delayedMessagesText;
 	}
 }

@@ -132,6 +132,7 @@ public class AquiletourRequestHandler {
 		if(user instanceof Guest){
 			
 			ShowLoginMenuMessage showLoginDialogMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginDialogMessage.setMessageToUser("SVP vous connecter pour voir vos cours");
 			Ntro.messages().send(showLoginDialogMessage);
 
 		} else {
@@ -231,7 +232,7 @@ public class AquiletourRequestHandler {
 		}else {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
-			showLoginMenuMessage.setMessageToUser("SVP se connecter pour voir le tableau de bord.");
+			showLoginMenuMessage.setMessageToUser("SVP vous connecter pour voir votre tableau bord.");
 			Ntro.messages().send(showLoginMenuMessage);
 		}
 	}

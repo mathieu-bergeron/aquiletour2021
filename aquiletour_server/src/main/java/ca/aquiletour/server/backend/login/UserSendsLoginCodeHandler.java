@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserUpdater;
@@ -52,10 +53,8 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 		
-		if(!message.getDelayedMessages().isEmpty()) {
-			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
-				Ntro.messages().send(delayedMessage);
-			}
+		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+			Ntro.messages().send(delayedMessage);
 		}
 	}
 
