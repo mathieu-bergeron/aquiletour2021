@@ -82,6 +82,7 @@
                                 </div>
                             </div>
                             <form action="" method="post" class="login-form">
+                                <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
                                 <div class="collapse show" id="student-login-collapse">
                                     <div class="form-group row mb-3 mx-2">
                                         <label for="studentId">No de DA</label>
@@ -125,20 +126,26 @@
                         </div>
                         <div id="login-menu-enter-code">
                             <form action="" method="post">
+                                <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
                                 <div class="form-group row mb-3 mx-2">
-                                    <label for="loginCode">Code</label>
+                                    <label for="loginCode">Code reçu par courriel</label>
                                     <input name="loginCode" id="login-input-step2"></input>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button class="mt-3 me-3 btn btn-primary" id="login-button-step2">Valider mon identité</button>
                                 </div>
                             </form>
+                            <div class="d-flex dropdown-item justify-content-end">
+                                <div class="mt-2">
+                                    <a href="#" class="logout-link" style="min-width:14rem;">(ce n'est pas moi)</a>
+                                </div>
+                            </div>
                         </div>
                         <div id="login-menu-add-password">
                         </div>
                         <div id="login-menu-student-profile">
                             <a href="#" class="dropdown-item" style="min-width:14rem;">Modifier mon mot de passe</a>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link-student">Déconnexion</a>
+                            <a href="#" class="dropdown-item logout-link" style="min-width:14rem;">Déconnexion</a>
                         </div>
                         <div id="login-menu-teacher-profile">
                             <form action="" method="post" class="px-4 py-3">
@@ -148,7 +155,7 @@
                                 </div>
                             </form>
                             <a href="#" class="dropdown-item" style="min-width:14rem;">Modifier mon mot de passe</a>
-                            <a href="#" class="dropdown-item" style="min-width:14rem;" id="logout-link-teacher">Déconnexion</a>
+                            <a href="#" class="dropdown-item logout-link" style="min-width:14rem;">Déconnexion</a>
                             <div class="d-flex justify-content-end">
                                 <form action="" method="post" class="mt-3 me-3">
                                     <input name="toggleStudentMode" style="display:none;"></input>

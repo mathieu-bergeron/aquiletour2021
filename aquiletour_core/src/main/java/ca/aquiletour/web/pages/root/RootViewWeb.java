@@ -1,6 +1,9 @@
 package ca.aquiletour.web.pages.root;
 
 import java.util.HashMap;
+import java.util.List;
+
+import static ca.ntro.assertions.Factory.that;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
@@ -31,9 +34,12 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElementLambda;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -67,8 +73,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuTeacherProfile;
 	private HtmlElement userProfileNameInput;
 	private HtmlElement toggleStudentModeButton;
-	private HtmlElement logoutLinkStudent;
-	private HtmlElement logoutLinkTeacher;
+	
+	private HtmlElements logoutLinks;
+	private HtmlElements addDelayedMessagesToValue;
 
 	private BootstrapAlert alertDanger;
 	private BootstrapAlert alertPrimary;
@@ -97,8 +104,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuStudentProfile = getRootElement().find("#login-menu-student-profile").get(0);
 		loginMenuTeacherProfile = getRootElement().find("#login-menu-teacher-profile").get(0);
 
-		logoutLinkStudent = getRootElement().find("#logout-link-student").get(0);
-		logoutLinkTeacher = getRootElement().find("#logout-link-teacher").get(0);
+		logoutLinks = getRootElement().find(".logout-link");
+		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
 
 		queueLink = getRootElement().find("#queue-link").get(0);
 		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
@@ -121,8 +128,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuAddPassword);
 		MustNot.beNull(loginMenuStudentProfile);
 		MustNot.beNull(loginMenuTeacherProfile);
-		MustNot.beNull(logoutLinkStudent);
-		MustNot.beNull(logoutLinkTeacher);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
 		MustNot.beNull(userProfileNameInput);
@@ -132,8 +137,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
+		Ntro.verify(that(logoutLinks.size() > 0).isTrue());
+		Ntro.verify(that(addDelayedMessagesToValue.size() > 0).isTrue());
+
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
+
 
 		initializeLinks();
 
@@ -172,8 +181,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		logoutLinkStudent.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
-		logoutLinkTeacher.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		logoutLinks.forEach(e -> {
+			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		});
 	}
 
 	@Override
@@ -395,10 +405,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showLoginMenu(String messageToUser) {
+	public void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages) {
 		T.call(this);
 
 		loginDropdown.addClass("show");
+		
+		String delayedMessagesText = Ntro.jsonService().toString(delayedMessages);
+		delayedMessagesText = delayedMessagesText.replaceAll("\"", "\\\"");
+
+		addDelayedMessagesToValue.appendToAttribute("value", delayedMessagesText);
+		
 		if(messageToUser != null && !messageToUser.isEmpty()) {
 			loginMenuMessage.show();
 			loginMenuMessageText.text(messageToUser);

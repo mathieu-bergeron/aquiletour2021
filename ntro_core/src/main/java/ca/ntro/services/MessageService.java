@@ -49,6 +49,12 @@ public abstract class MessageService {
 	public <M extends NtroMessage> void send(M message) {
 		T.call(this);
 		
+		// XXX: user might have changed after message creation
+		//      e.g. in the case of a login
+		if(message instanceof NtroUserMessage) {
+			((NtroUserMessage) message).setUser(Ntro.currentUser());
+		}
+		
 		if(handlerExistsFor(message)) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
@@ -74,7 +80,7 @@ public abstract class MessageService {
 		T.call(this);
 
 		MSG message = Ntro.factory().newInstance(messageClass);
-		
+
 		if(message instanceof NtroUserMessage) {
 			((NtroUserMessage) message).setUser(Ntro.currentUser());
 		}

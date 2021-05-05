@@ -13,6 +13,7 @@ import ca.aquiletour.server.backend.users.UserUpdater;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -50,6 +51,12 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		
+		if(!message.getDelayedMessages().isEmpty()) {
+			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+				Ntro.messages().send(delayedMessage);
+			}
+		}
 	}
 
 	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
