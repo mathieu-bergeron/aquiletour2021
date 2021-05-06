@@ -311,8 +311,9 @@ input[type="checkbox"] {
 //BREADCRUMB
 .breadcrumb-item{
   
-  font-size: 25px;
+  font-size: 1.25rem;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  margin-right:1rem;
   & a{
     color: black!important;
     text-decoration: none!important;
