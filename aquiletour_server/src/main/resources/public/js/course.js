@@ -92,11 +92,12 @@ function initializeCourse(viewRootElement, jSweet){
       let jsonValue = $(bcItems[index]).attr("siblings");
       console.log("jsonvalue " + jsonValue);
       
-      let parsedJson = JSON.parse(jsonValue);
+      //let parsedJson = JSON.parse(jsonValue);
 
       canvas.add(makeLine([element.offsetLeft, radius, offsetRight, radius]), testCircle(index, offsetY, centerX, radius));
       
 
+        /*
       if (parsedJson.length != 0 && parsedJson.length > 0) {
 
         canvas.add(testCircle(index, offsetY + (diameter + radius), centerX, radius));
@@ -104,7 +105,7 @@ function initializeCourse(viewRootElement, jSweet){
       }
   
       console.log( "json object : " + JSON.stringify(parsedJson));
-      
+      */
       
       
     });
