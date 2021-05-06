@@ -11,7 +11,7 @@ function initializeView(viewName, viewRootElement, jSweet){
 
     }else if(viewName === "CommitListViewWeb"){
 
-        initializeCommitList(viewRootElement, jSweet);
+        //initializeCommitList(viewRootElement, jSweet);
 
     }else if(viewName === "CourseViewWeb"){
 

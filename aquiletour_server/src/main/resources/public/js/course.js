@@ -1,56 +1,53 @@
+var radius = 8;
+var diameter = radius * 2;
+
+
 function initializeCourse(viewRootElement, jSweet){
 
   var canvas = new fabric.Canvas('breadcrumb-canvas');
-  var radius = 8;
-  var diameter = radius * 2;
-  
-  var breadcrumb = $("#breadcrumb");
+  var breadcrumb = $("#breadcrumbs-container");
   var margin = parseInt(breadcrumb.css("marginLeft"));
 
   canvas.setWidth((breadcrumb.outerWidth() + margin));
   canvas.setHeight(100);
 
-  function testCircle(index ,top, left, radius){
+
+  updatePosition(canvas);
+}
+
+  function makeCircle(index, top, left, radius){
     var circle = new fabric.Circle({
     top: top,
     left: left,
     strokeWidth: 3,
     radius: radius,
-    fill: 'black',
-    stroke: 'white',
+    fill: 'white',
+    stroke: 'orange',
     selectable: false,
-    id: index
+    evented: false,
+    index: index
     });
 
     return circle;
   }
 
-  function getPosition(element) {
-    var xPos = 0;
-    var yPos = 0;
+  // function makeCircleSibling(index, top, left, radius, centerX, offsetY){
+  //   var circle = new fabric.Circle({
+  //   top: top,
+  //   left: left,
+  //   strokeWidth: 1,
+  //   radius: radius,
+  //   fill: '#9C6663',
+  //   stroke: 'black',
+  //   selectable: false,
+  //   index: index,
+  //   centerX : centerX,
+  //   offsetY : offsetY
+  //   });
 
-    while (element) {
-      if (element.tagName == "BODY") {
-        var xScroll = element.scrollLeft || document.documentElement.scrollLeft;
-        var yScroll = element.scrollTop || document.documentElement.scrollTop;
+  //   return circle;
+  // }
 
-        xPos += (element.offsetLeft - xScroll + element.clientLeft);
-        yPos += (element.offsetTop - yScroll + element.clientTop);
-      } else {
-        xPos += (element.offsetLeft - element.scrollLeft + element.clientLeft);
-        yPos += (element.offsetTop - element.scrollTop + element.clientTop);
-      }
-      
-      element = element.offsetParent;
-    }
-    return {
-      x: xPos,
-      y: yPos
-    };
-  }
-
- document.addEventListener('load', updatePosition());
- 
   function makeLine(coords) {
     return new fabric.Line(coords,{
       fill: 'orange',
@@ -62,80 +59,124 @@ function initializeCourse(viewRootElement, jSweet){
   }
 
   
-  function updatePosition() {
+  function updatePosition(canvas) {
     var bcItems = $(".breadcrumb-item");
     var myElement = document.querySelector("#bc-position"); 
-    var position = getPosition(myElement);
-
     
     
-    canvas.clear();
-
-    //console.log(bcItems);
 
     bcItems.each(( index, element ) => {
-      console.log(element, getPosition(element), index);
-      
-
       
       var offsetY = element.offsetTop - (element.offsetTop - 1);
       var centerY = element.offsetTop + (element.offsetHeight / 2) - radius;
       var centerX = element.offsetLeft + (element.offsetWidth / 2) - radius;
+
+      
+
       var offsetRight = window.innerWidth - element.offsetLeft - element.offsetWidth;
 
-      console.log("offset top: " + centerY + " offset left: " + offsetRight);
-      console.log(bcItems);
-
-
       let jsonValue = $(bcItems[index]).attr("siblings");
-      console.log("jsonvalue " + jsonValue);
-      
-      let parsedJson = JSON.parse(jsonValue);
+      let mySiblings;
 
-
-      
-
-      canvas.add(makeLine([element.offsetLeft, radius, offsetRight, radius]), testCircle(index, offsetY, centerX, radius));
-      
-
-      if (parsedJson.length != 0 && parsedJson.length > 0) {
-
-        canvas.add(testCircle(index, offsetY + (diameter + radius), centerX, radius));
-
+      if (jsonValue === undefined) {
+        mySiblings = [];
+        console.log("no siblings");
+      } else {
+        mySiblings = JSON.parse(jsonValue);
       }
-  
-      console.log( "json object : " + JSON.stringify(parsedJson));
       
-      
-      
-    });
-    
-    
+      var circle = makeCircle(index, offsetY, centerX, radius);
 
-    
+      canvas.add(circle);
 
-    canvas.on('mouse:over', function(e) {
+      canvas.bringToFront(circle);
       
-      if (e.target != null) {
+      //take position from previous element;
+      if (index != 0) {
+      
+        var prevItem = bcItems[index - 1];
+        var nextItem = bcItems[index + 1];
+        var line = makeLine([prevItem.offsetLeft, radius - 1 , element.offsetLeft, radius - 1]);
+
+        canvas.add(line);
+
+        canvas.sendToBack(line);
+       
+      } else {
+        var lastLine = makeLine([offsetRight, radius - 1 , bcItems[bcItems.length - 1].offsetLeft, radius - 1]);
+
+        canvas.add(lastLine);
+
+        canvas.sendToBack(lastLine);
+      }
+      
+      
+      // if (mySiblings.length != 0 && mySiblings.length > 0) {
+
+      //   var circleSibling = makeCircleSibling(index, offsetY + (diameter + radius), centerX, radius, centerX, offsetY);
+
+      //   circleSibling.mySiblings = mySiblings;
+
+      //   canvas.add(circleSibling);
+
+      //   canvas.bringToFront(circleSibling);
+
         
-        if (parsedJson.length != 0 && parsedJson.length > 0) {
-          console.log("has siblings");
-        } else {
-          console.log("no siblings");
-        }
 
-      }
+      // }
+     
+      
+
+
+    });
+    
+    // canvas.on('mouse:over', function(e) {
+      
+    //   if (e.target != null) {
+    //     var prevElement = e.target.index - 1;
+        
+
+    //     if (e.target.mySiblings !== undefined && e.target.mySiblings.length > 0) {
+    //       console.log("has siblings");
+          
+          
+    //       if (e.target.index == 0) {
+    //         var lineSibling = makeLine([-5, radius, e.target.centerX, e.target.offsetY + (diameter + radius)]);
+
+    //         console.log("target id : " + e.target.index);
+    //         console.log("offset Y " + e.target.offsetY + " center X " + e.target.centerX);
+    //         canvas.add(lineSibling);
+
+    //         canvas.sendToBack(lineSibling);
+
+    //         canvas.remove(circle);
+
+    //       } else {
+    //         var nextLineSibling = makeLine([prevElement.offsetWidth, radius, e.target.centerX, e.target.offsetY + (diameter + radius)]);
+
+    //         console.log("offset Y " + e.target.offsetY + " center X " + e.target.centerX);
+    //         console.log(e.target.index);
+    //         console.log(prevElement.centerX);
+    //         canvas.add(nextLineSibling);
+
+    //         canvas.sendToBack(nextLineSibling);
+    //       }
+          
+          
+          
+          
+          
+    //     } else {
+    //       console.log("no siblings");
+    //     }
+
+    //   }
 
       
-    });
+    // });
     
   }
-
-
-
-
-
-$(document).ready(function() {
+/*$(document).ready(function() {
   
     // get box count
     var count = 0;
@@ -168,8 +209,8 @@ $(document).ready(function() {
   
 
 
-  console.log("initializeCourse");
-}
+  console.log("initializeCourse");*/
+
     
 
 

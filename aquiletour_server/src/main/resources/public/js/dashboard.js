@@ -117,7 +117,7 @@ function initializeDashboard(viewRootElement, jSweet){
           document.getElementById("shimmering").className = "";
         },2500);
     }    
-    coursesContainer.sortable({
+   /* coursesContainer.sortable({
       handle:'.handle'
-    });
+    });*/
 }

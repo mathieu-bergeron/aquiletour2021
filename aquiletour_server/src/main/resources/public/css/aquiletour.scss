@@ -211,6 +211,10 @@ input[type="checkbox"] {
   margin-left: 1%;
 }
 
+.bg-dark{
+  background-color: #24292e!important;
+}
+
 .navbar-collapse{
   margin-left: 1%;
 }
@@ -227,40 +231,6 @@ input[type="checkbox"] {
 
 .connect{
   padding-right: 1rem!important;
-}
-
-//FOOTER
-#page-container{
-  padding-bottom: 2.5rem;
-  min-height: 100%;
-   
-}
-
-.site-footer {
-  position: relative;
-  height: 150px;
-  bottom: 0;
-  width: 100%;
-  color:#737373;
-  line-height:24px;
-  padding:45px 0 20px;
-  
-  & hr{
-    border-top-color: #bbb;
-    opacity: 0.5;
-
-    &.small{
-      margin: 20px 0;
-    }
-  }
-
-  & h6{
-    color:#fff;
-    font-size:16px;
-    text-transform:uppercase;
-    margin-top:5px;
-    letter-spacing:2px
-  }
 }
 
 //HOMEPAGE
@@ -284,7 +254,7 @@ input[type="checkbox"] {
 
 .role-container{
   border-style: solid;
-  border-color: #63999C;
+  border-color: #9A9A9A;
   border-width: 2px;
   font-size: 1.2rem;
   margin-top: 1rem;
@@ -313,7 +283,7 @@ input[type="checkbox"] {
 }
 
 #roleStudent{
-  border-right: 2px #63999C;
+  border-right: 2px #9A9A9A; //#63999C
   border-style: solid;
   border-top: none;
   border-bottom: none;
@@ -326,6 +296,18 @@ input[type="checkbox"] {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+//BREADCRUMB
+.breadcrumb-item{
+  
+  font-size: 25px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  & a{
+    color: black!important;
+    text-decoration: none!important;
+    font-weight: bold!important;
+  }
+  
+}
 //WHOLE SITE
 html, body{
   min-height: 100%;
@@ -334,10 +316,8 @@ html, body{
 }
 
 body{
-  background-color: #63999C!important;
-  
-  
-  
+  background-color: #EBEDF0!important; //#63999C #f6f8fa #9A9A9A
+
 }
 
 .modal-content{
