@@ -111,7 +111,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 			breadcrumbsContainer.appendElement(taskLi);
 
 			if(t.parent() != null) {
-				taskLi.setAttribute("siblings", siblingsJson(coursePath, t).replace("\"", "'"));
+				taskLi.setAttribute("siblings", siblingsJson(coursePath, t).replace("\"", "\\\""));
 			}
 		});
 	}
