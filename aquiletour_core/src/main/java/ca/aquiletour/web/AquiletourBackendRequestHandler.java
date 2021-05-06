@@ -18,10 +18,7 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.users.Guest;
-import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
-import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -43,7 +40,6 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
-import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
@@ -93,10 +89,6 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith(Constants.HOME_URL_SEGMENT)) {
 
 			sendHomeMessages(path.subPath(1), parameters);
-			
-		}else if(path.startsWith(Constants.GIT_PROGRESS_URL_SEGMENT)) {
-
-			sendGitMessages(path.subPath(1), parameters);
 
 		}else if(path.startsWith(Constants.SEMESTER_LIST_URL_SEGMENT)) {
 
@@ -105,8 +97,15 @@ public class AquiletourBackendRequestHandler {
 		}else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
 
 			sendCourseListMessages(path.subPath(1), parameters, context.user());
+
 		}
 	}
+	
+
+    
+    
+
+
 
 	public static void sendRootMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
@@ -342,16 +341,8 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 	
-	
-	
-	private static void sendGitMessages(Path subPath, Map<String, String[]> parameters) {
-		T.call(AquiletourBackendRequestHandler.class);
-		
-	}
-
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
-		
 	}
 
 	private static void sendLoginMessages(Path path, Map<String, String[]> parameters) {
@@ -727,4 +718,5 @@ public class AquiletourBackendRequestHandler {
 		modifyAppointmentTimes.setTimeIncrementSeconds(incrementSeconds);
 		Ntro.messages().send(modifyAppointmentTimes);
 	}
+
 }
