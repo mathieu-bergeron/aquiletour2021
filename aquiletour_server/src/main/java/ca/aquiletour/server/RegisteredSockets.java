@@ -14,6 +14,10 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 import ca.aquiletour.core.models.users.User;
+<<<<<<< HEAD
+=======
+import ca.ntro.core.models.ModelStoreSync;
+>>>>>>> marwane
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
@@ -51,6 +55,14 @@ public class RegisteredSockets {
 
 	public static void sendMessageToUser(NtroUser user, NtroMessage message) {
 		sendMessageToUser(user.getAuthToken(), message);
+	}
+	public static void sendMessageToUserId(String userId, NtroMessage message) {
+		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+		
+		if (modelStore.ifModelExists(User.class, "admin", userId)) {
+			User user = modelStore.getModel(User.class, "admin", userId);
+			sendMessageToUser(user.getAuthToken(), message);
+		}
 	}
 
 	public static void sendMessageToUser(String authToken, NtroMessage message) {

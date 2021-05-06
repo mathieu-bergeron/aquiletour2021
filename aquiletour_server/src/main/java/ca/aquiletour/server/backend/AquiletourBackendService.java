@@ -2,7 +2,15 @@ package ca.aquiletour.server.backend;
 
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
+<<<<<<< HEAD
 import ca.aquiletour.core.messages.InitializeSessionMessage;
+=======
+import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
+import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.UserLogsOutMessage;
+import ca.aquiletour.core.messages.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.git.OnNewCommits;
+>>>>>>> marwane
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
@@ -45,6 +53,7 @@ import ca.aquiletour.server.backend.course.TaskCompletedHandler;
 import ca.aquiletour.server.backend.course.UpdateTaskInfoHandler;
 import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
+import ca.aquiletour.server.backend.git.OnNewCommitsHandler;
 import ca.aquiletour.server.backend.git.RegisterRepoHandler;
 import ca.aquiletour.server.backend.login.InitializeSessionHandler;
 import ca.aquiletour.server.backend.login.ItsNotMeHandler;
@@ -95,6 +104,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(RemoveSubTaskMessage.class, new RemoveSubTaskHandler());
 		addBackendMessageHandler(RemoveNextTaskMessage.class, new RemoveNextTaskHandler());
 		addBackendMessageHandler(RegisterRepo.class, new RegisterRepoHandler());
+<<<<<<< HEAD
 		addBackendMessageHandler(AddSemesterMessage.class, new AddSemesterHandler());
 		addBackendMessageHandler(AddSemesterWeekMessage.class, new AddSemesterWeekHandler());
 		addBackendMessageHandler(SelectCurrentSemester.class, new SelectCurrentSemesterHandler());
@@ -108,6 +118,9 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(ModifyAppointmentTimes.class, new ModifyAppointmentTimesHandler());
 		addBackendMessageHandler(ModifyAppointmentComment.class, new ModifyAppointmentCommentHandler());
 		addBackendMessageHandler(ItsNotMeMessage.class, new ItsNotMeHandler());
+=======
+		addBackendMessageHandler(OnNewCommits.class, new OnNewCommitsHandler());
+>>>>>>> marwane
 	}
 
 }

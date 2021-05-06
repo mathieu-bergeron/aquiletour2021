@@ -25,7 +25,6 @@ public class GetCommitsForPath extends StudentExerciseMessage implements NtroMod
 	
 	protected Path documentIdAsPath() {
 		T.call(this);
-
 		Path exercisePath = new Path(getExercisePath());
 
 		Path path = new Path();

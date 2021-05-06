@@ -34,6 +34,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 		T.call(this);
 		
 		String messageString = Ntro.jsonService().toString(message);
+		System.out.println(messageString);
 		byte[] messageBytes = messageString.getBytes(StandardCharsets.UTF_8);
 		int messageLength = messageBytes.length;
 		
@@ -52,12 +53,14 @@ public class LocalStoreServer extends LocalStoreFiles {
 			out.write(messageBytes);
 			
 			int responseCode = con.getResponseCode();
+			System.out.println(responseCode);
 			
 			if(responseCode == 200) {
 				
 				InputStream in = con.getInputStream();
 				
 				response = ResourceLoaderTaskJdk.readStream(in);
+				System.out.println(response + "bababa");
 				
 			}else {
 				

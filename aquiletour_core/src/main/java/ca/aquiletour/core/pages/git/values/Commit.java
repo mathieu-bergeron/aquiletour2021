@@ -10,12 +10,14 @@ import ca.ntro.core.system.trace.T;
 
 public class Commit implements NtroModelValue {
 	
-	String commitMessage= "";
+	String commitMessage= "";	
+	String commitId= "";	
+	String commitMessageFirstLine= "";
 	String timeStamp= "";
-	String exercisePath= "";
+	String exercisePathIfCompleted= "";
 	String id= "";
 	int estimatedEffort;
-	private List<String> modifiedFiles = new ArrayList<>();
+	private List<CommitFile> modifiedFiles = new ArrayList<>();
 
 	public String getCommitMessage() {
 		return commitMessage;
@@ -41,12 +43,12 @@ public class Commit implements NtroModelValue {
 		this.estimatedEffort = estimatedEffort;
 	}
 
-	public String getExercisePath() {
-		return exercisePath;
+	public String getExercisePathIfCompleted() {
+		return exercisePathIfCompleted;
 	}
 
-	public void setExercisePath(String exercisePath) {
-		this.exercisePath = exercisePath;
+	public void setExercisePathIfCompleted(String exercisePath) {
+		this.exercisePathIfCompleted = exercisePath;
 	}
 
 	public String getId() {
@@ -57,13 +59,30 @@ public class Commit implements NtroModelValue {
 		this.id = id;
 	}
 
-	public List<String> getModifiedFiles() {
+	public String getCommitId() {
+		return commitId;
+	}
+
+	public void setCommitId(String commitId) {
+		this.commitId = commitId;
+	}
+
+	public String getCommitMessageFirstLine() {
+		return commitMessageFirstLine;
+	}
+
+	public void setCommitMessageFirstLine(String commitMessageFirstLine) {
+		this.commitMessageFirstLine = commitMessageFirstLine;
+	}
+
+	public List<CommitFile> getModifiedFiles() {
 		return modifiedFiles;
 	}
 
-	public void setModifiedFiles(List<String> modifiedFiles) {
+	public void setModifiedFiles(List<CommitFile> modifiedFiles) {
 		this.modifiedFiles = modifiedFiles;
 	}
+	
 
 	
 }

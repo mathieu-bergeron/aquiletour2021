@@ -7,6 +7,10 @@ import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
+import ca.aquiletour.core.pages.dashboards.DashboardView;
+import ca.aquiletour.core.pages.git.commit_list.CommitListView;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
@@ -23,17 +27,18 @@ public interface RootView extends NtroView {
 	void showLogin(LoginView loginView);
 	void showQueues(OpenQueueListView currentView);
 	void showHome(HomeView homeView);
-
-	void onContextChange(NtroContext<?,?> context);
-
 	void showGit(CommitListView gitView);
+	void showGitCommitList(CommitListView gitCommitListView);
+	void showGitLateStudents(LateStudentsView gitLateStudentsView);
+	void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView);
 	void showCourse(CourseView currentView);
 	void showCalendarList(SemesterListView currentView);
 	void showCourseList(CourseListView currentView);
-	void displayErrorMessage(String message);
-	void displayPrimaryMessage(String message);
 	void showGroupList(GroupListView currentView);
 
+	void displayErrorMessage(String message);
+	void displayPrimaryMessage(String message);
+	void onContextChange(NtroContext<?,?> context);
 	void displayUserScreenName(String screenName);
 	void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages);
 }

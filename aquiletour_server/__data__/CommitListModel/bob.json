@@ -1,0 +1,167 @@
+{
+	"_C": "CommitListModel",
+	"semesterId": "H2021",
+	"studentId": "1234567",
+	"exercisePath": "/3C6/etape1/*",
+	"fromDate": "16152151235",
+	"toDate": "1615215942",
+	"commits": {
+		"_C": "ObservableCommitList",
+		"value": [
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier4/exercice2",
+				"modifiedFiles": [
+					"/src/atelier4/Exercise2.java",
+					".project"
+				],
+				"estimatedEffort": 100,
+				"commitMessage": "Blah blahbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm\nccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfffffffffffffffffffffffffffffffffffff",
+				"timeStamp": "1615215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier4/exercice2",
+				"modifiedFiles": [
+					"/src/atelier4/Exercise2.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 2,
+				"commitMessage": "Blih blih",
+				"timeStamp": "1715215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 11,
+				"commitMessage": "Bloh bloh",
+				"timeStamp": "1815215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier4/Exercise2.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 22,
+				"commitMessage": "Bluh bluh",
+				"timeStamp": "1915215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice5",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 33,
+				"commitMessage": "Bleh bleh",
+				"timeStamp": "2015215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 44,
+				"commitMessage": "Blouh blouh",
+				"timeStamp": "2115215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier4/exercice5",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 54,
+				"commitMessage": "Bloeh bloeh",
+				"timeStamp": "2215215942"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 64,
+				"commitMessage": "Bluih bluih",
+				"timeStamp": "2219999991"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 74,
+				"commitMessage": "Bl9h bl9h",
+				"timeStamp": "2215215943"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice6",
+				"modifiedFiles": [
+					"/src/atelier4/Exercise2.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 16,
+				"commitMessage": "Blu7h blu7h",
+				"timeStamp": "2315215941"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 19,
+				"commitMessage": "Blourgh Blourgh",
+				"timeStamp": "2415215941"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier4/exercice7",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 37,
+				"commitMessage": "Blhuh blhuh",
+				"timeStamp": "2515215941"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice6",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise3.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 24,
+				"commitMessage": "Blweh blweh",
+				"timeStamp": "2615215941"
+			},
+			{
+				"_C": "Commit",
+				"exercisePath": "/3C6/etape1/atelier1/exercice3",
+				"modifiedFiles": [
+					"/src/atelier2/Exercise1.java",
+					"REAMDE.md"
+				],
+				"estimatedEffort": 84,
+				"commitMessage": "Bloph bloph",
+				"timeStamp": "2715215941"
+			}
+		]
+	}
+}
