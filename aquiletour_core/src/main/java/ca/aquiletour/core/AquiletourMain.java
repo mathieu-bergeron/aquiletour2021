@@ -103,7 +103,11 @@ import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardItemTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsModel;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesModel;
 import ca.aquiletour.core.pages.git.values.Commit;
+import ca.aquiletour.core.pages.git.values.CommitFile;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.aquiletour.core.pages.group_list.models.ObservableCourseList;
 import ca.aquiletour.core.pages.group_list.models.GroupItem;
@@ -121,6 +125,8 @@ import ca.aquiletour.core.pages.queue.models.ObservableTime;
 import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queue.models.ObservableTags;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
+import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
@@ -227,6 +233,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CommitListModel.class);
 		Ntro.registerSerializableClass(ObservableCommitList.class);
 		Ntro.registerSerializableClass(Commit.class);
+		Ntro.registerSerializableClass(CommitFile.class);
+		
+		Ntro.registerSerializableClass(LateStudentsModel.class);
+		
+		Ntro.registerSerializableClass(StudentSummariesModel.class);
+		Ntro.registerSerializableClass(StudentSummary.class);	
+		Ntro.registerSerializableClass(ObservableStudentSummaryList.class);	
 
 		Ntro.registerSerializableClass(CourseModelBase.class);
 		Ntro.registerSerializableClass(CoursePath.class);

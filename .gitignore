@@ -35,6 +35,7 @@ aquiletour_server/src/main/resources/public/js/aquiletour_core
 aquiletour_server/src/main/resources/public/js/aquiletour_jsweet  
 aquiletour_server/src/main/resources/public/js/ntro_core  
 aquiletour_server/src/main/resources/public/js/ntro_jsweet
+aquiletour_server/__data__/CommitListModel/bob.json
 
 ntro_test_server/src/main/resources/public/js/ntro_core  
 ntro_test_server/src/main/resources/public/js/ntro_jsweet

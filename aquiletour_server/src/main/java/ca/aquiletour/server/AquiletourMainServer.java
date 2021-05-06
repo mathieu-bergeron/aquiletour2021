@@ -116,7 +116,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 
 		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX));
 		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
-		handlers.addHandler(GitHandler.createGitHandler(ca.aquiletour.core.Constants.GIT_API_URL_PATH));
+//		handlers.addHandler(GitHandler.createGitHandler(ca.aquiletour.core.Constants.GIT_API_URL_PATH));
 		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.SOCKET_PREFIX));
 		handlers.addHandler(MessageHandler.createMessageHandler(Constants.HTTP_PREFIX));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));

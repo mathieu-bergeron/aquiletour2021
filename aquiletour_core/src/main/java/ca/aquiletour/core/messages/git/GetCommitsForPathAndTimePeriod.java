@@ -1,6 +1,7 @@
 package ca.aquiletour.core.messages.git;
 
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListForTimePeriodMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
@@ -24,6 +25,17 @@ public class GetCommitsForPathAndTimePeriod extends GetCommitsForPath {
 
 	public void setToDate(long toDate) {
 		this.toDate = toDate;
+	}
+
+	public void loadStudentExerciseInfo(ShowCommitListForTimePeriodMessage message) {
+		T.call(this);
+		
+		loadExerciseInfo(message);
+		
+		//TODO setStartTime
+		setGroupId(message.getGroupId());
+		setSemesterId(message.getSemesterId());
+		setStudentId(message.getStudentId());
 	}
 
 	@Override

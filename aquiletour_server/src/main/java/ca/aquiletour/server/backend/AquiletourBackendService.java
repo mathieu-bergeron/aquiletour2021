@@ -3,6 +3,7 @@ package ca.aquiletour.server.backend;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
+import ca.aquiletour.core.messages.git.OnNewCommits;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
@@ -45,6 +46,7 @@ import ca.aquiletour.server.backend.course.TaskCompletedHandler;
 import ca.aquiletour.server.backend.course.UpdateTaskInfoHandler;
 import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
+import ca.aquiletour.server.backend.git.OnNewCommitsHandler;
 import ca.aquiletour.server.backend.git.RegisterRepoHandler;
 import ca.aquiletour.server.backend.login.InitializeSessionHandler;
 import ca.aquiletour.server.backend.login.ItsNotMeHandler;
@@ -108,6 +110,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(ModifyAppointmentTimes.class, new ModifyAppointmentTimesHandler());
 		addBackendMessageHandler(ModifyAppointmentComment.class, new ModifyAppointmentCommentHandler());
 		addBackendMessageHandler(ItsNotMeMessage.class, new ItsNotMeHandler());
+		addBackendMessageHandler(OnNewCommits.class, new OnNewCommitsHandler());
 	}
 
 }

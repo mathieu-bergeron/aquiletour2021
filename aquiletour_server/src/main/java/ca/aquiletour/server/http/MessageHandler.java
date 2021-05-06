@@ -75,6 +75,7 @@ public class MessageHandler extends AbstractHandler {
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			
 			Ntro.backendService().sendMessageToBackend(message);
+//			Ntro.messages().send(message);
 
 			response.setStatus(HttpStatus.OK_200);
 			baseRequest.setHandled(true);

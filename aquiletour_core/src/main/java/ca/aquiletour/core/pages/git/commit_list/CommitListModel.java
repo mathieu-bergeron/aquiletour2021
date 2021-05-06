@@ -9,7 +9,7 @@ import ca.ntro.core.models.NtroModel;
 
 public class CommitListModel implements NtroModel {
 
-	private String semesterId = "", studentId = "", exercisePath = "", fromDate = "", toDate = "";
+	private String semesterId = "", studentId = "", exercisePath = "", fromDate = "", toDate = "", courseId = "", groupId = "";
 	private ObservableCommitList commits = new ObservableCommitList();
 
 	public String getSemesterId() {
@@ -58,6 +58,22 @@ public class CommitListModel implements NtroModel {
 
 	public void setCommits(ObservableCommitList commits) {
 		this.commits = commits;
+	}
+
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 
 }
