@@ -14,6 +14,9 @@ import ca.aquiletour.core.pages.course_list.teacher.views.CourseListItemViewTeac
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListViewTeacher;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
+import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;
 import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.home.HomeView;
@@ -41,6 +44,9 @@ import ca.aquiletour.web.pages.dashboard.teacher.DashboardItemViewWebTeacher;
 import ca.aquiletour.web.pages.dashboard.teacher.DashboardViewWebTeacher;
 import ca.aquiletour.web.pages.git.commit_list.CommitListViewWeb;
 import ca.aquiletour.web.pages.git.commit_list.CommitViewWeb;
+import ca.aquiletour.web.pages.git.late_students.LateStudentsViewWeb;
+import ca.aquiletour.web.pages.git.student_summaries.StudentSummariesViewWeb;
+import ca.aquiletour.web.pages.git.student_summaries.StudentSummaryViewWeb;
 import ca.aquiletour.web.pages.group_list.GroupViewWeb;
 import ca.aquiletour.web.pages.group_list.GroupListViewWeb;
 import ca.aquiletour.web.pages.home.HomeViewWeb;
@@ -170,18 +176,42 @@ public class ViewLoaderRegistrationWeb {
 		ViewLoaders.registerViewLoader(CommitListView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/commit_list/git_progression_commit_list.html")
-			     	.setCssUrl("/views/commit_list/git_progression_commit_list.css")
+			     	.setHtmlUrl("/views/git/commit_list/commit_list.html")
+			     	.setCssUrl("/views/git/commit_list/commit_list.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CommitListViewWeb.class));
+
+		ViewLoaders.registerViewLoader(LateStudentsView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/git/late_students/late_students.html")
+			     	.setCssUrl("/views/git/late_students/late_students.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(LateStudentsViewWeb.class));
+
+		ViewLoaders.registerViewLoader(StudentSummariesView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/views/git/student_summaries/student_summaries.html")
+			     	.setCssUrl("/views/git/student_summaries/student_summaries.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(StudentSummariesViewWeb.class));
 		
 		ViewLoaders.registerViewLoader(CommitView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/partials/commit/git_progression_commit.html")
-			     	.setCssUrl("/partials/commit/git_progression_commit.css")
+			     	.setHtmlUrl("/partials/git/commit/commit.html")
+			     	.setCssUrl("/partials/git/commit/commit.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(CommitViewWeb.class));
+
+		ViewLoaders.registerViewLoader(StudentSummaryView.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/partials/git/student_summary/student_summary.html")
+			     	.setCssUrl("/partials/git/student_summary/student_summary.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(StudentSummaryViewWeb.class));
 
 		ViewLoaders.registerViewLoader(CourseViewTeacher.class,
 				"fr"
