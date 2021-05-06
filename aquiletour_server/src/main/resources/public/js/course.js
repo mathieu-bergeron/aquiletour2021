@@ -1,4 +1,7 @@
 function initializeCourse(viewRootElement, jSweet){
+  console.log('initializeCourse');
+
+
   var canvas = new fabric.Canvas('breadcrumb-canvas');
   var radius = 8;
   var diameter = radius * 2;
@@ -90,9 +93,6 @@ function initializeCourse(viewRootElement, jSweet){
       console.log("jsonvalue " + jsonValue);
       
       let parsedJson = JSON.parse(jsonValue);
-
-
-      
 
       canvas.add(makeLine([element.offsetLeft, radius, offsetRight, radius]), testCircle(index, offsetY, centerX, radius));
       
