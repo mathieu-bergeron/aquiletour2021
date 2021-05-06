@@ -3,27 +3,20 @@ package ca.aquiletour.web.pages.git.student_summaries;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;
-import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
-import ca.aquiletour.core.pages.queue.AppointmentView;
-import ca.aquiletour.core.pages.queue.values.Appointment;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class StudentSummaryViewWeb extends NtroViewWeb implements StudentSummaryView {
-	
-	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
-	}
 
+	@Override
+	public void initializeViewWeb(NtroContext<?, ?> context) {
+		
+	}
 
 	@Override
 	public void displayStudentSummary(StudentSummary studentSummary) {
@@ -57,4 +50,5 @@ public class StudentSummaryViewWeb extends NtroViewWeb implements StudentSummary
 			exerciseCompletedBeforeDeadline.appendHtml("Faux");
 		}
 	}
+
 }

@@ -14,7 +14,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class LateStudentsViewWeb extends NtroViewWeb implements LateStudentsView {
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 	}
 

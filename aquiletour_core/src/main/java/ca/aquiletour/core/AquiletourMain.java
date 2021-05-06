@@ -127,7 +127,6 @@ import ca.aquiletour.core.pages.queue.models.ObservableTags;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
-import ca.aquiletour.core.pages.queue.QueueModel;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;

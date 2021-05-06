@@ -4,7 +4,6 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.GetCommitsForPathAndTimePeriod;
 import ca.aquiletour.core.messages.git.OnNewCommits;
-import ca.aquiletour.core.pages.course.models.CourseModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitListController;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;

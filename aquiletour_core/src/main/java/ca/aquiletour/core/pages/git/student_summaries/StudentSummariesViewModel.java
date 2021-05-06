@@ -2,16 +2,10 @@ package ca.aquiletour.core.pages.git.student_summaries;
 
 import java.util.List;
 
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
-import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.ListObserver;
-import ca.ntro.core.mvc.ModelSubModelViewSubViewHandler;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class StudentSummariesViewModel extends ModelViewSubViewHandler<StudentSummariesModel,StudentSummariesView>  {

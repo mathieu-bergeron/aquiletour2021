@@ -1,14 +1,9 @@
 package ca.aquiletour.web.pages.git.student_summaries;
 
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
-import ca.aquiletour.core.pages.git.commit_list.CommitListView;
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesModel;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;
-import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
-import ca.aquiletour.web.pages.git.commit_list.CommitViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -17,7 +12,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class StudentSummariesViewWeb extends NtroViewWeb implements StudentSummariesView {
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 	}
 

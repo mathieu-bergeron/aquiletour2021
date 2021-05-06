@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.root;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,29 +14,19 @@ import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.views.CourseView;
-<<<<<<< HEAD
-import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
-import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
-=======
-import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
->>>>>>> marwane
 import ca.aquiletour.core.pages.home.HomeView;
-import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.root.RootView;
-import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
-import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.web.widgets.BootstrapAlert;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
-import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
@@ -367,7 +356,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		showSubView(gitCommitListView);
-		
 	}
 
 	@Override
@@ -478,4 +466,5 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		return delayedMessagesText;
 	}
+	
 }

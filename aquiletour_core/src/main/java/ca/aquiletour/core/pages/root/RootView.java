@@ -5,9 +5,7 @@ import java.util.List;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
-import ca.aquiletour.core.pages.git.CommitListView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
-import ca.aquiletour.core.pages.dashboards.DashboardView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
@@ -27,7 +25,6 @@ public interface RootView extends NtroView {
 	void showLogin(LoginView loginView);
 	void showQueues(OpenQueueListView currentView);
 	void showHome(HomeView homeView);
-	void showGit(CommitListView gitView);
 	void showGitCommitList(CommitListView gitCommitListView);
 	void showGitLateStudents(LateStudentsView gitLateStudentsView);
 	void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView);
