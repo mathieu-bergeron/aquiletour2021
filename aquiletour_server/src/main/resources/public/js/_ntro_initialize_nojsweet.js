@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function(){
 
     const viewRootElement = $(document);
     const jSweet = false;

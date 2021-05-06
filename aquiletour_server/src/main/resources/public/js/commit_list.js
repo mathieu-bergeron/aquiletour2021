@@ -299,6 +299,4 @@ function initializeCommitList(viewRootElement, jSweet) {
         }
     }
     commitsChart.update();
-
-
 }
