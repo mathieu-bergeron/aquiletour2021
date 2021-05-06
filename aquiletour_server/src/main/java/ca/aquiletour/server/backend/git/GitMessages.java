@@ -76,7 +76,7 @@ public class GitMessages {
 			//System.out.println("Response code: " + responseCode);
 			
 		} catch (IOException e) {
-			Log.fatalError("Unable to connect to _git_api", e);
+			Log.warning("Unable to connect to _git_api");
 		}
 	}
 

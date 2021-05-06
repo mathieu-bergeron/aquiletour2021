@@ -1,6 +1,4 @@
 function initializeCommitList(viewRootElement, jSweet) {
-    console.log("initializeCommitList");
-
     const commitList = viewRootElement.find("#commit-list li");
     var ctx = viewRootElement.find("#commitsChart");
     var deadline = viewRootElement.find("#deadline");
@@ -299,6 +297,4 @@ function initializeCommitList(viewRootElement, jSweet) {
         }
     }
     commitsChart.update();
-
-
 }

@@ -32,5 +32,6 @@ function initializeView(viewName, viewRootElement, jSweet){
 
         initializeCourseItem(viewRootElement, jSweet);
     }
+
 }
 
