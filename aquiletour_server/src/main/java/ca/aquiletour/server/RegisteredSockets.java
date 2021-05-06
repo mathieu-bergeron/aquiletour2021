@@ -1,11 +1,11 @@
 package ca.aquiletour.server;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.jetty.websocket.api.Session;
 
@@ -20,26 +20,27 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
+import io.vertx.core.impl.ConcurrentHashSet;
 
 public class RegisteredSockets {
 
-	private static Map<DocumentPath, Set<String>> tokensByObservedPath = new HashMap<>();
-	private static Map<String, Set<DocumentPath>> observedPathsByToken = new HashMap<>();
+	private static Map<DocumentPath, Set<String>> tokensByObservedPath = new ConcurrentHashMap<DocumentPath, Set<String>>();
+	private static Map<String, Set<DocumentPath>> observedPathsByToken = new ConcurrentHashMap<String, Set<DocumentPath>>();
 
-	private static Map<String, Set<String>> tokensByUserId = new HashMap<>();
-	private static Map<String, String> userIdByToken = new HashMap<>();
+	private static Map<String, Set<String>> tokensByUserId = new ConcurrentHashMap<String, Set<String>>();
+	private static Map<String, String> userIdByToken = new ConcurrentHashMap<String, String>();
 
 	// XXX: Session is a Jetty Session (a socket)
-	private static BiMap<String, Session> sockets = HashBiMap.create();
+	private static BiMap<String, Session> socketByToken = HashBiMap.create();
 
 	public static void registerUserSocket(NtroUser user, Session socket) {
 		T.call(RegisteredSockets.class);
 
-		sockets.put(user.getAuthToken(), socket);
+		socketByToken.put(user.getAuthToken(), socket);
 		
 		Set<String> userTokens = tokensByUserId.get(user.getId());
 		if(userTokens == null) {
-			userTokens = new HashSet<String>();
+			userTokens = new ConcurrentHashSet<String>();
 			tokensByUserId.put(user.getId(), userTokens);
 		}
 		userTokens.add(user.getAuthToken());
@@ -52,10 +53,10 @@ public class RegisteredSockets {
 	public static void deregisterSocket(Session socket) {
 		T.call(RegisteredSockets.class);
 
-		String authToken = sockets.inverse().get(socket);
+		String authToken = socketByToken.inverse().get(socket);
 		String userId = userIdByToken.get(authToken);
 
-		Session removed = sockets.remove(authToken);
+		Session removed = socketByToken.remove(authToken);
 		if(removed != null) {
 			System.out.println("deregistered socket for " + authToken);
 		}
@@ -84,12 +85,14 @@ public class RegisteredSockets {
 
 		Set<DocumentPath> observedPaths = observedPathsByToken.get(authToken);
 		if(observedPaths != null) {
-			for(DocumentPath observedPath : observedPaths) {
-				Set<String> observerTokens = tokensByObservedPath.get(observedPath);
-				if(observerTokens != null) {
-					observerTokens.remove(authToken);
-					if(observerTokens.isEmpty()) {
-						tokensByObservedPath.remove(observedPath);
+			synchronized(observedPaths) {
+				for(DocumentPath observedPath : observedPaths) {
+					Set<String> observerTokens = tokensByObservedPath.get(observedPath);
+					if(observerTokens != null) {
+						observerTokens.remove(authToken);
+						if(observerTokens.isEmpty()) {
+							tokensByObservedPath.remove(observedPath);
+						}
 					}
 				}
 			}
@@ -110,8 +113,10 @@ public class RegisteredSockets {
 		
 		Set<String> userTokens = tokensByUserId.get(userId);
 		if(userTokens != null) {
-			for(String authToken : userTokens) {
-				sendMessageToSocket(authToken, message);
+			synchronized(userTokens) {
+				for(String authToken : userTokens) {
+					sendMessageToSocket(authToken, message);
+				}
 			}
 			
 		}else {
@@ -123,7 +128,7 @@ public class RegisteredSockets {
 	public static void sendMessageToSocket(String authToken, NtroMessage message) {
 		T.call(RegisteredSockets.class);
 
-		Session socket = sockets.get(authToken);
+		Session socket = socketByToken.get(authToken);
 
 		if(socket != null) {
 			if(socket.isOpen()) {
@@ -141,14 +146,14 @@ public class RegisteredSockets {
 
 		Set<String> observerTokens = tokensByObservedPath.get(documentPath);
 		if(observerTokens == null) {
-			observerTokens = new HashSet<>();
+			observerTokens = new ConcurrentHashSet<String>();
 			tokensByObservedPath.put(documentPath, observerTokens);
 		}
 		observerTokens.add(user.getAuthToken());
 		
 		Set<DocumentPath> observedPaths = observedPathsByToken.get(user.getAuthToken());
 		if(observedPaths == null) {
-			observedPaths = new HashSet<>();
+			observedPaths = new ConcurrentHashSet<DocumentPath>();
 			observedPathsByToken.put(user.getAuthToken(), observedPaths);
 		}
 		observedPaths.add(documentPath);
@@ -167,15 +172,54 @@ public class RegisteredSockets {
 
 		if(observerTokens != null) {
 
-			for(String authToken : observerTokens) {
+			synchronized(observerTokens) {
+				for(String authToken : observerTokens) {
 
-				NtroInvokeValueMethodMessage message = Ntro.messages().create(NtroInvokeValueMethodMessage.class);
-				message.setValuePath(valuePath);
-				message.setMethodName(methodName);
-				message.setArgs(args);
+					NtroInvokeValueMethodMessage message = Ntro.messages().create(NtroInvokeValueMethodMessage.class);
+					message.setValuePath(valuePath);
+					message.setMethodName(methodName);
+					message.setArgs(args);
 
-				RegisteredSockets.sendMessageToSocket(authToken, message);
+					RegisteredSockets.sendMessageToSocket(authToken, message);
+				}
 			}
 		}
+	}
+
+	public static void removeObserversWithNoSockets() {
+		T.call(RegisteredSockets.class);
+		
+		Set<String> tokensToRemove = new HashSet<>();
+		
+		synchronized(observedPathsByToken) {
+			for(String authToken : observedPathsByToken.keySet()) {
+				if(!socketExistsForToken(authToken)) {
+
+					Set<DocumentPath> observedPaths = observedPathsByToken.get(authToken);
+					if(observedPaths != null) {
+						synchronized(observedPaths) {
+							for(DocumentPath observedPath : observedPaths) {
+								Set<String> observerTokens = tokensByObservedPath.get(observedPath);
+								if(observerTokens != null) {
+									observerTokens.remove(authToken);
+								}
+							}
+						}
+					}
+
+					tokensToRemove.add(authToken);
+				}
+			}
+		}
+		
+		for(String tokenToRemove : tokensToRemove) {
+			observedPathsByToken.remove(tokenToRemove);
+		}
+	}
+
+	private static boolean socketExistsForToken(String authToken) {
+		T.call(RegisteredSockets.class);
+
+		return socketByToken.containsKey(authToken);
 	}
 }
