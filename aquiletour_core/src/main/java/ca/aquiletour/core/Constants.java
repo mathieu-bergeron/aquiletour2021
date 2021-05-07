@@ -8,6 +8,8 @@ public class Constants {
 	
 	public static String LANG = "fr";
 	
+	public static final String EMAIL_HOST = "cmontmorency.qc.ca";
+
 	public static final String HOST = "http://localhost:8080";
 	
 	public static final String GITHOST = "http://localhost:8000";

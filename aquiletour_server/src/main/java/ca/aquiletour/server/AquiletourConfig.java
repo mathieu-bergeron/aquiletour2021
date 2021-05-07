@@ -15,7 +15,7 @@ import ca.ntro.services.ConfigService;
 public class AquiletourConfig extends ConfigService {
 
 	private static final Gson gson = new GsonBuilder().serializeNulls().create();
-
+	
 	public static AquiletourConfig loadFromJson(Path configFilepath) {
 		T.call(AquiletourConfig.class);
 		
@@ -31,20 +31,45 @@ public class AquiletourConfig extends ConfigService {
 			
 			System.err.println("\n\n[ERROR] Cannot find config file: " + configFilepath.toAbsolutePath() + "\n\n");
 			config = new AquiletourConfig();
-
 		}
 		
 		return config;
 	}
 	
 	private List<String> adminIds = new ArrayList<>();
+	private String smtpHost = "";
+	private String smtpPort = "";
+	private boolean smtpTls = false;
+	private String smtpUser = "";
+	private String smtpFrom = "";
+	private String smtpPassword = "";
 	
 
 	public List<String> getAdminIds() {
 		return adminIds;
 	}
 
-	public void setAdminIds(List<String> adminIds) {
-		this.adminIds = adminIds;
+	public String getSmtpHost() {
+		return smtpHost;
+	}
+
+	public String getSmtpPort() {
+		return smtpPort;
+	}
+
+	public boolean getSmtpTls() {
+		return smtpTls;
+	}
+
+	public String getSmtpUser() {
+		return smtpUser;
+	}
+
+	public String getSmtpFrom() {
+		return smtpFrom;
+	}
+
+	public String getSmtpPassword() {
+		return smtpPassword;
 	}
 }
