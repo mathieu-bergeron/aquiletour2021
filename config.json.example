@@ -1,3 +1,10 @@
 {
-    "adminIds" : ["alice"]
+    "adminIds" : ["alice", "bob"],
+
+    "smtpHost": "smtp.example.com",
+    "smtpPort": "587",
+    "smtpTls": true,
+    "smtpUser": "aiguilleur@example.com",
+    "smtpFrom": "aiguilleur@example.com",
+    "smtpPassword": "example"
 }

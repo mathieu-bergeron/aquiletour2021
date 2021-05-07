@@ -10,6 +10,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import ca.aquiletour.server.AquiletourConfig;
+import ca.ntro.core.system.log.Log;
+import ca.ntro.services.Ntro;
+
 // from: https://www.tutorialspoint.com/java/java_sending_email.htm
 // from : https://mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
 public class TestEmail {
@@ -21,28 +25,23 @@ public class TestEmail {
 			System.out.println("Usage: ./gradlew testEmail adresseDestinataire");
 		}
 	}
+	
 
 	public static void sendCode(String loginCode, String userName, String toEmail) {
-		final String fromEmail = "aiguilleur.ca@gmail.com";
-		//final String fromEmail = "mailagent@aiguilleur.ca";
-
-		final String username = "aiguilleur.ca@gmail.com";
-		//final String username = "mailagent@aiguilleur.ca";
-
-		final String password = "Momo!1234";
-		//final String password = "qwe123";
+		AquiletourConfig config = (AquiletourConfig) Ntro.config();
+		if(config.getSmtpHost() == null || config.getSmtpHost().isEmpty()) {
+			Log.warning("Email not configured in config.json");
+		}
+		
+		final String fromEmail = config.getSmtpFrom();
+		final String username = config.getSmtpUser();
+		final String password = config.getSmtpPassword();
 
 		Properties prop = new Properties();
-		prop.put("mail.smtp.host", "smtp.gmail.com");
-		prop.put("mail.smtp.port", "587");
+		prop.put("mail.smtp.host", config.getSmtpHost());
+		prop.put("mail.smtp.port", config.getSmtpPort());
 		prop.put("mail.smtp.auth", "true");
-		prop.put("mail.smtp.starttls.enable", "true"); //TLS
-		
-		/*
-		prop.put("mail.smtp.host", "mail.aiguilleur.ca");
-		prop.put("mail.smtp.port", "25");
-		prop.put("mail.smtp.auth", "true");
-		*/
+		prop.put("mail.smtp.starttls.enable", String.valueOf(config.getSmtpTls())); 
 		
 		Session session = Session.getInstance(prop,
 		        new javax.mail.Authenticator() {

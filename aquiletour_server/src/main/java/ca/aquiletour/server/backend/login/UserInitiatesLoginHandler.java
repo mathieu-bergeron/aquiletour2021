@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.login;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -80,7 +81,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}else {
 
 			userToRegister.setName(providedId);
-			userToRegister.setEmail(providedId + "@cmontmorency.qc.ca");
+			userToRegister.setEmail(providedId + "@" + Constants.EMAIL_HOST);
 		}
 
 		userToRegister.setId(providedId);
@@ -94,7 +95,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				//TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
 			}
 
 			@Override
@@ -126,7 +127,4 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 	public void handleLater(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
 		T.call(this);
 	}
-
-
-
 }
