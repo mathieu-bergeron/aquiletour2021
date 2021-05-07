@@ -1,0 +1,181 @@
+ffmpeg version n4.2.4-ffmpeg-windows-build-helpers Copyright (c) 2000-2020 the FFmpeg developers
+  built with gcc 10.1.0 (GCC)
+  configuration: --pkg-config=pkg-config --pkg-config-flags=--static --extra-version=ffmpeg-windows-build-helpers --enable-version3 --disable-debug --disable-w32threads --arch=x86_64 --target-os=mingw32 --cross-prefix=/home/runner/work/ffmpeg-windows-builds/ffmpeg-windows-builds/sandbox/cross_compilers/mingw-w64-x86_64/bin/x86_64-w64-mingw32- --enable-libcaca --enable-gray --enable-libtesseract --enable-fontconfig --enable-gmp --enable-gnutls --enable-libass --enable-libbluray --enable-libbs2b --enable-libflite --enable-libfreetype --enable-libfribidi --enable-libgme --enable-libgsm --enable-libilbc --enable-libmodplug --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopus --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvo-amrwbenc --enable-libvorbis --enable-libwebp --enable-libzimg --enable-libzvbi --enable-libmysofa --enable-libopenjpeg --enable-libopenh264 --enable-liblensfun --enable-libvmaf --enable-libsrt --enable-libaribb24 --enable-demuxer=dash --enable-libxml2 --enable-opengl --enable-libdav1d --enable-cuda-llvm --enable-libaom --enable-libvpx --enable-nvenc --enable-nvdec --extra-libs=-lharfbuzz --extra-libs=-lm --extra-libs=-lpthread --extra-cflags=-DLIBTWOLAME_STATIC --extra-cflags=-DMODPLUG_STATIC --extra-cflags=-DCACA_STATIC --enable-amf --enable-libmfx --enable-gpl --enable-frei0r --enable-filter=frei0r --enable-librubberband --enable-libvidstab --enable-libx264 --enable-libx265 --enable-libxvid --enable-libdavs2 --enable-libxavs2 --enable-libxavs --enable-avresample --extra-cflags='-mtune=generic' --extra-cflags=-O3 --enable-shared --disable-static --prefix=/home/runner/work/ffmpeg-windows-builds/ffmpeg-windows-builds/sandbox/win64/ffmpeg_git_n4.2.4_shared
+  WARNING: library configuration mismatch
+  avutil      configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  avcodec     configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  avformat    configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  avdevice    configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  avfilter    configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  swscale     configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  swresample  configuration: --enable-gpl --disable-programs --disable-doc --arch=x86_64 --enable-shared --enable-nvenc --enable-amf --enable-libx264 --enable-libopus --enable-libvorbis --enable-libvpx --enable-libsrt --disable-debug --cross-prefix=x86_64-w64-mingw32- --target-os=mingw32 --pkg-config=pkg-config --prefix=/home/jim/packages/win64 --disable-postproc
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libavresample   4.  0.  0 /  4.  0.  0
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Splitting the commandline.
+Reading option '-v' ... matched as option 'v' (set logging level) with argument 'debug'.
+Reading option '-nostdin' ... matched as option 'stdin' (enable or disable interaction on standard input) with argument 0.
+Reading option '-progress' ... matched as option 'progress' (write program-readable progress information) with argument 'C:/Users/Zouz/AppData/Local/Temp/KritaFFmpegProgress.UgmIFM'.
+Reading option '-r' ... matched as option 'r' (set frame rate (Hz value, fraction or abbreviation)) with argument '25'.
+Reading option '-start_number' ... matched as AVOption 'start_number' with argument '0'.
+Reading option '-i' ... matched as input url with argument 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame%04d.png'.
+Reading option '-vf' ... matched as option 'vf' (set video filters) with argument 'palettegen'.
+Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
+Reading option 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/palette.png' ... matched as output url.
+Finished splitting the commandline.
+Parsing a group of options: global .
+Applying option v (set logging level) with argument debug.
+Applying option nostdin (enable or disable interaction on standard input) with argument 0.
+Applying option progress (write program-readable progress information) with argument C:/Users/Zouz/AppData/Local/Temp/KritaFFmpegProgress.UgmIFM.
+[file @ 000001ac4d654640] Setting default whitelist 'file,crypto'
+Applying option y (overwrite output files) with argument 1.
+Successfully parsed a group of options.
+Parsing a group of options: input url C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame%04d.png.
+Applying option r (set frame rate (Hz value, fraction or abbreviation)) with argument 25.
+Successfully parsed a group of options.
+Opening an input file: C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame%04d.png.
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0000.png' for reading
+[file @ 000001ac4bb49a40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4bb49b00] Statistics: 16211 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0001.png' for reading
+[file @ 000001ac4d6a00c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4bb4ea40] Statistics: 16211 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0002.png' for reading
+[file @ 000001ac4bb4ea40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4bb4eb40] Statistics: 16301 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0003.png' for reading
+[file @ 000001ac4bb4eb00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4bb4ed00] Statistics: 16301 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0004.png' for reading
+[file @ 000001ac4bb4eec0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4bb4ed00] Statistics: 16349 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0005.png' for reading
+[file @ 000001ac4bb4ed00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d6b7a00] Statistics: 16349 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0006.png' for reading
+[file @ 000001ac4d6b7a00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69f840] Statistics: 16345 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0007.png' for reading
+[file @ 000001ac4d69f840] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fa00] Statistics: 16345 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0008.png' for reading
+[file @ 000001ac4d69fa00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fac0] Statistics: 16622 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0009.png' for reading
+[file @ 000001ac4d69fa80] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fb80] Statistics: 16622 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0010.png' for reading
+[file @ 000001ac4d69fb40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fd40] Statistics: 16805 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0011.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 16805 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0012.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17197 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0013.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17197 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0014.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17231 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0015.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17231 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0016.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0017.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0018.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0019.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0020.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0021.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0022.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0023.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0024.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+[image2 @ 000001ac4d6951c0] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame0025.png' for reading
+[file @ 000001ac4d69fd40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4d69fe40] Statistics: 17276 bytes read, 0 seeks
+Input #0, image2, from 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame%04d.png':
+  Duration: 00:00:01.04, start: 0.000000, bitrate: N/A
+    Stream #0:0, 26, 1/25: Video: png, 1 reference frame, rgba(pc), 800x800 [SAR 3937:3937 DAR 1:1], 0/1, 25 fps, 25 tbr, 25 tbn, 25 tbc
+Successfully opened the file.
+Parsing a group of options: output url C:/Users/Zouz/Desktop/Stage/aquiletour2021/palette.png.
+Applying option vf (set video filters) with argument palettegen.
+Successfully parsed a group of options.
+Opening an output file: C:/Users/Zouz/Desktop/Stage/aquiletour2021/palette.png.
+Successfully opened the file.
+detected 16 logical cores
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> png (native))
+cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+    Last message repeated 15 times
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] Setting 'video_size' to value '800x800'
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] Setting 'pix_fmt' to value '26'
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] Setting 'time_base' to value '1/25'
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] Setting 'pixel_aspect' to value '3937/3937'
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] Setting 'sws_param' to value 'flags=2'
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] Setting 'frame_rate' to value '25/1'
+[graph 0 input from stream 0:0 @ 000001ac4bb49a40] w:800 h:800 pixfmt:rgba tb:1/25 fr:25/1 sar:3937/3937 sws_param:flags=2
+[format @ 000001ac4d9d4580] Setting 'pix_fmts' to value 'rgb24|rgba|rgb48be|rgba64be|pal8|gray|ya8|gray16be|ya16be|monob'
+[auto_scaler_0 @ 000001ac4da15940] Setting 'flags' to value 'bicubic'
+[auto_scaler_0 @ 000001ac4da15940] w:iw h:ih flags:'bicubic' interl:0
+[Parsed_palettegen_0 @ 000001ac4d69f7c0] auto-inserting filter 'auto_scaler_0' between the filter 'graph 0 input from stream 0:0' and the filter 'Parsed_palettegen_0'
+[auto_scaler_1 @ 000001ac4da292c0] Setting 'flags' to value 'bicubic'
+[auto_scaler_1 @ 000001ac4da292c0] w:iw h:ih flags:'bicubic' interl:0
+[format @ 000001ac4d9d4580] auto-inserting filter 'auto_scaler_1' between the filter 'Parsed_palettegen_0' and the filter 'format'
+[AVFilterGraph @ 000001ac4d699440] query_formats: 4 queried, 1 merged, 2 already done, 0 delayed
+[auto_scaler_1 @ 000001ac4da292c0] picking rgba out of 10 ref:bgra alpha:1
+[swscaler @ 000001ac4dab3fc0] Forcing full internal H chroma due to input having non subsampled chroma
+[auto_scaler_0 @ 000001ac4da15940] w:800 h:800 fmt:rgba sar:3937/3937 -> w:800 h:800 fmt:bgra sar:1/1 flags:0x4
+[swscaler @ 000001ac4dac0f00] Forcing full internal H chroma due to input having non subsampled chroma
+[auto_scaler_1 @ 000001ac4da292c0] w:16 h:16 fmt:bgra sar:1/1 -> w:16 h:16 fmt:rgba sar:1/1 flags:0x4
+Output #0, image2, to 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/palette.png':
+  Metadata:
+    encoder         : Lavf58.29.100
+    Stream #0:0, 0, 1/25: Video: png, 1 reference frame, rgba, 16x16 [SAR 1:1 DAR 1:1], 0/1, q=2-31, 200 kb/s, 25 fps, 25 tbn, 25 tbc
+    Metadata:
+      encoder         : Lavc58.54.100 png
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+    Last message repeated 25 times
+[Parsed_palettegen_0 @ 000001ac4d69f7c0] 255(+1) colors generated out of 265 colors; ratio=0.962264
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+Clipping frame in rate conversion by 0.000008
+cur_dts is invalid st:0 (0) [init:1 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
+[out_0_0 @ 000001ac4bb4eb00] EOF on sink link out_0_0:default.
+No more output streams to write to, finishing.
+[image2 @ 000001ac4bb4e240] Opening 'C:/Users/Zouz/Desktop/Stage/aquiletour2021/palette.png' for writing
+[file @ 000001ac4d9dc680] Setting default whitelist 'file,crypto'
+[AVIOContext @ 000001ac4da08840] Statistics: 0 seeks, 1 writeouts
+frame=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=0.436x    
+[AVIOContext @ 000001ac4d695080] Statistics: 0 seeks, 1 writeouts
+video:1kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+Input file #0 (C:/Users/Zouz/Desktop/Stage/aquiletour2021/frame%04d.png):
+  Input stream #0:0 (video): 26 packets read (438882 bytes); 26 frames decoded; 
+  Total: 26 packets (438882 bytes) demuxed
+Output file #0 (C:/Users/Zouz/Desktop/Stage/aquiletour2021/palette.png):
+  Output stream #0:0 (video): 1 frames encoded; 1 packets muxed (767 bytes); 
+  Total: 1 packets (767 bytes) muxed
+26 frames successfully decoded, 0 decoding errors
