@@ -32,7 +32,8 @@ public class GetCommitsForPathAndTimePeriod extends GetCommitsForPath {
 		
 		loadExerciseInfo(message);
 		
-		//TODO setStartTime
+		setFromDate(message.getFromDate());
+		setToDate(message.getToDate());
 		setGroupId(message.getGroupId());
 		setSemesterId(message.getSemesterId());
 		setStudentId(message.getStudentId());

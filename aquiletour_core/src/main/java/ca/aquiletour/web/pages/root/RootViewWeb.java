@@ -18,6 +18,8 @@ import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListForTimePeriodMessage;
+import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.home.HomeView;
@@ -71,6 +73,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuTeacherProfile;
 	private HtmlElement userProfileNameInput;
 	private HtmlElement toggleStudentModeButton;
+	private HtmlElement progressionGit;
 	
 	private HtmlElements logoutLinks;
 	private HtmlElements addDelayedMessagesToValue;
@@ -90,6 +93,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		coursesLinkStudent = getRootElement().find("#courses-link-student").get(0);
 		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
+		progressionGit = getRootElement().find("#progression_git").get(0);
 
 		loginDropdown = getRootElement().find("#login-dropdown").get(0);
 		loginButton = getRootElement().find("#login-button").get(0);
@@ -116,6 +120,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(openQueueListLink);
 		MustNot.beNull(calendarListLink);
+		MustNot.beNull(progressionGit);
 		MustNot.beNull(loginButton);
 		MustNot.beNull(loginDropdown);
 		MustNot.beNull(loginMenuMessage);
@@ -165,7 +170,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		coursesLinkTeacher.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 		coursesLinkStudent.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
-
+		
+		
+		progressionGit.setAttribute("href", "/" + Constants.GIT_COMMIT_LIST_URL_SEGMENT + "/bob");
 
 		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
 

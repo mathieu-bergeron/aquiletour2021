@@ -319,26 +319,32 @@ public class AquiletourRequestHandler {
 
 	private static void sendGitCommitListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
-
-		if (subPath.nameCount() >= 1) {
+		
+		if (subPath.nameCount() >= 1) { // 
 
 			String courseId = subPath.name(0);
 			String exerciseId = new Path().toString();
 			if (subPath.nameCount() > 1) {
 				exerciseId = subPath.subPath(1).toString();
 			}
+			String studentId = subPath.name(2);
+			
 			ShowCommitListMessage showGitMessage = null;
-			if (parameters.containsKey("endTime")) {
+			if (parameters.containsKey("toDate") && parameters.containsKey("fromDate")) {
 				ShowCommitListForTimePeriodMessage message = Ntro.messages().create(ShowCommitListForTimePeriodMessage.class);
-				//TODO
+				message.setFromDate(Long.parseLong(parameters.get("toDate")[0]));
+				message.setFromDate(Long.parseLong(parameters.get("fromDate")[0]));
 				showGitMessage = message;
 			}else {
 				showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
 			}
 
-			showGitMessage.setCourseId("mathieu.bergeron/StruDon");
-			showGitMessage.setExercisePath("/TP1/Exercice 1");
-			showGitMessage.setStudentId("1234500");
+//			showGitMessage.setCourseId("mathieu.bergeron/StruDon");
+//			showGitMessage.setExercisePath("/TP1/Exercice 1");
+//			showGitMessage.setStudentId("1234500");
+			showGitMessage.setCourseId(courseId);
+			showGitMessage.setExercisePath(exerciseId);
+			showGitMessage.setStudentId(studentId);
 			showGitMessage.setGroupId("01"); // TODO
 			showGitMessage.setSemesterId("H2021"); // TODO
 			Ntro.messages().send(showGitMessage);

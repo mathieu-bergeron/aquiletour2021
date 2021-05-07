@@ -3,9 +3,20 @@ function initializeCommitList(viewRootElement, jSweet) {
 
     const commitList = viewRootElement.find("#commit-list li");
     var ctx = viewRootElement.find("#commitsChart");
-    var deadline = viewRootElement.find("#deadline");
-    deadline = parseInt($(deadline).text());
-
+    var deadlineSpan = viewRootElement.find("#deadline");
+    var studentId = viewRootElement.find("#studentId");
+    var deadline = parseInt($(deadlineSpan).text());
+    studentId = $(studentId).text();
+    studentId = studentId.replace(/ /g, '');
+    
+    $(deadlineSpan).text((new Date(deadline).toLocaleDateString('fr-ca', {
+        year: "numeric",
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric'
+    })).toString())
+    
     var pointBackgroundColors = [0];// color of points
     var pointRadiusByEstimatedEffort = [0];//size of points
 
@@ -57,14 +68,13 @@ function initializeCommitList(viewRootElement, jSweet) {
             },
         }
     });
-    commitHistoryName = window.location.pathname.slice(4);
     var commitsChart = new Chart(ctx, {
         type: 'scatter',
         data: {
             datasets: [{
                 backgroundColor: "#EF1010",
                 pointBackgroundColor: pointBackgroundColors,
-                label: "L'historique des commits de : " + commitHistoryName,
+                label: "L'historique des commits de : " + studentId,
                 pointRadius: pointRadiusByEstimatedEffort,
                 pointHoverRadius: pointRadiusByEstimatedEffort,
                 data: [{}],

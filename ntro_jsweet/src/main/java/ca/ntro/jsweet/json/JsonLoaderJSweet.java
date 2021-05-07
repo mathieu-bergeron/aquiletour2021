@@ -36,6 +36,7 @@ public class JsonLoaderJSweet extends JsonLoader {
 
 		def.js.Object options = new def.js.Object();
 		options.$set("method","POST");
+		options.$set("mode","cors");
 		options.$set("body",messageText);
 
         fetch(serviceUrl, options).then((Globals.FetchResponse response) -> {
@@ -51,6 +52,7 @@ public class JsonLoaderJSweet extends JsonLoader {
                         	System.err.println(error);
                         });
             } else {
+            	System.out.println(response);
                 return Promise.reject("[NetworkStore] return code != 200 for " + messageText + " " + response);
             }
         });

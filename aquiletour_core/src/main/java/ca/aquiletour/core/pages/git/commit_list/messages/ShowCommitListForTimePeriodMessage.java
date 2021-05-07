@@ -4,23 +4,22 @@ import ca.aquiletour.core.messages.git.StudentExerciseMessage;
 
 public class ShowCommitListForTimePeriodMessage extends ShowCommitListMessage {
 
-	Long startTime = (long) 0, endTime = (long) 0 ;
+	Long fromDate = (long) 0, toDate = (long) 0 ;
 
-	public Long getStartTime() {
-		return startTime;
+	public Long getFromDate() {
+		return fromDate;
 	}
 
-	public void setStartTime(Long startTime) {
-		this.startTime = startTime;
+	public void setFromDate(Long fromDate) {
+		this.fromDate = fromDate;
 	}
 
-	public Long getEndTime() {
-		return endTime;
+	public Long getToDate() {
+		return toDate;
 	}
 
-	public void setEndTime(Long endTime) {
-		this.endTime = endTime;
+	public void setToDate(Long toDate) {
+		this.toDate = toDate;
 	}
-	
 	
 }

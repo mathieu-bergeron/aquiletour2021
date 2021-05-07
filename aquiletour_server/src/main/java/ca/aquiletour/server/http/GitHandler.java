@@ -78,32 +78,143 @@ public class GitHandler extends AbstractHandler {
 		
 		T.call(this);
 		
-        if (request.getMethod().equals("POST")) {
-        	
-        	String body = ModelHandler.readBody(baseRequest);
-        	
-        	System.out.println("GitHandler::body " + body);
-
-			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
-			
-			if(message instanceof RegisterExercise) {
-
-				
-			}else if(message instanceof RegisterRepo) {
-				
-				handleRegisterRepoMessage(baseRequest, response, (RegisterRepo) message);
-
-			}else if(message instanceof GetCommitsForPath) {
-				
-				handleGetCommitListMessage(baseRequest, response, (GetCommitsForPath) message);
-
-			}else {
-
-				Log.error("[GitHandler] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
-				response.setStatus(HttpStatus.NO_CONTENT_204);
-				baseRequest.setHandled(true);
-			}
-
+        if (request.getMethod().equals("POST") || request.getMethod().equals("GET")) {
+        	T.here();
+        	response.getOutputStream().write(("{\r\n" + 
+        			"  \"_C\": \"CommitListModel\",\r\n" + 
+        			"  \"courseId\": \"H2021\",\r\n" + 
+        			"  \"semesterId\": \"mathieu.bergeron/StruDon\",\r\n" + 
+        			"  \"groupId\": \"01\",\r\n" + 
+        			"  \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"  \"studentId\": \"1234500\",\r\n" + 
+        			"  \"commits\": {\r\n" + 
+        			"    \"_C\": \"ObservableCommitList\",\r\n" + 
+        			"    \"value\": [\r\n" + 
+        			"      {\r\n" + 
+        			"        \"_C\": \"Commit\",\r\n" + 
+        			"        \"commitId\": \"521747298a3790fde1710f3aa2d03b55020575a1\",\r\n" + 
+        			"        \"exercisePathIfCompleted\": \"/TP1/Exercice 1\",\r\n" + 
+        			"        \"commitMessageFirstLine\": \"test\",\r\n" + 
+        			"        \"commitMessage\": \"test\",\r\n" + 
+        			"        \"timeStamp\": \"976924800000\",\r\n" + 
+        			"        \"estimatedEffort\": 12.0,\r\n" + 
+        			"        \"modifiedFiles\": [\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 12,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 12,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 12,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          }\r\n" + 
+        			"        ]\r\n" + 
+        			"      },\r\n" + 
+        			"      {\r\n" + 
+        			"        \"_C\": \"Commit\",\r\n" + 
+        			"        \"commitId\": \"521747298a3790fde1710f3aa2d03b55020575a2\",\r\n" + 
+        			"        \"exercisePathIfCompleted\": \"/\",\r\n" + 
+        			"        \"commitMessageFirstLine\": \"test\",\r\n" + 
+        			"        \"commitMessage\": \"test\",\r\n" + 
+        			"        \"timeStamp\": \"979171200000\",\r\n" + 
+        			"        \"estimatedEffort\": 16.0,\r\n" + 
+        			"        \"modifiedFiles\": [\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 16,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 16,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 16,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          }\r\n" + 
+        			"        ]\r\n" + 
+        			"      },\r\n" + 
+        			"      {\r\n" + 
+        			"        \"_C\": \"Commit\",\r\n" + 
+        			"        \"commitId\": \"521747298a3790fde1710f3aa2d03b55020575a3\",\r\n" + 
+        			"        \"exercisePathIfCompleted\": \"/TP1/Exercice 2\",\r\n" + 
+        			"        \"commitMessageFirstLine\": \"test\",\r\n" + 
+        			"        \"commitMessage\": \"test\",\r\n" + 
+        			"        \"timeStamp\": \"979257600000\",\r\n" + 
+        			"        \"estimatedEffort\": 16.0,\r\n" + 
+        			"        \"modifiedFiles\": [\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 16,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 16,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          }\r\n" + 
+        			"        ]\r\n" + 
+        			"      },\r\n" + 
+        			"      {\r\n" + 
+        			"        \"_C\": \"Commit\",\r\n" + 
+        			"        \"commitId\": \"521747298a3790fde1710f3aa2d03b55020575aa\",\r\n" + 
+        			"        \"exercisePathIfCompleted\": \"/\",\r\n" + 
+        			"        \"commitMessageFirstLine\": \"test\",\r\n" + 
+        			"        \"commitMessage\": \"test\",\r\n" + 
+        			"        \"timeStamp\": \"971136000000\",\r\n" + 
+        			"        \"estimatedEffort\": 20.0,\r\n" + 
+        			"        \"modifiedFiles\": [\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 20,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 20,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          },\r\n" + 
+        			"          {\r\n" + 
+        			"            \"_C\": \"CommitFile\",\r\n" + 
+        			"            \"path\": \"test/\",\r\n" + 
+        			"            \"estimatedEffort\": 20,\r\n" + 
+        			"            \"exercisePath\": \"/TP1/Exercice 1\",\r\n" + 
+        			"            \"message\": \"no field in database for now\"\r\n" + 
+        			"          }\r\n" + 
+        			"        ]\r\n" + 
+        			"      }\r\n" + 
+        			"    ]\r\n" + 
+        			"  }\r\n" + 
+        			"}").getBytes());
+        	System.out.println(ModelHandler.readBody(baseRequest));
 			response.setStatus(HttpStatus.OK_200);
 			baseRequest.setHandled(true);
 
