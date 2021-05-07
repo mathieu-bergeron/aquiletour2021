@@ -95,7 +95,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				//TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
 			}
 
 			@Override
