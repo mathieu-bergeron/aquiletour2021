@@ -38,4 +38,5 @@ public interface RootView extends NtroView {
 	void onContextChange(NtroContext<?,?> context);
 	void displayUserScreenName(String screenName);
 	void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages);
+	void showPasswordMenu();
 }

@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.root;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,13 +68,17 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuEnterPassword;
 	private HtmlElement loginMenuEnterCode;
 	private HtmlElement loginMenuAddPassword;
+	private HtmlElement currentPasswordContainer;
+	private HtmlElement modifyPasswordButton;
 	private HtmlElement loginMenuStudentProfile;
 	private HtmlElement loginMenuTeacherProfile;
 	private HtmlElement userProfileNameInput;
+	private HtmlElement modifyPasswordLink;
 	private HtmlElement toggleStudentModeButton;
 	
 	private HtmlElements logoutLinks;
 	private HtmlElements addDelayedMessagesToValue;
+	private HtmlElements addUserIdToValue;
 
 	private BootstrapAlert alertDanger;
 	private BootstrapAlert alertPrimary;
@@ -99,15 +104,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuEnterPassword = getRootElement().find("#login-menu-enter-password").get(0);
 		loginMenuEnterCode = getRootElement().find("#login-menu-enter-code").get(0);
 		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
+		currentPasswordContainer = getRootElement().find("#current-password-container").get(0);
+		modifyPasswordButton = getRootElement().find("#modify-password-button").get(0);
 		loginMenuStudentProfile = getRootElement().find("#login-menu-student-profile").get(0);
 		loginMenuTeacherProfile = getRootElement().find("#login-menu-teacher-profile").get(0);
 
 		logoutLinks = getRootElement().find(".logout-link");
 		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
+		addUserIdToValue = getRootElement().find(".add-user-id-to-value");
 
 		queueLink = getRootElement().find("#queue-link").get(0);
 		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
+		modifyPasswordLink = getRootElement().find("#modify-password-link").get(0);
 		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
+
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
 
@@ -124,11 +134,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuEnterPassword);
 		MustNot.beNull(loginMenuEnterCode);
 		MustNot.beNull(loginMenuAddPassword);
+		MustNot.beNull(currentPasswordContainer);
 		MustNot.beNull(loginMenuStudentProfile);
 		MustNot.beNull(loginMenuTeacherProfile);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
 		MustNot.beNull(userProfileNameInput);
+		MustNot.beNull(modifyPasswordLink);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
 		MustNot.beNull(toggleStudentModeButton);
@@ -137,6 +149,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		Ntro.verify(that(logoutLinks.size() > 0).isTrue());
 		Ntro.verify(that(addDelayedMessagesToValue.size() > 0).isTrue());
+		Ntro.verify(that(addUserIdToValue.size() > 0).isTrue());
 
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
@@ -188,8 +201,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
+		
 		User user = (User) context.user();
 		String userName = user.getFirstname();
+
+		addUserIdToValue.appendToAttribute("value", user.getId());
 
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
@@ -239,6 +255,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		if(user.actsAsTeacher()) {
 			
 			toggleStudentModeButton.text("Mode étudiant");
+			
+			if(user.getHasPassword()) {
+				modifyPasswordLink.text("Modifier mon mot de passe");
+			}else {
+				modifyPasswordLink.text("Ajouter un mot de passe");
+			}
 
 			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
 			calendarListLink.show();
@@ -248,6 +270,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			
 			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + Ntro.currentUser().getId());
 			queueLink.show();
+			
 			
 			coursesLinkStudent.hide();
 			coursesLinkTeacher.show();
@@ -485,6 +508,26 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		delayedMessagesText = delayedMessagesText.replaceAll("\"", "\\\"");
 
 		return delayedMessagesText;
+	}
+
+
+	@Override
+	public void showPasswordMenu() {
+		T.call(this);
+		
+		showLoginMenu(null, new ArrayList<>());
+		loginMenuAddPassword.show();
+		loginMenuStudentProfile.hide();
+		loginMenuTeacherProfile.hide();
+		
+		User user = (User) Ntro.currentUser();
+		if(user.getHasPassword()) {
+			currentPasswordContainer.show();
+			modifyPasswordButton.text("Modifier mon mot de passe");
+		}else {
+			currentPasswordContainer.hide();
+			modifyPasswordButton.text("Ajouter le mot de passe");
+		}
 	}
 	
 }

@@ -46,7 +46,13 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 		
-		if(message.getDelayedMessages().isEmpty()) {
+		if(message.getDelayedMessages().isEmpty() && userToRegister.getHasPassword()) {
+
+			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP entrer votre mot de passe");
+			Ntro.messages().send(showLoginMenuMessage);
+
+		} else if(message.getDelayedMessages().isEmpty() && !userToRegister.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");

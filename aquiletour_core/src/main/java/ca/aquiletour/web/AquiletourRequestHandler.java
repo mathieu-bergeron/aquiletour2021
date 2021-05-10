@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.user.ShowPasswordMenu;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
@@ -44,6 +45,8 @@ public class AquiletourRequestHandler {
 	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
+
+		sendRootMessages(context, path, parameters);
 		
 		if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
 
@@ -96,6 +99,16 @@ public class AquiletourRequestHandler {
 		} else if (path.startsWith(Constants.GIT_STUDENT_SUMMARIES_URL_SEGMENT)) {
 
 			sendGitStudentSummariesMessages(path.subPath(1), parameters, context.user());
+		}
+	}
+
+	public static void sendRootMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
+		T.call(AquiletourRequestHandler.class);
+
+		if(parameters.containsKey("showPasswordMenu")) {
+			
+			ShowPasswordMenu showPasswordMenu = Ntro.messages().create(ShowPasswordMenu.class);
+			Ntro.messages().send(showPasswordMenu);
 		}
 	}
 

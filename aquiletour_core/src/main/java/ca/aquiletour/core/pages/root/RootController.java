@@ -19,6 +19,7 @@ package ca.aquiletour.core.pages.root;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.ShowDashboardMessage;
+import ca.aquiletour.core.messages.user.ShowPasswordMenu;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -48,6 +49,7 @@ import ca.aquiletour.core.pages.root.handlers.NtroErrorHandler;
 import ca.aquiletour.core.pages.root.handlers.QuitMessageHandler;
 import ca.aquiletour.core.pages.root.handlers.RootViewHandler;
 import ca.aquiletour.core.pages.root.handlers.ShowLoginMenuHandler;
+import ca.aquiletour.core.pages.root.handlers.ShowPasswordMenuHandler;
 import ca.aquiletour.core.pages.root.handlers.UpdateUserInfoHandler;
 import ca.aquiletour.core.pages.root.messages.QuitMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
@@ -96,6 +98,8 @@ public class RootController extends NtroRootController {
 		addViewMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());
 
 		addViewMessageHandler(ShowLoginMenuMessage.class, new ShowLoginMenuHandler());
+
+		addViewMessageHandler(ShowPasswordMenu.class, new ShowPasswordMenuHandler());
 
 		// FIXME: could be in main. Not specific to Controller
 		Ntro.messages().registerHandler(QuitMessage.class, new QuitMessageHandler());

@@ -143,6 +143,7 @@ public class AquiletourBackendRequestHandler {
 			updateUserInfoMessage.setScreenName(screenName);
 			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
 
+
 		} else if(parameters.containsKey("toggleStudentMode")) {
 
 			// XXX: must be here in the frontend
