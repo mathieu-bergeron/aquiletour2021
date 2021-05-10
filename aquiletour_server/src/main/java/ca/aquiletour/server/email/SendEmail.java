@@ -10,13 +10,14 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.services.Ntro;
 
 // from: https://www.tutorialspoint.com/java/java_sending_email.htm
 // from : https://mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
-public class TestEmail {
+public class SendEmail {
 
 	public static void main(String[] args) {
 		if(args.length > 0) {
@@ -28,6 +29,11 @@ public class TestEmail {
 	
 
 	public static void sendCode(String loginCode, String userName, String toEmail) {
+		if(Constants.DISABLE_EMAILS) {
+			Log.warning("Emails are disabled");
+			return;
+		}
+		
 		AquiletourConfig config = (AquiletourConfig) Ntro.config();
 		if(config.getSmtpHost() == null || config.getSmtpHost().isEmpty()) {
 			Log.warning("Email not configured in config.json");

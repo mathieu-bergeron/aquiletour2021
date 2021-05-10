@@ -8,7 +8,7 @@ import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.aquiletour.server.email.TestEmail;
+import ca.aquiletour.server.email.SendEmail;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -72,10 +72,11 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 			userToRegister = new TeacherGuest();
 		}
+		
 
-		if(modelStore.ifModelExists(User.class, "TODO", providedId)) {
+		if(modelStore.ifModelExists(User.class, "admin", providedId)) {
 
-			User existingUser = modelStore.getModel(User.class, "TODO", providedId);
+			User existingUser = modelStore.getModel(User.class, "admin", providedId);
 			userToRegister.copyPublicInfomation(existingUser);
 
 		}else {
@@ -87,6 +88,22 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		userToRegister.setId(providedId);
 		userToRegister.setAuthToken(authToken);
 		
+		SessionData sessionData = new SessionData();
+
+		if(!userToRegister.getHasPassword()) {
+
+			String loginCode = sendLoginCode(userToRegister);
+			sessionData.setLoginCode(loginCode.replace(" ", ""));
+		}
+
+		session.setUser(userToRegister.toSessionUser());
+		session.setSessionData(sessionData);
+		modelStore.save(session);
+
+		return userToRegister;
+	}
+
+	private String sendLoginCode(User userToRegister) {
 		String loginCode = SecureRandomString.generateLoginCode();
 
 		Ntro.threadService().executeLater(new NtroTaskSync() {
@@ -95,22 +112,14 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				T.values(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
-				TestEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
+				SendEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
 			}
 
 			@Override
 			protected void onFailure(Exception e) {
 			}
 		});
-		
-		SessionData sessionData = new SessionData();
-		sessionData.setLoginCode(loginCode.replace(" ", ""));
-
-		session.setUser(userToRegister.toSessionUser());
-		session.setSessionData(sessionData);
-		modelStore.save(session);
-
-		return userToRegister;
+		return loginCode;
 	}
 
 	private boolean isStudentId(String providedId) {

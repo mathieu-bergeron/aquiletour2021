@@ -2,6 +2,8 @@ package ca.aquiletour.core;
 
 public class Constants {
 	
+	public static final boolean DISABLE_EMAILS = true;
+	
 	public static final int APPOINTMENT_DURATION_MINUTES = 5;
 	public static final int APPOINTMENT_TIME_INCREMENT_SECONDS = 5*60;
 	public static final int APPOINTMENT_DURATION_INCREMENT_SECONDS = 60;

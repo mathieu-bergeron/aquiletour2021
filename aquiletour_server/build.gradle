@@ -71,7 +71,7 @@ task server (type:JavaExec) {
 
 task testEmail (type:JavaExec) {
     dependsOn 'classes'
-    main = 'ca.aquiletour.server.email.TestEmail'
+    main = 'ca.aquiletour.server.email.SendEmail'
     classpath = sourceSets.main.runtimeClasspath
     //jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm 
     jvmArgs('-Dfile.encoding=UTF-8') 

@@ -199,25 +199,31 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuStudentProfile.hide();
 		loginMenuTeacherProfile.hide();
 
-		if(context.user() instanceof Guest) {
+		if(user instanceof Guest) {
 
 			loginButton.html("Connexion");
 			loginMenuEnterId.show();
 
-		} else if(context.user() instanceof TeacherGuest || context.user() instanceof StudentGuest) {
+		} else if(shouldValidatePassword(user)) {
+
+			String linkText = "Valider " + user.getEmail();
+			loginButton.html(linkText);
+			loginMenuEnterPassword.show();
+
+		} else if(shouldValidateLoginCode(user)) {
 
 			String linkText = "Valider " + user.getEmail();
 			loginButton.html(linkText);
 			loginMenuEnterCode.show();
 
-		}else if(context.user() instanceof Teacher) {
+		}else if(user instanceof Teacher) {
 			userName += " " + user.getLastname();
 			
 			loginButton.text(userName);
 			loginMenuTeacherProfile.show();
 			userProfileNameInput.value(userName);
 
-		}else if(context.user() instanceof Student) {
+		}else if(user instanceof Student) {
 			userName += " " + user.getLastname();
 			
 			loginButton.text(userName);
@@ -230,7 +236,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		groupListLink.hide();
 		queueLink.hide();
 		
-		if(((User)context.user()).actsAsTeacher()) {
+		if(user.actsAsTeacher()) {
 			
 			toggleStudentModeButton.text("Mode étudiant");
 
@@ -256,6 +262,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 	}
 
+
+	private boolean shouldValidateLoginCode(User user) {
+		T.call(this);
+
+		return (user instanceof TeacherGuest || user instanceof StudentGuest)
+				&& !user.getHasPassword();
+	}
+
+	private boolean shouldValidatePassword(User user) {
+		T.call(this);
+
+		return (user instanceof TeacherGuest || user instanceof StudentGuest)
+				&& user.getHasPassword();
+	}
 
 	@Override
 	public void showDashboard(DashboardView dashboardView) {

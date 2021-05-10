@@ -49,7 +49,7 @@ public class User extends NtroUser {
 		this.passwordHash = passwordHash;
 	}
 
-	public boolean isHasPassword() {
+	public boolean getHasPassword() {
 		return hasPassword;
 	}
 
@@ -61,6 +61,7 @@ public class User extends NtroUser {
 		setFirstname(user.getFirstname());
 		setLastname(user.getLastname());
 		setEmail(user.getEmail());
+		setHasPassword(user.getHasPassword());
 	}
 
 	public User toSessionUser() {
@@ -72,11 +73,14 @@ public class User extends NtroUser {
 	}
 
 	protected void copySessionOnlyInfo(User sessionUser) {
+		T.call(this);
+
 		sessionUser.setId(getId());
 		sessionUser.setAuthToken(getAuthToken());
 		sessionUser.setFirstname(getFirstname());
 		sessionUser.setLastname(getLastname());
 		sessionUser.setEmail(getEmail());
+		sessionUser.setHasPassword(getHasPassword());
 	}
 
 	public boolean actsAsTeacher() {
