@@ -23,6 +23,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+		T.call(this);
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
@@ -67,6 +68,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 	}
 
 	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, NtroSession session) {
+		T.call(this);
 
 		User userToRegister;
 		
@@ -99,7 +101,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		if(!userToRegister.getHasPassword()) {
 
 			String loginCode = sendLoginCode(userToRegister);
-			sessionData.setLoginCode(loginCode.replace(" ", ""));
+			sessionData.setLoginCode(loginCode);
 		}
 
 		session.setUser(userToRegister.toSessionUser());
@@ -109,7 +111,9 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		return userToRegister;
 	}
 
-	private String sendLoginCode(User userToRegister) {
+	public static String sendLoginCode(User userToRegister) {
+		T.call(UserInitiatesLoginHandler.class);
+
 		String loginCode = SecureRandomString.generateLoginCode();
 
 		Ntro.threadService().executeLater(new NtroTaskSync() {
@@ -125,7 +129,8 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			protected void onFailure(Exception e) {
 			}
 		});
-		return loginCode;
+
+		return loginCode.replace(" ", "");
 	}
 
 	private boolean isStudentId(String providedId) {

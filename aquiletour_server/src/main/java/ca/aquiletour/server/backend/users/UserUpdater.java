@@ -14,6 +14,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
+import ca.ntro.users.NtroSession;
 
 public class UserUpdater {
 
@@ -131,6 +132,12 @@ public class UserUpdater {
 			}
 		});
 		
+	}
+
+	public static void deleteSession(ModelStoreSync modelStore, String authToken) {
+		T.call(UserUpdater.class);
+
+		modelStore.deleteModel(NtroSession.class, "admin", authToken);
 	}
 
 }

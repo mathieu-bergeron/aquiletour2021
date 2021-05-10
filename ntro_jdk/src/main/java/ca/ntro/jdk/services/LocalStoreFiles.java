@@ -98,6 +98,8 @@ public abstract class LocalStoreFiles extends ModelStore {
 	@Override
 	protected void deleteDocument(DocumentPath documentPath) {
 		T.call(this);
+		
+		System.out.println("deleting: " + documentPath.toString());
 
 		File modelFile = getModelFile(documentPath);
 		

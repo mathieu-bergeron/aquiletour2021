@@ -70,11 +70,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuAddPassword;
 	private HtmlElement currentPasswordContainer;
 	private HtmlElement modifyPasswordButton;
-	private HtmlElement loginMenuStudentProfile;
-	private HtmlElement loginMenuTeacherProfile;
-	private HtmlElement userProfileNameInput;
+	private HtmlElement loginMenuUserProfile;
+	private HtmlElement userNameContainer;
+	private HtmlElement userNameInput;
 	private HtmlElement showPasswordMenuLink;
-	private HtmlElement toggleStudentModeButton;
+	private HtmlElement toggleModeButton;
+	private HtmlElement toggleModeContainer;
 	
 	private HtmlElements logoutLinks;
 	private HtmlElements addDelayedMessagesToValue;
@@ -106,17 +107,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
 		currentPasswordContainer = getRootElement().find("#current-password-container").get(0);
 		modifyPasswordButton = getRootElement().find("#modify-password-button").get(0);
-		loginMenuStudentProfile = getRootElement().find("#login-menu-student-profile").get(0);
-		loginMenuTeacherProfile = getRootElement().find("#login-menu-teacher-profile").get(0);
+
+		loginMenuUserProfile = getRootElement().find("#login-menu-user-profile").get(0);
+		userNameContainer = getRootElement().find("#user-name-container").get(0);
+		userNameInput = getRootElement().find("#user-name-input").get(0);
+		showPasswordMenuLink = getRootElement().find("#show-password-menu-link").get(0);
+		toggleModeContainer = getRootElement().find("#toggle-mode-container").get(0);
+		toggleModeButton = getRootElement().find("#toggle-mode-button").get(0);
 
 		logoutLinks = getRootElement().find(".logout-link");
 		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
 		addUserIdToValue = getRootElement().find(".add-user-id-to-value");
 
 		queueLink = getRootElement().find("#queue-link").get(0);
-		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
-		showPasswordMenuLink = getRootElement().find("#show-password-menu-link").get(0);
-		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
+
 
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
@@ -135,15 +139,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuEnterCode);
 		MustNot.beNull(loginMenuAddPassword);
 		MustNot.beNull(currentPasswordContainer);
-		MustNot.beNull(loginMenuStudentProfile);
-		MustNot.beNull(loginMenuTeacherProfile);
+		MustNot.beNull(loginMenuUserProfile);
+		MustNot.beNull(toggleModeContainer);
+		MustNot.beNull(userNameContainer);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
-		MustNot.beNull(userProfileNameInput);
+		MustNot.beNull(userNameInput);
 		MustNot.beNull(showPasswordMenuLink);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
-		MustNot.beNull(toggleStudentModeButton);
+		MustNot.beNull(toggleModeButton);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
@@ -212,8 +217,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuEnterPassword.hide();
 		loginMenuEnterCode.hide();
 		loginMenuAddPassword.hide();
-		loginMenuStudentProfile.hide();
-		loginMenuTeacherProfile.hide();
+		loginMenuUserProfile.hide();
 
 		if(user instanceof Guest) {
 
@@ -233,17 +237,19 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginMenuEnterCode.show();
 
 		}else if(user instanceof Teacher) {
-			userName += " " + user.getLastname();
+			userName = displayName(user, userName);
 			
 			loginButton.text(userName);
-			loginMenuTeacherProfile.show();
-			userProfileNameInput.value(userName);
+			loginMenuUserProfile.show();
+			userNameInput.value(userName);
 
 		}else if(user instanceof Student) {
-			userName += " " + user.getLastname();
+			userName = displayName(user, userName);
 			
 			loginButton.text(userName);
-			loginMenuStudentProfile.show();
+			loginMenuUserProfile.show();
+			userNameContainer.hide();
+			toggleModeContainer.hide();
 		}
 		
 		coursesLinkTeacher.hide();
@@ -254,7 +260,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		if(user.actsAsTeacher()) {
 			
-			toggleStudentModeButton.text("Mode étudiant");
+			toggleModeButton.text("Mode étudiant");
 			
 			if(user.getHasPassword()) {
 				showPasswordMenuLink.text("Modifier mon mot de passe");
@@ -277,12 +283,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			
 		} else {
 
-			toggleStudentModeButton.text("Mode enseignant");
+			toggleModeButton.text("Mode enseignant");
 
 			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
 			openQueueListLink.show();
 		}
 		
+	}
+
+
+	private String displayName(User user, String userName) {
+		if(user.getLastname() != null && !user.getLastname().isEmpty()) {
+			userName += " " + user.getLastname();
+		}
+		return userName;
 	}
 
 
@@ -517,9 +531,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		showLoginMenu(null, new ArrayList<>());
 		loginMenuAddPassword.show();
-		loginMenuStudentProfile.hide();
-		loginMenuTeacherProfile.hide();
-		
+		loginMenuUserProfile.hide();
+
 		User user = (User) Ntro.currentUser();
 		if(user.getHasPassword()) {
 			currentPasswordContainer.show();

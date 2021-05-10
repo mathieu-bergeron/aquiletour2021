@@ -7,7 +7,6 @@ import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserUpdater;
@@ -17,13 +16,14 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.stores.DocumentPath;
 import ca.ntro.users.NtroSession;
 
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
+		T.call(this);
+
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
@@ -36,7 +36,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		if(session != null) {
 			sessionData = (SessionData) session.getSessionData();
 		}
-		
+
 		if(sessionData != null 
 				&& sessionData.getLoginCode().equals(loginCode)) {
 			
@@ -62,9 +62,9 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		User existingUser = null;
 
-		if(modelStore.ifModelExists(User.class, "TODO", userId)) {
+		if(modelStore.ifModelExists(User.class, "admin", userId)) {
 
-			existingUser = modelStore.getModel(User.class, "TODO", userId);
+			existingUser = modelStore.getModel(User.class, "admin", userId);
 
 		}else {
 

@@ -277,6 +277,22 @@ public abstract class ModelStore {
 		
 	}
 
+	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      String documentId) {
+		T.call(this);
+		
+		deleteDocument(documentPath(modelClass, documentId));
+	}
+
+	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      Path modelPath) {
+		T.call(this);
+
+		deleteDocument(documentPath(modelClass, documentId(modelPath)));
+	}
+
 	protected abstract void deleteDocument(DocumentPath documentPath);
 
 	public void closeWithoutSaving(NtroModel model) {
