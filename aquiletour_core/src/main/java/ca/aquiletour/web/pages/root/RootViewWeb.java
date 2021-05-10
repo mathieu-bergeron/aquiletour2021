@@ -189,7 +189,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		User user = (User) context.user();
-		String userName = user.getName();
+		String userName = user.getFirstname();
 
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
@@ -211,14 +211,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginMenuEnterCode.show();
 
 		}else if(context.user() instanceof Teacher) {
-			userName += " " + user.getSurname();
+			userName += " " + user.getLastname();
 			
 			loginButton.text(userName);
 			loginMenuTeacherProfile.show();
 			userProfileNameInput.value(userName);
 
 		}else if(context.user() instanceof Student) {
-			userName += " " + user.getSurname();
+			userName += " " + user.getLastname();
 			
 			loginButton.text(userName);
 			loginMenuStudentProfile.show();

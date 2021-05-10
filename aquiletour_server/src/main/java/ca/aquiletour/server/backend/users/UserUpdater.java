@@ -67,8 +67,8 @@ public class UserUpdater {
 			public void update(User existingModel) {
 				T.call(this);
 				
-				existingModel.setName(screenName);
-				existingModel.setSurname("");
+				existingModel.setFirstname(screenName);
+				existingModel.setLastname("");
 			}
 		});
 	}

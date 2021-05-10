@@ -18,8 +18,8 @@ public class UpdateUserInfoHandler extends ViewMessageHandler<RootView, UpdateUs
 
 		NtroSession session = Ntro.currentSession();
 		User user = (User) session.getUser();
-		user.setName(message.getScreenName());
-		user.setSurname("");
+		user.setFirstname(message.getScreenName());
+		user.setLastname("");
 
 		// XXX: saves session back to cookie
 		Ntro.sessionService().registerCurrentSession(session);

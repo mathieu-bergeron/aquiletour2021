@@ -48,8 +48,8 @@ public class GroupItem implements NtroModelValue {
 
 		for(User studentToAdd : studentsToAdd) {
 			StudentDescription studentDescription = new StudentDescription();
-			studentDescription.setName(studentToAdd.getName());
-			studentDescription.setSurname(studentToAdd.getSurname());
+			studentDescription.setName(studentToAdd.getFirstname());
+			studentDescription.setSurname(studentToAdd.getLastname());
 			
 			MustNot.beNull(studentToAdd.getId());
 			

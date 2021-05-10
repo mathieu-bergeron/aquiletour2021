@@ -48,8 +48,8 @@ public class QueuesUpdater {
 
 		OpenQueue queueSummary = new OpenQueue();
 		queueSummary.setId(queueId);
-		queueSummary.setTeacherName(teacher.getName());
-		queueSummary.setTeacherSurname(teacher.getSurname());
+		queueSummary.setTeacherName(teacher.getFirstname());
+		queueSummary.setTeacherSurname(teacher.getLastname());
 
 		return queueSummary;
 	}

@@ -80,7 +80,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 		}else {
 
-			userToRegister.setName(providedId);
+			userToRegister.setFirstname(providedId);
 			userToRegister.setEmail(providedId + "@" + Constants.EMAIL_HOST);
 		}
 
@@ -94,8 +94,8 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			protected void runTask() {
 				T.call(this);
 
-				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				T.values(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
+				TestEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
 			}
 
 			@Override

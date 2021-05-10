@@ -80,7 +80,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			}
 			
 			newUser.copyPublicInfomation((User) session.getUser());
-			newUser.setName(userId);
+			newUser.setFirstname(userId);
 			newUser.setId(userId);
 
 			UserUpdater.addUser(modelStore, newUser);

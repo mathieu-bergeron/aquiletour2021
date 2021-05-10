@@ -147,8 +147,8 @@ public class QueueUpdater {
 
 		appointment.updateTime(Ntro.calendar().now());
 		appointment.setStudentId(user.getId());
-		appointment.setStudentName(user.getName());
-		appointment.setStudentSurname(user.getSurname());
+		appointment.setStudentName(user.getFirstname());
+		appointment.setStudentSurname(user.getLastname());
 		
 		return appointment;
 	}

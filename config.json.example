@@ -1,6 +1,8 @@
 {
     "adminIds" : ["alice", "bob"],
 
+    "passwordSalt": "saltExample",
+
     "smtpHost": "smtp.example.com",
     "smtpPort": "587",
     "smtpTls": true,

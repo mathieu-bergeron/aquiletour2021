@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.ConfigService;
 
 public class AquiletourConfig extends ConfigService {
@@ -37,12 +38,16 @@ public class AquiletourConfig extends ConfigService {
 	}
 	
 	private List<String> adminIds = new ArrayList<>();
+
+	private String passwordSalt = SecureRandomString.generate();
+
 	private String smtpHost = "";
 	private String smtpPort = "";
 	private boolean smtpTls = false;
 	private String smtpUser = "";
 	private String smtpFrom = "";
 	private String smtpPassword = "";
+
 	
 
 	public List<String> getAdminIds() {
@@ -71,5 +76,9 @@ public class AquiletourConfig extends ConfigService {
 
 	public String getSmtpPassword() {
 		return smtpPassword;
+	}
+
+	public String getPasswordSalt() {
+		return passwordSalt;
 	}
 }

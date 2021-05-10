@@ -8,7 +8,7 @@ public class Guest extends User {
 		super();
 		T.call(this);
 		
-		setName("Visiteur");
+		setFirstname("Visiteur");
 	}
 
 	@Override

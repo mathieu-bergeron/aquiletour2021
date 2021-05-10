@@ -5,9 +5,12 @@ import ca.ntro.users.NtroUser;
 
 public class User extends NtroUser {
 	
-	private String name = "";
-	private String surname = "";
+	private String firstname = "";
+	private String lastname = "";
 	private String email = "";
+
+	private String passwordHash = "";
+	private boolean has
 
 	public User() {
 
@@ -17,17 +20,17 @@ public class User extends NtroUser {
 		this.email = email;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
-	public String getSurname() {
-		return surname;
+	public String getLastname() {
+		return lastname;
 	}
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public String getEmail() {
@@ -38,10 +41,9 @@ public class User extends NtroUser {
 		this.email = email;
 	}
 
-
 	public void copyPublicInfomation(User user) {
-		setName(user.getName());
-		setSurname(user.getSurname());
+		setFirstname(user.getFirstname());
+		setLastname(user.getLastname());
 		setEmail(user.getEmail());
 	}
 
@@ -56,8 +58,8 @@ public class User extends NtroUser {
 	protected void copySessionOnlyInfo(User sessionUser) {
 		sessionUser.setId(getId());
 		sessionUser.setAuthToken(getAuthToken());
-		sessionUser.setName(getName());
-		sessionUser.setSurname(getSurname());
+		sessionUser.setFirstname(getFirstname());
+		sessionUser.setLastname(getLastname());
 		sessionUser.setEmail(getEmail());
 	}
 

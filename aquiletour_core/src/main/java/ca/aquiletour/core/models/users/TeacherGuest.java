@@ -17,8 +17,8 @@ public class TeacherGuest extends Teacher {
 	public void copyPublicInfomation(User otherUser) {
 		super.copyPublicInfomation(otherUser);
 
-		setName(otherUser.getId());
-		setSurname("");
+		setFirstname(otherUser.getId());
+		setLastname("");
 	}
 
 	@Override

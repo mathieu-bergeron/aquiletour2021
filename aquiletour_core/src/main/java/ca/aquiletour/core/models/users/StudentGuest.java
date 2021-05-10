@@ -15,8 +15,8 @@ public class StudentGuest extends Student {
 	public void copyPublicInfomation(User otherUser) {
 		super.copyPublicInfomation(otherUser);
 
-		setName(otherUser.getId());
-		setSurname("");
+		setFirstname(otherUser.getId());
+		setLastname("");
 	}
 
 }
