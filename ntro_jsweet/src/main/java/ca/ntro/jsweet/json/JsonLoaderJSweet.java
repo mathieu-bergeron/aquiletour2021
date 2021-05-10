@@ -6,7 +6,7 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.NtroModelMessage;
-import ca.ntro.messages.ntro_messages.GetModelNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import def.es6.Globals;
@@ -51,7 +51,7 @@ public class JsonLoaderJSweet extends JsonLoader {
                         	System.err.println(error);
                         });
             } else {
-                return Promise.reject("[NetworkStore] return code != 200 for " + messageText);
+                return Promise.reject("[NetworkStore] return code != 200 for " + messageText + " " + response);
             }
         });
     }

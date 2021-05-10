@@ -1,10 +1,15 @@
 package ca.ntro.web.dom;
 
+import java.util.Map;
+
 import ca.ntro.core.system.trace.T;
 
 public abstract class HtmlElement {
 
+	public abstract HtmlElement createTag(String tagName);
 	public abstract HtmlElement createElement(String html);
+
+	public abstract void animate(Map<String,Object> properties, long duration, AnimationListener listener);
 
 	public abstract void appendHtml(String html);
 	public abstract void appendElement(HtmlElement element);
@@ -23,6 +28,7 @@ public abstract class HtmlElement {
 
 	public abstract String getAttribute(String name);
 	public abstract void setAttribute(String name, String value);
+	public abstract void removeAttribute(String name);
 
 	public void removeChildrenFromDocument() {
 		T.call(this);
@@ -54,12 +60,43 @@ public abstract class HtmlElement {
 	public abstract void html(String htmlString);
 	public abstract String value();
 	
-	public abstract void show();
-	public abstract void hide();
-	
 	public abstract void readFileFromInput(HtmlFileListener listener);
 
 	public abstract void invoke(String method, Object[] objects);
 
 	public abstract void trigger(String event);
+	
+	
+	
+	public void show() {
+		String styleString = getStyleString();
+
+		styleString = styleString.replace("display:none !important;", "");
+
+		setAttribute("style", styleString);
+	}
+
+	public void hide() {
+		String styleString = getStyleString();
+		
+		if(!styleString.contains("display:none !important;")){
+			styleString += " display:none !important;";
+		}
+		
+		setAttribute("style", styleString);
+	}
+
+	private String getStyleString() {
+		String styleString = getAttribute("style");
+		if(styleString == null) {
+			styleString = "";
+		}
+		return styleString;
+	}
+
+	public abstract void css(String property, String value);
+	public abstract void css(String property, double value);
+
+	public abstract void addClass(String styleClass);
+	public abstract void removeClass(String styleClass);
 }

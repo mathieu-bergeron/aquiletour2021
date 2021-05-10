@@ -1,7 +1,7 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.messages.UserLogsOutMessage;
-import ca.ntro.BackendMessageHandler;
+import ca.aquiletour.core.messages.user.UserLogsOutMessage;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -12,7 +12,7 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 	public void handleNow(ModelStoreSync modelStore, UserLogsOutMessage message) {
 		T.call(this);
 		
-		Ntro.userService().registerCurrentUser(AuthenticateSessionUserHandler.createGuestSession(modelStore));
+		Ntro.currentSession().setUser(InitializeSessionHandler.createGuestSession(modelStore));
 	}
 
 	@Override

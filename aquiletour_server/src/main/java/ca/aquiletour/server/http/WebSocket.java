@@ -9,7 +9,7 @@ import ca.aquiletour.server.RegisteredSockets;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.RegisterSocketNtroMessage;
+import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.Ntro;
 
 // from https://github.com/jetty-project/embedded-jetty-websocket-examples
@@ -29,9 +29,9 @@ public class WebSocket extends WebSocketAdapter {
         super.onWebSocketText(messageText);
         NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
 
-        if(message instanceof RegisterSocketNtroMessage) {
+        if(message instanceof NtroRegisterSocketMessage) {
         	
-        	RegisterSocketNtroMessage registerSocketSystemMessage = (RegisterSocketNtroMessage) message;
+        	NtroRegisterSocketMessage registerSocketSystemMessage = (NtroRegisterSocketMessage) message;
         	RegisteredSockets.registerUserSocket(registerSocketSystemMessage.getUser(), getSession());
 
         }else{

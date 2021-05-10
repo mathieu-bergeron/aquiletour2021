@@ -28,13 +28,18 @@ import ca.ntro.jdk.web.ViewLoaderWebJdk;
 import ca.ntro.services.AppCloser;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.CalendarService;
 import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 import ca.ntro.services.CollectionsService;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.RouterService;
+import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
@@ -95,10 +100,10 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected BackendService provideBackendService() {
+	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(InitializationTaskJdk.class, "provideBackendService");
 		
-		return new BackendServiceJdk();
+		return BackendServiceJdk.class;
 	}
 
 	@Override
@@ -112,14 +117,33 @@ public class InitializationTaskJdk extends InitializationTask {
 	}
 
 	@Override
-	protected Class<? extends UserService> provideUserServiceClass() {
-		return UserServiceJdk.class;
+	protected Class<? extends SessionService> provideSessionServiceClass() {
+		return SessionServiceJdk.class;
 	}
 
 	@Override
-	protected Class<? extends ModelStore> provideModelStoreClass() {
-		return LocalStoreFiles.class;
+	protected ModelStore provideModelStore() {
+		return Ntro.factory().newInstance(LocalStoreFiles.class);
 	}
+
+
+	@Override
+	protected ConfigService provideConfigService() {
+		throw new RuntimeException("provideConfigService must be overriden");
+	}
+
+
+	@Override
+	protected CalendarService provideCalendarService() {
+		return new CalendarServiceJdk();
+	}
+
+
+	@Override
+	protected RouterService provideRouterService() {
+		throw new RuntimeException("provideConfigService must be overriden");
+	}
+
 
 
 }

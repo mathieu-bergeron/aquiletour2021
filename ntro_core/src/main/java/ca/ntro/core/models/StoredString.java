@@ -5,7 +5,7 @@ import ca.ntro.core.system.trace.T;
 public class StoredString extends StoredProperty<String> {
 
 	public StoredString() {
-		super();
+		super("");
 		T.call(this);
 	}
 

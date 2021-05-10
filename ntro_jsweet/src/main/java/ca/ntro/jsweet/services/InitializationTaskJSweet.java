@@ -25,27 +25,29 @@ import ca.ntro.core.json.JsonParser;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.CalendarService;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.ResourceLoader;
+import ca.ntro.services.RouterService;
+import ca.ntro.services.SessionService;
 import ca.ntro.services.ThreadService;
-import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class InitializationTaskJSweet extends InitializationTask {
 	
-	private final BackendServiceJSweet backendServiceJSweet;
+	private final RouterService routerService;
 	
-	public InitializationTaskJSweet(BackendServiceJSweet backendServiceJSweet) {
+	public InitializationTaskJSweet(RouterService routerService) {
 		super();
 		T.call(this);
 
-		this.backendServiceJSweet = backendServiceJSweet;
+		this.routerService = routerService;
 	}
-	
 	
 	@Override
 	protected StackAnalyzer provideStackAnalyzer() {
@@ -53,9 +55,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 		return new StackAnalyzerJSweet();
 	}
-
-
-
 
 	@Override
 	protected ValueFormatter provideValueFormatter() {
@@ -104,10 +103,10 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 
 	@Override
-	protected BackendService provideBackendService() {
+	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(this, "provideBackendService");
 
-		return backendServiceJSweet;
+		return BackendServiceJSweet.class;
 	}
 
 	@Override
@@ -123,15 +122,28 @@ public class InitializationTaskJSweet extends InitializationTask {
 
 
 	@Override
-	protected Class<? extends UserService> provideUserServiceClass() {
-		return UserServiceJSweet.class;
+	protected Class<? extends SessionService> provideSessionServiceClass() {
+		return SessionServiceJSweet.class;
 	}
-
 
 	@Override
-	protected Class<? extends ModelStore> provideModelStoreClass() {
-		return NetworkStoreJSweet.class;
+	protected ModelStore provideModelStore() {
+		return new NetworkStoreJSweet();
 	}
 
+	@Override
+	protected ConfigService provideConfigService() {
+		// XXX: not supported in the client
+		return null;
+	}
 
+	@Override
+	protected CalendarService provideCalendarService() {
+		return new CalendarServiceJSweet();
+	}
+
+	@Override
+	protected RouterService provideRouterService() {
+		return routerService;
+	}
 }

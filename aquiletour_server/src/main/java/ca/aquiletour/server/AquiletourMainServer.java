@@ -18,6 +18,9 @@
 package ca.aquiletour.server;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.servlet.ServletException;
 
@@ -27,6 +30,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.GitHandler;
 import ca.aquiletour.server.http.MessageHandler;
@@ -40,10 +44,13 @@ import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
 public class AquiletourMainServer extends NtroTaskAsync {
+	
+	private Timer timePassesTimer;
 
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
+		
 
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
@@ -53,6 +60,8 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		AquiletourMain.registerSerializableClasses();
 		
 		Ntro.jsonService().setPrettyPrinting(true);
+		
+		sendTimePassesMessages();
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _resources)
@@ -66,6 +75,26 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		}
 
 		notifyTaskFinished();
+	}
+
+	private void sendTimePassesMessages() {
+		T.call(this);
+
+		long periodSeconds = 5;
+
+		timePassesTimer =  new Timer();
+		timePassesTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				T.call(this);
+				
+				TimePassesMessage timePassesMessage = Ntro.messages().create(TimePassesMessage.class);
+				timePassesMessage.setElapsedTimeSeconds(periodSeconds);
+				timePassesMessage.setCurrentTime(Ntro.calendar().now());
+				
+				Ntro.messages().send(timePassesMessage);
+			}
+		}, 0, periodSeconds * 1000);
 	}
 
 	@Override
@@ -109,7 +138,9 @@ public class AquiletourMainServer extends NtroTaskAsync {
         System.out.println("\n\nPress Enter to stop the server...");
 
         System.in.read();
-
+        
+        timePassesTimer.cancel();
+        
         server.stop();
 
         server.join();

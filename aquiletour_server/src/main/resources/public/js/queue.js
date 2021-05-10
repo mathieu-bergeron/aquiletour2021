@@ -11,7 +11,7 @@ function initializeQueue(viewRootElement, jSweet){
             }
 
             const queueIdElement = viewRootElement.find("#queue-id");
-            const queueId = queueIdElement.html();
+            const queueId = queueIdElement.text();
 
             const appointment = $(ui.item);
             const nextAppointment = $(appointment.next());
@@ -24,6 +24,9 @@ function initializeQueue(viewRootElement, jSweet){
                 const nextAppointmentId = trimId(nextAppointment.attr("id"));
 
                 if(jSweet){
+
+                    console.log(appointmentId);
+                    console.log(nextAppointmentId);
 
                     let moveAppointmentMessage = (ca.ntro.services.Ntro.messages().create(ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage));
                     moveAppointmentMessage.setCourseId(queueId);

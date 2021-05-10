@@ -24,4 +24,10 @@ public class StoredInteger extends StoredProperty<Integer> {
 		return (Integer) Ntro.introspector().castPrimitiveValue(Integer.class, super.getValue());
 	}
 
+	public void incrementBy(int increment) {
+		T.call(this);
+		
+		setValue(getValue() + increment);
+	}
+
 }

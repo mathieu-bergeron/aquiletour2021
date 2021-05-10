@@ -7,7 +7,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElementLambda;
 import ca.ntro.web.dom.HtmlElements;
 
-public class HtmlElementsJdk implements HtmlElements {
+public class HtmlElementsJdk extends HtmlElements {
 	
 	private Elements elements;
 	

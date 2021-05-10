@@ -1,18 +1,23 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.messages.UserInitiatesLoginMessage;
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.ntro.BackendMessageHandler;
+import ca.aquiletour.server.email.TestEmail;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.random.SecureRandomString;
-import ca.ntro.messages.ntro_messages.SetUserNtroMessage;
+import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 
 public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiatesLoginMessage> {
 
@@ -24,7 +29,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		String providedId = message.getProvidedId();
 		User userToRegister = null;
 
-		Session session = AuthenticateSessionUserHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
 
@@ -35,14 +40,27 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			userToRegister = user;
 		}
 
-		Ntro.userService().registerCurrentUser(userToRegister);
+		Ntro.currentSession().setUser(userToRegister);
 		
-		SetUserNtroMessage setUserNtroMessage = Ntro.messages().create(SetUserNtroMessage.class);
+		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		
+		if(message.getDelayedMessages().isEmpty()) {
+
+			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
+			Ntro.messages().send(showLoginMenuMessage);
+			
+		}else {
+
+			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+				Ntro.messages().send(delayedMessage);
+			}
+		}
 	}
 
-	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, Session session) {
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, NtroSession session) {
 
 		User userToRegister;
 		
@@ -63,7 +81,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}else {
 
 			userToRegister.setName(providedId);
-			userToRegister.setEmail(providedId + "@cmontmorency.qc.ca");
+			userToRegister.setEmail(providedId + "@" + Constants.EMAIL_HOST);
 		}
 
 		userToRegister.setId(providedId);
@@ -77,16 +95,19 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				//TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
 			}
 
 			@Override
 			protected void onFailure(Exception e) {
 			}
 		});
+		
+		SessionData sessionData = new SessionData();
+		sessionData.setLoginCode(loginCode.replace(" ", ""));
 
 		session.setUser(userToRegister.toSessionUser());
-		session.setLoginCode(loginCode.replace(" ", ""));
+		session.setSessionData(sessionData);
 		modelStore.save(session);
 
 		return userToRegister;
@@ -106,7 +127,4 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 	public void handleLater(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
 		T.call(this);
 	}
-
-
-
 }

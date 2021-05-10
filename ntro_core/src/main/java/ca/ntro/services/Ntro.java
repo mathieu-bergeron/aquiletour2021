@@ -21,11 +21,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.assertions.AssertExpression;
+import ca.ntro.core.Constants;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.regex.RegEx;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.users.NtroUser;
+import ca.ntro.users.NtroSession;
+import ca.ntro.users.NtroSessionData;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -41,6 +47,104 @@ public class Ntro {
 	}
 
 	/* </Factory> */
+	
+	
+	
+	
+	
+	/* <Context> */
+	
+	public static NtroContext<?,?> context() {
+		__T.call(Ntro.class, "context");
+
+		NtroContext<?, ?> context = new NtroContext<>();
+
+		context.registerUser(Ntro.currentUser());
+		context.registerLang(Constants.LANG);
+		context.registerSessionData(Ntro.currentSession().getSessionData());
+		
+		return context;
+	}
+
+	/* </Context> */
+	
+	
+	
+	
+	
+	/* <Router> */
+	
+	private static RouterService router;
+
+	static void registerRouterService(RouterService router) {
+		__T.call(Ntro.class, "registerRouterService");
+
+		Ntro.router = router;
+	}
+	
+	public static RouterService router() {
+		__T.call(Ntro.class, "router");
+
+		if(router == null) {
+			Log.fatalError("ConfigService not registered");
+		}
+
+		return router;
+	}
+
+	/* </Router> */
+	
+	
+	
+	
+	
+	/* <Config> */
+
+	private static ConfigService config;
+
+	static void registerConfigService(ConfigService config) {
+		__T.call(Ntro.class, "registerConfigService");
+
+		Ntro.config = config;
+	}
+
+	public static ConfigService config() {
+		__T.call(Ntro.class, "config");
+
+		if(config == null) {
+			Log.fatalError("ConfigService not registered");
+		}
+
+		return config;
+	}
+
+	/* </Config> */
+	
+	
+	
+	
+	
+	/* <Calendar> */
+
+	private static CalendarService calendarService;
+
+	static void registerCalendarService(CalendarService calendarService) {
+		__T.call(Ntro.class, "registerCalendarService");
+
+		Ntro.calendarService = calendarService;
+	}
+
+	public static CalendarService calendar() {
+		__T.call(Ntro.class, "calendar");
+
+		if(calendarService == null) {
+			Log.fatalError("CalendarService not registered");
+		}
+
+		return calendarService;
+	}
+
+	/* </Calendar> */
 	
 	
 	
@@ -275,34 +379,16 @@ public class Ntro {
 	
 	/* <ModelStore> */
 
-	private static Class<? extends ModelStore> modelStoreClass;
-	private static Map<String, ModelStore> modelStores = new HashMap<>();
-	
-	// FIXME: we need a single store (so that multiple request update the same model)
-	//        but then we need to lock write access to model
 	private static ModelStore modelStore;
 
-	static void registerModelStoreClass(Class<? extends ModelStore> modelStoreClass) {
-		__T.call(Ntro.class, "registerModelStoreClass");
+	static void registerModelStore(ModelStore modelStore) {
+		__T.call(Ntro.class, "registerModelStore");
 
-		Ntro.modelStoreClass = modelStoreClass;
+		Ntro.modelStore = modelStore;
 	}
 
 	public static ModelStore modelStore() {
 		__T.call(Ntro.class, "modelStore");
-		
-		if(modelStore == null) {
-			modelStore = Ntro.factory().newInstance(modelStoreClass);
-		}
-
-		/*
-		ModelStore modelStore = modelStores.get(threadService().currentThread().getThreadId());
-
-		if(modelStore == null) {
-			modelStore = Ntro.factory().newInstance(modelStoreClass);
-			modelStores.put(threadService().currentThread().getThreadId(), modelStore);
-		}
-		*/
 
 		return modelStore;
 	}
@@ -315,18 +401,26 @@ public class Ntro {
 	
 	/* <BackendService> */
 
-	private static BackendService backendService;
+	private static Class<? extends BackendService> backendServiceClass;
+	private static Map<String, BackendService> backendServices = new HashMap<>();
 
-	static void registerBackendService(BackendService backendService) {
-		__T.call(Ntro.class, "registerBackendService");
+	static void registerBackendServiceClass(Class<? extends BackendService> backendServiceClass) {
+		__T.call(Ntro.class, "registerBackendServiceClass");
 
-		Ntro.backendService = backendService;
+		Ntro.backendServiceClass = backendServiceClass;
 	}
 
 	public static BackendService backendService() {
 		__T.call(Ntro.class, "backendService");
 
-		return backendService;
+		BackendService service = backendServices.get(threadService().currentThread().threadId());
+
+		if(service == null) {
+			service = Ntro.factory().newInstance(backendServiceClass);
+			backendServices.put(threadService().currentThread().threadId(), service);
+		}
+
+		return service;
 	}
 
 	/* </BackendService> */
@@ -398,29 +492,49 @@ public class Ntro {
 	
 	/* <UserService> */
 
-	private static Class<? extends UserService> userServiceClass;
-	private static Map<String, UserService> userServices = new HashMap<>();
-
-	static void registerUserServiceClass(Class<? extends UserService> userServiceClass) {
-		__T.call(Ntro.class, "registerUserServiceClass");
-
-		Ntro.userServiceClass = userServiceClass;
+	public static NtroUser currentUser() {
+		__T.call(Ntro.class, "userService");
+		
+		return currentSession().getUser();
 	}
 
-	public static UserService userService() {
-		__T.call(Ntro.class, "userService");
+	/* </UserService> */
+	
+	
+	
+	
+	
+	/* <SessionService> */
 
-		UserService service = userServices.get(threadService().currentThread().threadId());
+	private static Class<? extends SessionService> sessionServiceClass;
+	private static Map<String, SessionService> sessionServices = new HashMap<>();
+
+	static void registerSessionServiceClass(Class<? extends SessionService> sessionServiceClass) {
+		__T.call(Ntro.class, "registerSessionServiceClass");
+
+		Ntro.sessionServiceClass = sessionServiceClass;
+	}
+
+	public static NtroSession currentSession() {
+		__T.call(Ntro.class, "currentSession");
+
+		return sessionService().session();
+	}
+
+	public static SessionService sessionService() {
+		__T.call(Ntro.class, "sessionService");
+
+		SessionService service = sessionServices.get(threadService().currentThread().threadId());
 
 		if(service == null) {
-			service = Ntro.factory().newInstance(userServiceClass);
-			userServices.put(threadService().currentThread().threadId(), service);
+			service = Ntro.factory().newInstance(sessionServiceClass);
+			sessionServices.put(threadService().currentThread().threadId(), service);
 		}
 
 		return service;
 	}
 
-	/* </UserService> */
+	/* </SessionService> */
 	
 	
 	

@@ -44,5 +44,4 @@ public class EarlyInitializationJdk extends EarlyInitialization {
 	protected CollectionsService provideCollectionsService() {
 		return new CollectionsServiceJdk();
 	}
-
 }

@@ -6,6 +6,7 @@ import ca.ntro.messages.NtroMessage;
 public class ShowTaskMessage extends NtroMessage {
 	
 	private Path taskPath = new Path("/");
+	private String groupId;
 
 	public Path getTaskPath() {
 		return taskPath;
@@ -13,5 +14,13 @@ public class ShowTaskMessage extends NtroMessage {
 
 	public void setTaskPath(Path taskPath) {
 		this.taskPath = taskPath;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 }

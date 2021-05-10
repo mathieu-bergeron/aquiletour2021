@@ -3,14 +3,14 @@ package ca.aquiletour.server.backend.queue;
 import java.util.List;
 
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.queue.QueueModel;
-import ca.aquiletour.core.pages.queue.values.Appointment;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
-import ca.aquiletour.server.backend.queues.QueuesUpdater;
+import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class QueueUpdater {
 
@@ -53,10 +53,6 @@ public class QueueUpdater {
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
-
-		DashboardUpdater.deleteQueueForUser(modelStore, queueId, queue.getTeacherId());
-		
-		DashboardUpdater.deleteQueueForUsers(modelStore, queueId, queue.getStudentIds());
 	
 		modelStore.delete(queue);
 	}
@@ -71,10 +67,6 @@ public class QueueUpdater {
 		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
-
-		DashboardUpdater.openQueueForUser(modelStore, queueId, queue.getTeacherId());
-		
-		DashboardUpdater.openQueueForUsers(modelStore, queueId, queue.getStudentIds());
 		
 		modelStore.closeWithoutSaving(queue);
 
@@ -98,12 +90,6 @@ public class QueueUpdater {
 				queue.clearQueue();
 			}
 		});
-		
-
-		DashboardUpdater.closeQueueForUser(modelStore, queueId, queue.getTeacherId());
-		
-		DashboardUpdater.closeQueueForUsers(modelStore, queueId, queue.getStudentIds());
-		
 	}
 
 	public static int addStudentsToQueue(ModelStoreSync modelStore, 
@@ -142,8 +128,6 @@ public class QueueUpdater {
 
 		T.call(QueueUpdater.class);
 
-		DashboardUpdater.setMyAppointmentForUser(modelStore, queueId, user, true);
-
 		Appointment appointment = createAppointment(user);
 		
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
@@ -161,6 +145,7 @@ public class QueueUpdater {
 
 		Appointment appointment = new Appointment();
 
+		appointment.updateTime(Ntro.calendar().now());
 		appointment.setStudentId(user.getId());
 		appointment.setStudentName(user.getName());
 		appointment.setStudentSurname(user.getSurname());
@@ -188,11 +173,6 @@ public class QueueUpdater {
 		List<String> studentIds = queue.getStudentIds();
 
 		modelStore.closeWithoutSaving(queue);
-		
-		DashboardUpdater.setNumberOfAppointmentsForUser(modelStore, queueId, teacherId, nbAppointment);
-
-		DashboardUpdater.setNumberOfAppointmentsForUserIds(modelStore, queueId, studentIds, nbAppointment);
-
 	}
 
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
@@ -200,10 +180,8 @@ public class QueueUpdater {
 
 		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
 		
-		Appointment appointment = queue.findAppointmentById(appointmentId);
+		Appointment appointment = queue.appointmentById(appointmentId);
 
-		modelStore.closeWithoutSaving(queue);
-		
 		return appointment;
 	}
 
@@ -225,8 +203,6 @@ public class QueueUpdater {
 		
 		String appointmentOwnerId = deletedAppointment.getStudentId();
 		
-		DashboardUpdater.setMyAppointmentForUserId(modelStore, queueId, appointmentOwnerId, false);
-		
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}
 
@@ -246,5 +222,48 @@ public class QueueUpdater {
 				queue.moveAppointment(appointmentId, destinationId, beforeOrAfter);
 			}
 		});
+	}
+
+	public static void modifyAppointmentTimes(ModelStoreSync modelStore, int timeIncrementSeconds, User user) {
+		T.call(QueueUpdater.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.incrementAppointmentTimesSeconds(timeIncrementSeconds);
+			}
+		});
+	}
+
+	public static void modifyAppointmentDurations(ModelStoreSync modelStore, int durationIncrementSeconds, User user) {
+		T.call(QueueUpdater.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.modifyAppointmentDurations(durationIncrementSeconds);
+			}
+		});
+	}
+
+	public static void modifyAppointmentComment(ModelStoreSync modelStore, 
+			                                    String queueId, 
+			                                    String comment, 
+			                                    User student) {
+		T.call(QueueUpdater.class);
+
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.modifyAppointmentComment(student.getId(), comment);
+			}
+		});
+		
 	}
 }

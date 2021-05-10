@@ -1,17 +1,21 @@
 package ca.ntro.jdk.dom;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeFilter;
 
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
@@ -184,7 +188,7 @@ public class HtmlElementJdk extends HtmlElement {
 	public void show() {
 		String styleString = getStyleString();
 
-		styleString = styleString.replace("display:none;", "");
+		styleString = styleString.replace("display:none !important;", "");
 
 		jsoupElement.attr("style", styleString);
 	}
@@ -193,8 +197,8 @@ public class HtmlElementJdk extends HtmlElement {
 	public void hide() {
 		String styleString = getStyleString();
 		
-		if(!styleString.contains("display:none;")){
-			styleString += "display:none;";
+		if(!styleString.contains("display:none !important;")){
+			styleString += " display:none !important;";
 		}
 		
 		jsoupElement.attr("style", styleString);
@@ -221,13 +225,21 @@ public class HtmlElementJdk extends HtmlElement {
 		Document jsoupDocument = Jsoup.parse(html, StandardCharsets.UTF_8.name());
 
 		List<Node> childNodes = jsoupDocument.body().childNodes();
+		
+		List<Element> elements = new ArrayList<>();
+		
+		for(Node childNode : childNodes) {
+			if(childNode instanceof Element) {
+				elements.add((Element) childNode);
+			}
+		}
 
-		if(childNodes.size() == 1) {
-			result = (Element) childNodes.get(0);
+		if(elements.size() == 1) {
+			result = elements.get(0).clone();
 		}else {
-			result = new Element("span");
-			for(Node childNode : childNodes) {
-				result.appendChild(childNode.clone());
+			result = new Element("div");
+			for(Element childElement : elements) {
+				result.appendChild(childElement.clone());
 			}
 		}
 
@@ -249,4 +261,44 @@ public class HtmlElementJdk extends HtmlElement {
 		// XXX: not supported on the server
 	}
 
+	@Override
+	public void animate(Map<String, Object> properties, long duration, AnimationListener listener) {
+		listener.animationFinished();
+	}
+
+	@Override
+	public void css(String property, String value) {
+		// XXX: not supported on the server
+	}
+
+	@Override
+	public void css(String property, double value) {
+		// XXX: not supported on the server
+	}
+
+	@Override
+	public HtmlElement createTag(String tagName) {
+		return new HtmlElementJdk(new Element(Tag.valueOf(tagName),""));
+	}
+
+	@Override
+	public void removeAttribute(String name) {
+		T.call(this);
+		
+		jsoupElement.removeAttr(name);
+	}
+
+	@Override
+	public void addClass(String styleClass) {
+		T.call(this);
+		
+		jsoupElement.addClass(styleClass);
+	}
+
+	@Override
+	public void removeClass(String styleClass) {
+		T.call(this);
+
+		jsoupElement.removeClass(styleClass);
+	}
 }

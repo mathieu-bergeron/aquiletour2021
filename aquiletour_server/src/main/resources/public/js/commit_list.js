@@ -1,8 +1,8 @@
 function initializeCommitList(viewRootElement, jSweet) {
-    console.log("initializeCommitList");
-
     const commitList = viewRootElement.find("#commit-list li");
     var ctx = viewRootElement.find("#commitsChart");
+    var deadline = viewRootElement.find("#deadline");
+    deadline = parseInt($(deadline).text());
 
     var pointBackgroundColors = [0];// color of points
     var pointRadiusByEstimatedEffort = [0];//size of points
@@ -14,7 +14,8 @@ function initializeCommitList(viewRootElement, jSweet) {
     var modifiedFilesOfEachCommit = [];//
 
     var colors = [];// for deadlines
-    var deadlines = [1715215942 * 1000, 2715215941* 1000, 2015215942* 1000, 2215215942* 1000, 2615215941* 1000, 2515215941* 1000];
+    var deadlines = [];
+    deadlines.push(deadline);
     setAllCommitInfo();
     changeColors();
     var annotations = deadlines.map(function(epoch, index) {
@@ -36,7 +37,8 @@ function initializeCommitList(viewRootElement, jSweet) {
                 this.options.label.backgroundColor = 'rgba(0,0,0,0.8)';
                 this.options.label.fontSize = 18;
                 this.options.label.position = "center";
-                this.options.label.content = "Remise : " + new Date(epoch).toLocaleDateString('fr-ca', {
+                this.options.label.content = "Remise : " + new Date(epoch).toLocaleDateString('fr-ca', {         	
+                	year: 'numeric',
                     month: 'short',
                     day: 'numeric',
                     hour: 'numeric',
@@ -295,6 +297,4 @@ function initializeCommitList(viewRootElement, jSweet) {
         }
     }
     commitsChart.update();
-
-
 }

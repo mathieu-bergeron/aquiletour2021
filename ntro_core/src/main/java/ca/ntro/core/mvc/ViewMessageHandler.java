@@ -11,7 +11,14 @@ public abstract class ViewMessageHandler<V extends NtroView,
                 extends Handler
                 implements TaskWrapper {
 
-	private NtroTask mainTask = new ViewMessageHandlerTask<V, MSG>(this, "FIXME");
+	private ViewMessageHandlerTask<V,MSG> mainTask;
+
+	public void setMessageId(String messageId) {
+		T.call(this);
+
+		mainTask = new ViewMessageHandlerTask<V, MSG>(this, messageId);
+		mainTask.setTaskId(messageId);
+	}
 
 	@Override
 	public NtroTask getTask() {
@@ -35,4 +42,5 @@ public abstract class ViewMessageHandler<V extends NtroView,
 	}
 
 	protected abstract void handle(V view, MSG message);
+
 }

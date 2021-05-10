@@ -21,55 +21,42 @@
   margin: 0;
   list-style: none;
   margin-left: auto;
-  margin-right: auto;
-}
+  margin-right: auto; }
 
 /*progress bar*/
 input[type="checkbox"] {
-  height: 20px;
-  width: 20px;
-  margin-right: 10px;
-}
+  height: 15px;
+  width: 15px;
+  margin-right: 10px; }
 
 .ready {
-  font-size: 1.5em;
-}
+  font-size: 1.5em; }
 
 .ui-progressbar-value {
-  background: lightgreen;
-}
+  background-color: lightgreen !important; }
 
-.progressbar-container {
+.progressbar {
   position: relative;
-  width: 350px;
-}
+  width: auto; }
 
 .progressbar-bar {
   height: 25px;
   margin: 10px 0;
-  border-radius: 7px;
-}
+  border-radius: 7px; }
 
 .progressbar-label {
   position: absolute;
   top: 2px;
   left: 45%;
-  z-index: 2;
-}
+  z-index: 2; }
 
 /*cards*/
 .card {
   height: fit-content !important;
-  width: fit-content !important;
-}
+  width: fit-content !important; }
 
 .course-title {
-  margin-right: auto;
-}
-
-.mb-3 {
-  margin-bottom: 2rem !important;
-}
+  margin-right: auto; }
 
 /*Defines the circle inside a card*/
 .color {
@@ -78,40 +65,32 @@ input[type="checkbox"] {
   border-radius: 50%;
   display: inline-block;
   border: 1px solid black;
-  position: absolute;
-}
+  position: absolute; }
 
 .ghost {
   position: absolute;
-  background-color: #f7f7f7;
-}
+  background-color: #f7f7f7; }
 
 .ghost-header {
   position: relative;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   height: 41px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
 
 .ghost-header::before, .ghost-header::after {
   content: "";
   position: absolute;
   height: 8px;
-  background-color: rgba(0, 0, 0, 0.2);
-}
+  background-color: rgba(0, 0, 0, 0.2); }
 
 .ghost-header::after {
   top: auto;
-  background-color: rgba(0, 0, 0, 0.06);
-}
+  background-color: rgba(0, 0, 0, 0.06); }
 
 .ghost-body {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
-  height: 120px;
-}
+  height: 120px; }
 
 .ghost-body::before, .ghost-body::after {
   content: "";
@@ -119,14 +98,12 @@ input[type="checkbox"] {
   height: 16px;
   border-style: solid;
   border-width: 8px 0;
-  border-color: rgba(0, 0, 0, 0.08);
-}
+  border-color: rgba(0, 0, 0, 0.08); }
 
 .ghost-body::after {
   top: auto;
   bottom: 20px;
-  right: 72px;
-}
+  right: 72px; }
 
 .shimmering {
   position: absolute;
@@ -134,206 +111,155 @@ input[type="checkbox"] {
   right: 0;
   bottom: 0;
   left: 0;
-  -webkit-transform: translate3d(-100%, 0, 0);
-          transform: translate3d(-100%, 0, 0);
-  -webkit-animation: slide 1.6s infinite;
-          animation: slide 1.6s infinite;
+  transform: translate3d(-100%, 0, 0);
+  animation: slide 1.6s infinite;
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 99%, rgba(255, 255, 255, 0) 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), color-stop(50%, rgba(255, 255, 255, 0.6)), color-stop(99%, rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 0)));
   background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 99%, rgba(255, 255, 255, 0) 100%);
-  /* W3C */
-}
-
-@-webkit-keyframes slide {
-  0% {
-    -webkit-transform: translateX(-5%);
-            transform: translateX(-5%);
-  }
-  100% {
-    -webkit-transform: translateX(5%);
-            transform: translateX(5%);
-  }
-}
+  /* W3C */ }
 
 @keyframes slide {
   0% {
-    -webkit-transform: translateX(-5%);
-            transform: translateX(-5%);
-  }
+    transform: translateX(-5%); }
   100% {
-    -webkit-transform: translateX(5%);
-            transform: translateX(5%);
-  }
-}
+    transform: translateX(5%); } }
 
 .available-icon {
-  margin-left: 10px;
-}
+  margin-left: 10px; }
 
 .add-course-form {
-  margin-bottom: 40px;
-}
+  margin-bottom: 40px; }
 
 /*dashboard modal*/
 .dashboard-mFooter {
   position: absolute;
-  bottom: 0;
-}
+  bottom: 0; }
 
 .dashboard-mBody {
   text-align: justify;
   height: 15rem;
-  width: 15rem;
-}
+  width: 15rem; }
 
 .dashboard-mContent {
   width: fit-content;
-  height: fit-content;
-}
+  height: fit-content; }
 
 .btn-add-course {
-  top: 0;
-}
+  top: 0; }
 
 .queue {
   margin-left: 15%;
   margin-right: 15%;
-  margin-top: 10px;
-}
+  margin-top: 10px; }
 
 .queue-settings {
-  float: right;
-}
+  float: right; }
 
 .list-group-item {
   word-break: break-all;
   text-align: left;
-  height: auto;
-}
+  height: auto; }
 
 .navbar-brand {
-  margin-left: 1%;
-}
+  margin-left: 1%; }
+
+.bg-dark {
+  background-color: #24292e !important; }
 
 .navbar-collapse {
-  margin-left: 1%;
-}
+  margin-left: 1%; }
 
 .dropdown {
   position: absolute;
-  right: 0;
-}
+  right: 0; }
 
 .dropdown-menu {
   left: auto;
-  right: 0;
-}
+  right: 0; }
 
 .connect {
-  padding-right: 1rem !important;
-}
-
-#page-container {
-  padding-bottom: 2.5rem;
-  min-height: 100%;
-}
-
-.site-footer {
-  position: relative;
-  height: 150px;
-  bottom: 0;
-  width: 100%;
-  color: #737373;
-  line-height: 24px;
-  padding: 45px 0 20px;
-}
-.site-footer hr {
-  border-top-color: #bbb;
-  opacity: 0.5;
-}
-.site-footer hr.small {
-  margin: 20px 0;
-}
-.site-footer h6 {
-  color: #fff;
-  font-size: 16px;
-  text-transform: uppercase;
-  margin-top: 5px;
-  letter-spacing: 2px;
-}
+  padding-right: 1rem !important; }
 
 .img-homepage {
   height: 80vh;
-  margin: auto;
-}
+  margin: auto; }
 
 .carousel-indicators {
-  top: 0 !important;
-}
+  top: 0 !important; }
 
 .home-modal {
   width: auto;
-  top: 25rem !important;
-}
+  top: 25rem !important; }
 
-.role-container {
+.home-mBody {
+  text-align: justify;
+  height: fit-content;
+  width: fit-content; }
+
+.userInput {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0; }
+  .userInput:focus {
+    outline-width: 0;
+    border-bottom-color: blue; }
+
+#login-tabs {
   border-style: solid;
   border-color: #63999C;
   border-width: 2px;
   font-size: 1.2rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  display: flex;
-  width: fit-content;
-  letter-spacing: 0.5px;
-}
+  letter-spacing: 0.5px; }
 
-.home-mBody {
-  text-align: justify;
-  height: fit-content;
-  width: fit-content;
-}
+.login-tab {
+  width: 100%; }
 
-.userInput {
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-}
-.userInput:focus {
-  outline-width: 0;
-  border-bottom-color: blue;
-}
+.login-tab-link {
+  text-decoration: none;
+  color: black; }
 
-#roleStudent {
+.login-tab-selected {
+  background-color: lightgray; }
+
+#login-tab-student {
   border-right: 2px #63999C;
   border-style: solid;
   border-top: none;
   border-bottom: none;
-  border-left: none;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
+  border-left: none; }
 
-#roleTeacher {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
+#login-tab-teacher {
+  border-left: 2px #63999C;
+  border-style: solid;
+  border-top: none;
+  border-bottom: none;
+  border-right: none; }
+
+.breadcrumb-item {
+  font-size: 1.25rem;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  margin-right: 1rem; }
+  .breadcrumb-item a {
+    color: black !important;
+    text-decoration: none !important;
+    font-weight: bold !important; }
 
 html, body {
-  min-height: 100%;
-}
+  min-height: 100%; }
 
 body {
-  background-color: #63999C !important;
-}
+  background-color: #EBEDF0 !important; }
 
-.modal-content {
+/*
+.modal-content{
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
-
+*/
 #page-loader {
   position: absolute;
   top: 0;
@@ -345,9 +271,33 @@ body {
   text-align: center;
   width: 100%;
   padding-top: 25px;
-  background-color: rgba(255, 255, 255, 0.7);
-}
+  background-color: rgba(255, 255, 255, 0.7); }
+
+.breadcrumb {
+  width: fit-content;
+  position: relative !important; }
+
+/* Style to change separator  */
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ""; }
 
 /* For chatbox feature*/
+.disable-text-selection {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none; }
 
-/*# sourceMappingURL=aquiletour.css.map */
+.dot-container {
+  display: inline;
+  position: relative; }
+
+.dot {
+  height: 0.5rem;
+  width: 0.5rem;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  right: 0rem;
+  bottom: -0.5rem; }

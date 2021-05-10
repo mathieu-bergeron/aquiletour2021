@@ -1,7 +1,16 @@
 package ca.ntro.jsweet.dom;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
+
+
+import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
+import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
@@ -17,10 +26,15 @@ import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 import def.js.Function;
 
+import static jsweet.util.Lang.function;
+
 import static def.jquery.Globals.$;
 
 import static def.dom.Globals.document;
 
+import static def.dom.Globals.history;
+
+import static def.dom.Globals.window;
 
 public class HtmlElementJSweet extends HtmlElement {
 
@@ -65,7 +79,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void appendHtml(String html) {
 		T.call(this);
 
-		jQueryElement.append(parseHtml(html));
+		appendElement(new HtmlElementJSweet(parseHtml(html)));
 	}
 
 	@Override
@@ -75,8 +89,80 @@ public class HtmlElementJSweet extends HtmlElement {
 		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
 		
 		toAppend.show();
+
 		
 		jQueryElement.append(toAppend);
+
+		installFormAutosubmit(toAppend);
+	}
+
+	private void installFormAutosubmit(JQuery toAppend) {
+		T.call(this);
+
+		JQuery forms = toAppend.find("form");
+		forms.each(new BiFunction<Integer, Element, Object>() {
+			@Override
+			public Object apply(Integer t, Element formElement) {
+				T.call(this);
+
+				JQuery form = $(formElement);
+				form.off();
+				form.on("submit", new BiFunction<JQueryEventObject, Object, Object>() {
+					@Override
+					public Object apply(JQueryEventObject t, Object u) {
+						T.call(this);
+
+						t.preventDefault();
+						
+						String href = form.attr("action");
+						if(href == null || href.isEmpty()) {
+							href = window.location.pathname;
+						}else if(!href.startsWith("/")) {
+							href = window.location.pathname + href;
+						}
+						
+						Map<String, String[]> parameters = new HashMap<>();
+						JQuery formInputs = form.find("[name]");
+						putInputParameters(parameters, formInputs);
+
+						String formId = form.attr("id");
+						if(formId != null && !formId.isEmpty()) {
+							JQuery otherInputs = $(document).find("[form='"+formId+"']");
+							putInputParameters(parameters, otherInputs);
+							
+						}else {
+							formId = "unknownForm";
+						}
+
+						history.pushState(null, formId, href);
+						
+						Ntro.router().sendMessagesFor(Ntro.context(), new Path(href), parameters);
+
+						return null;
+					}
+				});
+				return null;
+			}
+		});
+	}
+
+	private void putInputParameters(Map<String, String[]> parameters, JQuery formInputs) {
+		T.call(this);
+
+		for(int i = 0; i < formInputs.length; i++) {
+			 JQuery formInput = $(formInputs.get(i));
+			 putInputParameter(formInput, parameters);
+		}
+	}
+
+	private void putInputParameter(JQuery formInput, Map<String, String[]> parameters) {
+		T.call(this);
+
+		String name = formInput.attr("name");
+		String value = formInput.val().toString();
+		if(value != null) {
+			parameters.put(name, new String[] {value});
+		}
 	}
 
 	@Override
@@ -132,8 +218,29 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void setAttribute(String name, String value) {
 		T.call(this);
-
+		
 		jQueryElement.attr(name, value);
+		
+		if(name.equals("href")) {
+			removeListeners();
+			addEventListener("click", new HtmlEventListener() {
+				@Override
+				public void onEvent() {
+					T.call(this);
+					
+					String fullHref = value;
+					
+					if(value.isEmpty() || value.startsWith("?") || value.startsWith("#")) {
+						
+						fullHref = window.location.pathname + value;
+					}
+
+					history.pushState(null, jQueryElement.text(), fullHref);
+
+					Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -178,20 +285,13 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public void html(String htmlString) {
 
-		// XXX: this would remove listeners
-		//jQueryElement.html("");
+		// XXX: jQueryElement.html("") would remove listeners
 		for(int i = 0; i < jQueryElement.length; i++) {
 			jQueryElement.get(i).innerHTML = "";
 		}
-		
-		if(htmlString != null) {
-			Object[] elementsToAppend = $.parseHTML(htmlString);
 
-			if(elementsToAppend != null) {
-				for(Object newElement : $.parseHTML(htmlString)) {
-					jQueryElement.append(newElement);
-				}
-			}
+		if(htmlString != null) {
+			appendElement(new HtmlElementJSweet(parseHtml(htmlString)));
 		}
 	}
 
@@ -200,15 +300,6 @@ public class HtmlElementJSweet extends HtmlElement {
 		return jQueryElement.html();
 	}
 
-	@Override
-	public void show() {
-		jQueryElement.show();
-	}
-
-	@Override
-	public void hide() {
-		jQueryElement.hide();
-	}
 
 	@Override
 	public HtmlElement createElement(String html) {
@@ -237,16 +328,30 @@ public class HtmlElementJSweet extends HtmlElement {
 	public static JQuery parseHtml(String html) {
 		T.call(HtmlElementJSweet.class);
 		
-		JQuery result = null;
+		JQuery result = $(document.createElement("div"));
 
-		Object[] parsedHtml = $.parseHTML(html, document, false);
+		// FIXME: this will remove duplicate ids
+		//        we cannot use ids in partials
+		Object[] nodes = $.parseHTML(html, document, false);
+		
+		List<Element> elements = new ArrayList<>();
+		for(Object nodeObject : nodes) {
+			if(nodeObject instanceof Element) {
+				Element element = (Element) nodeObject;
+				if(element.nodeType == 1 ) {
+					elements.add(element);
+				}
+			}
+		}
+		
+		if(elements.size() == 1) {
 
-		if(parsedHtml.length == 1) {
-			result = $(parsedHtml[0]);
-		}else {
-			result = $(document.createElement("span"));
-			for(Object parsedElement : parsedHtml) {
-				result.append($(parsedElement));
+			result = $(nodes[0]);
+
+		}else if(elements.size() > 0) {
+
+			for(Element element  : elements) {
+				result.append($(element));
 			}
 		}
 
@@ -276,5 +381,52 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public String text() {
 		return jQueryElement.text();
+	}
+
+	@Override
+	public void animate(Map<String, Object> properties, long duration, AnimationListener listener) {
+		T.call(this);
+		
+		jQueryElement.animate(properties, 
+				              duration, 
+				              function(()-> listener.animationFinished()));
+	}
+
+	@Override
+	public void css(String property, String value) {
+		T.call(this);
+		
+		jQueryElement.css(property, value);
+	}
+
+	@Override
+	public void css(String property, double value) {
+		T.call(this);
+		
+		jQueryElement.css(property, value);
+	}
+
+	@Override
+	public HtmlElement createTag(String tagName) {
+		return new HtmlElementJSweet($(tagName));
+	}
+
+	@Override
+	public void removeAttribute(String name) {
+		jQueryElement.removeAttr(name);
+	}
+
+	@Override
+	public void addClass(String styleClass) {
+		T.call(this);
+		
+		jQueryElement.addClass(styleClass);
+	}
+
+	@Override
+	public void removeClass(String styleClass) {
+		T.call(this);
+
+		jQueryElement.removeClass(styleClass);
 	}
 }

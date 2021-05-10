@@ -16,4 +16,9 @@ public class BackendServiceJdk extends BackendService {
 		throw new RuntimeException("TODO");
 	}
 
+	@Override
+	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
+		throw new RuntimeException("TODO");
+	}
+
 }

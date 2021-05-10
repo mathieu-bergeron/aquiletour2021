@@ -1,5 +1,7 @@
 package ca.aquiletour.core.models.users;
 
+import ca.ntro.core.system.trace.T;
+
 public class TeacherGuest extends Teacher {
 
 	@Override
@@ -19,4 +21,10 @@ public class TeacherGuest extends Teacher {
 		setSurname("");
 	}
 
+	@Override
+	public boolean actsAsTeacher() {
+		T.call(this);
+		
+		return true;
+	}
 }

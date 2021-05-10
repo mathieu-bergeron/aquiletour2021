@@ -2,7 +2,12 @@ package ca.aquiletour.core.pages.course.teacher;
 
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
+import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
+import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.handlers.CourseViewModelTeacher;
+import ca.aquiletour.core.pages.course.teacher.handlers.ShowCourseHandlerTeacher;
+import ca.aquiletour.core.pages.course.teacher.messages.ShowCourseMessageTeacher;
+import ca.aquiletour.core.pages.course.teacher.messages.ShowTaskMessageTeacher;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -28,10 +33,17 @@ public class CourseControllerTeacher extends CourseController {
 	}
 
 	@Override
+	protected Class<? extends ShowCourseMessage> showMessageClass() {
+		T.call(this);
+		
+		return ShowCourseMessageTeacher.class;
+	}
+
+	@Override
 	protected ControllerMessageHandler<?, ?, ?> showHandler() {
 		T.call(this);
 
-		return new ShowCourseHandler();
+		return new ShowCourseHandlerTeacher();
 	}
 
 	@Override
@@ -40,4 +52,12 @@ public class CourseControllerTeacher extends CourseController {
 
 		return new CourseViewModelTeacher();
 	}
+
+	@Override
+	protected Class<? extends ShowTaskMessage> showTaskMessageClass() {
+		T.call(this);
+
+		return ShowTaskMessageTeacher.class;
+	}
+
 }

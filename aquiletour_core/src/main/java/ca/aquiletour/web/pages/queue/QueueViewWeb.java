@@ -1,8 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
-import ca.aquiletour.core.pages.queue.AppointmentView;
-import ca.aquiletour.core.pages.queue.QueueView;
-import ca.aquiletour.core.pages.queue.values.Appointment;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -14,7 +13,7 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	private HtmlElement appointmentList;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
 		appointmentList = this.getRootElement().find("#appointment-list").get(0);

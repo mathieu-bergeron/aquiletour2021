@@ -24,7 +24,7 @@ public class RegExJSweet extends RegEx {
 
 	@Override
 	public Pattern compilePattern(String pattern) {
-		throw new RuntimeException("TODO: RegExJSweet");
+		return new PatternJSweet();
 	}
 
 }

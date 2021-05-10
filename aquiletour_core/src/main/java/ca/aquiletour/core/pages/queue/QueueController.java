@@ -1,5 +1,7 @@
 package ca.aquiletour.core.pages.queue;
 
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
+import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
@@ -9,7 +11,7 @@ import ca.ntro.core.system.trace.T;
 public abstract class QueueController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		// empty model loader until the ShowQueue message
@@ -26,7 +28,7 @@ public abstract class QueueController extends NtroController<RootController> {
 	
 	
 	@Override
-	protected void onChangeContext(NtroContext<?> previousContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 		
 //		 TODO: we can automatize this!

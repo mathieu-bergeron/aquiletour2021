@@ -11,7 +11,7 @@ import ca.ntro.core.system.trace.T;
 public class StudentSummariesController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(StudentSummariesView.class, "fr");
@@ -31,7 +31,7 @@ public class StudentSummariesController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> oldContext, NtroContext<?,?> context) {
 		// TODO Auto-generated method stub
 		
 	}

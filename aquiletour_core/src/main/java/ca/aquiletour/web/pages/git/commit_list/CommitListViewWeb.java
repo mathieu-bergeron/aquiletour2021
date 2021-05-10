@@ -12,7 +12,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 	}
 
@@ -29,13 +29,14 @@ public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 	}
 
 	@Override
-	public void displayCommitList(CommitListModel commitListModel) {
+	public void displayCommitList(CommitListModel commitListModel, long deadline) {
 		if(commitListModel.getCommits().size() <= CommitViewWeb.commitId ) {
 			CommitViewWeb.commitId = 1;
 		}
 		HtmlElement studentId = this.getRootElement().find("#studentId").get(0);
 		HtmlElement semesterId = this.getRootElement().find("#semesterId").get(0);
 		HtmlElement exercisePath = this.getRootElement().find("#exercisePath").get(0);
+		HtmlElement deadlineHtml = this.getRootElement().find("#deadline").get(0);
 		HtmlElement fromDate = this.getRootElement().find("#fromDate").get(0);
 		HtmlElement toDate = this.getRootElement().find("#toDate").get(0);
 		
@@ -45,11 +46,13 @@ public class CommitListViewWeb extends NtroViewWeb implements CommitListView {
 		MustNot.beNull(exercisePath);
 		MustNot.beNull(fromDate);
 		MustNot.beNull(toDate);
+		MustNot.beNull(deadlineHtml);
 		
 		studentId.appendHtml(commitListModel.getStudentId());
 		semesterId.appendHtml(commitListModel.getSemesterId());
 		exercisePath.appendHtml(commitListModel.getExercisePath());
 		fromDate.appendHtml(commitListModel.getFromDate());
 		toDate.appendHtml(commitListModel.getToDate());
+		deadlineHtml.appendHtml(Long.toString(deadline));
 	}
 }

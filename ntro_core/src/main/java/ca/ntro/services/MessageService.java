@@ -3,7 +3,6 @@ package ca.ntro.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.MessageHandlerTask;
@@ -28,6 +27,8 @@ public abstract class MessageService {
 	}
 
 	public void registerHandlerTask(Class<? extends NtroMessage> messageClass, MessageHandlerTask messageHandlerTask) {
+		T.call(this);
+		
 		// JSWEET: compilation error with <MSG extends NtroMessage>
 		handlers.put(messageClass, new MessageHandler() {
 			@Override
@@ -37,10 +38,24 @@ public abstract class MessageService {
 			}
 		});
 	}
+	
+	protected <M extends NtroMessage> boolean handlerExistsFor(M message) {
+		T.call(this);
+		
+		return handlers.containsKey(message.getClass());
+	}
 
 	@SuppressWarnings("unchecked")
 	public <M extends NtroMessage> void send(M message) {
-		if(handlers.containsKey(message.getClass())) {
+		T.call(this);
+		
+		// XXX: user might have changed after message creation
+		//      e.g. in the case of a login
+		if(message instanceof NtroUserMessage) {
+			((NtroUserMessage) message).setUser(Ntro.currentUser());
+		}
+		
+		if(handlerExistsFor(message)) {
 
 			MessageHandler<M> handler = (MessageHandler<M>) handlers.get(message.getClass());
 			handler.handle(message);
@@ -65,9 +80,9 @@ public abstract class MessageService {
 		T.call(this);
 
 		MSG message = Ntro.factory().newInstance(messageClass);
-		
+
 		if(message instanceof NtroUserMessage) {
-			((NtroUserMessage) message).setUser(Ntro.userService().user());
+			((NtroUserMessage) message).setUser(Ntro.currentUser());
 		}
 
 		return message;
@@ -89,5 +104,9 @@ public abstract class MessageService {
 		Ntro.messages().registerHandlerTask(messageClass, handlerTask);
 
 		return handlerTask;
+	}
+	
+	public void sendQueuedMessages() {
+		// XXX: must be redefined on the server
 	}
 }

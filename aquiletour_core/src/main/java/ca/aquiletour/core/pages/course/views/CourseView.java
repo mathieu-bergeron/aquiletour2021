@@ -1,17 +1,40 @@
 package ca.aquiletour.core.pages.course.views;
 
-import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.course.models.TaskBreadcrumbs;
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
+import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.dates.CourseDate;
 import ca.ntro.core.mvc.NtroView;
 
 public interface CourseView extends NtroView  {
 
-	void displayBreadcrumbs(String courseId, TaskBreadcrumbs breadcrumps);
+	void displayBreadcrumbs(CoursePath coursePath, TaskBreadcrumbs breadcrumps);
 
-	void insertTask(int index, TaskView taskView);
-	void appendTask(TaskView taskView);
+	void clearSubtasks();
+	void insertSubtask(int index, TaskView taskView);
+	void appendSubtask(TaskView taskView);
 
-	void identifyCurrentTask(String courseId, Task task);
+	void identifyCurrentTask(CoursePath coursePath, Task task);
 
-	void clearTasks();
+	void hidePreviousTasks();
+	void showPreviousTasks();
+	void clearPreviousTasks();
+	void appendPreviousTask(CoursePath coursePath, Task previousTask);
+
+	void hideNextTasks();
+	void showNextTasks();
+	void clearNextTasks();
+	void appendNextTask(CoursePath coursePath, Task nextTask);
+
+	void displayTaskTitle(String title, boolean editable);
+	void displayTaskDescription(String description, boolean editable);
+	void displayTaskEndTime(AquiletourDate endTime, boolean editable);
+
+	void clearTaskTypes();
+	void appendTaskType(TaskType item);
+
+	void showUneditableComponents(boolean show);
+
 }

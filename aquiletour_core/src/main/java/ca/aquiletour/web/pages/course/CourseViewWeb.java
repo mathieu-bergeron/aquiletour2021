@@ -1,101 +1,268 @@
 package ca.aquiletour.web.pages.course;
 
-import ca.aquiletour.core.pages.course.models.Task;
-import ca.aquiletour.core.pages.course.models.TaskBreadcrumbs;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
+import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class CourseViewWeb extends NtroViewWeb implements CourseView {
+public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 
-	private HtmlElement taskIdInput;
-	private HtmlElement taskContainer;
+	private HtmlElement taskTitle;
+	private HtmlElement subTaskContainer;
 	private HtmlElement breadcrumbsContainer;
+	private HtmlElement previousTaskContainer;
+	private HtmlElement previousTaskList;
+	private HtmlElement nextTaskList;
+	private HtmlElement nextTaskContainer;
+	private HtmlElement taskTypeContainer;
+
+	private HtmlElement uneditableDescription;
+	private HtmlElement uneditableEndtime;
 
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
-		taskContainer = this.getRootElement().find("#tasks-container").get(0);
+		subTaskContainer = this.getRootElement().find("#subtask-container").get(0);
 		breadcrumbsContainer = this.getRootElement().find("#breadcrumbs-container").get(0);
-		taskIdInput = this.getRootElement().find("#task-id-input").get(0);
+		taskTitle = this.getRootElement().find("#task-title").get(0);
+		previousTaskContainer = this.getRootElement().find("#previous-task-container").get(0);
+		nextTaskContainer= this.getRootElement().find("#next-task-container").get(0);
+		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
+		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
+		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
+		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
+		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
-		MustNot.beNull(taskContainer);
+
+		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
-		MustNot.beNull(taskIdInput);
+		MustNot.beNull(taskTitle);
+		MustNot.beNull(previousTaskList);
+		MustNot.beNull(previousTaskContainer);
+		MustNot.beNull(nextTaskList);
+		MustNot.beNull(nextTaskContainer);
+		MustNot.beNull(taskTypeContainer);
+		MustNot.beNull(uneditableEndtime);
+		MustNot.beNull(uneditableDescription);
+		
+		previousTaskContainer.hide();
+		nextTaskContainer.hide();
 	}
 
 	@Override
-	public void insertTask(int index, TaskView taskView) {
+	public void showUneditableComponents(boolean show) {
 		T.call(this);
 		
-		HtmlElement taskElement = ((TaskViewWeb) taskView).getRootElement();
+		if(show) {
 
-		if(index >= 0 && index < taskContainer.children("*").size()) {
-
-			HtmlElement anchorElement = taskContainer.children("*").get(index);
-			taskContainer.insertBefore(anchorElement);
+			uneditableEndtime.show();
+			uneditableDescription.show();
 
 		}else {
 
-			taskContainer.appendElement(taskElement);
+			uneditableEndtime.hide();
+			uneditableDescription.hide();
 		}
 	}
 
 	@Override
-	public void displayBreadcrumbs(String courseId, TaskBreadcrumbs breadcrumps) {
+	public void insertSubtask(int index, TaskView taskView) {
 		T.call(this);
+		
+		HtmlElement taskElement = ((TaskViewWeb) taskView).getRootElement();
+
+		if(index >= 0 && index < subTaskContainer.children("*").size()) {
+
+			HtmlElement anchorElement = subTaskContainer.children("*").get(index);
+			subTaskContainer.insertBefore(anchorElement);
+
+		}else {
+
+			subTaskContainer.appendElement(taskElement);
+		}
+	}
+
+	@Override
+	public void displayBreadcrumbs(CoursePath coursePath, TaskBreadcrumbs breadcrumps) {
+		T.call(this);
+		
+		breadcrumbsContainer.deleteChildrenForever();
 		
 		breadcrumps.forEachTask(t -> {
-			HtmlElement taskLi = breadcrumbsContainer.createElement("<li class='breadcrumb-item'></li>");
-			HtmlElement anchor = taskLi.createElement("<a></a>");
-			taskLi.appendElement(anchor);
+
+			HtmlElement taskLi = taskLi(coursePath, "breadcrumb-item", t);
+
 			breadcrumbsContainer.appendElement(taskLi);
-			/*
+
 			if(t.parent() != null) {
-				taskLi.appendHtml("&nbsp;&nbsp;&nbsp;alternatives: [");
-				t.forEachSibling(s -> {
-					
-					HtmlElement siblingAnchor = taskLi.createElement("<a></a>");
-					taskLi.appendElement(siblingAnchor);
-					taskLi.appendHtml(",&nbsp;");
-					siblingAnchor.text(s.getTitle());
-					siblingAnchor.setAttribute("href", "/cours/" + courseId + s.id());
-				});
-
-				taskLi.appendHtml("]");
-			}*/
-
-			anchor.text(t.getTitle());
-			anchor.setAttribute("href", "/cours/" + courseId + t.id());
+				taskLi.setAttribute("siblings", siblingsJson(coursePath, t).replace("\"", "\\\""));
+			}
 		});
 	}
+	
+	private String siblingsJson(CoursePath coursePath, Task task) {
+		T.call(this);
+
+		List<Map<String, String>> siblings = new ArrayList<>();
+		
+		task.forEachSibling(t -> {
+			Map<String, String> sibling = new HashMap<>();
+			
+			sibling.put("text", t.getTitle().getValue());
+			sibling.put("href", Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + t.id());
+			
+			siblings.add(sibling);
+		});
+		
+		return Ntro.jsonService().toString(siblings);
+	}
+
 
 	@Override
-	public void identifyCurrentTask(String courseId,Task task) {
+	public void clearSubtasks() {
 		T.call(this);
 		
-		taskIdInput.value(task.id());
+		subTaskContainer.deleteChildrenForever();
 	}
 
 	@Override
-	public void clearTasks() {
-		T.call(this);
-		
-		taskContainer.deleteChildrenForever();
-	}
-
-	@Override
-	public void appendTask(TaskView taskView) {
+	public void appendSubtask(TaskView taskView) {
 		T.call(this);
 
 		HtmlElement taskElement = ((TaskViewWeb) taskView).getRootElement();
 		
-		taskContainer.appendElement(taskElement);
+		subTaskContainer.appendElement(taskElement);
 	}
 
+	@Override
+	public void clearPreviousTasks() {
+		T.call(this);
+		
+		previousTaskList.deleteChildrenForever();
+	}
+
+	@Override
+	public void appendPreviousTask(CoursePath coursePath, Task previousTask) {
+		T.call(this);
+		
+		previousTaskList.appendElement(taskLi(coursePath, "list-group-item", previousTask));
+	}
+	
+	private HtmlElement taskLi(CoursePath coursePath, String styleClass, Task task) {
+		T.call(this);
+
+		HtmlElement taskLi = taskTitle.createElement("<li></li>");
+		taskLi.setAttribute("class", styleClass);
+
+		HtmlElement anchor = taskLi.createElement("<a></a>");
+		taskLi.appendElement(anchor);
+
+		anchor.text(task.getTitle().getValue());
+		anchor.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + task.id());
+		
+		return taskLi;
+	}
+
+	@Override
+	public void clearNextTasks() {
+		T.call(this);
+		
+		nextTaskList.deleteChildrenForever();
+	}
+
+	@Override
+	public void appendNextTask(CoursePath coursePath, Task nextTask) {
+		T.call(this);
+		
+		nextTaskList.appendElement(taskLi(coursePath, "list-group-item", nextTask));
+	}
+
+	@Override
+	public void hidePreviousTasks() {
+		T.call(this);
+		
+		previousTaskContainer.hide();
+	}
+
+	@Override
+	public void showPreviousTasks() {
+		T.call(this);
+		
+		previousTaskContainer.show();
+	}
+
+	@Override
+	public void hideNextTasks() {
+		T.call(this);
+		
+		nextTaskContainer.hide();
+	}
+
+	@Override
+	public void showNextTasks() {
+		T.call(this);
+		
+		nextTaskContainer.show();
+	}
+
+	@Override
+	public void displayTaskTitle(String title, boolean editable) {
+		T.call(this);
+
+		taskTitle.text(title);
+	}
+
+	@Override
+	public void displayTaskDescription(String description, boolean editable) {
+		T.call(this);
+
+		uneditableDescription.text(description);
+	}
+
+	@Override
+	public void appendTaskType(TaskType item) {
+		T.call(this);
+		
+		String taskTypeText = taskTypeContainer.text();
+		
+		if(taskTypeText == null || taskTypeText.isEmpty()) {
+			
+			taskTypeContainer.text(item.toString());
+
+		}else {
+
+			taskTypeContainer.text(taskTypeText + ", " + item.toString());
+		}
+	}
+
+	@Override
+	public void clearTaskTypes() {
+		T.call(this);
+
+		taskTypeContainer.deleteChildrenForever();
+		taskTypeContainer.text("");
+	}
+
+	@Override
+	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+		T.call(this);
+
+		uneditableEndtime.text(endTime.toString());
+	}
 }

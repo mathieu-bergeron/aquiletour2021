@@ -1,23 +1,15 @@
 package ca.aquiletour.core.pages.course.messages;
 
+import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.course.models.Task;
 import ca.ntro.core.Path;
 import ca.ntro.messages.NtroUserMessage;
 
-public class AddPreviousTaskMessage extends NtroUserMessage<User> {
+public class AddPreviousTaskMessage extends CourseMessage {
 	
-	private String courseId;
 	private Path nextPath;
 	private Task previousTask;
-
-	public String getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
-	}
 
 	public Path getNextPath() {
 		return nextPath;

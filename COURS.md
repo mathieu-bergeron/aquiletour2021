@@ -1,3 +1,63 @@
+# Vues
+
+1. Planifier une session
+    * ajouter une session (officielle ou personalisée)
+    * ajouter des cours et créer des groupes
+    * entrer l'horaire du prof
+
+1. Vue «Cours» générique: naviguer le calendrier de cours (et on peut ajouter)
+1. Vue «Dashboard» générique: liste d'items et on peut en ajouter
+
+1. Vue «Cours» générique où
+    * on a toujours un breadcrumbs
+    * on a toujours un sélecteur de groupe
+    * le genre de carte affichée est différent
+
+1. Sélecteur dans le calendrier de cours
+    aPlan de cours: `/cours/`
+    * on a toujours un breadcrumbs
+    * on a toujours un breadcrumbs
+    * H2021:          `/groupes/?g=*`
+    * H2021-groupe01  `/groupes/`
+    * H2021-groupe02  ``
+    * 1234500         `/etudiants`
+    * 1234500-git     `/etudiants`
+
+1. L'usager a l'impression de naviguer un seul calendrier
+   de cours, mais en réalité on passe d'un modèle à l'autre
+
+
+# Modèles
+
+1. On a:
+    * CourseModel: plan de cours
+    * CourseSemester: plan de cours + info pour une session
+    * CourseStudent: plan de cours + info pour un étudiant
+
+
+# Modèles
+
+1. Prof:
+    1. Tableau de bord (CoursSession)
+        * résumé pour tous les groupes
+        * lien vers le cours
+        * lien vers les groupes
+        * lien vers la file d'attente
+    1. Cours (plan de cours, dates abstraites: samedi de la semaine 10)
+    2. Groupe (dates concrètes, 4 oct)
+        * choix du groupe avec 
+        * liste d'étudiants
+        * option: un choix dans le CoursSession (groupe01, groupe02, tous)
+    3. CoursSession 
+        * (résumé de plusieurs groupes, dates abstraites)
+
+1. Étudiant: CoursGroupe
+
+1. Session: 
+    * éditable par un SuperUser
+    * calendrier de la session (semaine - jour)
+
+
 # Point de vue étudiant
 
 ## Groupe

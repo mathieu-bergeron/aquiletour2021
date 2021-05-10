@@ -31,13 +31,13 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 	private NtroTask mainTask = new ContainerTask();
 	private NtroTask initTasks = new ContainerTask();
-	private NtroContext<?> context;
+	private NtroContext<?,?> context;
 	private Path path;
 	
 	private List<NtroAbstractController> subControllers = new ArrayList<>();
 	
-	protected abstract void onCreate(NtroContext<?> context);
-	protected abstract void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context);
+	protected abstract void onCreate(NtroContext<?,?> context);
+	protected abstract void onChangeContext(NtroContext<?,?> oldContext, NtroContext<?,?> context);
 	protected abstract void onFailure(Exception e);
 
 	public NtroAbstractController() {
@@ -325,6 +325,12 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?> handler) {
 		T.call(this);
 
+		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
+		handler.setMessageId(messageId);
+
+		handler.getTask().addPreviousTask(messageHandlerTask);
+
 		mainTask.addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, VIEW_CREATOR_TASK_ID);
 	}
@@ -343,6 +349,12 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		setModelLoader(Ntro.modelStore().getModelLoaderFromRequest(serviceUrl, message));
 	}
 
+	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) {
+		T.call(this);
+
+		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelPath));
+	}
+
 	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, String modelId) {
 		T.call(this);
 
@@ -358,7 +370,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	public void changeUser(NtroUser user) {
 		
 		// FIXME: clone context
-		NtroContext<?> oldContext = context;
+		NtroContext<?,?> oldContext = context;
 
 		context.registerUser(user);
 

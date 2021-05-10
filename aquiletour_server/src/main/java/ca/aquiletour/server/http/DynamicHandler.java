@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -38,15 +39,19 @@ import org.eclipse.jetty.util.UrlEncoded;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
-import ca.aquiletour.core.models.users.Guest;
+import ca.aquiletour.core.messages.InitializeSessionMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
+import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
+import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
+import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
@@ -55,11 +60,11 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
-import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.Session;
+import ca.ntro.users.NtroSession;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -123,31 +128,43 @@ public class DynamicHandler extends AbstractHandler {
 		System.out.println("");
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
-		
-		// This will register a Ntro.userService().currentUser()
-		// (possibly a Guest)
-		sendLoginMessagesAccordingToCookies(baseRequest);
+
+		Enumeration<String> names = baseRequest.getParameterNames();
+		while(names.hasMoreElements()) {
+			String paramName = names.nextElement();
+			String paramValue = baseRequest.getParameter(paramName);
+			System.out.println(paramName + " " + paramValue);
+		}
+
+		sendSessionMessagesAccordingToCookies(baseRequest);
+
+		setCurrentSemester();
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
-		AquiletourBackendRequestHandler.sendMessages(path, parameters);
 
-		// currentUser might have changed
-		setUserCookie(response);
+		executeBackend(baseRequest, response, path, parameters);
 
-		sendCsvMessage(baseRequest);
+		setCurrentSemester();
 
-		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
+		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
+		//boolean ifJSweet = false;
 
-		NtroWindowServer window = newWindow(ifJsOnly, path);
-		
-		if(!ifJsOnly) {
+		NtroWindowServer window = newWindow(ifJSweet, path);
+		//NtroWindowServer window = newWindow(true, path);
+
+		if(!ifJSweet) {
+
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
+
+		}else {
+			
+			// FIXME: the taskGraph itself should have a notion
+			//        of queued messages
+			Ntro.messages().sendQueuedMessages();
 		}
-		
-		//System.out.println(rootController.getTask().toString());
-		
-		// XXX the entire taskGraph is not really async
+
+		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
 		if(!baseRequest.isHandled()) {
@@ -157,21 +174,50 @@ public class DynamicHandler extends AbstractHandler {
 		}
 	}
 
+	private void executeBackend(Request baseRequest, HttpServletResponse response, Path path,
+			Map<String, String[]> parameters) throws IOException {
+
+		NtroContext<User, SessionData> context = createNtroContext();
+
+		try {
+
+			AquiletourBackendRequestHandler.sendMessages(context, path, parameters);
+
+		}catch(UserInputError e) {
+
+			NtroErrorMessage displayErrorMessage = Ntro.messages().create(NtroErrorMessage.class);
+			displayErrorMessage.setMessage(e.getMessage());
+			Ntro.messages().send(displayErrorMessage);
+		}
+
+		setSessionCookie(response);
+
+		sendCsvMessage(baseRequest);
+	}
+
 	private void sendCsvMessage(Request baseRequest) throws IOException {
-		if(Ntro.userService().user() instanceof Teacher) {
+		if(Ntro.currentUser() instanceof Teacher) {
+
 			
-			String queueId = baseRequest.getParameter("queueId");
+			String semesterId = baseRequest.getParameter("semesterId");
+			String courseId = baseRequest.getParameter("courseId");
 			Part filePart = null;
 			try {
 				filePart = baseRequest.getPart("csvFile");
 			} catch (IOException | ServletException e) {}
-
-			if(queueId != null && filePart != null) {
+			
+			if(semesterId != null && courseId != null && filePart != null) {
+				
 				String fileContent = readPart(filePart);
 				
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
+
+				addStudentCsvMessage.setTeacherId(Ntro.currentUser().getId());
+				addStudentCsvMessage.setSemesterId(semesterId);
+				addStudentCsvMessage.setCourseId(courseId);
 				addStudentCsvMessage.setCsvString(fileContent);
-				addStudentCsvMessage.setQueueId(queueId);
+				addStudentCsvMessage.setCsvFilename(filePart.getSubmittedFileName());
+
 				Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
 			}
 		}
@@ -190,21 +236,32 @@ public class DynamicHandler extends AbstractHandler {
 		return builder.toString();
 	}
 
-	private void sendLoginMessagesAccordingToCookies(Request baseRequest) {
+	private void sendSessionMessagesAccordingToCookies(Request baseRequest) {
 		T.call(this);
 
-		AuthenticateSessionUserMessage authenticateSessionUserMessage = Ntro.messages().create(AuthenticateSessionUserMessage.class);
+		InitializeSessionMessage authenticateSessionUserMessage = Ntro.messages().create(InitializeSessionMessage.class);
 
-		if(hasCookie(baseRequest, "user")) {
+		if(hasCookie(baseRequest, "session")) {
+			String sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
+			NtroSession session = Ntro.jsonService().fromString(NtroSession.class, sessionString);
 
-			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
-			User sessionUser = Ntro.jsonService().fromString(User.class, userString);
-			
-			authenticateSessionUserMessage.setSessionUser(sessionUser);
-
+			authenticateSessionUserMessage.setSessionUser((User) session.getUser());
 		}
 
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
+	}
+
+	private void setCurrentSemester() {
+		T.call(this);
+		
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModel.class, "admin", Ntro.currentUser().getId());
+		modelLoader.execute();
+		SemesterListModel semesterList = (SemesterListModel) modelLoader.getModel();
+		Ntro.modelStore().save(semesterList);
+		
+		SessionData sessionData = new SessionData();
+		sessionData.setCurrentSemester(semesterList.getCurrentSemesterId().getValue());
+		Ntro.currentSession().setSessionData(sessionData);
 	}
 
 	private void executeFrontendOnServer(Request baseRequest, 
@@ -213,18 +270,17 @@ public class DynamicHandler extends AbstractHandler {
 			                             Map<String, String[]> parameters,
 			                             NtroWindowServer window) {
 		
-		
 		handleRedirections(baseRequest, response, path);
 
-		NtroContext<User> context = new NtroContext<>();
-		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.userService().user());
-		
+		NtroContext<User, SessionData> context = createNtroContext();
+
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
 
 		// NORMAL
 		RootController rootController =  ControllerFactory.createRootController(RootController.class, path, window, context);
+		
+		Ntro.messages().sendQueuedMessages();
 
 		// Client controller executes after
 		// to make sure modifications to the
@@ -235,14 +291,16 @@ public class DynamicHandler extends AbstractHandler {
 
 		AquiletourRequestHandler.sendMessages(context, path, parameters);
 
-		// DEBUG
-		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowUsersMessage.class));
-		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
-
-		//rootController.getTask().destroy();
-		
 		// XXX: prepare for next request
 		Ntro.reset();
+	}
+
+	private NtroContext<User, SessionData> createNtroContext() {
+		NtroContext<User, SessionData> context = new NtroContext<>();
+		context.registerLang(Constants.LANG); // TODO
+		context.registerUser((User) Ntro.currentUser());
+		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		return context;
 	}
 
 	private void handleRedirections(Request baseRequest, HttpServletResponse response, Path path) {
@@ -284,52 +342,53 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 
-	private void setUserCookie(HttpServletResponse response) {
+	private void setSessionCookie(HttpServletResponse response) {
 		T.call(this);
 		
-		User currentUser = (User) Ntro.userService().user();
-		User sessionUser = currentUser.toSessionUser();
-		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
+		NtroSession session = Ntro.currentSession();
+		User user = (User) session.getUser();
+		session.setUser(user.toSessionUser());
+		setCookie(response, "session", Ntro.jsonService().toString(session));
 	}
-	
+
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
 		
-		boolean ifJsOnly = true;
+		boolean ifJSweet = false;
 
-		if(baseRequest.getParameter("nojs") != null) {
+		if(baseRequest.getParameter("nojsweet") != null) {
 			
-			setCookie(response, "jsOnly" , "false" );
-			ifJsOnly = false;
+			setCookie(response, "jsweet" , "false" );
+			ifJSweet = false;
 
-		} else if(baseRequest.getParameter("js") != null) {
+		} else if(baseRequest.getParameter("jsweet") != null) {
 			
-			setCookie(response, "jsOnly" , "true" );
-			ifJsOnly = true;
+			setCookie(response, "jsweet" , "true" );
+			ifJSweet = true;
 			
-		}else if(hasCookie(baseRequest, "jsOnly")) {
+		}else if(hasCookie(baseRequest, "jsweet")) {
 			
-			String jsOnlyCookie = getCookie(baseRequest, "jsOnly");
-			ifJsOnly = Boolean.valueOf(jsOnlyCookie);
+			String jsOnlyCookie = getCookie(baseRequest, "jsweet");
+			ifJSweet = Boolean.valueOf(jsOnlyCookie);
 
 		}
 		
-		return ifJsOnly;
+		return ifJSweet;
 
 	}
 
-	private NtroWindowServer newWindow(boolean ifJsOnly, Path path) {
+	private NtroWindowServer newWindow(boolean ifJSweet, Path path) {
 		T.call(this);
 
 		NtroWindowServer newWindow;
 
-		if(ifJsOnly) {
+		if(ifJSweet) {
 
 			newWindow = new NtroWindowServer("/private/index.html");
 			
 		}else {
 
-			newWindow = new NtroWindowServer("/private/nojs.html");
+			newWindow = new NtroWindowServer("/private/nojsweet.html");
 
 		} 
 
@@ -379,7 +438,7 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCookie(HttpServletResponse response, String name, String value) {
 		T.call(this);
 		
-		String trimmedValue = value.replace(" ", "");
+		String trimmedValue = value.replace(" ", "%20");
 
 		String urlEncodedString = UrlEncoded.encodeString(trimmedValue);
 		

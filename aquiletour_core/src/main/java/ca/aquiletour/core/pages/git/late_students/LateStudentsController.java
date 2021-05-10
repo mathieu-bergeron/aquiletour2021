@@ -14,7 +14,7 @@ import ca.ntro.core.system.trace.T;
 public class LateStudentsController extends NtroController<RootController> {
 
 	@Override
-	protected void onCreate(NtroContext<?> context) {
+	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
 		setViewLoader(LateStudentsView.class, "fr");
@@ -34,7 +34,7 @@ public class LateStudentsController extends NtroController<RootController> {
 	}
 
 	@Override
-	protected void onChangeContext(NtroContext<?> oldContext, NtroContext<?> context) {
+	protected void onChangeContext(NtroContext<?,?> oldContext, NtroContext<?,?> context) {
 		// TODO Auto-generated method stub
 		
 	}

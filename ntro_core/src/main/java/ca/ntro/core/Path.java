@@ -199,4 +199,38 @@ public class Path implements JsonSerializable {
 		return parentPath;
 	}
 
+	public void addName(String name) {
+		T.call(this);
+		
+		getNames().add(name);
+	}
+
+	public String lastName() {
+		T.call(this);
+
+		int nameCount = nameCount();
+		return name(nameCount-1);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if(other == this) return true;
+		if(other == null) return false;
+		if(other instanceof Path) {
+			Path otherPath = (Path) other;
+			
+			if(otherPath.nameCount() != nameCount()) return false;
+			
+			for(int i = 0; i < otherPath.nameCount(); i++) {
+				if(!name(i).equals(otherPath.name(i))) {
+					return false;
+				}
+			}
+			
+			return true;
+		}
+
+		return false;
+	}
+
 }

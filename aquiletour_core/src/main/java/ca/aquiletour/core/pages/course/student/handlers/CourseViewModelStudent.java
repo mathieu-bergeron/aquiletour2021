@@ -1,38 +1,38 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
+import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.courses.task_types.GitExerciseTask;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
-import ca.aquiletour.core.pages.course.models.CourseModel;
-import ca.aquiletour.core.pages.course.models.Task;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
-import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
-public class CourseViewModelStudent extends CourseViewModel {
+public class CourseViewModelStudent extends CourseViewModel<CourseModel, CourseViewStudent> {
 
 	@Override
-	protected void handle(CourseModel model, CourseView view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(CourseModel model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 		
-		/*
-		if(getCurrentTask() != null && isTaskEmpty(getCurrentTask())) {
-			
-			((CourseViewStudent) view).displayGitRepoForm();
-
-		}else {
-
-			((CourseViewStudent) view).hideGitRepoForm();
-
-		}*/
-	}
-	
-	private boolean isTaskEmpty(Task task) {
-		T.call(this);
 		
-		return task.getPreviousTasks().size() == 0
-				&& task.getSubTasks().size() == 0
-				&& task.getNextTasks().size() == 0;
+		if(currentTask() != null
+				&& currentTask().hasType(GitExerciseTask.class)) {
+			
+			view.showCompletionCheckbox(false);
+
+		}
+	}
+
+	@Override
+	protected void displayStudentCompletion(String studentId, TaskCompletion completion, CourseViewStudent view) {
+		T.call(this);
+
+		if(studentId.equals(Ntro.currentUser().getId())) {
+			
+			view.checkCompletion(true);
+		}
 	}
 }

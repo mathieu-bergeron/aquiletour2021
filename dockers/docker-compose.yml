@@ -23,8 +23,8 @@ services:
   aqltweb:
     container_name: aqlt_web
     build:
-      context: ../.
-      dockerfile: dockers/aquiletour/Dockerfile
+      context: ../../
+      dockerfile: aquiletour2021/dockers/aquiletour/Dockerfile
     tty: true
     networks:
       - aqlt_net

@@ -3,4 +3,3 @@ ENV MYSQL_ROOT_PASSWORD=test
 ENV MYSQL_DATABASE=monimplicationdb
 ENV MYSQL_USER=monimplication
 ENV MYSQL_PASSWORD=passw0rd
-

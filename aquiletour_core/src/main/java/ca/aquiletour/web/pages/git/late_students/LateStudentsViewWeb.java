@@ -14,7 +14,7 @@ import ca.ntro.web.mvc.NtroViewWeb;
 
 public class LateStudentsViewWeb extends NtroViewWeb implements LateStudentsView {
 	@Override
-	public void initializeViewWeb(NtroContext<?> context) {
+	public void initializeViewWeb(NtroContext<?,?> context) {
 
 	}
 
@@ -44,10 +44,8 @@ public class LateStudentsViewWeb extends NtroViewWeb implements LateStudentsView
 			
 			studentIds.appendHtml(lateStudentsModel.getStudentIds().get(i));
 			
-			if(i == lateStudentsModel.getStudentIds().size() - 1) {
-				studentIds.appendHtml(".");  
-			}else {
-				studentIds.appendHtml(", ");
+			if(i != lateStudentsModel.getStudentIds().size() - 1) {
+				studentIds.appendHtml("<br>");  
 			}
 		} 
 	}

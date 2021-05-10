@@ -1,11 +1,20 @@
 package ca.aquiletour.server.backend.queue;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.aquiletour.core.models.users.Guest;
+import ca.aquiletour.core.models.users.StudentGuest;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
-import ca.ntro.BackendMessageHandler;
+import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
+import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 
 public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentMessage> {
 
@@ -13,10 +22,23 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	public void handleNow(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
 
-		User student = message.getUser();
+		User user = message.getUser();
 		String courseId = message.getCourseId();
 		
-		QueueUpdater.addAppointmentForUser(modelStore, courseId, student);
+		if(user instanceof Guest || user instanceof TeacherGuest || user instanceof StudentGuest) {
+			
+			List<NtroMessage> delayedMessages = new ArrayList<>();
+			delayedMessages.add(message);
+
+			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP se connecter pour prendre rendez-vous");
+			showLoginMenuMessage.setDelayedMessages(delayedMessages);
+			Ntro.messages().send(showLoginMenuMessage);
+
+		}else {
+
+			QueueUpdater.addAppointmentForUser(modelStore, courseId, user);
+		}
 	}
 
 	@Override
