@@ -10,7 +10,7 @@ public class User extends NtroUser {
 	private String email = "";
 
 	private String passwordHash = "";
-	private boolean has
+	private boolean hasPassword = false;
 
 	public User() {
 
@@ -40,6 +40,22 @@ public class User extends NtroUser {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	public boolean isHasPassword() {
+		return hasPassword;
+	}
+
+	public void setHasPassword(boolean hasPassword) {
+		this.hasPassword = hasPassword;
+	}
 
 	public void copyPublicInfomation(User user) {
 		setFirstname(user.getFirstname());
@@ -68,4 +84,6 @@ public class User extends NtroUser {
 		
 		return false;
 	}
+	
+	
 }

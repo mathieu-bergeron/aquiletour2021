@@ -6,6 +6,8 @@ public class Constants {
 	public static final int APPOINTMENT_TIME_INCREMENT_SECONDS = 5*60;
 	public static final int APPOINTMENT_DURATION_INCREMENT_SECONDS = 60;
 	
+	public static final int MAX_PASSWORD_ATTEMPS = 3;
+	
 	public static String LANG = "fr";
 	
 	public static final String EMAIL_HOST = "cmontmorency.qc.ca";
