@@ -1,12 +1,16 @@
 package ca.aquiletour.server.backend.login;
 
+import java.util.List;
+
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserUpdater;
@@ -69,10 +73,15 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		}else {
 
 			User newUser = null;
+			List<String> adminIds = ((AquiletourConfig)Ntro.config()).getAdminIds();
 			
-			if(session.getUser() instanceof TeacherGuest) {
+			if(session.getUser() instanceof TeacherGuest && !adminIds.contains(session.getUser().getId())) {
 
 				newUser = new Teacher();
+
+			} else if(session.getUser() instanceof TeacherGuest && adminIds.contains(session.getUser().getId())) {
+
+				newUser = new Admin();
 
 			} else if(session.getUser() instanceof StudentGuest) {
 
