@@ -73,7 +73,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuStudentProfile;
 	private HtmlElement loginMenuTeacherProfile;
 	private HtmlElement userProfileNameInput;
-	private HtmlElement modifyPasswordLink;
+	private HtmlElement showPasswordMenuLink;
 	private HtmlElement toggleStudentModeButton;
 	
 	private HtmlElements logoutLinks;
@@ -115,7 +115,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		queueLink = getRootElement().find("#queue-link").get(0);
 		userProfileNameInput = getRootElement().find("#user-profile-name-input").get(0);
-		modifyPasswordLink = getRootElement().find("#modify-password-link").get(0);
+		showPasswordMenuLink = getRootElement().find("#show-password-menu-link").get(0);
 		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
 
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
@@ -140,7 +140,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
 		MustNot.beNull(userProfileNameInput);
-		MustNot.beNull(modifyPasswordLink);
+		MustNot.beNull(showPasswordMenuLink);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
 		MustNot.beNull(toggleStudentModeButton);
@@ -257,9 +257,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			toggleStudentModeButton.text("Mode étudiant");
 			
 			if(user.getHasPassword()) {
-				modifyPasswordLink.text("Modifier mon mot de passe");
+				showPasswordMenuLink.text("Modifier mon mot de passe");
 			}else {
-				modifyPasswordLink.text("Ajouter un mot de passe");
+				showPasswordMenuLink.text("Ajouter un mot de passe");
 			}
 
 			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);

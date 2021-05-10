@@ -24,6 +24,9 @@ dependencies {
     implementation 'guru.nidi:graphviz-java-all-j2v8:0.18.0'
     // </DEV ONLY>
 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+
     testImplementation project(':ntro_test')
     testImplementation 'junit:junit:4.13'
 }

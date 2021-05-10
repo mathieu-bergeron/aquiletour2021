@@ -9,6 +9,7 @@ import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
+import ca.aquiletour.core.messages.user.UserChangesPassword;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
@@ -143,6 +144,21 @@ public class AquiletourBackendRequestHandler {
 			updateUserInfoMessage.setScreenName(screenName);
 			Ntro.messages().send(updateUserInfoMessage); // XXX: must be Ntro.message(), in JSweet the frontend handles it
 
+		} else if(parameters.containsKey("newPasswordA")) {
+
+			String currentPassword = null;
+			if(parameters.containsKey("currentPassword")) {
+				currentPassword = parameters.get("currentPassword")[0];
+			}
+			String newPasswordA = parameters.get("newPasswordA")[0];
+			String newPasswordB = parameters.get("newPasswordB")[0];
+			
+			UserChangesPassword userChangesPassword = Ntro.messages().create(UserChangesPassword.class);
+			userChangesPassword.setCurrentPassword(currentPassword);
+			userChangesPassword.setNewPasswordA(newPasswordA);
+			userChangesPassword.setNewPasswordB(newPasswordB);
+			
+			Ntro.backendService().sendMessageToBackend(userChangesPassword);
 
 		} else if(parameters.containsKey("toggleStudentMode")) {
 

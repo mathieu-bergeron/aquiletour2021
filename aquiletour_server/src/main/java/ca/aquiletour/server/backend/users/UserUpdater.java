@@ -4,18 +4,61 @@ import java.util.List;
 
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
-import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
-import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
 public class UserUpdater {
+
+	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) {
+		T.call(UserUpdater.class);
+
+		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
+			
+			modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
+				@Override
+				public void update(User userModel) {
+					T.call(this);
+
+					userModel.setPasswordHash(PasswordDigest.passwordDigest(newPassword));
+					userModel.setHasPassword(true);
+				}
+			});
+
+		}else {
+			
+			Log.warning("Model not found: " + user.getId());
+		}
+	}
+
+	public static boolean isUserPasswordValid(ModelStoreSync modelStore, String password, User user) {
+		T.call(UserUpdater.class);
+		
+		boolean isValid = false;
+
+		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
+			
+			User userModel = modelStore.getModel(User.class, "admin", user.getId());
+
+			if(!userModel.getHasPassword()
+					|| userModel.getPasswordHash().equals(PasswordDigest.passwordDigest(password))) {
+				isValid = true;
+			}
+
+		}else {
+			
+			Log.warning("Model not found in isUserPasswordValid: " + user.getId());
+		}
+		
+		return isValid;
+	}
 
 	public static void addUsers(ModelStoreSync modelStore, List<User> usersToAdd) {
 		T.call(UserUpdater.class);
@@ -89,4 +132,5 @@ public class UserUpdater {
 		});
 		
 	}
+
 }

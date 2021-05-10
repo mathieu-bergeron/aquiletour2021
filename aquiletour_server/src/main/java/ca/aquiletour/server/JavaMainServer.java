@@ -23,8 +23,8 @@ import java.nio.file.Paths;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.aquiletour.web.AquiletourRouterService;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.jdk.web.NtroWebServer;
-import ca.ntro.services.ConfigService;
 import ca.ntro.services.RouterService;
 
 public class JavaMainServer {
@@ -36,7 +36,9 @@ public class JavaMainServer {
 		
 		Path configFilepath = Paths.get(userHome, ".aiguilleur", "config.json");
 		
-		ConfigService config = AquiletourConfig.loadFromJson(configFilepath);
+		AquiletourConfig config = AquiletourConfig.loadFromJson(configFilepath);
+
+		PasswordDigest.initialize(config.getPasswordSalt());
 		
 		RouterService routerService = new AquiletourRouterService();
 		

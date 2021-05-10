@@ -9,6 +9,7 @@ import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
+import ca.aquiletour.core.messages.user.UserChangesPassword;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
@@ -69,6 +70,7 @@ import ca.aquiletour.server.backend.time.TimePassesHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
 import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
+import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.messages.NtroMessage;
 
@@ -111,6 +113,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(ModifyAppointmentComment.class, new ModifyAppointmentCommentHandler());
 		addBackendMessageHandler(ItsNotMeMessage.class, new ItsNotMeHandler());
 		addBackendMessageHandler(OnNewCommits.class, new OnNewCommitsHandler());
+		addBackendMessageHandler(UserChangesPassword.class, new UserChangesPasswordHandler());
 	}
 
 }

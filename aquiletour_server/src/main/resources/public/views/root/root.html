@@ -127,6 +127,7 @@
                         <div id="login-menu-enter-password">
                             <form action="" method="post">
                                 <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
+                                <input name="user"  class="add-user-id-to-value" style="display:none;"></input>
                                 <div class="form-group row mb-3 mx-2">
                                     <label for="password">Mot de passe</label>
                                     <input name="password" id="login-input-password"></input>
@@ -174,12 +175,12 @@
                                     <input type="password" name="currentPassword" id="current-password-input"></input>
                                 </div>
                                 <div class="form-group row mb-3 mx-2">
-                                    <label for="passwordA" style="min-width:12rem;">Nouveau mot de passe</label>
-                                    <input type="password" name="passwordA" id="password-a-input"></input>
+                                    <label for="newPasswordA" style="min-width:12rem;">Nouveau mot de passe</label>
+                                    <input type="password" name="newPasswordA" id="password-a-input"></input>
                                 </div>
                                 <div class="form-group row mb-3 mx-2">
-                                    <label for="passwordB" style="min-width:14rem;">Répéter le mot de passe</label>
-                                    <input type="password" name="passwordB" id="password-b-input"></input>
+                                    <label for="newPasswordB" style="min-width:14rem;">Répéter le mot de passe</label>
+                                    <input type="password" name="newPasswordB" id="password-b-input"></input>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button class="mt-3 me-3 btn btn-secondary" id="modify-password-button">Modifier mon mot de passe</button>
@@ -190,7 +191,7 @@
                                     <form action="" method="post" id="close-password-menu-form">
                                         <input name="closePasswordMenu" style="display:none;"></input>
                                     </form>
-                                    <a href="#" class="logout-link submit-link" id="add-password-later-link" style="min-width:14rem;" form="close-password-menu-form">(plus tard)</a>
+                                    <a href="#" class="logout-link submit-link" id="close-password-menu-link" style="min-width:14rem;" form="close-password-menu-form">(plus tard)</a>
                                 </div>
                             </div>
                         </div>
@@ -205,9 +206,9 @@
                                     <button type="submit" class="btn btn-secondary btn-sm">Modifier</button>
                                 </div>
                             </form>
-                            <form action="" method="post" id="modify-password-form">
+                            <form action="" method="post" id="show-password-menu-form">
                                 <input name="showPasswordMenu" style="display:none;"></input>
-                                <a href="#" class="dropdown-item submit-link" id="modify-password-link" form="modify-password-form" style="min-width:14rem;">Modifier mon mot de passe</a>
+                                <a href="#" class="dropdown-item submit-link" id="show-password-menu-link" form="show-password-menu-form" style="min-width:14rem;">Modifier mon mot de passe</a>
                             </form>
                             <a href="#" class="dropdown-item logout-link" style="min-width:14rem;">Déconnexion</a>
                             <div class="d-flex justify-content-end">
