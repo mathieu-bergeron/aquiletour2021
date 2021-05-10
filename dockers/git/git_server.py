@@ -12,6 +12,7 @@ import mysql.connector
 import json
 import api_modules
 import depot_manager.task_processor
+import utils.task_utils
 
 app = FastAPI()
 fast_lite_conn = None
@@ -104,19 +105,7 @@ async def read_hook(request: Request):
                 req['depot'] = hook['resource']['repository']['remoteUrl']
         # Add to DB
         if req['depot']:
-            cur = fast_lite_conn.cursor()
-            cur.execute('SELECT * FROM tasks\
-                WHERE ans_date IS NULL AND request=?',(json.dumps(req),))
-            row = cur.fetchone()
-            if row:
-                body = {'request_id' : row[0]}
-            else:
-                cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-                    VALUES (?,DateTime('now','localtime'),?)''',
-                    (5,json.dumps(req)))
-                body = {'request_id' : cur.lastrowid}
-                fast_lite_conn.commit()
-            cur.close()
+            body = utils.task_utils.add_task(req, 5, fast_lite_conn)
             response = JSONResponse(content = body)
             response.status_code = status.HTTP_200_OK
         else:
@@ -152,17 +141,11 @@ if __name__=="__main__":
                         answer TEXT,
                         ack_date TEXT);''')
 # TEST DATA - Begin
-#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (5,DateTime('now','localtime'),"req1")''')
-#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (5,DateTime('now','localtime'),"{""_C"": ""HookTask"", ""depot"": ""https://gitlab.com/LeducNic/coursmo.git""}")''')
-#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (9,DateTime('now','localtime'),"{""_C"": ""UpdateTask"", ""semesterId"": ""H2021"", ""courseId"": ""nicolas.leduc/420-ZF5"", ""groupId"": ""02""}")''')
-#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (1,DateTime('now','localtime'),"req4")''')
-#        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
-#            VALUES (5,DateTime('now','localtime'),"req5")''')
-        conn.commit()
+#        utils.task_utils.add_task({'req1': ''}, 5, conn)
+#        utils.task_utils.add_task({'_C': 'HookTask', 'depot': 'https://gitlab.com/LeducNic/coursmo.git'}, 5, conn)
+#        utils.task_utils.add_task({'_C': 'UpdateTask', 'semesterId': 'H2021', 'courseId': 'nicolas.leduc/420-ZF5', 'groupId': '02'}, 9, conn)
+#        utils.task_utils.add_task({'req4': ''}, 1, conn)
+#        utils.task_utils.add_task({'req5': ''}, 5, conn)
         conn2 = mysql.connector.connect(user='root',password='test',database='git_info')
         cur2= conn2.cursor()
         cur2.execute('DELETE FROM commit_file')
