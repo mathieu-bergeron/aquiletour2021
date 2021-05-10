@@ -58,7 +58,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		}
 	}
 
-	private User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
+	public static User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
 
 		User existingUser = null;
 

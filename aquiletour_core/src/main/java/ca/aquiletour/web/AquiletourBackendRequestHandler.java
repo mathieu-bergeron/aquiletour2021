@@ -13,6 +13,7 @@ import ca.aquiletour.core.messages.user.UserChangesPassword;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.messages.user.UserSendsPassword;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -159,6 +160,16 @@ public class AquiletourBackendRequestHandler {
 			userChangesPassword.setNewPasswordB(newPasswordB);
 			
 			Ntro.backendService().sendMessageToBackend(userChangesPassword);
+
+		} else if(parameters.containsKey("password")) {
+
+			String password = parameters.get("password")[0];
+			
+			UserSendsPassword userSendsPassword = Ntro.messages().create(UserSendsPassword.class);
+			userSendsPassword.setPassword(password);
+			userSendsPassword.setDelayedMessages(delayedMessages(parameters));
+			
+			Ntro.backendService().sendMessageToBackend(userSendsPassword);
 
 		} else if(parameters.containsKey("toggleStudentMode")) {
 
