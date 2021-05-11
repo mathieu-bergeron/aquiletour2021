@@ -138,14 +138,14 @@ public class DynamicHandler extends AbstractHandler {
 
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
-		setCurrentSemester();
+		//setCurrentSemester();
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 		executeBackend(baseRequest, response, path, parameters);
 
-		setCurrentSemester();
+		//setCurrentSemester();
 
 		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
 		//boolean ifJSweet = false;
@@ -296,10 +296,16 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 	private NtroContext<User, SessionData> createNtroContext() {
+		T.call(this);
+
 		NtroContext<User, SessionData> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
 		context.registerUser((User) Ntro.currentUser());
-		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
+			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		}else {
+			context.registerSessionData(new SessionData());
+		}
 		return context;
 	}
 

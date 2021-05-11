@@ -54,6 +54,8 @@ import ca.aquiletour.core.pages.root.handlers.UpdateUserInfoHandler;
 import ca.aquiletour.core.pages.root.messages.QuitMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.SemesterListController;
+import ca.aquiletour.core.pages.semester_list.admin.SemesterListControllerAdmin;
+import ca.aquiletour.core.pages.semester_list.teacher.SemesterListControllerTeacher;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroRootController;
 import ca.ntro.core.system.trace.T;
@@ -87,7 +89,8 @@ public class RootController extends NtroRootController {
 		addSubController(LateStudentsController.class, Constants.GIT_LATE_STUDENTS_URL_SEGMENT);
 		addSubController(StudentSummariesController.class, Constants.GIT_STUDENT_SUMMARIES_URL_SEGMENT);
 
-		addSubController(SemesterListController.class, Constants.SEMESTER_LIST_URL_SEGMENT);
+		addSubController(SemesterListControllerAdmin.class, Constants.SEMESTER_LIST_URL_SEGMENT);
+		addSubController(SemesterListControllerTeacher.class, Constants.SEMESTER_LIST_URL_SEGMENT);
 
 		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
 

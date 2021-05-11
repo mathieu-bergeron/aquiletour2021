@@ -28,6 +28,10 @@ import ca.aquiletour.core.pages.queue.student.StudentQueueView;
 import ca.aquiletour.core.pages.queue.teacher.AppointmentViewTeacher;
 import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
 import ca.aquiletour.core.pages.root.RootView;
+import ca.aquiletour.core.pages.semester_list.admin.views.SemesterListViewAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.views.SemesterViewAdmin;
+import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterListViewTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterViewTeacher;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.aquiletour.web.pages.course.student.CourseViewWebStudent;
@@ -59,7 +63,11 @@ import ca.aquiletour.web.pages.queues.QueueSummaryViewWeb;
 import ca.aquiletour.web.pages.queues.QueuesViewWeb;
 import ca.aquiletour.web.pages.root.RootViewWeb;
 import ca.aquiletour.web.pages.semester_list.SemesterListViewWeb;
+import ca.aquiletour.web.pages.semester_list.SemesterListViewWebAdmin;
+import ca.aquiletour.web.pages.semester_list.SemesterListViewWebTeacher;
 import ca.aquiletour.web.pages.semester_list.SemesterViewWeb;
+import ca.aquiletour.web.pages.semester_list.SemesterViewWebAdmin;
+import ca.aquiletour.web.pages.semester_list.SemesterViewWebTeacher;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -246,21 +254,37 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(TaskViewWebStudent.class));
 
-		ViewLoaders.registerViewLoader(SemesterListView.class,
+		ViewLoaders.registerViewLoader(SemesterListViewAdmin.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/views/semester_list/semester_list.html")
-			     	.setCssUrl("/views/semester_list/semester_list.css")
+			     	.setHtmlUrl("/views/semester_list/admin/semester_list_admin.html")
+			     	.setCssUrl("/views/semester_list/admin/semester_list_admin.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(SemesterListViewWeb.class));
+			     	.setTargetClass(SemesterListViewWebAdmin.class));
 
-		ViewLoaders.registerViewLoader(SemesterView.class,
+		ViewLoaders.registerViewLoader(SemesterListViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/partials/semester/semester.html")
-			     	.setCssUrl("/partials/semester/semester.css")
+			     	.setHtmlUrl("/views/semester_list/teacher/semester_list_teacher.html")
+			     	.setCssUrl("/views/semester_list/teacher/semester_list_teacher.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
-			     	.setTargetClass(SemesterViewWeb.class));
+			     	.setTargetClass(SemesterListViewWebTeacher.class));
+
+		ViewLoaders.registerViewLoader(SemesterViewAdmin.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/partials/semester/admin/semester_admin.html")
+			     	.setCssUrl("/partials/semester/admin/semester_admin.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(SemesterViewWebAdmin.class));
+
+		ViewLoaders.registerViewLoader(SemesterViewTeacher.class,
+				"fr"
+				, Ntro.viewLoaderWeb()
+			     	.setHtmlUrl("/partials/semester/teacher/semester_teacher.html")
+			     	.setCssUrl("/partials/semester/teacher/semester_teacher.css")
+			     	.setTranslationsUrl("/i18n/fr/string.json")
+			     	.setTargetClass(SemesterViewWebTeacher.class));
 
 		ViewLoaders.registerViewLoader(CourseListViewTeacher.class,
 				"fr"

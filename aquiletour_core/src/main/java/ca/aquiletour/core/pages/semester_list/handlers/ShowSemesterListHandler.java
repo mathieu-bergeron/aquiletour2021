@@ -4,8 +4,9 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
+import ca.ntro.core.system.trace.T;
 
-public class ShowSemesterListHandler extends ParentViewMessageHandler<RootView,
+public abstract class ShowSemesterListHandler extends ParentViewMessageHandler<RootView,
                                                                       SemesterListView,
                                                                       ShowSemesterListMessage> {
 
@@ -13,8 +14,9 @@ public class ShowSemesterListHandler extends ParentViewMessageHandler<RootView,
 	protected void handle(RootView parentView, 
 			              SemesterListView currentView, 
 			              ShowSemesterListMessage message) {
+		T.call(this);
 		
-		parentView.showCalendarList(currentView);
+		parentView.showSemesterList(currentView);
 	}
 
 }

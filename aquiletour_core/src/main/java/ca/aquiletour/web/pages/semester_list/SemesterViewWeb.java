@@ -19,7 +19,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class SemesterViewWeb extends NtroViewWeb implements SemesterView {
+public abstract class SemesterViewWeb extends NtroViewWeb implements SemesterView {
 
 	private HtmlElement semesterIdHeader;
 	private HtmlElement weeksTbody;

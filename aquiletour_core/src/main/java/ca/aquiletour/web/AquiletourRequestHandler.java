@@ -35,6 +35,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
+import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListMessageTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -188,8 +189,8 @@ public class AquiletourRequestHandler {
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 		
-		ShowSemesterListMessage showCalendarListMessage = Ntro.messages().create(ShowSemesterListMessage.class);
-		Ntro.messages().send(showCalendarListMessage);
+		ShowSemesterListMessageTeacher showSemesterList = Ntro.messages().create(ShowSemesterListMessageTeacher.class);
+		Ntro.messages().send(showSemesterList);
 	}
 
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {

@@ -10,7 +10,7 @@ import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterListModel implements NtroModel {
+public abstract class SemesterListModel implements NtroModel {
 	
 	private StoredString currentSemesterId = new StoredString(Constants.DRAFTS_SEMESTER_ID);
 	private ObservableSemesterList semesters = new ObservableSemesterList();

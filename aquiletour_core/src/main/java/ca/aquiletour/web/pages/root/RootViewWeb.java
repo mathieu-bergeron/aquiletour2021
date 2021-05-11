@@ -476,7 +476,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showCalendarList(SemesterListView calendarListView) {
+	public void showSemesterList(SemesterListView calendarListView) {
 		T.call(this);
 
 		showSubView(calendarListView);

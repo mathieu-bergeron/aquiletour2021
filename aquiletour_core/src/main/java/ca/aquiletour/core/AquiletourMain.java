@@ -135,7 +135,9 @@ import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterWeekList;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.ObservableCourseGroupList;
@@ -254,6 +256,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(SemesterModel.class);
 		Ntro.registerSerializableClass(SemesterListModel.class);
+		Ntro.registerSerializableClass(SemesterListModelTeacher.class);
+		Ntro.registerSerializableClass(SemesterListModelAdmin.class);
 		Ntro.registerSerializableClass(ObservableSemesterList.class);
 		Ntro.registerSerializableClass(ObservableSemesterWeekList.class);
 		Ntro.registerSerializableClass(CalendarWeek.class);

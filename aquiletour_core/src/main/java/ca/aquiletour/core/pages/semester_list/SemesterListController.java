@@ -1,35 +1,42 @@
 package ca.aquiletour.core.pages.semester_list;
 
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.semester_list.handlers.SemesterListViewModel;
 import ca.aquiletour.core.pages.semester_list.handlers.ShowSemesterListHandler;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
+import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterListController extends NtroController<RootController> {
-	
+public abstract class SemesterListController extends NtroController<RootController> {
 
 	@Override
 	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 
-		setViewLoader(SemesterListView.class, context.lang());
+		setViewLoader(viewClass(), context.lang());
 
-		addParentViewMessageHandler(ShowSemesterListMessage.class, new ShowSemesterListHandler());
+		addParentViewMessageHandler(showMessageClass(), showMessageHandler());
 
-		setModelLoader(SemesterListModel.class, 
+		setModelLoader(modelClass(), 
 					   context.user().getAuthToken(),
-					   context.user().getId());
+					   modelId(context));
 
-		addSubViewLoader(SemesterView.class, context().lang());
+		addSubViewLoader(subViewClass(), context().lang());
 		
-		addModelViewSubViewHandler(SemesterView.class, new SemesterListViewModel());
+		addModelViewSubViewHandler(subViewClass(), viewModel());
 	}
+
+	protected abstract Class<? extends SemesterListView> viewClass();
+	protected abstract Class<? extends ShowSemesterListMessage> showMessageClass();
+	protected abstract ShowSemesterListHandler showMessageHandler();
+	protected abstract Class<? extends SemesterView> subViewClass();
+	protected abstract Class<? extends SemesterListModel> modelClass();
+	protected abstract String modelId(NtroContext<?,?> context);
+	protected abstract ModelViewSubViewHandler<?,?> viewModel();
 	
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {

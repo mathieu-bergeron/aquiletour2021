@@ -10,7 +10,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class SemesterListViewWeb extends NtroViewWeb implements SemesterListView {
+public abstract class SemesterListViewWeb extends NtroViewWeb implements SemesterListView {
 	
 	private HtmlElement semesterCodeInput;
 	private HtmlElement semesterContainer;
