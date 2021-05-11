@@ -54,7 +54,7 @@ public abstract class SemesterListModel implements NtroModel {
 		T.call(this);
 		
 		if(!ifSemesterIdExists(semester.getSemesterId())) {
-			semesters.addItem(semester);
+			semesters.insertItem(0, semester);
 		}
 	}
 

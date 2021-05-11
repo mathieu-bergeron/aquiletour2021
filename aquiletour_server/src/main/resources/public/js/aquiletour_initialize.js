@@ -1,5 +1,11 @@
 $(document).ready(function(){
     initializeWidgets($(document));
+
+    // XXX: avoid form resubmission on refresh
+    //      https://www.webtrickshome.com/faq/how-to-stop-form-resubmission-on-page-refresh
+    if (window.history.replaceState) {
+        window.history.replaceState( null, null, window.location.href );
+    }
 });
 
 function initializeView(viewName, viewRootElement, jSweet){
@@ -11,7 +17,7 @@ function initializeView(viewName, viewRootElement, jSweet){
     }else if(viewName === "QueueViewWebTeacher"){
 
         initializeQueue(viewRootElement, jSweet);
-        
+
     }else if(viewName === "TeacherDashboardViewWeb"){
 
         initializeDashboard(viewRootElement, jSweet);
