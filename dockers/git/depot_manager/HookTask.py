@@ -7,6 +7,7 @@ import utils.normalize_data
 import git
 import utils.task_utils
 import utils.data_matcher
+import utils.net_utils
 
 #  {
 #      "_C": "HookTask",
@@ -83,19 +84,34 @@ def hook_task(depot, maria_conn):
         depotDir = record[0].split('/')
         depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record[1]
         depotPath = os.path.join('depot',record[2],record[3],record[4],record[5],depotDir)
+        message = {}
+        message['semesterId'] = record[2]
+        message['courseId'] = record[3]
+        message['groupId'] = record[4]
+        message['studentId'] = record[5]
+        message['repoPath'] = record[6]
 #        print(depotPath)
         try:
             if not os.path.isdir(depotPath) :
                 print(depotPath + ' not exists, cloning!')
                 git.Repo.clone_from(depot,depotPath)
+                message['_C'] = 'OnClone'
             else :
                 print(depotPath + ' exists, pulling!')
                 git.Repo(depotPath).remotes.origin.pull()
+                message['_C'] = 'OnPull'
+            utils.net_utils.send_message(message)
             answer = update_commit_db(record[2],record[3],record[4],record[6],depot, depotPath, maria_conn)
             if not answer:
                 answer = 'DONE'
         except git.exc.GitCommandError:
-            answer = 'DEPOT not accessible on server'
+            if not os.path.isdir(depotPath) :
+                answer = 'CLONE FAILED: DEPOT not accessible on server'
+                message['_C'] = 'OnCloneFailed'
+            else:
+                answer = 'PULL FAILED: DEPOT not accessible on server'
+                message['_C'] = 'OnPullFailed'
+            utils.net_utils.send_message(message)
         #   Not there... Error
         # Fetch / Clone depot
         #   Not possible ... Error
