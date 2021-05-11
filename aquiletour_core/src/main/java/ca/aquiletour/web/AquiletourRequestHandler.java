@@ -82,7 +82,7 @@ public class AquiletourRequestHandler {
 			
 		} else if(path.startsWith(Constants.SEMESTER_LIST_URL_SEGMENT)) {
 
-			sendCalendarListMessages(path.subPath(1), parameters, context.user());
+			sendSemesterListMessages(path.subPath(1), parameters, context.user());
 
 		} else if(path.startsWith(Constants.COURSE_LIST_URL_SEGMENT)) {
 
@@ -189,15 +189,15 @@ public class AquiletourRequestHandler {
 		}
 	}
 
-	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
+	private static void sendSemesterListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
 
-		if(user instanceof Admin && user.actsAsAdmin()) {
+		if(user.actsAsAdmin()) {
 			
 			ShowSemesterListAdmin showSemesterList = Ntro.messages().create(ShowSemesterListAdmin.class);
 			Ntro.messages().send(showSemesterList);
 
-		}else if(user instanceof Teacher || user instanceof TeacherGuest){
+		}else if(user.actsAsTeacher()){
 
 			ShowSemesterListTeacher showSemesterList = Ntro.messages().create(ShowSemesterListTeacher.class);
 			Ntro.messages().send(showSemesterList);
