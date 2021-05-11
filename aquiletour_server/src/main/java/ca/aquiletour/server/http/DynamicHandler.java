@@ -41,13 +41,16 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
@@ -138,14 +141,14 @@ public class DynamicHandler extends AbstractHandler {
 
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
-		//setCurrentSemester();
+		setCurrentSemester();
 
 		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 		executeBackend(baseRequest, response, path, parameters);
 
-		//setCurrentSemester();
+		setCurrentSemester();
 
 		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
 		//boolean ifJSweet = false;
@@ -254,11 +257,23 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCurrentSemester() {
 		T.call(this);
 		
-		ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModel.class, "admin", Ntro.currentUser().getId());
-		modelLoader.execute();
-		SemesterListModel semesterList = (SemesterListModel) modelLoader.getModel();
-		Ntro.modelStore().save(semesterList);
+		User user = (User) Ntro.currentUser();
+		SemesterListModel semesterList = null;
+
+		if(user instanceof Admin && user.actsAsAdmin()) {
 		
+			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModelAdmin.class, "admin", Ntro.currentUser().getId());
+			modelLoader.execute();
+			semesterList = (SemesterListModel) modelLoader.getModel();
+
+		}else {
+
+			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModelTeacher.class, "admin", Ntro.currentUser().getId());
+			modelLoader.execute();
+			semesterList = (SemesterListModel) modelLoader.getModel();
+			
+		}
+
 		SessionData sessionData = new SessionData();
 		sessionData.setCurrentSemester(semesterList.getCurrentSemesterId().getValue());
 		Ntro.currentSession().setSessionData(sessionData);

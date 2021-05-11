@@ -4,7 +4,8 @@ import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
-import ca.aquiletour.server.backend.semester_list.SemesterListUpdater;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -23,11 +24,12 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 				                     message.getEndTime(),
 				                     message.getUser());
 
-		SemesterSchedule semesterSchedule = SemesterListUpdater.getSemesterSchedule(modelStore, 
+		SemesterSchedule semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 
+																					SemesterListModelTeacher.class,
 				                                                                    message.getSemesterId(), 
 				                                                                    message.getUser());
 		
-		TeacherSchedule teacherSchedule = SemesterListUpdater.getTeacherSchedule(modelStore, 
+		TeacherSchedule teacherSchedule = SemesterListManager.getTeacherSchedule(modelStore, 
 				                                                                 message.getSemesterId(), 
 				                                                                 message.getUser());
 

@@ -4,7 +4,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.semester_list.SemesterListController;
 import ca.aquiletour.core.pages.semester_list.admin.handlers.SemesterListViewModelAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.handlers.ShowSemesterListHandlerAdmin;
-import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListMessageAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.views.SemesterListViewAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.views.SemesterViewAdmin;
@@ -58,7 +58,7 @@ public class SemesterListControllerAdmin extends SemesterListController {
 	protected Class<? extends ShowSemesterListMessage> showMessageClass() {
 		T.call(this);
 		
-		return ShowSemesterListMessageAdmin.class;
+		return ShowSemesterListAdmin.class;
 	}
 
 	@Override

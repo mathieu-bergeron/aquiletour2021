@@ -6,9 +6,11 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.Teacher;
+import ca.aquiletour.core.models.users.TeacherGuest;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.student.messages.ShowCourseMessageStudent;
@@ -34,8 +36,9 @@ import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
+import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
-import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListMessageTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -188,9 +191,17 @@ public class AquiletourRequestHandler {
 
 	private static void sendCalendarListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourRequestHandler.class);
-		
-		ShowSemesterListMessageTeacher showSemesterList = Ntro.messages().create(ShowSemesterListMessageTeacher.class);
-		Ntro.messages().send(showSemesterList);
+
+		if(user instanceof Admin && user.actsAsAdmin()) {
+			
+			ShowSemesterListAdmin showSemesterList = Ntro.messages().create(ShowSemesterListAdmin.class);
+			Ntro.messages().send(showSemesterList);
+
+		}else if(user instanceof Teacher || user instanceof TeacherGuest){
+
+			ShowSemesterListTeacher showSemesterList = Ntro.messages().create(ShowSemesterListTeacher.class);
+			Ntro.messages().send(showSemesterList);
+		}
 	}
 
 	private static void sendHomeMessages(Path subPath, Map<String, String[]> parameters) {

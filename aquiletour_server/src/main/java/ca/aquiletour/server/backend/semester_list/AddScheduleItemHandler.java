@@ -13,7 +13,7 @@ public class AddScheduleItemHandler extends BackendMessageHandler<AddScheduleIte
 	public void handleNow(ModelStoreSync modelStore, AddScheduleItemMessage message) {
 		T.call(this);
 		
-		SemesterListUpdater.addScheduleItemForUser(modelStore, 
+		SemesterListManager.addScheduleItemForUser(modelStore, 
 				                                   message.getSemesterId(), 
 				                                   message.getScheduleItem(), 
 				                                   message.getUser());

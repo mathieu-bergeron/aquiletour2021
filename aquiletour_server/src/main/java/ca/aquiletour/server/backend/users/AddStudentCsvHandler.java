@@ -19,7 +19,7 @@ import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
-import ca.aquiletour.server.backend.semester_list.SemesterListUpdater;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -119,7 +119,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                         studentsToAdd,
 				                         teacher);
 
-		SemesterListUpdater.addCourseGroupForUser(modelStore, 
+		SemesterListManager.addCourseGroupForUser(modelStore, 
 				                                  message.getSemesterId(), 
 				                                  message.getCourseId(), 
 				                                  groupId, 

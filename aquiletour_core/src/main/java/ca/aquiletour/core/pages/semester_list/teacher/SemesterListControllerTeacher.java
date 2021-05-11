@@ -1,13 +1,13 @@
 package ca.aquiletour.core.pages.semester_list.teacher;
 
 import ca.aquiletour.core.pages.semester_list.SemesterListController;
-import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListMessageAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.handlers.ShowSemesterListHandler;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.teacher.handlers.SemesterListViewModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.handlers.ShowSemesterListHandlerTeacher;
-import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListMessageTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterListViewTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterViewTeacher;
@@ -58,7 +58,7 @@ public class SemesterListControllerTeacher extends SemesterListController {
 	protected Class<? extends ShowSemesterListMessage> showMessageClass() {
 		T.call(this);
 		
-		return ShowSemesterListMessageTeacher.class;
+		return ShowSemesterListTeacher.class;
 	}
 
 	@Override
