@@ -1,21 +1,27 @@
 <div class='card border mb-3 p-1' style="min-width:20rem;">
     <div class='card-header bg-transparent border'>
-        <div class="d-flex">
-            <h5 id="semester-id"></h5>
+        <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center">
+                <h5 id="semester-id" class="me-3 mb-0"></h5>
+                <button class="btn btn-danger btn-sm" style='line-height:0px'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </div>
             <div class="flex-fill"></div>
             <div class="d-flex align-items-center">
-                <span class="me-2">session courante</span>
-                <div class="form-check form-switch">
-                <form class="add-id-to-id" action="" method="post" id="select-current-semester-form">
-                    <input class="add-id-to-value" name="currentSemesterId" value="" style="display:none;"></input>
-                    <input class="form-check-input aquiletour-checkbox add-id-to-form" name="ifSemesterSelected" type="checkbox" form="select-current-semester-form">
-                </form>
+                <span class="me-2 mt-0 mb-0 pb-1">session courante</span>
+                <div class="form-check form-switch mt-0 mb-0">
+                    <form class="add-id-to-id" action="" method="post" id="select-current-semester-form">
+                        <input class="add-id-to-value" name="currentSemesterId" value="" style="display:none;"></input>
+                        <input class="form-check-input aquiletour-checkbox add-id-to-form" name="ifSemesterSelected" type="checkbox" form="select-current-semester-form">
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <h3>Calendrier</h3>
     <div class="add-id-to-id" id="semester-calendar">
         <div class="p-3">
             <form action="" method="post" class="add-id-to-id" id="add-semester-dates-form">
@@ -23,98 +29,100 @@
             </form>
             <table class="table" id="semester-dates-table">
                 <thead>
-                <tr>
-                    <th>Semaine du</th>
-                    <th>Lundi<br>(horaire du)</th>
-                    <th>Mardi<br>(horaire du)</th>
-                    <th>Mercredi<br>(horaire du)</th>
-                    <th>Jeudi<br>(horaire du)</th>
-                    <th>Vendredi<br>(horaire du)</th>
-                    <th>&nbsp;</th>
-                </tr>
+                    <tr>
+                        <th>Semaine du</th>
+                        <th>Lundi<br>(horaire du)</th>
+                        <th>Mardi<br>(horaire du)</th>
+                        <th>Mercredi<br>(horaire du)</th>
+                        <th>Jeudi<br>(horaire du)</th>
+                        <th>Vendredi<br>(horaire du)</th>
+                        <th>&nbsp;</th>
+                    </tr>
                 </thead>
                 <tbody id="semester-weeks-tbody">
-                <tr id="add-week-row">
-                    <td rowspan="2">
-                        <div class="input-group date" data-provide="datepicker">
-                            <input form="add-semester-dates-form" class="form-control week-of-input add-id-to-form add-id-to-id" name="weekOf" id="week-of-input" style="max-width:7rem;"></input>
-                        </div>
-                    </td>
-                    <td>
-                        <input class="add-id-to-form" form="add-semester-dates-form" name="day0" style="max-width:5rem"></input>
-                    </td>
-                    <td>
-                        <input  class="add-id-to-form" form="add-semester-dates-form" name="day1" style="max-width:5rem"></input>
-                    </td>
-                    <td>
-                        <input  class="add-id-to-form" form="add-semester-dates-form" name="day2" style="max-width:5rem"></input>
-                    </td>
-                    <td>
-                        <input  class="add-id-to-form" form="add-semester-dates-form" name="day3" style="max-width:5rem"></input>
-                    </td>
-                    <td>
-                        <input  class="add-id-to-form" form="add-semester-dates-form" name="day4" style="max-width:5rem"></input>
-                    </td>
-                    <td rowspan="2">
-                        <button class="btn btn-secondary btn-sm add-id-to-form" form="add-semester-dates-form" type="submit" style="line-height:0px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <tr id="add-week-row">
+                        <td rowspan="2">
+                            <div class="input-group date" data-provide="datepicker">
+                                <input form="add-semester-dates-form" class="form-control week-of-input add-id-to-form add-id-to-id" name="weekOf" id="week-of-input" style="max-width:7rem;"></input>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="add-id-to-form" form="add-semester-dates-form" name="day0" style="max-width:5rem"></input>
+                        </td>
+                        <td>
+                            <input  class="add-id-to-form" form="add-semester-dates-form" name="day1" style="max-width:5rem"></input>
+                        </td>
+                        <td>
+                            <input  class="add-id-to-form" form="add-semester-dates-form" name="day2" style="max-width:5rem"></input>
+                        </td>
+                        <td>
+                            <input  class="add-id-to-form" form="add-semester-dates-form" name="day3" style="max-width:5rem"></input>
+                        </td>
+                        <td>
+                            <input  class="add-id-to-form" form="add-semester-dates-form" name="day4" style="max-width:5rem"></input>
+                        </td>
+                        <td rowspan="2">
+                            <button class="btn btn-secondary btn-sm add-id-to-form" form="add-semester-dates-form" type="submit" style="line-height:0px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                <tr id="schedule-of-row">
-                    <td>
-                        <select class="form-select add-id-to-form" form="add-semester-dates-form" name="day0ScheduleOf" style="max-width:5rem">
-                            <option name="monday" selected>LU</option>
-                            <option name="tuesday">MA</option>
-                            <option name="wednesday">ME</option>
-                            <option name="thursday">JE</option>
-                            <option name="friday">VE</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day1ScheduleOf" style="max-width:5rem">
-                            <option name="monday">LU</option>
-                            <option name="tuesday" selected>MA</option>
-                            <option name="wednesday">ME</option>
-                            <option name="thursday">JE</option>
-                            <option name="friday">VE</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day2ScheduleOf" style="max-width:5rem">
-                            <option name="monday">LU</option>
-                            <option name="tuesday">MA</option>
-                            <option name="wednesday" selected>ME</option>
-                            <option name="thursday">JE</option>
-                            <option name="friday">VE</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day3ScheduleOf" style="max-width:5rem">
-                            <option name="monday">LU</option>
-                            <option name="tuesday">MA</option>
-                            <option name="wednesday">ME</option>
-                            <option name="thursday" selected>JE</option>
-                            <option name="friday">VE</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day4ScheduleOf" style="max-width:5rem">
-                            <option name="monday">LU</option>
-                            <option name="tuesday">MA</option>
-                            <option name="wednesday">ME</option>
-                            <option name="thursday">JE</option>
-                            <option name="friday" selected>VE</option>
-                        </select>
-                    </td>
-                </tr>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr id="schedule-of-row">
+                        <td>
+                            <select class="form-select add-id-to-form" form="add-semester-dates-form" name="day0ScheduleOf" style="max-width:5rem">
+                                <option name="monday" selected>LU</option>
+                                <option name="tuesday">MA</option>
+                                <option name="wednesday">ME</option>
+                                <option name="thursday">JE</option>
+                                <option name="friday">VE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day1ScheduleOf" style="max-width:5rem">
+                                <option name="monday">LU</option>
+                                <option name="tuesday" selected>MA</option>
+                                <option name="wednesday">ME</option>
+                                <option name="thursday">JE</option>
+                                <option name="friday">VE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day2ScheduleOf" style="max-width:5rem">
+                                <option name="monday">LU</option>
+                                <option name="tuesday">MA</option>
+                                <option name="wednesday" selected>ME</option>
+                                <option name="thursday">JE</option>
+                                <option name="friday">VE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day3ScheduleOf" style="max-width:5rem">
+                                <option name="monday">LU</option>
+                                <option name="tuesday">MA</option>
+                                <option name="wednesday">ME</option>
+                                <option name="thursday" selected>JE</option>
+                                <option name="friday">VE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select  class="form-select add-id-to-form" form="add-semester-dates-form" name="day4ScheduleOf" style="max-width:5rem">
+                                <option name="monday">LU</option>
+                                <option name="tuesday">MA</option>
+                                <option name="wednesday">ME</option>
+                                <option name="thursday">JE</option>
+                                <option name="friday" selected>VE</option>
+                            </select>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+
 
 </div>
 
