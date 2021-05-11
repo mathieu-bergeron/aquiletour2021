@@ -110,7 +110,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 		CoursePath coursePath = new CoursePath(teacher.getId(), message.getSemesterId(), message.getCourseId());
 
-		UserUpdater.addUsers(modelStore, studentsToAdd);
+		UserManager.addUsers(modelStore, studentsToAdd);
 
 		GroupListUpdater.addGroupForUser(modelStore, 
 				                         message.getSemesterId(), 

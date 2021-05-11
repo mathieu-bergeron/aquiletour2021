@@ -1,7 +1,7 @@
 package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
-import ca.aquiletour.server.backend.users.UserUpdater;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -16,6 +16,8 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 		T.call(this);
 		
 		authToken = Ntro.currentUser().getAuthToken();
+		
+		UserManager.resetUserAfterLogout(modelStore, message.getUser());
 
 		Ntro.currentSession().setUser(InitializeSessionHandler.createGuestSession(modelStore));
 	}
@@ -24,6 +26,6 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 	public void handleLater(ModelStoreSync modelStore, UserLogsOutMessage message) {
 		T.call(this);
 
-		UserUpdater.deleteSession(modelStore, authToken);
+		SessionManager.deleteSession(modelStore, authToken);
 	}
 }

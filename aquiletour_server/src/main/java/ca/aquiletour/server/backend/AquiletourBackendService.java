@@ -7,6 +7,7 @@ import ca.aquiletour.core.messages.git.OnNewCommits;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
+import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserChangesPassword;
@@ -70,6 +71,7 @@ import ca.aquiletour.server.backend.semester_list.AddSemesterWeekHandler;
 import ca.aquiletour.server.backend.semester_list.SelectCurrentSemesterHandler;
 import ca.aquiletour.server.backend.time.TimePassesHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
+import ca.aquiletour.server.backend.users.ToggleAdminModeHandler;
 import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
@@ -117,6 +119,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(OnNewCommits.class, new OnNewCommitsHandler());
 		addBackendMessageHandler(UserChangesPassword.class, new UserChangesPasswordHandler());
 		addBackendMessageHandler(UserSendsPassword.class, new UserSendsPasswordHandler());
+		addBackendMessageHandler(ToggleAdminModeMessage.class, new ToggleAdminModeHandler());
 	}
 
 }

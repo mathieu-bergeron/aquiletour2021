@@ -14,7 +14,7 @@ public class ToggleStudentModeHandler extends BackendMessageHandler<ToggleStuden
 		T.call(this);
 		
 		if(message.getUser() instanceof Teacher) {
-			UserUpdater.toggleStudentMode(modelStore, message.getUser());
+			UserManager.toggleStudentMode(modelStore, message.getUser());
 		}
 	}
 

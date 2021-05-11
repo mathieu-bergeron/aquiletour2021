@@ -7,6 +7,7 @@ import java.util.Map;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
+import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserChangesPassword;
@@ -20,6 +21,7 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
@@ -174,11 +176,24 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("toggleStudentMode")) {
 
 			// XXX: must be here in the frontend
-			Teacher teacher = (Teacher) Ntro.currentSession().getUser();
-			teacher.toggleStudentMode();
-			
-			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
-			Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()
+			if(Ntro.currentSession().getUser() instanceof Teacher) {
+				Teacher teacher = (Teacher) Ntro.currentSession().getUser();
+				teacher.toggleStudentMode();
+				
+				ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
+				Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()
+			}
+
+		} else if(parameters.containsKey("toggleAdminMode")) {
+
+			// XXX: must be here in the frontend
+			if(Ntro.currentSession().getUser() instanceof Admin) {
+				Admin admin = (Admin) Ntro.currentSession().getUser();
+				admin.toggleAdminMode();
+				
+				ToggleAdminModeMessage toggleAdminModeMessage = Ntro.messages().create(ToggleAdminModeMessage.class);
+				Ntro.messages().send(toggleAdminModeMessage); // XXX: as above, must be Ntro.messages()
+			}
 		}
 	}
 

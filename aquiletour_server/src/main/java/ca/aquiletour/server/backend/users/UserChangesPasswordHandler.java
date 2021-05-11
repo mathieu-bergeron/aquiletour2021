@@ -14,7 +14,7 @@ public class UserChangesPasswordHandler extends BackendMessageHandler<UserChange
 		
 		if(message.getCurrentPassword() != null 
 				&& !message.getCurrentPassword().isEmpty()
-				&& !UserUpdater.isUserPasswordValid(modelStore, message.getCurrentPassword(), message.getUser())) {
+				&& !UserManager.isUserPasswordValid(modelStore, message.getCurrentPassword(), message.getUser())) {
 			
 			throw new BackendMessageHandlerError("Le mot de passe courant est erroné.");
 
@@ -29,7 +29,7 @@ public class UserChangesPasswordHandler extends BackendMessageHandler<UserChange
 			
 		}else {
 			
-			UserUpdater.setUserPassword(modelStore, message.getNewPasswordA(), message.getUser());
+			UserManager.setUserPassword(modelStore, message.getNewPasswordA(), message.getUser());
 		}
 		
 	}

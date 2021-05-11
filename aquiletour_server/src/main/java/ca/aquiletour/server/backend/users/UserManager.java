@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.users;
 
 import java.util.List;
 
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
@@ -16,10 +17,10 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.users.NtroSession;
 
-public class UserUpdater {
+public class UserManager {
 
 	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) {
-		T.call(UserUpdater.class);
+		T.call(UserManager.class);
 
 		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
 			
@@ -40,7 +41,7 @@ public class UserUpdater {
 	}
 
 	public static boolean isUserPasswordValid(ModelStoreSync modelStore, String password, User user) {
-		T.call(UserUpdater.class);
+		T.call(UserManager.class);
 		
 		boolean isValid = false;
 
@@ -62,7 +63,7 @@ public class UserUpdater {
 	}
 
 	public static void addUsers(ModelStoreSync modelStore, List<User> usersToAdd) {
-		T.call(UserUpdater.class);
+		T.call(UserManager.class);
 
 		for(User user : usersToAdd) {
 			addUser(modelStore, user);
@@ -70,7 +71,7 @@ public class UserUpdater {
 	}
 
 	public static void addUser(ModelStoreSync modelStore, User user) {
-		T.call(UserUpdater.class);
+		T.call(UserManager.class);
 
 		if(!modelStore.ifModelExists(User.class, "admin", user.getId())) {
 			
@@ -104,7 +105,7 @@ public class UserUpdater {
 	}
 
 	public static void updateScreenName(ModelStoreSync modelStore, String screenName, User user) {
-		T.call(UserUpdater.class);
+		T.call(UserManager.class);
 		
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
 			@Override
@@ -118,7 +119,7 @@ public class UserUpdater {
 	}
 
 	public static void toggleStudentMode(ModelStoreSync modelStore, User user) {
-		T.call(UserUpdater.class);
+		T.call(UserManager.class);
 
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
 			@Override
@@ -131,13 +132,35 @@ public class UserUpdater {
 				}
 			}
 		});
-		
 	}
 
-	public static void deleteSession(ModelStoreSync modelStore, String authToken) {
-		T.call(UserUpdater.class);
+	public static void toggleAdminMode(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
 
-		modelStore.deleteModel(NtroSession.class, "admin", authToken);
+		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
+			@Override
+			public void update(User userModel) {
+				T.call(this);
+				
+				if(userModel instanceof Admin) {
+					Admin admin = (Admin) userModel;
+					admin.toggleAdminMode();
+				}
+			}
+		});
 	}
 
+
+	public static void resetUserAfterLogout(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
+			@Override
+			public void update(User userModel) {
+				T.call(this);
+
+				userModel.resetAfterLogout();
+			}
+		});
+	}
 }

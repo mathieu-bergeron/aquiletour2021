@@ -30,7 +30,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		String providedId = message.getProvidedId();
 		User userToRegister = null;
 
-		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
 

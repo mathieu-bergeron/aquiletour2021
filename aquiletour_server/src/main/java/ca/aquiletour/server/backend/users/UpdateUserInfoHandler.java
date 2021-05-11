@@ -27,7 +27,7 @@ public class UpdateUserInfoHandler extends BackendMessageHandler<UpdateUserInfoM
 	public void handleLater(ModelStoreSync modelStore, UpdateUserInfoMessage message) {
 		T.call(this);
 
-		UserUpdater.updateScreenName(modelStore, message.getScreenName(), message.getUser());
+		UserManager.updateScreenName(modelStore, message.getScreenName(), message.getUser());
 	}
 
 }

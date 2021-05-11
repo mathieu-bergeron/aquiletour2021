@@ -5,7 +5,7 @@ import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.aquiletour.server.backend.users.UserUpdater;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
@@ -26,17 +26,18 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 		User userToRegister = null;
 
-		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		
-		if(UserUpdater.isUserPasswordValid(modelStore, message.getPassword(), message.getUser())) {
+		if(UserManager.isUserPasswordValid(modelStore, message.getPassword(), message.getUser())) {
 
-			userToRegister = UserSendsLoginCodeHandler.registerStudentOrTeacher(modelStore, authToken,  userId, session);
+			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, session);
 
 			NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
 			setUserNtroMessage.setUser(userToRegister);
 			RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 
 			Ntro.currentSession().setUser(userToRegister);
+			session.setUser(userToRegister);
 			modelStore.save(session);
 			
 			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
@@ -61,8 +62,6 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 			}else {
 				showLoginMenuMessage.setMessageToUser("Mot de passe erroné.");
 			}
-
-			modelStore.save(session);
 
 			Ntro.messages().send(showLoginMenuMessage);
 		}

@@ -13,7 +13,7 @@ import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
-import ca.aquiletour.server.backend.users.UserUpdater;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -34,7 +34,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		User userToRegister = null;
 
-		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		SessionData sessionData = null;
 		
 		if(session != null) {
@@ -44,7 +44,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		if(sessionData != null 
 				&& sessionData.getLoginCode().equals(loginCode)) {
 			
-			userToRegister = registerStudentOrTeacher(modelStore, authToken,  userId, session);
+			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, session);
 			
 		}else {
 			
@@ -62,55 +62,6 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		}
 	}
 
-	public static User registerStudentOrTeacher(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
-
-		User existingUser = null;
-
-		if(modelStore.ifModelExists(User.class, "admin", userId)) {
-
-			existingUser = modelStore.getModel(User.class, "admin", userId);
-
-		}else {
-
-			User newUser = null;
-			List<String> adminIds = ((AquiletourConfig)Ntro.config()).getAdminIds();
-			
-			if(session.getUser() instanceof TeacherGuest && !adminIds.contains(session.getUser().getId())) {
-
-				newUser = new Teacher();
-
-			} else if(session.getUser() instanceof TeacherGuest && adminIds.contains(session.getUser().getId())) {
-
-				newUser = new Admin();
-
-			} else if(session.getUser() instanceof StudentGuest) {
-
-				newUser = new Student();
-			}
-			
-			newUser.copyPublicInfomation((User) session.getUser());
-			newUser.setFirstname(userId);
-			newUser.setId(userId);
-
-			UserUpdater.addUser(modelStore, newUser);
-			
-			if(newUser instanceof Teacher) {
-				QueueUpdater.createQueue(modelStore, newUser.getId(), newUser.getId());
-			}
-			
-			existingUser = newUser;
-		}
-
-		User sessionUser = existingUser.toSessionUser();
-		
-		sessionUser.setAuthToken(authToken);
-		existingUser.setAuthToken(authToken);
-		
-		session.setUser(sessionUser);
-		modelStore.save(session);
-
-		return existingUser;
-	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {

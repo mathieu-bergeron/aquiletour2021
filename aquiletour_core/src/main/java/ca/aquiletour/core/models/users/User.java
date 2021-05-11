@@ -88,6 +88,14 @@ public class User extends NtroUser {
 		
 		return false;
 	}
-	
-	
+
+	public boolean actsAsAdmin() {
+		T.call(this);
+		
+		return false;
+	}
+
+	public void resetAfterLogout() {
+		T.call(this);
+	}
 }

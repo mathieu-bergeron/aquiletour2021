@@ -11,10 +11,18 @@ public class Teacher extends User {
 		Teacher sessionUser = new Teacher();
 		
 		copySessionOnlyInfo(sessionUser);
-		
-		sessionUser.studentMode = this.studentMode;
 
 		return sessionUser;
+	}
+
+	@Override
+	protected void copySessionOnlyInfo(User sessionUser) {
+		T.call(this);
+		super.copySessionOnlyInfo(sessionUser);
+		
+		if(sessionUser instanceof Teacher) {
+			((Teacher) sessionUser).studentMode = this.studentMode;
+		}
 	}
 
 
@@ -39,5 +47,13 @@ public class Teacher extends User {
 		T.call(this);
 		
 		setStudentMode(!getStudentMode());
+	}
+
+	@Override
+	public void resetAfterLogout() {
+		T.call(this);
+		super.resetAfterLogout();
+
+		setStudentMode(false);
 	}
 }

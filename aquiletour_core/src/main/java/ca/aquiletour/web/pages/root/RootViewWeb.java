@@ -8,6 +8,7 @@ import static ca.ntro.assertions.Factory.that;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.users.Admin;
 import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Student;
 import ca.aquiletour.core.models.users.StudentGuest;
@@ -74,8 +75,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement userNameContainer;
 	private HtmlElement userNameInput;
 	private HtmlElement showPasswordMenuLink;
-	private HtmlElement toggleModeButton;
-	private HtmlElement toggleModeContainer;
+	private HtmlElement toggleStudentModeButton;
+	private HtmlElement toggleStudentModeContainer;
+	private HtmlElement toggleAdminModeButton;
+	private HtmlElement toggleAdminModeContainer;
 	
 	private HtmlElements logoutLinks;
 	private HtmlElements addDelayedMessagesToValue;
@@ -112,8 +115,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		userNameContainer = getRootElement().find("#user-name-container").get(0);
 		userNameInput = getRootElement().find("#user-name-input").get(0);
 		showPasswordMenuLink = getRootElement().find("#show-password-menu-link").get(0);
-		toggleModeContainer = getRootElement().find("#toggle-mode-container").get(0);
-		toggleModeButton = getRootElement().find("#toggle-mode-button").get(0);
+		toggleStudentModeContainer = getRootElement().find("#toggle-student-mode-container").get(0);
+		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
+
+		toggleAdminModeContainer = getRootElement().find("#toggle-admin-mode-container").get(0);
+		toggleAdminModeButton = getRootElement().find("#toggle-admin-mode-button").get(0);
 
 		logoutLinks = getRootElement().find(".logout-link");
 		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
@@ -140,7 +146,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuAddPassword);
 		MustNot.beNull(currentPasswordContainer);
 		MustNot.beNull(loginMenuUserProfile);
-		MustNot.beNull(toggleModeContainer);
+		MustNot.beNull(toggleStudentModeContainer);
+		MustNot.beNull(toggleStudentModeButton);
+		MustNot.beNull(toggleAdminModeContainer);
+		MustNot.beNull(toggleAdminModeButton);
 		MustNot.beNull(userNameContainer);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
@@ -148,7 +157,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(showPasswordMenuLink);
 		MustNot.beNull(coursesLinkTeacher);
 		MustNot.beNull(coursesLinkStudent);
-		MustNot.beNull(toggleModeButton);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
@@ -218,6 +226,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuEnterCode.hide();
 		loginMenuAddPassword.hide();
 		loginMenuUserProfile.hide();
+		toggleAdminModeContainer.hide();
+		toggleStudentModeContainer.hide();
+
+		loginButton.removeClass("btn-danger");
+		loginButton.addClass("btn-secondary");
 
 		if(user instanceof Guest) {
 
@@ -236,12 +249,33 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginButton.html(linkText);
 			loginMenuEnterCode.show();
 
-		}else if(user instanceof Teacher) {
-			userName = displayName(user, userName);
+		}else if(user instanceof Teacher && !(user instanceof Admin)) {
+
+			adjustLoginMenuForTeacher(user, userName);
+
+		}else if(user instanceof Admin && !user.actsAsAdmin()) {
+
+			adjustLoginMenuForTeacher(user, userName);
+
+			toggleAdminModeContainer.show();
+			toggleAdminModeButton.removeClass("btn-secondary");
+			toggleAdminModeButton.addClass("btn-danger");
+
+		}else if(user instanceof Admin && user.actsAsAdmin()) {
 			
-			loginButton.text(userName);
 			loginMenuUserProfile.show();
-			userNameInput.value(userName);
+
+			toggleStudentModeContainer.hide();
+			userNameContainer.hide();
+			showPasswordMenuLink.hide();
+
+			loginButton.text("Admin");
+			loginButton.removeClass("btn-secondary");
+			loginButton.addClass("btn-danger");
+			toggleAdminModeContainer.show();
+			toggleAdminModeButton.text("Quitter le mode admin");
+			toggleAdminModeButton.removeClass("btn-danger");
+			toggleAdminModeButton.addClass("btn-secondary");
 
 		}else if(user instanceof Student) {
 			userName = displayName(user, userName);
@@ -249,7 +283,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginButton.text(userName);
 			loginMenuUserProfile.show();
 			userNameContainer.hide();
-			toggleModeContainer.hide();
+			toggleStudentModeContainer.hide();
 		}
 		
 		coursesLinkTeacher.hide();
@@ -260,7 +294,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		if(user.actsAsTeacher()) {
 			
-			toggleModeButton.text("Mode étudiant");
+			toggleStudentModeButton.text("Mode étudiant");
 			
 			if(user.getHasPassword()) {
 				showPasswordMenuLink.text("Modifier mon mot de passe");
@@ -283,7 +317,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			
 		} else {
 
-			toggleModeButton.text("Mode enseignant");
+			toggleStudentModeButton.text("Mode enseignant");
 
 			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
 			openQueueListLink.show();
@@ -291,6 +325,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 	}
 
+
+	private void adjustLoginMenuForTeacher(User user, String userName) {
+		T.call(this);
+
+		userName = displayName(user, userName);
+		loginMenuUserProfile.show();
+		userNameInput.value(userName);
+		toggleStudentModeContainer.show();
+		loginButton.text(userName);
+	}
 
 	private String displayName(User user, String userName) {
 		if(user.getLastname() != null && !user.getLastname().isEmpty()) {

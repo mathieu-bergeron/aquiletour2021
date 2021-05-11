@@ -25,7 +25,7 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		
 		if(sessionUser != null) {
 
-			session = getStoredSession(modelStore, sessionUser.getAuthToken());
+			session = SessionManager.getStoredSession(modelStore, sessionUser.getAuthToken());
 		}
 
 		if(session != null) {
@@ -38,19 +38,6 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		}
 
 		Ntro.currentSession().setUser(user);
-	}
-
-	public static NtroSession getStoredSession(ModelStoreSync modelStore, String authToken) {
-		T.call(InitializeSessionHandler.class);
-
-		NtroSession session = null;
-		
-		if(modelStore.ifModelExists(NtroSession.class, "TODO", authToken)) {
-			
-			session = modelStore.getModel(NtroSession.class, "TODO", authToken);
-		}
-
-		return session;
 	}
 
 	private User updateExistingSession(ModelStoreSync modelStore, NtroSession session) {
@@ -75,14 +62,14 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		return actualUser;
 	}
 
-	private User updateSessionWithActualUser(ModelStoreSync modelStore, NtroSession session, User oldSessionUser) {
-		T.call(this);
+	public static User updateSessionWithActualUser(ModelStoreSync modelStore, NtroSession session, User oldSessionUser) {
+		T.call(InitializeSessionHandler.class);
 
 		User actualUser = oldSessionUser;
 
-		if(modelStore.ifModelExists(User.class, "TODO", oldSessionUser.getId())) {
+		if(modelStore.ifModelExists(User.class, "admin", oldSessionUser.getId())) {
 
-			actualUser = modelStore.getModel(User.class, "TODO", oldSessionUser.getId());
+			actualUser = modelStore.getModel(User.class, "admin", oldSessionUser.getId());
 			
 			User sessionUser = actualUser.toSessionUser();
 			sessionUser.setAuthToken(oldSessionUser.getAuthToken());
