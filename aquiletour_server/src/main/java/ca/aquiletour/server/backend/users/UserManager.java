@@ -11,7 +11,7 @@ import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserListModel;
 import ca.aquiletour.core.models.user_registration.RegistrationIdModel;
-import ca.aquiletour.core.models.user_registration.UserIdModel;
+import ca.aquiletour.core.models.user_registration.StudentIdModel;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.AquiletourConfig;
@@ -241,17 +241,17 @@ public class UserManager {
 		
 		String studentId = null;
 
-		if(modelStore.ifModelExists(UserIdModel.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(StudentIdModel.class, "admin", registrationId)) {
 
-			studentId = modelStore.getModel(UserIdModel.class, "admin", registrationId).getUserId();
+			studentId = modelStore.getModel(StudentIdModel.class, "admin", registrationId).getUserId();
 
 		}else {
 			
 			String newId = generateUniqueUserId(modelStore);
 			
-			modelStore.createModel(UserIdModel.class, "admin", registrationId, new ModelInitializer<UserIdModel>() {
+			modelStore.createModel(StudentIdModel.class, "admin", registrationId, new ModelInitializer<StudentIdModel>() {
 				@Override
-				public void initialize(UserIdModel newModel) {
+				public void initialize(StudentIdModel newModel) {
 					T.call(this);
 					newModel.setUserId(newId);
 				}
