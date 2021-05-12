@@ -10,8 +10,8 @@ import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.RegistrationIdModel;
-import ca.aquiletour.core.models.user_registration.StudentIdModel;
+import ca.aquiletour.core.models.user_registration.RegistrationIds;
+import ca.aquiletour.core.models.user_registration.StudentIds;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
 import ca.aquiletour.server.AquiletourConfig;
@@ -266,17 +266,17 @@ public class UserManager {
 		
 		String studentId = null;
 
-		if(modelStore.ifModelExists(StudentIdModel.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(StudentIds.class, "admin", registrationId)) {
 
-			studentId = modelStore.getModel(StudentIdModel.class, "admin", registrationId).getUserId();
+			studentId = modelStore.getModel(StudentIds.class, "admin", registrationId).getUserId();
 
 		}else {
 			
 			String newId = generateUniqueUserId(modelStore, Student.class);
 			
-			modelStore.createModel(StudentIdModel.class, "admin", registrationId, new ModelInitializer<StudentIdModel>() {
+			modelStore.createModel(StudentIds.class, "admin", registrationId, new ModelInitializer<StudentIds>() {
 				@Override
-				public void initialize(StudentIdModel newModel) {
+				public void initialize(StudentIds newModel) {
 					T.call(this);
 					newModel.setUserId(newId);
 				}
@@ -284,9 +284,9 @@ public class UserManager {
 
 			studentId = newId;
 
-			modelStore.createModel(RegistrationIdModel.class, "admin", studentId, new ModelInitializer<RegistrationIdModel>() {
+			modelStore.createModel(RegistrationIds.class, "admin", studentId, new ModelInitializer<RegistrationIds>() {
 				@Override
-				public void initialize(RegistrationIdModel newModel) {
+				public void initialize(RegistrationIds newModel) {
 					T.call(this);
 					newModel.setRegistrationId(registrationId);
 				}
