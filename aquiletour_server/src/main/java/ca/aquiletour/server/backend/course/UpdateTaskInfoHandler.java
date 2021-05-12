@@ -1,6 +1,5 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
@@ -36,14 +35,12 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 		CourseUpdater.updateCourseSchedule(modelStore,
 										   message.coursePath(),
 										   semesterSchedule,
-										   teacherSchedule,
-										   message.getUser());
+										   teacherSchedule);
 	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, UpdateTaskInfoMessage message) {
 		T.call(this);
 	}
-
 
 }

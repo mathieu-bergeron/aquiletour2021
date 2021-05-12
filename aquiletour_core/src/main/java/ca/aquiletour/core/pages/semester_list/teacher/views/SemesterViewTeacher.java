@@ -10,5 +10,6 @@ public interface SemesterViewTeacher extends SemesterView {
 	void appendScheduleItem(ScheduleItem item);
 	void displayScheduleSummary(String scheduleSummaryText);
 	void displayAvailabilitySummary(String availabilitySummaryText);
+	void enableCurrentSemesterSelector(boolean enabled);
 
 }

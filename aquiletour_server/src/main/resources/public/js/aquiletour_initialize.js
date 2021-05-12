@@ -24,13 +24,17 @@ function initializeView(viewName, viewRootElement, jSweet){
 
     }else if(viewName === "CommitListViewWeb"){
 
-        initializeCommitList(viewRootElement, jSweet);
+        //initializeCommitList(viewRootElement, jSweet);
 
     }else if(viewName === "CourseViewWeb"){
 
         initializeCourse(viewRootElement, jSweet);
 
-    }else if(viewName === "SemesterViewWeb"){
+    }else if(viewName === "SemesterViewWebTeacher"){
+
+        initializeSemester(viewRootElement, jSweet);
+
+    }else if(viewName === "SemesterViewWebAdmin"){
 
         initializeSemester(viewRootElement, jSweet);
 

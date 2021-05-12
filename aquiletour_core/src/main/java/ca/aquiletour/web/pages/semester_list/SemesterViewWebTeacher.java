@@ -100,4 +100,18 @@ public class SemesterViewWebTeacher extends SemesterViewWeb implements SemesterV
 		
 		calendarSummary.text(semesterSummaryText);
 	}
+
+	@Override
+	public void enableCurrentSemesterSelector(boolean enabled) {
+		T.call(this);
+		
+		if(enabled) {
+			
+			currentSemesterCheckbox().removeAttribute("disabled");
+
+		}else {
+
+			currentSemesterCheckbox().setAttribute("disabled", "true");
+		}
+	}
 }

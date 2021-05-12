@@ -2,24 +2,22 @@ package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
-import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class SemesterListModel implements NtroModel {
+public abstract class SemesterListModel<SM extends SemesterModel> implements NtroModel {
 	
 	private StoredString currentSemesterId = new StoredString(Constants.DRAFTS_SEMESTER_ID);
-	private ObservableSemesterList semesters = new ObservableSemesterList();
+	private ObservableSemesterList<SM> semesters = new ObservableSemesterList<SM>();
 
-	public ObservableSemesterList getSemesters() {
+	public ObservableSemesterList<SM> getSemesters() {
 		return semesters;
 	}
 
-	public void setSemesters(ObservableSemesterList semesters) {
+	public void setSemesters(ObservableSemesterList<SM> semesters) {
 		this.semesters = semesters;
 	}
 	
@@ -32,11 +30,11 @@ public abstract class SemesterListModel implements NtroModel {
 	}
 
 
-	public SemesterModel semesterById(String semesterId) {
+	public SM semesterById(String semesterId) {
 		T.call(this);
 
 		int semesterIndex = semesterIndexById(semesterId);
-		SemesterModel semester = null;
+		SM semester = null;
 		
 		if(semesterIndex != -1) {
 			semester = getSemesters().item(semesterIndex);
@@ -65,7 +63,7 @@ public abstract class SemesterListModel implements NtroModel {
 		return semesterIndexById(semesterId) != -1;
 	}
 
-	public void addSemester(SemesterModel semester) {
+	public void addSemester(SM semester) {
 		T.call(this);
 		
 		if(!ifSemesterIdExists(semester.getSemesterId())) {
@@ -94,36 +92,7 @@ public abstract class SemesterListModel implements NtroModel {
 		getCurrentSemesterId().set(semesterId);
 	}
 
-	public void addCourseGroup(String semesterId, String courseId, String groupId) {
-		T.call(this);
 
-		SemesterModel semester = semesterById(semesterId);
-		
-		if(semester != null) {
-			
-			semester.addCourseGroup(courseId, groupId);
-			
-		} else {
-			
-			Log.warning("Semester not found: " + semesterId);
-		}
-	}
-
-	public void addScheduleItem(String semesterId, ScheduleItem scheduleItem) {
-		T.call(this);
-
-		SemesterModel semester = semesterById(semesterId);
-		
-		if(semester != null) {
-			
-			semester.addScheduleItem(scheduleItem);
-			
-		} else {
-			
-			Log.warning("Semester not found: " + semesterId);
-		}
-		
-	}
 
 	public SemesterSchedule semesterSchedule(String semesterId) {
 		T.call(this);
@@ -143,23 +112,6 @@ public abstract class SemesterListModel implements NtroModel {
 		return schedule;
 	}
 
-	public TeacherSchedule teacherSchedule(String semesterId) {
-		T.call(this);
-
-		SemesterModel semester = semesterById(semesterId);
-		TeacherSchedule schedule = null;
-		
-		if(semester != null) {
-			
-			schedule = semester.getTeacherSchedule();
-			
-		} else {
-			
-			Log.warning("Semester not found: " + semesterId);
-		}
-		
-		return schedule;
-	}
 
 	public void removeSemester(String semesterId) {
 		T.call(this);

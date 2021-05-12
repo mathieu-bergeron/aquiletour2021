@@ -254,10 +254,9 @@ public class CourseUpdater {
 	public static void updateCourseSchedule(ModelStoreSync modelStore, 
                          	                CoursePath coursePath,
 						                    SemesterSchedule semesterSchedule, 
-						                    TeacherSchedule teacherSchedule, 
-						                    User user) {
+						                    TeacherSchedule teacherSchedule) {
 		T.call(CourseUpdater.class);
-		
+
 		modelStore.updateModel(CourseModel.class, "admin", coursePath, new ModelUpdater<CourseModel>() {
 			@Override
 			public void update(CourseModel course) {

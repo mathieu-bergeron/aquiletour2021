@@ -231,14 +231,14 @@ public class CourseListUpdater {
 	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
-																			   User user) {
+																			   String userId) {
 		T.call(CourseListUpdater.class);
 
 		List<CoursePath> courses = new ArrayList<>();
 		
-		if(modelStore.ifModelExists(courseListModelClass, "admin", user.getId())) {
+		if(modelStore.ifModelExists(courseListModelClass, "admin", userId)) {
 			
-			CLM model = modelStore.getModel(courseListModelClass, "admin", user.getId());
+			CLM model = modelStore.getModel(courseListModelClass, "admin", userId);
 			
 			for(CourseListItem item :  model.getCourses().getValue()) {
 
@@ -247,6 +247,16 @@ public class CourseListUpdater {
 		}
 
 		return courses;
+
+	}
+
+	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
+																			   Class<CLM> courseListModelClass, 
+																			   String semesterId, 
+																			   User user) {
+		T.call(CourseListUpdater.class);
+		
+		return getCourseList(modelStore, courseListModelClass, semesterId, user.getId());
 	}
 
 }

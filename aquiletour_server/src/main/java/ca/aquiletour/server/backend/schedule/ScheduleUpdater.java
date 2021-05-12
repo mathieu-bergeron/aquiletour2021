@@ -3,7 +3,6 @@ package ca.aquiletour.server.backend.schedule;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
@@ -21,28 +20,39 @@ public class ScheduleUpdater {
 			                                  String semesterId, 
 			                                  User user) {
 		T.call(ScheduleUpdater.class);
+		
+		updateSchedulesForUserId(modelStore, semesterId, user.getId());
+	}
+
+	public static void updateSchedulesForUserId(ModelStoreSync modelStore, 
+			                                    String semesterId, 
+			                                    String userId) {
+		T.call(ScheduleUpdater.class);
 
 		SemesterSchedule semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 
 																				    SemesterListModelTeacher.class,
 				                                                                    semesterId, 
-				                                                                    user);
+				                                                                    userId);
 		
 		TeacherSchedule teacherSchedule = SemesterListManager.getTeacherSchedule(modelStore, 
 				                                                                 semesterId, 
-				                                                                 user);
+				                                                                 userId);
 
 		
 		List<CoursePath> teacherCourses = CourseListUpdater.getCourseList(modelStore, 
 																	      CourseListModelTeacher.class,
 				                                                          semesterId, 
-				                                                          user);
+				                                                          userId);
 		
-		for(CoursePath coursePath : teacherCourses) {
-			CourseUpdater.updateCourseSchedule(modelStore,
-											   coursePath,
-											   semesterSchedule,
-											   teacherSchedule,
-											   user);
+		if(semesterSchedule != null
+				&& teacherSchedule != null) {
+
+			for(CoursePath coursePath : teacherCourses) {
+				CourseUpdater.updateCourseSchedule(modelStore,
+												   coursePath,
+												   semesterSchedule,
+												   teacherSchedule);
+			}
 		}
 	}
 

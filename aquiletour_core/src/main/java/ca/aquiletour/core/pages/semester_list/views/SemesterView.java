@@ -6,7 +6,7 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface SemesterView extends NtroView {
 
-	void displaySemester(SemesterModel item);
+	void displaySemester(SemesterModel item, boolean isCurrentSemester);
 	void appendSemesterWeek(CalendarWeek item);
 	void displayCalendarSummary(String semesterSummaryText);
 

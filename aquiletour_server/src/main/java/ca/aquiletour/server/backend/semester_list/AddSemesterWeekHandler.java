@@ -6,6 +6,7 @@ import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.schedule.ScheduleUpdater;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
@@ -27,7 +28,7 @@ public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWee
 													   SemesterListModelAdmin.class,
 					                                   message.getSemesterId(), 
 					                                   message.getSemesterWeek(), 
-					                                   Constants.MANAGED_SEMESTER_MODEL_ID);
+					                                   Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 
 		}else if(message.getUser().actsAsTeacher()) {
 
@@ -46,6 +47,18 @@ public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWee
 	public void handleLater(ModelStoreSync modelStore, AddSemesterWeekMessage message) {
 		T.call(this);
 
-		ScheduleUpdater.updateSchedulesForUser(modelStore, message.getSemesterId(), message.getUser());
+		if(message.getUser().actsAsAdmin()) {
+			UserManager.forEachTeacherId(modelStore, teacherId -> {
+				SemesterListManager.addSemesterWeekToModel(modelStore, 
+														   SemesterListModelTeacher.class,
+														   message.getSemesterId(), 
+														   message.getSemesterWeek(), 
+														   teacherId);
+
+				//ScheduleUpdater.updateSchedulesForUserId(modelStore, message.getSemesterId(), teacherId);
+			});
+
+		}
+
 	}
 }

@@ -11,33 +11,40 @@ import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class SemesterListViewModel<SLM extends SemesterListModel, 
+public abstract class SemesterListViewModel<SLM extends SemesterListModel<SM>, 
+											SM extends SemesterModel,
                                             SLV extends SemesterListView, 
                                             SV extends SemesterView> 
 
        extends ModelViewSubViewHandler<SLM, SLV> {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handle(SLM model, SLV view, ViewLoader subViewLoader) {
 		T.call(this);
 
-		model.getSemesters().onItemAdded(new ItemAddedListener<SemesterModel>() {
+		model.getSemesters().onItemAdded(new ItemAddedListener<SM>() {
 			@Override
-			public void onItemAdded(int index, SemesterModel item) {
+			public void onItemAdded(int index, SM item) {
 				T.call(this);
 
-				@SuppressWarnings("unchecked")
 				SV semesterView = (SV) subViewLoader.createView();
-
-				observeSemester(view, semesterView, item);
+				
+				observeSemester(view, semesterView, item, isCurrentSemester(model, item));
 			}
 		});
 	}
 
-	protected void observeSemester(SLV view, SV semesterView, SemesterModel semester) {
+	private boolean isCurrentSemester(SLM model, SM item) {
 		T.call(this);
 
-		displaySemester(semester, semesterView);
+		return model.getCurrentSemesterId().getValue().equals(item.getSemesterId());
+	}
+
+	protected void observeSemester(SLV view, SV semesterView, SM semester, boolean isCurrentSemester) {
+		T.call(this);
+
+		displaySemester(semester, semesterView, isCurrentSemester);
 		
 		view.appendSemester(semesterView);
 		
@@ -53,10 +60,10 @@ public abstract class SemesterListViewModel<SLM extends SemesterListModel,
 		});
 	}
 
-	protected void displaySemester(SemesterModel semester, SV semesterView) {
+	protected void displaySemester(SM semester, SV semesterView, boolean isCurrentSemester) {
 		T.call(this);
 
-		semesterView.displaySemester(semester);
+		semesterView.displaySemester(semester, isCurrentSemester);
 		semesterView.displayCalendarSummary(semester.semesterSummary());
 	}
 }

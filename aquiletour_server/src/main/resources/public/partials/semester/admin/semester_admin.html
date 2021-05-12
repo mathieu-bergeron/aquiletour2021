@@ -47,7 +47,7 @@
                     <tr id="add-week-row">
                         <td rowspan="2">
                             <div class="input-group date" data-provide="datepicker">
-                                <input form="add-semester-dates-form" class="form-control week-of-input add-id-to-form add-id-to-id" name="weekOf" id="week-of-input" style="max-width:7rem;"></input>
+                                <input form="add-semester-dates-form" class="form-control week-of-input add-id-to-form add-id-to-id aquiletour-datepicker" name="weekOf" id="week-of-input" style="max-width:7rem;"></input>
                             </div>
                         </td>
                         <td>
@@ -132,17 +132,18 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content dashboard-mContent">
             <div class="modal-header">
-                <h5 class="modal-title" id="delete-semester-modal-title">Confirmer la suppression</h5>
+                <div>
+                    <h5 id="delete-semester-modal-title">ATTENTION</h5>
+                    <span>la session sera supprimée pour tous les profs</span>
+                </div>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5>ATTENTION</h5>
-                <p>la session va être supprimée pour tous les profs</p>
                 <form action="" method="post" class="delete-semester-form">
                     <div class="form-group row">
                         <input class="add-id-to-value" name="deleteSemesterId" style="display:none;"></input>
-                        <label for="confirmSemesterId">Confirmer le code de la session à supprimer</label>
-                        <input class="ms-3" name="confirmSemesterId" style="max-width:10rem;"></input>
+                        <label for="confirmSemesterId">Saisir le code de la session pour confirmer</label>
+                        <input class="ms-3 form-text" name="confirmSemesterId" style="max-width:10rem;"></input>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-danger me-3">Supprimer</button>

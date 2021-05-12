@@ -44,7 +44,7 @@ public class SemesterListControllerAdmin extends SemesterListController {
 	protected String modelId(NtroContext<?, ?> context) {
 		T.call(this);
 		
-		return Constants.MANAGED_SEMESTER_MODEL_ID;
+		return Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID;
 	}
 
 	@Override

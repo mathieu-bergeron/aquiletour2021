@@ -350,4 +350,16 @@ public class UserManager {
 
 		return user;
 	}
+
+	public static void forEachTeacherId(ModelStoreSync modelStore, UserIdLambda lambda) {
+		T.call(UserManager.class);
+		
+		UserListModel teacherList = modelStore.getModel(UserListModel.class, 
+				                                        "admin", 
+				                                        Constants.TEACHER_LIST_MODEL_ID);
+
+		for(String teacherId : teacherList.userIds()) {
+			lambda.execute(teacherId);
+		}
+	}
 }

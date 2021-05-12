@@ -48,7 +48,7 @@ public abstract class SemesterViewWeb extends NtroViewWeb implements SemesterVie
 	}
 
 	@Override
-	public void displaySemester(SemesterModel item) {
+	public void displaySemester(SemesterModel item, boolean isCurrentSemester) {
 		T.call(this);
 		
 		semesterIdHeader.text(item.getSemesterId());
@@ -58,9 +58,7 @@ public abstract class SemesterViewWeb extends NtroViewWeb implements SemesterVie
 		addIdToForm.appendToAttribute("form", item.getSemesterId());
 		addIdToDataTarget.appendToAttribute("data-target", item.getSemesterId());
 
-		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
-		
-		if(sessionData.getCurrentSemester().equals(item.getSemesterId())) {
+		if(isCurrentSemester) {
 			currentSemesterCheckbox.setAttribute("checked", "");
 		}else {
 			currentSemesterCheckbox.removeAttribute("checked");
@@ -106,5 +104,11 @@ public abstract class SemesterViewWeb extends NtroViewWeb implements SemesterVie
 	public void displayCalendarSummary(String semesterSummaryText) {
 		T.call(this);
 		// XXX: not supported here
+	}
+	
+	protected HtmlElement currentSemesterCheckbox() {
+		T.call(this);
+		
+		return currentSemesterCheckbox;
 	}
 }
