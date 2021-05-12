@@ -1,13 +1,19 @@
 package ca.aquiletour.server.backend.users;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import ca.aquiletour.core.models.users.Admin;
-import ca.aquiletour.core.models.users.Teacher;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.user.Admin;
+import ca.aquiletour.core.models.user.Teacher;
+import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.core.models.user_list.UserListModel;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
+import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
+import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.log.Log;
@@ -97,10 +103,26 @@ public class UserManager {
 
 			DashboardUpdater.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
 			DashboardUpdater.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
+			
+			modelStore.updateModel(UserListModel.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserListModel>() {
+				@Override
+				public void update(UserListModel existingModel) {
+					T.call(this);
+					existingModel.addUserId(user.getId());
+				}
+			});
 
 		}else {
 
 			DashboardUpdater.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
+
+			modelStore.updateModel(UserListModel.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserListModel>() {
+				@Override
+				public void update(UserListModel existingModel) {
+					T.call(this);
+					existingModel.addUserId(user.getId());
+				}
+			});
 		}
 	}
 
@@ -162,5 +184,53 @@ public class UserManager {
 				userModel.resetAfterLogout();
 			}
 		});
+	}
+
+	public static void initialize(ModelStoreSync modelStore) {
+		T.call(UserManager.class);
+
+		if(!modelStore.ifModelExists(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
+			modelStore.createModel(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID, new ModelInitializer<UserListModel>() {
+				@Override
+				public void initialize(UserListModel newModel) {
+					T.call(this);
+					
+					AquiletourConfig config = (AquiletourConfig) Ntro.config();
+					for(String adminId : config.getAdminIds()){
+						newModel.addUserId(adminId);
+					}
+				}
+			});
+		}
+
+		if(!modelStore.ifModelExists(UserListModel.class, "admin", Constants.TEACHER_LIST_MODEL_ID)) {
+			modelStore.createModel(UserListModel.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelInitializer<UserListModel>() {
+				@Override
+				public void initialize(UserListModel newModel) {
+					T.call(this);
+				}
+			});
+		}
+
+		if(!modelStore.ifModelExists(UserListModel.class, "admin", Constants.STUDENT_LIST_MODEL_ID)) {
+			modelStore.createModel(UserListModel.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelInitializer<UserListModel>() {
+				@Override
+				public void initialize(UserListModel newModel) {
+					T.call(this);
+				}
+			});
+		}
+	}
+
+	public static Set<String> getAdminIds(ModelStoreSync modelStore) {
+		T.call(UserManager.class);
+		
+		Set<String> adminIds = new HashSet<>();
+
+		if(modelStore.ifModelExists(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
+			adminIds = modelStore.getModel(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID).userIds();
+		}
+
+		return adminIds;
 	}
 }

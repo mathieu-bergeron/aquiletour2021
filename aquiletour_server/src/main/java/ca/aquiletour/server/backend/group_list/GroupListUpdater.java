@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.group_list;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;

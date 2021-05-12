@@ -1,4 +1,6 @@
-package ca.aquiletour.core.models.users;
+package ca.aquiletour.core.models.user;
+
+import ca.ntro.core.system.trace.T;
 
 public class StudentGuest extends Student {
 
@@ -17,6 +19,13 @@ public class StudentGuest extends Student {
 
 		setFirstname(otherUser.getId());
 		setLastname("");
+	}
+
+	@Override
+	public boolean isGuest() {
+		T.call(this);
+		
+		return true;
 	}
 
 }

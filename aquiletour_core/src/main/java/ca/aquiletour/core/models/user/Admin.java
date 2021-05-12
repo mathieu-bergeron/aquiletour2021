@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.users;
+package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
 

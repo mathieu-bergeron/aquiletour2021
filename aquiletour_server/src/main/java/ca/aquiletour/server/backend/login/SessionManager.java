@@ -1,13 +1,14 @@
 package ca.aquiletour.server.backend.login;
 
 import java.util.List;
+import java.util.Set;
 
-import ca.aquiletour.core.models.users.Admin;
-import ca.aquiletour.core.models.users.Student;
-import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.Teacher;
-import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.Admin;
+import ca.aquiletour.core.models.user.Student;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.models.user.Teacher;
+import ca.aquiletour.core.models.user.TeacherGuest;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserManager;
@@ -63,7 +64,7 @@ public class SessionManager {
 		}else {
 
 			User newUser = null;
-			List<String> adminIds = ((AquiletourConfig)Ntro.config()).getAdminIds();
+			Set<String> adminIds = UserManager.getAdminIds(modelStore);
 			
 			if(session.getUser() instanceof TeacherGuest && !adminIds.contains(session.getUser().getId())) {
 
@@ -106,6 +107,40 @@ public class SessionManager {
 		T.call(SessionManager.class);
 
 		modelStore.deleteModel(NtroSession.class, "admin", authToken);
+	}
+
+	public static boolean isUserAuthenticated(ModelStoreSync modelStore, User user) {
+		T.call(SessionManager.class);
+		
+		boolean isAuthenticated = false;
+		
+		String authToken = user.getAuthToken();
+		
+		if(authToken != null 
+				&& !authToken.isEmpty()
+				&& modelStore.ifModelExists(NtroSession.class, "admin", authToken)) {
+			
+			NtroSession session = modelStore.getModel(NtroSession.class, "admin", authToken);
+			
+			User storedUser = (User) session.getUser();
+			
+			if(storedUser != null 
+					&& user != null
+					&& storedUser.getClass().equals(user.getClass())) {
+
+				String storedUserId = storedUser.getId();
+
+				if(storedUserId != null
+						&& storedUserId.equals(user.getId())
+						&& !user.isGuest()
+						&& !storedUser.isGuest()) {
+					
+					isAuthenticated = true;
+				}
+			}
+		}
+		
+		return isAuthenticated;
 	}
 
 

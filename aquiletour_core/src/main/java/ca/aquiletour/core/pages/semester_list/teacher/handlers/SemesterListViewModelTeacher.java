@@ -23,17 +23,6 @@ public class SemesterListViewModelTeacher extends SemesterListViewModel<Semester
 
 		super.observeSemester(view, semesterView, semester);
 		
-		semester.getSemesterSchedule().getWeeks().removeObservers();
-		semester.getSemesterSchedule().getWeeks().onItemAdded(new ItemAddedListener<CalendarWeek>() {
-			@Override
-			public void onItemAdded(int index, CalendarWeek item) {
-				T.call(this);
-
-				semesterView.appendSemesterWeek(item);
-				semesterView.displayCalendarSummary(semester.semesterSummary());
-			}
-		});
-		
 		semester.getCourseGroups().removeObservers();
 		semester.getCourseGroups().onItemAdded(new ItemAddedListener<CourseGroup>() {
 			@Override

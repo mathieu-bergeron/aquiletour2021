@@ -3,7 +3,7 @@ package ca.aquiletour.core.models.courses.model;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 

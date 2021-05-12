@@ -4,10 +4,10 @@ package ca.aquiletour.server.backend.queue;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.users.Guest;
-import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.Guest;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.models.user.TeacherGuest;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.ntro.backend.BackendMessageHandler;

@@ -5,7 +5,7 @@ import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
@@ -55,19 +55,19 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 		
-		addSemesterWeekForUserId(modelStore, modelClass, semesterId, semesterWeek, user.getId());
+		addSemesterWeekToModel(modelStore, modelClass, semesterId, semesterWeek, user.getId());
 	}
 
-	public static <SL extends SemesterListModel>  void addSemesterWeekForUserId(ModelStoreSync modelStore, 
-			                                                                    Class<SL> modelClass, 
-			                                                                    String semesterId, 
-			                                                                    CalendarWeek semesterWeek, 
-			                                                                    String userId) {
+	public static <SL extends SemesterListModel>  void addSemesterWeekToModel(ModelStoreSync modelStore, 
+			                                                                  Class<SL> modelClass, 
+			                                                                  String semesterId, 
+			                                                                  CalendarWeek semesterWeek, 
+			                                                                  String modelId) {
 		T.call(SemesterListManager.class);
 
 		modelStore.updateModel(modelClass, 
 							   "admin",
-							   userId,
+							   modelId,
 							   new ModelUpdater<SemesterListModel>() {
 
 			@Override

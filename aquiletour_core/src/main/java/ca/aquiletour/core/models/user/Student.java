@@ -1,4 +1,6 @@
-package ca.aquiletour.core.models.users;
+package ca.aquiletour.core.models.user;
+
+import ca.ntro.core.system.trace.T;
 
 public class Student extends User {
 
@@ -46,6 +48,13 @@ public class Student extends User {
 		if(sessionUser instanceof Student) {
 			((Student)sessionUser).setProgramId(getProgramId());
 		}
+	}
+
+	@Override
+	public boolean isGuest() {
+		T.call(this);
+		
+		return false;
 	}
 	
 }

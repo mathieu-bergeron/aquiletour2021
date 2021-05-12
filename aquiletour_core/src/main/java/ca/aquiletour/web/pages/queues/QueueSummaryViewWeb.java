@@ -1,8 +1,8 @@
 package ca.aquiletour.web.pages.queues;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.users.Teacher;
-import ca.aquiletour.core.models.users.TeacherGuest;
+import ca.aquiletour.core.models.user.Teacher;
+import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;

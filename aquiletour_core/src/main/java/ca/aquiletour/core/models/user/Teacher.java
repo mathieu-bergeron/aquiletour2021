@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.users;
+package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
 
@@ -55,5 +55,12 @@ public class Teacher extends User {
 		super.resetAfterLogout();
 
 		setStudentMode(false);
+	}
+
+	@Override
+	public boolean isGuest() {
+		T.call(this);
+		
+		return false;
 	}
 }

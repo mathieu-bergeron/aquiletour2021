@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.open_queues_list;
 
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.ntro.core.models.ModelStoreSync;

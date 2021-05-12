@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.queue;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;

@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.user.UserSendsPassword;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserManager;

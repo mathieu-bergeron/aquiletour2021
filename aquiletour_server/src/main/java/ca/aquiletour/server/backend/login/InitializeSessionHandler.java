@@ -1,10 +1,10 @@
 package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.InitializeSessionMessage;
-import ca.aquiletour.core.models.users.Guest;
-import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.Guest;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.models.user.TeacherGuest;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;

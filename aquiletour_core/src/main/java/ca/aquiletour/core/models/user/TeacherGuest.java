@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.users;
+package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
 
@@ -23,6 +23,13 @@ public class TeacherGuest extends Teacher {
 
 	@Override
 	public boolean actsAsTeacher() {
+		T.call(this);
+		
+		return true;
+	}
+
+	@Override
+	public boolean isGuest() {
 		T.call(this);
 		
 		return true;

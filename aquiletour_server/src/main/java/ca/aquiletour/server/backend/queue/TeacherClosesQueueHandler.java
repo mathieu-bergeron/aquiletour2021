@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.queue;
 
 
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;

@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.root.handlers;
 
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ViewMessageHandler;
 import ca.ntro.core.system.trace.T;

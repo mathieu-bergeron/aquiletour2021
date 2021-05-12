@@ -64,4 +64,7 @@ public class Constants {
 
 	public static final String MANAGED_SEMESTER_MODEL_ID = "all";
 
+	public static final String STUDENT_LIST_MODEL_ID = "students";
+	public static final String TEACHER_LIST_MODEL_ID = "teachers";
+	public static final String ADMIN_LIST_MODEL_ID = "admins";
 }

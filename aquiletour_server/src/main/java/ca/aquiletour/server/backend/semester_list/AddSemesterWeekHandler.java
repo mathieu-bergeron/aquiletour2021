@@ -1,41 +1,44 @@
 package ca.aquiletour.server.backend.semester_list;
 
-import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.models.users.Admin;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
+import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.schedule.ScheduleUpdater;
 import ca.ntro.backend.BackendMessageHandler;
+import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
 public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWeekMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AddSemesterWeekMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddSemesterWeekMessage message) throws BackendMessageHandlerError {
 		T.call(this);
-		
-		String semesterId = message.getSemesterId();
-		CalendarWeek semesterWeek = message.getSemesterWeek();
-		User user = message.getUser();
-		
-		if(message.getUser() instanceof Admin && message.getUser().actsAsAdmin()) {
 
-			SemesterListManager.addSemesterWeekForUser(modelStore, 
+		if(!SessionManager.isUserAuthenticated(modelStore, message.getUser())) {
+			throw new BackendMessageHandlerError("Permission refusée!");
+		}
+		
+		if(message.getUser().actsAsAdmin()) {
+
+			SemesterListManager.addSemesterWeekToModel(modelStore, 
 													   SemesterListModelAdmin.class,
-					                                   semesterId, 
-					                                   semesterWeek, 
-					                                   user);
+					                                   message.getSemesterId(), 
+					                                   message.getSemesterWeek(), 
+					                                   Constants.MANAGED_SEMESTER_MODEL_ID);
 
-		}else {
+		}else if(message.getUser().actsAsTeacher()) {
 
 			SemesterListManager.addSemesterWeekForUser(modelStore, 
 													   SemesterListModelTeacher.class,
-					                                   semesterId, 
-					                                   semesterWeek, 
-					                                   user);
+					                                   message.getSemesterId(), 
+					                                   message.getSemesterWeek(), 
+					                                   message.getUser());
+		} else {
+
+			throw new BackendMessageHandlerError("Permission refusée");
 		}
 	}
 
@@ -45,5 +48,4 @@ public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWee
 
 		ScheduleUpdater.updateSchedulesForUser(modelStore, message.getSemesterId(), message.getUser());
 	}
-
 }

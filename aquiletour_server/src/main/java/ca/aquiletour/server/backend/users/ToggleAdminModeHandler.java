@@ -1,7 +1,7 @@
 package ca.aquiletour.server.backend.users;
 
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
-import ca.aquiletour.core.models.users.Admin;
+import ca.aquiletour.core.models.user.Admin;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;

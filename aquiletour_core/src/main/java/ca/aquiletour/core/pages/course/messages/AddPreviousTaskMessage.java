@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.course.messages;
 
 import ca.aquiletour.core.messages.course.CourseMessage;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.Path;
 import ca.ntro.messages.NtroUserMessage;
 

@@ -31,6 +31,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.GitHandler;
 import ca.aquiletour.server.http.MessageHandler;
@@ -38,6 +39,7 @@ import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Constants;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.services.Ntro;
@@ -62,6 +64,8 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		Ntro.jsonService().setPrettyPrinting(true);
 		
 		sendTimePassesMessages();
+
+		UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _resources)

@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.users;
+package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.users.NtroUser;
@@ -93,6 +93,12 @@ public class User extends NtroUser {
 		T.call(this);
 		
 		return false;
+	}
+
+	public boolean isGuest() {
+		T.call(this);
+		
+		return true;
 	}
 
 	public void resetAfterLogout() {
