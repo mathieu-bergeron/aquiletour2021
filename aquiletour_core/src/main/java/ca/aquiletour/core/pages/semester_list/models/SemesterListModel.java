@@ -33,21 +33,36 @@ public abstract class SemesterListModel implements NtroModel {
 
 
 	public SemesterModel semesterById(String semesterId) {
+		T.call(this);
+
+		int semesterIndex = semesterIndexById(semesterId);
 		SemesterModel semester = null;
 		
-		for(int i = 0; i < getSemesters().size(); i++) {
-			SemesterModel candidate = getSemesters().item(i);
-			if(candidate.getSemesterId().equals(semesterId)) {
-				semester = candidate;
-				break;
-			}
+		if(semesterIndex != -1) {
+			semester = getSemesters().item(semesterIndex);
 		}
 
 		return semester;
 	}
 
+	public int semesterIndexById(String semesterId) {
+		T.call(this);
+
+		int index = -1;
+		
+		for(int i = 0; i < getSemesters().size(); i++) {
+			SemesterModel candidate = getSemesters().item(i);
+			if(candidate.getSemesterId().equals(semesterId)) {
+				index = i;
+				break;
+			}
+		}
+
+		return index;
+	}
+
 	public boolean ifSemesterIdExists(String semesterId) {
-		return semesterById(semesterId) != null;
+		return semesterIndexById(semesterId) != -1;
 	}
 
 	public void addSemester(SemesterModel semester) {
@@ -144,5 +159,20 @@ public abstract class SemesterListModel implements NtroModel {
 		}
 		
 		return schedule;
+	}
+
+	public void removeSemester(String semesterId) {
+		T.call(this);
+
+		int semesterIndex = semesterIndexById(semesterId);
+
+		if(semesterIndex != -1) {
+			
+			getSemesters().removeItemAtIndex(semesterIndex);
+			
+		} else {
+			
+			Log.warning("Semester not found: " + semesterId);
+		}
 	}
 }

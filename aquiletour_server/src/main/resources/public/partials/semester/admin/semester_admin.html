@@ -3,7 +3,11 @@
         <div class="d-flex align-items-center">
             <div class="d-flex align-items-center">
                 <h5 id="semester-id" class="me-3 mb-0"></h5>
-                <button class="btn btn-danger btn-sm" style='line-height:0px'>
+                <button class="btn btn-danger btn-sm add-id-to-data-target" 
+                        id="delete-semester-button"
+                        data-toggle="modal"
+                        data-target="#delete-semester-modal"
+                        style='line-height:0px'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                           <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
@@ -121,8 +125,32 @@
             </table>
         </div>
     </div>
-
-
-
 </div>
+
+
+<div class="modal fade add-id-to-id" id="delete-semester-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content dashboard-mContent">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delete-semester-modal-title">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>ATTENTION</h5>
+                <p>la session va être supprimée pour tous les profs</p>
+                <form action="" method="post" class="delete-semester-form">
+                    <div class="form-group row">
+                        <input class="add-id-to-value" name="deleteSemesterId" style="display:none;"></input>
+                        <label for="confirmSemesterId">Confirmer le code de la session à supprimer</label>
+                        <input class="ms-3" name="confirmSemesterId" style="max-width:10rem;"></input>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-danger me-3">Supprimer</button>
+                    </div>
+                </form>
+            </div>       
+        </div>
+    </div>
+</div>
+
 

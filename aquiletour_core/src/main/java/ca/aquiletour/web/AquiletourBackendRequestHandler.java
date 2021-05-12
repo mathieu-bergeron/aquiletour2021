@@ -45,10 +45,12 @@ import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
+import ca.aquiletour.core.pages.semester_list.messages.DeleteSemester;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
+import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -381,6 +383,22 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("semesterId")) {
 			// add availibility dates
+
+		} else if(parameters.containsKey("deleteSemesterId")) {
+			
+			String semesterIdA = parameters.get("deleteSemesterId")[0];
+			String semesterIdB = parameters.get("confirmSemesterId")[0];
+			
+			if(semesterIdA.equals(semesterIdB)) {
+				
+				DeleteSemester deleteSemester = Ntro.messages().create(DeleteSemester.class);
+				deleteSemester.setSemesterId(semesterIdA);
+				Ntro.messages().send(deleteSemester);
+
+			}else {
+				
+				throw new UserInputError("Les codes de session ne correspondent pas: '" + semesterIdA + "' Vs '" + semesterIdB + "'");
+			}
 		}
 	}
 	

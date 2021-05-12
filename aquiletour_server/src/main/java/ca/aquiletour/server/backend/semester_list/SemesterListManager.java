@@ -79,6 +79,27 @@ public class SemesterListManager {
 		});
 	}
 
+	public static <SL extends SemesterListModel>  void deleteSemesterFromModel(ModelStoreSync modelStore, 
+																			   Class<SL> modelClass, 
+																			   String semesterId, 
+																			   String modelId) {
+
+		T.call(SemesterListManager.class);
+		
+		modelStore.updateModel(modelClass, 
+							   "admin",
+							   modelId,
+							   new ModelUpdater<SL>() {
+
+			@Override
+			public void update(SL semesterList) {
+				T.call(this);
+
+				semesterList.removeSemester(semesterId);
+			}
+		});
+	}
+
 	public static <SL extends SemesterListModel>  void addSemesterToModel(ModelStoreSync modelStore, 
 																			Class<SL> modelClass, 
 																			String semesterId, 
@@ -110,6 +131,16 @@ public class SemesterListManager {
 				semesterList.addSemester(semester);
 			}
 		});
+	}
+
+	public static <SL extends SemesterListModel>  void deleteSemesterForUser(ModelStoreSync modelStore, 
+																		     Class<SL> modelClass,
+			 														         String semesterId, 
+			 														         User user) {
+
+		T.call(SemesterListManager.class);
+		
+		addSemesterToModel(modelStore, modelClass, semesterId, user.getId());
 	}
 
 	public static <SL extends SemesterListModel>  void addSemesterForUser(ModelStoreSync modelStore, 
