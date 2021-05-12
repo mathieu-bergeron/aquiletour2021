@@ -37,11 +37,7 @@ public abstract class SemesterModel implements NtroModelValue {
 	public String semesterSummary() {
 		T.call(this);
 		
-		StringBuilder builder = new StringBuilder();
+		return getSemesterSchedule().summary();
 		
-		builder.append(getSemesterSchedule().size());
-		builder.append(" semaines");
-
-		return builder.toString();
 	}
 }

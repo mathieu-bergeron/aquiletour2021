@@ -24,11 +24,12 @@ public class SemesterViewWebTeacher extends SemesterViewWeb implements SemesterV
 
 		courseGroupSelect = this.getRootElement().find("#course-group-select").get(0);
 		scheduleTbody = this.getRootElement().find("#schedule-tbody").get(0);
-		scheduleSummary = this.getRootElement().find("#schedule-summary").get(0);
+		scheduleSummary = this.getRootElement().find(".schedule-summary").get(0);
 		availabilitySummary = this.getRootElement().find("#availability-summary").get(0);
 		calendarSummary = this.getRootElement().find("#calendar-summary").get(0);
-		MustNot.beNull(calendarSummary);
 
+		MustNot.beNull(calendarSummary);
+		MustNot.beNull(scheduleSummary);
 		MustNot.beNull(courseGroupSelect);
 		MustNot.beNull(scheduleTbody);
 	}

@@ -307,4 +307,10 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 			}
 		});
 	}
+
+	public boolean isEmpty() {
+		T.call(this);
+
+		return size() == 0;
+	}
 }

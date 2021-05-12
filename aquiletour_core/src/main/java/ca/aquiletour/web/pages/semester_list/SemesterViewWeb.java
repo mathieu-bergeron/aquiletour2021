@@ -3,7 +3,6 @@ package ca.aquiletour.web.pages.semester_list;
 
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
@@ -11,7 +10,6 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDayOfWeek;
-import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
@@ -22,7 +20,6 @@ public abstract class SemesterViewWeb extends NtroViewWeb implements SemesterVie
 	private HtmlElement currentSemesterCheckbox;
 
 	private HtmlElement weeksTbody;
-
 
 	private HtmlElements addIdToValue;
 	private HtmlElements addIdToId;

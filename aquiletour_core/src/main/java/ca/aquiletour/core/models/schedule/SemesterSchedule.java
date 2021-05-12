@@ -67,10 +67,18 @@ public class SemesterSchedule implements NtroModelValue  {
 		return date;
 	}
 
-	public int size() {
+	public String summary() {
 		T.call(this);
 
-		return weeks.size();
+		StringBuilder builder = new StringBuilder();
+		
+		if(!weeks.isEmpty()) {
+
+			builder.append(weeks.size());
+			builder.append(" semaines");
+		}
+
+		return builder.toString();
 	}
 
 }

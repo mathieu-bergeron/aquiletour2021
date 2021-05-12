@@ -34,9 +34,7 @@ public class SemesterModelTeacher extends SemesterModel {
 	public String scheduleSummary() {
 		T.call(this);
 		
-		String summary = "0 heures";
-
-		return summary;
+		return teacherSchedule.summary();
 	}
 
 	public String availabilitySummary() {

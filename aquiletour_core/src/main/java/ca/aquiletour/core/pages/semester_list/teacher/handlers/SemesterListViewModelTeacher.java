@@ -38,6 +38,8 @@ public class SemesterListViewModelTeacher extends SemesterListViewModel<Semester
 			}
 		});
 		
+		semesterView.displayScheduleSummary(semester.scheduleSummary());
+
 		semester.getTeacherSchedule().getScheduleItems().removeObservers();
 		semester.getTeacherSchedule().getScheduleItems().onItemAdded(new ItemAddedListener<ScheduleItem>() {
 			@Override
@@ -45,7 +47,6 @@ public class SemesterListViewModelTeacher extends SemesterListViewModel<Semester
 				T.call(this);
 
 				semesterView.appendScheduleItem(item);
-				semesterView.displayScheduleSummary(semester.scheduleSummary());
 			}
 		});
 	}
