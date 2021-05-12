@@ -1,11 +1,13 @@
 package ca.aquiletour.server.backend.login;
 
+
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.backend.BackendMessageHandler;
+import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;
@@ -87,7 +89,7 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		
 		User user = new Guest();
 		
-		String authToken = SecureRandomString.generate();
+		String authToken = SecureRandomString.generate(Constants.RANDOM_STRING_DEFAULT_LENGTH);
 		
 		user.setId(authToken);
 		user.setAuthToken(authToken);

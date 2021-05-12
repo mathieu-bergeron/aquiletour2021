@@ -284,9 +284,9 @@ public class UserManager {
 		String uniqueId;
 		
 		do {
-			
-			uniqueId = SecureRandomString.generate();
-			
+
+			uniqueId = SecureRandomString.generate(Constants.USER_ID_RANDOM_STRING_LENGTH);
+
 		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
 
 		return uniqueId;
