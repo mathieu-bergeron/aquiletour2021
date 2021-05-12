@@ -2,18 +2,17 @@ package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.models.schedule.ScheduleItems;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
 
 public class SemesterModel implements NtroModelValue {
 	
 	private String semesterId = Constants.DRAFTS_SEMESTER_ID;
+
+	private boolean commonSemester = false;
 
 	private ObservableCourseGroupList courseGroups = new ObservableCourseGroupList();
 
