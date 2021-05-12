@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.queue.student.messages;
 
 import ca.aquiletour.core.pages.queue.QueueController;
-import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.queue.models.Queue;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
@@ -17,7 +17,7 @@ public class ShowStudentQueueHandler extends ControllerMessageHandler<QueueContr
 
 		String authToken = currentController.context().user().getAuthToken();
 		
-		currentController.setModelLoader(QueueModel.class, authToken, courseId);
+		currentController.setModelLoader(Queue.class, authToken, courseId);
 		
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		

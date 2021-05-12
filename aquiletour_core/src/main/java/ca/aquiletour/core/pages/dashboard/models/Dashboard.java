@@ -11,7 +11,7 @@ import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class DashboardModel<CT extends CurrentTask> implements NtroModel {
+public abstract class Dashboard<CT extends CurrentTask> implements NtroModel {
 
 	private DashboardItems dashboardItems = new DashboardItems();
 	private StoredString statusMessage = new StoredString();

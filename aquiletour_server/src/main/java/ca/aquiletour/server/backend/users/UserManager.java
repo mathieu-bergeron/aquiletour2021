@@ -9,11 +9,11 @@ import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.models.user_list.UserListModel;
+import ca.aquiletour.core.models.user_list.UserList;
 import ca.aquiletour.core.models.user_registration.RegistrationIdModel;
 import ca.aquiletour.core.models.user_registration.StudentIdModel;
-import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
-import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
+import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
 import ca.ntro.core.models.ModelInitializer;
@@ -113,12 +113,12 @@ public class UserManager {
 		
 		if(user instanceof Teacher) {
 
-			DashboardUpdater.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
-			DashboardUpdater.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
+			DashboardUpdater.createDashboardForUser(modelStore, DashboardTeacher.class, user);
+			DashboardUpdater.createDashboardForUser(modelStore, DashboardStudent.class, user);
 			
-			modelStore.updateModel(UserListModel.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserListModel>() {
+			modelStore.updateModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserList>() {
 				@Override
-				public void update(UserListModel existingModel) {
+				public void update(UserList existingModel) {
 					T.call(this);
 					existingModel.addUserId(user.getId());
 				}
@@ -126,11 +126,11 @@ public class UserManager {
 
 		}else {
 
-			DashboardUpdater.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
+			DashboardUpdater.createDashboardForUser(modelStore, DashboardStudent.class, user);
 
-			modelStore.updateModel(UserListModel.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserListModel>() {
+			modelStore.updateModel(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserList>() {
 				@Override
-				public void update(UserListModel existingModel) {
+				public void update(UserList existingModel) {
 					T.call(this);
 					existingModel.addUserId(user.getId());
 				}
@@ -210,10 +210,10 @@ public class UserManager {
 	public static void initialize(ModelStoreSync modelStore) {
 		T.call(UserManager.class);
 
-		if(!modelStore.ifModelExists(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
-			modelStore.createModel(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID, new ModelInitializer<UserListModel>() {
+		if(!modelStore.ifModelExists(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
+			modelStore.createModel(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID, new ModelInitializer<UserList>() {
 				@Override
-				public void initialize(UserListModel newModel) {
+				public void initialize(UserList newModel) {
 					T.call(this);
 					
 					AquiletourConfig config = (AquiletourConfig) Ntro.config();
@@ -224,19 +224,19 @@ public class UserManager {
 			});
 		}
 
-		if(!modelStore.ifModelExists(UserListModel.class, "admin", Constants.TEACHER_LIST_MODEL_ID)) {
-			modelStore.createModel(UserListModel.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelInitializer<UserListModel>() {
+		if(!modelStore.ifModelExists(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID)) {
+			modelStore.createModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelInitializer<UserList>() {
 				@Override
-				public void initialize(UserListModel newModel) {
+				public void initialize(UserList newModel) {
 					T.call(this);
 				}
 			});
 		}
 
-		if(!modelStore.ifModelExists(UserListModel.class, "admin", Constants.STUDENT_LIST_MODEL_ID)) {
-			modelStore.createModel(UserListModel.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelInitializer<UserListModel>() {
+		if(!modelStore.ifModelExists(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID)) {
+			modelStore.createModel(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelInitializer<UserList>() {
 				@Override
-				public void initialize(UserListModel newModel) {
+				public void initialize(UserList newModel) {
 					T.call(this);
 				}
 			});
@@ -248,8 +248,8 @@ public class UserManager {
 		
 		Set<String> adminIds = new HashSet<>();
 
-		if(modelStore.ifModelExists(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
-			adminIds = modelStore.getModel(UserListModel.class, "admin", Constants.ADMIN_LIST_MODEL_ID).userIds();
+		if(modelStore.ifModelExists(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
+			adminIds = modelStore.getModel(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID).userIds();
 		}
 
 		return adminIds;
@@ -354,7 +354,7 @@ public class UserManager {
 	public static void forEachTeacherId(ModelStoreSync modelStore, UserIdLambda lambda) {
 		T.call(UserManager.class);
 		
-		UserListModel teacherList = modelStore.getModel(UserListModel.class, 
+		UserList teacherList = modelStore.getModel(UserList.class, 
 				                                        "admin", 
 				                                        Constants.TEACHER_LIST_MODEL_ID);
 

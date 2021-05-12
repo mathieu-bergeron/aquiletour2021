@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.semester_list;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.handlers.ShowSemesterListHandler;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
-import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
+import ca.aquiletour.core.pages.semester_list.models.SemesterList;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
@@ -34,7 +34,7 @@ public abstract class SemesterListController extends NtroController<RootControll
 	protected abstract Class<? extends ShowSemesterListMessage> showMessageClass();
 	protected abstract ShowSemesterListHandler showMessageHandler();
 	protected abstract Class<? extends SemesterView> subViewClass();
-	protected abstract Class<? extends SemesterListModel> modelClass();
+	protected abstract Class<? extends SemesterList> modelClass();
 	protected abstract String modelId(NtroContext<?,?> context);
 	protected abstract ModelViewSubViewHandler<?,?> viewModel();
 	

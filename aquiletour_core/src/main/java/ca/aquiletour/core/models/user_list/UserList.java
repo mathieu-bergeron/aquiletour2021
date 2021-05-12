@@ -5,7 +5,7 @@ import java.util.Set;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class UserListModel implements NtroModel {
+public class UserList implements NtroModel {
 
 	private UserIdMap userIdMap = new UserIdMap();
 

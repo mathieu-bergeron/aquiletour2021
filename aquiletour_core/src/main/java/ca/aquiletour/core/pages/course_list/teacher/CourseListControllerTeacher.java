@@ -5,7 +5,7 @@ import ca.aquiletour.core.pages.course_list.handlers.CourseListViewModel;
 import ca.aquiletour.core.pages.course_list.handlers.ShowCourseListHandler;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
-import ca.aquiletour.core.pages.course_list.models.CourseListModel;
+import ca.aquiletour.core.pages.course_list.models.CourseList;
 import ca.aquiletour.core.pages.course_list.teacher.handlers.CourseListViewModelTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.handlers.ShowCourseListHandlerTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.messages.SelectCourseListSubsetTeacher;
@@ -46,10 +46,10 @@ public class CourseListControllerTeacher extends CourseListController {
 	}
 
 	@Override
-	protected Class<? extends CourseListModel> modelClass() {
+	protected Class<? extends CourseList> modelClass() {
 		T.call(this);
 		
-		return CourseListModelTeacher.class;
+		return CourseListTeacher.class;
 	}
 
 	@Override

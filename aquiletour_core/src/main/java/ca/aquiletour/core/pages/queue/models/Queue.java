@@ -13,8 +13,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
-public class QueueModel implements NtroModel {
-	
+public class Queue implements NtroModel {
 	
 	private ObservableTime currentTime = new ObservableTime();
 

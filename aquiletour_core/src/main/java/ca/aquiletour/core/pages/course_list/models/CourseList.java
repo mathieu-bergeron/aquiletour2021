@@ -5,7 +5,7 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseListModel implements NtroModel {
+public abstract class CourseList implements NtroModel {
 	
 	private ObservableSemesterIdList semesters = new ObservableSemesterIdList();
 	private ObservableCourseDescriptionList courses = new ObservableCourseDescriptionList();

@@ -2,12 +2,11 @@ package ca.aquiletour.core.pages.semester_list.teacher.models;
 
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
-import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
+import ca.aquiletour.core.pages.semester_list.models.SemesterList;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterListModelTeacher extends SemesterListModel<SemesterModelTeacher> {
+public class SemesterListTeacher extends SemesterList<SemesterModelTeacher> {
 
 	public void addCourseGroup(String semesterId, String courseId, String groupId) {
 		T.call(this);

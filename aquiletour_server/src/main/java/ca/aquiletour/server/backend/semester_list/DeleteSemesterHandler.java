@@ -1,9 +1,9 @@
 package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.DeleteSemester;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
@@ -24,14 +24,14 @@ public class DeleteSemesterHandler extends BackendMessageHandler<DeleteSemester>
 		if(message.getUser().actsAsAdmin()) {
 			
 			SemesterListManager.deleteSemesterFromModel(modelStore, 
-					                                    SemesterListModelAdmin.class, 
+					                                    SemesterListAdmin.class, 
 					                                    message.getSemesterId(), 
 					                                    Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 
 		}else if(message.getUser().actsAsTeacher()){
 
 			SemesterListManager.deleteSemesterForUser(modelStore, 
-									  			      SemesterListModelTeacher.class, 
+									  			      SemesterListTeacher.class, 
 												      message.getSemesterId(), 
 												      message.getUser());
 		}else {
@@ -46,7 +46,7 @@ public class DeleteSemesterHandler extends BackendMessageHandler<DeleteSemester>
 		if(message.getUser().actsAsAdmin()) {
 			UserManager.forEachTeacherId(modelStore, teacherId -> {
 				SemesterListManager.deleteSemesterFromModel(modelStore, 
-															SemesterListModelTeacher.class, 
+															SemesterListTeacher.class, 
 															message.getSemesterId(), 
 															teacherId);
 			});

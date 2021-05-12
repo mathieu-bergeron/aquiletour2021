@@ -5,7 +5,7 @@ import ca.aquiletour.core.pages.course_list.handlers.CourseListViewModel;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListItemViewTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListViewTeacher;
 import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
@@ -14,10 +14,10 @@ import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class CourseListViewModelTeacher extends CourseListViewModel<CourseListModelTeacher, CourseListViewTeacher> {
+public class CourseListViewModelTeacher extends CourseListViewModel<CourseListTeacher, CourseListViewTeacher> {
 
 	@Override
-	protected void handle(CourseListModelTeacher model, CourseListViewTeacher view, ViewLoader subViewLoader, SelectCourseListSubset message) {
+	protected void handle(CourseListTeacher model, CourseListViewTeacher view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 	}

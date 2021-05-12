@@ -6,7 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.models.CourseListModel;
+import ca.aquiletour.core.pages.course_list.models.CourseList;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelInitializer;
@@ -26,7 +26,7 @@ public class CourseListUpdater {
 		}
 	}
 
-	public static <CLM extends CourseListModel> void addSemesterForUser(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void addSemesterForUser(ModelStoreSync modelStore, 
 																	    Class<CLM> courseListModelClass,
 			                                                            String semesterId, 
 			                                                            User user) {
@@ -36,7 +36,7 @@ public class CourseListUpdater {
 		addSemesterForUserId(modelStore,courseListModelClass, semesterId, user.getId());
 	}
 	
-	public static <CLM extends CourseListModel> void addSemesterForUserId(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void addSemesterForUserId(ModelStoreSync modelStore, 
 			                                                              Class<CLM> courseListModelClass,
 			                                                              String semesterId, 
 			                                                              String userId) {
@@ -67,7 +67,7 @@ public class CourseListUpdater {
 	}
 	
 
-	public static <CLM extends CourseListModel> void addCourseForUser(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void addCourseForUser(ModelStoreSync modelStore, 
 			 														  Class<CLM> courseListModelClass,
 			                                                          CourseListItem courseDescription, 
 			                                                          User teacher) {
@@ -97,7 +97,7 @@ public class CourseListUpdater {
 		}
 	}
 
-	public static <CLM extends CourseListModel> void addGroupForUser(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void addGroupForUser(ModelStoreSync modelStore, 
 																     Class<CLM> courseListModelClass, 
 																     String semesterId, 
 																     String courseId, 
@@ -110,7 +110,7 @@ public class CourseListUpdater {
 		
 	}
 
-	public static <CLM extends CourseListModel> void addGroupForUserId(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void addGroupForUserId(ModelStoreSync modelStore, 
 																	   Class<CLM> courseListModelClass, 
 																	   String semesterId, 
 																	   String courseId, 
@@ -129,7 +129,7 @@ public class CourseListUpdater {
 		});
 	}
 
-	public static <CLM extends CourseListModel> void closeQueueForUserId(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void closeQueueForUserId(ModelStoreSync modelStore, 
 																		 Class<CLM> courseListModelClass, 
 																		 String semesterId, 
 																		 String courseId, 
@@ -147,7 +147,7 @@ public class CourseListUpdater {
 		});
 	}
 	
-	public static <CLM extends CourseListModel> void closeQueueForUser(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void closeQueueForUser(ModelStoreSync modelStore, 
 			 														   Class<CLM> courseListModelClass, 
 			 														   String semesterId, 
 			 														   String courseId, 
@@ -158,7 +158,7 @@ public class CourseListUpdater {
 	}
 	
 
-	public static <CLM extends CourseListModel> void openQueueForUserId(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void openQueueForUserId(ModelStoreSync modelStore, 
 			 															Class<CLM> courseListModelClass, 
 			 															String semesterId, 
 			 															String courseId, 
@@ -177,7 +177,7 @@ public class CourseListUpdater {
 		});
 	}
 	
-	public static <CLM extends CourseListModel> void openQueueForUser(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void openQueueForUser(ModelStoreSync modelStore, 
 																      Class<CLM> courseListModelClass, 
 																      String semesterId, 
 																      String courseId, 
@@ -189,7 +189,7 @@ public class CourseListUpdater {
 	}
 	
 
-	public static <CLM extends CourseListModel> String getCourseTitle(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> String getCourseTitle(ModelStoreSync modelStore, 
 																      Class<CLM> courseListModelClass, 
 																      String semesterId, 
 																      String courseId, 
@@ -199,7 +199,7 @@ public class CourseListUpdater {
 		return getCourseItem(modelStore, courseListModelClass, semesterId, courseId, userId).getCourseTitle();
 	}
 
-	public static <CLM extends CourseListModel> CourseListItem getCourseItem(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> CourseListItem getCourseItem(ModelStoreSync modelStore, 
 																         Class<CLM> courseListModelClass, 
 																         String semesterId, 
 																         String courseId, 
@@ -207,12 +207,12 @@ public class CourseListUpdater {
 
 		T.call(CourseListUpdater.class);
 		
-		CourseListModel model = modelStore.getModel(courseListModelClass, "admin", userId);
+		CourseList model = modelStore.getModel(courseListModelClass, "admin", userId);
 		
 		return model.courseById(semesterId, courseId);
 	}
 	
-	public static <CLM extends CourseListModel> void addTask(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> void addTask(ModelStoreSync modelStore, 
 			 												 Class<CLM> courseListModelClass,
 			                                                 CoursePath coursePath, 
 			                                                 TaskDescription task) {
@@ -228,7 +228,7 @@ public class CourseListUpdater {
 		});
 	}
 
-	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
 																			   String userId) {
@@ -250,7 +250,7 @@ public class CourseListUpdater {
 
 	}
 
-	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
+	public static <CLM extends CourseList> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
 																			   User user) {

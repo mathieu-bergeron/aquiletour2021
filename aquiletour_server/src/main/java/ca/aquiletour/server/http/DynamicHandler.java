@@ -47,10 +47,10 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
-import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
+import ca.aquiletour.core.pages.semester_list.models.SemesterList;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
@@ -258,19 +258,19 @@ public class DynamicHandler extends AbstractHandler {
 		T.call(this);
 		
 		User user = (User) Ntro.currentUser();
-		SemesterListModel semesterList = null;
+		SemesterList semesterList = null;
 
 		if(user instanceof Admin && user.actsAsAdmin()) {
 		
-			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModelAdmin.class, "admin", Ntro.currentUser().getId());
+			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListAdmin.class, "admin", Ntro.currentUser().getId());
 			modelLoader.execute();
-			semesterList = (SemesterListModel) modelLoader.getModel();
+			semesterList = (SemesterList) modelLoader.getModel();
 
 		}else {
 
-			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModelTeacher.class, "admin", Ntro.currentUser().getId());
+			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListTeacher.class, "admin", Ntro.currentUser().getId());
 			modelLoader.execute();
-			semesterList = (SemesterListModel) modelLoader.getModel();
+			semesterList = (SemesterList) modelLoader.getModel();
 			
 		}
 

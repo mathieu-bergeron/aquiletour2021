@@ -6,8 +6,8 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
@@ -30,7 +30,7 @@ public class ScheduleUpdater {
 		T.call(ScheduleUpdater.class);
 
 		SemesterSchedule semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 
-																				    SemesterListModelTeacher.class,
+																				    SemesterListTeacher.class,
 				                                                                    semesterId, 
 				                                                                    userId);
 		
@@ -40,7 +40,7 @@ public class ScheduleUpdater {
 
 		
 		List<CoursePath> teacherCourses = CourseListUpdater.getCourseList(modelStore, 
-																	      CourseListModelTeacher.class,
+																	      CourseListTeacher.class,
 				                                                          semesterId, 
 				                                                          userId);
 		

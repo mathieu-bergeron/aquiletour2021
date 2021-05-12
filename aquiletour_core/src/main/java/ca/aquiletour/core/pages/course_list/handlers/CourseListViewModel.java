@@ -4,7 +4,7 @@ package ca.aquiletour.core.pages.course_list.handlers;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.models.CourseListModel;
+import ca.aquiletour.core.pages.course_list.models.CourseList;
 import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.ntro.core.models.listeners.ItemAddedListener;
@@ -12,7 +12,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseListViewModel<M extends CourseListModel, V extends CourseListView> extends ModelViewSubViewMessageHandler<M, V, SelectCourseListSubset> {
+public abstract class CourseListViewModel<M extends CourseList, V extends CourseListView> extends ModelViewSubViewMessageHandler<M, V, SelectCourseListSubset> {
 	
 	private String currentSemesterId = null;
 
