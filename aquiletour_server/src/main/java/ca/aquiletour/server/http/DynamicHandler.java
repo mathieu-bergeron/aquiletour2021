@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Scanner;
@@ -229,7 +230,7 @@ public class DynamicHandler extends AbstractHandler {
 	private String readPart(Part part) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		InputStream inputStream = part.getInputStream();
-		Scanner scanner = new Scanner(inputStream);
+		Scanner scanner = new Scanner(inputStream, Constants.CSV_FILE_ENCODING);
 		while(scanner.hasNextLine()) {
 			builder.append(scanner.nextLine());
 			builder.append(System.lineSeparator());

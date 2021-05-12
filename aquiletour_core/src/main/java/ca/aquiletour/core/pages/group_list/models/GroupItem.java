@@ -66,4 +66,15 @@ public class GroupItem implements NtroModelValue {
 	public void setStudents(ObservableStudentList students) {
 		this.students = students;
 	}
+
+	public String studentsSummary() {
+		T.call(this);
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(students.size());
+		builder.append(" étudiants");
+		
+		return builder.toString();
+	}
 }

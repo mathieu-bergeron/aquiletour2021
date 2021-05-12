@@ -37,9 +37,7 @@ public class Group implements NtroModelValue {
 		
 		for(Student student : studentsToAdd) {
 			
-			
 		}
-		
 		
 		return null;
 	}
