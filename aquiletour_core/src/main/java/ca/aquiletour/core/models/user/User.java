@@ -104,4 +104,32 @@ public class User extends NtroUser {
 	public void resetAfterLogout() {
 		T.call(this);
 	}
+
+	public void updateFirstNameIfEmpty(String firstName) {
+		T.call(this);
+		
+		if(firstName != null
+				&& (getFirstname() == null
+				|| getFirstname().isEmpty())) {
+
+			setFirstname(firstName);
+		}
+	}
+
+	public void updateLastNameIfEmpty(String lastName) {
+		T.call(this);
+
+		if(lastName != null
+				&& (getLastname() == null
+				|| getLastname().isEmpty())) {
+
+			setLastname(lastName);
+		}
+	}
+
+
+	public void updateEmailIfEmpty(String email) {
+		T.call(this);
+		
+	}
 }

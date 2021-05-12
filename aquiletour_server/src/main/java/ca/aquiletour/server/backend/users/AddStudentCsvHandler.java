@@ -3,6 +3,7 @@ package ca.aquiletour.server.backend.users;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.model.CourseModel;
@@ -37,7 +38,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		String csvFilename = message.getCsvFilename();
 		
 		groupId = groupNameFromCsvFileName(csvFilename);
-		studentsToAdd = parseCsv(csvString);
+		studentsToAdd = parseCsv(modelStore, csvString);
 		
 		CourseListUpdater.addGroupForUser(modelStore, 
 										  CourseListModelTeacher.class,
@@ -72,7 +73,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		return groupName;
 	}
 
-	private List<User> parseCsv(String csvString) {
+	private List<User> parseCsv(ModelStoreSync modelStore, String csvString) {
 		T.call(this);
 		
 		List<User> usersToAdd = new ArrayList<>();
@@ -81,20 +82,23 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		for (int i = 0; i < cutByLine.length; i++) {
 			String line = cutByLine[i];
-			Student newUser = new Student();
-			if(i == 0) {//first line is not a student, its the class name
-				
-			} else {
+			if(i > 0){ //first line is not a student, its the class name
 				String[] cutBySeparator = line.split(";");
-				newUser.setLastname(cutBySeparator[0]);//FamilleA
-				newUser.setFirstname(cutBySeparator[1]);//PrenomA
-				// FIXME: hide DA
-				//        use a SHA1 digest as userId
-				newUser.setId(cutBySeparator[2].substring(2));//DA 
-				newUser.setProgramId(cutBySeparator[3]);//program number
-//					newUser.setName(cutBySeparator[4]);//?
-				newUser.setPhoneNumber(cutBySeparator[5]);//phone
-				newUser.setEmail(newUser.getId() + "@cmontmorency.qc.ca");
+				String lastName = cutBySeparator[0];
+				String firstName = cutBySeparator[1];
+				String registrationId = cutBySeparator[2].substring(2);
+				String programId = cutBySeparator[3];
+				String phoneNumber = cutBySeparator[5];
+				String email = registrationId + "@" + Constants.EMAIL_HOST;
+
+				Student newUser = UserManager.createStudent(modelStore,
+						                                    firstName,
+						                                    lastName,
+						                                    registrationId,
+						                                    programId,
+						                                    phoneNumber,
+						                                    email);
+
 				usersToAdd.add(newUser);
 			}		
 		}

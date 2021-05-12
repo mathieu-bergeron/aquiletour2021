@@ -56,5 +56,29 @@ public class Student extends User {
 		
 		return false;
 	}
+
+
+	public void updateProgramIdIfEmpty(String programId) {
+		T.call(this);
+
+		if(programId != null
+				&& (getProgramId() == null
+				|| getProgramId().isEmpty())) {
+
+			setProgramId(programId);
+		}
+	}
+
+	public void updatePhoneNumberIfEmpty(String phoneNumber) {
+		T.call(this);
+
+		if(phoneNumber != null
+				&& (getPhoneNumber() == null
+				|| getPhoneNumber().isEmpty())) {
+
+			setPhoneNumber(phoneNumber);
+		}
+		
+	}
 	
 }

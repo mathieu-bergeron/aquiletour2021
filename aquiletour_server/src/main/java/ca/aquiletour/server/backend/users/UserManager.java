@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.student_registration.RegistrationIdModel;
+import ca.aquiletour.core.models.student_registration.StudentIdModel;
 import ca.aquiletour.core.models.user.Admin;
+import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserListModel;
@@ -19,9 +22,9 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.digest.PasswordDigest;
+import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.users.NtroSession;
 
 public class UserManager {
 
@@ -80,23 +83,7 @@ public class UserManager {
 		T.call(UserManager.class);
 
 		if(!modelStore.ifModelExists(User.class, "admin", user.getId())) {
-			
-			// FIXME: old way... because new way below is not aquivalent(??)
-            DocumentPath documentPath = new DocumentPath();
-            documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(User.class));
-            documentPath.setDocumentId(user.getId());
-            modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(user));
-
-			/*
-			modelStore.createModel(User.class, "admin", user.getId(), new ModelInitializer<User>() {
-				@Override
-				public void initialize(User newModel) {
-					T.call(this);
-
-					newModel.copyPublicInfomation(user);
-					newModel.setAuthToken(user.getAuthToken());
-				}
-			});*/
+            createUser(modelStore, user);
 		}
 		
 		if(user instanceof Teacher) {
@@ -124,6 +111,15 @@ public class UserManager {
 				}
 			});
 		}
+	}
+
+	private static void createUser(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		DocumentPath documentPath = new DocumentPath();
+		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(User.class));
+		documentPath.setDocumentId(user.getId());
+		modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(user));
 	}
 
 	public static void updateScreenName(ModelStoreSync modelStore, String screenName, User user) {
@@ -233,4 +229,97 @@ public class UserManager {
 
 		return adminIds;
 	}
+
+	public static Student createStudent(ModelStoreSync modelStore, 
+									    String firstName, 
+									    String lastName, 
+									    String registrationId, 
+									    String programId, 
+									    String phoneNumber, 
+									    String email) {
+		T.call(UserManager.class);
+		
+		String studentId = null;
+
+		if(modelStore.ifModelExists(StudentIdModel.class, "admin", registrationId)) {
+
+			studentId = modelStore.getModel(StudentIdModel.class, "admin", registrationId).getUserId();
+
+		}else {
+			
+			String newId = SecureRandomString.generate();
+			
+			modelStore.createModel(StudentIdModel.class, "admin", registrationId, new ModelInitializer<StudentIdModel>() {
+				@Override
+				public void initialize(StudentIdModel newModel) {
+					T.call(this);
+					newModel.setUserId(newId);
+				}
+			});
+
+			studentId = newId;
+
+			modelStore.createModel(RegistrationIdModel.class, "admin", studentId, new ModelInitializer<RegistrationIdModel>() {
+				@Override
+				public void initialize(RegistrationIdModel newModel) {
+					T.call(this);
+					newModel.setRegistrationId(registrationId);
+				}
+			});
+		}
+
+		return createStudent(modelStore, 
+				             studentId, 
+				             firstName, 
+				             lastName, 
+				             registrationId, 
+				             programId, 
+				             phoneNumber, 
+				             email);
+	}
+
+	public static Student createStudent(ModelStoreSync modelStore, 
+										String studentId,
+									    String firstName, 
+									    String lastName, 
+									    String registrationId, 
+									    String programId, 
+									    String phoneNumber, 
+									    String email) {
+		T.call(UserManager.class);
+		
+		Student student = null;
+		
+		if(modelStore.ifModelExists(User.class, "admin", studentId)) {
+
+			student = (Student) modelStore.getModel(User.class, "admin", studentId);
+			updateStudentInfoIfEmpty(firstName, lastName, programId, phoneNumber, email, student);
+			modelStore.save(student);
+
+		}else {
+
+			student = new Student();
+			student.setId(studentId);
+			updateStudentInfoIfEmpty(firstName, lastName, programId, phoneNumber, email, student);
+			addUser(modelStore, student);
+		}
+
+		return student;
+	}
+
+	private static void updateStudentInfoIfEmpty(String firstName, 
+			                                     String lastName, 
+			                                     String programId, 
+			                                     String phoneNumber, 
+			                                     String email, 
+			                                     Student student) {
+		T.call(UserManager.class);
+
+		student.updateFirstNameIfEmpty(firstName);
+		student.updateLastNameIfEmpty(lastName);
+		student.updateProgramIdIfEmpty(programId);
+		student.updatePhoneNumberIfEmpty(phoneNumber);
+		student.updateEmailIfEmpty(email);
+	}
+
 }
