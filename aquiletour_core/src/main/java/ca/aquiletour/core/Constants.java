@@ -68,5 +68,5 @@ public class Constants {
 	public static final String TEACHER_LIST_MODEL_ID = "teachers";
 	public static final String ADMIN_LIST_MODEL_ID = "admins";
 	
-	public static final int USER_ID_RANDOM_STRING_LENGTH = 10;
+	public static final int DEFAULT_STUDENT_ID_LENGTH = 4;
 }

@@ -27,6 +27,31 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
 public class UserManager {
+	
+	private static int USER_ID_LENGTH = Constants.DEFAULT_STUDENT_ID_LENGTH;
+	private static int NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH = 10;
+
+	private synchronized static <U extends User> String generateUniqueUserId(ModelStoreSync modelStore, 
+			                                                                 Class<U> modelClass) {
+		T.call(UserManager.class);
+		
+		String uniqueId;
+		int numberOfCollisions = -1;
+		
+		do {
+			
+			numberOfCollisions++;
+			if(numberOfCollisions >= NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH) {
+				numberOfCollisions = -1;
+				USER_ID_LENGTH++;
+			}
+
+			uniqueId = SecureRandomString.generate(USER_ID_LENGTH);
+
+		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
+
+		return uniqueId;
+	}
 
 	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) {
 		T.call(UserManager.class);
@@ -247,7 +272,7 @@ public class UserManager {
 
 		}else {
 			
-			String newId = generateUniqueUserId(modelStore);
+			String newId = generateUniqueUserId(modelStore, Student.class);
 			
 			modelStore.createModel(StudentIdModel.class, "admin", registrationId, new ModelInitializer<StudentIdModel>() {
 				@Override
@@ -278,19 +303,6 @@ public class UserManager {
 				             email);
 	}
 
-	private synchronized static String generateUniqueUserId(ModelStoreSync modelStore) {
-		T.call(UserManager.class);
-		
-		String uniqueId;
-		
-		do {
-
-			uniqueId = SecureRandomString.generate(Constants.USER_ID_RANDOM_STRING_LENGTH);
-
-		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
-
-		return uniqueId;
-	}
 
 	public static Student createStudent(ModelStoreSync modelStore, 
 										String studentId,
