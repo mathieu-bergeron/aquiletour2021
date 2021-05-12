@@ -52,7 +52,10 @@ public class SessionManager {
 		return actualUser;
 	}
 
-	public static User createAuthenticatedUser(ModelStoreSync modelStore, String authToken, String userId, NtroSession session) {
+	public static User createAuthenticatedUser(ModelStoreSync modelStore, 
+			                                   String authToken, 
+			                                   String userId, 
+			                                   NtroSession session) {
 		T.call(SessionManager.class);
 
 		User existingUser = null;

@@ -91,14 +91,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				String phoneNumber = cutBySeparator[5];
 				String email = registrationId + "@" + Constants.EMAIL_HOST;
 
-				Student newUser = UserManager.createStudent(modelStore,
-						                                    firstName,
-						                                    lastName,
-						                                    registrationId,
-						                                    programId,
-						                                    phoneNumber,
-						                                    email);
-
+				Student newUser = UserManager.createStudentUsingRegistrationId(modelStore, 
+																			   firstName, 
+																			   lastName, 
+																			   registrationId, 
+																			   programId, 
+																			   phoneNumber, 
+																			   email);
 				usersToAdd.add(newUser);
 			}		
 		}

@@ -255,13 +255,13 @@ public class UserManager {
 		return adminIds;
 	}
 
-	public static Student createStudent(ModelStoreSync modelStore, 
-									    String firstName, 
-									    String lastName, 
-									    String registrationId, 
-									    String programId, 
-									    String phoneNumber, 
-									    String email) {
+	public static Student createStudentUsingRegistrationId(ModelStoreSync modelStore, 
+									                       String firstName, 
+									                       String lastName, 
+									                       String registrationId, 
+									                       String programId, 
+									                       String phoneNumber, 
+									                       String email) {
 		T.call(UserManager.class);
 		
 		String studentId = null;
@@ -293,59 +293,61 @@ public class UserManager {
 			});
 		}
 
-		return createStudent(modelStore, 
-				             studentId, 
-				             firstName, 
-				             lastName, 
-				             registrationId, 
-				             programId, 
-				             phoneNumber, 
-				             email);
+		return createStudentForUserId(modelStore, 
+									  studentId, 
+									  firstName, 
+									  lastName, 
+									  programId, 
+									  phoneNumber, 
+									  email);
 	}
 
-
-	public static Student createStudent(ModelStoreSync modelStore, 
-										String studentId,
-									    String firstName, 
-									    String lastName, 
-									    String registrationId, 
-									    String programId, 
-									    String phoneNumber, 
-									    String email) {
+	public static Student createStudentForUserId(ModelStoreSync modelStore, 
+												 String studentId,
+												 String firstName, 
+												 String lastName, 
+												 String email,
+												 String programId, 
+												 String phoneNumber) {
 		T.call(UserManager.class);
 		
-		Student student = null;
+		Student student = createUser(modelStore, 
+				                     Student.class, 
+				                     studentId, 
+				                     firstName, 
+				                     lastName, 
+				                     email);
 		
-		if(modelStore.ifModelExists(User.class, "admin", studentId)) {
-
-			student = (Student) modelStore.getModel(User.class, "admin", studentId);
-			updateStudentInfoIfEmpty(firstName, lastName, programId, phoneNumber, email, student);
-			modelStore.save(student);
-
-		}else {
-
-			student = new Student();
-			student.setId(studentId);
-			updateStudentInfoIfEmpty(firstName, lastName, programId, phoneNumber, email, student);
-			addUser(modelStore, student);
-		}
-
+		student.updatePhoneNumberIfEmpty(phoneNumber);
+		student.updateProgramIdIfEmpty(programId);
+		
 		return student;
 	}
 
-	private static void updateStudentInfoIfEmpty(String firstName, 
-			                                     String lastName, 
-			                                     String programId, 
-			                                     String phoneNumber, 
-			                                     String email, 
-			                                     Student student) {
+	public static <U extends User> U createUser(ModelStoreSync modelStore, 
+										        Class<U> modelClass,
+										        String userId,
+										        String firstName, 
+										        String lastName, 
+										        String email) {
 		T.call(UserManager.class);
+		
+		U user = null;
+		
+		if(modelStore.ifModelExists(modelClass, "admin", userId)) {
 
-		student.updateFirstNameIfEmpty(firstName);
-		student.updateLastNameIfEmpty(lastName);
-		student.updateProgramIdIfEmpty(programId);
-		student.updatePhoneNumberIfEmpty(phoneNumber);
-		student.updateEmailIfEmpty(email);
+			user =  modelStore.getModel(modelClass, "admin", userId);
+			user.updateInfoIfEmpty(firstName, lastName, email);
+			modelStore.save(user);
+
+		}else {
+
+			user = Ntro.factory().newInstance(modelClass);
+			user.setId(userId);
+			user.updateInfoIfEmpty(firstName, lastName, email);
+			addUser(modelStore, user);
+		}
+
+		return user;
 	}
-
 }

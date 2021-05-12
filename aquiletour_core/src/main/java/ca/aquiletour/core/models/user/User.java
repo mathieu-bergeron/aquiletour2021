@@ -138,4 +138,12 @@ public class User extends NtroUser {
 			setEmail(email);
 		}
 	}
+
+	public void updateInfoIfEmpty(String firstName, String lastName, String email) {
+		T.call(this);
+		
+		updateFirstNameIfEmpty(firstName);
+		updateLastNameIfEmpty(lastName);
+		updateEmailIfEmpty(email);
+	}
 }
