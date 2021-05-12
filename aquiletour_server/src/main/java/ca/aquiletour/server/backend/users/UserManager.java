@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.student_registration.RegistrationIdModel;
-import ca.aquiletour.core.models.student_registration.StudentIdModel;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserListModel;
+import ca.aquiletour.core.models.user_registration.RegistrationIdModel;
+import ca.aquiletour.core.models.user_registration.UserIdModel;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.AquiletourConfig;
@@ -241,17 +241,17 @@ public class UserManager {
 		
 		String studentId = null;
 
-		if(modelStore.ifModelExists(StudentIdModel.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(UserIdModel.class, "admin", registrationId)) {
 
-			studentId = modelStore.getModel(StudentIdModel.class, "admin", registrationId).getUserId();
+			studentId = modelStore.getModel(UserIdModel.class, "admin", registrationId).getUserId();
 
 		}else {
 			
-			String newId = SecureRandomString.generate();
+			String newId = generateUniqueUserId(modelStore);
 			
-			modelStore.createModel(StudentIdModel.class, "admin", registrationId, new ModelInitializer<StudentIdModel>() {
+			modelStore.createModel(UserIdModel.class, "admin", registrationId, new ModelInitializer<UserIdModel>() {
 				@Override
-				public void initialize(StudentIdModel newModel) {
+				public void initialize(UserIdModel newModel) {
 					T.call(this);
 					newModel.setUserId(newId);
 				}
@@ -276,6 +276,20 @@ public class UserManager {
 				             programId, 
 				             phoneNumber, 
 				             email);
+	}
+
+	private synchronized static String generateUniqueUserId(ModelStoreSync modelStore) {
+		T.call(UserManager.class);
+		
+		String uniqueId;
+		
+		do {
+			
+			uniqueId = SecureRandomString.generate();
+			
+		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
+
+		return uniqueId;
 	}
 
 	public static Student createStudent(ModelStoreSync modelStore, 

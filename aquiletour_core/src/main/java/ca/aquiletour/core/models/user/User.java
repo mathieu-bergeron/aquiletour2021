@@ -130,6 +130,12 @@ public class User extends NtroUser {
 
 	public void updateEmailIfEmpty(String email) {
 		T.call(this);
-		
+
+		if(email != null
+				&& (getEmail() == null
+				|| getEmail().isEmpty())) {
+
+			setEmail(email);
+		}
 	}
 }

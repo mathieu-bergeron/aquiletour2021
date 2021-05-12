@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.student_registration;
+package ca.aquiletour.core.models.user_registration;
 
 import ca.ntro.core.models.NtroModel;
 

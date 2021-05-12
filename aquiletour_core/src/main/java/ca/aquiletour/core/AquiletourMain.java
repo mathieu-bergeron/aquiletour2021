@@ -66,8 +66,6 @@ import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.student_registration.RegistrationIdModel;
-import ca.aquiletour.core.models.student_registration.StudentIdModel;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
@@ -77,6 +75,8 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserIdMap;
 import ca.aquiletour.core.models.user_list.UserListModel;
+import ca.aquiletour.core.models.user_registration.RegistrationIdModel;
+import ca.aquiletour.core.models.user_registration.UserIdModel;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
@@ -378,7 +378,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(UserListModel.class);
 		Ntro.registerSerializableClass(RegistrationIdModel.class);
-		Ntro.registerSerializableClass(StudentIdModel.class);
+		Ntro.registerSerializableClass(UserIdModel.class);
 		Ntro.registerSerializableClass(UserIdMap.class);
 	}
 	
