@@ -7,9 +7,7 @@ import java.util.Set;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Student;
-import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
-import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
 import ca.aquiletour.core.models.user_registration.RegistrationId;
@@ -173,6 +171,12 @@ public class UserManager {
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
 
+		storeStudentId(modelStore, user);
+	}
+
+	private static void storeStudentId(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
 		modelStore.updateModel(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserList>() {
 			@Override
 			public void update(UserList existingModel) {
@@ -188,6 +192,28 @@ public class UserManager {
 		QueueUpdater.createQueue(modelStore, user.getRegistrationId(), user);
 		DashboardManager.createDashboardForUser(modelStore, DashboardTeacher.class, user);
 		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
+
+		storeTeacherId(modelStore, user);
+		
+		if(user instanceof Admin) {
+			storeAdminId(modelStore, user);
+		}
+	}
+
+	private static void storeAdminId(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		modelStore.updateModel(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID, new ModelUpdater<UserList>() {
+			@Override
+			public void update(UserList existingModel) {
+				T.call(this);
+				existingModel.addUserId(user.getId());
+			}
+		});
+	}
+
+	private static void storeTeacherId(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
 
 		modelStore.updateModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserList>() {
 			@Override
