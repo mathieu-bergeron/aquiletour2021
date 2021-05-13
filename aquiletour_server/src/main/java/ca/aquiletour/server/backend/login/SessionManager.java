@@ -3,6 +3,7 @@ package ca.aquiletour.server.backend.login;
 import java.util.Set;
 
 import ca.aquiletour.core.models.user.Admin;
+import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
@@ -10,11 +11,56 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.aquiletour.server.backend.users.UserManager;
+import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.users.NtroSession;
 
 public class SessionManager {
+
+	public static User createGuestSession(ModelStoreSync modelStore) {
+		T.call(SessionManager.class);
+		
+		User user = new Guest();
+		
+		String authToken = SecureRandomString.generate(Constants.RANDOM_STRING_DEFAULT_LENGTH);
+		
+		user.setId(authToken);
+		user.setAuthToken(authToken);
+
+		NtroSession session = modelStore.getModel(NtroSession.class, "admin", authToken);
+
+		session.setUser(user);
+		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
+		
+		modelStore.save(session);
+			
+		return user;
+	}
+
+	public static User updateExistingSession(ModelStoreSync modelStore, NtroSession session) {
+		T.call(SessionManager.class);
+
+		session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
+		
+		User sessionUser = (User) session.getUser();
+		User actualUser = null;
+		
+		if(sessionUser instanceof Guest 
+				|| sessionUser instanceof TeacherGuest 
+				|| sessionUser instanceof StudentGuest) {
+
+			actualUser = sessionUser;
+
+		}else {
+
+			actualUser = updateSessionWithActualUser(modelStore, session, sessionUser);
+		}
+		
+		return actualUser;
+	}
+
 
 	public static NtroSession getStoredSession(ModelStoreSync modelStore, String authToken) {
 		T.call(SessionManager.class);
@@ -34,9 +80,9 @@ public class SessionManager {
 
 		User actualUser = oldSessionUser;
 
-		if(modelStore.ifModelExists(User.class, "admin", oldSessionUser.getId())) {
+		if(UserManager.ifStoredUserExists(modelStore, oldSessionUser)) {
 
-			actualUser = modelStore.getModel(User.class, "admin", oldSessionUser.getId());
+			actualUser = UserManager.getStoredUser(modelStore, oldSessionUser);
 			
 			User sessionUser = actualUser.toSessionUser();
 			sessionUser.setAuthToken(oldSessionUser.getAuthToken());

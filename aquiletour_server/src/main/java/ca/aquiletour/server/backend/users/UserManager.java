@@ -7,7 +7,9 @@ import java.util.Set;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Student;
+import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
+import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
 import ca.aquiletour.core.models.user_registration.RegistrationIds;
@@ -361,5 +363,137 @@ public class UserManager {
 		for(String teacherId : teacherList.userIds()) {
 			lambda.execute(teacherId);
 		}
+	}
+
+	public static boolean ifTeacherExists(ModelStoreSync modelStore, String teacherId) {
+		T.call(UserManager.class);
+		
+		boolean ifExists = false;
+		
+		
+		return ifExists;
+	}
+
+	public static boolean ifStudentExistsForRegistrationId(ModelStoreSync modelStore, String registrationId) {
+		T.call(UserManager.class);
+		
+		boolean ifExists = false;
+
+		if(modelStore.ifModelExists(StudentIds.class, "admin", registrationId)) {
+			ifExists = true;
+		}
+		
+		return ifExists;
+	}
+
+	public static boolean ifStudentExistsForId(ModelStoreSync modelStore, String studentId) {
+		T.call(UserManager.class);
+		
+		boolean ifExists = false;
+
+		if(modelStore.ifModelExists(Student.class, "admin", studentId)) {
+			ifExists = true;
+		}
+		
+		return ifExists;
+	}
+
+	public static Teacher getTeacher(ModelStoreSync modelStore, String teacherId) {
+		T.call(UserManager.class);
+		
+		return modelStore.getModel(Teacher.class, "admin", teacherId);
+	}
+
+	public static Student getStudentByRegistrationId(ModelStoreSync modelStore, String registrationId) {
+		T.call(UserManager.class);
+		
+		Student student = null;
+
+		if(modelStore.ifModelExists(StudentIds.class, "admin", registrationId)) {
+			String studentId = modelStore.getModel(StudentIds.class, "admin", registrationId).getUserId();
+			student = getStudentById(modelStore, studentId);
+		}
+
+		return student;
+	}
+
+	public static Student getStudentById(ModelStoreSync modelStore, String studentId) {
+		T.call(UserManager.class);
+		
+		return modelStore.getModel(Student.class, "admin", studentId);
+	}
+
+
+	public static boolean ifStoredUserExists(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+		
+		boolean ifExists = false;
+		
+		if(user instanceof Teacher) {
+			
+			ifExists = ifTeacherExists(modelStore, user.getId());
+			
+		}else {
+
+			ifExists = ifStudentExistsForId(modelStore, user.getId());
+
+		}
+
+		return ifExists;
+	}
+
+	public static User getStoredUser(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+		
+		User storedUser = null;
+		
+		if(user instanceof Teacher) {
+			
+			storedUser = getTeacher(modelStore, user.getId());
+			
+		}else {
+
+			storedUser = getStudentById(modelStore, user.getId());
+			
+		}
+		
+		return storedUser;
+	}
+
+	public static User createStudentGuest(ModelStoreSync modelStore, String registrationId) {
+		T.call(UserManager.class);
+
+		User newUser = new StudentGuest();
+		User existingUser = UserManager.getStudentByRegistrationId(modelStore, registrationId);
+		
+		if(existingUser != null) {
+			newUser.copyPublicInfomation(existingUser);
+
+		}else {
+			newUser.setFirstname(registrationId);
+			newUser.setEmail(registrationId + "@" + Constants.EMAIL_HOST);
+			newUser.setId(registrationId);
+		}
+		
+		return newUser;
+	}
+
+	public static User createTeacherGuest(ModelStoreSync modelStore, String teacherId) {
+		T.call(UserManager.class);
+
+		User newUser = new TeacherGuest();
+		User existingUser = UserManager.getTeacher(modelStore, teacherId);
+
+		if(existingUser != null) {
+			newUser.copyPublicInfomation(existingUser);
+
+		}else {
+
+			newUser.setFirstname(teacherId);
+			newUser.setEmail(teacherId + "@" + Constants.EMAIL_HOST);
+			newUser.setId(teacherId);
+		}
+
+		return null;
 	}
 }

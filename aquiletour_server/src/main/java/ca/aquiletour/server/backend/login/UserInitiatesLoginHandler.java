@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.email.SendEmail;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -71,29 +72,16 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		T.call(this);
 
 		User userToRegister;
-		
+
 		if(isStudentId(providedId)) {
 			
-			userToRegister = new StudentGuest();
+			userToRegister = UserManager.createStudentGuest(modelStore, providedId);
 			
 		}else {
 
-			userToRegister = new TeacherGuest();
-		}
-		
-
-		if(modelStore.ifModelExists(User.class, "admin", providedId)) {
-
-			User existingUser = modelStore.getModel(User.class, "admin", providedId);
-			userToRegister.copyPublicInfomation(existingUser);
-
-		}else {
-
-			userToRegister.setFirstname(providedId);
-			userToRegister.setEmail(providedId + "@" + Constants.EMAIL_HOST);
+			userToRegister = UserManager.createTeacherGuest(modelStore, providedId);
 		}
 
-		userToRegister.setId(providedId);
 		userToRegister.setAuthToken(authToken);
 		
 		SessionData sessionData = new SessionData();

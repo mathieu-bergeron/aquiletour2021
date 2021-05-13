@@ -19,7 +19,7 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 		
 		UserManager.resetUserAfterLogout(modelStore, message.getUser());
 
-		Ntro.currentSession().setUser(InitializeSessionHandler.createGuestSession(modelStore));
+		Ntro.currentSession().setUser(SessionManager.createGuestSession(modelStore));
 	}
 
 	@Override
