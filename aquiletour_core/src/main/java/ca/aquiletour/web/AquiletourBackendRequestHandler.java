@@ -224,7 +224,7 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
-		userInitiatesLoginMessage.setProvidedId(userId);
+		userInitiatesLoginMessage.setRegistrationId(userId);
 		userInitiatesLoginMessage.setDelayedMessages(delayedMessages(parameters));
 		Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
 	}

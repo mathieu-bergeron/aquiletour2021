@@ -64,7 +64,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 				String userId = loginInputStep1.value();
 
 				UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
-				userInitiatesLoginMessage.setProvidedId(userId);
+				userInitiatesLoginMessage.setRegistrationId(userId);
 				Ntro.messages().send(userInitiatesLoginMessage);
 			}
 		});

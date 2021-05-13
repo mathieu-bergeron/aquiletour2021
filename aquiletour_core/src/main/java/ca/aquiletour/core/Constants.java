@@ -2,6 +2,8 @@ package ca.aquiletour.core;
 
 public class Constants {
 
+	public static final int DEFAULT_USER_ID_LENGTH = 2;
+
 	public static final String CSV_FILE_ENCODING = "latin1";
 	
 	public static final boolean DISABLE_EMAILS = true;
@@ -70,8 +72,5 @@ public class Constants {
 	public static final String TEACHER_LIST_MODEL_ID = "teachers";
 	public static final String ADMIN_LIST_MODEL_ID = "admins";
 	
-	public static final int DEFAULT_STUDENT_ID_LENGTH = 4;
-	
-	
-	
+
 }

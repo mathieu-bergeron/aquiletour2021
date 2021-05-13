@@ -18,7 +18,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
 import ca.aquiletour.server.backend.course.CourseUpdater;
 import ca.aquiletour.server.backend.course_list.CourseListUpdater;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
+import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListUpdater;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendMessageHandler;
@@ -113,7 +113,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 		CoursePath coursePath = new CoursePath(teacher.getId(), message.getSemesterId(), message.getCourseId());
 
-		UserManager.addUsers(modelStore, studentsToAdd);
+		UserManager.createUsers(modelStore, studentsToAdd);
 
 		GroupListUpdater.addGroupForUser(modelStore, 
 				                         message.getSemesterId(), 
@@ -147,15 +147,15 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		for(User student : studentsToAdd) {
 			CourseListUpdater.addSemesterForUser(modelStore, CourseListStudent.class, courseItem.getSemesterId(), student);
 			CourseListUpdater.addCourseForUser(modelStore, CourseListStudent.class, courseItem, student);
-			DashboardUpdater.addDashboardItemForUser(modelStore, DashboardStudent.class, courseItem, student);
+			DashboardManager.addDashboardItemForUser(modelStore, DashboardStudent.class, courseItem, student);
 			
 			List<CurrentTaskStudent> currentTasksStudent = course.currentTasksStudent(student.getId());
 			
-			DashboardUpdater.updateCurrentTasksForUser(modelStore, DashboardStudent.class, CurrentTaskStudent.class, message.coursePath(), currentTasksStudent, student);
+			DashboardManager.updateCurrentTasksForUser(modelStore, DashboardStudent.class, CurrentTaskStudent.class, message.coursePath(), currentTasksStudent, student);
 		}
 		
 		List<CurrentTaskTeacher> currentTasksTeacher = course.currentTasksTeacher();
 		
-		DashboardUpdater.updateCurrentTasksForUserId(modelStore, DashboardTeacher.class, CurrentTaskTeacher.class, message.coursePath(), currentTasksTeacher, message.getTeacherId());
+		DashboardManager.updateCurrentTasksForUserId(modelStore, DashboardTeacher.class, CurrentTaskTeacher.class, message.coursePath(), currentTasksTeacher, message.getTeacherId());
 	}
 }

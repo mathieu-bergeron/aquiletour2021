@@ -80,5 +80,16 @@ public class Student extends User {
 		}
 		
 	}
+
+	public void updateInfoIfEmpty(User user) {
+		T.call(this);
+		super.updateInfoIfEmpty(user);
+		
+		if(user instanceof Student) {
+			Student student = (Student) user;
+			updatePhoneNumberIfEmpty(student.getPhoneNumber());
+			updateProgramIdIfEmpty(student.getProgramId());
+		}
+	}
 	
 }

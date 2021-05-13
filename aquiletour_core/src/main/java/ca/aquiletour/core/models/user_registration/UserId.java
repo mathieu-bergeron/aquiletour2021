@@ -2,7 +2,7 @@ package ca.aquiletour.core.models.user_registration;
 
 import ca.ntro.core.models.NtroModel;
 
-public class StudentIds implements NtroModel {
+public class UserId implements NtroModel {
 
 	private String userId = "";
 

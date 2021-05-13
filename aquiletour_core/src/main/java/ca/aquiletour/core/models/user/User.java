@@ -5,6 +5,7 @@ import ca.ntro.users.NtroUser;
 
 public class User extends NtroUser {
 	
+	private String registrationId = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String email = "";
@@ -18,6 +19,14 @@ public class User extends NtroUser {
 
 	public User(String email) {
 		this.email = email;
+	}
+
+	public String getRegistrationId() {
+		return registrationId;
+	}
+
+	public void setRegistrationId(String registrationId) {
+		this.registrationId = registrationId;
 	}
 
 	public String getFirstname() {
@@ -58,6 +67,9 @@ public class User extends NtroUser {
 	}
 
 	public void copyPublicInfomation(User user) {
+		T.call(this);
+
+		setRegistrationId(user.getRegistrationId());
 		setFirstname(user.getFirstname());
 		setLastname(user.getLastname());
 		setEmail(user.getEmail());
@@ -76,6 +88,7 @@ public class User extends NtroUser {
 		T.call(this);
 
 		sessionUser.setId(getId());
+		sessionUser.setRegistrationId(getRegistrationId());
 		sessionUser.setAuthToken(getAuthToken());
 		sessionUser.setFirstname(getFirstname());
 		sessionUser.setLastname(getLastname());
@@ -145,5 +158,13 @@ public class User extends NtroUser {
 		updateFirstNameIfEmpty(firstName);
 		updateLastNameIfEmpty(lastName);
 		updateEmailIfEmpty(email);
+	}
+
+	public void updateInfoIfEmpty(User user) {
+		T.call(this);
+
+		updateFirstNameIfEmpty(user.getFirstname());
+		updateLastNameIfEmpty(user.getLastname());
+		updateEmailIfEmpty(user.getEmail());
 	}
 }

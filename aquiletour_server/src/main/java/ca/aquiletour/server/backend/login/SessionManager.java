@@ -125,11 +125,13 @@ public class SessionManager {
 				newUser = new Student();
 			}
 			
-			newUser.copyPublicInfomation((User) session.getUser());
-			newUser.setFirstname(userId);
+			User sessionUser = (User) session.getUser();
+			
+			newUser.copyPublicInfomation(sessionUser);
+			newUser.setFirstname(sessionUser.getRegistrationId());
 			newUser.setId(userId);
 
-			UserManager.addUser(modelStore, newUser);
+			UserManager.createUser(modelStore, newUser);
 			
 			if(newUser instanceof Teacher) {
 				QueueUpdater.createQueue(modelStore, newUser.getId(), newUser.getId());

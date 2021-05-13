@@ -1,6 +1,5 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.StudentGuest;
@@ -28,14 +27,14 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
-		String providedId = message.getProvidedId();
+		String registrationId = message.getRegistrationId();
 		User userToRegister = null;
 
 		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
 
-			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, providedId, session);
+			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, registrationId, session);
 
 		}else {
 			
@@ -68,18 +67,18 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}
 	}
 
-	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, NtroSession session) {
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String registrationId, NtroSession session) {
 		T.call(this);
 
 		User userToRegister;
 
-		if(isStudentId(providedId)) {
+		if(isStudentId(registrationId)) {
 			
-			userToRegister = UserManager.createStudentGuest(modelStore, providedId);
+			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, registrationId);
 			
 		}else {
 
-			userToRegister = UserManager.createTeacherGuest(modelStore, providedId);
+			userToRegister = UserManager.createGuestUser(modelStore, TeacherGuest.class, registrationId);
 		}
 
 		userToRegister.setAuthToken(authToken);

@@ -308,9 +308,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
 			groupListLink.show();
 			
-			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + Ntro.currentUser().getId());
+			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getRegistrationId());
 			queueLink.show();
-			
 			
 			coursesLinkStudent.hide();
 			coursesLinkTeacher.show();

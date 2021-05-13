@@ -15,13 +15,13 @@ import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardUpdater {
+public class DashboardManager {
 
 	public static <DM extends Dashboard<?>> void addDashboardItemForUser(ModelStoreSync modelStore, 
 																		   Class<DM> dashboardModelClass, 
 																		   CourseListItem courseListItem, 
 																		   User user) {
-		T.call(DashboardUpdater.class);
+		T.call(DashboardManager.class);
 
 		modelStore.updateModel(dashboardModelClass, "admin", user.getId(), new ModelUpdater<DM>() {
 			@Override
@@ -36,7 +36,7 @@ public class DashboardUpdater {
 	public static <DM extends Dashboard<?>> void createDashboardForUser(ModelStoreSync modelStore, 
 																	      Class<DM> dashboardModelClass,
 			 														      User user) {
-		T.call(DashboardUpdater.class);
+		T.call(DashboardManager.class);
 
 		modelStore.createModel(dashboardModelClass, "admin", user.getId(), new ModelInitializer<DM>() {
 			@Override
@@ -52,7 +52,7 @@ public class DashboardUpdater {
 																	         CoursePath coursePath,
 																	         List<CT> currentTasks,
 			 														         String userId) {
-		T.call(DashboardUpdater.class);
+		T.call(DashboardManager.class);
 
 		modelStore.updateModel(dashboardModelClass, "admin", userId, new ModelUpdater<DM>() {
 			@Override
@@ -71,7 +71,7 @@ public class DashboardUpdater {
 																	         CoursePath coursePath,
 																	         List<CT> currentTasks,
 			 														         User user) {
-		T.call(DashboardUpdater.class);
+		T.call(DashboardManager.class);
 		
 		updateCurrentTasksForUserId(modelStore, dashboardModelClass, currentTaskClass, coursePath, currentTasks, user.getId());
 	}

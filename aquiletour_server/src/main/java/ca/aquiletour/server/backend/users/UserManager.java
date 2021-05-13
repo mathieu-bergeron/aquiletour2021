@@ -12,12 +12,13 @@ import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.RegistrationIds;
-import ca.aquiletour.core.models.user_registration.StudentIds;
+import ca.aquiletour.core.models.user_registration.RegistrationId;
+import ca.aquiletour.core.models.user_registration.UserId;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
 import ca.aquiletour.server.AquiletourConfig;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
+import ca.aquiletour.server.backend.dashboard.DashboardManager;
+import ca.aquiletour.server.backend.queue.QueueUpdater;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -30,11 +31,10 @@ import ca.ntro.stores.DocumentPath;
 
 public class UserManager {
 	
-	private static int USER_ID_LENGTH = Constants.DEFAULT_STUDENT_ID_LENGTH;
+	private static int USER_ID_LENGTH = Constants.DEFAULT_USER_ID_LENGTH;
 	private static int NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH = 10;
 
-	private synchronized static <U extends User> String generateUniqueUserId(ModelStoreSync modelStore, 
-			                                                                 Class<U> modelClass) {
+	private synchronized static String generateUniqueUserId(ModelStoreSync modelStore) {
 		T.call(UserManager.class);
 		
 		String uniqueId;
@@ -53,6 +53,30 @@ public class UserManager {
 		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
 
 		return uniqueId;
+	}
+
+	private static String generateAndStoreUserId(ModelStoreSync modelStore, String registrationId) {
+		T.call(UserManager.class);
+		
+		String userId = generateUniqueUserId(modelStore);
+		
+		modelStore.createModel(RegistrationId.class, "admin", userId, new ModelInitializer<RegistrationId>() {
+			@Override
+			public void initialize(RegistrationId newModel) {
+				T.call(this);
+				newModel.setRegistrationId(registrationId);
+			}
+		});
+
+		modelStore.createModel(UserId.class, "admin", registrationId, new ModelInitializer<UserId>() {
+			@Override
+			public void initialize(UserId newModel) {
+				T.call(this);
+				newModel.setUserId(userId);
+			}
+		});
+
+		return userId;
 	}
 
 	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) {
@@ -98,49 +122,83 @@ public class UserManager {
 		return isValid;
 	}
 
-	public static void addUsers(ModelStoreSync modelStore, List<User> usersToAdd) {
+	public static void createUsers(ModelStoreSync modelStore, List<User> usersToAdd) {
 		T.call(UserManager.class);
 
 		for(User user : usersToAdd) {
-			addUser(modelStore, user);
+			createUser(modelStore, user);
 		}
 	}
 
-	public static void addUser(ModelStoreSync modelStore, User user) {
+	public static void createUser(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
 
-		if(!modelStore.ifModelExists(User.class, "admin", user.getId())) {
-            createUser(modelStore, user);
-		}
-		
-		if(user instanceof Teacher) {
+		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
 
-			DashboardUpdater.createDashboardForUser(modelStore, DashboardTeacher.class, user);
-			DashboardUpdater.createDashboardForUser(modelStore, DashboardStudent.class, user);
+			updateExistingUser(modelStore, user);
+
+		}else{
+
+            createStoredUser(modelStore, user);
+			initializeUserModels(modelStore, user);
+		}
+	}
+
+	private static void updateExistingUser(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+		
+		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
+			@Override
+			public void update(User existingUser) {
+				existingUser.updateInfoIfEmpty(user);
+			}
+		});
+	}
+
+	private static void initializeUserModels(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		if(user instanceof Teacher) {
 			
-			modelStore.updateModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserList>() {
-				@Override
-				public void update(UserList existingModel) {
-					T.call(this);
-					existingModel.addUserId(user.getId());
-				}
-			});
+			initializeTeacherModels(modelStore, user);
 
 		}else {
 
-			DashboardUpdater.createDashboardForUser(modelStore, DashboardStudent.class, user);
-
-			modelStore.updateModel(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserList>() {
-				@Override
-				public void update(UserList existingModel) {
-					T.call(this);
-					existingModel.addUserId(user.getId());
-				}
-			});
+			initializeStudentModels(modelStore, user);
 		}
 	}
 
-	private static void createUser(ModelStoreSync modelStore, User user) {
+	private static void initializeStudentModels(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
+
+		modelStore.updateModel(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserList>() {
+			@Override
+			public void update(UserList existingModel) {
+				T.call(this);
+				existingModel.addUserId(user.getId());
+			}
+		});
+	}
+
+	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		QueueUpdater.createQueue(modelStore, user.getRegistrationId(), user);
+		DashboardManager.createDashboardForUser(modelStore, DashboardTeacher.class, user);
+		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
+
+		modelStore.updateModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserList>() {
+			@Override
+			public void update(UserList existingModel) {
+				T.call(this);
+				existingModel.addUserId(user.getId());
+			}
+		});
+	}
+
+	private static void createStoredUser(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
 
 		DocumentPath documentPath = new DocumentPath();
@@ -268,17 +326,17 @@ public class UserManager {
 		
 		String studentId = null;
 
-		if(modelStore.ifModelExists(StudentIds.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
 
-			studentId = modelStore.getModel(StudentIds.class, "admin", registrationId).getUserId();
+			studentId = modelStore.getModel(UserId.class, "admin", registrationId).getUserId();
 
 		}else {
 			
-			String newId = generateUniqueUserId(modelStore, Student.class);
+			String newId = generateUniqueUserId(modelStore);
 			
-			modelStore.createModel(StudentIds.class, "admin", registrationId, new ModelInitializer<StudentIds>() {
+			modelStore.createModel(UserId.class, "admin", registrationId, new ModelInitializer<UserId>() {
 				@Override
-				public void initialize(StudentIds newModel) {
+				public void initialize(UserId newModel) {
 					T.call(this);
 					newModel.setUserId(newId);
 				}
@@ -286,9 +344,9 @@ public class UserManager {
 
 			studentId = newId;
 
-			modelStore.createModel(RegistrationIds.class, "admin", studentId, new ModelInitializer<RegistrationIds>() {
+			modelStore.createModel(RegistrationId.class, "admin", studentId, new ModelInitializer<RegistrationId>() {
 				@Override
-				public void initialize(RegistrationIds newModel) {
+				public void initialize(RegistrationId newModel) {
 					T.call(this);
 					newModel.setRegistrationId(registrationId);
 				}
@@ -347,7 +405,7 @@ public class UserManager {
 			user = Ntro.factory().newInstance(modelClass);
 			user.setId(userId);
 			user.updateInfoIfEmpty(firstName, lastName, email);
-			addUser(modelStore, user);
+			createUser(modelStore, user);
 		}
 
 		return user;
@@ -379,7 +437,7 @@ public class UserManager {
 		
 		boolean ifExists = false;
 
-		if(modelStore.ifModelExists(StudentIds.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
 			ifExists = true;
 		}
 		
@@ -398,102 +456,62 @@ public class UserManager {
 		return ifExists;
 	}
 
-	public static Teacher getTeacher(ModelStoreSync modelStore, String teacherId) {
+	public static User getUserById(ModelStoreSync modelStore, String userId) {
 		T.call(UserManager.class);
 		
-		return modelStore.getModel(Teacher.class, "admin", teacherId);
+		return modelStore.getModel(User.class, "admin", userId);
 	}
 
-	public static Student getStudentByRegistrationId(ModelStoreSync modelStore, String registrationId) {
+	public static User getUserByRegistrationId(ModelStoreSync modelStore, String registrationId) {
 		T.call(UserManager.class);
 		
-		Student student = null;
+		User user = null;
 
-		if(modelStore.ifModelExists(StudentIds.class, "admin", registrationId)) {
-			String studentId = modelStore.getModel(StudentIds.class, "admin", registrationId).getUserId();
-			student = getStudentById(modelStore, studentId);
+		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
+			String userId = modelStore.getModel(UserId.class, "admin", registrationId).getUserId();
+			user = getUserById(modelStore, userId);
 		}
 
-		return student;
+		return user;
 	}
-
-	public static Student getStudentById(ModelStoreSync modelStore, String studentId) {
-		T.call(UserManager.class);
-		
-		return modelStore.getModel(Student.class, "admin", studentId);
-	}
-
 
 	public static boolean ifStoredUserExists(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
 		
-		boolean ifExists = false;
-		
-		if(user instanceof Teacher) {
-			
-			ifExists = ifTeacherExists(modelStore, user.getId());
-			
-		}else {
-
-			ifExists = ifStudentExistsForId(modelStore, user.getId());
-
-		}
-
-		return ifExists;
+		return modelStore.ifModelExists(User.class, "admin", user.getId());
 	}
 
 	public static User getStoredUser(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
 		
-		User storedUser = null;
+		return getUserById(modelStore, user.getId());
 		
-		if(user instanceof Teacher) {
-			
-			storedUser = getTeacher(modelStore, user.getId());
-			
-		}else {
-
-			storedUser = getStudentById(modelStore, user.getId());
-			
-		}
-		
-		return storedUser;
 	}
 
-	public static User createStudentGuest(ModelStoreSync modelStore, String registrationId) {
+	public static User createGuestUser(ModelStoreSync modelStore, 
+									   Class<? extends User> guestUserClass,
+									   String registrationId) {
 		T.call(UserManager.class);
-
-		User newUser = new StudentGuest();
-		User existingUser = UserManager.getStudentByRegistrationId(modelStore, registrationId);
+		
+		User newUser = Ntro.factory().newInstance(guestUserClass);
+		newUser.setRegistrationId(registrationId);
+		
+		User existingUser = UserManager.getUserByRegistrationId(modelStore, registrationId);
 		
 		if(existingUser != null) {
+
 			newUser.copyPublicInfomation(existingUser);
+			newUser.setId(existingUser.getId());
 
 		}else {
+
+			String userId = generateAndStoreUserId(modelStore, registrationId);
 			newUser.setFirstname(registrationId);
 			newUser.setEmail(registrationId + "@" + Constants.EMAIL_HOST);
-			newUser.setId(registrationId);
+			newUser.setId(userId);
 		}
-		
+
 		return newUser;
 	}
 
-	public static User createTeacherGuest(ModelStoreSync modelStore, String teacherId) {
-		T.call(UserManager.class);
-
-		User newUser = new TeacherGuest();
-		User existingUser = UserManager.getTeacher(modelStore, teacherId);
-
-		if(existingUser != null) {
-			newUser.copyPublicInfomation(existingUser);
-
-		}else {
-
-			newUser.setFirstname(teacherId);
-			newUser.setEmail(teacherId + "@" + Constants.EMAIL_HOST);
-			newUser.setId(teacherId);
-		}
-
-		return null;
-	}
 }
