@@ -102,6 +102,7 @@ public class SessionManager {
 		T.call(SessionManager.class);
 
 		User existingUser = null;
+		User sessionUser = (User) session.getUser();
 
 		if(modelStore.ifModelExists(User.class, "admin", userId)) {
 
@@ -112,11 +113,11 @@ public class SessionManager {
 			User newUser = null;
 			Set<String> adminIds = UserManager.getAdminIds(modelStore);
 			
-			if(session.getUser() instanceof TeacherGuest && !adminIds.contains(session.getUser().getId())) {
+			if(session.getUser() instanceof TeacherGuest && !adminIds.contains(sessionUser.getRegistrationId())) {
 
 				newUser = new Teacher();
 
-			} else if(session.getUser() instanceof TeacherGuest && adminIds.contains(session.getUser().getId())) {
+			} else if(session.getUser() instanceof TeacherGuest && adminIds.contains(sessionUser.getRegistrationId())) {
 
 				newUser = new Admin();
 
@@ -124,8 +125,6 @@ public class SessionManager {
 
 				newUser = new Student();
 			}
-			
-			User sessionUser = (User) session.getUser();
 			
 			newUser.copyPublicInfomation(sessionUser);
 			newUser.setFirstname(sessionUser.getRegistrationId());
@@ -140,12 +139,12 @@ public class SessionManager {
 			existingUser = newUser;
 		}
 
-		User sessionUser = existingUser.toSessionUser();
+		User newSessionUser = existingUser.toSessionUser();
 		
-		sessionUser.setAuthToken(authToken);
+		newSessionUser.setAuthToken(authToken);
 		existingUser.setAuthToken(authToken);
 		
-		session.setUser(sessionUser);
+		session.setUser(newSessionUser);
 		modelStore.save(session);
 
 		return existingUser;
