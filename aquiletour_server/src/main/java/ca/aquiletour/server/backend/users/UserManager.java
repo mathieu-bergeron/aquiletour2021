@@ -14,9 +14,12 @@ import ca.aquiletour.core.models.user_registration.RegistrationId;
 import ca.aquiletour.core.models.user_registration.UserId;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.queue.QueueUpdater;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -155,14 +158,29 @@ public class UserManager {
 
 	private static void initializeUserModels(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
-
-		if(user instanceof Teacher) {
+		
+		if(user instanceof Admin) {
+			
+			initializeAdminModels(modelStore, user);
+			initializeTeacherModels(modelStore, user);
+			initializeStudentModels(modelStore, user);
+			
+			storeTeacherId(modelStore, user);
+			storeStudentId(modelStore, user);
+			
+		}else if(user instanceof Teacher) {
 			
 			initializeTeacherModels(modelStore, user);
+			initializeStudentModels(modelStore, user);
 
-		}else {
+			storeTeacherId(modelStore, user);
+			storeStudentId(modelStore, user);
+
+		} else if(user instanceof Student){
 
 			initializeStudentModels(modelStore, user);
+			
+			storeStudentId(modelStore, user);
 		}
 	}
 
@@ -170,8 +188,6 @@ public class UserManager {
 		T.call(UserManager.class);
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
-
-		storeStudentId(modelStore, user);
 	}
 
 	private static void storeStudentId(ModelStoreSync modelStore, User user) {
@@ -186,14 +202,19 @@ public class UserManager {
 		});
 	}
 
+	private static void initializeAdminModels(ModelStoreSync modelStore, User user) {
+		T.call(UserManager.class);
+
+		SemesterListManager.createSemesterListForUser(modelStore, SemesterListAdmin.class, user);
+	}
+
+
 	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
 
 		QueueUpdater.createQueue(modelStore, user.getRegistrationId(), user);
 		DashboardManager.createDashboardForUser(modelStore, DashboardTeacher.class, user);
-		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
-
-		storeTeacherId(modelStore, user);
+		SemesterListManager.createSemesterListForUser(modelStore, SemesterListTeacher.class, user);
 	}
 
 	private static void storeTeacherId(ModelStoreSync modelStore, User user) {

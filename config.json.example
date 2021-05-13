@@ -1,5 +1,5 @@
 {
-    "adminIds" : ["alice", "bob"],
+    "adminRegistrationIds" : ["alice", "bob"],
 
     "passwordSalt": "saltExample",
 

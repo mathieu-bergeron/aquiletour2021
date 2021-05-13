@@ -114,15 +114,6 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 		
-		if(!modelStore.ifModelExists(modelClass, "admin", userId)) {
-			modelStore.createModel(modelClass, "admin", userId, new ModelInitializer<SL>() {
-				@Override
-				public void initialize(SL newModel) {
-					T.call(this);
-				}
-			});
-		}
-
 		modelStore.updateModel(modelClass, 
 							   "admin",
 							   userId,
@@ -138,6 +129,29 @@ public class SemesterListManager {
 					((SemesterModelTeacher) semester).setAdminControlled(adminControlled);
 				}
 				semesterList.addSemester(semester);
+			}
+		});
+	}
+
+	public static <SL extends SemesterList<?>> void createSemesterListForUser(ModelStoreSync modelStore, 
+			                                                                  Class<SL> modelClass, 
+			                                                                  User user) {
+
+		T.call(SemesterListManager.class);
+		
+		createSemesterListForModelId(modelStore, modelClass, user.getId());
+	}
+
+	public static <SL extends SemesterList<?>> void createSemesterListForModelId(ModelStoreSync modelStore, 
+			                                                                     Class<SL> modelClass, 
+			                                                                     String userId) {
+
+		T.call(SemesterListManager.class);
+
+		modelStore.createModel(modelClass, "admin", userId, new ModelInitializer<SL>() {
+			@Override
+			public void initialize(SL newModel) {
+				T.call(this);
 			}
 		});
 	}
