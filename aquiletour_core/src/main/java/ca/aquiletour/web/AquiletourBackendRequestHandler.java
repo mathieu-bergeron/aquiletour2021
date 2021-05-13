@@ -544,15 +544,16 @@ public class AquiletourBackendRequestHandler {
 			
 			Ntro.messages().send(addNextTaskMessage);
 
-		}else if(parameters.containsKey("nextTask")) {
+		}else if(parameters.containsKey("linkToNextTaskPath")
+				&& parameters.get("linkToNextTaskPath")[0].length() > 0) {
 
 			AddNextTaskMessage addNextTaskMessage = AquiletourRequestHandler.createCourseMessage(AddNextTaskMessage.class,
 																							     path,
 																							     parameters,
 																							     sessionData);
 			String previousTaskId = parameters.get("taskId")[0];
-			String existingTaskId = parameters.get("nextTask")[0];
-			Path existingTaskPath = new Path(existingTaskId);
+			String existingTaskPathSting = parameters.get("linkToNextTaskPath")[0];
+			Path existingTaskPath = new Path(existingTaskPathSting);
 			
 			Task nextTask = new Task();
 			nextTask.setPath(existingTaskPath);
