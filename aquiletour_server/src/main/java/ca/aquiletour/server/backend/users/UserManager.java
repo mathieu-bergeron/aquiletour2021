@@ -194,22 +194,6 @@ public class UserManager {
 		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
 
 		storeTeacherId(modelStore, user);
-		
-		if(user instanceof Admin) {
-			storeAdminId(modelStore, user);
-		}
-	}
-
-	private static void storeAdminId(ModelStoreSync modelStore, User user) {
-		T.call(UserManager.class);
-
-		modelStore.updateModel(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID, new ModelUpdater<UserList>() {
-			@Override
-			public void update(UserList existingModel) {
-				T.call(this);
-				existingModel.addUserId(user.getId());
-			}
-		});
 	}
 
 	private static void storeTeacherId(ModelStoreSync modelStore, User user) {
@@ -303,7 +287,7 @@ public class UserManager {
 					T.call(this);
 					
 					AquiletourConfig config = (AquiletourConfig) Ntro.config();
-					for(String adminId : config.getAdminIds()){
+					for(String adminId : config.getAdminRegistrationIds()){
 						newModel.addUserId(adminId);
 					}
 				}
@@ -329,7 +313,7 @@ public class UserManager {
 		}
 	}
 
-	public static Set<String> getAdminIds(ModelStoreSync modelStore) {
+	public static Set<String> getAdminRegistrationIds(ModelStoreSync modelStore) {
 		T.call(UserManager.class);
 		
 		Set<String> adminIds = new HashSet<>();

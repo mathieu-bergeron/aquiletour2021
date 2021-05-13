@@ -38,7 +38,7 @@ public class AquiletourConfig extends ConfigService {
 		return config;
 	}
 	
-	private List<String> adminIds = new ArrayList<>();
+	private List<String> adminRegistrationIds = new ArrayList<>();
 
 	private String passwordSalt = SecureRandomString.generate(Constants.RANDOM_STRING_DEFAULT_LENGTH);
 
@@ -51,8 +51,8 @@ public class AquiletourConfig extends ConfigService {
 
 	
 
-	public List<String> getAdminIds() {
-		return adminIds;
+	public List<String> getAdminRegistrationIds() {
+		return adminRegistrationIds;
 	}
 
 	public String getSmtpHost() {
