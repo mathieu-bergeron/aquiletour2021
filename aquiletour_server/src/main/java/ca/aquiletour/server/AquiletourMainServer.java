@@ -31,6 +31,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.http.DynamicHandler;
 import ca.aquiletour.server.http.GitHandler;
@@ -66,6 +67,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		sendTimePassesMessages();
 
 		UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+		SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _resources)

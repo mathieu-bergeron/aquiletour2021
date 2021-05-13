@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Scanner;
@@ -42,22 +41,17 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
-import ca.aquiletour.core.pages.semester_list.models.SemesterList;
-import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
-import ca.aquiletour.server.AquiletourConfig;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -258,25 +252,17 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCurrentSemester() {
 		T.call(this);
 		
-		User user = (User) Ntro.currentUser();
-		SemesterList semesterList = null;
-
-		if(user instanceof Admin && user.actsAsAdmin()) {
-		
-			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListAdmin.class, "admin", Ntro.currentUser().getId());
-			modelLoader.execute();
-			semesterList = (SemesterList) modelLoader.getModel();
-
+		SessionData sessionData = null;
+		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
+			sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		}else {
-
-			ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListTeacher.class, "admin", Ntro.currentUser().getId());
-			modelLoader.execute();
-			semesterList = (SemesterList) modelLoader.getModel();
-			
+			sessionData = new SessionData();
 		}
 
-		SessionData sessionData = new SessionData();
-		sessionData.setCurrentSemester(semesterList.getCurrentSemesterId().getValue());
+		if(sessionData.getCurrentSemester() == null || sessionData.getCurrentSemester().isEmpty()) {
+			sessionData.setCurrentSemester(SemesterListManager.getCurrentSemester(new ModelStoreSync(Ntro.modelStore())));
+		}
+		
 		Ntro.currentSession().setSessionData(sessionData);
 	}
 

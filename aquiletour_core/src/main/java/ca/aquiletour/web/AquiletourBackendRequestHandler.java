@@ -50,7 +50,6 @@ import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
-import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -62,6 +61,7 @@ import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.Ntro;
 
 public class AquiletourBackendRequestHandler {
+	
 	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);

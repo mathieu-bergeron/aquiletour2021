@@ -204,8 +204,6 @@ public class UserManager {
 
 	private static void initializeAdminModels(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
-
-		SemesterListManager.createSemesterListForUser(modelStore, SemesterListAdmin.class, user);
 	}
 
 
@@ -215,6 +213,7 @@ public class UserManager {
 		QueueUpdater.createQueue(modelStore, user.getRegistrationId(), user);
 		DashboardManager.createDashboardForUser(modelStore, DashboardTeacher.class, user);
 		SemesterListManager.createSemesterListForUser(modelStore, SemesterListTeacher.class, user);
+		SemesterListManager.addManagedSemestersForTeacher(modelStore, user);
 	}
 
 	private static void storeTeacherId(ModelStoreSync modelStore, User user) {
