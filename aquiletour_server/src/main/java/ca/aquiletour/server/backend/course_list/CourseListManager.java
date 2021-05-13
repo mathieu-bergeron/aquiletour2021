@@ -14,10 +14,10 @@ import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
-public class CourseListUpdater {
+public class CourseListManager {
 
-	public static void validateCourseDescription(CourseListItem courseDescription) throws BackendMessageHandlerError {
-		T.call(CourseListUpdater.class);
+	public static void validateCourseListItem(CourseListItem courseDescription) throws BackendMessageHandlerError {
+		T.call(CourseListManager.class);
 		
 		// forbidden chars: ' " ¤ /
 
@@ -31,7 +31,7 @@ public class CourseListUpdater {
 			                                                            String semesterId, 
 			                                                            User user) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		addSemesterForUserId(modelStore,courseListModelClass, semesterId, user.getId());
 	}
@@ -41,16 +41,7 @@ public class CourseListUpdater {
 			                                                              String semesterId, 
 			                                                              String userId) {
 
-		T.call(CourseListUpdater.class);
-		
-		if(!modelStore.ifModelExists(courseListModelClass, "admin", userId)) {
-			modelStore.createModel(courseListModelClass, "admin", userId, new ModelInitializer<CLM>() {
-				@Override
-				public void initialize(CLM newModel) {
-					T.call(this);
-				}
-			});
-		}
+		T.call(CourseListManager.class);
 
 		modelStore.updateModel(courseListModelClass, 
 							   "admin",
@@ -65,36 +56,21 @@ public class CourseListUpdater {
 			}
 		});
 	}
-	
 
 	public static <CLM extends CourseList> void addCourseForUser(ModelStoreSync modelStore, 
 			 														  Class<CLM> courseListModelClass,
 			                                                          CourseListItem courseDescription, 
 			                                                          User teacher) {
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
-		if(modelStore.ifModelExists(courseListModelClass, "admin", teacher.getId())) {
-			
-			modelStore.updateModel(courseListModelClass, "admin", teacher.getId(), new ModelUpdater<CLM>() {
-				@Override
-				public void update(CLM existingModel) {
-					T.call(this);
-					
-					existingModel.addCourse(courseDescription);
-				}
-			});
-
-		}else {
-			
-			modelStore.createModel(courseListModelClass, "admin", teacher.getId(), new ModelInitializer<CLM>() {
-				@Override
-				public void initialize(CLM newModel) {
-					T.call(this);
-				}
-			});
-			
-			addCourseForUser(modelStore, courseListModelClass, courseDescription, teacher);
-		}
+		modelStore.updateModel(courseListModelClass, "admin", teacher.getId(), new ModelUpdater<CLM>() {
+			@Override
+			public void update(CLM existingModel) {
+				T.call(this);
+				
+				existingModel.addCourse(courseDescription);
+			}
+		});
 	}
 
 	public static <CLM extends CourseList> void addGroupForUser(ModelStoreSync modelStore, 
@@ -104,7 +80,7 @@ public class CourseListUpdater {
 																     String groupId, 
 																     User user) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		addGroupForUserId(modelStore, courseListModelClass, semesterId, courseId, groupId, user.getId());
 		
@@ -117,7 +93,7 @@ public class CourseListUpdater {
 																	   String groupId, 
 																	   String userId) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 
 		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
 			@Override
@@ -135,7 +111,7 @@ public class CourseListUpdater {
 																		 String courseId, 
 																		 String userId) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 
 		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
 			@Override
@@ -152,7 +128,7 @@ public class CourseListUpdater {
 			 														   String semesterId, 
 			 														   String courseId, 
 			 														   User user) { 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		closeQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
 	}
@@ -164,7 +140,7 @@ public class CourseListUpdater {
 			 															String courseId, 
 			 															String userId) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 
 		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
 			@Override
@@ -183,7 +159,7 @@ public class CourseListUpdater {
 																      String courseId, 
 																      User user) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		openQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
 	}
@@ -194,7 +170,7 @@ public class CourseListUpdater {
 																      String semesterId, 
 																      String courseId, 
 																      String userId) { 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		return getCourseItem(modelStore, courseListModelClass, semesterId, courseId, userId).getCourseTitle();
 	}
@@ -205,7 +181,7 @@ public class CourseListUpdater {
 																         String courseId, 
 																         String userId) {
 
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		CourseList model = modelStore.getModel(courseListModelClass, "admin", userId);
 		
@@ -216,7 +192,7 @@ public class CourseListUpdater {
 			 												 Class<CLM> courseListModelClass,
 			                                                 CoursePath coursePath, 
 			                                                 TaskDescription task) {
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		modelStore.updateModel(courseListModelClass, "admin", coursePath.teacherId(), new ModelUpdater<CLM>() {
 			@Override
@@ -232,7 +208,7 @@ public class CourseListUpdater {
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
 																			   String userId) {
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 
 		List<CoursePath> courses = new ArrayList<>();
 		
@@ -254,9 +230,32 @@ public class CourseListUpdater {
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
 																			   User user) {
-		T.call(CourseListUpdater.class);
+		T.call(CourseListManager.class);
 		
 		return getCourseList(modelStore, courseListModelClass, semesterId, user.getId());
+	}
+
+	public static <CLM extends CourseList> void createCourseListForModelId(ModelStoreSync modelStore, 
+			                                                               Class<CLM> modelClass, 
+			                                                               String modelId) {
+
+		T.call(CourseListManager.class);
+
+		modelStore.createModel(modelClass, "admin", modelId, new ModelInitializer<CLM>() {
+			@Override
+			public void initialize(CLM newModel) {
+				T.call(this);
+			}
+		});
+	}
+
+	public static <CLM extends CourseList> void createCourseListForUser(ModelStoreSync modelStore, 
+			                                                            Class<CLM> modelClass, 
+			                                                            User user) {
+
+		T.call(CourseListManager.class);
+		
+		createCourseListForModelId(modelStore, modelClass, user.getId());
 	}
 
 }

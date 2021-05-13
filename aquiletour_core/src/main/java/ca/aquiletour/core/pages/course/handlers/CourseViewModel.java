@@ -5,7 +5,7 @@ import java.util.List;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -22,7 +22,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseViewModel<M extends CourseModel, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
+public abstract class CourseViewModel<M extends Course, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
 	private CoursePath currentCoursePath;
 	private Task currentTask;
@@ -403,7 +403,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
 
-				displaySubtasksInOrder(model, view, subViewLoader);
+				displayNextTasksInOrder(model, view, subViewLoader);
 			}
 			
 			@Override

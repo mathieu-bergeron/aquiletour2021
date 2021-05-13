@@ -7,8 +7,8 @@ import ca.aquiletour.core.pages.semester_list.admin.models.SemesterModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
-import ca.aquiletour.server.backend.course_list.CourseListUpdater;
-import ca.aquiletour.server.backend.group_list.GroupListUpdater;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
+import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
@@ -71,8 +71,8 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 
 		}else if(message.getUser().actsAsTeacher()){
 
-			CourseListUpdater.addSemesterForUser(modelStore, CourseListTeacher.class, message.getSemesterId(), message.getUser());
-			GroupListUpdater.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
+			CourseListManager.addSemesterForUser(modelStore, CourseListTeacher.class, message.getSemesterId(), message.getUser());
+			GroupListManager.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
 		}
 	}
 

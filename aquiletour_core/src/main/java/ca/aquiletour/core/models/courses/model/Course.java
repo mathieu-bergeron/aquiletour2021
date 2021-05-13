@@ -18,7 +18,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModel extends CourseModelBase {
+public class Course extends CourseModelBase {
 
 	private ObservableSemesterIdList otherSemesters = new ObservableSemesterIdList();
 

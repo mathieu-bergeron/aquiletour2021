@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;

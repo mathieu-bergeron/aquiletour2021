@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course.teacher.handlers;
 
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.messages.ShowTaskMessageTeacher;
@@ -13,7 +13,7 @@ public class ShowCourseHandlerTeacher extends ShowCourseHandler {
 	protected Class<? extends CourseModelBase> modelClass() {
 		T.call(this);
 		
-		return CourseModel.class;
+		return Course.class;
 	}
 
 	@Override

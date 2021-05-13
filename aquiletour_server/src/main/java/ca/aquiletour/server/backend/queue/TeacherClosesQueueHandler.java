@@ -5,7 +5,7 @@ import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
-import ca.aquiletour.server.backend.course_list.CourseListUpdater;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -23,7 +23,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 
-		CourseListUpdater.closeQueueForUser(modelStore, CourseListTeacher.class, sessionData.getCurrentSemester(), message.getCourseId(), message.getUser());
+		CourseListManager.closeQueueForUser(modelStore, CourseListTeacher.class, sessionData.getCurrentSemester(), message.getCourseId(), message.getUser());
 	}
 
 	@Override
@@ -32,6 +32,6 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 
 		String courseId = message.getCourseId();
 		
-		QueueUpdater.closeQueue(modelStore, courseId);
+		QueueManager.closeQueue(modelStore, courseId);
 	}
 }

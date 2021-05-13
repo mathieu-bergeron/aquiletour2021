@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.git.commit_list;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.ListObserver;
@@ -12,10 +12,10 @@ import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitListModel, CourseModel, CommitListView>  {
+public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitListModel, Course, CommitListView>  {
 	
 	@Override
-	protected void handle(CommitListModel model, CourseModel courseModel, CommitListView view, ViewLoader subViewLoader) {
+	protected void handle(CommitListModel model, Course courseModel, CommitListView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
 		long deadline = findExerciseDeadline(courseModel, model.getExercisePath());
@@ -76,7 +76,7 @@ public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitL
 		});
 	}
 	
-	private long findExerciseDeadline(CourseModel courseModel, String exercisePath) {
+	private long findExerciseDeadline(Course courseModel, String exercisePath) {
 		T.call(this);
 		
 		long deadline = -1;

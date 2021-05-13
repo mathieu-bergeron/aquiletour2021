@@ -2,32 +2,34 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.models.courses.model.GroupDescription;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
-import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseViewTeacher> {
+public class CourseViewModelTeacher extends CourseViewModel<Course, CourseViewTeacher> {
 	
 	@Override
 	protected boolean isEditable() {
-		boolean isOwner = currentCoursePath().teacherId().equals(Ntro.currentUser().getId());
+		T.call(this);
+
+		User user = (User) Ntro.currentUser();
+		boolean isOwner = currentCoursePath().teacherId().equals(user.getRegistrationId());
 		
 		boolean isStructure = currentGroupId().equals(Constants.COURSE_STRUCTURE_ID);
 		
-		return isOwner && isStructure;
+		return isOwner && isStructure && user.actsAsTeacher();
 	}
 
 	@Override
-	protected void handle(CourseModel model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(Course model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 		
@@ -41,14 +43,14 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 
 
 
-	private void initializeDropdowns(CourseModel model, CourseViewTeacher view) {
+	private void initializeDropdowns(Course model, CourseViewTeacher view) {
 		T.call(this);
 		
 		initializeSemesterDropdown(model, view);
 		initializeGroupDropdown(model, view);
 	}
 
-	private void initializeGroupDropdown(CourseModel model, CourseViewTeacher view) {
+	private void initializeGroupDropdown(Course model, CourseViewTeacher view) {
 		T.call(this);
 
 		appendToGroupDropdown(Constants.COURSE_STRUCTURE_ID, view);
@@ -66,7 +68,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModel, CourseV
 		view.selectGroup(Constants.COURSE_STRUCTURE_ID);
 	}
 
-	private void initializeSemesterDropdown(CourseModel model, CourseViewTeacher view) {
+	private void initializeSemesterDropdown(Course model, CourseViewTeacher view) {
 		T.call(this);
 
 		String semesterId = model.getCoursePath().semesterId();

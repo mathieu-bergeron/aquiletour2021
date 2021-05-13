@@ -6,7 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
@@ -17,9 +17,9 @@ import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
 import ca.aquiletour.server.backend.course.CourseUpdater;
-import ca.aquiletour.server.backend.course_list.CourseListUpdater;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
-import ca.aquiletour.server.backend.group_list.GroupListUpdater;
+import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -40,7 +40,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		groupId = groupNameFromCsvFileName(csvFilename);
 		studentsToAdd = parseCsv(modelStore, csvString);
 		
-		CourseListUpdater.addGroupForUser(modelStore, 
+		CourseListManager.addGroupForUser(modelStore, 
 										  CourseListTeacher.class,
 				                          message.getSemesterId(), 
 				                          message.getCourseId(), 
@@ -115,7 +115,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 		UserManager.createUsers(modelStore, studentsToAdd);
 
-		GroupListUpdater.addGroupForUser(modelStore, 
+		GroupListManager.addGroupForUser(modelStore, 
 				                         message.getSemesterId(), 
 				                         message.getCourseId(), 
 				                         groupId, 
@@ -128,7 +128,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                                  groupId, 
 				                                  teacher);
 		
-		CourseListItem courseItem = CourseListUpdater.getCourseItem(modelStore, 
+		CourseListItem courseItem = CourseListManager.getCourseItem(modelStore, 
 															    CourseListTeacher.class,
 				                                                message.getSemesterId(),
 				                                                message.getCourseId(),
@@ -140,13 +140,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 							   studentsToAdd,
 							   teacher);
 
-		CourseModel course = CourseUpdater.getCourse(modelStore, 
-													 CourseModel.class,
+		Course course = CourseUpdater.getCourse(modelStore, 
+													 Course.class,
 													 message.coursePath());
 		
 		for(User student : studentsToAdd) {
-			CourseListUpdater.addSemesterForUser(modelStore, CourseListStudent.class, courseItem.getSemesterId(), student);
-			CourseListUpdater.addCourseForUser(modelStore, CourseListStudent.class, courseItem, student);
+			CourseListManager.addSemesterForUser(modelStore, CourseListStudent.class, courseItem.getSemesterId(), student);
+			CourseListManager.addCourseForUser(modelStore, CourseListStudent.class, courseItem, student);
 			DashboardManager.addDashboardItemForUser(modelStore, DashboardStudent.class, courseItem, student);
 			
 			List<CurrentTaskStudent> currentTasksStudent = course.currentTasksStudent(student.getId());

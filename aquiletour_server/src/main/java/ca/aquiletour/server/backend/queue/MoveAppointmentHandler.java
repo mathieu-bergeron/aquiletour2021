@@ -17,7 +17,7 @@ public class MoveAppointmentHandler extends BackendMessageHandler<MoveAppointmen
 		String destinationId = message.getDestinationId();
 		String beforeOrAfter = message.getBeforeOrAfter();
 		
-		QueueUpdater.moveAppointment(modelStore, courseId, appointmentId, destinationId, beforeOrAfter);
+		QueueManager.moveAppointment(modelStore, courseId, appointmentId, destinationId, beforeOrAfter);
 	}
 
 	@Override

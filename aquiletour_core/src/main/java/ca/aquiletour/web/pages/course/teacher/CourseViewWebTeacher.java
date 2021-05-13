@@ -12,12 +12,12 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 
 public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTeacher {
 
 	private HtmlElement taskTitleInput;
 	private HtmlElement taskDescriptionInput;
-	private HtmlElement taskIdInput;
 	private HtmlElement taskEndTimeWeek;
 	private HtmlElement taskEndTimeScheduleItem;
 	private HtmlElement taskEndTimeStartOrEnd;
@@ -28,6 +28,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement editableDescription;
 	private HtmlElement editableTitle;
 	private HtmlElement uneditableCompletions;
+
+	private HtmlElements addTaskIdToValue;
 
 	private BootstrapDropdown semesterDropdown;
 	private BootstrapDropdown groupDropdown;
@@ -42,7 +44,6 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		HtmlElement groupDropdownHead = getRootElement().find("#group-dropdown-head-courseview").get(0);
 		HtmlElement groupDropdownTail = getRootElement().find("#group-dropdown-tail-courseview").get(0);
 
-		taskIdInput = this.getRootElement().find("#task-id-input").get(0);
 		taskTitleInput = this.getRootElement().find("#task-title-input").get(0);
 		taskDescriptionInput = this.getRootElement().find("#task-description-input").get(0);
 		taskEndTimeWeek = this.getRootElement().find("#task-endtime-week").get(0);
@@ -56,6 +57,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		uneditableCompletions = this.getRootElement().find("#uneditable-completions").get(0);
 		editableTitle = this.getRootElement().find("#editable-title").get(0);
 		
+		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
+
 		MustNot.beNull(semesterDropdownHead);
 		MustNot.beNull(semesterDropdownTail);
 		MustNot.beNull(groupDropdownHead);
@@ -63,7 +66,6 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(taskEndTimeWeek);
 		MustNot.beNull(taskEndTimeScheduleItem);
 		MustNot.beNull(taskEndTimeStartOrEnd);
-		MustNot.beNull(taskIdInput);
 		MustNot.beNull(taskTitleInput);
 		MustNot.beNull(taskDescriptionInput);
 		MustNot.beNull(saveButtonContainer);
@@ -147,7 +149,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
 		
-		taskIdInput.value(task.id());
+		addTaskIdToValue.appendToAttribute("value", task.id());
 	}
 
 	@Override

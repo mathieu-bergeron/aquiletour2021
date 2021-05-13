@@ -12,7 +12,7 @@ public class ModifyAppointmentDurationsHandler extends BackendMessageHandler<Mod
 	public void handleNow(ModelStoreSync modelStore, ModifyAppointmentDurations message) throws BackendMessageHandlerError {
 		T.call(this);
 
-		QueueUpdater.modifyAppointmentDurations(modelStore, message.getDurationIncrementSeconds(), message.getUser());
+		QueueManager.modifyAppointmentDurations(modelStore, message.getDurationIncrementSeconds(), message.getUser());
 	}
 
 	@Override

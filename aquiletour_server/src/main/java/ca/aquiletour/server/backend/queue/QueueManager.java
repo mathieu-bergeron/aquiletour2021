@@ -12,13 +12,13 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class QueueUpdater {
+public class QueueManager {
 
 	public static void createQueue(ModelStoreSync modelStore,
 								   String queueId,
 			                       User user) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		createQueue(modelStore, user.getId(), queueId);
 	}
@@ -27,7 +27,7 @@ public class QueueUpdater {
 								   String teacherId,
 			                       String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		modelStore.createModel(Queue.class, 
 							   "admin",
@@ -46,7 +46,7 @@ public class QueueUpdater {
 	public static void deleteQueue(ModelStoreSync modelStore,
 			                       String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		QueuesUpdater.deleteQueue(modelStore, queueId);
 
@@ -60,7 +60,7 @@ public class QueueUpdater {
 	public static void openQueue(ModelStoreSync modelStore,
 			                     String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		QueuesUpdater.openQueue(modelStore, queueId);
 
@@ -75,7 +75,7 @@ public class QueueUpdater {
 	public static void closeQueue(ModelStoreSync modelStore,
 			                      String queueId) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		QueuesUpdater.closeQueue(modelStore, queueId);
 
@@ -95,7 +95,7 @@ public class QueueUpdater {
 	public static int addStudentsToQueue(ModelStoreSync modelStore, 
 			                             String queueId, 
 			                             List<User> studentsToAdd) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		Queue queue = modelStore.getModel(Queue.class, 
 				"admin",
@@ -126,7 +126,7 @@ public class QueueUpdater {
 			                                 String queueId,
 			                                 User user) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		Appointment appointment = createAppointment(user);
 		
@@ -141,7 +141,7 @@ public class QueueUpdater {
 	}
 
 	private static Appointment createAppointment(User user) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		Appointment appointment = new Appointment();
 
@@ -154,7 +154,7 @@ public class QueueUpdater {
 	}
 
 	public static void addAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}
@@ -162,7 +162,7 @@ public class QueueUpdater {
 	// FIXME: much better to increment number of appointments
 	//        if two threads add appointements, this size() could be wrong
 	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		Queue queue = modelStore.getModel(Queue.class, "admin", queueId);
 
@@ -176,7 +176,7 @@ public class QueueUpdater {
 	}
 
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		Queue queue = modelStore.getModel(Queue.class, "admin", queueId);
 		
@@ -186,7 +186,7 @@ public class QueueUpdater {
 	}
 
 	public static void deleteAppointment(ModelStoreSync modelStore, String queueId, String appointmentId) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
 			@Override
@@ -199,7 +199,7 @@ public class QueueUpdater {
 	}
 
 	public static void deleteAppointmentUpdates(ModelStoreSync modelStore, String queueId, Appointment deletedAppointment) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		String appointmentOwnerId = deletedAppointment.getStudentId();
 		
@@ -212,7 +212,7 @@ public class QueueUpdater {
 			                           String destinationId,
 			                           String beforeOrAfter) {
 
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
 			@Override
@@ -225,7 +225,7 @@ public class QueueUpdater {
 	}
 
 	public static void modifyAppointmentTimes(ModelStoreSync modelStore, int timeIncrementSeconds, User user) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		modelStore.updateModel(Queue.class, "admin", user.getId(), new ModelUpdater<Queue>() {
 			@Override
@@ -238,7 +238,7 @@ public class QueueUpdater {
 	}
 
 	public static void modifyAppointmentDurations(ModelStoreSync modelStore, int durationIncrementSeconds, User user) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 		
 		modelStore.updateModel(Queue.class, "admin", user.getId(), new ModelUpdater<Queue>() {
 			@Override
@@ -254,7 +254,7 @@ public class QueueUpdater {
 			                                    String queueId, 
 			                                    String comment, 
 			                                    User student) {
-		T.call(QueueUpdater.class);
+		T.call(QueueManager.class);
 
 		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
 			@Override

@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.messages.ShowTaskMessageStudent;
@@ -16,7 +16,7 @@ public class ShowCourseHandlerStudent extends ShowCourseHandler {
 		//return CourseModelStudent.class;
 		
 		// XXX: always use teacher model
-		return CourseModel.class;
+		return Course.class;
 	}
 
 	@Override

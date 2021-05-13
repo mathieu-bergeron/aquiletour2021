@@ -239,11 +239,11 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("courseTitle")[0];
 			String courseId = parameters.get("newCourseId")[0];
 			
-			CourseListItem courseDescription = new CourseListItem(user.getId(), semesterId, courseId, courseTitle);
+			CourseListItem courseListItem = new CourseListItem(user.getRegistrationId(), semesterId, courseId, courseTitle);
 			
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setSemesterId(semesterId);
-			addCourseMessage.setCourseListItem(courseDescription);
+			addCourseMessage.setCourseListItem(courseListItem);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
 		}
 
@@ -452,7 +452,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, SessionData sessionData) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("newSubTask")) {
+		if(parameters.containsKey("newSubTaskId")) {
 
 			AddSubTaskMessage addSubTaskMessage = AquiletourRequestHandler.createCourseMessage(AddSubTaskMessage.class,
 																							   path,
@@ -460,8 +460,8 @@ public class AquiletourBackendRequestHandler {
 																							   sessionData);
 
 			String parentTaskId = parameters.get("taskId")[0];
-			String newSubTaskId = parameters.get("newSubTask")[0];
-			String taskTitle = newSubTaskId;
+			String newSubTaskId = parameters.get("newSubTaskId")[0];
+			String taskTitle = parameters.get("taskTitle")[0];
 			Path newTaskPath = new Path(parentTaskId + "/" + newSubTaskId);
 			
 			Task task = new Task();
@@ -472,8 +472,8 @@ public class AquiletourBackendRequestHandler {
 			addSubTaskMessage.setSubTask(task);
 			Ntro.messages().send(addSubTaskMessage);
 
-		}else if(parameters.containsKey("newPreviousTask")
-				&& parameters.get("newPreviousTask")[0].length() > 0) {
+		}else if(parameters.containsKey("newPreviousTaskId")
+				&& parameters.get("newPreviousTaskId")[0].length() > 0) {
 
 			AddPreviousTaskMessage addPreviousTaskMessage = AquiletourRequestHandler.createCourseMessage(AddPreviousTaskMessage.class,
 																							             path,
@@ -481,8 +481,8 @@ public class AquiletourBackendRequestHandler {
 																							             sessionData);
 
 			String nextTaskId = parameters.get("taskId")[0];
-			String newPreviousTaskId = parameters.get("newPreviousTask")[0];
-			String taskTitle = newPreviousTaskId;
+			String newPreviousTaskId = parameters.get("newPreviousTaskId")[0];
+			String taskTitle = parameters.get("previousTaskTitle")[0];
 			
 			Path nextPath = new Path(nextTaskId);
 			Path parentPath = nextPath.parent();
@@ -498,7 +498,8 @@ public class AquiletourBackendRequestHandler {
 			
 			Ntro.messages().send(addPreviousTaskMessage);
 
-		}else if(parameters.containsKey("previousTask")) {
+		}else if(parameters.containsKey("linkToPreviousTaskPath")
+				&& parameters.get("linkToPreviousTaskPath")[0].length() > 0) {
 
 			AddPreviousTaskMessage addPreviousTaskMessage = AquiletourRequestHandler.createCourseMessage(AddPreviousTaskMessage.class,
 																							             path,
@@ -506,8 +507,8 @@ public class AquiletourBackendRequestHandler {
 																							             sessionData);
 
 			String nextTaskId = parameters.get("taskId")[0];
-			String existingTaskId = parameters.get("previousTask")[0];
-			Path existingTaskPath = new Path(existingTaskId);
+			String existingTaskPathString = parameters.get("linkToPreviousTaskPath")[0];
+			Path existingTaskPath = new Path(existingTaskPathString);
 
 			Task previousTask = new Task();
 			previousTask.setPath(existingTaskPath);
@@ -517,8 +518,8 @@ public class AquiletourBackendRequestHandler {
 			
 			Ntro.messages().send(addPreviousTaskMessage);
 
-		}else if(parameters.containsKey("newNextTask")
-				&& parameters.get("newNextTask")[0].length() > 0) {
+		}else if(parameters.containsKey("newNextTaskId")
+				&& parameters.get("newNextTaskId")[0].length() > 0) {
 
 			AddNextTaskMessage addNextTaskMessage = AquiletourRequestHandler.createCourseMessage(AddNextTaskMessage.class,
 																							     path,
@@ -526,8 +527,8 @@ public class AquiletourBackendRequestHandler {
 																							     sessionData);
 
 			String previousTaskId = parameters.get("taskId")[0];
-			String newNextTaskId = parameters.get("newNextTask")[0];
-			String taskTitle = newNextTaskId;
+			String newNextTaskId = parameters.get("newNextTaskId")[0];
+			String taskTitle = parameters.get("nextTaskTitle")[0];
 			
 			Path previousPath = new Path(previousTaskId);
 			Path parentPath = previousPath.parent();

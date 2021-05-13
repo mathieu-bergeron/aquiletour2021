@@ -14,7 +14,7 @@ public class ModifyAppointmentCommentHandler extends BackendMessageHandler<Modif
 		
 		T.here();
 		
-		QueueUpdater.modifyAppointmentComment(modelStore, message.getQueueId(), message.getComment(), message.getUser());
+		QueueManager.modifyAppointmentComment(modelStore, message.getQueueId(), message.getComment(), message.getUser());
 	}
 
 	@Override

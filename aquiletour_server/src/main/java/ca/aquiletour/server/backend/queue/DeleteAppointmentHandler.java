@@ -22,15 +22,15 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 		String courseId = message.getCourseId();
 		String appointmentId = message.getAppointmentId();
 		
-		deletedAppointment = QueueUpdater.getAppointmentById(modelStore, courseId, appointmentId);
+		deletedAppointment = QueueManager.getAppointmentById(modelStore, courseId, appointmentId);
 
-		QueueUpdater.deleteAppointment(modelStore, courseId, appointmentId);
+		QueueManager.deleteAppointment(modelStore, courseId, appointmentId);
 	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, DeleteAppointmentMessage message) {
 		T.call(this);
 
-		QueueUpdater.deleteAppointmentUpdates(modelStore, message.getCourseId(), deletedAppointment);
+		QueueManager.deleteAppointmentUpdates(modelStore, message.getCourseId(), deletedAppointment);
 	}
 }

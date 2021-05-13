@@ -9,7 +9,7 @@ import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.server.backend.queue.QueueUpdater;
+import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
@@ -131,10 +131,6 @@ public class SessionManager {
 			newUser.setId(userId);
 
 			UserManager.createUser(modelStore, newUser);
-			
-			if(newUser instanceof Teacher) {
-				QueueUpdater.createQueue(modelStore, newUser.getId(), newUser.getId());
-			}
 			
 			existingUser = newUser;
 		}

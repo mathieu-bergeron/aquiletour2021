@@ -37,7 +37,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 
 		}else {
 
-			QueueUpdater.addAppointmentForUser(modelStore, courseId, user);
+			QueueManager.addAppointmentForUser(modelStore, courseId, user);
 		}
 	}
 
@@ -45,6 +45,6 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	public void handleLater(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
 
-		QueueUpdater.addAppointmentUpdates(modelStore, message.getCourseId());
+		QueueManager.addAppointmentUpdates(modelStore, message.getCourseId());
 	}
 }

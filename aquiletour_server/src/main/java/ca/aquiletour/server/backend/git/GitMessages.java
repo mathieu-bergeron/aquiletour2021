@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.RegisterExercise;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -16,7 +17,7 @@ import ca.ntro.services.Ntro;
 
 public class GitMessages {
 
-	public static void registerExercice(String courseId, Path path) {
+	public static void registerExercice(CoursePath coursePath, Path path) {
 		T.call(GitMessages.class);
 
 		String directoryName = "exercice";
@@ -26,7 +27,7 @@ public class GitMessages {
 		}
 		
 		RegisterExercise registerExerciceMessage = Ntro.messages().create(RegisterExercise.class);
-		registerExerciceMessage.setCourseId(courseId);
+		registerExerciceMessage.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
 		registerExerciceMessage.setExercisePath(path.toString());
 		registerExerciceMessage.setSourceFolderPath(path.toString());
 		registerExerciceMessage.setCompletionKeywords(directoryName);

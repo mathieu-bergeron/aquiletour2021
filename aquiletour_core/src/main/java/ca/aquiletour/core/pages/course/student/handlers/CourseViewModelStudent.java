@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.models.courses.task_types.GitExerciseTask;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
@@ -10,10 +10,10 @@ import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class CourseViewModelStudent extends CourseViewModel<CourseModel, CourseViewStudent> {
+public class CourseViewModelStudent extends CourseViewModel<Course, CourseViewStudent> {
 
 	@Override
-	protected void handle(CourseModel model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(Course model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 		

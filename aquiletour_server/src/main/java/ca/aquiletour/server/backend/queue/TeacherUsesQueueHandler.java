@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.queue;
 
 import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
-import ca.aquiletour.server.backend.course_list.CourseListUpdater;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -14,7 +14,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 	public void handleNow(ModelStoreSync modelStore, TeacherUsesQueueMessage message) {
 		T.call(this);
 		
-		CourseListUpdater.openQueueForUser(modelStore, 
+		CourseListManager.openQueueForUser(modelStore, 
 				                           CourseListTeacher.class,
 				                           message.getSemesterId(),
 				                           message.getCourseId(), 

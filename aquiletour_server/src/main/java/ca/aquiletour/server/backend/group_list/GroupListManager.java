@@ -9,7 +9,7 @@ import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 
-public class GroupListUpdater {
+public class GroupListManager {
 
 	public static void addGroupForUser(ModelStoreSync modelStore, 
 			                           String semesterId, 
@@ -18,7 +18,7 @@ public class GroupListUpdater {
 			                           List<User> studentsToAdd,
 			                           User user) {
 
-		T.call(GroupListUpdater.class);
+		T.call(GroupListManager.class);
 		
 		addGroupForUserId(modelStore, semesterId, courseId, groupId, studentsToAdd, user.getId());
 	}
@@ -30,15 +30,9 @@ public class GroupListUpdater {
 										 List<User> studentsToAdd,
 			                             String userId) {
 
-		T.call(GroupListUpdater.class);
+		T.call(GroupListManager.class);
 
 		if(!modelStore.ifModelExists(GroupList.class, "admin", userId)) {
-			modelStore.createModel(GroupList.class, "admin", userId, new ModelInitializer<GroupList>() {
-				@Override
-				public void initialize(GroupList newModel) {
-					T.call(this);
-				}
-			});
 		}
 
 		modelStore.updateModel(GroupList.class, "admin", userId, new ModelUpdater<GroupList>() {
@@ -56,7 +50,7 @@ public class GroupListUpdater {
 			                                String semesterId, 
 			                                String userId) {
 
-		T.call(GroupListUpdater.class);
+		T.call(GroupListManager.class);
 
 		if(!modelStore.ifModelExists(GroupList.class, "admin", userId)) {
 			modelStore.createModel(GroupList.class, "admin", userId, new ModelInitializer<GroupList>() {
@@ -85,7 +79,7 @@ public class GroupListUpdater {
 			                              String semesterId, 
 			                              User user) {
 
-		T.call(GroupListUpdater.class);
+		T.call(GroupListManager.class);
 		
 		addSemesterForUserId(modelStore, semesterId, user.getId());
 	}
@@ -96,16 +90,7 @@ public class GroupListUpdater {
 			                              String courseId, 
 			                              String userId) {
 
-		T.call(GroupListUpdater.class);
-
-		if(!modelStore.ifModelExists(GroupList.class, "admin", userId)) {
-			modelStore.createModel(GroupList.class, "admin", userId, new ModelInitializer<GroupList>() {
-				@Override
-				public void initialize(GroupList newModel) {
-					T.call(this);
-				}
-			});
-		}
+		T.call(GroupListManager.class);
 
 		modelStore.updateModel(GroupList.class, 
 							   "admin",
@@ -126,8 +111,25 @@ public class GroupListUpdater {
 			                            String courseId, 
 			                            User user) {
 
-		T.call(GroupListUpdater.class);
+		T.call(GroupListManager.class);
 		
 		addCourseForUserId(modelStore, semesterId, courseId, user.getId());
+	}
+
+	public static void createGroupListForModelId(ModelStoreSync modelStore, String modelId) {
+		T.call(GroupListManager.class);
+
+		modelStore.createModel(GroupList.class, "admin", modelId, new ModelInitializer<GroupList>() {
+			@Override
+			public void initialize(GroupList newModel) {
+				T.call(this);
+			}
+		});
+	}
+
+	public static void createGroupListForUser(ModelStoreSync modelStore, User user) {
+		T.call(GroupListManager.class);
+
+		createGroupListForModelId(modelStore, user.getId());
 	}
 }
