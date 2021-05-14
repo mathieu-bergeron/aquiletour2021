@@ -163,7 +163,7 @@ if __name__=="__main__":
 #        cur.execute('''INSERT INTO tasks(priority,req_date,request) 
 #            VALUES (5,DateTime('now','localtime'),"req5")''')
         conn.commit()
-        conn2 = mysql.connector.connect(user='root',password='test',database='git_info')
+        conn2 = mysql.connector.connect(user='git_info',password='/*git_info*/',database='git_info')
         cur2= conn2.cursor()
         cur2.execute('DELETE FROM commit_file')
         cur2.execute('DELETE FROM commit')
