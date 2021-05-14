@@ -8,7 +8,7 @@ import ca.ntro.core.system.trace.T;
 
 public class Group implements NtroModelValue {
 
-	private String groupId;
+	private String groupId = "";
 	private ObservableStudentMap students = new ObservableStudentMap();
 
 	public ObservableStudentMap getStudents() {
