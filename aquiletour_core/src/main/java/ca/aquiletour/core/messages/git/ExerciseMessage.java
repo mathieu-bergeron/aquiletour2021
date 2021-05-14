@@ -6,6 +6,7 @@ import ca.ntro.messages.NtroMessage;
 public class ExerciseMessage extends NtroMessage {
 
 	private String courseId;
+	private String groupId;
 	private String exercisePath;
 
 	public String getCourseId() {
@@ -31,4 +32,11 @@ public class ExerciseMessage extends NtroMessage {
 		setExercisePath(message.getExercisePath());
 	}
 
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 }

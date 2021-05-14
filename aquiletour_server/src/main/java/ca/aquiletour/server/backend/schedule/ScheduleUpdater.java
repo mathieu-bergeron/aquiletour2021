@@ -8,7 +8,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
-import ca.aquiletour.server.backend.course.CourseUpdater;
+import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.core.models.ModelStoreSync;
@@ -48,7 +48,7 @@ public class ScheduleUpdater {
 				&& teacherSchedule != null) {
 
 			for(CoursePath coursePath : teacherCourses) {
-				CourseUpdater.updateCourseSchedule(modelStore,
+				CourseManager.updateCourseSchedule(modelStore,
 												   coursePath,
 												   semesterSchedule,
 												   teacherSchedule);

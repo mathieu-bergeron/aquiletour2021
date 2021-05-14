@@ -1,6 +1,5 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
@@ -15,7 +14,7 @@ public class AddSubTaskHandler extends BackendMessageHandler<AddSubTaskMessage> 
 	public void handleNow(ModelStoreSync modelStore, AddSubTaskMessage message) {
 		T.call(this);
 		
-		CourseUpdater.addSubTask(modelStore, message.coursePath(), message.getParentPath(), message.getSubTask());
+		CourseManager.addSubTask(modelStore, message.coursePath(), message.getParentPath(), message.getSubTask());
 		CourseListManager.addTask(modelStore, 
 								  CourseListTeacher.class,
 								  message.coursePath(),

@@ -15,7 +15,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 	public void handleNow(ModelStoreSync modelStore, UpdateTaskInfoMessage message) {
 		T.call(this);
 		
-		CourseUpdater.updateTaskInfo(modelStore, 
+		CourseManager.updateTaskInfo(modelStore, 
 				                     message.coursePath(), 
 				                     message.getTaskPath(),
 				                     message.getTaskTitle(),
@@ -32,7 +32,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 				                                                                 message.getSemesterId(), 
 				                                                                 message.getUser());
 
-		CourseUpdater.updateCourseSchedule(modelStore,
+		CourseManager.updateCourseSchedule(modelStore,
 										   message.coursePath(),
 										   semesterSchedule,
 										   teacherSchedule);

@@ -12,7 +12,7 @@ public class RemoveSubTaskHandler extends BackendMessageHandler<RemoveSubTaskMes
 	public void handleNow(ModelStoreSync modelStore, RemoveSubTaskMessage message) {
 		T.call(this);
 		
-		CourseUpdater.removeSubTask(modelStore, message.coursePath(), message.getTaskToModify(), message.getTaskToRemove());
+		CourseManager.removeSubTask(modelStore, message.coursePath(), message.getTaskToModify(), message.getTaskToRemove());
 	}
 
 	@Override

@@ -68,7 +68,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 			}
 			
 		} catch (IOException e) {
-			Log.fatalError("Unable to connect to " + serviceUrl, e);
+			Log.error("Unable to connect to " + serviceUrl);
 		}
 		
 		return new JsonLoaderMemory(response);

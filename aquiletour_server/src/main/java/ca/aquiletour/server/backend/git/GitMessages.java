@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.ntro.core.Path;
@@ -17,19 +18,20 @@ import ca.ntro.services.Ntro;
 
 public class GitMessages {
 
-	public static void registerExercice(CoursePath coursePath, Path path) {
+	public static void registerExercice(CoursePath coursePath, String groupId, Path taskPath) {
 		T.call(GitMessages.class);
 
 		String directoryName = "exercice";
 		
-		if(path.nameCount() > 0) {
-			directoryName = path.name(path.nameCount()-1);
+		if(taskPath.nameCount() > 0) {
+			directoryName = taskPath.name(taskPath.nameCount()-1);
 		}
 		
 		RegisterExercise registerExerciceMessage = Ntro.messages().create(RegisterExercise.class);
 		registerExerciceMessage.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
-		registerExerciceMessage.setExercisePath(path.toString());
-		registerExerciceMessage.setSourceFolderPath(path.toString());
+		registerExerciceMessage.setGroupId(groupId);
+		registerExerciceMessage.setExercisePath(taskPath.toString());
+		registerExerciceMessage.setSourceFolderPath(taskPath.toString());
 		registerExerciceMessage.setCompletionKeywords(directoryName);
 		
 		sendMessage(registerExerciceMessage);
@@ -81,9 +83,16 @@ public class GitMessages {
 		}
 	}
 
-	public static void deRegisterExercice(String courseId, Path path) {
+	public static void deleteExercise(CoursePath coursePath, String groupId, Path taskPath) {
+
 		T.call(GitMessages.class);
 		
+		DeRegisterExercise deleteExercice = Ntro.messages().create(DeRegisterExercise.class);
+		deleteExercice.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
+		deleteExercice.setGroupId(groupId);
+		deleteExercice.setExercisePath(taskPath.toString());
+		
+		sendMessage(deleteExercice);
 	}
 
 }

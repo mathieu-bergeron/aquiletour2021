@@ -14,7 +14,7 @@ public class RemovePreviousTaskHandler extends BackendMessageHandler<RemovePrevi
 		
 		String courseId = message.getCourseId();
 
-		CourseUpdater.removePreviousTask(modelStore, courseId, message.getTaskToModify(), message.getTaskToRemove());
+		CourseManager.removePreviousTask(modelStore, courseId, message.getTaskToModify(), message.getTaskToRemove());
 	}
 
 	@Override

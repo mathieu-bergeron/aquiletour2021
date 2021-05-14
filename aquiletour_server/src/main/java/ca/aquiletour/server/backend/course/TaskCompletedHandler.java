@@ -12,7 +12,7 @@ public class TaskCompletedHandler extends BackendMessageHandler<TaskCompletedMes
 	public void handleNow(ModelStoreSync modelStore, TaskCompletedMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 		
-		CourseUpdater.taskCompletedByUser(modelStore,
+		CourseManager.taskCompletedByUser(modelStore,
 				                          message.coursePath(), 
 				                          message.getTaskPath(), 
 				                          message.getUser());

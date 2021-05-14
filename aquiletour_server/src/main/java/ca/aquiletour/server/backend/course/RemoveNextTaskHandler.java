@@ -14,7 +14,7 @@ public class RemoveNextTaskHandler extends BackendMessageHandler<RemoveNextTaskM
 		
 		String courseId = message.getCourseId();
 
-		CourseUpdater.removeNextTask(modelStore, courseId, message.getTaskToModify(), message.getTaskToRemove());
+		CourseManager.removeNextTask(modelStore, courseId, message.getTaskToModify(), message.getTaskToRemove());
 	}
 
 	@Override
