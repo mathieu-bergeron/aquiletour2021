@@ -5,6 +5,7 @@ import sqlite3
 import json
 import re
 import utils.normalize_data
+import utils.task_utils
 
 # {
 #       "_C": "RegisterExercise",
@@ -23,29 +24,20 @@ def process(api_req, maria_conn, lite_conn):
         api_req['repoPath'] = '/'
     if maria_conn:
         try:
-            # host = 'ZZ'
-            # if re.search('gitlab', api_req['repoUrl']):
-            #     host = 'GL'
-            # elif re.search('github', api_req['repoUrl']):
-            #     host = 'GH'
-            # elif re.search('azure', api_req['repoUrl']):
-            #     host = 'AZ'
+            semester = utils.normalize_data.normalize_session(api_req['semesterId'])
+            course = utils.normalize_data.normalize_courseId(api_req['courseId'])
+            group = utils.normalize_data.normalize_group(api_req['groupId'])
             maria_cur = maria_conn.cursor()
             maria_cur.execute('''INSERT INTO exercise 
                 VALUES (%s,%s,%s,%s,%s,%s,%s)''',
-                (
-                utils.normalize_data.normalize_session(api_req['semesterId']),
-                utils.normalize_data.normalize_courseId(api_req['courseId']),
-                utils.normalize_data.normalize_group(api_req['groupId']),
-                api_req['exercisePath'],
-                api_req['repoPath'],
-                api_req['sourceFolderPath'],
-                api_req['completionKeywords']))
+                (semester, course, group, api_req['exercisePath'],
+                api_req['repoPath'], api_req['sourceFolderPath'], api_req['completionKeywords']))
             maria_conn.commit()
             response = JSONResponse()
             response.status_code = status.HTTP_200_OK
+            utils.task_utils.add_task({'_C':'UpdateTask', 'semesterId':semester, 'courseId':course, 'groupId':group}, 9, lite_conn)
         except mysql.connector.errors.IntegrityError:
-            print('Duplicate depot or invalid data')
+            print('Duplicate exercise or invalid data')
             response = Response()
             response.status_code = status.HTTP_304_NOT_MODIFIED
         except mysql.connector.errors.DataError:
