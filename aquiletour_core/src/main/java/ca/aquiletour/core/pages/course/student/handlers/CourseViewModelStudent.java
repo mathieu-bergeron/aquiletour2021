@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.student.handlers;
 import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.models.courses.task_types.GitExerciseTask;
+import ca.aquiletour.core.models.courses.task_types.GitRepoTask;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
@@ -21,8 +22,15 @@ public class CourseViewModelStudent extends CourseViewModel<Course, CourseViewSt
 		if(currentTask() != null
 				&& currentTask().hasType(GitExerciseTask.class)) {
 			
-			view.showCompletionCheckbox(false);
+			view.enableCompletionCheckbox(false);
+			view.displayGitRepoForm(false);
+		}
 
+		if(currentTask() != null
+				&& currentTask().hasType(GitRepoTask.class)) {
+			
+			view.displayCompletionCheckbox(false);
+			view.displayGitRepoForm(true);
 		}
 	}
 

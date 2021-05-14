@@ -16,7 +16,7 @@ import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
 
-	private HtmlElement gitRepoForm;
+	private HtmlElement gitRepoContainer;
 	private HtmlElement gitProgressionLink;
 	private HtmlElement taskCompletedContainer;
 	private HtmlElement taskCompletedCheckbox;
@@ -32,7 +32,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		super.initializeViewWeb(context);
 
-		gitRepoForm = this.getRootElement().find("#git-repo-form").get(0);
+		gitRepoContainer = this.getRootElement().find("#git-repo-container").get(0);
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
 		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
@@ -41,7 +41,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
 
-		MustNot.beNull(gitRepoForm);
+		MustNot.beNull(gitRepoContainer);
 		MustNot.beNull(gitProgressionLink);
 		MustNot.beNull(taskCompletedContainer);
 		MustNot.beNull(taskCompletedCheckbox);
@@ -71,17 +71,17 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void displayGitRepoForm() {
+	public void displayGitRepoForm(boolean show) {
 		T.call(this);
 		
-		gitRepoForm.show();
-	}
+		if(show) {
+			
+			gitRepoContainer.show();
 
-	@Override
-	public void hideGitRepoForm() {
-		T.call(this);
+		}else {
 
-		gitRepoForm.hide();
+			gitRepoContainer.hide();
+		}
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void showCompletionCheckbox(boolean show) {
+	public void displayCompletionCheckbox(boolean show) {
 		T.call(this);
 		
 		if(show) {
@@ -116,6 +116,22 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 			taskCompletedCheckbox.removeAttribute("checked");
 		}
+	}
+
+	@Override
+	public void enableCompletionCheckbox(boolean enable) {
+		T.call(this);
+
+		if(enable) {
+			
+			taskCompletedCheckbox.removeAttribute("checked");
+			
+		}else {
+
+			taskCompletedCheckbox.setAttribute("disabled", "true");
+
+		}
+		
 	}
 
 
