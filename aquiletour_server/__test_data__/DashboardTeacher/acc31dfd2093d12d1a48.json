@@ -1,0 +1,31 @@
+{
+  "dashboardItems": {
+    "_C": "DashboardItems",
+    "value": [
+      {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "_C": "DashboardItemTeacher",
+        "coursePath": {
+          "names": [
+            "alice",
+            "H2021",
+            "strudon"
+          ],
+          "_C": "CoursePath"
+        },
+        "currentTasks": {
+          "_C": "CurrentTasks",
+          "value": []
+        }
+      }
+    ]
+  },
+  "_C": "DashboardTeacher",
+  "statusMessage": {
+    "_C": "StoredString",
+    "value": ""
+  }
+}

@@ -409,9 +409,9 @@ public class UserManager {
 												 String studentId,
 												 String firstName, 
 												 String lastName, 
-												 String email,
 												 String programId, 
-												 String phoneNumber) {
+												 String phoneNumber,
+												 String email) {
 		T.call(UserManager.class);
 		
 		Student student = createUser(modelStore, 

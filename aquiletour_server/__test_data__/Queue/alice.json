@@ -1,0 +1,37 @@
+{
+  "currentTime": {
+    "_C": "ObservableTime",
+    "value": {
+      "_C": "NtroDate",
+      "epochSeconds": -1
+    }
+  },
+  "appointments": {
+    "_C": "ObservableAppointmentList",
+    "value": []
+  },
+  "maxId": 0,
+  "currentCourseId": {
+    "_C": "StoredString",
+    "value": ""
+  },
+  "teacherId": "acc31dfd2093d12d1a48",
+  "_C": "Queue",
+  "currentGroupId": {
+    "_C": "StoredString",
+    "value": ""
+  },
+  "firstAppointmentTime": {
+    "_C": "ObservableTime",
+    "value": {
+      "_C": "NtroDate",
+      "epochSeconds": -1
+    }
+  },
+  "studentIds": [],
+  "courseId": "alice",
+  "appointmentDurationSeconds": {
+    "_C": "StoredInteger",
+    "value": 300
+  }
+}

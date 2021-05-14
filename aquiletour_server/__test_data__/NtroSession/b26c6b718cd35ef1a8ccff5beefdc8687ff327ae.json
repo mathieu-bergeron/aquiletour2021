@@ -1,0 +1,19 @@
+{
+  "sessionData": {
+    "_C": "NtroSessionData"
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "Visiteur",
+    "_C": "Guest",
+    "authToken": "b26c6b718cd35ef1a8ccff5beefdc8687ff327ae",
+    "registrationId": "",
+    "hasPassword": false,
+    "id": "b26c6b718cd35ef1a8ccff5beefdc8687ff327ae",
+    "email": "",
+    "passwordHash": "",
+    "lastname": ""
+  },
+  "timeToLiveMiliseconds": 30000
+}
