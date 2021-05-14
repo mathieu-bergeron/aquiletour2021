@@ -16,8 +16,6 @@ import ca.aquiletour.core.pages.course_list.student.CourseListStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
-import ca.aquiletour.core.pages.group_list.models.GroupList;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
