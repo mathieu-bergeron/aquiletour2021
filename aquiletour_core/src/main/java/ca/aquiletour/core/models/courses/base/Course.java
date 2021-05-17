@@ -1,19 +1,40 @@
 package ca.aquiletour.core.models.courses.base;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseModelBase implements NtroModel, TaskGraph {
+public abstract class Course implements NtroModel, TaskGraph {
 
 	private CoursePath coursePath = new CoursePath();
+	private SemesterIds siblingSemesters = new SemesterIds();
+	private CourseIds siblingCourses = new CourseIds();
+
 	private ObservableTaskMap tasks = new ObservableTaskMap(this);
+	
+	public SemesterIds getSiblingSemesters() {
+		return siblingSemesters;
+	}
+
+	public void setSiblingSemesters(SemesterIds siblingSemesters) {
+		this.siblingSemesters = siblingSemesters;
+	}
+
+	public CourseIds getSiblingCourses() {
+		return siblingCourses;
+	}
+
+	public void setSiblingCourses(CourseIds siblingCourses) {
+		this.siblingCourses = siblingCourses;
+	}
 
 	@Override
 	public Task findTaskByPath(Path path) {
@@ -318,6 +339,5 @@ public abstract class CourseModelBase implements NtroModel, TaskGraph {
 	}
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
-
 
 }

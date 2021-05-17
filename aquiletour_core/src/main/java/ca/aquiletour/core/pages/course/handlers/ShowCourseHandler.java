@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.course.handlers;
 
-import ca.aquiletour.core.models.courses.base.CourseModelBase;
+import ca.aquiletour.core.models.courses.base.Course;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -45,5 +45,5 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 	
 	
 	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
-	protected abstract Class<? extends CourseModelBase> modelClass();
+	protected abstract Class<? extends Course> modelClass();
 }

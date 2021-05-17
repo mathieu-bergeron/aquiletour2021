@@ -2,7 +2,6 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.user.User;
@@ -74,8 +73,8 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseTeacher, Cours
 		String semesterId = model.getCoursePath().semesterId();
 		appendToSemesterDropdown(semesterId, view);
 		
-		model.getOtherSemesters().removeObservers();
-		model.getOtherSemesters().onItemAdded(new ItemAddedListener<String>() {
+		model.getSiblingSemesters().removeObservers();
+		model.getSiblingSemesters().onItemAdded(new ItemAddedListener<String>() {
 			@Override
 			public void onItemAdded(int index, String item) {
 				T.call(this);

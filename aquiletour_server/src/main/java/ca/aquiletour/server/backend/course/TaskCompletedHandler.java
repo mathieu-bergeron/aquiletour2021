@@ -15,6 +15,7 @@ public class TaskCompletedHandler extends BackendMessageHandler<TaskCompletedMes
 		CourseManager.taskCompletedByUser(modelStore,
 				                          message.coursePath(), 
 				                          message.getTaskPath(), 
+				                          message.getAtomicTaskId(),
 				                          message.getUser());
 	}
 

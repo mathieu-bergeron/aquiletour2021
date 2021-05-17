@@ -681,9 +681,10 @@ public class AquiletourBackendRequestHandler {
 
 				Ntro.backendService().sendMessageToBackend(registerRepoMessage);
 
-		} else if(parameters.containsKey("taskCompletedId")) {
+		} else if(parameters.containsKey("atomicTaskCompletedId")) {
 				
-				String taskId = parameters.get("taskCompletedId")[0];
+				String atomicTaskId = parameters.get("atomicTaskCompletedId")[0];
+				String taskId = parameters.get("taskId")[0];
 				Path taskPath = new Path();
 				taskPath.parseFileName(taskId);
 
@@ -691,10 +692,12 @@ public class AquiletourBackendRequestHandler {
 																						                 path,
 																							             parameters,
              																							 sessionData);
-
 				taskCompletedMessage.setTaskPath(taskPath);
+				taskCompletedMessage.setAtomicTaskId(atomicTaskId);
 				
 				Ntro.messages().send(taskCompletedMessage);
+
+				throw new RuntimeException("FIXME");
 			}
 	}
 

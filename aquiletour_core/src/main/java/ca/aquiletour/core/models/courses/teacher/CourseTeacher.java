@@ -3,10 +3,10 @@ package ca.aquiletour.core.models.courses.teacher;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.base.CourseModelBase;
+import ca.aquiletour.core.models.courses.base.Course;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
-import ca.aquiletour.core.models.courses.student.StoredCompletions;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -14,16 +14,13 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CourseTeacher extends CourseModelBase {
-
-	private SemesterIds otherSemesters = new SemesterIds();
-	private CourseIds otherCourses = new CourseIds();
+public class CourseTeacher extends Course {
 
 	private GroupDescriptions groups = new GroupDescriptions();
 
@@ -32,14 +29,6 @@ public class CourseTeacher extends CourseModelBase {
 	
 	private StudentCompletionsByStudentId completions = new StudentCompletionsByStudentId();
 	
-	public SemesterIds getOtherSemesters() {
-		return otherSemesters;
-	}
-
-	public void setOtherSemesters(SemesterIds otherSemesters) {
-		this.otherSemesters = otherSemesters;
-	}
-
 	public GroupDescriptions getGroups() {
 		return groups;
 	}
@@ -71,14 +60,6 @@ public class CourseTeacher extends CourseModelBase {
 
 	public void setCompletions(StudentCompletionsByStudentId completions) {
 		this.completions = completions;
-	}
-
-	public CourseIds getOtherCourses() {
-		return otherCourses;
-	}
-
-	public void setOtherCourses(CourseIds otherCourses) {
-		this.otherCourses = otherCourses;
 	}
 
 	public void addGroup(String groupId, List<User> studentsToAdd) {
@@ -167,7 +148,7 @@ public class CourseTeacher extends CourseModelBase {
 		}
 	}
 
-	public void taskCompletedByStudent(Path taskPath, String studentId) {
+	public void taskCompletedByStudent(Path taskPath, String atomicTaskId, String studentId) {
 		T.call(this);
 		
 		String taskId = pathToId(taskPath);
@@ -183,13 +164,24 @@ public class CourseTeacher extends CourseModelBase {
 		
 		if(groupId != null) {
 
-			StoredCompletions studentTaskCompletions = studentCompletions.valueOf(taskId);
+			CompletionByAtomicTaskId studentTaskCompletions = studentCompletions.valueOf(taskId);
 			if(studentTaskCompletions == null) {
-				studentTaskCompletions = new StoredCompletions();
+				studentTaskCompletions = new CompletionByAtomicTaskId();
 				studentCompletions.putEntry(taskId, studentTaskCompletions);
 			}
 			
-			studentTaskCompletions.addItem(new AtomicTaskCompletion(studentId, groupId));
+			if(atomicTaskId != null && !atomicTaskId.isEmpty()) {
+
+				studentTaskCompletions.putEntry(atomicTaskId, new AtomicTaskCompletion(studentId, groupId));
+
+			}else {
+
+				Log.warning("atomicTaskId is null or empty");
+			}
+
+		}else {
+			
+			Log.warning("groupId not found for studentId " + studentId);
 		}
 	}
 	

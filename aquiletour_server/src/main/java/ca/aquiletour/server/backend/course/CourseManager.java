@@ -288,6 +288,7 @@ public class CourseManager {
 	public static void taskCompletedByUser(ModelStoreSync modelStore, 
 			                               CoursePath coursePath, 
 			                               Path taskPath, 
+			                               String atomicTaskId,
 			                               User user) {
 		T.call(CourseManager.class);
 
@@ -296,7 +297,7 @@ public class CourseManager {
 			public void update(CourseTeacher course) {
 				T.call(this);
 				
-				course.taskCompletedByStudent(taskPath, user.getId());
+				course.taskCompletedByStudent(taskPath, atomicTaskId, user.getId());
 			}
 		});
 	}

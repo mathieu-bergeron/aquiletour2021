@@ -35,7 +35,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.ShortTextTask;
-import ca.aquiletour.core.models.courses.base.CourseModelBase;
+import ca.aquiletour.core.models.courses.base.Course;
 import ca.aquiletour.core.models.courses.base.StoredCourseDate;
 import ca.aquiletour.core.models.courses.base.StoredTaskIds;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
@@ -48,9 +48,8 @@ import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.student.CourseStudent;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
-import ca.aquiletour.core.models.courses.teacher.CompletionsByStudentId;
-import ca.aquiletour.core.models.courses.teacher.CompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
@@ -245,7 +244,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentSummary.class);	
 		Ntro.registerSerializableClass(ObservableStudentSummaryList.class);	
 
-		Ntro.registerSerializableClass(CourseModelBase.class);
+		Ntro.registerSerializableClass(Course.class);
 		Ntro.registerSerializableClass(CoursePath.class);
 		Ntro.registerSerializableClass(ObservableTaskMap.class);
 		Ntro.registerSerializableClass(StoredTaskIds.class);
@@ -356,9 +355,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentIdList.class);
 		Ntro.registerSerializableClass(GroupDescriptions.class);
 
-		Ntro.registerSerializableClass(CompletionsByStudentId.class);
-		Ntro.registerSerializableClass(CompletionsByTaskId.class);
-
 		Ntro.registerSerializableClass(ObservableTime.class);
 		Ntro.registerSerializableClass(ObservableTags.class);
 
@@ -381,6 +377,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(CourseIds.class);
 		Ntro.registerSerializableClass(ShortTextTask.class);
+
+		Ntro.registerSerializableClass(StudentCompletionsByTaskId.class);
+		Ntro.registerSerializableClass(CompletionByAtomicTaskId.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
