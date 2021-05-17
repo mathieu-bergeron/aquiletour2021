@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.model;
+package ca.aquiletour.core.models.courses.teacher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,9 @@ import java.util.List;
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
-import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
+import ca.aquiletour.core.models.courses.student.StoredCompletions;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -18,7 +20,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
-public class Course extends CourseModelBase {
+public class CourseTeacher extends CourseModelBase {
 
 	private SemesterIds otherSemesters = new SemesterIds();
 	private CourseIds otherCourses = new CourseIds();
@@ -28,7 +30,7 @@ public class Course extends CourseModelBase {
 	private TaskDatesByGroupId scheduledDates = new TaskDatesByGroupId();
 	private TaskDatesByGroupId overridenDates = new TaskDatesByGroupId();
 	
-	private CompletionsByTaskId completions = new CompletionsByTaskId();
+	private StudentCompletionsByStudentId completions = new StudentCompletionsByStudentId();
 	
 	public SemesterIds getOtherSemesters() {
 		return otherSemesters;
@@ -63,14 +65,14 @@ public class Course extends CourseModelBase {
 	}
 	
 	
-	public CompletionsByTaskId getCompletions() {
+	public StudentCompletionsByStudentId getCompletions() {
 		return completions;
 	}
 
-	public void setCompletions(CompletionsByTaskId completions) {
+	public void setCompletions(StudentCompletionsByStudentId completions) {
 		this.completions = completions;
 	}
-	
+
 	public CourseIds getOtherCourses() {
 		return otherCourses;
 	}
@@ -170,17 +172,24 @@ public class Course extends CourseModelBase {
 		
 		String taskId = pathToId(taskPath);
 		
-		CompletionByStudentId studentCompletions = getCompletions().valueOf(taskId);
+		StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
 		
 		if(studentCompletions == null) {
-			studentCompletions = new CompletionByStudentId();
-			getCompletions().putEntry(taskId, studentCompletions);
+			studentCompletions = new StudentCompletionsByTaskId();
+			getCompletions().putEntry(studentId, studentCompletions);
 		}
 		
 		String groupId = groupIdForStudent(studentId);
 		
 		if(groupId != null) {
-			studentCompletions.putEntry(studentId, new TaskCompletion(studentId, groupId));
+
+			StoredCompletions studentTaskCompletions = studentCompletions.valueOf(taskId);
+			if(studentTaskCompletions == null) {
+				studentTaskCompletions = new StoredCompletions();
+				studentCompletions.putEntry(taskId, studentTaskCompletions);
+			}
+			
+			studentTaskCompletions.addItem(new AtomicTaskCompletion(studentId, groupId));
 		}
 	}
 	
@@ -211,21 +220,6 @@ public class Course extends CourseModelBase {
 		 * 
 		 */
 		
-		// FIXME: we need to visit the graph
-		for(Task task : getTasks().getValue().values()) {
-
-
-			CompletionByStudentId completions = getCompletions().valueOf(task.id());
-			if(completions == null
-					|| (completions != null && completions.containsKey(studentId))){
-
-				CurrentTaskStudent currentTaskStudent = new CurrentTaskStudent();
-				currentTaskStudent.setTaskPath(task.getPath());
-				currentTaskStudent.updateEndTime(task.getEndTime().getValue());
-				currentTasks.add(currentTaskStudent);
-			}
-		}
-		
 		return currentTasks;
 	}
 
@@ -244,22 +238,6 @@ public class Course extends CourseModelBase {
 		T.call(this);
 		
 		List<CurrentTaskTeacher> currentTasks = new ArrayList<>();
-		
-		for(Task task : getTasks().getValue().values()) {
-			
-			CompletionByStudentId completions = getCompletions().valueOf(task.id());
-			
-			int numberOfIncompletes = numberOfStudents();
-			if(completions != null) {
-				numberOfIncompletes -= completions.size();
-			}
-				
-			CurrentTaskTeacher currentTaskTeacher = new CurrentTaskTeacher();
-			currentTaskTeacher.setTaskPath(task.getPath());
-			currentTaskTeacher.updateNumberOfStudents(numberOfIncompletes); 
-
-			currentTasks.add(currentTaskTeacher);
-		}
 		
 		return currentTasks;
 	}

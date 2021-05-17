@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.model;
+package ca.aquiletour.core.models.courses.teacher;
 
 import java.util.List;
 

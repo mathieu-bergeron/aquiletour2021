@@ -2,9 +2,9 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.model.Course;
-import ca.aquiletour.core.models.courses.model.GroupDescription;
-import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
+import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
+import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -14,7 +14,7 @@ import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class CourseViewModelTeacher extends CourseViewModel<Course, CourseViewTeacher> {
+public class CourseViewModelTeacher extends CourseViewModel<CourseTeacher, CourseViewTeacher> {
 	
 	@Override
 	protected boolean isEditable() {
@@ -29,7 +29,7 @@ public class CourseViewModelTeacher extends CourseViewModel<Course, CourseViewTe
 	}
 
 	@Override
-	protected void handle(Course model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void handle(CourseTeacher model, CourseViewTeacher view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		super.handle(model, view, subViewLoader, message);
 		
@@ -43,14 +43,14 @@ public class CourseViewModelTeacher extends CourseViewModel<Course, CourseViewTe
 
 
 
-	private void initializeDropdowns(Course model, CourseViewTeacher view) {
+	private void initializeDropdowns(CourseTeacher model, CourseViewTeacher view) {
 		T.call(this);
 		
 		initializeSemesterDropdown(model, view);
 		initializeGroupDropdown(model, view);
 	}
 
-	private void initializeGroupDropdown(Course model, CourseViewTeacher view) {
+	private void initializeGroupDropdown(CourseTeacher model, CourseViewTeacher view) {
 		T.call(this);
 
 		appendToGroupDropdown(Constants.COURSE_STRUCTURE_ID, view);
@@ -68,7 +68,7 @@ public class CourseViewModelTeacher extends CourseViewModel<Course, CourseViewTe
 		view.selectGroup(Constants.COURSE_STRUCTURE_ID);
 	}
 
-	private void initializeSemesterDropdown(Course model, CourseViewTeacher view) {
+	private void initializeSemesterDropdown(CourseTeacher model, CourseViewTeacher view) {
 		T.call(this);
 
 		String semesterId = model.getCoursePath().semesterId();
@@ -115,7 +115,7 @@ public class CourseViewModelTeacher extends CourseViewModel<Course, CourseViewTe
 	}
 
 	@Override
-	protected void displayStudentCompletion(String studentId, TaskCompletion completion, CourseViewTeacher view) {
+	protected void displayStudentCompletion(String studentId, CourseViewTeacher view) {
 		T.call(this);
 		
 		view.appendCompletion(studentId);

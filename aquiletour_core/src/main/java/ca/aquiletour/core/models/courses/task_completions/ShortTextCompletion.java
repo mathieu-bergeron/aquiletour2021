@@ -1,6 +1,6 @@
 package ca.aquiletour.core.models.courses.task_completions;
 
-public class ShortTextCompletion extends TaskCompletion {
+public class ShortTextCompletion extends AtomicTaskCompletion {
 	
 	private String text = "";
 

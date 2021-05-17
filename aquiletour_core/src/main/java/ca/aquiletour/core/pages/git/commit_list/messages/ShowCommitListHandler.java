@@ -2,8 +2,8 @@ package ca.aquiletour.core.pages.git.commit_list.messages;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.messages.git.GetCommitsForPathAndTimePeriod;
+import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.pages.git.commit_list.CommitListController;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.root.RootView;
@@ -33,7 +33,7 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		}
 
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
-		currentController.setSubModelLoader(Course.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
+		currentController.setSubModelLoader(CourseTeacher.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showGitCommitList(currentView);

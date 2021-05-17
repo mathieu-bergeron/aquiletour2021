@@ -5,9 +5,11 @@ import java.util.List;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
-import ca.aquiletour.core.models.courses.model.Course;
-import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
+import ca.aquiletour.core.models.courses.student.StoredCompletions;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.teacher.CompletionsByStudentId;
+import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -22,7 +24,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseViewModel<M extends Course, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
+public abstract class CourseViewModel<M extends CourseTeacher, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
 	private CoursePath currentCoursePath;
 	private Task currentTask;
@@ -68,43 +70,25 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
-			observeCompletionByTaskId(model, view);
+			observeCompletionByStudentId(model, view);
 		}
 	}
 
-	protected void observeCompletionByTaskId(M model, V view) {
+	protected void observeCompletionByStudentId(M model, V view) {
 		T.call(this);
 
 		model.getCompletions().removeObservers();
-		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByStudentId>() {
+		model.getCompletions().onEntryAdded(new EntryAddedListener<StudentCompletionsByTaskId>() {
 			@Override
-			public void onEntryAdded(String taskId, CompletionByStudentId completionByStudentId) {
+			public void onEntryAdded(String studentId, StudentCompletionsByTaskId studentCompletionsByTaskId) {
 				T.call(this);
-				
-				observeCompletionByStudentId(view, taskId, completionByStudentId);
+
+				displayStudentCompletion(studentId, view);
 			}
 		});
 	}
-
-	protected void observeCompletionByStudentId(V view, 
-											  String taskId, 
-											  CompletionByStudentId completionByStudentId) {
-		T.call(this);
-
-		completionByStudentId.removeObservers();
-		if(currentTask() != null && currentTask().id().equals(taskId)) {
-			completionByStudentId.onEntryAdded(new EntryAddedListener<TaskCompletion>() {
-				@Override
-				public void onEntryAdded(String studentId, TaskCompletion value) {
-					T.call(this);
-					
-					displayStudentCompletion(studentId, value, view);
-				}
-			});
-		}
-	}
 	
-	protected abstract void displayStudentCompletion(String studentId, TaskCompletion completion, V view);
+	protected abstract void displayStudentCompletion(String studentId, V view);
 
 	private void removeAllObservers() {
 		T.call(this);

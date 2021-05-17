@@ -41,22 +41,21 @@ import ca.aquiletour.core.models.courses.base.StoredTaskIds;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
 import ca.aquiletour.core.models.courses.base.StoredAtomicTasks;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.TaskRelation;
 import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
-import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
-import ca.aquiletour.core.models.courses.model.CompletionsByTaskId;
-import ca.aquiletour.core.models.courses.model.Course;
-import ca.aquiletour.core.models.courses.model.CourseIds;
-import ca.aquiletour.core.models.courses.model.EndTimeByTaskId;
-import ca.aquiletour.core.models.courses.model.GroupDescription;
-import ca.aquiletour.core.models.courses.model.TaskDatesByGroupId;
-import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
-import ca.aquiletour.core.models.courses.student.CourseModelStudent;
-import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.student.CourseStudent;
+import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.teacher.CompletionsByStudentId;
+import ca.aquiletour.core.models.courses.teacher.CompletionsByTaskId;
+import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
+import ca.aquiletour.core.models.courses.teacher.CourseIds;
+import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
+import ca.aquiletour.core.models.courses.teacher.GroupDescription;
+import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
@@ -251,7 +250,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableTaskMap.class);
 		Ntro.registerSerializableClass(StoredTaskIds.class);
 		Ntro.registerSerializableClass(Task.class);
-		Ntro.registerSerializableClass(TaskRelation.class);
 
 		Ntro.registerSerializableClass(Group.class);
 		Ntro.registerSerializableClass(StudentDescription.class);
@@ -269,12 +267,12 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SemesterSchedule.class);
 		Ntro.registerSerializableClass(TeacherSchedule.class);
 
-		Ntro.registerSerializableClass(Course.class);
-		Ntro.registerSerializableClass(CourseModelStudent.class);
+		Ntro.registerSerializableClass(CourseTeacher.class);
+		Ntro.registerSerializableClass(CourseStudent.class);
 		Ntro.registerSerializableClass(EndTimeByTaskId.class);
 		Ntro.registerSerializableClass(TaskDatesByGroupId.class);
-		Ntro.registerSerializableClass(TaskCompletion.class);
-		Ntro.registerSerializableClass(CompletionByTaskId.class);
+		Ntro.registerSerializableClass(AtomicTaskCompletion.class);
+		Ntro.registerSerializableClass(StudentCompletionsByTaskId.class);
 
 		Ntro.registerSerializableClass(CourseListItem.class);
 		Ntro.registerSerializableClass(CourseListTeacher.class);
@@ -358,7 +356,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentIdList.class);
 		Ntro.registerSerializableClass(GroupDescriptions.class);
 
-		Ntro.registerSerializableClass(CompletionByStudentId.class);
+		Ntro.registerSerializableClass(CompletionsByStudentId.class);
 		Ntro.registerSerializableClass(CompletionsByTaskId.class);
 
 		Ntro.registerSerializableClass(ObservableTime.class);

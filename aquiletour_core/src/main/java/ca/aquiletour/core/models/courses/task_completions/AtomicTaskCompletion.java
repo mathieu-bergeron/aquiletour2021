@@ -3,17 +3,17 @@ package ca.aquiletour.core.models.courses.task_completions;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
-public class TaskCompletion implements NtroModelValue {
+public class AtomicTaskCompletion implements NtroModelValue {
 	
 	String atomicTaskId = "";
 	String studentId = "";
 	String groupId = "";
 
-	public TaskCompletion() {
+	public AtomicTaskCompletion() {
 		T.call(this);
 	}
 
-	public TaskCompletion(String studentId, String groupId) {
+	public AtomicTaskCompletion(String studentId, String groupId) {
 		T.call(this);
 		
 		this.studentId = studentId;
