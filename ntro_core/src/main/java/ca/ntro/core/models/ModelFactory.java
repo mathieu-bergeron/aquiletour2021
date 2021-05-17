@@ -152,7 +152,7 @@ public class ModelFactory {
 
 			Object subValue = map.get(key);
 			
-			ValuePath subPath = valuePath.clone();
+			ValuePath subPath = valuePath.cloneModelValue();
 			subPath.addFieldName(key);
 			
 			initializeStoreConnections(subValue, modelStore, subPath, localHeap);
@@ -169,7 +169,7 @@ public class ModelFactory {
 			
 			Object subValue = list.get(i);
 			
-			ValuePath subPath = valuePath.clone();
+			ValuePath subPath = valuePath.cloneModelValue();
 			subPath.addFieldName(String.valueOf(i));
 
 			initializeStoreConnections(subValue, modelStore, subPath, localHeap);

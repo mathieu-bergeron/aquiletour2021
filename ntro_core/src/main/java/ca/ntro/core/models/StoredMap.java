@@ -11,7 +11,7 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
+public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> implements NtroCloneable<StoredMap<V>> {
 
 	private List<MapObserver<V>> mapObservers = new ArrayList<>();
 
@@ -155,5 +155,29 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 			}
 		});
 	}
+	
+	@Override
+	public StoredMap<V> cloneModelValue() throws CloneNotSupportedException {
+		T.call(this);
+		
+		StoredMap<V> clone = new StoredMap<>();
+		
+		for(Map.Entry<String, V> entry : getValue().entrySet()) {
+			
+			V value = entry.getValue();
+			
+			if(value instanceof NtroCloneable) {
+				
+				clone.putEntry(entry.getKey(), ((NtroCloneable<V>)value).cloneModelValue());
+				
+			}else {
+
+				throw new CloneNotSupportedException("To clone a Map, its values must implement NtroCloneable");
+			}
+		}
+		
+		return clone;
+	}
+	
 	
 }

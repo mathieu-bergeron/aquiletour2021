@@ -3,9 +3,11 @@ package ca.aquiletour.server.backend.course;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.CoursePathStudent;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.student.CourseStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.dates.CourseDate;
@@ -17,6 +19,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class CourseManager {
@@ -306,5 +309,29 @@ public class CourseManager {
 		T.call(CourseManager.class);
 		
 		return modelStore.getModel(courseModelClass, "admin", coursePath);
+	}
+
+	public static void createStudentCourse(ModelStoreSync modelStore, 
+										   CoursePath coursePath,
+			                               CourseTeacher courseTeacher, 
+			                               User student) {
+		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getRegistrationId());
+		
+		modelStore.createModel(CourseStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseStudent>() {
+			@Override
+			public void initialize(CourseStudent newModel) {
+				T.call(this);
+			
+				try {
+
+					newModel.copyTasks(courseTeacher);
+
+				}catch(CloneNotSupportedException e) {
+					Log.fatalError("Could not clone courseTeacher", e);
+				}
+			}
+		});
 	}
 }

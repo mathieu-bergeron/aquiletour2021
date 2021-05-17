@@ -9,6 +9,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -339,5 +340,13 @@ public abstract class Course implements NtroModel, TaskGraph {
 	}
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
+	
+	public void copyTasks(Course course) throws CloneNotSupportedException {
+		T.call(this);
+		
+		getTasks().setCourse(this);
+		
+		throw new RuntimeException("TODO: pas si simple");
+	}
 
 }

@@ -140,21 +140,24 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 							   studentsToAdd,
 							   teacher);
 
-		CourseTeacher course = CourseManager.getCourse(modelStore, 
-													 CourseTeacher.class,
-													 message.coursePath());
+		CourseTeacher teacherCourse = CourseManager.getCourse(modelStore, 
+													   CourseTeacher.class,
+													   message.coursePath());
 		
 		for(User student : studentsToAdd) {
+			
+			CourseManager.createStudentCourse(modelStore, message.coursePath(), teacherCourse, student);
+			
 			CourseListManager.addSemesterForUser(modelStore, CourseListStudent.class, courseItem.getSemesterId(), student);
 			CourseListManager.addCourseForUser(modelStore, CourseListStudent.class, courseItem, student);
 			DashboardManager.addDashboardItemForUser(modelStore, DashboardStudent.class, courseItem, student);
 			
-			List<CurrentTaskStudent> currentTasksStudent = course.currentTasksStudent(student.getId());
+			List<CurrentTaskStudent> currentTasksStudent = teacherCourse.currentTasksStudent(student.getId());
 			
 			DashboardManager.updateCurrentTasksForUser(modelStore, DashboardStudent.class, CurrentTaskStudent.class, message.coursePath(), currentTasksStudent, student);
 		}
 		
-		List<CurrentTaskTeacher> currentTasksTeacher = course.currentTasksTeacher();
+		List<CurrentTaskTeacher> currentTasksTeacher = teacherCourse.currentTasksTeacher();
 		
 		DashboardManager.updateCurrentTasksForUserId(modelStore, DashboardTeacher.class, CurrentTaskTeacher.class, message.coursePath(), currentTasksTeacher, message.getTeacherId());
 	}

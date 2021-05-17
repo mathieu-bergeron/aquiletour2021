@@ -17,4 +17,5 @@ public class CourseStudent extends Course {
 		// FIMXE: should be only in CourseTeacher
 	}
 
+
 }
