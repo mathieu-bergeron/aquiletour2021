@@ -3,11 +3,11 @@ package ca.aquiletour.core.pages.course.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
 import ca.aquiletour.core.models.courses.model.Course;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -114,7 +114,8 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 		currentTask.getNextTasks().removeObservers();
 		currentTask.getDescription().removeObservers();
 		currentTask.getEndTime().removeObservers();
-		currentTask.getTaskTypes().removeObservers();
+		currentTask.getEntryTasks().removeObservers();
+		currentTask.getExitTasks().removeObservers();
 		currentTask.getTitle().removeObservers();
 	}
 
@@ -134,7 +135,8 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
 		observeCurrentTaskEndTime(model, view);
-		observeCurrentTaskTypes(view);
+		observeEntryTasks(view);
+		observeExitTasks(view);
 
 		observeSubTasks(model, view, subViewLoader);
 		
@@ -182,31 +184,53 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 		
 		if(!isEditable()) {
 			
-			description = TaskType.removeTypesFromDescription(value);
+			description = AtomicTask.removeAtomicTasksFromDescription(value);
 
 		}
 
 		view.displayTaskDescription(description, isEditable());
 	}
 
-	private void observeCurrentTaskTypes(V view) {
+	private void observeEntryTasks(V view) {
 		T.call(this);
 
-		view.clearTaskTypes();
-		currentTask.getTaskTypes().removeObservers();
-		currentTask.getTaskTypes().onItemAdded(new ItemAddedListener<TaskType>() {
+		view.clearEntryTasks();
+		currentTask.getEntryTasks().removeObservers();
+		currentTask.getEntryTasks().onItemAdded(new ItemAddedListener<AtomicTask>() {
 			@Override
-			public void onItemAdded(int index, TaskType item) {
+			public void onItemAdded(int index, AtomicTask item) {
 				T.call(this);
 				
-				view.appendTaskType(item);
+				view.appendEntryTask(item);
 			}
 		});
 		
-		currentTask.getTaskTypes().onClearItems(new ClearItemsListener() {
+		currentTask.getEntryTasks().onClearItems(new ClearItemsListener() {
 			@Override
 			public void onClearItems() {
-				view.clearTaskTypes();
+				view.clearEntryTasks();
+			}
+		});
+	}
+
+	private void observeExitTasks(V view) {
+		T.call(this);
+
+		view.clearExitTasks();
+		currentTask.getExitTasks().removeObservers();
+		currentTask.getExitTasks().onItemAdded(new ItemAddedListener<AtomicTask>() {
+			@Override
+			public void onItemAdded(int index, AtomicTask item) {
+				T.call(this);
+				
+				view.appendExitTask(item);
+			}
+		});
+		
+		currentTask.getExitTasks().onClearItems(new ClearItemsListener() {
+			@Override
+			public void onClearItems() {
+				view.clearExitTasks();
 			}
 		});
 	}

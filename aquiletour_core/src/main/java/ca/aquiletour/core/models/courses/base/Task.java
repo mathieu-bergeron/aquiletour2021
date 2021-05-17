@@ -5,18 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ca.aquiletour.core.models.courses.task_types.GitRepoTask;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
 public class Task implements NtroModelValue, TaskNode {
@@ -29,7 +26,8 @@ public class Task implements NtroModelValue, TaskNode {
 	private StoredString description = new StoredString();
 	private ObservableCourseDate endTime = new ObservableCourseDate();
 
-	private ObservableTaskTypeList taskTypes = new ObservableTaskTypeList();
+	private AtomicTasks entryTasks = new AtomicTasks();
+	private AtomicTasks exitTasks = new AtomicTasks();
 	
 	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
 	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
@@ -352,10 +350,10 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
-		getTaskTypes().clearItems();
-		for(TaskType taskType : TaskType.typesFromDescription(description)) {
-			getTaskTypes().addItem(taskType);
-		}
+		getEntryTasks().clearItems();
+		getExitTasks().clearItems();
+
+		AtomicTask.addAtomicTasksFromDescription(this, description);
 	}
 	
 	public void updateTitle(String title) {
@@ -377,13 +375,21 @@ public class Task implements NtroModelValue, TaskNode {
 	public void setEndTime(ObservableCourseDate endTime) {
 		this.endTime = endTime;
 	}
-
-	public ObservableTaskTypeList getTaskTypes() {
-		return taskTypes;
+	
+	public AtomicTasks getEntryTasks() {
+		return entryTasks;
 	}
 
-	public void setTaskTypes(ObservableTaskTypeList taskTypes) {
-		this.taskTypes = taskTypes;
+	public void setEntryTasks(AtomicTasks entryTasks) {
+		this.entryTasks = entryTasks;
+	}
+
+	public AtomicTasks getExitTasks() {
+		return exitTasks;
+	}
+
+	public void setExitTasks(AtomicTasks exitTasks) {
+		this.exitTasks = exitTasks;
 	}
 
 	public void updateDate(SemesterSchedule semesterSchedule) {
@@ -412,20 +418,20 @@ public class Task implements NtroModelValue, TaskNode {
 
 		return date;
 	}
-	
-	public boolean hasType(Class<? extends TaskType> type) {
+
+	public void addEntryTask(AtomicTask task) {
 		T.call(this);
 		
-		boolean hasType = false;
-		
-		for(TaskType candidate : taskTypes.getValue()) {
-			if(candidate.getClass().equals(type)) {
-				hasType = true;
-				break;
-			}
+		if(!getEntryTasks().contains(task)) {
+			getEntryTasks().addItem(task);
 		}
-		
-		return hasType;
-		
+	}
+
+	public void addExitTask(AtomicTask task) {
+		T.call(this);
+
+		if(!getExitTasks().contains(task)) {
+			getExitTasks().addItem(task);
+		}
 	}
 }

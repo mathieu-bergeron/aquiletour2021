@@ -270,6 +270,8 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 	}
 
 	public boolean contains(I item) {
+		T.call(this);
+
 		return Ntro.collections().listContainsEquals(getValue(), item);
 	}
 

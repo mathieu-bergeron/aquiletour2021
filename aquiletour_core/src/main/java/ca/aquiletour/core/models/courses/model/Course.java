@@ -5,7 +5,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.group_description.ObservableGroupDescriptionList;
+import ca.aquiletour.core.models.courses.group_description.GroupDescriptionLists;
 import ca.aquiletour.core.models.courses.student.TaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -21,8 +21,9 @@ import ca.ntro.core.system.trace.T;
 public class Course extends CourseModelBase {
 
 	private ObservableSemesterIdList otherSemesters = new ObservableSemesterIdList();
+	private CourseIdList otherCourses = new CourseIdList();
 
-	private ObservableGroupDescriptionList groups = new ObservableGroupDescriptionList();
+	private GroupDescriptionLists groups = new GroupDescriptionLists();
 
 	private TaskDatesByGroupId scheduledDates = new TaskDatesByGroupId();
 	private TaskDatesByGroupId overridenDates = new TaskDatesByGroupId();
@@ -37,11 +38,11 @@ public class Course extends CourseModelBase {
 		this.otherSemesters = otherSemesters;
 	}
 
-	public ObservableGroupDescriptionList getGroups() {
+	public GroupDescriptionLists getGroups() {
 		return groups;
 	}
 
-	public void setGroups(ObservableGroupDescriptionList groups) {
+	public void setGroups(GroupDescriptionLists groups) {
 		this.groups = groups;
 	}
 
@@ -68,6 +69,14 @@ public class Course extends CourseModelBase {
 
 	public void setCompletions(CompletionsByTaskId completions) {
 		this.completions = completions;
+	}
+	
+	public CourseIdList getOtherCourses() {
+		return otherCourses;
+	}
+
+	public void setOtherCourses(CourseIdList otherCourses) {
+		this.otherCourses = otherCourses;
 	}
 
 	public void addGroup(String groupId, List<User> studentsToAdd) {

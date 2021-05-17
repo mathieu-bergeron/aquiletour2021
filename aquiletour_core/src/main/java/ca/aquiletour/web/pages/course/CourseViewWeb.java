@@ -7,9 +7,9 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
@@ -29,7 +29,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement previousTaskList;
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
-	private HtmlElement taskTypeContainer;
+
+	private HtmlElement entryTasksContainer;
+	private HtmlElement exitTasksContainer;
 
 	private HtmlElement uneditableDescription;
 	private HtmlElement uneditableEndtime;
@@ -45,7 +47,8 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		nextTaskContainer= this.getRootElement().find("#next-task-container").get(0);
 		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
-		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
+		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
+		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
 		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
 		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
@@ -57,7 +60,8 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(previousTaskContainer);
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
-		MustNot.beNull(taskTypeContainer);
+		MustNot.beNull(entryTasksContainer);
+		MustNot.beNull(exitTasksContainer);
 		MustNot.beNull(uneditableEndtime);
 		MustNot.beNull(uneditableDescription);
 		
@@ -236,27 +240,52 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void appendTaskType(TaskType item) {
+	public void appendEntryTask(AtomicTask task) {
 		T.call(this);
 		
-		String taskTypeText = taskTypeContainer.text();
+		appendAtomicTask(task, entryTasksContainer);
+	}
+	
+	private void appendAtomicTask(AtomicTask task, HtmlElement tasksContainer) {
+		T.call(this);
 		
-		if(taskTypeText == null || taskTypeText.isEmpty()) {
+		tasksContainer.addClass("border");
+
+		String tasksText = tasksContainer.text();
+		
+		if(tasksText == null || tasksText.isEmpty()) {
 			
-			taskTypeContainer.text(item.toString());
+			tasksContainer.text(task.toString());
 
 		}else {
 
-			taskTypeContainer.text(taskTypeText + ", " + item.toString());
+			tasksContainer.text(tasksText + ", " + task.toString());
 		}
 	}
 
 	@Override
-	public void clearTaskTypes() {
+	public void appendExitTask(AtomicTask task) {
 		T.call(this);
 
-		taskTypeContainer.deleteChildrenForever();
-		taskTypeContainer.text("");
+		appendAtomicTask(task, exitTasksContainer);
+	}
+
+	@Override
+	public void clearEntryTasks() {
+		T.call(this);
+
+		entryTasksContainer.deleteChildrenForever();
+		entryTasksContainer.text("");
+		entryTasksContainer.removeClass("border");
+	}
+
+	@Override
+	public void clearExitTasks() {
+		T.call(this);
+
+		exitTasksContainer.deleteChildrenForever();
+		exitTasksContainer.text("");
+		exitTasksContainer.removeClass("border");
 	}
 
 	@Override

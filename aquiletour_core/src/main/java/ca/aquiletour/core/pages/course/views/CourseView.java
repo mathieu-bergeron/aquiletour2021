@@ -1,11 +1,10 @@
 package ca.aquiletour.core.pages.course.views;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.AquiletourDate;
-import ca.aquiletour.core.models.dates.CourseDate;
 import ca.ntro.core.mvc.NtroView;
 
 public interface CourseView extends NtroView  {
@@ -32,8 +31,10 @@ public interface CourseView extends NtroView  {
 	void displayTaskDescription(String description, boolean editable);
 	void displayTaskEndTime(AquiletourDate endTime, boolean editable);
 
-	void clearTaskTypes();
-	void appendTaskType(TaskType item);
+	void clearEntryTasks();
+	void clearExitTasks();
+	void appendEntryTask(AtomicTask task);
+	void appendExitTask(AtomicTask task);
 
 	void showUneditableComponents(boolean show);
 
