@@ -142,11 +142,11 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 		CourseTeacher teacherCourse = CourseManager.getCourse(modelStore, 
 													   CourseTeacher.class,
-													   message.coursePath());
+													   coursePath);
 		
 		for(User student : studentsToAdd) {
 			
-			CourseManager.createStudentCourse(modelStore, message.coursePath(), teacherCourse, student);
+			CourseManager.createStudentCourse(modelStore, coursePath, teacherCourse, student);
 			
 			CourseListManager.addSemesterForUser(modelStore, CourseListStudent.class, courseItem.getSemesterId(), student);
 			CourseListManager.addCourseForUser(modelStore, CourseListStudent.class, courseItem, student);

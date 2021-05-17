@@ -396,6 +396,7 @@ public class UserManager {
 
 		return createStudentForUserId(modelStore, 
 									  studentId, 
+									  registrationId,
 									  firstName, 
 									  lastName, 
 									  programId, 
@@ -405,6 +406,7 @@ public class UserManager {
 
 	public static Student createStudentForUserId(ModelStoreSync modelStore, 
 												 String studentId,
+												 String registrationId,
 												 String firstName, 
 												 String lastName, 
 												 String programId, 
@@ -415,6 +417,7 @@ public class UserManager {
 		Student student = createUser(modelStore, 
 				                     Student.class, 
 				                     studentId, 
+				                     registrationId,
 				                     firstName, 
 				                     lastName, 
 				                     email);
@@ -428,6 +431,7 @@ public class UserManager {
 	public static <U extends User> U createUser(ModelStoreSync modelStore, 
 										        Class<U> modelClass,
 										        String userId,
+										        String registrationId,
 										        String firstName, 
 										        String lastName, 
 										        String email) {
@@ -445,6 +449,7 @@ public class UserManager {
 
 			user = Ntro.factory().newInstance(modelClass);
 			user.setId(userId);
+			user.setRegistrationId(registrationId);
 			user.updateInfoIfEmpty(firstName, lastName, email);
 			createUser(modelStore, user);
 		}

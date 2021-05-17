@@ -4,6 +4,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.base.Course;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
@@ -23,7 +24,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseViewModel<M extends CourseTeacher, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
+public abstract class CourseViewModel<M extends Course, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
 	private CoursePath currentCoursePath;
 	private Task currentTask;
@@ -69,24 +70,12 @@ public abstract class CourseViewModel<M extends CourseTeacher, V extends CourseV
 			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
-			observeCompletionByStudentId(model, view);
+			observeCompletions(model, view);
 		}
 	}
 
-	protected void observeCompletionByStudentId(M model, V view) {
-		T.call(this);
+	protected abstract void observeCompletions(M model, V view);
 
-		model.getCompletions().removeObservers();
-		model.getCompletions().onEntryAdded(new EntryAddedListener<StudentCompletionsByTaskId>() {
-			@Override
-			public void onEntryAdded(String studentId, StudentCompletionsByTaskId studentCompletionsByTaskId) {
-				T.call(this);
-
-				displayStudentCompletion(studentId, view);
-			}
-		});
-	}
-	
 	protected abstract void displayStudentCompletion(String studentId, V view);
 
 	private void removeAllObservers() {

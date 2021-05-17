@@ -2,12 +2,14 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
+import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
@@ -40,7 +42,19 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseTeacher, Cours
 		view.showEditableComponents(isEditable());
 	}
 
+	protected void observeCompletions(CourseTeacher model, CourseViewTeacher view) {
+		T.call(this);
 
+		model.getCompletions().removeObservers();
+		model.getCompletions().onEntryAdded(new EntryAddedListener<StudentCompletionsByTaskId>() {
+			@Override
+			public void onEntryAdded(String studentId, StudentCompletionsByTaskId studentCompletionsByTaskId) {
+				T.call(this);
+
+				displayStudentCompletion(studentId, view);
+			}
+		});
+	}
 
 	private void initializeDropdowns(CourseTeacher model, CourseViewTeacher view) {
 		T.call(this);

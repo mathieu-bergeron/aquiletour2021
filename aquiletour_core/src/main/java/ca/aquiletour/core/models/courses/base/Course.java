@@ -1,5 +1,7 @@
 package ca.aquiletour.core.models.courses.base;
 
+import java.util.Map;
+
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -300,9 +302,6 @@ public abstract class Course implements NtroModel, TaskGraph {
 			
 			Log.warning("Task not found: " + taskPath.toString());
 		}
-		
-		
-		
 	}
 
 	public AquiletourDate taskEndTimeForGroup(String groupId, String taskId) {
@@ -341,12 +340,23 @@ public abstract class Course implements NtroModel, TaskGraph {
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
 	
-	public void copyTasks(Course course) throws CloneNotSupportedException {
+	private void copyTasks(Course course) {
 		T.call(this);
 		
 		getTasks().setCourse(this);
+		for(Map.Entry<String, Task> entry : course.getTasks().getValue().entrySet()) {
+			Task newTask = new Task();
+			getTasks().putEntry(entry.getKey(), newTask);
+			
+			newTask.copyTask(entry.getValue());
+		}
+	}
+
+	public void copyCourse(Course course) {
+		T.call(this);
 		
-		throw new RuntimeException("TODO: pas si simple");
+		coursePath = course.getCoursePath();
+		copyTasks(course);
 	}
 
 }

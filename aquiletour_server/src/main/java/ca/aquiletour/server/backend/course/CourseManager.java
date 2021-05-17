@@ -319,18 +319,15 @@ public class CourseManager {
 		
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getRegistrationId());
 		
+		System.out.println(coursePathStudent.toFileName());
+		
 		modelStore.createModel(CourseStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseStudent>() {
 			@Override
 			public void initialize(CourseStudent newModel) {
 				T.call(this);
 			
-				try {
-
-					newModel.copyTasks(courseTeacher);
-
-				}catch(CloneNotSupportedException e) {
-					Log.fatalError("Could not clone courseTeacher", e);
-				}
+					
+				newModel.copyCourse(courseTeacher);
 			}
 		});
 	}

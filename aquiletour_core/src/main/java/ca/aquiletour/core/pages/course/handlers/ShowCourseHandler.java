@@ -1,5 +1,6 @@
 package ca.aquiletour.core.pages.course.handlers;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Course;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
@@ -21,9 +22,7 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 	protected void handle(CourseController currentController, CourseView currentView, ShowCourseMessage message) {
 		T.call(this);
 
-		Path coursePath = message.coursePath();
-		
-		System.out.println("coursePath: " + message.coursePath());
+		CoursePath coursePath = coursePathFromMessage(message);
 
 		// XXX: change model only when needed
 		if(!coursePath.equals(currentCoursePath)) {
@@ -43,6 +42,7 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 		rootView.showCourse(currentView);
 	}
 	
+	protected abstract CoursePath coursePathFromMessage(ShowCourseMessage message);
 	
 	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
 	protected abstract Class<? extends Course> modelClass();

@@ -1,5 +1,6 @@
 package ca.aquiletour.core.models.courses;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
 public class CoursePathStudent extends CoursePath {
@@ -24,5 +25,13 @@ public class CoursePathStudent extends CoursePath {
 		T.call(this);
 
 		return getNames().get(STUDENT_INDEX);
+	}
+
+	public Path toUrlPath() {
+		T.call(this);
+
+		Path path = super.toUrlPath();
+		path.addName(getNames().get(STUDENT_INDEX));
+		return path;
 	}
 }

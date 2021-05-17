@@ -54,6 +54,7 @@ import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
+import ca.aquiletour.core.models.courses.teacher.StudentCompletionsByStudentId;
 import ca.aquiletour.core.models.courses.teacher.TaskDatesByGroupId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
@@ -379,6 +380,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ShortTextTask.class);
 
 		Ntro.registerSerializableClass(StudentCompletionsByTaskId.class);
+		Ntro.registerSerializableClass(StudentCompletionsByStudentId.class);
 		Ntro.registerSerializableClass(CompletionByAtomicTaskId.class);
 	}
 	

@@ -3,6 +3,7 @@ package ca.aquiletour.core.models.courses.base;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
@@ -32,6 +33,26 @@ public class Task implements NtroModelValue, TaskNode {
 	private StoredTaskIds previousTasks = new StoredTaskIds();
 	private StoredTaskIds subTasks = new StoredTaskIds();
 	private StoredTaskIds nextTasks = new StoredTaskIds();
+
+	public void copyTask(Task task) {
+		T.call(this);
+
+		updateTitle(task.getTitle().getValue());
+		updateDescription(task.getDescription().getValue());
+		updateEndTime(task.getEndTime().getValue());
+		
+		copyTaskIds(task.getPreviousTasks(), previousTasks);
+		copyTaskIds(task.getSubTasks(), subTasks);
+		copyTaskIds(task.getNextTasks(), nextTasks);
+	}
+	
+	private void copyTaskIds(StoredTaskIds from, StoredTaskIds to) {
+		T.call(this);
+		
+		for(String taskId : from.getValue()) {
+			to.addItem(taskId);
+		}
+	}
 
 	public StoredTaskIds getPreviousTasks() {
 		return previousTasks;
@@ -443,17 +464,17 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		AtomicTask task = null;
 		
-		task = getAtomicTaskById(id, entryTasks);
+		task = atomicTaskById(id, entryTasks);
 		
 		if(task == null) {
 			
-			task = getAtomicTaskById(id, exitTasks);
+			task = atomicTaskById(id, exitTasks);
 		}
 		
 		return task;
 	}
 
-	private AtomicTask getAtomicTaskById(String id, StoredAtomicTasks tasks) {
+	private AtomicTask atomicTaskById(String id, StoredAtomicTasks tasks) {
 		T.call(this);
 		
 		AtomicTask task = null;
@@ -473,4 +494,5 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		return String.valueOf(getEntryTasks().size() + getExitTasks().size());
 	}
+
 }
