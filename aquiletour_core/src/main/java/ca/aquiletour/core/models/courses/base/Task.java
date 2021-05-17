@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -19,42 +18,41 @@ import ca.ntro.services.Ntro;
 public class Task implements NtroModelValue, TaskNode {
 	
 	private TaskGraph graph;
-	
+
 	private Path path = new Path();
 
 	private StoredString title = new StoredString();
 	private StoredString description = new StoredString();
-	private ObservableCourseDate endTime = new ObservableCourseDate();
+	private StoredCourseDate endTime = new StoredCourseDate();
 
-	private AtomicTasks entryTasks = new AtomicTasks();
-	private AtomicTasks exitTasks = new AtomicTasks();
+	private StoredAtomicTasks entryTasks = new StoredAtomicTasks();
+	private StoredAtomicTasks exitTasks = new StoredAtomicTasks();
 	
-	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
-	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
-	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
-	
+	private StoredTaskIds previousTasks = new StoredTaskIds();
+	private StoredTaskIds subTasks = new StoredTaskIds();
+	private StoredTaskIds nextTasks = new StoredTaskIds();
 
-	public ObservableTaskIdList getPreviousTasks() {
+	public StoredTaskIds getPreviousTasks() {
 		return previousTasks;
 	}
 
-	public void setPreviousTasks(ObservableTaskIdList previousTasks) {
+	public void setPreviousTasks(StoredTaskIds previousTasks) {
 		this.previousTasks = previousTasks;
 	}
 
-	public ObservableTaskIdList getSubTasks() {
+	public StoredTaskIds getSubTasks() {
 		return subTasks;
 	}
 
-	public void setSubTasks(ObservableTaskIdList subTasks) {
+	public void setSubTasks(StoredTaskIds subTasks) {
 		this.subTasks = subTasks;
 	}
 
-	public ObservableTaskIdList getNextTasks() {
+	public StoredTaskIds getNextTasks() {
 		return nextTasks;
 	}
 
-	public void setNextTasks(ObservableTaskIdList nextTasks) {
+	public void setNextTasks(StoredTaskIds nextTasks) {
 		this.nextTasks = nextTasks;
 	}
 
@@ -368,27 +366,27 @@ public class Task implements NtroModelValue, TaskNode {
 		getEndTime().set(endTime);
 	}
 
-	public ObservableCourseDate getEndTime() {
+	public StoredCourseDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(ObservableCourseDate endTime) {
+	public void setEndTime(StoredCourseDate endTime) {
 		this.endTime = endTime;
 	}
 	
-	public AtomicTasks getEntryTasks() {
+	public StoredAtomicTasks getEntryTasks() {
 		return entryTasks;
 	}
 
-	public void setEntryTasks(AtomicTasks entryTasks) {
+	public void setEntryTasks(StoredAtomicTasks entryTasks) {
 		this.entryTasks = entryTasks;
 	}
 
-	public AtomicTasks getExitTasks() {
+	public StoredAtomicTasks getExitTasks() {
 		return exitTasks;
 	}
 
-	public void setExitTasks(AtomicTasks exitTasks) {
+	public void setExitTasks(StoredAtomicTasks exitTasks) {
 		this.exitTasks = exitTasks;
 	}
 

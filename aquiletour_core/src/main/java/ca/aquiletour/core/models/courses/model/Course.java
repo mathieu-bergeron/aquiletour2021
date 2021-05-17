@@ -5,14 +5,14 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.group_description.GroupDescriptionLists;
+import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.course_list.models.ObservableSemesterIdList;
+import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
@@ -20,29 +20,29 @@ import ca.ntro.core.system.trace.T;
 
 public class Course extends CourseModelBase {
 
-	private ObservableSemesterIdList otherSemesters = new ObservableSemesterIdList();
-	private CourseIdList otherCourses = new CourseIdList();
+	private SemesterIds otherSemesters = new SemesterIds();
+	private CourseIds otherCourses = new CourseIds();
 
-	private GroupDescriptionLists groups = new GroupDescriptionLists();
+	private GroupDescriptions groups = new GroupDescriptions();
 
 	private TaskDatesByGroupId scheduledDates = new TaskDatesByGroupId();
 	private TaskDatesByGroupId overridenDates = new TaskDatesByGroupId();
 	
 	private CompletionsByTaskId completions = new CompletionsByTaskId();
 	
-	public ObservableSemesterIdList getOtherSemesters() {
+	public SemesterIds getOtherSemesters() {
 		return otherSemesters;
 	}
 
-	public void setOtherSemesters(ObservableSemesterIdList otherSemesters) {
+	public void setOtherSemesters(SemesterIds otherSemesters) {
 		this.otherSemesters = otherSemesters;
 	}
 
-	public GroupDescriptionLists getGroups() {
+	public GroupDescriptions getGroups() {
 		return groups;
 	}
 
-	public void setGroups(GroupDescriptionLists groups) {
+	public void setGroups(GroupDescriptions groups) {
 		this.groups = groups;
 	}
 
@@ -71,11 +71,11 @@ public class Course extends CourseModelBase {
 		this.completions = completions;
 	}
 	
-	public CourseIdList getOtherCourses() {
+	public CourseIds getOtherCourses() {
 		return otherCourses;
 	}
 
-	public void setOtherCourses(CourseIdList otherCourses) {
+	public void setOtherCourses(CourseIds otherCourses) {
 		this.otherCourses = otherCourses;
 	}
 

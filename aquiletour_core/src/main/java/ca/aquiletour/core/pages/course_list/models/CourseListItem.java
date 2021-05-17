@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course_list.models;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.ObservableTaskIdList;
+import ca.aquiletour.core.models.courses.base.StoredTaskIds;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredList;

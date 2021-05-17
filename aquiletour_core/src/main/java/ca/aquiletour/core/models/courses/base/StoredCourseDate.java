@@ -5,14 +5,14 @@ import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.system.trace.T;
 
-public class ObservableCourseDate extends StoredProperty<CourseDate> {
+public class StoredCourseDate extends StoredProperty<CourseDate> {
 	
-	public ObservableCourseDate() {
+	public StoredCourseDate() {
 		super(new CourseDateScheduleItem());
 		T.call(this);
 	}
 
-	public ObservableCourseDate(CourseDate date) {
+	public StoredCourseDate(CourseDate date) {
 		super(date);
 		T.call(this);
 	}
