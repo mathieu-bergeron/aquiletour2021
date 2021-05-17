@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -348,10 +349,12 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
-		getEntryTasks().clearItems();
-		getExitTasks().clearItems();
-
 		AtomicTask.addAtomicTasksFromDescription(this, description);
+	}
+	
+	public void deleteAtomicTask(String taskId) {
+		T.call(this);
+		
 	}
 	
 	public void updateTitle(String title) {
@@ -421,6 +424,7 @@ public class Task implements NtroModelValue, TaskNode {
 		T.call(this);
 		
 		if(!getEntryTasks().contains(task)) {
+			task.setId(nextAtomicTaskId());
 			getEntryTasks().addItem(task);
 		}
 	}
@@ -429,7 +433,44 @@ public class Task implements NtroModelValue, TaskNode {
 		T.call(this);
 
 		if(!getExitTasks().contains(task)) {
+			task.setId(nextAtomicTaskId());
 			getExitTasks().addItem(task);
 		}
+	}
+	
+	private AtomicTask getAtomicTaskById(String id) {
+		T.call(this);
+		
+		AtomicTask task = null;
+		
+		task = getAtomicTaskById(id, entryTasks);
+		
+		if(task == null) {
+			
+			task = getAtomicTaskById(id, exitTasks);
+		}
+		
+		return task;
+	}
+
+	private AtomicTask getAtomicTaskById(String id, StoredAtomicTasks tasks) {
+		T.call(this);
+		
+		AtomicTask task = null;
+		
+		for(AtomicTask candidate : tasks.getValue()) {
+			if(id.equals(candidate.getId())) {
+				task = candidate;
+				break;
+			}
+		}
+		
+		return task;
+	}
+	
+	private String nextAtomicTaskId() {
+		T.call(this);
+		
+		return String.valueOf(getEntryTasks().size() + getExitTasks().size());
 	}
 }

@@ -5,6 +5,7 @@ import ca.ntro.core.system.trace.T;
 
 public class TaskCompletion implements NtroModelValue {
 	
+	String atomicTaskId = "";
 	String studentId = "";
 	String groupId = "";
 
@@ -33,5 +34,13 @@ public class TaskCompletion implements NtroModelValue {
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public String getAtomicTaskId() {
+		return atomicTaskId;
+	}
+
+	public void setAtomicTaskId(String atomicTaskId) {
+		this.atomicTaskId = atomicTaskId;
 	}
 }

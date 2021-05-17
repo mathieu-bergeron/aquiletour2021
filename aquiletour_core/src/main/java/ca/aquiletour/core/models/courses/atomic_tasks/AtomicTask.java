@@ -1,8 +1,6 @@
-package ca.aquiletour.core.models.courses.base;
+package ca.aquiletour.core.models.courses.atomic_tasks;
 
-import ca.aquiletour.core.models.courses.atomic_tasks.GitExerciseTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.ShortTextTask;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
@@ -39,4 +37,13 @@ public class AtomicTask implements NtroModelValue {
 		return result;
 	}
 
+	private String id = "";
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }
