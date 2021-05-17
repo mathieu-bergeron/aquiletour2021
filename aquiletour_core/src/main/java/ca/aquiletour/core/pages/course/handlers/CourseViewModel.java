@@ -7,7 +7,7 @@ import ca.aquiletour.core.models.courses.base.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
 import ca.aquiletour.core.models.courses.model.Course;
-import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;

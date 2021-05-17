@@ -56,7 +56,7 @@ import ca.aquiletour.core.models.courses.model.GroupDescription;
 import ca.aquiletour.core.models.courses.model.TaskDatesByGroupId;
 import ca.aquiletour.core.models.courses.student.CompletionByTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
-import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;

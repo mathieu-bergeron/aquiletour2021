@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.student;
+package ca.aquiletour.core.models.courses.task_completions;
 
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;

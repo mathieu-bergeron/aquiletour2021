@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
 import ca.aquiletour.core.models.courses.model.Course;
-import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;

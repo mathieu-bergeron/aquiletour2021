@@ -6,7 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.models.courses.base.CourseModelBase;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptionLists;
-import ca.aquiletour.core.models.courses.student.TaskCompletion;
+import ca.aquiletour.core.models.courses.task_completions.TaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -178,8 +178,10 @@ public class Course extends CourseModelBase {
 		}
 		
 		String groupId = groupIdForStudent(studentId);
-
-		studentCompletions.putEntry(studentId, new TaskCompletion(studentId, groupId));
+		
+		if(groupId != null) {
+			studentCompletions.putEntry(studentId, new TaskCompletion(studentId, groupId));
+		}
 	}
 	
 	public String groupIdForStudent(String studentId) {
