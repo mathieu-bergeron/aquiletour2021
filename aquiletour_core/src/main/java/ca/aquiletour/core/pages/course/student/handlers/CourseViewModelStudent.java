@@ -1,7 +1,9 @@
 package ca.aquiletour.core.pages.course.student.handlers;
 
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.CourseStudent;
+import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
@@ -36,5 +38,34 @@ public class CourseViewModelStudent extends CourseViewModel<CourseStudent, Cours
 				displayStudentCompletion(null, view);
 			}
 		});
+	}
+
+	@Override
+	protected void displayEntryTask(CourseStudent model, CourseViewStudent view, AtomicTask task) {
+		T.call(this);
+		
+		AtomicTaskCompletion completion = getCompletion(model, task);
+		view.appendEntryTask(task, completion);
+	}
+
+	private AtomicTaskCompletion getCompletion(CourseStudent model, AtomicTask task) {
+		T.call(this);
+
+		CompletionByAtomicTaskId completions =  model.getCompletions().valueOf(currentTask().id());
+
+		AtomicTaskCompletion completion = null;
+		if(completions != null) {
+			completion = completions.valueOf(task.getId());
+		}
+
+		return completion;
+	}
+
+	@Override
+	protected void displayExitTask(CourseStudent model, CourseViewStudent view, AtomicTask task) {
+		T.call(this);
+
+		AtomicTaskCompletion completion = getCompletion(model, task);
+		view.appendExitTask(task, completion);
 	}
 }

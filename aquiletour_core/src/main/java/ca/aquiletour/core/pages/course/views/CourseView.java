@@ -33,8 +33,6 @@ public interface CourseView extends NtroView  {
 
 	void clearEntryTasks();
 	void clearExitTasks();
-	void appendEntryTask(AtomicTask task);
-	void appendExitTask(AtomicTask task);
 
 	void showUneditableComponents(boolean show);
 

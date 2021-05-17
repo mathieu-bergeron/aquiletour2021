@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
@@ -134,4 +135,17 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseTeacher, Cours
 		view.appendCompletion(studentId);
 	}
 
+	@Override
+	protected void displayEntryTask(CourseTeacher model, CourseViewTeacher view, AtomicTask task) {
+		T.call(this);
+
+		view.appendEntryTask(task);
+	}
+
+	@Override
+	protected void displayExitTask(CourseTeacher model, CourseViewTeacher view, AtomicTask task) {
+		T.call(this);
+
+		view.appendExitTask(task);
+	}
 }

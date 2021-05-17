@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.course.teacher;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
@@ -29,6 +30,9 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement editableTitle;
 	private HtmlElement uneditableCompletions;
 
+	private HtmlElement entryTasksContainer;
+	private HtmlElement exitTasksContainer;
+
 	private HtmlElements addTaskIdToValue;
 
 	private BootstrapDropdown semesterDropdown;
@@ -56,6 +60,9 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		editableDescription = this.getRootElement().find("#editable-description").get(0);
 		uneditableCompletions = this.getRootElement().find("#uneditable-completions").get(0);
 		editableTitle = this.getRootElement().find("#editable-title").get(0);
+
+		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
+		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
 		
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 
@@ -75,6 +82,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(editableDescription);
 		MustNot.beNull(uneditableCompletions);
 		MustNot.beNull(editableTitle);
+		MustNot.beNull(entryTasksContainer);
+		MustNot.beNull(exitTasksContainer);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
@@ -243,6 +252,55 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		}
 
 		uneditableCompletions.text(list);
+	}
+
+	@Override
+	public void appendEntryTask(AtomicTask task) {
+		T.call(this);
+		
+		appendAtomicTask(task, entryTasksContainer);
+	}
+
+	@Override
+	public void appendExitTask(AtomicTask task) {
+		T.call(this);
+
+		appendAtomicTask(task, exitTasksContainer);
+	}
+
+	private void appendAtomicTask(AtomicTask task, HtmlElement tasksContainer) {
+		T.call(this);
+		
+		tasksContainer.addClass("border");
+
+		String tasksText = tasksContainer.text();
+		
+		if(tasksText == null || tasksText.isEmpty()) {
+			
+			tasksContainer.text(task.toString());
+
+		}else {
+
+			tasksContainer.text(tasksText + ", " + task.toString());
+		}
+	}
+
+	@Override
+	public void clearEntryTasks() {
+		T.call(this);
+
+		entryTasksContainer.deleteChildrenForever();
+		entryTasksContainer.text("");
+		entryTasksContainer.removeClass("border");
+	}
+
+	@Override
+	public void clearExitTasks() {
+		T.call(this);
+
+		exitTasksContainer.deleteChildrenForever();
+		exitTasksContainer.text("");
+		exitTasksContainer.removeClass("border");
 	}
 
 }

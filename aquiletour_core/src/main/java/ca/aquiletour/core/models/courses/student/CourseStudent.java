@@ -1,7 +1,6 @@
 package ca.aquiletour.core.models.courses.student;
 
 import ca.aquiletour.core.models.courses.base.Course;
-import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.models.StoredString;
@@ -15,7 +14,7 @@ public class CourseStudent extends Course {
 	@Override
 	protected void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		T.call(this);
-		// FIMXE: should be only in CourseTeacher
+		// FIMXE: only in CourseTeacher?
 	}
 
 	public StoredString getGroupId() {

@@ -2,6 +2,8 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
+import org.apache.log4j.net.SyslogAppender;
+
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Course;
@@ -107,8 +109,8 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
 		observeCurrentTaskEndTime(model, view);
-		observeEntryTasks(view);
-		observeExitTasks(view);
+		observeEntryTasks(model, view);
+		observeExitTasks(model, view);
 
 		observeSubTasks(model, view, subViewLoader);
 		
@@ -163,7 +165,7 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 		view.displayTaskDescription(description, isEditable());
 	}
 
-	private void observeEntryTasks(V view) {
+	private void observeEntryTasks(M model, V view) {
 		T.call(this);
 
 		view.clearEntryTasks();
@@ -173,7 +175,7 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 			public void onItemAdded(int index, AtomicTask item) {
 				T.call(this);
 				
-				view.appendEntryTask(item);
+				displayEntryTask(model, view, item);
 			}
 		});
 		
@@ -184,8 +186,11 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 			}
 		});
 	}
+	
+	protected abstract void displayEntryTask(M model, V view, AtomicTask task);
+	protected abstract void displayExitTask(M model, V view, AtomicTask task);
 
-	private void observeExitTasks(V view) {
+	private void observeExitTasks(M model, V view) {
 		T.call(this);
 
 		view.clearExitTasks();
@@ -195,7 +200,7 @@ public abstract class CourseViewModel<M extends Course, V extends CourseView> ex
 			public void onItemAdded(int index, AtomicTask item) {
 				T.call(this);
 				
-				view.appendExitTask(item);
+				displayExitTask(model, view, item);
 			}
 		});
 		

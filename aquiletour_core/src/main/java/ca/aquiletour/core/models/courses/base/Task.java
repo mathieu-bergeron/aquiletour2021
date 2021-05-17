@@ -3,7 +3,6 @@ package ca.aquiletour.core.models.courses.base;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
@@ -36,6 +35,8 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void copyTask(Task task) {
 		T.call(this);
+		
+		setPath(task.getPath());
 
 		updateTitle(task.getTitle().getValue());
 		updateDescription(task.getDescription().getValue());

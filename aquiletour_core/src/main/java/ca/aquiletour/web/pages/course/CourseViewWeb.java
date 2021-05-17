@@ -30,8 +30,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
 
-	private HtmlElement entryTasksContainer;
-	private HtmlElement exitTasksContainer;
 
 	private HtmlElement uneditableDescription;
 	private HtmlElement uneditableEndtime;
@@ -47,8 +45,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		nextTaskContainer= this.getRootElement().find("#next-task-container").get(0);
 		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
-		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
-		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
 		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
 		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
@@ -60,8 +56,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(previousTaskContainer);
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
-		MustNot.beNull(entryTasksContainer);
-		MustNot.beNull(exitTasksContainer);
 		MustNot.beNull(uneditableEndtime);
 		MustNot.beNull(uneditableDescription);
 		
@@ -239,54 +233,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		uneditableDescription.text(description);
 	}
 
-	@Override
-	public void appendEntryTask(AtomicTask task) {
-		T.call(this);
-		
-		appendAtomicTask(task, entryTasksContainer);
-	}
 	
-	private void appendAtomicTask(AtomicTask task, HtmlElement tasksContainer) {
-		T.call(this);
-		
-		tasksContainer.addClass("border");
 
-		String tasksText = tasksContainer.text();
-		
-		if(tasksText == null || tasksText.isEmpty()) {
-			
-			tasksContainer.text(task.toString());
 
-		}else {
-
-			tasksContainer.text(tasksText + ", " + task.toString());
-		}
-	}
-
-	@Override
-	public void appendExitTask(AtomicTask task) {
-		T.call(this);
-
-		appendAtomicTask(task, exitTasksContainer);
-	}
-
-	@Override
-	public void clearEntryTasks() {
-		T.call(this);
-
-		entryTasksContainer.deleteChildrenForever();
-		entryTasksContainer.text("");
-		entryTasksContainer.removeClass("border");
-	}
-
-	@Override
-	public void clearExitTasks() {
-		T.call(this);
-
-		exitTasksContainer.deleteChildrenForever();
-		exitTasksContainer.text("");
-		exitTasksContainer.removeClass("border");
-	}
 
 	@Override
 	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {

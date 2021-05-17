@@ -2,7 +2,11 @@ package ca.aquiletour.web.pages.course.student;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
@@ -16,10 +20,15 @@ import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
 
-	private HtmlElement gitRepoContainer;
+	private HtmlElement gitRepoTaskStep01;
+	private HtmlElement gitRepoTaskStep02;
+
 	private HtmlElement gitProgressionLink;
 	private HtmlElement taskCompletedContainer;
 	private HtmlElement taskCompletedCheckbox;
+
+	private HtmlElement entryTasksContainer;
+	private HtmlElement exitTasksContainer;
 
 	private HtmlElements addTaskIdToForm;
 	private HtmlElements addTaskIdToValue;
@@ -32,25 +41,37 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		super.initializeViewWeb(context);
 
-		gitRepoContainer = this.getRootElement().find("#git-repo-container").get(0);
+		gitRepoTaskStep01 = this.getRootElement().find(".git-repo-task-step01").get(0);
+		gitRepoTaskStep02 = this.getRootElement().find(".git-repo-task-step02").get(0);
+
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
 		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
+
+		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
+		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
 
 		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
 
-		MustNot.beNull(gitRepoContainer);
+		MustNot.beNull(gitRepoTaskStep01);
+		MustNot.beNull(gitRepoTaskStep02);
+
 		MustNot.beNull(gitProgressionLink);
 		MustNot.beNull(taskCompletedContainer);
 		MustNot.beNull(taskCompletedCheckbox);
+		MustNot.beNull(entryTasksContainer);
+		MustNot.beNull(exitTasksContainer);
 
 		Ntro.verify(that(addTaskIdToForm.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
 		
 		gitProgressionText = gitProgressionLink.text();
+
+		gitRepoTaskStep01.hide();
+		gitRepoTaskStep02.hide();
 	}
 
 	@Override
@@ -76,11 +97,11 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		if(show) {
 			
-			gitRepoContainer.show();
+			gitRepoTaskStep01.show();
 
 		}else {
 
-			gitRepoContainer.hide();
+			gitRepoTaskStep01.hide();
 		}
 	}
 
@@ -131,6 +152,48 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			taskCompletedCheckbox.setAttribute("disabled", "true");
 
 		}
+		
+	}
+
+	@Override
+	public void clearEntryTasks() {
+		T.call(this);
+
+		entryTasksContainer.deleteChildrenForever();
+	}
+
+	@Override
+	public void clearExitTasks() {
+		T.call(this);
+
+		exitTasksContainer.deleteChildrenForever();
+	}
+
+	@Override
+	public void appendEntryTask(AtomicTask task, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		if(task instanceof GitRepoTask) {
+
+			if(completion == null) {
+				
+				HtmlElement step01 = gitRepoTaskStep01.clone();
+				step01.show();
+				entryTasksContainer.appendElement(step01);
+
+			}else {
+
+				entryTasksContainer.appendElement(gitRepoTaskStep02.clone());
+			}
+
+		}else if(task instanceof GitExerciseTask) {
+			
+		}
+	}
+
+	@Override
+	public void appendExitTask(AtomicTask task, AtomicTaskCompletion completion) {
+		T.call(this);
 		
 	}
 

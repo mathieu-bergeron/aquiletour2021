@@ -429,4 +429,11 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		jQueryElement.removeClass(styleClass);
 	}
+
+	@Override
+	public HtmlElement clone() {
+		T.call(this);
+
+		return new HtmlElementJSweet(jQueryElement.clone(false));
+	}
 }

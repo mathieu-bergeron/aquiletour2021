@@ -99,4 +99,6 @@ public abstract class HtmlElement {
 
 	public abstract void addClass(String styleClass);
 	public abstract void removeClass(String styleClass);
+
+	public abstract HtmlElement clone();
 }
