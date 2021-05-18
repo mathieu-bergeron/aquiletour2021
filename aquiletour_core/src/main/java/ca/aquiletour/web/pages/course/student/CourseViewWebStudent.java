@@ -5,6 +5,9 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloneFailed;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -208,12 +211,23 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			step01.show();
 			entryTasksContainer.appendElement(step01);
 
-		}else {
+		}else if(completion instanceof GitRepoSubmitted){
+			
+			GitRepoSubmitted gitRepoSubmitted = (GitRepoSubmitted) completion;
 			
 			HtmlElement step02 = gitRepoTaskStep02.clone();
 			step02.show();
 
+			HtmlElement repoUrl = step02.find(".repo-url").get(0);
+			
+			repoUrl.text(gitRepoSubmitted.getRepoUrl());
+
 			entryTasksContainer.appendElement(step02);
+
+		}else if(completion instanceof GitRepoCloned){
+
+		}else if(completion instanceof GitRepoCloneFailed){
+
 		}
 	}
 
