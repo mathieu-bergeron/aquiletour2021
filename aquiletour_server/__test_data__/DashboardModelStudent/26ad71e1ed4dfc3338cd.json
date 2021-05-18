@@ -23,7 +23,7 @@
       }
     ]
   },
-  "_C": "DashboardStudent",
+  "_C": "DashboardModelStudent",
   "statusMessage": {
     "_C": "StoredString",
     "value": ""

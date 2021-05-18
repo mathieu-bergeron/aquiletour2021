@@ -3,9 +3,9 @@
     "_C": "ObservableCourseDescriptionList",
     "value": []
   },
-  "_C": "CourseListStudent",
+  "_C": "CourseListModelStudent",
   "semesters": {
-    "_C": "ObservableSemesterIdList",
+    "_C": "SemesterIds",
     "value": []
   }
 }

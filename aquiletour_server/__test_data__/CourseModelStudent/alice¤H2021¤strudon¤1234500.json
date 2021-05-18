@@ -1,5 +1,5 @@
 {
-  "_C": "Course",
+  "_C": "CourseModelStudent",
   "coursePath": {
     "names": [
       "alice",
@@ -8,24 +8,20 @@
     ],
     "_C": "CoursePath"
   },
-  "scheduledDates": {
-    "_C": "TaskDatesByGroupId",
-    "value": {}
+  "groupId": {
+    "_C": "StoredString",
+    "value": ""
   },
   "completions": {
-    "_C": "CompletionsByTaskId",
+    "_C": "StudentCompletionsByTaskId",
     "value": {}
   },
-  "groups": {
-    "_C": "ObservableGroupDescriptionList",
+  "siblingSemesters": {
+    "_C": "SemesterIds",
     "value": []
   },
-  "overridenDates": {
-    "_C": "TaskDatesByGroupId",
-    "value": {}
-  },
-  "otherSemesters": {
-    "_C": "ObservableSemesterIdList",
+  "siblingCourses": {
+    "_C": "CourseIds",
     "value": []
   },
   "tasks": {
@@ -42,40 +38,41 @@
           "_C": "Path"
         },
         "nextTasks": {
-          "_C": "ObservableTaskIdList",
+          "_C": "StoredTaskIds",
           "value": []
         },
         "_C": "Task",
         "subTasks": {
-          "_C": "ObservableTaskIdList",
+          "_C": "StoredTaskIds",
           "value": []
         },
         "description": {
           "_C": "StoredString",
           "value": "{remiseGit}"
         },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
         "endTime": {
-          "_C": "ObservableCourseDate",
+          "_C": "StoredCourseDate",
           "value": {
             "semesterWeek": 1,
             "_C": "CourseDateScheduleItem",
             "scheduleItemId": "1",
             "weekOf": {
-              "_R": "/tasks/value///endTime/value/weekOf"
+              "_C": "NtroDate",
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
         },
-        "taskTypes": {
-          "_C": "ObservableTaskTypeList",
-          "value": [
-            {
-              "_C": "GitExerciseTask"
-            }
-          ]
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
         },
         "previousTasks": {
-          "_C": "ObservableTaskIdList",
+          "_C": "StoredTaskIds",
           "value": []
         },
         "title": {
@@ -88,16 +85,15 @@
       },
       "/": {
         "path": {
-          "names": [],
-          "_C": "Path"
+          "_R": "/tasks/value///entryTasks/value/0/repoPath"
         },
         "nextTasks": {
-          "_C": "ObservableTaskIdList",
+          "_C": "StoredTaskIds",
           "value": []
         },
         "_C": "Task",
         "subTasks": {
-          "_C": "ObservableTaskIdList",
+          "_C": "StoredTaskIds",
           "value": [
             "/atelier1"
           ]
@@ -106,29 +102,38 @@
           "_C": "StoredString",
           "value": "{dépôtGit}"
         },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
         "endTime": {
-          "_C": "ObservableCourseDate",
+          "_C": "StoredCourseDate",
           "value": {
             "semesterWeek": 1,
             "_C": "CourseDateScheduleItem",
             "scheduleItemId": "1",
             "weekOf": {
               "_C": "NtroDate",
-              "epochSeconds": 1620014400
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
         },
-        "taskTypes": {
-          "_C": "ObservableTaskTypeList",
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
           "value": [
             {
-              "_C": "GitRepoTask"
+              "_C": "GitRepoTask",
+              "id": "0",
+              "repoPath": {
+                "names": [],
+                "_C": "Path"
+              }
             }
           ]
         },
         "previousTasks": {
-          "_C": "ObservableTaskIdList",
+          "_C": "StoredTaskIds",
           "value": []
         },
         "title": {

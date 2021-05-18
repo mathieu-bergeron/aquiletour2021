@@ -3,7 +3,7 @@
     "_C": "DashboardItems",
     "value": []
   },
-  "_C": "DashboardStudent",
+  "_C": "DashboardModelStudent",
   "statusMessage": {
     "_C": "StoredString",
     "value": ""

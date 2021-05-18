@@ -28,11 +28,9 @@
       }
     ]
   },
-  "_C": "CourseListStudent",
+  "_C": "CourseListModelTeacher",
   "semesters": {
-    "_C": "ObservableSemesterIdList",
-    "value": [
-      "H2021"
-    ]
+    "_C": "SemesterIds",
+    "value": []
   }
 }

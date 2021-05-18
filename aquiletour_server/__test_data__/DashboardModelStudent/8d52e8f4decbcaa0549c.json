@@ -7,7 +7,7 @@
           "_C": "StoredString",
           "value": "Structure de données"
         },
-        "_C": "DashboardItemTeacher",
+        "_C": "DashboardItemStudent",
         "coursePath": {
           "names": [
             "alice",
@@ -23,7 +23,7 @@
       }
     ]
   },
-  "_C": "DashboardTeacher",
+  "_C": "DashboardModelStudent",
   "statusMessage": {
     "_C": "StoredString",
     "value": ""
