@@ -108,9 +108,14 @@ public class GitApiRepoMessage extends NtroMessage {
 	public Path taskPath() {
 		T.call(this);
 		
-		Path path = new Path(getRepoPath());
-
-		return path.subPath(0, path.nameCount()-2);
+		Path repoPath = new Path(getRepoPath());
+		Path taskPath = new Path();
+		
+		if(repoPath.nameCount() >= 2) {
+			taskPath = repoPath.subPath(0, repoPath.nameCount()-2);
+		}
+		
+		return taskPath;
 	}
 
 	public String atomicTaskId() {
