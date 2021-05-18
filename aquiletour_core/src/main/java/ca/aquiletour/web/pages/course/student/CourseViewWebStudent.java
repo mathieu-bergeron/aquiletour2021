@@ -24,8 +24,10 @@ import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
 
-	private HtmlElement gitRepoTaskStep01;
-	private HtmlElement gitRepoTaskStep02;
+	private HtmlElement gitRepoTaskSubmitUrl;
+	private HtmlElement gitRepoTaskCloningRepo;
+	private HtmlElement gitRepoTaskRepoCloned;
+	private HtmlElement gitRepoTaskCloneFailed;
 
 	private HtmlElement gitProgressionLink;
 	private HtmlElement taskCompletedContainer;
@@ -38,10 +40,6 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElements addTaskIdToValue;
 	private HtmlElements addTaskIdToId;
 
-	private HtmlElements addStudentIdToValue;
-	private HtmlElements addGroupIdToValue;
-	private HtmlElements addRepoPathToValue;
-
 	private String gitProgressionText;
 
 	@Override
@@ -49,8 +47,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		super.initializeViewWeb(context);
 
-		gitRepoTaskStep01 = this.getRootElement().find(".git-repo-task-step01").get(0);
-		gitRepoTaskStep02 = this.getRootElement().find(".git-repo-task-step02").get(0);
+		gitRepoTaskSubmitUrl = this.getRootElement().find(".git-repo-task-submit-url").get(0);
+		gitRepoTaskCloningRepo = this.getRootElement().find(".git-repo-task-cloning-repo").get(0);
+		gitRepoTaskRepoCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
+		gitRepoTaskCloneFailed = this.getRootElement().find(".git-repo-task-clone-failed").get(0);
 
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
@@ -64,8 +64,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
 
 
-		MustNot.beNull(gitRepoTaskStep01);
-		MustNot.beNull(gitRepoTaskStep02);
+		MustNot.beNull(gitRepoTaskSubmitUrl);
+		MustNot.beNull(gitRepoTaskCloningRepo);
+		MustNot.beNull(gitRepoTaskRepoCloned);
+		MustNot.beNull(gitRepoTaskCloneFailed);
 
 		MustNot.beNull(gitProgressionLink);
 		MustNot.beNull(taskCompletedContainer);
@@ -79,8 +81,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		gitProgressionText = gitProgressionLink.text();
 
-		gitRepoTaskStep01.hide();
-		gitRepoTaskStep02.hide();
+		gitRepoTaskSubmitUrl.hide();
+		gitRepoTaskCloningRepo.hide();
+		gitRepoTaskRepoCloned.hide();
+		gitRepoTaskCloneFailed.hide();
 	}
 
 	@Override
@@ -106,11 +110,11 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		if(show) {
 			
-			gitRepoTaskStep01.show();
+			gitRepoTaskSubmitUrl.show();
 
 		}else {
 
-			gitRepoTaskStep01.hide();
+			gitRepoTaskSubmitUrl.hide();
 		}
 	}
 
@@ -196,7 +200,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		if(completion == null) {
 			
-			HtmlElement step01 = gitRepoTaskStep01.clone();
+			HtmlElement step01 = gitRepoTaskSubmitUrl.clone();
 			
 			HtmlElements addStudentIdToValue = step01.find(".add-student-id-to-value");
 			HtmlElements addGroupIdToValue = step01.find(".add-group-id-to-value");
@@ -215,7 +219,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			
 			GitRepoSubmitted gitRepoSubmitted = (GitRepoSubmitted) completion;
 			
-			HtmlElement step02 = gitRepoTaskStep02.clone();
+			HtmlElement step02 = gitRepoTaskCloningRepo.clone();
 			step02.show();
 
 			HtmlElement repoUrl = step02.find(".repo-url").get(0);
