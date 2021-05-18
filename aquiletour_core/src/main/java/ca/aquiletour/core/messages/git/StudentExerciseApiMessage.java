@@ -1,12 +1,27 @@
 package ca.aquiletour.core.messages.git;
 
+import ca.aquiletour.core.pages.course.student.messages.StudentRepoMessage;
 import ca.ntro.core.system.trace.T;
 
-public class StudentExerciseMessage extends ExerciseMessage {
+public class StudentExerciseApiMessage extends ExerciseMessage {
 
 	private String semesterId;
 	private String groupId;
 	private String studentId;
+	
+	public StudentExerciseApiMessage() {
+		super();
+		T.call(this);
+	}
+	
+	public StudentExerciseApiMessage(StudentRepoMessage message) {
+		super(message);
+		T.call(this);
+
+		setGroupId(message.getGroupId());
+		setSemesterId(message.getSemesterId());
+		setStudentId(message.getStudentId());
+	}
 
 	public String getGroupId() {
 		return groupId;
@@ -33,7 +48,7 @@ public class StudentExerciseMessage extends ExerciseMessage {
 		this.studentId = studentId;
 	}
 
-	public void loadStudentExerciseInfo(StudentExerciseMessage message) {
+	public void loadStudentExerciseInfo(StudentExerciseApiMessage message) {
 		T.call(this);
 		
 		loadExerciseInfo(message);

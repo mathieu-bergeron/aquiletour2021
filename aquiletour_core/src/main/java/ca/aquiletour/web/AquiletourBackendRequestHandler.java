@@ -683,9 +683,6 @@ public class AquiletourBackendRequestHandler {
 																					    parameters,
 																					    sessionData);
 
-			String repoUrl = parameters.get("repoUrl")[0];
-			
-			studentRegistersRepo.setRepoUrl(repoUrl);
 
 			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
 
@@ -731,10 +728,12 @@ public class AquiletourBackendRequestHandler {
 		String studentId = parameters.get("studentId")[0];
 		String groupId = parameters.get("groupId")[0];
 		Path repoPath = new Path(parameters.get("repoPath")[0]);
+		String repoUrl = parameters.get("repoUrl")[0];
 
 		message.setStudentId(studentId);
 		message.setGroupId(groupId);
 		message.setRepoPath(repoPath);
+		message.setRepoUrl(repoUrl);
 		
 		return message;
 	}

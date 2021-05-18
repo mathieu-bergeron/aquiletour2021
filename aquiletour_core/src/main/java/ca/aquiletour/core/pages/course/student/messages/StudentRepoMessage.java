@@ -10,6 +10,15 @@ public class StudentRepoMessage extends AtomicTaskMessage {
 	private String studentId;
 	private String groupId;
 	private Path repoPath;
+	private String repoUrl;
+
+	public String getRepoUrl() {
+		return repoUrl;
+	}
+
+	public void setRepoUrl(String repoUrl) {
+		this.repoUrl = repoUrl;
+	}
 
 	public String getStudentId() {
 		return studentId;

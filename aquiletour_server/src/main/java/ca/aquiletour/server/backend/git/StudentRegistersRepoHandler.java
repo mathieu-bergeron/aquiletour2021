@@ -14,8 +14,8 @@ public class StudentRegistersRepoHandler extends BackendMessageHandler<StudentRe
 	public void handleNow(ModelStoreSync modelStore, StudentRegistersRepoMessage message) {
 		T.call(this);
 		
-		GitMessages.sendMessage(RegisterGitRepo.fromStudentRegistersRepoMessage(message));
-		
+		GitMessages.sendMessage(new RegisterGitRepo(message));
+
 		GitRepoSubmitted gitRepoSubmitted = new GitRepoSubmitted();
 		gitRepoSubmitted.setAtomicTaskId(message.getAtomicTaskId());
 		gitRepoSubmitted.setRepoUrl(message.getRepoUrl());

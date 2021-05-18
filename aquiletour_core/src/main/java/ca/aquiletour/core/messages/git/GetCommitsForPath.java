@@ -8,7 +8,7 @@ import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class GetCommitsForPath extends StudentExerciseMessage implements NtroModelMessage {
+public class GetCommitsForPath extends StudentExerciseApiMessage implements NtroModelMessage {
 	
 
 	@Override

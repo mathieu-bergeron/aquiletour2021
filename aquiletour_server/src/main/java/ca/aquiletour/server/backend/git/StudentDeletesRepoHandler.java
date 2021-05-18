@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.git;
 
+import ca.aquiletour.core.messages.git.DeleteGitRepo;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
@@ -13,7 +14,7 @@ public class StudentDeletesRepoHandler extends BackendMessageHandler<StudentDele
 	public void handleNow(ModelStoreSync modelStore, StudentDeletesRepoMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 
-		//GitMessages.sendMessage();
+		GitMessages.sendMessage(new DeleteGitRepo(message));
 
 		CourseManager.removeAtomicTaskCompletionStudent(modelStore, 
 				                                  		message.coursePath(), 

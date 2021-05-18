@@ -200,27 +200,29 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		if(completion == null) {
 			
-			HtmlElement step01 = gitRepoTaskSubmitUrl.clone();
+			HtmlElement formElement = gitRepoTaskSubmitUrl.clone();
 			
-			identifyGitRepo(groupId, repoTask, step01);
+			identifyGitRepo(groupId, repoTask, formElement);
 
-			entryTasksContainer.appendElement(step01);
-			step01.show();
+			entryTasksContainer.appendElement(formElement);
+			formElement.show();
 
 		}else if(completion instanceof GitRepoSubmitted){
 			
 			GitRepoSubmitted gitRepoSubmitted = (GitRepoSubmitted) completion;
 
-			HtmlElement step02 = gitRepoTaskCloningRepo.clone();
-			identifyGitRepo(groupId, repoTask, step02);
-			
+			HtmlElement formElement = gitRepoTaskCloningRepo.clone();
+			identifyGitRepo(groupId, repoTask, formElement);
 
-			HtmlElement repoUrl = step02.find(".repo-url").get(0);
+			HtmlElements addRepoUrlToValue = formElement.find(".add-repo-url-to-value");
+			addRepoUrlToValue.appendToAttribute("value", gitRepoSubmitted.getRepoUrl());
+
+			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			
 			repoUrl.text(gitRepoSubmitted.getRepoUrl());
 
-			entryTasksContainer.appendElement(step02);
-			step02.show();
+			entryTasksContainer.appendElement(formElement);
+			formElement.show();
 
 		}else if(completion instanceof GitRepoCloned){
 
