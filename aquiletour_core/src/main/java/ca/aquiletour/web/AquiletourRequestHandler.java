@@ -94,7 +94,7 @@ public class AquiletourRequestHandler {
 
 		} else if (path.startsWith(Constants.GIT_COMMIT_LIST_URL_SEGMENT)) {
 
-			sendGitCommitListMessages(path.subPath(1), parameters, context.user());
+			sendGitCommitListMessages(path.subPath(1), parameters, context.user(), context.sessionData());
 
 		} else if (path.startsWith(Constants.GIT_LATE_STUDENTS_URL_SEGMENT)) {
 
@@ -339,30 +339,28 @@ public class AquiletourRequestHandler {
 		}
 	}
 
-	private static void sendGitCommitListMessages(Path subPath, Map<String, String[]> parameters, User user) {
+	private static void sendGitCommitListMessages(Path subPath, Map<String, String[]> parameters, User user, SessionData sessionData) {
 		T.call(AquiletourRequestHandler.class);
 
 		if (subPath.nameCount() >= 1) {
-
-			String courseId = subPath.name(0);
-			String exerciseId = new Path().toString();
-			if (subPath.nameCount() > 1) {
-				exerciseId = subPath.subPath(1).toString();
-			}
+			
 			ShowCommitListMessage showGitMessage = null;
 			if (parameters.containsKey("endTime")) {
-				ShowCommitListForTimePeriodMessage message = Ntro.messages().create(ShowCommitListForTimePeriodMessage.class);
-				//TODO
+				ShowCommitListForTimePeriodMessage message = AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListForTimePeriodMessage.class, 
+						                                                                                                subPath, 
+						                                                                                                parameters, 
+						                                                                                                sessionData);
+				// TODO
+				//message.setStartTime(startTime);
+				//message.setEndTime(endTime);
 				showGitMessage = message;
 			}else {
-				showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
+				showGitMessage= AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListMessage.class, 
+						                                                                   subPath, 
+						                                                                   parameters, 
+						                                                                   sessionData);
 			}
 
-			showGitMessage.setCourseId("mathieu.bergeron/StruDon");
-			showGitMessage.setExercisePath("/TP1/Exercice 1");
-			showGitMessage.setStudentId("1234500");
-			showGitMessage.setGroupId("01"); // TODO
-			showGitMessage.setSemesterId("H2021"); // TODO
 			Ntro.messages().send(showGitMessage);
 		}
 	}

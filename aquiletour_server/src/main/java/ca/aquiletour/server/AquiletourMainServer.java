@@ -34,7 +34,6 @@ import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.http.DynamicHandler;
-import ca.aquiletour.server.http.GitHandler;
 import ca.aquiletour.server.http.MessageHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
@@ -122,7 +121,6 @@ public class AquiletourMainServer extends NtroTaskAsync {
 
 		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX));
 		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
-//		handlers.addHandler(GitHandler.createGitHandler(ca.aquiletour.core.Constants.GIT_API_URL_PATH));
 		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.SOCKET_PREFIX));
 		handlers.addHandler(MessageHandler.createMessageHandler(Constants.HTTP_PREFIX));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));

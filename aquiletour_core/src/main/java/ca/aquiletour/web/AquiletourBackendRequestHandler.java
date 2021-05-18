@@ -36,7 +36,7 @@ import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
-import ca.aquiletour.core.pages.course.student.messages.StudentRepoMessage;
+import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
@@ -678,20 +678,20 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("StudentRegistersRepo")) {
 
-			StudentRegistersRepoMessage studentRegistersRepo = createStudentRepoMessage(StudentRegistersRepoMessage.class,
-																					    path,
-																					    parameters,
-																					    sessionData);
+			StudentRegistersRepoMessage studentRegistersRepo = createAquiletourGitMessage(StudentRegistersRepoMessage.class,
+																					      path,
+																					      parameters,
+																					      sessionData);
 
 
 			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
 
 		} else if(parameters.containsKey("StudentDeletesRepo")) {
 
-			StudentDeletesRepoMessage studentDeletesRepoMessage = createStudentRepoMessage(StudentDeletesRepoMessage.class,
-																					       path,
-																					       parameters,
-																					       sessionData);
+			StudentDeletesRepoMessage studentDeletesRepoMessage = createAquiletourGitMessage(StudentDeletesRepoMessage.class,
+																					         path,
+																					         parameters,
+																					         sessionData);
 			Ntro.backendService().sendMessageToBackend(studentDeletesRepoMessage);
 
 		} else if(parameters.containsKey("atomicTaskCompletedId")) {
@@ -714,7 +714,7 @@ public class AquiletourBackendRequestHandler {
 			}
 	}
 
-	static <MSG extends StudentRepoMessage> MSG createStudentRepoMessage(Class<MSG> messageClass, 
+	static <MSG extends AquiletourGitMessage> MSG createAquiletourGitMessage(Class<MSG> messageClass, 
 			                                                             Path path, 
 			                                                             Map<String, String[]> parameters,
 			                                                             SessionData sessionData) {

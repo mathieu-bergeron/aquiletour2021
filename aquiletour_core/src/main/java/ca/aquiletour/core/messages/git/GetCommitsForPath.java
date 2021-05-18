@@ -1,5 +1,7 @@
 package ca.aquiletour.core.messages.git;
 
+import ca.aquiletour.core.messages.git.base.GitApiExerciseMessage;
+import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
@@ -8,8 +10,17 @@ import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
-public class GetCommitsForPath extends StudentExerciseApiMessage implements NtroModelMessage {
+public class GetCommitsForPath extends GitApiExerciseMessage implements NtroModelMessage {
 	
+	public GetCommitsForPath() {
+		super();
+		T.call(this);
+	}
+
+	public GetCommitsForPath(AquiletourGitMessage message) {
+		super(message);
+		T.call(this);
+	}
 
 	@Override
 	public DocumentPath getDocumentPath() {

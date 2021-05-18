@@ -1,23 +1,22 @@
-package ca.aquiletour.core.messages.git;
+package ca.aquiletour.core.messages.git.base;
 
-import ca.aquiletour.core.pages.course.student.messages.StudentRepoMessage;
+import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.ntro.core.system.trace.T;
 
-public class StudentRepoApiMessage extends StudentExerciseApiMessage {
+public class GitApiRepoUrlMessage extends GitApiRepoMessage {
 
 	private String repoUrl;
-
-	public StudentRepoApiMessage() {
+	
+	public GitApiRepoUrlMessage() {
 		super();
 		T.call(this);
 	}
-	
-	public StudentRepoApiMessage(StudentRepoMessage message) {
+
+	public GitApiRepoUrlMessage(AquiletourGitMessage message) {
 		super(message);
 		T.call(this);
 
 		setRepoUrl(message.getRepoUrl());
-
 	}
 
 	public String getRepoUrl() {

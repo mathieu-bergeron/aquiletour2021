@@ -10,6 +10,20 @@ public class GetCommitsForPathAndTimePeriod extends GetCommitsForPath {
 	
 	private long fromDate;
 	private long toDate;
+	
+	public GetCommitsForPathAndTimePeriod() {
+		super();
+		T.call(this);
+	}
+
+	public GetCommitsForPathAndTimePeriod(ShowCommitListForTimePeriodMessage message) {
+		super(message);
+		T.call(this);
+		
+		setFromDate(message.getStartTime());
+		setToDate(message.getEndTime());
+	}
+	
 
 	public long getFromDate() {
 		return fromDate;
@@ -25,17 +39,6 @@ public class GetCommitsForPathAndTimePeriod extends GetCommitsForPath {
 
 	public void setToDate(long toDate) {
 		this.toDate = toDate;
-	}
-
-	public void loadStudentExerciseInfo(ShowCommitListForTimePeriodMessage message) {
-		T.call(this);
-		
-		loadExerciseInfo(message);
-		
-		//TODO setStartTime
-		setGroupId(message.getGroupId());
-		setSemesterId(message.getSemesterId());
-		setStudentId(message.getStudentId());
 	}
 
 	@Override

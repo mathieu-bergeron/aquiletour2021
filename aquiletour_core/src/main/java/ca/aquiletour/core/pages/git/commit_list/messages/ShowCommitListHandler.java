@@ -22,14 +22,11 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		GetCommitsForPath getCommitListMessage = null;
 		if (message instanceof ShowCommitListForTimePeriodMessage) {
 			
-			GetCommitsForPathAndTimePeriod getMessage = Ntro.messages().create(GetCommitsForPathAndTimePeriod.class);		
-			getMessage.loadStudentExerciseInfo(message);
-			getCommitListMessage = getMessage;
-			
+			getCommitListMessage = new GetCommitsForPathAndTimePeriod((ShowCommitListForTimePeriodMessage) message);
+
 		} else {
-			
-			getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
-			getCommitListMessage.loadStudentExerciseInfo(message);
+
+			getCommitListMessage = new GetCommitsForPath(message);
 		}
 
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
