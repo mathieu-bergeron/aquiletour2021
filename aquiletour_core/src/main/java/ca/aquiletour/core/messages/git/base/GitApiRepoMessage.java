@@ -33,8 +33,12 @@ public class GitApiRepoMessage extends NtroMessage {
 
 	private String gitApiCourseId(AquiletourGitMessage message) {
 		T.call(this);
+		
+		Path teacherCourse = new Path();
+		teacherCourse.addName(message.getTeacherId());
+		teacherCourse.addName(message.getCourseId());
 
-		return message.getTeacherId() + "/" + message.getCourseId();
+		return teacherCourse.toString();
 	}
 
 	private String gitApiRepoPath(AquiletourGitMessage message) {
@@ -92,7 +96,7 @@ public class GitApiRepoMessage extends NtroMessage {
 		Path teacherCourse = new Path(getCourseId());
 		CoursePath coursePath = null;
 		
-		if(teacherCourse.nameCount() == 2) {
+		if(teacherCourse.nameCount() >= 2) {
 			
 			coursePath = new CoursePath(teacherCourse.name(0), getSemesterId(), teacherCourse.name(1));
 
