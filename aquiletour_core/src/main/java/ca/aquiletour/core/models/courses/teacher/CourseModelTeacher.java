@@ -244,9 +244,9 @@ public class CourseModelTeacher extends CourseModel {
 		}
 
 		updateAtomicTaskCompletion(studentCompletions, 
-				                taskPath, 
-				                atomicTaskId, 
-				                completionToAdd);
+				                   taskPath, 
+				                   atomicTaskId, 
+				                   completionToAdd);
 	}
 
 	public void removeAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId) {
@@ -255,8 +255,8 @@ public class CourseModelTeacher extends CourseModel {
 		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
 		if(studentCompletions != null) {
 			removeAtomicTaskCompletion(studentCompletions, 
-									taskPath, 
-									atomicTaskId);
+									   taskPath, 
+									   atomicTaskId);
 		}
 	}
 }
