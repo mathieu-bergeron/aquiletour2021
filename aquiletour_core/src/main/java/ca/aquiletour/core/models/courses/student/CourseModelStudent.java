@@ -44,6 +44,12 @@ public class CourseModelStudent extends CourseModel {
 				                   atomicTaskId, 
 				                   newCompletion);
 	}
-	
 
+	public void removeAtomicTaskCompletion(Path taskPath, String atomicTaskId) {
+		T.call(this);
+		
+		removeAtomicTaskCompletion(completions, 
+				                   taskPath,
+				                   atomicTaskId);
+	}
 }

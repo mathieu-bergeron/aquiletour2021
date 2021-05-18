@@ -373,9 +373,22 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
 		if(taskCompletions == null) {
 			taskCompletions = new CompletionByAtomicTaskId();
-			studentCompletions.putEntry(atomicTaskId, taskCompletions);
+			studentCompletions.putEntry(taskId, taskCompletions);
 		}
+
+		taskCompletions.putEntry(atomicTaskId, newCompletion);
+	}
+
+	protected void removeAtomicTaskCompletion(StudentCompletionsByTaskId studentCompletions, 
+			                                  Path taskPath,
+			                                  String atomicTaskId) {
+		T.call(this);
+
+		String taskId = Task.idFromPath(taskPath);
 		
-		taskCompletions.putEntry(taskId, newCompletion);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		if(taskCompletions != null) {
+			taskCompletions.removeEntry(atomicTaskId);
+		}
 	}
 }

@@ -248,4 +248,15 @@ public class CourseModelTeacher extends CourseModel {
 				                atomicTaskId, 
 				                completionToAdd);
 	}
+
+	public void removeAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId) {
+		T.call(this);
+
+		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
+		if(studentCompletions != null) {
+			removeAtomicTaskCompletion(studentCompletions, 
+									taskPath, 
+									atomicTaskId);
+		}
+	}
 }

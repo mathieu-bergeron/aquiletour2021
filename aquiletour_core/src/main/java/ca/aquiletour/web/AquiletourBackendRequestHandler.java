@@ -6,7 +6,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.AtomicTaskMessage;
-import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
@@ -34,7 +34,9 @@ import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
+import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
+import ca.aquiletour.core.pages.course.student.messages.StudentRepoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
@@ -676,22 +678,24 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("StudentRegistersRepo")) {
 
-			StudentRegistersRepoMessage studentRegistersRepo = createAtomicTaskMessage(StudentRegistersRepoMessage.class,
-																					   path,
-																					   parameters,
-																					   sessionData);
+			StudentRegistersRepoMessage studentRegistersRepo = createStudentRepoMessage(StudentRegistersRepoMessage.class,
+																					    path,
+																					    parameters,
+																					    sessionData);
 
-			String studentId = parameters.get("studentId")[0];
-			String groupId = parameters.get("groupId")[0];
-			Path repoPath = new Path(parameters.get("repoPath")[0]);
 			String repoUrl = parameters.get("repoUrl")[0];
 			
-			studentRegistersRepo.setStudentId(studentId);
-			studentRegistersRepo.setGroupId(groupId);
-			studentRegistersRepo.setRepoPath(repoPath);
 			studentRegistersRepo.setRepoUrl(repoUrl);
 
 			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
+
+		} else if(parameters.containsKey("StudentDeletesRepo")) {
+
+			StudentDeletesRepoMessage studentDeletesRepoMessage = createStudentRepoMessage(StudentDeletesRepoMessage.class,
+																					       path,
+																					       parameters,
+																					       sessionData);
+			Ntro.backendService().sendMessageToBackend(studentDeletesRepoMessage);
 
 		} else if(parameters.containsKey("atomicTaskCompletedId")) {
 				
@@ -711,6 +715,28 @@ public class AquiletourBackendRequestHandler {
 
 				throw new RuntimeException("FIXME");
 			}
+	}
+
+	static <MSG extends StudentRepoMessage> MSG createStudentRepoMessage(Class<MSG> messageClass, 
+			                                                             Path path, 
+			                                                             Map<String, String[]> parameters,
+			                                                             SessionData sessionData) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		MSG message = createAtomicTaskMessage(messageClass,
+										      path,
+											  parameters,
+											  sessionData);
+
+		String studentId = parameters.get("studentId")[0];
+		String groupId = parameters.get("groupId")[0];
+		Path repoPath = new Path(parameters.get("repoPath")[0]);
+
+		message.setStudentId(studentId);
+		message.setGroupId(groupId);
+		message.setRepoPath(repoPath);
+		
+		return message;
 	}
 
 	static <MSG extends AtomicTaskMessage> MSG createAtomicTaskMessage(Class<MSG> messageClass, 

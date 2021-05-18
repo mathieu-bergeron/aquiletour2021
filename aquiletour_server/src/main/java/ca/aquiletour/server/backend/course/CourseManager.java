@@ -352,6 +352,23 @@ public class CourseManager {
 		});
 	}
 
+	public static void removeAtomicTaskCompletionTeacher(ModelStoreSync modelStore, 
+			                                             CoursePath coursePath, 
+			                                             String studentId, 
+			                                             Path taskPath, 
+			                                             String atomicTaskId) {
+		T.call(CourseManager.class);
+
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
+			@Override
+			public void update(CourseModelTeacher existingModel) {
+				T.call(this);
+				
+				existingModel.removeAtomicTaskCompletion(taskPath, studentId, atomicTaskId);
+			}
+		});
+	}
+
 	public static void updateAtomicTaskCompletionStudent(ModelStoreSync modelStore, 
 			                                              CoursePath coursePath, 
 			                                              String studentId, 
@@ -368,6 +385,25 @@ public class CourseManager {
 				T.call(this);
 				
 				existingModel.updateAtomicTaskCompletion(taskPath, atomicTaskId, newCompletion);
+			}
+		});
+	}
+
+	public static void removeAtomicTaskCompletionStudent(ModelStoreSync modelStore, 
+			                                             CoursePath coursePath, 
+			                                             String studentId, 
+			                                             Path taskPath, 
+			                                             String atomicTaskId) {
+		T.call(CourseManager.class);
+
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+		
+		modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+			@Override
+			public void update(CourseModelStudent existingModel) {
+				T.call(this);
+				
+				existingModel.removeAtomicTaskCompletion(taskPath, atomicTaskId);
 			}
 		});
 	}

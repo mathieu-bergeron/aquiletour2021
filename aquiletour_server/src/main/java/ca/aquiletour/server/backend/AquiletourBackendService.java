@@ -1,6 +1,8 @@
 package ca.aquiletour.server.backend;
 
 
+import java.nio.file.attribute.UserDefinedFileAttributeView;
+
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.OnNewCommits;
@@ -23,6 +25,7 @@ import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
+import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
@@ -51,6 +54,7 @@ import ca.aquiletour.server.backend.course.UpdateTaskInfoHandler;
 import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
 import ca.aquiletour.server.backend.git.OnNewCommitsHandler;
+import ca.aquiletour.server.backend.git.StudentDeletesRepoHandler;
 import ca.aquiletour.server.backend.git.StudentRegistersRepoHandler;
 import ca.aquiletour.server.backend.login.InitializeSessionHandler;
 import ca.aquiletour.server.backend.login.ItsNotMeHandler;
@@ -122,6 +126,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(UserSendsPasswordMessage.class, new UserSendsPasswordHandler());
 		addBackendMessageHandler(ToggleAdminModeMessage.class, new ToggleAdminModeHandler());
 		addBackendMessageHandler(DeleteSemesterMessage.class, new DeleteSemesterHandler());
+		addBackendMessageHandler(StudentDeletesRepoMessage.class, new StudentDeletesRepoHandler());
 	}
 
 }

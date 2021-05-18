@@ -202,37 +202,45 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			
 			HtmlElement step01 = gitRepoTaskSubmitUrl.clone();
 			
-			HtmlElements addStudentIdToValue = step01.find(".add-student-id-to-value");
-			HtmlElements addGroupIdToValue = step01.find(".add-group-id-to-value");
-			HtmlElements addRepoPathToValue = step01.find(".add-repo-path-to-value");
-			HtmlElements addAtomicTaskIdToValue = step01.find(".add-atomic-task-id-to-value");
-			
-			addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getRegistrationId());
-			addGroupIdToValue.appendToAttribute("value", groupId);
-			addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
-			addAtomicTaskIdToValue.appendToAttribute("value", repoTask.getId());
+			identifyGitRepo(groupId, repoTask, step01);
 
-			step01.show();
 			entryTasksContainer.appendElement(step01);
+			step01.show();
 
 		}else if(completion instanceof GitRepoSubmitted){
 			
 			GitRepoSubmitted gitRepoSubmitted = (GitRepoSubmitted) completion;
-			
+
 			HtmlElement step02 = gitRepoTaskCloningRepo.clone();
-			step02.show();
+			identifyGitRepo(groupId, repoTask, step02);
+			
 
 			HtmlElement repoUrl = step02.find(".repo-url").get(0);
 			
 			repoUrl.text(gitRepoSubmitted.getRepoUrl());
 
 			entryTasksContainer.appendElement(step02);
+			step02.show();
 
 		}else if(completion instanceof GitRepoCloned){
 
 		}else if(completion instanceof GitRepoCloneFailed){
 
 		}
+	}
+
+	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement formElement) {
+		T.call(this);
+
+		HtmlElements addStudentIdToValue = formElement.find(".add-student-id-to-value");
+		HtmlElements addGroupIdToValue = formElement.find(".add-group-id-to-value");
+		HtmlElements addRepoPathToValue = formElement.find(".add-repo-path-to-value");
+		HtmlElements addAtomicTaskIdToValue = formElement.find(".add-atomic-task-id-to-value");
+		
+		addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getRegistrationId());
+		addGroupIdToValue.appendToAttribute("value", groupId);
+		addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
+		addAtomicTaskIdToValue.appendToAttribute("value", repoTask.getId());
 	}
 
 	@Override

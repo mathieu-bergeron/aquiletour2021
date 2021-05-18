@@ -6,11 +6,11 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 
-public class RegisterRepo extends StudentExerciseMessage {
+public class RegisterGitRepo extends StudentExerciseMessage {
 	
 	private String repoPath;
 	private String repoUrl;
-
+	
 	public String getRepoUrl() {
 		return repoUrl;
 	}
@@ -27,10 +27,10 @@ public class RegisterRepo extends StudentExerciseMessage {
 		this.repoPath = repoPath;
 	}
 
-	public static RegisterRepo fromStudentRegistersRepoMessage(StudentRegistersRepoMessage message) {
-		T.call(RegisterRepo.class);
+	public static RegisterGitRepo fromStudentRegistersRepoMessage(StudentRegistersRepoMessage message) {
+		T.call(RegisterGitRepo.class);
 		
-		RegisterRepo registerRepo = Ntro.messages().create(RegisterRepo.class);
+		RegisterGitRepo registerRepo = Ntro.messages().create(RegisterGitRepo.class);
 		
 		registerRepo.setCourseId(message.getTeacherId() + "/" + message.getCourseId());
 		registerRepo.setExercisePath(message.getTaskPath().toString());

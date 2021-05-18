@@ -36,7 +36,7 @@ import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
-import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.core.models.ModelLoader;
@@ -89,9 +89,9 @@ public class GitHandler extends AbstractHandler {
 			if(message instanceof RegisterExercise) {
 
 				
-			}else if(message instanceof RegisterRepo) {
+			}else if(message instanceof RegisterGitRepo) {
 				
-				handleRegisterRepoMessage(baseRequest, response, (RegisterRepo) message);
+				handleRegisterRepoMessage(baseRequest, response, (RegisterGitRepo) message);
 
 			}else if(message instanceof GetCommitsForPath) {
 				
@@ -138,7 +138,7 @@ public class GitHandler extends AbstractHandler {
 
 	private void handleRegisterRepoMessage(Request baseRequest, 
 			                               HttpServletResponse response,
-			                               RegisterRepo message) {
+			                               RegisterGitRepo message) {
 		
 		System.out.println("RegisterRepoMessage");
 		

@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.git;
 
-import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.server.backend.course.CourseManager;
@@ -14,7 +14,7 @@ public class StudentRegistersRepoHandler extends BackendMessageHandler<StudentRe
 	public void handleNow(ModelStoreSync modelStore, StudentRegistersRepoMessage message) {
 		T.call(this);
 		
-		GitMessages.sendMessage(RegisterRepo.fromStudentRegistersRepoMessage(message));
+		GitMessages.sendMessage(RegisterGitRepo.fromStudentRegistersRepoMessage(message));
 		
 		GitRepoSubmitted gitRepoSubmitted = new GitRepoSubmitted();
 		gitRepoSubmitted.setAtomicTaskId(message.getAtomicTaskId());
