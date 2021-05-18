@@ -1,5 +1,6 @@
 package ca.aquiletour.core.messages.git.base;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
@@ -83,5 +84,38 @@ public class GitApiRepoMessage extends NtroMessage {
 
 	public void setRepoPath(String repoPath) {
 		this.repoPath = repoPath;
+	}
+
+	public CoursePath coursePath() {
+		T.call(this);
+		
+		Path teacherCourse = new Path(getCourseId());
+		CoursePath coursePath = null;
+		
+		if(teacherCourse.nameCount() == 2) {
+			
+			coursePath = new CoursePath(teacherCourse.name(0), getSemesterId(), teacherCourse.name(1));
+
+		}else {
+
+			coursePath = new CoursePath();
+			
+		}
+
+		return coursePath;
+	}
+
+	public Path taskPath() {
+		T.call(this);
+		
+		Path path = new Path(getRepoPath());
+
+		return path.subPath(0, path.nameCount()-1);
+	}
+
+	public String atomicTaskId() {
+		T.call(this);
+
+		return new Path(getRepoPath()).lastName();
 	}
 }
