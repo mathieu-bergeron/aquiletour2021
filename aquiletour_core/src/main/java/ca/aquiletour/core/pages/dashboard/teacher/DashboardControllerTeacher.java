@@ -2,10 +2,10 @@ package ca.aquiletour.core.pages.dashboard.teacher;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.dashboard.handlers.DashboardViewModel;
-import ca.aquiletour.core.pages.dashboard.models.Dashboard;
+import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.aquiletour.core.pages.dashboard.teacher.handlers.ShowTeacherDashboardHandler;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
-import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.TeacherDashboardView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
@@ -31,9 +31,9 @@ public class DashboardControllerTeacher extends DashboardController {
 	}
 
 	@Override
-	protected Class<? extends Dashboard> modelClass() {
+	protected Class<? extends DashboardModel> modelClass() {
 		T.call(this);
 
-		return DashboardTeacher.class;
+		return DashboardModelTeacher.class;
 	}
 }

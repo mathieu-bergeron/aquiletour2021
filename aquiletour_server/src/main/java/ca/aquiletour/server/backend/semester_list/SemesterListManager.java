@@ -6,10 +6,10 @@ import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
-import ca.aquiletour.core.pages.semester_list.models.SemesterList;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
+import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
@@ -36,13 +36,13 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 
-		modelStore.updateModel(SemesterListTeacher.class, 
+		modelStore.updateModel(SemesterListModelTeacher.class, 
 							   "admin",
 							   userId,
-							   new ModelUpdater<SemesterListTeacher>() {
+							   new ModelUpdater<SemesterListModelTeacher>() {
 
 			@Override
-			public void update(SemesterListTeacher semesterList) {
+			public void update(SemesterListModelTeacher semesterList) {
 				T.call(this);
 				
 				semesterList.addScheduleItem(semesterId, scheduleItem);
@@ -50,7 +50,7 @@ public class SemesterListManager {
 		});
 	}
 	
-	public static <SL extends SemesterList>  void addSemesterWeekForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel>  void addSemesterWeekForUser(ModelStoreSync modelStore, 
 																		      Class<SL> modelClass, 
 																		      String semesterId, 
 																		      CalendarWeek semesterWeek, 
@@ -61,7 +61,7 @@ public class SemesterListManager {
 		addSemesterWeekToModel(modelStore, modelClass, semesterId, semesterWeek, user.getId());
 	}
 
-	public static <SL extends SemesterList<?>>  void addSemesterWeekToModel(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>>  void addSemesterWeekToModel(ModelStoreSync modelStore, 
 			                                                                  Class<SL> modelClass, 
 			                                                                  String semesterId, 
 			                                                                  CalendarWeek semesterWeek, 
@@ -71,10 +71,10 @@ public class SemesterListManager {
 		modelStore.updateModel(modelClass, 
 							   "admin",
 							   modelId,
-							   new ModelUpdater<SemesterList<?>>() {
+							   new ModelUpdater<SemesterListModel<?>>() {
 
 			@Override
-			public void update(SemesterList<?> semesterList) {
+			public void update(SemesterListModel<?> semesterList) {
 				T.call(this);
 				
 				semesterList.addSemesterWeek(semesterId, semesterWeek);
@@ -82,7 +82,7 @@ public class SemesterListManager {
 		});
 	}
 
-	public static <SL extends SemesterList<?>>  void deleteSemesterFromModel(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>>  void deleteSemesterFromModel(ModelStoreSync modelStore, 
 																			   Class<SL> modelClass, 
 																			   String semesterId, 
 																			   String modelId) {
@@ -104,7 +104,7 @@ public class SemesterListManager {
 	}
 
 	public static 
-	       <SM extends SemesterModel, SL extends SemesterList<SM>> 
+	       <SM extends SemesterModel, SL extends SemesterListModel<SM>> 
 	       void 
 	       addSemesterToModel(ModelStoreSync modelStore, 
 							  Class<SL> modelClass, 
@@ -135,7 +135,7 @@ public class SemesterListManager {
 	}
 
 	public static 
-	       <SM extends SemesterModel, SL extends SemesterList<SM>> 
+	       <SM extends SemesterModel, SL extends SemesterListModel<SM>> 
 	       void 
 	       addSemesterToModel(ModelStoreSync modelStore, 
 							  Class<SL> modelClass, 
@@ -166,7 +166,7 @@ public class SemesterListManager {
 		});
 	}
 
-	public static <SL extends SemesterList<?>> void createSemesterListForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>> void createSemesterListForUser(ModelStoreSync modelStore, 
 			                                                                  Class<SL> modelClass, 
 			                                                                  User user) {
 
@@ -188,14 +188,14 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 
-		SemesterList<?> semesterList = modelStore.getModel(SemesterListAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 		
 		for(SemesterModel semester : semesterList.getSemesters().getValue()) {
-			addSemesterToModel(modelStore, SemesterListTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
+			addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
 		}
 	}
 
-	public static <SL extends SemesterList<?>> void createSemesterListForModelId(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>> void createSemesterListForModelId(ModelStoreSync modelStore, 
 			                                                                     Class<SL> modelClass, 
 			                                                                     String modelId) {
 
@@ -209,7 +209,7 @@ public class SemesterListManager {
 		});
 	}
 
-	public static <SL extends SemesterList<?>>  void deleteSemesterForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>>  void deleteSemesterForUser(ModelStoreSync modelStore, 
 																		        Class<SL> modelClass,
 			 														            String semesterId, 
 			 														            User user) {
@@ -220,7 +220,7 @@ public class SemesterListManager {
 	}
 
 	public static 
-	       <SL extends SemesterList<SM>, SM extends SemesterModel>  
+	       <SL extends SemesterListModel<SM>, SM extends SemesterModel>  
 	       void addSemesterForUser(ModelStoreSync modelStore, 
 					               Class<SL> modelClass, 
 					               Class<SM> semesterModelClass,
@@ -233,7 +233,7 @@ public class SemesterListManager {
 		addSemesterToModel(modelStore, modelClass, semesterModelClass, semesterId, adminControlled, user.getId());
 	}
 
-	public static <SL extends SemesterList>  void selectCurrentSemesterForModelId(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel>  void selectCurrentSemesterForModelId(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass,
 																				      String semesterId, 
 																				      boolean currentSemester, 
@@ -269,7 +269,7 @@ public class SemesterListManager {
 	}
 
 
-	public static <SL extends SemesterList> void selectCurrentSemesterForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel> void selectCurrentSemesterForUser(ModelStoreSync modelStore, 
 																					Class<SL> modelClass, 
 																					String semesterId, 
 																					boolean currentSemester, 
@@ -288,13 +288,13 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 
-		modelStore.updateModel(SemesterListTeacher.class, 
+		modelStore.updateModel(SemesterListModelTeacher.class, 
 							   "admin",
 							   userId,
-							   new ModelUpdater<SemesterListTeacher>() {
+							   new ModelUpdater<SemesterListModelTeacher>() {
 
 			@Override
-			public void update(SemesterListTeacher semesterList) {
+			public void update(SemesterListModelTeacher semesterList) {
 				T.call(this);
 
 				semesterList.addCourseGroup(semesterId, courseId, groupId);
@@ -314,7 +314,7 @@ public class SemesterListManager {
 		addCourseGroupForUserId(modelStore, semesterId, courseId, groupId, user.getId());
 	}
 
-	public static <SL extends SemesterList<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass, 
 																					  String semesterId, 
 																					  String userId) {
@@ -324,7 +324,7 @@ public class SemesterListManager {
 		
 		if(modelStore.ifModelExists(modelClass, "admin", userId)) {
 			
-			SemesterList<?> model = modelStore.getModel(modelClass, "admin", userId);
+			SemesterListModel<?> model = modelStore.getModel(modelClass, "admin", userId);
 			
 			schedule = model.semesterSchedule(semesterId);
 		}
@@ -333,7 +333,7 @@ public class SemesterListManager {
 
 	}
 
-	public static <SL extends SemesterList<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass, 
 																					  String semesterId, 
 																					  User user) {
@@ -349,9 +349,9 @@ public class SemesterListManager {
 
 		TeacherSchedule schedule = null;
 		
-		if(modelStore.ifModelExists(SemesterListTeacher.class, "admin", userId)) {
+		if(modelStore.ifModelExists(SemesterListModelTeacher.class, "admin", userId)) {
 			
-			SemesterListTeacher model = modelStore.getModel(SemesterListTeacher.class, "admin", userId);
+			SemesterListModelTeacher model = modelStore.getModel(SemesterListModelTeacher.class, "admin", userId);
 			
 			schedule = model.teacherSchedule(semesterId);
 		}
@@ -370,14 +370,14 @@ public class SemesterListManager {
 	public static void initialize(ModelStoreSync modelStore) {
 		T.call(SemesterListManager.class);
 		
-		createSemesterListForModelId(modelStore, SemesterListAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		createSemesterListForModelId(modelStore, SemesterListModelAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 	}
 
 	public static String getCurrentSemester(ModelStoreSync modelStore) {
 		T.call(SemesterListManager.class);
 		
 		String currentSemesterId = null;
-		SemesterList<?> semesterList = modelStore.getModel(SemesterListAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 		
 		if(semesterList.getCurrentSemesterId() != null &&
 				!semesterList.getCurrentSemesterId().isEmpty()) {

@@ -8,8 +8,8 @@ import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
-import ca.aquiletour.core.pages.dashboard.models.Dashboard;
-import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
+import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
+import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -17,7 +17,7 @@ import ca.ntro.core.system.trace.T;
 
 public class DashboardManager {
 
-	public static <DM extends Dashboard<?>> void addDashboardItemForUser(ModelStoreSync modelStore, 
+	public static <DM extends DashboardModel<?>> void addDashboardItemForUser(ModelStoreSync modelStore, 
 																		   Class<DM> dashboardModelClass, 
 																		   CourseListItem courseListItem, 
 																		   User user) {
@@ -33,7 +33,7 @@ public class DashboardManager {
 		});
 	}
 
-	public static <DM extends Dashboard<?>> void createDashboardForUser(ModelStoreSync modelStore, 
+	public static <DM extends DashboardModel<?>> void createDashboardForUser(ModelStoreSync modelStore, 
 																	      Class<DM> dashboardModelClass,
 			 														      User user) {
 		T.call(DashboardManager.class);
@@ -46,7 +46,7 @@ public class DashboardManager {
 		});
 	}
 
-	public static <DM extends Dashboard<CT>, CT extends CurrentTask> void updateCurrentTasksForUserId(ModelStoreSync modelStore, 
+	public static <DM extends DashboardModel<CT>, CT extends CurrentTask> void updateCurrentTasksForUserId(ModelStoreSync modelStore, 
 																	         Class<DM> dashboardModelClass,
 																	         Class<CT> currentTaskClass,
 																	         CoursePath coursePath,
@@ -65,7 +65,7 @@ public class DashboardManager {
 
 	}
 
-	public static <DM extends Dashboard<CT>, CT extends CurrentTask> void updateCurrentTasksForUser(ModelStoreSync modelStore, 
+	public static <DM extends DashboardModel<CT>, CT extends CurrentTask> void updateCurrentTasksForUser(ModelStoreSync modelStore, 
 																	         Class<DM> dashboardModelClass,
 																	         Class<CT> currentTaskClass,
 																	         CoursePath coursePath,

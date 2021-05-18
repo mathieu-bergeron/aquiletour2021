@@ -4,7 +4,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.models.Queue;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
@@ -29,12 +29,12 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		modelStore.createModel(Queue.class, 
+		modelStore.createModel(QueueModel.class, 
 							   "admin",
 				               queueId, 
-				               new ModelInitializer<Queue>() {
+				               new ModelInitializer<QueueModel>() {
 			@Override
-			public void initialize(Queue newQueue) {
+			public void initialize(QueueModel newQueue) {
 				T.call(this);
 
 				newQueue.setTeacherId(teacherId);
@@ -50,7 +50,7 @@ public class QueueManager {
 
 		QueuesUpdater.deleteQueue(modelStore, queueId);
 
-		Queue queue = modelStore.getModel(Queue.class, 
+		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 	
@@ -64,7 +64,7 @@ public class QueueManager {
 		
 		QueuesUpdater.openQueue(modelStore, queueId);
 
-		Queue queue = modelStore.getModel(Queue.class, 
+		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 		
@@ -79,13 +79,13 @@ public class QueueManager {
 
 		QueuesUpdater.closeQueue(modelStore, queueId);
 
-		Queue queue = modelStore.getModel(Queue.class, 
+		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 		
-		modelStore.updateModel(Queue.class, "amdin", queueId, new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "amdin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 				queue.clearQueue();
 			}
@@ -97,7 +97,7 @@ public class QueueManager {
 			                             List<User> studentsToAdd) {
 		T.call(QueueManager.class);
 
-		Queue queue = modelStore.getModel(Queue.class, 
+		QueueModel queue = modelStore.getModel(QueueModel.class, 
 				"admin",
 				queueId);
 
@@ -130,9 +130,9 @@ public class QueueManager {
 
 		Appointment appointment = createAppointment(user);
 		
-		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 
 				queue.addAppointment(appointment);
@@ -164,7 +164,7 @@ public class QueueManager {
 	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
 		T.call(QueueManager.class);
 
-		Queue queue = modelStore.getModel(Queue.class, "admin", queueId);
+		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
 
 		// FIXME: use increment insted
 		int nbAppointment = queue.getAppointments().size();
@@ -178,7 +178,7 @@ public class QueueManager {
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
 		T.call(QueueManager.class);
 
-		Queue queue = modelStore.getModel(Queue.class, "admin", queueId);
+		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
 		
 		Appointment appointment = queue.appointmentById(appointmentId);
 
@@ -188,9 +188,9 @@ public class QueueManager {
 	public static void deleteAppointment(ModelStoreSync modelStore, String queueId, String appointmentId) {
 		T.call(QueueManager.class);
 		
-		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 
 				queue.deleteAppointment(appointmentId);
@@ -214,9 +214,9 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 		
-		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 
 				queue.moveAppointment(appointmentId, destinationId, beforeOrAfter);
@@ -227,9 +227,9 @@ public class QueueManager {
 	public static void modifyAppointmentTimes(ModelStoreSync modelStore, int timeIncrementSeconds, User user) {
 		T.call(QueueManager.class);
 		
-		modelStore.updateModel(Queue.class, "admin", user.getId(), new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 				
 				queue.incrementAppointmentTimesSeconds(timeIncrementSeconds);
@@ -240,9 +240,9 @@ public class QueueManager {
 	public static void modifyAppointmentDurations(ModelStoreSync modelStore, int durationIncrementSeconds, User user) {
 		T.call(QueueManager.class);
 		
-		modelStore.updateModel(Queue.class, "admin", user.getId(), new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 				
 				queue.modifyAppointmentDurations(durationIncrementSeconds);
@@ -256,9 +256,9 @@ public class QueueManager {
 			                                    User student) {
 		T.call(QueueManager.class);
 
-		modelStore.updateModel(Queue.class, "admin", queueId, new ModelUpdater<Queue>() {
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
-			public void update(Queue queue) {
+			public void update(QueueModel queue) {
 				T.call(this);
 				
 				queue.modifyAppointmentComment(student.getId(), comment);

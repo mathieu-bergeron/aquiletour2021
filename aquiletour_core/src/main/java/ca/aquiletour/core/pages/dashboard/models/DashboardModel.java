@@ -4,14 +4,13 @@ package ca.aquiletour.core.pages.dashboard.models;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class Dashboard<CT extends CurrentTask> implements NtroModel {
+public abstract class DashboardModel<CT extends CurrentTask> implements NtroModel {
 
 	private DashboardItems dashboardItems = new DashboardItems();
 	private StoredString statusMessage = new StoredString();

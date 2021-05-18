@@ -6,7 +6,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 
-public class GroupList implements NtroModel {
+public class GroupListModel implements NtroModel {
 	
 	private SemesterCourses semesterCourses = new SemesterCourses();
 	private ObservableGroupList groups = new ObservableGroupList();

@@ -4,7 +4,7 @@ import ca.aquiletour.core.pages.group_list.handlers.GroupListViewModel;
 import ca.aquiletour.core.pages.group_list.handlers.ShowGroupListHandler;
 import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
 import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
-import ca.aquiletour.core.pages.group_list.models.GroupList;
+import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.root.RootController;
@@ -23,7 +23,7 @@ public class GroupListController extends NtroController<RootController> {
 
 		addParentViewMessageHandler(ShowGroupListMessage.class, new ShowGroupListHandler());
 
-		setModelLoader(GroupList.class, 
+		setModelLoader(GroupListModel.class, 
 					   context.user().getAuthToken(),
 					   context.user().getId());
 

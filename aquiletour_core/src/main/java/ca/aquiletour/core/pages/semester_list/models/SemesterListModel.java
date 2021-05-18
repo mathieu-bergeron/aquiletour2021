@@ -8,7 +8,7 @@ import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class SemesterList<SM extends SemesterModel> implements NtroModel {
+public abstract class SemesterListModel<SM extends SemesterModel> implements NtroModel {
 	
 	private StoredString currentSemesterId = new StoredString(Constants.DRAFTS_SEMESTER_ID);
 	private ObservableSemesterList<SM> semesters = new ObservableSemesterList<SM>();

@@ -12,11 +12,11 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
 import ca.aquiletour.core.models.user_registration.RegistrationId;
 import ca.aquiletour.core.models.user_registration.UserId;
-import ca.aquiletour.core.pages.course_list.student.CourseListStudent;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
-import ca.aquiletour.core.pages.dashboard.student.models.DashboardStudent;
-import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
+import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
@@ -190,9 +190,9 @@ public class UserManager {
 	private static void initializeStudentModels(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
 
-		DashboardManager.createDashboardForUser(modelStore, DashboardStudent.class, user);
+		DashboardManager.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
 
-		CourseListManager.createCourseListForUser(modelStore, CourseListStudent.class, user);
+		CourseListManager.createCourseListForUser(modelStore, CourseListModelStudent.class, user);
 	}
 
 	private static void storeStudentId(ModelStoreSync modelStore, User user) {
@@ -217,13 +217,13 @@ public class UserManager {
 
 		QueueManager.createQueue(modelStore, user.getRegistrationId(), user);
 
-		DashboardManager.createDashboardForUser(modelStore, DashboardTeacher.class, user);
+		DashboardManager.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
 
-		CourseListManager.createCourseListForUser(modelStore, CourseListTeacher.class, user);
+		CourseListManager.createCourseListForUser(modelStore, CourseListModelTeacher.class, user);
 
 		GroupListManager.createGroupListForUser(modelStore, user);
 
-		SemesterListManager.createSemesterListForUser(modelStore, SemesterListTeacher.class, user);
+		SemesterListManager.createSemesterListForUser(modelStore, SemesterListModelTeacher.class, user);
 		SemesterListManager.addManagedSemestersForTeacher(modelStore, user);
 	}
 

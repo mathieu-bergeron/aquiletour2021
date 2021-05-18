@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.semester_list.handlers;
 
 
 import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.pages.semester_list.models.SemesterList;
+import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterView;
@@ -11,7 +11,7 @@ import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class SemesterListViewModel<SLM extends SemesterList<SM>, 
+public abstract class SemesterListViewModel<SLM extends SemesterListModel<SM>, 
 											SM extends SemesterModel,
                                             SLV extends SemesterListView, 
                                             SV extends SemesterView> 

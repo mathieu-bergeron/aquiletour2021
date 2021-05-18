@@ -1,11 +1,11 @@
 package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
@@ -29,7 +29,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 		if(message.getUser().actsAsAdmin()) {
 			
 			SemesterListManager.addSemesterToModel(modelStore, 
-					                               SemesterListAdmin.class, 
+					                               SemesterListModelAdmin.class, 
 					                               SemesterModelAdmin.class,
 					                               message.getSemesterId(), 
 					                               true,
@@ -40,7 +40,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 			boolean adminControlledSemester = false;
 
 			SemesterListManager.addSemesterForUser(modelStore, 
-												   SemesterListTeacher.class, 
+												   SemesterListModelTeacher.class, 
 												   SemesterModelTeacher.class,
 												   message.getSemesterId(), 
 												   adminControlledSemester,
@@ -62,7 +62,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 			
 			UserManager.forEachTeacherId(modelStore, teacherId -> {
 				SemesterListManager.addSemesterToModel(modelStore, 
-													   SemesterListTeacher.class, 
+													   SemesterListModelTeacher.class, 
 													   SemesterModelTeacher.class,
 													   message.getSemesterId(), 
 													   adminControlledSemester,
@@ -71,7 +71,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 
 		}else if(message.getUser().actsAsTeacher()){
 
-			CourseListManager.addSemesterForUser(modelStore, CourseListTeacher.class, message.getSemesterId(), message.getUser());
+			CourseListManager.addSemesterForUser(modelStore, CourseListModelTeacher.class, message.getSemesterId(), message.getUser());
 			GroupListManager.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
 		}
 	}

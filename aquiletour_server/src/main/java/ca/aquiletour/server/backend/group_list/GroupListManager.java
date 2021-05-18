@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.group_list;
 import java.util.List;
 
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.group_list.models.GroupList;
+import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -32,12 +32,12 @@ public class GroupListManager {
 
 		T.call(GroupListManager.class);
 
-		if(!modelStore.ifModelExists(GroupList.class, "admin", userId)) {
+		if(!modelStore.ifModelExists(GroupListModel.class, "admin", userId)) {
 		}
 
-		modelStore.updateModel(GroupList.class, "admin", userId, new ModelUpdater<GroupList>() {
+		modelStore.updateModel(GroupListModel.class, "admin", userId, new ModelUpdater<GroupListModel>() {
 			@Override
-			public void update(GroupList existingModel) {
+			public void update(GroupListModel existingModel) {
 				T.call(this);
 
 				existingModel.addGroup(semesterId, courseId, groupId, studentsToAdd);
@@ -52,22 +52,22 @@ public class GroupListManager {
 
 		T.call(GroupListManager.class);
 
-		if(!modelStore.ifModelExists(GroupList.class, "admin", userId)) {
-			modelStore.createModel(GroupList.class, "admin", userId, new ModelInitializer<GroupList>() {
+		if(!modelStore.ifModelExists(GroupListModel.class, "admin", userId)) {
+			modelStore.createModel(GroupListModel.class, "admin", userId, new ModelInitializer<GroupListModel>() {
 				@Override
-				public void initialize(GroupList newModel) {
+				public void initialize(GroupListModel newModel) {
 					T.call(this);
 				}
 			});
 		}
 
-		modelStore.updateModel(GroupList.class, 
+		modelStore.updateModel(GroupListModel.class, 
 							   "admin",
 							   userId,
-							   new ModelUpdater<GroupList>() {
+							   new ModelUpdater<GroupListModel>() {
 
 			@Override
-			public void update(GroupList groupListModel) {
+			public void update(GroupListModel groupListModel) {
 				T.call(this);
 				
 				groupListModel.addSemester(semesterId);
@@ -92,13 +92,13 @@ public class GroupListManager {
 
 		T.call(GroupListManager.class);
 
-		modelStore.updateModel(GroupList.class, 
+		modelStore.updateModel(GroupListModel.class, 
 							   "admin",
 							   userId,
-							   new ModelUpdater<GroupList>() {
+							   new ModelUpdater<GroupListModel>() {
 
 			@Override
-			public void update(GroupList groupListModel) {
+			public void update(GroupListModel groupListModel) {
 				T.call(this);
 				
 				groupListModel.addCourse(semesterId, courseId);
@@ -119,9 +119,9 @@ public class GroupListManager {
 	public static void createGroupListForModelId(ModelStoreSync modelStore, String modelId) {
 		T.call(GroupListManager.class);
 
-		modelStore.createModel(GroupList.class, "admin", modelId, new ModelInitializer<GroupList>() {
+		modelStore.createModel(GroupListModel.class, "admin", modelId, new ModelInitializer<GroupListModel>() {
 			@Override
-			public void initialize(GroupList newModel) {
+			public void initialize(GroupListModel newModel) {
 				T.call(this);
 			}
 		});

@@ -1,9 +1,9 @@
 package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.schedule.ScheduleUpdater;
 import ca.aquiletour.server.backend.users.UserManager;
@@ -25,7 +25,7 @@ public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWee
 		if(message.getUser().actsAsAdmin()) {
 
 			SemesterListManager.addSemesterWeekToModel(modelStore, 
-													   SemesterListAdmin.class,
+													   SemesterListModelAdmin.class,
 					                                   message.getSemesterId(), 
 					                                   message.getSemesterWeek(), 
 					                                   Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
@@ -33,7 +33,7 @@ public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWee
 		}else if(message.getUser().actsAsTeacher()) {
 
 			SemesterListManager.addSemesterWeekForUser(modelStore, 
-													   SemesterListTeacher.class,
+													   SemesterListModelTeacher.class,
 					                                   message.getSemesterId(), 
 					                                   message.getSemesterWeek(), 
 					                                   message.getUser());
@@ -50,7 +50,7 @@ public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWee
 		if(message.getUser().actsAsAdmin()) {
 			UserManager.forEachTeacherId(modelStore, teacherId -> {
 				SemesterListManager.addSemesterWeekToModel(modelStore, 
-														   SemesterListTeacher.class,
+														   SemesterListModelTeacher.class,
 														   message.getSemesterId(), 
 														   message.getSemesterWeek(), 
 														   teacherId);

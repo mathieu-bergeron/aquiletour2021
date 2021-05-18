@@ -4,7 +4,7 @@ package ca.aquiletour.core.pages.queue.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.models.Queue;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.models.listeners.ClearItemsListener;
@@ -18,10 +18,10 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
-public class QueueViewModel extends ModelViewSubViewHandler<Queue, QueueView>  {
+public class QueueViewModel extends ModelViewSubViewHandler<QueueModel, QueueView>  {
 	
 	@Override
-	protected void handle(Queue model, QueueView view, ViewLoader subViewLoader) {
+	protected void handle(QueueModel model, QueueView view, ViewLoader subViewLoader) {
 		T.call(this);
 		
 		view.clearQueue();
@@ -31,7 +31,7 @@ public class QueueViewModel extends ModelViewSubViewHandler<Queue, QueueView>  {
 		observeAppointments(model, view, subViewLoader);
 	}
 
-	private void observeAppointments(Queue model, QueueView view, ViewLoader subViewLoader) {
+	private void observeAppointments(QueueModel model, QueueView view, ViewLoader subViewLoader) {
 		T.call(this);
 
 		model.getAppointments().onItemAdded(new ItemAddedListener<Appointment>() {

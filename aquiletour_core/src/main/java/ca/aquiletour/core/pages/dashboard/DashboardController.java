@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.dashboard;
 
-import ca.aquiletour.core.pages.dashboard.models.Dashboard;
+import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
@@ -22,7 +22,7 @@ public abstract class DashboardController extends NtroController<RootController>
 	}
 	
 	protected abstract Class<? extends DashboardView> viewClass();
-	protected abstract Class<? extends Dashboard> modelClass();
+	protected abstract Class<? extends DashboardModel> modelClass();
 	protected abstract void installParentViewMessageHandler();
 	
 	@Override

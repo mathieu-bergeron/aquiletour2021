@@ -9,7 +9,7 @@ import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
 import ca.aquiletour.core.pages.group_list.models.ObservableCourseList;
 import ca.aquiletour.core.pages.group_list.models.GroupItem;
-import ca.aquiletour.core.pages.group_list.models.GroupList;
+import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.ntro.core.models.listeners.ListObserver;
@@ -18,13 +18,13 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList, GroupListView, SelectGroupListSubset> {
+public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupListModel, GroupListView, SelectGroupListSubset> {
 	
 	private String currentSemesterId = null;
 	private String currentCourseId = null;
 
 	@Override
-	protected void handle(GroupList model, GroupListView view, ViewLoader subViewLoader, SelectGroupListSubset message) {
+	protected void handle(GroupListModel model, GroupListView view, ViewLoader subViewLoader, SelectGroupListSubset message) {
 		T.call(this);
 		
 		if(currentSemesterId == null) {
@@ -43,7 +43,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 
 	}
 
-	private void observeSemesterCourses(GroupList model, GroupListView view) {
+	private void observeSemesterCourses(GroupListModel model, GroupListView view) {
 		T.call(this);
 		
 		model.getSemesterCourses().observe(new MapObserver<ObservableCourseList>() {
@@ -96,7 +96,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		view.appendToSemesterDropdown(semesterId, href, text);
 	}
 
-	private void changeCurrentSelection(GroupList model, 
+	private void changeCurrentSelection(GroupListModel model, 
 			                           GroupListView view, 
 			                           ViewLoader subViewLoader) {
 
@@ -126,7 +126,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		observeGroups(model, view, subViewLoader);
 	}
 
-	private void observeGroups(GroupList model, 
+	private void observeGroups(GroupListModel model, 
 		                       GroupListView view, 
 	                       ViewLoader subViewLoader) {
 		T.call(this);

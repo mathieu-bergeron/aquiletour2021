@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import ca.aquiletour.core.pages.queue.models.Queue;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.MessageServiceWebserver;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
@@ -80,10 +80,10 @@ public class BackendTests {
 		
 		// XXX: assuming that modelLoader is actually Sync
 		//      will not work in JSweet
-		ModelLoader modelLoader = Ntro.modelStore().getLoader(Queue.class, "bobToken", "bob");
+		ModelLoader modelLoader = Ntro.modelStore().getLoader(QueueModel.class, "bobToken", "bob");
 		modelLoader.execute();
 		
-		Queue queue = (Queue) modelLoader.getModel();
+		QueueModel queue = (QueueModel) modelLoader.getModel();
 
 		return queue.getAppointments().getValue().size();
 	}

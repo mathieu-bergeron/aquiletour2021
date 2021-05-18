@@ -1,7 +1,7 @@
 package ca.aquiletour.server.backend.queue;
 
 
-import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.ntro.backend.BackendMessageHandler;
@@ -15,7 +15,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 		T.call(this);
 		
 		CourseListManager.openQueueForUser(modelStore, 
-				                           CourseListTeacher.class,
+				                           CourseListModelTeacher.class,
 				                           message.getSemesterId(),
 				                           message.getCourseId(), 
 				                           message.getUser());

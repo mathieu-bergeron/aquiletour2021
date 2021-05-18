@@ -2,9 +2,9 @@ package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.Admin;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
@@ -25,14 +25,14 @@ public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCu
 		if(message.getUser().actsAsAdmin()) {
 
 			SemesterListManager.selectCurrentSemesterForModelId(modelStore,
-					 										    SemesterListAdmin.class,
+					 										    SemesterListModelAdmin.class,
 															    message.getSemesterId(),
 															    message.getCurrentSemester(),
 															    Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 		}else if(message.getUser().actsAsTeacher()) {
 
 			SemesterListManager.selectCurrentSemesterForUser(modelStore,
-					 										 SemesterListTeacher.class,
+					 										 SemesterListModelTeacher.class,
 															 message.getSemesterId(),
 															 message.getCurrentSemester(),
 															 message.getUser());
@@ -49,7 +49,7 @@ public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCu
 		if(message.getUser().actsAsAdmin()) {
 			UserManager.forEachTeacherId(modelStore, teacherId -> {
 				SemesterListManager.selectCurrentSemesterForModelId(modelStore,
-																	SemesterListTeacher.class,
+																	SemesterListModelTeacher.class,
 																	message.getSemesterId(),
 																	message.getCurrentSemester(),
 																	teacherId);

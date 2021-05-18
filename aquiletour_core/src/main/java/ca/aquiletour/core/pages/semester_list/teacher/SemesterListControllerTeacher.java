@@ -4,11 +4,11 @@ import ca.aquiletour.core.pages.semester_list.SemesterListController;
 import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.handlers.ShowSemesterListHandler;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
-import ca.aquiletour.core.pages.semester_list.models.SemesterList;
+import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.teacher.handlers.SemesterListViewModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.handlers.ShowSemesterListHandlerTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListTeacher;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterListViewTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterViewTeacher;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
@@ -34,10 +34,10 @@ public class SemesterListControllerTeacher extends SemesterListController {
 	}
 
 	@Override
-	protected Class<? extends SemesterList> modelClass() {
+	protected Class<? extends SemesterListModel> modelClass() {
 		T.call(this);
 		
-		return SemesterListTeacher.class;
+		return SemesterListModelTeacher.class;
 	}
 
 	@Override

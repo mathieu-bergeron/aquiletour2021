@@ -4,8 +4,8 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListTeacher;
-import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardTeacher;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
@@ -28,7 +28,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		CourseListManager.validateCourseListItem(item);
 			
-		CourseListManager.addCourseForUser(modelStore, CourseListTeacher.class, item, teacher);
+		CourseListManager.addCourseForUser(modelStore, CourseListModelTeacher.class, item, teacher);
 		
 		CourseManager.createCourseForUser(modelStore, 
 				                          path,
@@ -45,7 +45,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		GroupListManager.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseListItem().getCourseId(), message.getUser());
 		
-		DashboardManager.addDashboardItemForUser(modelStore, DashboardTeacher.class, message.getCourseListItem(), message.getUser());
+		DashboardManager.addDashboardItemForUser(modelStore, DashboardModelTeacher.class, message.getCourseListItem(), message.getUser());
 
 		/*
 

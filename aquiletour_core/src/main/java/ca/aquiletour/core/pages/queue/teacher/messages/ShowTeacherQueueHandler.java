@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.queue.teacher.messages;
 
 import ca.aquiletour.core.pages.queue.QueueController;
-import ca.aquiletour.core.pages.queue.models.Queue;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
@@ -23,7 +23,7 @@ public class ShowTeacherQueueHandler extends ControllerMessageHandler<QueueContr
 		if(!courseId.equals(currentCourseId)) {
 			// XXX: change queue model when needed
 			String authToken = currentController.context().user().getAuthToken();
-			currentController.setModelLoader(Queue.class, authToken, courseId);
+			currentController.setModelLoader(QueueModel.class, authToken, courseId);
 			currentCourseId = courseId;
 		}
 
