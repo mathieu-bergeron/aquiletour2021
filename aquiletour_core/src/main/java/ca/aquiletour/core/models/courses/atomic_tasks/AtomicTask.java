@@ -1,5 +1,8 @@
 package ca.aquiletour.core.models.courses.atomic_tasks;
 
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;

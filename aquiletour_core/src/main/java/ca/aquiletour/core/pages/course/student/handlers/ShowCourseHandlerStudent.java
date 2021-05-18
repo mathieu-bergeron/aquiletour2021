@@ -2,8 +2,8 @@ package ca.aquiletour.core.pages.course.student.handlers;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.CoursePathStudent;
-import ca.aquiletour.core.models.courses.base.Course;
-import ca.aquiletour.core.models.courses.student.CourseStudent;
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
@@ -15,10 +15,10 @@ import ca.ntro.services.Ntro;
 public class ShowCourseHandlerStudent extends ShowCourseHandler {
 
 	@Override
-	protected Class<? extends Course> modelClass() {
+	protected Class<? extends CourseModel> modelClass() {
 		T.call(this);
 
-		return CourseStudent.class;
+		return CourseModelStudent.class;
 	}
 
 	@Override

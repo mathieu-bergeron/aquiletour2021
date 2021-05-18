@@ -1,5 +1,6 @@
-package ca.aquiletour.core.models.courses.atomic_tasks;
+package ca.aquiletour.core.models.courses.atomic_tasks.git_repo;
 
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 

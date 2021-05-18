@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.course.AtomicTaskMessage;
 import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
@@ -54,6 +55,7 @@ import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.models.NtroDate;
@@ -674,10 +676,10 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("StudentRegistersRepo")) {
 
-			StudentRegistersRepoMessage studentRegistersRepo = AquiletourRequestHandler.createCourseMessage(StudentRegistersRepoMessage.class,
-																									 path,
-																									 parameters,
-																									 sessionData);
+			StudentRegistersRepoMessage studentRegistersRepo = createAtomicTaskMessage(StudentRegistersRepoMessage.class,
+																					   path,
+																					   parameters,
+																					   sessionData);
 
 			String studentId = parameters.get("studentId")[0];
 			String groupId = parameters.get("groupId")[0];
@@ -709,6 +711,29 @@ public class AquiletourBackendRequestHandler {
 
 				throw new RuntimeException("FIXME");
 			}
+	}
+
+	static <MSG extends AtomicTaskMessage> MSG createAtomicTaskMessage(Class<MSG> messageClass, 
+			                                                           Path path, 
+			                                                           Map<String, String[]> parameters,
+			                                                           SessionData sessionData) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		MSG message = AquiletourRequestHandler.createCourseMessage(messageClass,
+																   path,
+																   parameters,
+																   sessionData);
+		
+		if(parameters.containsKey("atomicTaskId")) {
+
+			message.setAtomicTaskId(parameters.get("atomicTaskId")[0]);
+
+		}else {
+			
+			Log.fatalError("Cannot create AtomicTaskMessage: atomicTaskId is not defined");
+		}
+
+		return message;
 	}
 
 	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {

@@ -3,6 +3,9 @@ package ca.aquiletour.core.models.courses.base;
 import java.util.Map;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
@@ -15,7 +18,7 @@ import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class Course implements NtroModel, TaskGraph {
+public abstract class CourseModel implements NtroModel, TaskGraph {
 
 	private CoursePath coursePath = new CoursePath();
 	private SemesterIds siblingSemesters = new SemesterIds();
@@ -340,7 +343,7 @@ public abstract class Course implements NtroModel, TaskGraph {
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
 	
-	private void copyTasks(Course course) {
+	private void copyTasks(CourseModel course) {
 		T.call(this);
 		
 		getTasks().setCourse(this);
@@ -352,11 +355,27 @@ public abstract class Course implements NtroModel, TaskGraph {
 		}
 	}
 
-	public void copyCourse(Course course) {
+	public void copyCourse(CourseModel course) {
 		T.call(this);
 		
 		coursePath = course.getCoursePath();
 		copyTasks(course);
 	}
 
+	protected void updateAtomicTaskCompletion(StudentCompletionsByTaskId studentCompletions, 
+			                                  Path taskPath,
+			                                  String atomicTaskId,
+			                                  AtomicTaskCompletion newCompletion) {
+		T.call(this);
+
+		String taskId = Task.idFromPath(taskPath);
+		
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		if(taskCompletions == null) {
+			taskCompletions = new CompletionByAtomicTaskId();
+			studentCompletions.putEntry(atomicTaskId, taskCompletions);
+		}
+		
+		taskCompletions.putEntry(taskId, newCompletion);
+	}
 }

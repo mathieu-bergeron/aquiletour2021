@@ -1,12 +1,15 @@
 package ca.aquiletour.core.models.courses.student;
 
-import ca.aquiletour.core.models.courses.base.Course;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
 
-public class CourseStudent extends Course {
+public class CourseModelStudent extends CourseModel {
 	
 	private StoredString groupId = new StoredString();
 	private StudentCompletionsByTaskId completions = new StudentCompletionsByTaskId();
@@ -33,6 +36,14 @@ public class CourseStudent extends Course {
 		this.completions = completions;
 	}
 
-
+	public void updateAtomicTaskCompletion(Path taskPath, String atomicTaskId, AtomicTaskCompletion newCompletion) {
+		T.call(this);
+		
+		updateAtomicTaskCompletion(completions, 
+				                   taskPath,
+				                   atomicTaskId, 
+				                   newCompletion);
+	}
+	
 
 }

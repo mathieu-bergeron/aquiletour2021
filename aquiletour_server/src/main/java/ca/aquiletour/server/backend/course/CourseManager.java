@@ -4,11 +4,13 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.CoursePathStudent;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.models.courses.base.OnTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.student.CourseStudent;
-import ca.aquiletour.core.models.courses.teacher.CourseTeacher;
+import ca.aquiletour.core.models.courses.student.CourseModelStudent;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -31,9 +33,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", courseId, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", courseId, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				course.removeNextTask(taskToModify, taskToDelete);
 			}
@@ -47,9 +49,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				course.removeSubTask(taskToModify, taskToDelete);
 			}
@@ -62,9 +64,9 @@ public class CourseManager {
 			                              Path taskToDelete) {
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", courseId, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", courseId, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				course.removePreviousTask(taskToModify, taskToDelete);
 			}
@@ -77,9 +79,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				course.deleteTask(taskToDelete, new OnTaskRemoved() {
 					@Override
@@ -100,9 +102,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 
 				course.addPreviousTaskTo(nextPath, previousTask, new OnTaskAdded() {
@@ -124,9 +126,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 
 				course.addNextTaskTo(previousPath, nextTask, new OnTaskAdded() {
@@ -149,9 +151,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 
 				course.addSubTaskTo(parentTaskPath, task, new OnTaskAdded() {
@@ -166,7 +168,7 @@ public class CourseManager {
 		});
 	}
 
-	private static void registerExercice(CoursePath coursePath, Task task, CourseTeacher course) {
+	private static void registerExercice(CoursePath coursePath, Task task, CourseModelTeacher course) {
 		T.call(CourseManager.class);
 
 		for(GroupDescription groupDescription : course.getGroups().getValue()) {
@@ -175,7 +177,7 @@ public class CourseManager {
 		}
 	}
 
-	private static void deleteExercice(CoursePath coursePath, Task task, CourseTeacher course) {
+	private static void deleteExercice(CoursePath coursePath, Task task, CourseModelTeacher course) {
 		T.call(CourseManager.class);
 
 		for(GroupDescription groupDescription : course.getGroups().getValue()) {
@@ -190,9 +192,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
 				course.updateCourseTitle(courseTitle);
@@ -208,9 +210,9 @@ public class CourseManager {
 			                                 String userId) {
 		T.call(CourseManager.class);
 
-		modelStore.createModel(CourseTeacher.class, "admin", coursePath, new ModelInitializer<CourseTeacher>() {
+		modelStore.createModel(CourseModelTeacher.class, "admin", coursePath, new ModelInitializer<CourseModelTeacher>() {
 			@Override
-			public void initialize(CourseTeacher course) {
+			public void initialize(CourseModelTeacher course) {
 				T.call(this);
 				
 				Task rootTask = new Task();
@@ -241,9 +243,9 @@ public class CourseManager {
 
 		T.call(CourseManager.class);
 
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 
 				course.addGroup(groupId, studentsToAdd);
@@ -261,9 +263,9 @@ public class CourseManager {
 		
 		T.call(CourseManager.class);
 
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
 				course.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime);
@@ -278,9 +280,9 @@ public class CourseManager {
 						                    TeacherSchedule teacherSchedule) {
 		T.call(CourseManager.class);
 
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
 				course.updateSchedule(semesterSchedule, teacherSchedule);
@@ -295,9 +297,9 @@ public class CourseManager {
 			                               User user) {
 		T.call(CourseManager.class);
 
-		modelStore.updateModel(CourseTeacher.class, "admin", coursePath, new ModelUpdater<CourseTeacher>() {
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseTeacher course) {
+			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
 				course.taskCompletedByStudent(taskPath, atomicTaskId, user.getId());
@@ -305,7 +307,7 @@ public class CourseManager {
 		});
 	}
 
-	public static CourseTeacher getCourse(ModelStoreSync modelStore, Class<CourseTeacher> courseModelClass, CoursePath coursePath) {
+	public static CourseModelTeacher getCourse(ModelStoreSync modelStore, Class<CourseModelTeacher> courseModelClass, CoursePath coursePath) {
 		T.call(CourseManager.class);
 		
 		return modelStore.getModel(courseModelClass, "admin", coursePath);
@@ -313,7 +315,7 @@ public class CourseManager {
 
 	public static void createStudentCourse(ModelStoreSync modelStore, 
 										   CoursePath coursePath,
-			                               CourseTeacher courseTeacher, 
+			                               CourseModelTeacher courseTeacher, 
 			                               User student) {
 		T.call(CourseManager.class);
 		
@@ -321,13 +323,51 @@ public class CourseManager {
 		
 		System.out.println(coursePathStudent.toFileName());
 		
-		modelStore.createModel(CourseStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseStudent>() {
+		modelStore.createModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseModelStudent>() {
 			@Override
-			public void initialize(CourseStudent newModel) {
+			public void initialize(CourseModelStudent newModel) {
 				T.call(this);
 			
 					
 				newModel.copyCourse(courseTeacher);
+			}
+		});
+	}
+
+	public static void updateAtomicTaskCompletionTeacher(ModelStoreSync modelStore, 
+			                                              CoursePath coursePath, 
+			                                              String studentId, 
+			                                              Path taskPath, 
+			                                              String atomicTaskId, 
+			                                              AtomicTaskCompletion newCompletion) {
+		T.call(CourseManager.class);
+
+		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
+			@Override
+			public void update(CourseModelTeacher existingModel) {
+				T.call(this);
+				
+				existingModel.updateAtomicTaskCompletion(taskPath, studentId, atomicTaskId, newCompletion);
+			}
+		});
+	}
+
+	public static void updateAtomicTaskCompletionStudent(ModelStoreSync modelStore, 
+			                                              CoursePath coursePath, 
+			                                              String studentId, 
+			                                              Path taskPath, 
+			                                              String atomicTaskId, 
+			                                              AtomicTaskCompletion newCompletion) {
+		T.call(CourseManager.class);
+
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+		
+		modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+			@Override
+			public void update(CourseModelStudent existingModel) {
+				T.call(this);
+				
+				existingModel.updateAtomicTaskCompletion(taskPath, atomicTaskId, newCompletion);
 			}
 		});
 	}

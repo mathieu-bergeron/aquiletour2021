@@ -3,10 +3,10 @@ package ca.aquiletour.web.pages.course.student;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.GitExerciseTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
@@ -181,16 +181,16 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		if(task instanceof GitRepoTask) {
 			
-			appendGitRepoEntryTask(groupId, completion, (GitRepoTask) task);
+			appendGitRepoEntryTask(groupId, (GitRepoTask) task, completion);
 
 		}else if(task instanceof GitExerciseTask) {
 			
 		}
 	}
 
-	private void appendGitRepoEntryTask(String groupId, AtomicTaskCompletion completion, GitRepoTask repoTask) {
+	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask, AtomicTaskCompletion completion) {
 		T.call(this);
-
+		
 		if(completion == null) {
 			
 			HtmlElement step01 = gitRepoTaskStep01.clone();
@@ -198,11 +198,13 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElements addStudentIdToValue = step01.find(".add-student-id-to-value");
 			HtmlElements addGroupIdToValue = step01.find(".add-group-id-to-value");
 			HtmlElements addRepoPathToValue = step01.find(".add-repo-path-to-value");
+			HtmlElements addAtomicTaskIdToValue = step01.find(".add-atomic-task-id-to-value");
 			
 			addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getRegistrationId());
 			addGroupIdToValue.appendToAttribute("value", groupId);
 			addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
-			
+			addAtomicTaskIdToValue.appendToAttribute("value", repoTask.getId());
+
 			step01.show();
 			entryTasksContainer.appendElement(step01);
 

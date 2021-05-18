@@ -227,7 +227,13 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 	public String id() {
-		return getPath().toString();
+		return idFromPath(getPath());
+	}
+	
+	public static String idFromPath(Path taskPath) {
+		T.call(Task.class);
+		
+		return taskPath.toString();
 	}
 
 	public void forEachStartTaskLocal(TaskLambda lambda) {

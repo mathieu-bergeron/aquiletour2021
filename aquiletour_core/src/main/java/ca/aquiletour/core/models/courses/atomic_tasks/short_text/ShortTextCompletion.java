@@ -1,4 +1,6 @@
-package ca.aquiletour.core.models.courses.task_completions;
+package ca.aquiletour.core.models.courses.atomic_tasks.short_text;
+
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 
 public class ShortTextCompletion extends AtomicTaskCompletion {
 	

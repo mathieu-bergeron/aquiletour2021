@@ -3,12 +3,12 @@ package ca.aquiletour.core.models.courses.teacher;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.base.Course;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
-import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -20,7 +20,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CourseTeacher extends Course {
+public class CourseModelTeacher extends CourseModel {
 
 	private GroupDescriptions groups = new GroupDescriptions();
 
@@ -232,5 +232,20 @@ public class CourseTeacher extends Course {
 		List<CurrentTaskTeacher> currentTasks = new ArrayList<>();
 		
 		return currentTasks;
+	}
+
+	public void updateAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId, AtomicTaskCompletion completionToAdd) {
+		T.call(this);
+
+		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
+		if(studentCompletions == null) {
+			studentCompletions = new StudentCompletionsByTaskId();
+			completions.putEntry(studentId, studentCompletions);
+		}
+
+		updateAtomicTaskCompletion(studentCompletions, 
+				                taskPath, 
+				                atomicTaskId, 
+				                completionToAdd);
 	}
 }

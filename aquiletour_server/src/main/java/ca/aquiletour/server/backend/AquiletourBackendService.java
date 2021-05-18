@@ -4,7 +4,6 @@ package ca.aquiletour.server.backend;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.OnNewCommits;
-import ca.aquiletour.core.messages.git.RegisterRepo;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
@@ -79,7 +78,6 @@ import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
-import ca.ntro.messages.NtroMessage;
 
 public class AquiletourBackendService extends BackendServiceServer {
 	

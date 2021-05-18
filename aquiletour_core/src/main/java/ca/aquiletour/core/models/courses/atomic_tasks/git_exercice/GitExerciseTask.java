@@ -1,24 +1,26 @@
-package ca.aquiletour.core.models.courses.atomic_tasks;
+package ca.aquiletour.core.models.courses.atomic_tasks.git_exercice;
 
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.ntro.core.system.trace.T;
 
-public class ShortTextTask extends AtomicTask {
+public class GitExerciseTask extends AtomicTask {
 	
 	@Override
 	public String toString() {
-		return "Texte court";
+		return "Remise Git";
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		T.call(this);
 		
 		if(other == null) return false;
 		if(this == other) return true;
-		if(other instanceof ShortTextTask) {
+		if(other instanceof GitExerciseTask) {
 			return true;
 		}
 		return false;
 	}
+
 
 }

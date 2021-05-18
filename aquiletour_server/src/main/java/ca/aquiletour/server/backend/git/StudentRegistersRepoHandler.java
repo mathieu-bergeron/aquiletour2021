@@ -1,7 +1,9 @@
 package ca.aquiletour.server.backend.git;
 
 import ca.aquiletour.core.messages.git.RegisterRepo;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
+import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -13,16 +15,35 @@ public class StudentRegistersRepoHandler extends BackendMessageHandler<StudentRe
 		T.call(this);
 		
 		GitMessages.sendMessage(RegisterRepo.fromStudentRegistersRepoMessage(message));
+		
+		GitRepoSubmitted gitRepoSubmitted = new GitRepoSubmitted();
+		gitRepoSubmitted.setAtomicTaskId(message.getAtomicTaskId());
+		gitRepoSubmitted.setRepoUrl(message.getRepoUrl());
+		gitRepoSubmitted.setStudentId(message.getStudentId());
+
+		CourseManager.updateAtomicTaskCompletionStudent(modelStore, 
+				                                  		message.coursePath(), 
+				                                  		message.getStudentId(),
+				                                  		message.getTaskPath(), 
+				                                  		message.getAtomicTaskId(), 
+				                                  		gitRepoSubmitted);
 	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, StudentRegistersRepoMessage message) {
 		T.call(this);
-		
-		// Add completion to course model
-		
-		
-		
+
+		GitRepoSubmitted gitRepoSubmitted = new GitRepoSubmitted();
+		gitRepoSubmitted.setAtomicTaskId(message.getAtomicTaskId());
+		gitRepoSubmitted.setRepoUrl(message.getRepoUrl());
+		gitRepoSubmitted.setStudentId(message.getStudentId());
+
+		CourseManager.updateAtomicTaskCompletionTeacher(modelStore, 
+				                                 		message.coursePath(), 
+				                                 		message.getStudentId(),
+				                                 		message.getTaskPath(), 
+				                                 		message.getAtomicTaskId(), 
+				                                 		gitRepoSubmitted);
 	}
 
 }

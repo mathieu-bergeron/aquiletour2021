@@ -1,10 +1,11 @@
 package ca.aquiletour.core.pages.course.student.messages;
 
+import ca.aquiletour.core.messages.course.AtomicTaskMessage;
 import ca.aquiletour.core.messages.course.CourseMessage;
 import ca.ntro.core.Path;
 import ca.ntro.messages.NtroMessage;
 
-public class StudentRegistersRepoMessage extends CourseMessage {
+public class StudentRegistersRepoMessage extends AtomicTaskMessage {
 	
 	private String studentId;
 	private String groupId;
