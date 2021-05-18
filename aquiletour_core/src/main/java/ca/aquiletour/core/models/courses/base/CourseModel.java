@@ -14,7 +14,6 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -390,5 +389,22 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		if(taskCompletions != null) {
 			taskCompletions.removeEntry(atomicTaskId);
 		}
+	}
+
+	protected AtomicTaskCompletion atomicTaskCompletion(StudentCompletionsByTaskId studentCompletions, 
+			                                               Path taskPath,
+			                                               String atomicTaskId) {
+		T.call(this);
+		
+		AtomicTaskCompletion result = null;
+
+		String taskId = Task.idFromPath(taskPath);
+		
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		if(taskCompletions != null) {
+			result = taskCompletions.valueOf(atomicTaskId);
+		}
+		
+		return result;
 	}
 }

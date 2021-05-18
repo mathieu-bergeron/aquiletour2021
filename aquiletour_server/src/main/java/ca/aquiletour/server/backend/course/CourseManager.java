@@ -21,7 +21,6 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public class CourseManager {
@@ -406,5 +405,19 @@ public class CourseManager {
 				existingModel.removeAtomicTaskCompletion(taskPath, atomicTaskId);
 			}
 		});
+	}
+
+	public static AtomicTaskCompletion getAtomicTaskCompletionStudent(ModelStoreSync modelStore, 
+			                                                          CoursePath coursePath, 
+			                                                          String studentId, 
+			                                                          Path taskPath, 
+			                                                          String atomicTaskId) {
+		T.call(CourseManager.class);
+
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+		
+		CourseModelStudent model = modelStore.getModel(CourseModelStudent.class, "admin", coursePathStudent);
+		
+		return model.atomicTaskCompletion(taskPath, atomicTaskId);
 	}
 }

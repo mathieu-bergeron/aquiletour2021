@@ -26,7 +26,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 	private HtmlElement gitRepoTaskSubmitUrl;
 	private HtmlElement gitRepoTaskCloningRepo;
-	private HtmlElement gitRepoTaskRepoCloned;
+	private HtmlElement gitRepoTaskCloned;
 	private HtmlElement gitRepoTaskCloneFailed;
 
 	private HtmlElement gitProgressionLink;
@@ -49,7 +49,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		gitRepoTaskSubmitUrl = this.getRootElement().find(".git-repo-task-submit-url").get(0);
 		gitRepoTaskCloningRepo = this.getRootElement().find(".git-repo-task-cloning-repo").get(0);
-		gitRepoTaskRepoCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
+		gitRepoTaskCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
 		gitRepoTaskCloneFailed = this.getRootElement().find(".git-repo-task-clone-failed").get(0);
 
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
@@ -66,7 +66,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		MustNot.beNull(gitRepoTaskSubmitUrl);
 		MustNot.beNull(gitRepoTaskCloningRepo);
-		MustNot.beNull(gitRepoTaskRepoCloned);
+		MustNot.beNull(gitRepoTaskCloned);
 		MustNot.beNull(gitRepoTaskCloneFailed);
 
 		MustNot.beNull(gitProgressionLink);
@@ -83,7 +83,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		gitRepoTaskSubmitUrl.hide();
 		gitRepoTaskCloningRepo.hide();
-		gitRepoTaskRepoCloned.hide();
+		gitRepoTaskCloned.hide();
 		gitRepoTaskCloneFailed.hide();
 	}
 
@@ -218,13 +218,22 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			addRepoUrlToValue.appendToAttribute("value", gitRepoSubmitted.getRepoUrl());
 
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
-			
 			repoUrl.text(gitRepoSubmitted.getRepoUrl());
 
 			entryTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloned){
+
+			GitRepoCloned gitRepoCloned = (GitRepoCloned) completion;
+
+			HtmlElement formElement = gitRepoTaskCloned.clone();
+
+			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
+			repoUrl.text(gitRepoCloned.getRepoUrl());
+
+			entryTasksContainer.appendElement(formElement);
+			formElement.show();
 
 		}else if(completion instanceof GitRepoCloneFailed){
 

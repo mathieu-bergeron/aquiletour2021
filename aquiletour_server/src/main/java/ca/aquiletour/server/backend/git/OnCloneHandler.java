@@ -1,7 +1,9 @@
 package ca.aquiletour.server.backend.git;
 
 import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCompletion;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
@@ -18,8 +20,18 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 	@Override
 	public void handleLater(ModelStoreSync modelStore, OnClone message) {
 		T.call(this);
+
+		AtomicTaskCompletion completion = CourseManager.getAtomicTaskCompletionStudent(modelStore, 
+				                                                                       message.coursePath(), 
+				                                                                       message.getStudentId(), 
+				                                                                       message.taskPath(), 
+				                                                                       message.atomicTaskId());
 		
 		GitRepoCloned gitRepoCloned = new GitRepoCloned();
+		
+		if(completion instanceof GitRepoCompletion) {
+			gitRepoCloned.setRepoUrl(((GitRepoCompletion) completion).getRepoUrl());
+		}
 		
 		CourseManager.updateAtomicTaskCompletionStudent(modelStore, 
 				                                        message.coursePath(), 
