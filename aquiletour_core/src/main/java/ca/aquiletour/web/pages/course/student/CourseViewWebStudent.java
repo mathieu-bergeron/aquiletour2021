@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.task_completions.AtomicTaskCompletion;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;
@@ -34,6 +35,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElements addTaskIdToValue;
 	private HtmlElements addTaskIdToId;
 
+	private HtmlElements addStudentIdToValue;
+	private HtmlElements addGroupIdToValue;
+	private HtmlElements addRepoPathToValue;
+
 	private String gitProgressionText;
 
 	@Override
@@ -54,6 +59,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
+
 
 		MustNot.beNull(gitRepoTaskStep01);
 		MustNot.beNull(gitRepoTaskStep02);
@@ -170,29 +176,47 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void appendEntryTask(AtomicTask task, AtomicTaskCompletion completion) {
+	public void appendEntryTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		if(task instanceof GitRepoTask) {
-
-			if(completion == null) {
-				
-				HtmlElement step01 = gitRepoTaskStep01.clone();
-				step01.show();
-				entryTasksContainer.appendElement(step01);
-
-			}else {
-
-				entryTasksContainer.appendElement(gitRepoTaskStep02.clone());
-			}
+			
+			appendGitRepoEntryTask(groupId, completion, (GitRepoTask) task);
 
 		}else if(task instanceof GitExerciseTask) {
 			
 		}
 	}
 
+	private void appendGitRepoEntryTask(String groupId, AtomicTaskCompletion completion, GitRepoTask repoTask) {
+		T.call(this);
+
+		if(completion == null) {
+			
+			HtmlElement step01 = gitRepoTaskStep01.clone();
+			
+			HtmlElements addStudentIdToValue = step01.find(".add-student-id-to-value");
+			HtmlElements addGroupIdToValue = step01.find(".add-group-id-to-value");
+			HtmlElements addRepoPathToValue = step01.find(".add-repo-path-to-value");
+			
+			addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getRegistrationId());
+			addGroupIdToValue.appendToAttribute("value", groupId);
+			addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
+			
+			step01.show();
+			entryTasksContainer.appendElement(step01);
+
+		}else {
+			
+			HtmlElement step02 = gitRepoTaskStep02.clone();
+			step02.show();
+
+			entryTasksContainer.appendElement(step02);
+		}
+	}
+
 	@Override
-	public void appendExitTask(AtomicTask task, AtomicTaskCompletion completion) {
+	public void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 	}

@@ -120,8 +120,8 @@ import ca.aquiletour.core.pages.group_list.models.SemesterCourses;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
 import ca.aquiletour.core.pages.open_queue_list.values.ObservableQueueList;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
-import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurations;
-import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimes;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.ObservableTime;
 import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
@@ -359,8 +359,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ObservableTime.class);
 		Ntro.registerSerializableClass(ObservableTags.class);
 
-		Ntro.registerSerializableClass(ModifyAppointmentDurations.class);
-		Ntro.registerSerializableClass(ModifyAppointmentTimes.class);
+		Ntro.registerSerializableClass(ModifyAppointmentDurationsMessage.class);
+		Ntro.registerSerializableClass(ModifyAppointmentTimesMessage.class);
 		Ntro.registerSerializableClass(ToggleStudentModeMessage.class);
 
 		Ntro.registerSerializableClass(DashboardItemStudent.class);

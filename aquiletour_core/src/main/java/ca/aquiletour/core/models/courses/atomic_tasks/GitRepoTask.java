@@ -6,7 +6,18 @@ import ca.ntro.core.system.trace.T;
 public class GitRepoTask extends AtomicTask {
 	
 	private Path repoPath = new Path();
-	private Path exercicePath = new Path();
+	
+	public GitRepoTask() {
+		super();
+		T.call(this);
+	}
+
+	public GitRepoTask(Path repoPath) {
+		super();
+		T.call(this);
+		
+		this.repoPath = repoPath;
+	}
 
 	@Override
 	public String toString() {
@@ -21,14 +32,6 @@ public class GitRepoTask extends AtomicTask {
 		this.repoPath = repoPath;
 	}
 
-	public Path getExercicePath() {
-		return exercicePath;
-	}
-
-	public void setExercicePath(Path exercicePath) {
-		this.exercicePath = exercicePath;
-	}
-	
 	@Override
 	public boolean equals(Object other) {
 		if(other == null) return false;
@@ -53,16 +56,6 @@ public class GitRepoTask extends AtomicTask {
 		}else if(repoPath != null 
 				&& !repoPath.equals(otherTask.repoPath)) {
 
-			isEqual = false;
-
-		}else if(exercicePath == null
-				&& otherTask.exercicePath != null) {
-
-			isEqual = false;
-
-		}else if(exercicePath != null
-				&& !exercicePath.equals(otherTask.exercicePath)) {
-			
 			isEqual = false;
 		}
 		

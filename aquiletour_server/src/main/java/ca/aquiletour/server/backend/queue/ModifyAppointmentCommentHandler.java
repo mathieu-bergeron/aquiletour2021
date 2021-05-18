@@ -1,15 +1,15 @@
 package ca.aquiletour.server.backend.queue;
 
-import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentComment;
+import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentCommentMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
-public class ModifyAppointmentCommentHandler extends BackendMessageHandler<ModifyAppointmentComment>{
+public class ModifyAppointmentCommentHandler extends BackendMessageHandler<ModifyAppointmentCommentMessage>{
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, ModifyAppointmentComment message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, ModifyAppointmentCommentMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 		
 		T.here();
@@ -18,7 +18,7 @@ public class ModifyAppointmentCommentHandler extends BackendMessageHandler<Modif
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, ModifyAppointmentComment message) {
+	public void handleLater(ModelStoreSync modelStore, ModifyAppointmentCommentMessage message) {
 		T.call(this);
 		
 	}

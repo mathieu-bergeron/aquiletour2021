@@ -3,7 +3,7 @@ package ca.aquiletour.core.messages.user;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 
-public class UserChangesPassword extends NtroUserMessage<User> {
+public class UserChangesPasswordMessage extends NtroUserMessage<User> {
 	
 	private String currentPassword;
 	private String newPasswordA;

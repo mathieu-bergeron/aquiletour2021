@@ -1,15 +1,15 @@
 package ca.aquiletour.server.backend.users;
 
-import ca.aquiletour.core.messages.user.UserChangesPassword;
+import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
-public class UserChangesPasswordHandler extends BackendMessageHandler<UserChangesPassword> {
+public class UserChangesPasswordHandler extends BackendMessageHandler<UserChangesPasswordMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, UserChangesPassword message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, UserChangesPasswordMessage message) throws BackendMessageHandlerError {
 		T.call(UserChangesPasswordHandler.class);
 		
 		if(message.getCurrentPassword() != null 
@@ -35,7 +35,7 @@ public class UserChangesPasswordHandler extends BackendMessageHandler<UserChange
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, UserChangesPassword message) {
+	public void handleLater(ModelStoreSync modelStore, UserChangesPasswordMessage message) {
 		T.call(UserChangesPasswordHandler.class);
 		
 	}

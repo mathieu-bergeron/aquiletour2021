@@ -4,7 +4,7 @@ package ca.aquiletour.core.pages.queue.student.messages;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 
-public class ModifyAppointmentComment extends NtroUserMessage<User> {
+public class ModifyAppointmentCommentMessage extends NtroUserMessage<User> {
 
 	private String queueId;
 	private String comment;

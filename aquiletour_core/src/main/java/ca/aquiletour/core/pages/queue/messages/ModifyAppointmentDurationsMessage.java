@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.queue.messages;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 
-public class ModifyAppointmentDurations extends NtroUserMessage<User> {
+public class ModifyAppointmentDurationsMessage extends NtroUserMessage<User> {
 	
 	private int durationIncrementSeconds;
 

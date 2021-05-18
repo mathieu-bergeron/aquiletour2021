@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.user;
 
-public class UserSendsPassword extends DelayedMessagesMessage {
+public class UserSendsPasswordMessage extends DelayedMessagesMessage {
 	
 	private String password;
 

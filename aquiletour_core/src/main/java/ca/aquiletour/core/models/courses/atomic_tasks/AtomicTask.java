@@ -11,7 +11,7 @@ public class AtomicTask implements NtroModelValue {
 		
 		if(description.contains("{dépôtGit}")) {
 			
-			parentTask.addEntryTask(new GitRepoTask());
+			parentTask.addEntryTask(new GitRepoTask(parentTask.getPath()));
 		}
 
 		if(description.contains("{remiseGit}")) {

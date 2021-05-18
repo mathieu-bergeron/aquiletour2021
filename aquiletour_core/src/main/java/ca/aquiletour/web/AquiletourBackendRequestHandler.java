@@ -10,11 +10,11 @@ import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
-import ca.aquiletour.core.messages.user.UserChangesPassword;
+import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.messages.user.UserSendsPassword;
+import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -33,19 +33,20 @@ import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
+import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
-import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurations;
-import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimes;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
+import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
-import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentComment;
+import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentCommentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
-import ca.aquiletour.core.pages.semester_list.messages.DeleteSemester;
+import ca.aquiletour.core.pages.semester_list.messages.DeleteSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
@@ -59,9 +60,9 @@ import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.Ntro;
+import jsweet.util.StringTypes.param;
 
 public class AquiletourBackendRequestHandler {
-	
 	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
@@ -116,13 +117,17 @@ public class AquiletourBackendRequestHandler {
 	public static void sendRootMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("studentId") && !parameters.get("studentId")[0].isEmpty()) {
+		if(parameters.containsKey("loginStep01")
+				&& parameters.containsKey("studentId") 
+				&& !parameters.get("studentId")[0].isEmpty()) {
 			
 			String userId = parameters.get("studentId")[0];
 			
 			sendLoginMessage(userId, parameters);
 
-		} else if(parameters.containsKey("teacherId") && !parameters.get("teacherId")[0].isEmpty()) {
+		} else if(parameters.containsKey("loginStep01")
+				&& parameters.containsKey("teacherId") 
+				&& !parameters.get("teacherId")[0].isEmpty()) {
 			
 			String userId = parameters.get("teacherId")[0];
 			
@@ -158,7 +163,7 @@ public class AquiletourBackendRequestHandler {
 			String newPasswordA = parameters.get("newPasswordA")[0];
 			String newPasswordB = parameters.get("newPasswordB")[0];
 			
-			UserChangesPassword userChangesPassword = Ntro.messages().create(UserChangesPassword.class);
+			UserChangesPasswordMessage userChangesPassword = Ntro.messages().create(UserChangesPasswordMessage.class);
 			userChangesPassword.setCurrentPassword(currentPassword);
 			userChangesPassword.setNewPasswordA(newPasswordA);
 			userChangesPassword.setNewPasswordB(newPasswordB);
@@ -169,7 +174,7 @@ public class AquiletourBackendRequestHandler {
 
 			String password = parameters.get("password")[0];
 			
-			UserSendsPassword userSendsPassword = Ntro.messages().create(UserSendsPassword.class);
+			UserSendsPasswordMessage userSendsPassword = Ntro.messages().create(UserSendsPasswordMessage.class);
 			userSendsPassword.setPassword(password);
 			userSendsPassword.setDelayedMessages(delayedMessages(parameters));
 			
@@ -391,7 +396,7 @@ public class AquiletourBackendRequestHandler {
 			
 			if(semesterIdA.equals(semesterIdB)) {
 				
-				DeleteSemester deleteSemester = Ntro.messages().create(DeleteSemester.class);
+				DeleteSemesterMessage deleteSemester = Ntro.messages().create(DeleteSemesterMessage.class);
 				deleteSemester.setSemesterId(semesterIdA);
 				Ntro.messages().send(deleteSemester);
 
@@ -667,19 +672,24 @@ public class AquiletourBackendRequestHandler {
 			
 			Ntro.messages().send(updateTaskInfo);
 
-		} else if(parameters.containsKey("registerGitRepo")) {
-				
-				String taskId = parameters.get("taskId")[0];
-				String repoUrl = parameters.get("registerGitRepo")[0];
-				RegisterRepo registerRepoMessage = Ntro.messages().create(RegisterRepo.class);
-				registerRepoMessage.setCourseId("FIXME");
-				registerRepoMessage.setStudentId(Ntro.currentUser().getId());
-				registerRepoMessage.setSemesterId("H2021"); // FIXME
-				registerRepoMessage.setGroupId("01"); // FIXME
-				registerRepoMessage.setRepoUrl(repoUrl);
-				registerRepoMessage.setExercisePath(taskId);
+		} else if(parameters.containsKey("StudentRegistersRepo")) {
 
-				Ntro.backendService().sendMessageToBackend(registerRepoMessage);
+			StudentRegistersRepoMessage studentRegistersRepo = AquiletourRequestHandler.createCourseMessage(StudentRegistersRepoMessage.class,
+																									 path,
+																									 parameters,
+																									 sessionData);
+
+			String studentId = parameters.get("studentId")[0];
+			String groupId = parameters.get("groupId")[0];
+			Path repoPath = new Path(parameters.get("repoPath")[0]);
+			String repoUrl = parameters.get("repoUrl")[0];
+			
+			studentRegistersRepo.setStudentId(studentId);
+			studentRegistersRepo.setGroupId(groupId);
+			studentRegistersRepo.setRepoPath(repoPath);
+			studentRegistersRepo.setRepoUrl(repoUrl);
+
+			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
 
 		} else if(parameters.containsKey("atomicTaskCompletedId")) {
 				
@@ -762,7 +772,7 @@ public class AquiletourBackendRequestHandler {
 			String queueId = parameters.get("modifyCommentForQueueId")[0];
 			String comment = parameters.get("comment")[0];
 
-			ModifyAppointmentComment modifyAppointmentComment = Ntro.messages().create(ModifyAppointmentComment.class);
+			ModifyAppointmentCommentMessage modifyAppointmentComment = Ntro.messages().create(ModifyAppointmentCommentMessage.class);
 			modifyAppointmentComment.setQueueId(queueId);
 			modifyAppointmentComment.setComment(comment);
 			Ntro.messages().send(modifyAppointmentComment);
@@ -772,7 +782,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendModifyAppointmentDurationsMessage(int incrementSeconds) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		ModifyAppointmentDurations modifyAppointmentDurations = Ntro.messages().create(ModifyAppointmentDurations.class);
+		ModifyAppointmentDurationsMessage modifyAppointmentDurations = Ntro.messages().create(ModifyAppointmentDurationsMessage.class);
 		modifyAppointmentDurations.setDurationIncrementSeconds(incrementSeconds);
 		Ntro.messages().send(modifyAppointmentDurations);
 	}
@@ -780,7 +790,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendModifyAppointmentTimesMessage(int incrementSeconds) {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		ModifyAppointmentTimes modifyAppointmentTimes = Ntro.messages().create(ModifyAppointmentTimes.class);
+		ModifyAppointmentTimesMessage modifyAppointmentTimes = Ntro.messages().create(ModifyAppointmentTimesMessage.class);
 		modifyAppointmentTimes.setTimeIncrementSeconds(incrementSeconds);
 		Ntro.messages().send(modifyAppointmentTimes);
 	}

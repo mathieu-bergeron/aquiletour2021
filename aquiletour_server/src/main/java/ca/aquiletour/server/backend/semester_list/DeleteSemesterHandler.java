@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListAdmin;
-import ca.aquiletour.core.pages.semester_list.messages.DeleteSemester;
+import ca.aquiletour.core.pages.semester_list.messages.DeleteSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
@@ -11,10 +11,10 @@ import ca.ntro.backend.BackendMessageHandlerError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
-public class DeleteSemesterHandler extends BackendMessageHandler<DeleteSemester> {
+public class DeleteSemesterHandler extends BackendMessageHandler<DeleteSemesterMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, DeleteSemester message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, DeleteSemesterMessage message) throws BackendMessageHandlerError {
 		T.call(this);
 
 		if(!SessionManager.isUserAuthenticated(modelStore, message.getUser())) {
@@ -40,7 +40,7 @@ public class DeleteSemesterHandler extends BackendMessageHandler<DeleteSemester>
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, DeleteSemester message) {
+	public void handleLater(ModelStoreSync modelStore, DeleteSemesterMessage message) {
 		T.call(this);
 
 		if(message.getUser().actsAsAdmin()) {

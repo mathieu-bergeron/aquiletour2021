@@ -45,7 +45,8 @@ public class CourseViewModelStudent extends CourseViewModel<CourseStudent, Cours
 		T.call(this);
 		
 		AtomicTaskCompletion completion = getCompletion(model, task);
-		view.appendEntryTask(task, completion);
+		String groupId = model.getGroupId().getValue();
+		view.appendEntryTask(groupId, task, completion);
 	}
 
 	private AtomicTaskCompletion getCompletion(CourseStudent model, AtomicTask task) {
@@ -66,6 +67,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseStudent, Cours
 		T.call(this);
 
 		AtomicTaskCompletion completion = getCompletion(model, task);
-		view.appendExitTask(task, completion);
+		String groupId = model.getGroupId().getValue();
+		view.appendExitTask(groupId, task, completion);
 	}
 }

@@ -11,7 +11,7 @@ public interface CourseViewStudent extends CourseView  {
 	void enableCompletionCheckbox(boolean enable);
 	void checkCompletion(boolean check);
 
-	void appendEntryTask(AtomicTask task, AtomicTaskCompletion completion);
-	void appendExitTask(AtomicTask task, AtomicTaskCompletion completion);
+	void appendEntryTask(String groupId, AtomicTask task, AtomicTaskCompletion completion);
+	void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion);
 
 }
