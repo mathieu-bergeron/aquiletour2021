@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import ca.ntro.core.models.foreach.Break;
-import ca.ntro.core.models.foreach.EntryLambda;
+import ca.ntro.core.models.foreach.MapIterator;
+import ca.ntro.core.models.foreach.MapMapper;
 import ca.ntro.core.models.foreach.MapReducer;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
@@ -39,8 +40,10 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 	}
 
 	public void putEntry(String key, V value) {
-		
-		getValue().put(key, value);
+
+		synchronized (getValue()) {
+			getValue().put(key, value);
+		}
 		
 		if(ifStoredConnected()) {
 
@@ -62,7 +65,15 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 	}
 
 	public V valueOf(String key) {
-		return getValue().get(key);
+		T.call(this);
+		
+		V value = null;
+		
+		synchronized (getValue()) {
+			value = getValue().get(key);
+		}
+		
+		return value;
 	}
 	
 	public void removeEntry(String key) {
@@ -108,8 +119,14 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 
 	public boolean containsKey(String key) {
 		T.call(this);
+		
+		boolean contains = false;
+		
+		synchronized (getValue()) {
+			contains = getValue().containsKey(key);
+		}
 
-		return getValue().containsKey(key);
+		return contains;
 	}
 
 	public void removeObservers() {
@@ -121,8 +138,10 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 	public void clear() {
 		T.call(this);
 		
-		getValue().clear();
-
+		synchronized (getValue()) {
+			getValue().clear();
+		}
+		
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onClearEntries();
 		}
@@ -200,14 +219,14 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		return accumulator;
 	}
 	
-	public void forEachEntry(EntryLambda<V> lambda) {
+	public void forEachEntry(MapIterator<V> lambda) {
 		T.call(this);
 
 		synchronized (getValue()) {
 			for(Map.Entry<String, V> entry : getValue().entrySet()) {
 				try {
 
-					lambda.execute(entry.getKey(), entry.getValue());
+					lambda.on(entry.getKey(), entry.getValue());
 
 				}catch(Break b) {
 					break;
@@ -215,8 +234,29 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 			}
 		}
 	}
-	
-	
-	
-	
+
+	public void map(MapMapper<V> lambda) {
+		T.call(this);
+		
+		Map<String, V> toUpdate = new HashMap<>();
+
+		synchronized (getValue()) {
+			for(Map.Entry<String, V> entry : getValue().entrySet()) {
+				try {
+
+					V newValue = lambda.map(entry.getKey(), entry.getValue());
+					if(!entry.getValue().equals(newValue)) {
+						toUpdate.put(entry.getKey(), newValue);
+					}
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+
+		for(Map.Entry<String, V> entryUpdate : toUpdate.entrySet()) {
+			putEntry(entryUpdate.getKey(), entryUpdate.getValue());
+		}
+	}
 }
