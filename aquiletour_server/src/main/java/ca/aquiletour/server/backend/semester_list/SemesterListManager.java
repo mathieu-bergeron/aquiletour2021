@@ -189,10 +189,10 @@ public class SemesterListManager {
 		T.call(SemesterListManager.class);
 
 		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
-		
-		for(SemesterModel semester : semesterList.getSemesters().getValue()) {
+
+		semesterList.getSemesters().forEachItem((index, semester) -> {
 			addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
-		}
+		});
 	}
 
 	public static <SL extends SemesterListModel<?>> void createSemesterListForModelId(ModelStoreSync modelStore, 
