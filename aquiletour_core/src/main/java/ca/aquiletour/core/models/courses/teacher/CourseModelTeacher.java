@@ -17,6 +17,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -116,12 +117,12 @@ public class CourseModelTeacher extends CourseModel {
 
 		scheduledDates.clear();
 		
-		for(GroupDescription group : groups.getValue()) {
+		getGroups().forEachItem((index, group) -> {
 			updateGroupSchedule(getCoursePath().courseId(), 
 					            group.getGroupId(), 
 					            semesterSchedule, 
 					            teacherSchedule);
-		}
+		});
 	}
 
 	protected void updateGroupSchedule(String courseId, 
@@ -129,8 +130,8 @@ public class CourseModelTeacher extends CourseModel {
 			                           SemesterSchedule semesterSchedule, 
 			                           TeacherSchedule teacherSchedule) {
 		T.call(this);
-
-		for(Task task : getTasks().getValue().values()) {
+		
+		getTasks().forEachEntry((key, task) -> {
 
 			SemesterDate date = task.resolveDate(courseId, groupId, semesterSchedule, teacherSchedule);
 
@@ -145,7 +146,7 @@ public class CourseModelTeacher extends CourseModel {
 
 				taskDates.putEntry(task.id(), date);
 			}
-		}
+		});
 	}
 
 	public void taskCompletedByStudent(Path taskPath, String atomicTaskId, String studentId) {
@@ -188,16 +189,18 @@ public class CourseModelTeacher extends CourseModel {
 	public String groupIdForStudent(String studentId) {
 		T.call(this);
 		
-		String groupId = null;
-		
-		for(GroupDescription group : groups.getValue()) {
-			if(group.getStudents().contains(studentId)) {
+		return getGroups().reduceTo(String.class, null, (index, group, groupId) -> {
+			if(groupId != null) {
+
+				throw new Break();
+
+			}else if(group.getStudents().contains(studentId)){
+				
 				groupId = group.getGroupId();
-				break;
 			}
-		}
-		
-		return groupId;
+
+			return groupId;
+		});
 	}
 
 	public List<CurrentTaskStudent> currentTasksStudent(String studentId) {
