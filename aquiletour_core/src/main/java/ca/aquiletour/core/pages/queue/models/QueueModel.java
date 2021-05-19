@@ -310,7 +310,7 @@ public class QueueModel implements NtroModel {
 		
 		firstAppointmentTime.incrementBySeconds(timeIncrementSeconds);
 
-		getAppointments().forEachItem(appointment -> {
+		getAppointments().forEachItem((index, appointment) -> {
 			appointment.incrementTimeSeconds(timeIncrementSeconds);
 		});
 	}
@@ -326,35 +326,23 @@ public class QueueModel implements NtroModel {
 	private void recomputeAppointmentTimes() {
 		T.call(this);
 
-		NtroDate currentTime = firstAppointmentTime.getValue();
+		NtroDate firstTime = firstAppointmentTime.getValue();
 		
-		if(!queueEmpty()) {
+		getAppointments().reduceTo(NtroDate.class, firstTime, (index, appointment, currentTime) -> {
+			if(index != 0) {
+				currentTime = currentTime.deltaSeconds(appointmentDurationSeconds.getValue());
+			}
 
-			firstAppointment().updateTime(currentTime);
-		}
+			appointment.updateTime(currentTime);
 
-		for(int i = 1 ; i < appointments.size(); i++) {
-			currentTime = currentTime.deltaSeconds(appointmentDurationSeconds.getValue());
-			appointments.item(i).updateTime(currentTime);
-		}
+			return currentTime;
+		});
 	}
 
 	private boolean queueEmpty() {
 		T.call(this);
 		
 		return getAppointments().size() == 0;
-	}
-
-	private Appointment firstAppointment() {
-		T.call(this);
-		
-		Appointment result = null;
-
-		if(getAppointments().size() > 0) {
-			result = getAppointments().item(0);
-		}
-
-		return result;
 	}
 
 	private Appointment findLatestAppointment() {
