@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.foreach.Break;
+import ca.ntro.core.models.foreach.EntryLambda;
+import ca.ntro.core.models.foreach.MapReducer;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.system.log.Log;
@@ -178,6 +181,42 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		
 		return clone;
 	}
+
+	public <R extends Object> R reduceTo(Class<R> valueClass, R accumulator, MapReducer<R,V> reducer) {
+		T.call(this);
+		
+		synchronized (getValue()) {
+			for(Map.Entry<String, V> entry : getValue().entrySet()) {
+				try {
+
+					accumulator = reducer.reduce(entry.getKey(), entry.getValue(), accumulator);
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+
+		return accumulator;
+	}
+	
+	public void forEachEntry(EntryLambda<V> lambda) {
+		T.call(this);
+
+		synchronized (getValue()) {
+			for(Map.Entry<String, V> entry : getValue().entrySet()) {
+				try {
+
+					lambda.execute(entry.getKey(), entry.getValue());
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+	}
+	
+	
 	
 	
 }

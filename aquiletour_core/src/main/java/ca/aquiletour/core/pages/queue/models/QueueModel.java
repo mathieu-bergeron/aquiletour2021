@@ -6,6 +6,8 @@ import java.util.List;
 import ca.aquiletour.core.Constants;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
+import ca.ntro.core.models.foreach.Break;
+import ca.ntro.core.models.foreach.EntryLambda;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
@@ -28,27 +30,32 @@ public class QueueModel implements NtroModel {
 	private IsOpenById isOpenByGroupId = new IsOpenById();
 	private MessageById messageByCourseId = new MessageById();
 	private MessageById messageByGroupId = new MessageById();
-	
+
 	public boolean isQueueOpen() {
 		T.call(this);
 
 		boolean isOpen = false;
 		
-		for(Boolean isOpenFor : isOpenByCourseId.getValue().values()) {
-			if(isOpenFor) {
-				isOpen = true;
-				break;
-			}
-		}
-		
-		for(Boolean isOpenFor : isOpenByGroupId.getValue().values()) {
-			if(isOpenFor) {
-				isOpen = true;
-				break;
-			}
-		}
-		
+		isOpen = isQueueOpenForSomeId(isOpen, isOpenByCourseId);
+		isOpen = isQueueOpenForSomeId(isOpen, isOpenByGroupId);
+
 		return isOpen;
+	}
+
+	private boolean isQueueOpenForSomeId(boolean isQueueOpen, IsOpenById isOpenById) {
+		T.call(this);
+
+		return isOpenById.reduceTo(Boolean.class, isQueueOpen, (key, isOpenForId, isOpen) -> {
+			if(isOpen) {
+				throw new Break();
+			}
+
+			if(isOpenForId) {
+				isOpen = true;
+			}
+
+			return isOpen;
+		});
 	}
 	
 	public IsOpenById getIsOpenByCourseId() {
