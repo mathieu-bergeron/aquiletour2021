@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
-import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
@@ -25,13 +23,70 @@ public class QueueModel implements NtroModel {
 	private int maxId;
 	private String teacherId = "";
 	private String courseId = "";
+
+	private IsOpenById isOpenByCourseId = new IsOpenById();
+	private IsOpenById isOpenByGroupId = new IsOpenById();
+	private MessageById messageByCourseId = new MessageById();
+	private MessageById messageByGroupId = new MessageById();
 	
-	private StoredString currentCourseId = new StoredString();
-	private StoredString currentGroupId = new StoredString();
+	public boolean isQueueOpen() {
+		T.call(this);
+
+		boolean isOpen = false;
+		
+		for(Boolean isOpenFor : isOpenByCourseId.getValue().values()) {
+			if(isOpenFor) {
+				isOpen = true;
+				break;
+			}
+		}
+		
+		for(Boolean isOpenFor : isOpenByGroupId.getValue().values()) {
+			if(isOpenFor) {
+				isOpen = true;
+				break;
+			}
+		}
+		
+		return isOpen;
+	}
 	
-	// TODO: the queue is open for some courseGroups
-	private List<CourseGroup> openForCourseGroups = new ArrayList<>();
-	private List<CourseGroup> selectedCourseGroupes = new ArrayList<>();
+	public IsOpenById getIsOpenByCourseId() {
+		return isOpenByCourseId;
+	}
+
+	public void setIsOpenByCourseId(IsOpenById isOpenByCourseId) {
+		this.isOpenByCourseId = isOpenByCourseId;
+	}
+
+	public IsOpenById getIsOpenByGroupId() {
+		return isOpenByGroupId;
+	}
+
+	public void setIsOpenByGroupId(IsOpenById isOpenByGroupId) {
+		this.isOpenByGroupId = isOpenByGroupId;
+	}
+
+
+	public MessageById getMessageByCourseId() {
+		return messageByCourseId;
+	}
+
+
+	public void setMessageByCourseId(MessageById messageByCourseId) {
+		this.messageByCourseId = messageByCourseId;
+	}
+
+
+	public MessageById getMessageByGroupId() {
+		return messageByGroupId;
+	}
+
+
+	public void setMessageByGroupId(MessageById messageByGroupId) {
+		this.messageByGroupId = messageByGroupId;
+	}
+
 
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
@@ -234,22 +289,6 @@ public class QueueModel implements NtroModel {
 		T.call(this);
 
 		return index >= 0 && index < getAppointments().size();
-	}
-
-	public StoredString getCurrentCourseId() {
-		return currentCourseId;
-	}
-
-	public void setCurrentCourseId(StoredString currentCourseId) {
-		this.currentCourseId = currentCourseId;
-	}
-
-	public StoredString getCurrentGroupId() {
-		return currentGroupId;
-	}
-
-	public void setCurrentGroupId(StoredString currentGroupId) {
-		this.currentGroupId = currentGroupId;
 	}
 
 	public ObservableTime getCurrentTime() {

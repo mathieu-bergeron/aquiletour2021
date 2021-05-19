@@ -64,6 +64,9 @@ public class Constants {
 	public static final String ALL_COURSES_ID = "_c";
 	public static final String ALL_COURSES_TEXT = "Tous les cours";
 
+	public static final String ALL_USERS_ID = "_u";
+	public static final String ALL_USERS_TEXT = "Tout le monde";
+
 	public static final String CREATE_COURSE_TEXT = "Ajouter un cours";
 
 	public static final String ADMIN_CONTROLLED_SEMESTER_LIST_ID = "all";
