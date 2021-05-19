@@ -3,6 +3,8 @@ package ca.ntro.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.functionnal.ListIterator;
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ItemRemovedListener;
@@ -315,4 +317,22 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 
 		return size() == 0;
 	}
+	
+	public void forEachItem(ListIterator<I> lambda) {
+		T.call(this);
+
+		synchronized (getValue()) {
+			for(I item : getValue()) {
+				try {
+
+					lambda.on(item);
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+	}
+	
+	
 }

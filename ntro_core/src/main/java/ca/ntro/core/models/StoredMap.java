@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.models.foreach.Break;
-import ca.ntro.core.models.foreach.MapIterator;
-import ca.ntro.core.models.foreach.MapMapper;
-import ca.ntro.core.models.foreach.MapReducer;
+import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.functionnal.MapIterator;
+import ca.ntro.core.models.functionnal.MapMapper;
+import ca.ntro.core.models.functionnal.MapReducer;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.system.log.Log;

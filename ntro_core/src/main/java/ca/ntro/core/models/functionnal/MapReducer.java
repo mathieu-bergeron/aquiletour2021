@@ -1,4 +1,4 @@
-package ca.ntro.core.models.foreach;
+package ca.ntro.core.models.functionnal;
 
 public interface MapReducer<ACC extends Object, V extends Object> {
 

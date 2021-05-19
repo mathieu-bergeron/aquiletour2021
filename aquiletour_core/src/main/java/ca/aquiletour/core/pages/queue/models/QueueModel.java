@@ -6,7 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.Constants;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
-import ca.ntro.core.models.foreach.Break;
+import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
@@ -310,9 +310,9 @@ public class QueueModel implements NtroModel {
 		
 		firstAppointmentTime.incrementBySeconds(timeIncrementSeconds);
 
-		for(Appointment appointment : getAppointments().getValue()) {
+		getAppointments().forEachItem(appointment -> {
 			appointment.incrementTimeSeconds(timeIncrementSeconds);
-		}
+		});
 	}
 
 	public void modifyAppointmentDurations(int durationIncrementSeconds) {
