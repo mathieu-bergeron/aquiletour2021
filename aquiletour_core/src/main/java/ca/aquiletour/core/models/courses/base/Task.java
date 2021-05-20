@@ -317,7 +317,7 @@ public class Task implements NtroModelValue, TaskNode {
 			return task.parent() == Task.this;
 		});
 		
-		findResults.sort((findResult1, findResult2) -> {
+		findResults.asList().sort((findResult1, findResult2) -> {
 			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
 		});
 		

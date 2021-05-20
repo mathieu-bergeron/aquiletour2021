@@ -18,7 +18,7 @@ public class FindResults extends ArrayList<FindResult> {
 		if(result == null) {
 			
 			result = new FindResult(task, distance, distance);
-			add(result);
+			asList().add(result);
 
 		}else {
 			
@@ -64,7 +64,7 @@ public class FindResults extends ArrayList<FindResult> {
 	}
 
 	// JSWEET: (FindResult candidate: this) does not compile
-	private List<FindResult> asList(){
+	public List<FindResult> asList(){
 		return (List<FindResult>) this;
 	}
 
