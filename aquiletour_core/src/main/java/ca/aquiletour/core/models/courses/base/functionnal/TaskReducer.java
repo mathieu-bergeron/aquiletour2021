@@ -5,6 +5,6 @@ import ca.ntro.core.models.functionnal.Break;
 
 public interface TaskReducer<ACC extends Object> {
 
-	ACC reduce(Task task, ACC accumulator) throws Break;
+	ACC reduce(int distance, Task task, ACC accumulator) throws Break;
 
 }

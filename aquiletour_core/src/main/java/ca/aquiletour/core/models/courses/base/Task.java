@@ -7,10 +7,13 @@ import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
-import ca.aquiletour.core.models.courses.base.functionnal.HowToVisitNodes;
+import ca.aquiletour.core.models.courses.base.functionnal.NodeDirection;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
+import ca.aquiletour.core.models.courses.base.functionnal.FindAllResults;
+import ca.aquiletour.core.models.courses.base.functionnal.FindResult;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskMatcher;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskReducer;
+import ca.aquiletour.core.models.courses.base.functionnal.TasksFound;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -546,16 +549,35 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
-	public <R extends Object> R reduceReachableTasksTo(Class<R> resultClass, 
-			                                           HowToVisitNodes howToVisitNodes, 
-			                                           boolean transitive,
-			                                           TaskReducer<R> reducer) {
+	public <R extends Object> R reduceTo(Class<R> resultClass, 
+			                             NodeDirection[] howToVisitNodes, 
+										 boolean transitive,
+										 R accumulator,
+			                             TaskReducer<R> reducer) {
 		T.call(this);
 		
 		R result = null;
 		
 		
 		return result;
+	}
+
+	public FindAllResults findAll(NodeDirection[] howToVisitNodes, 
+								   boolean transitive,
+								   TaskMatcher matcher) {
+		T.call(this);
+		
+		return reduceTo(FindAllResults.class, 
+					    howToVisitNodes, 
+				        transitive, 
+				        new FindAllResults(),
+
+		 (distance, task, findAllResults) -> {
+			 
+			 findAllResults.addOrUpdateFindResult(distance, task);
+			 
+			 return findAllResults;
+		});
 	}
 
 	public Task findTaskBackwards(TaskMatcher matcher) {
