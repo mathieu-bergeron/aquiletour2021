@@ -3,6 +3,7 @@ package ca.aquiletour.core.models.courses.atomic_tasks;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
+import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.functionnal.FindResults;
 import ca.aquiletour.core.models.courses.base.functionnal.VisitDirection;
@@ -15,7 +16,7 @@ import static ca.aquiletour.core.models.courses.base.functionnal.VisitDirection.
 
 public class AtomicTask implements NtroModelValue {
 
-	public static void addAtomicTasksFromDescription(Task parentTask, String description) {
+	public static void addAtomicTasksFromDescription(Task parentTask, String description, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(AtomicTask.class);
 		
 		if(description.contains("{dépôtGit}")) {
@@ -34,8 +35,12 @@ public class AtomicTask implements NtroModelValue {
 			if(findResults.size() > 0) {
 				repoPath = findResults.closest().getTask().getPath();
 			}
+			
+			GitExerciseTask gitTask = new GitExerciseTask(repoPath);
 
-			parentTask.addExitTask(new GitExerciseTask(repoPath));
+			parentTask.addExitTask(gitTask);
+			
+			atomicTaskListener.onTaskAdded(gitTask);
 		}
 
 		if(description.contains("{texteCourt}")) {

@@ -76,7 +76,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		tasks.putEntry(rootTask.id(), rootTask);
 	}
 
-	public void addSubTaskTo(Path parentPath, Task subTask, OnTaskAdded onTaskAdded) {
+	public void addSubTaskTo(Path parentPath, Task subTask) {
 		T.call(this);
 		
 		subTask.setGraph(asGraph());
@@ -88,17 +88,13 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			addNewTask(subTask);
 
 			parent.addSubTask(subTask);
-			
-			if(onTaskAdded != null) {
-				onTaskAdded.onTaskAdded();
-			}
 
 		}else {
 			Log.warning("parentTask not found: " + parentPath);
 		}
 	}
 
-	public void addNextTaskTo(Path previousPath, Task nextTask, OnTaskAdded onTaskAdded) {
+	public void addNextTaskTo(Path previousPath, Task nextTask) {
 		T.call(this);
 		
 		nextTask.setGraph(asGraph());
@@ -117,10 +113,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			}else {
 
 				addNewNextTask(previousTask, nextTask);
-				
-				if(onTaskAdded != null) {
-					onTaskAdded.onTaskAdded();
-				}
+
 			}
 			
 		}else {
@@ -151,7 +144,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		tasks.putEntry(nextTask.id(), nextTask);
 	}
 
-	public void addPreviousTaskTo(Path path, Task previousTask, OnTaskAdded onTaskAdded) {
+	public void addPreviousTaskTo(Path path, Task previousTask) {
 		T.call(this);
 		
 		previousTask.setGraph(asGraph());
@@ -170,10 +163,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			}else {
 
 				addNewPreviousTask(previousTask, nextTask);
-				
-				if(onTaskAdded != null) {
-					onTaskAdded.onTaskAdded();
-				}
+
 			}
 
 		}else {
@@ -303,7 +293,11 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		return rootTask;
 	}
 
-	public void updateTaskInfo(Path taskPath, String taskTitle, String taskDescription, CourseDate endTime) {
+	public void updateTaskInfo(Path taskPath, 
+			                   String taskTitle, 
+			                   String taskDescription, 
+			                   CourseDate endTime,
+			                   OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 
 		Task task = findTaskByPath(taskPath);
@@ -311,7 +305,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		if(task != null) {
 			
 			task.updateTitle(taskTitle);
-			task.updateDescription(taskDescription);
+			task.updateDescription(taskDescription, atomicTaskListener);
 			task.updateEndTime(endTime);
 			
 		}else {

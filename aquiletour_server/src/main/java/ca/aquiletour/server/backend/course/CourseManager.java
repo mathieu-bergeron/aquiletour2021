@@ -4,9 +4,10 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.CoursePathStudent;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
-import ca.aquiletour.core.models.courses.base.OnTaskAdded;
+import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
@@ -205,15 +206,15 @@ public class CourseManager {
 
 		switch(taskType) {
 			case PREVIOUS_TASK:
-				courseModel.addPreviousTaskTo(anchorTaskPath, task, null);
+				courseModel.addPreviousTaskTo(anchorTaskPath, task);
 				break;
 
 			case SUBTASK:
-				courseModel.addSubTaskTo(anchorTaskPath, task, null);
+				courseModel.addSubTaskTo(anchorTaskPath, task);
 				break;
 
 			case NEXT_TASK:
-				courseModel.addNextTaskTo(anchorTaskPath, task, null);
+				courseModel.addNextTaskTo(anchorTaskPath, task);
 				break;
 		}
 	}
@@ -318,10 +319,15 @@ public class CourseManager {
 			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
-				course.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime);
+				course.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime, new OnAtomicTaskAdded() {
+					@Override
+					public void onTaskAdded(AtomicTask task) {
+						T.call(this);
+						
+					}
+				});
 			}
 		});
-
 	}
 
 	public static void updateCourseSchedule(ModelStoreSync modelStore, 

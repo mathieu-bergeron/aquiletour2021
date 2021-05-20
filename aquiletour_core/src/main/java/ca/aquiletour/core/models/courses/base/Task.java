@@ -48,7 +48,12 @@ public class Task implements NtroModelValue, TaskNode {
 		setPath(task.getPath());
 
 		updateTitle(task.getTitle().getValue());
-		updateDescription(task.getDescription().getValue());
+		updateDescription(task.getDescription().getValue(), new OnAtomicTaskAdded() {
+			@Override
+			public void onTaskAdded(AtomicTask task) {
+				T.call(this);
+			}
+		});
 		updateEndTime(task.getEndTime().getValue());
 		
 		copyTaskIds(task.getPreviousTasks(), previousTasks);
@@ -385,12 +390,12 @@ public class Task implements NtroModelValue, TaskNode {
 		this.description = description;
 	}
 
-	public void updateDescription(String description) {
+	public void updateDescription(String description, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 		
 		getDescription().set(description);
 		
-		AtomicTask.addAtomicTasksFromDescription(this, description);
+		AtomicTask.addAtomicTasksFromDescription(this, description, atomicTaskListener);
 	}
 	
 	public void deleteAtomicTask(String taskId) {
