@@ -8,6 +8,7 @@ import java.util.Set;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.functionnal.VisitDirection;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
+import ca.aquiletour.core.models.courses.base.functionnal.FindResult;
 import ca.aquiletour.core.models.courses.base.functionnal.FindResults;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskMatcher;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskReducer;
@@ -309,27 +310,18 @@ public class Task implements NtroModelValue, TaskNode {
 		return isStartTaskLocal;
 	}
 
-
 	public void forEachSubTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
-		Set<Task> visitedTasks = new HashSet<>();
-		
-		forEachStartTaskLocal(st -> {
-
-			if(Ntro.collections().setContainsExact(visitedTasks, st)) return;
-			visitedTasks.add(st);
-			
-			lambda.execute(st);
-			
-			st.forEachReachableTaskLocal(rt -> {
-
-				if(Ntro.collections().setContainsExact(visitedTasks, rt)) return;
-				visitedTasks.add(rt);
-				
-				lambda.execute(rt);
-			});
+		FindResults findResults = findAll(new VisitDirection[] {SUB, NEXT}, true, task -> {
+			return task.parent() == Task.this;
 		});
+		
+		findResults.sort((findResult1, findResult2) -> {
+			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
+		});
+		
+		findResults.forEachTask(lambda);
 	}
 
 	public void forEachPreviousTaskInOrder(TaskForEach lambda) {
@@ -541,7 +533,14 @@ public class Task implements NtroModelValue, TaskNode {
 										 R accumulator,
 			                             TaskReducer<R> reducer) {
 		
-		return reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, new HashSet<>());
+		Set<String> visistedNodes = new HashSet<>();
+		visistedNodes.add(this.id());
+		
+		try {
+			accumulator = reducer.reduce(0, this, accumulator);
+		} catch(Break b) {}
+		
+		return reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, visistedNodes);
 	}
 
 	private <R extends Object> R reduceToImpl(Class<R> resultClass, 
@@ -556,48 +555,48 @@ public class Task implements NtroModelValue, TaskNode {
 		for(VisitDirection direction : howToVisitNodes) {
 			switch(direction) {
 				case PREVIOUS:
-					reduceToForTasksToVisit(resultClass, 
-							                howToVisitNodes, 
-							                transitive, 
-							                accumulator, 
-							                reducer, 
-							                distance, 
-							                visitedNodes, 
-							                getPreviousTasks());
+					accumulator = reduceToForTasksToVisit(resultClass, 
+							                              howToVisitNodes, 
+							                              transitive, 
+							                              accumulator, 
+							                              reducer, 
+							                              distance+1, 
+							                              visitedNodes,
+							                              getPreviousTasks());
 					break;
 
 				case SUB:
-					reduceToForTasksToVisit(resultClass, 
-							                howToVisitNodes, 
-							                transitive, 
-							                accumulator, 
-							                reducer, 
-							                distance, 
-							                visitedNodes, 
-							                getSubTasks());
+					accumulator = reduceToForTasksToVisit(resultClass, 
+							                              howToVisitNodes, 
+							                              transitive, 
+							                              accumulator, 
+							                              reducer, 
+							                              distance+1, 
+							                              visitedNodes, 
+							                              getSubTasks());
 					break;
 
 				case NEXT:
-					reduceToForTasksToVisit(resultClass, 
-							                howToVisitNodes, 
-							                transitive, 
-							                accumulator, 
-							                reducer, 
-							                distance, 
-							                visitedNodes, 
-							                getNextTasks());
+					accumulator = reduceToForTasksToVisit(resultClass, 
+							                              howToVisitNodes, 
+							                              transitive, 
+							                              accumulator, 
+							                              reducer, 
+							                              distance+1, 
+							                              visitedNodes, 
+							                              getNextTasks());
 					break;
 
 				case PARENT:
 					if(!isRootTask()) {
-						reduceToForTaskToVisit(resultClass, 
-											   howToVisitNodes, 
-											   transitive, 
-											   accumulator, 
-											   reducer, 
-											   distance, 
-											   visitedNodes, 
-											   parent());
+						accumulator = reduceToForTaskToVisit(resultClass, 
+								                             howToVisitNodes, 
+											                 transitive, 
+											                 accumulator, 
+											                 reducer, 
+											                 distance+1, 
+											                 visitedNodes, 
+											                 parent());
 					}
 					break;
 			}
@@ -606,17 +605,17 @@ public class Task implements NtroModelValue, TaskNode {
 		return accumulator;
 	}
 
-	private <R extends Object> void reduceToForTasksToVisit(Class<R> resultClass, 
-			                                                VisitDirection[] howToVisitNodes, 
-										                    boolean transitive,
-										                    R accumulator,
-			                                                TaskReducer<R> reducer,
-			                                                int distance,
-			                                                Set<String> visitedNodes,
-			                                                StoredTaskIds tasksToVisit) {
+	private <R extends Object> R reduceToForTasksToVisit(Class<R> resultClass, 
+			                                             VisitDirection[] howToVisitNodes, 
+										                 boolean transitive,
+										                 R accumulator,
+			                                             TaskReducer<R> reducer,
+			                                             int distance,
+			                                             Set<String> visitedNodes,
+			                                             StoredTaskIds tasksToVisit) {
 		T.call(this);
 
-		tasksToVisit.reduceTo(resultClass, accumulator, (index, taskId, accumulatorArg) -> {
+		return tasksToVisit.reduceTo(resultClass, accumulator, (index, taskId, accumulatorArg) -> {
 			Task taskToVisit = graph.findTaskByPath(new Path(taskId));
 
 			reduceToForTaskToVisit(resultClass, 
@@ -632,27 +631,29 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
-	private <R> void reduceToForTaskToVisit(Class<R> resultClass, 
-			                                VisitDirection[] howToVisitNodes, 
-			                                boolean transitive, 
-			                                R accumulator, 
-			                                TaskReducer<R> reducer, 
-			                                int distance, 
-			                                Set<String> visitedNodes, 
-			                                Task taskToVisit) {
+	private <R extends Object> R reduceToForTaskToVisit(Class<R> resultClass, 
+			                                            VisitDirection[] howToVisitNodes, 
+			                                            boolean transitive, 
+			                                            R accumulator, 
+			                                            TaskReducer<R> reducer, 
+			                                            int distance, 
+			                                            Set<String> visitedNodes, 
+			                                            Task taskToVisit) {
 		T.call(this);
 		
 		try {
 
-			reducer.reduce(distance+1, taskToVisit, accumulator);
+			accumulator = reducer.reduce(distance, taskToVisit, accumulator);
 
 			if(transitive && !visitedNodes.contains(taskToVisit.id())) {
 				visitedNodes.add(taskToVisit.id());
 
-				taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance+1, visitedNodes);
+				accumulator = taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance, visitedNodes);
 			}
 
 		} catch(Break b) { }
+		
+		return accumulator;
 	}
 	
 	

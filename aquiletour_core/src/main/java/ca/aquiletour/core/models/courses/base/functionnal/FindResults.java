@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.trace.T;
 
 public class FindResults extends ArrayList<FindResult> {
@@ -13,7 +14,7 @@ public class FindResults extends ArrayList<FindResult> {
 		T.call(this);
 		
 		FindResult result = resultByTaskId(task);
-		
+
 		if(result == null) {
 			
 			result = new FindResult(task, distance, distance);
@@ -30,10 +31,14 @@ public class FindResults extends ArrayList<FindResult> {
 		
 		FindResult result = null;
 		
-		if(task != null) {
+		if(task != null && task.id() != null) {
+
 			for(FindResult candidate : asList()) {
-				if(candidate.getTask().id().equals(task.id())) {
-					candidate = result;
+				
+				if(candidate.getTask() != null && 
+						task.id().equals(candidate.getTask().id())) {
+
+					result = candidate;
 					break;
 				}
 			}
@@ -61,5 +66,19 @@ public class FindResults extends ArrayList<FindResult> {
 	// JSWEET: (FindResult candidate: this) does not compile
 	private List<FindResult> asList(){
 		return (List<FindResult>) this;
+	}
+
+	public void forEachTask(TaskForEach lambda) {
+		T.call(this);
+		
+		for(FindResult result : asList()) {
+			try {
+
+				lambda.execute(result.getTask());
+
+			}catch(Break b) {
+				break;
+			}
+		}
 	}
 }

@@ -33,7 +33,6 @@ public class AtomicTask implements NtroModelValue {
 			
 			if(findResults.size() > 0) {
 				repoPath = findResults.closest().getTask().getPath();
-				T.values("repoPath", repoPath);
 			}
 
 			parentTask.addExitTask(new GitExerciseTask(repoPath));
