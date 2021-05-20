@@ -7,8 +7,10 @@ import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.base.functionnal.HowToVisitNodes;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskMatcher;
+import ca.aquiletour.core.models.courses.base.functionnal.TaskReducer;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -190,17 +192,12 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void forEachPreviousTask(TaskForEach lambda) {
 		T.call(this);
-
-		for(String previousTaskId : getPreviousTasks().getValue()) {
+		
+		getPreviousTasks().forEachItem((index, previousTaskId) -> {
 			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
-			try {
 
-				lambda.execute(previousTask);
-
-			}catch(Break b) {
-				break;
-			}
-		}
+			lambda.execute(previousTask);
+		});
 	}
 
 	public void forEachSibling(TaskForEach lambda) {
@@ -539,14 +536,26 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void forEachTaskBackwardsTransitive(TaskForEach lambda) {
 		T.call(this);
+
+		if(!isRootTask()) {
+			parent().forEachTaskBackwardsTransitive(lambda);
+		}
 		
 		forEachPreviousTask(pt -> {
 			pt.forEachTaskBackwardsTransitive(lambda);
 		});
+	}
+
+	public <R extends Object> R reduceReachableTasksTo(Class<R> resultClass, 
+			                                           HowToVisitNodes howToVisitNodes, 
+			                                           boolean transitive,
+			                                           TaskReducer<R> reducer) {
+		T.call(this);
 		
-		if(!isRootTask()) {
-			parent().forEachTaskBackwardsTransitive(lambda);
-		}
+		R result = null;
+		
+		
+		return result;
 	}
 
 	public Task findTaskBackwards(TaskMatcher matcher) {
