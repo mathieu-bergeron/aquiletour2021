@@ -158,7 +158,7 @@ public class CourseManager {
 			                      			 Task task) {
 
 		T.call(CourseManager.class);
-
+		
 		addTaskForStudents(modelStore, coursePath, parentTaskPath, task, TaskType.SUBTASK);
 	}
 
@@ -178,29 +178,26 @@ public class CourseManager {
 			                               Task task,
 			                               TaskType taskType) {
 		T.call(CourseManager.class);
+		
+		CourseModelTeacher courseTeacher = modelStore.getModel(CourseModelTeacher.class, "admin", coursePath);
+		
+		if(courseTeacher != null) {
+			courseTeacher.getGroups().forEachItem((i, group) -> {
+				group.getStudents().forEachItem((j, studentId) -> {
+					
+					CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
 
-		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
-			@Override
-			public void update(CourseModelTeacher courseTeacher) {
-				T.call(this);
+					modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+						@Override
+						public void update(CourseModelStudent courseStudent) {
+							T.call(this);
 
-				courseTeacher.getGroups().forEachItem((i, group) -> {
-					group.getStudents().forEachItem((j, studentId) -> {
-						
-						CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
-
-						modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
-							@Override
-							public void update(CourseModelStudent courseStudent) {
-								T.call(this);
-								
-								addTaskToCourseModel(anchorTaskPath, task, courseStudent, taskType);
-							}
-						});
+							addTaskToCourseModel(anchorTaskPath, task, courseStudent, taskType);
+						}
 					});
 				});
-			}
-		});
+			});
+		}
 	}
 
 	private static void addTaskToCourseModel(Path anchorTaskPath, Task task, CourseModel courseModel, TaskType taskType) {
