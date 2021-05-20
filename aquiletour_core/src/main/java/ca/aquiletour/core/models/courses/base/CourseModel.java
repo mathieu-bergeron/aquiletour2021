@@ -87,7 +87,9 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 
 			parent.addSubTask(subTask);
 			
-			onTaskAdded.onTaskAdded();
+			if(onTaskAdded != null) {
+				onTaskAdded.onTaskAdded();
+			}
 
 		}else {
 			Log.warning("parentTask not found: " + parentPath);
@@ -113,8 +115,10 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			}else {
 
 				addNewNextTask(previousTask, nextTask);
-
-				onTaskAdded.onTaskAdded();
+				
+				if(onTaskAdded != null) {
+					onTaskAdded.onTaskAdded();
+				}
 			}
 			
 		}else {
@@ -164,8 +168,10 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			}else {
 
 				addNewPreviousTask(previousTask, nextTask);
-
-				onTaskAdded.onTaskAdded();
+				
+				if(onTaskAdded != null) {
+					onTaskAdded.onTaskAdded();
+				}
 			}
 
 		}else {

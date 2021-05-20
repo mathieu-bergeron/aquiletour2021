@@ -25,5 +25,7 @@ public class AddSubTaskHandler extends BackendMessageHandler<AddSubTaskMessage> 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddSubTaskMessage message) {
 		T.call(this);
+		
+		CourseManager.addSubTaskForStudents(modelStore, message.coursePath(), message.getParentPath(), message.getSubTask());
 	}
 }

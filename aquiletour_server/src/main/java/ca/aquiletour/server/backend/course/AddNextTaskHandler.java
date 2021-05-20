@@ -16,7 +16,8 @@ public class AddNextTaskHandler extends BackendMessageHandler<AddNextTaskMessage
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddNextTaskMessage message) {
+		T.call(this);
+
+		CourseManager.addNextTaskForStudents(modelStore, message.coursePath(), message.getPreviousPath(), message.getNextTask());
 	}
-
-
 }

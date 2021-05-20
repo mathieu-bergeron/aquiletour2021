@@ -16,8 +16,9 @@ public class AddPreviousTaskHandler extends BackendMessageHandler<AddPreviousTas
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddPreviousTaskMessage message) {
-		// TODO Auto-generated method stub
-		
+		T.call(this);
+
+		CourseManager.addPreviousTaskForStudents(modelStore, message.coursePath(), message.getNextPath(), message.getPreviousTask());
 	}
 
 }
