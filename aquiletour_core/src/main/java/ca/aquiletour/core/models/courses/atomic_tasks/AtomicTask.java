@@ -4,9 +4,14 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTa
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.functionnal.FindResults;
+import ca.aquiletour.core.models.courses.base.functionnal.VisitDirection;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
+
+import static ca.aquiletour.core.models.courses.base.functionnal.VisitDirection.*;
+
 
 public class AtomicTask implements NtroModelValue {
 
@@ -22,12 +27,13 @@ public class AtomicTask implements NtroModelValue {
 			
 			Path repoPath = new Path();
 			
-			Task repoTask = parentTask.findTaskBackwards(t -> {
+			FindResults findResults = parentTask.findAll(new VisitDirection[] {PREVIOUS, PARENT}, true, t -> {
 				return t.hasAtomicTaskOfType(GitRepoTask.class);
 			});
 			
-			if(repoTask != null) {
-				repoPath = repoTask.getPath();
+			if(findResults.size() > 0) {
+				repoPath = findResults.closest().getTask().getPath();
+				T.values("repoPath", repoPath);
 			}
 
 			parentTask.addExitTask(new GitExerciseTask(repoPath));

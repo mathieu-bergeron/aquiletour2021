@@ -6,14 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
-import ca.aquiletour.core.models.courses.base.functionnal.NodeDirection;
+import ca.aquiletour.core.models.courses.base.functionnal.VisitDirection;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
-import ca.aquiletour.core.models.courses.base.functionnal.FindAllResults;
-import ca.aquiletour.core.models.courses.base.functionnal.FindResult;
+import ca.aquiletour.core.models.courses.base.functionnal.FindResults;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskMatcher;
 import ca.aquiletour.core.models.courses.base.functionnal.TaskReducer;
-import ca.aquiletour.core.models.courses.base.functionnal.TasksFound;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -24,6 +21,8 @@ import ca.ntro.core.models.StoredString;
 import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
+
+import static ca.aquiletour.core.models.courses.base.functionnal.VisitDirection.*;
 
 public class Task implements NtroModelValue, TaskNode {
 	
@@ -165,41 +164,28 @@ public class Task implements NtroModelValue, TaskNode {
 	
 	public void forEachSubTask(TaskForEach lambda) {
 		T.call(this);
-
-		for(String subTaskId : getSubTasks().getValue()) {
-			Task subTask = graph.findTaskByPath(new Path(subTaskId));
-			try {
-				
-				lambda.execute(subTask);
-				
-			}catch(Break b) {
-				break;
-			}
-		}
+		
+		reduceTo(Void.class, new VisitDirection[]{SUB}, false, null, (distance, task, accumulatorArg) ->{
+			lambda.execute(task);
+			return accumulatorArg;
+		});
 	}
 
 	public void forEachNextTask(TaskForEach lambda) {
 		T.call(this);
 
-		for(String nextTaskId : getNextTasks().getValue()) {
-			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
-			try {
-				
-				lambda.execute(nextTask);
-				
-			}catch(Break b) {
-				break;
-			}
-		}
+		reduceTo(Void.class, new VisitDirection[]{NEXT}, false, null, (distance, task, accumulatorArg) ->{
+			lambda.execute(task);
+			return accumulatorArg;
+		});
 	}
 
 	public void forEachPreviousTask(TaskForEach lambda) {
 		T.call(this);
-		
-		getPreviousTasks().forEachItem((index, previousTaskId) -> {
-			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
 
-			lambda.execute(previousTask);
+		reduceTo(Void.class, new VisitDirection[]{PREVIOUS}, false, null, (distance, task, accumulatorArg) ->{
+			lambda.execute(task);
+			return accumulatorArg;
 		});
 	}
 
@@ -550,31 +536,142 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 	public <R extends Object> R reduceTo(Class<R> resultClass, 
-			                             NodeDirection[] howToVisitNodes, 
+			                             VisitDirection[] howToVisitNodes, 
 										 boolean transitive,
 										 R accumulator,
 			                             TaskReducer<R> reducer) {
-		T.call(this);
 		
-		R result = null;
-		
-		
-		return result;
+		return reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, new HashSet<>());
 	}
 
-	public FindAllResults findAll(NodeDirection[] howToVisitNodes, 
-								   boolean transitive,
-								   TaskMatcher matcher) {
+	private <R extends Object> R reduceToImpl(Class<R> resultClass, 
+			                                  VisitDirection[] howToVisitNodes, 
+										      boolean transitive,
+										      R accumulator,
+			                                  TaskReducer<R> reducer,
+			                                  int distance,
+			                                  Set<String> visitedNodes) {
 		T.call(this);
 		
-		return reduceTo(FindAllResults.class, 
+		for(VisitDirection direction : howToVisitNodes) {
+			switch(direction) {
+				case PREVIOUS:
+					reduceToForTasksToVisit(resultClass, 
+							                howToVisitNodes, 
+							                transitive, 
+							                accumulator, 
+							                reducer, 
+							                distance, 
+							                visitedNodes, 
+							                getPreviousTasks());
+					break;
+
+				case SUB:
+					reduceToForTasksToVisit(resultClass, 
+							                howToVisitNodes, 
+							                transitive, 
+							                accumulator, 
+							                reducer, 
+							                distance, 
+							                visitedNodes, 
+							                getSubTasks());
+					break;
+
+				case NEXT:
+					reduceToForTasksToVisit(resultClass, 
+							                howToVisitNodes, 
+							                transitive, 
+							                accumulator, 
+							                reducer, 
+							                distance, 
+							                visitedNodes, 
+							                getNextTasks());
+					break;
+
+				case PARENT:
+					if(!isRootTask()) {
+						reduceToForTaskToVisit(resultClass, 
+											   howToVisitNodes, 
+											   transitive, 
+											   accumulator, 
+											   reducer, 
+											   distance, 
+											   visitedNodes, 
+											   parent());
+					}
+					break;
+			}
+		}
+		
+		return accumulator;
+	}
+
+	private <R extends Object> void reduceToForTasksToVisit(Class<R> resultClass, 
+			                                                VisitDirection[] howToVisitNodes, 
+										                    boolean transitive,
+										                    R accumulator,
+			                                                TaskReducer<R> reducer,
+			                                                int distance,
+			                                                Set<String> visitedNodes,
+			                                                StoredTaskIds tasksToVisit) {
+		T.call(this);
+
+		tasksToVisit.reduceTo(resultClass, accumulator, (index, taskId, accumulatorArg) -> {
+			Task taskToVisit = graph.findTaskByPath(new Path(taskId));
+
+			reduceToForTaskToVisit(resultClass, 
+					 		       howToVisitNodes, 
+					 		       transitive, 
+					 		       accumulator, 
+					 		       reducer, 
+					 		       distance, 
+					 		       visitedNodes, 
+					 		       taskToVisit);
+
+			return accumulatorArg;
+		});
+	}
+
+	private <R> void reduceToForTaskToVisit(Class<R> resultClass, 
+			                                VisitDirection[] howToVisitNodes, 
+			                                boolean transitive, 
+			                                R accumulator, 
+			                                TaskReducer<R> reducer, 
+			                                int distance, 
+			                                Set<String> visitedNodes, 
+			                                Task taskToVisit) {
+		T.call(this);
+		
+		try {
+
+			reducer.reduce(distance+1, taskToVisit, accumulator);
+
+			if(transitive && !visitedNodes.contains(taskToVisit.id())) {
+				visitedNodes.add(taskToVisit.id());
+
+				taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance+1, visitedNodes);
+			}
+
+		} catch(Break b) { }
+	}
+	
+	
+
+	public FindResults findAll(VisitDirection[] howToVisitNodes, 
+							   boolean transitive,
+							   TaskMatcher matcher) {
+		T.call(this);
+		
+		return reduceTo(FindResults.class, 
 					    howToVisitNodes, 
 				        transitive, 
-				        new FindAllResults(),
+				        new FindResults(),
 
 		 (distance, task, findAllResults) -> {
-			 
-			 findAllResults.addOrUpdateFindResult(distance, task);
+
+			 if(matcher.match(task)) {
+				 findAllResults.addOrUpdateFindResult(distance, task);
+			 }
 			 
 			 return findAllResults;
 		});
@@ -592,9 +689,22 @@ public class Task implements NtroModelValue, TaskNode {
 	public boolean hasAtomicTaskOfType(Class<? extends AtomicTask> taskClass) {
 		T.call(this);
 		
-		Boolean hasAtomicTask = false;
 		
-		hasAtomicTask = getEntryTasks().reduceTo(Boolean.class, hasAtomicTask, (index, task, hasTask) -> {
+		Boolean hasTaskOfType = false;
+		
+		hasTaskOfType = hasAtomicTaskOfType(taskClass, entryTasks);
+		
+		if(!hasTaskOfType) {
+			hasTaskOfType = hasAtomicTaskOfType(taskClass, exitTasks);
+		}
+
+		return hasTaskOfType;
+	}
+	
+	private boolean hasAtomicTaskOfType(Class<? extends AtomicTask> taskClass, StoredAtomicTasks atomicTasks) {
+		T.call(this);
+
+		return atomicTasks.reduceTo(Boolean.class, false, (index, task, hasTask) -> {
 			if(hasTask) {
 
 				throw new Break();
@@ -606,8 +716,6 @@ public class Task implements NtroModelValue, TaskNode {
 
 			return hasTask;
 		});
-
-		return false;
 	}
 
 }
