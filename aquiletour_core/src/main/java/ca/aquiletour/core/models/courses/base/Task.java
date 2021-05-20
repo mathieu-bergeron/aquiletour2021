@@ -20,6 +20,7 @@ import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -318,8 +319,14 @@ public class Task implements NtroModelValue, TaskNode {
 	public void forEachSubTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
-		FindResults findResults = findAll(new VisitDirection[] {SUB, NEXT}, true, task -> {
-			return task.parent() == Task.this;
+		FindResults findResults = getSubTasks().reduceTo(FindResults.class, new FindResults(), (index, subTaskId, accumulator) -> {
+			Task subTask = graph.findTaskByPath(new Path(subTaskId));
+			
+			FindResult distanceToSubTask = distanceToTask(new VisitDirection[] {SUB, NEXT}, subTask);
+			
+			accumulator.addOrUpdateFindResult(distanceToSubTask);
+			
+			return accumulator;
 		});
 		
 		findResults.asList().sort((findResult1, findResult2) -> {
@@ -329,18 +336,71 @@ public class Task implements NtroModelValue, TaskNode {
 		findResults.forEachTask(lambda);
 	}
 
-	public void forEachPreviousTaskInOrder(TaskForEach lambda) {
+	private FindResult distanceToTask(Task task) {
+		T.call(this);
+
+		return distanceToTask(new VisitDirection[] {PARENT, SUB, PREVIOUS, NEXT}, task);
+	}
+	
+	private FindResult distanceToTask(VisitDirection[] howToVisitTasks, Task task) {
 		T.call(this);
 		
-		// TODO: order according to the graph
-		forEachPreviousTask(lambda);
+		FindResult result = null;
+		
+		FindResults findResults = findAll(howToVisitTasks, true, visitedTask -> {
+			return visitedTask == task;
+		});
+		
+		if(findResults.size() == 1) {
+
+			result = findResults.get(0);
+			
+		}else {
+			
+			Log.warning("Should not find more than one task");
+		}
+
+		return result;
+	}
+
+	public void forEachPreviousTaskInOrder(TaskForEach lambda) {
+		T.call(this);
+
+		FindResults findResults = getPreviousTasks().reduceTo(FindResults.class, new FindResults(), (index, previousTaskId, accumulator) -> {
+			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
+			
+			FindResult distanceToPreviousTask = distanceToTask(new VisitDirection[] {PREVIOUS}, previousTask);
+			
+			accumulator.addOrUpdateFindResult(distanceToPreviousTask);
+			
+			return accumulator;
+		});
+		
+		findResults.asList().sort((findResult1, findResult2) -> {
+			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
+		});
+		
+		findResults.forEachTask(lambda);
 	}
 
 	public void forEachNextTaskInOrder(TaskForEach lambda) {
 		T.call(this);
+
+		FindResults findResults = getNextTasks().reduceTo(FindResults.class, new FindResults(), (index, nextTaskId, accumulator) -> {
+			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
+			
+			FindResult distanceToNextTask = distanceToTask(new VisitDirection[] {NEXT}, nextTask);
+			
+			accumulator.addOrUpdateFindResult(distanceToNextTask);
+			
+			return accumulator;
+		});
 		
-		// TODO: order according to the graph
-		forEachNextTask(lambda);
+		findResults.asList().sort((findResult1, findResult2) -> {
+			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
+		});
+
+		findResults.forEachTask(lambda);
 	}
 
 	public void removeTask(String taskId) {
@@ -683,15 +743,6 @@ public class Task implements NtroModelValue, TaskNode {
 			 
 			 return findAllResults;
 		});
-	}
-
-	public Task findTaskBackwards(TaskMatcher matcher) {
-		T.call(this);
-		
-		Task task = null;
-		
-		
-		return task;
 	}
 
 	public boolean hasAtomicTaskOfType(Class<? extends AtomicTask> taskClass) {

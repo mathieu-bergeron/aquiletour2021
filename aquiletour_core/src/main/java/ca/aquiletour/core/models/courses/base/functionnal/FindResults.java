@@ -25,6 +25,21 @@ public class FindResults extends ArrayList<FindResult> {
 			result.updateDistances(distance);
 		}
 	}
+
+	public void addOrUpdateFindResult(FindResult resultToAdd) {
+		T.call(this);
+		
+		FindResult result = resultByTaskId(resultToAdd.getTask());
+		
+		if(result == null) {
+			
+			asList().add(resultToAdd);
+			
+		}else {
+			
+			result.updateDistances(resultToAdd);
+		}
+	}
 	
 	private FindResult resultByTaskId(Task task) {
 		T.call(this);
@@ -81,4 +96,5 @@ public class FindResults extends ArrayList<FindResult> {
 			}
 		}
 	}
+
 }

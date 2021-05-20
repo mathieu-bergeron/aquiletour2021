@@ -41,4 +41,16 @@ public class FindResult {
 		}
 	}
 
+	public void updateDistances(FindResult resultToAdd) {
+		T.call(this);
+		
+		if(resultToAdd.getMinDistance() < minDistance) {
+			minDistance = resultToAdd.getMinDistance();
+		}
+		
+		if(resultToAdd.getMaxDistance() > maxDistance) {
+			maxDistance = resultToAdd.getMaxDistance();
+		}
+	}
+
 }

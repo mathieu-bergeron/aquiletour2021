@@ -460,8 +460,8 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 
 		view.clearNextTasks();
 
-		currentTask.forEachNextTaskInOrder(st -> {
-			view.appendNextTask(model.getCoursePath(), st);
+		currentTask.forEachNextTaskInOrder(nt -> {
+			view.appendNextTask(model.getCoursePath(), nt);
 		});
 	}
 }
