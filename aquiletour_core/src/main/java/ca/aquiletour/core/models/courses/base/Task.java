@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
+import ca.aquiletour.core.models.courses.base.functionnal.TaskMatcher;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -13,6 +16,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
+import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -154,34 +158,52 @@ public class Task implements NtroModelValue, TaskNode {
 		this.graph = graph;
 	}
 	
-	public void forEachSubTask(TaskLambda lambda) {
+	public void forEachSubTask(TaskForEach lambda) {
 		T.call(this);
 
 		for(String subTaskId : getSubTasks().getValue()) {
 			Task subTask = graph.findTaskByPath(new Path(subTaskId));
-			lambda.execute(subTask);
+			try {
+				
+				lambda.execute(subTask);
+				
+			}catch(Break b) {
+				break;
+			}
 		}
 	}
 
-	public void forEachNextTask(TaskLambda lambda) {
+	public void forEachNextTask(TaskForEach lambda) {
 		T.call(this);
 
 		for(String nextTaskId : getNextTasks().getValue()) {
 			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
-			lambda.execute(nextTask);
+			try {
+				
+				lambda.execute(nextTask);
+				
+			}catch(Break b) {
+				break;
+			}
 		}
 	}
 
-	public void forEachPreviousTask(TaskLambda lambda) {
+	public void forEachPreviousTask(TaskForEach lambda) {
 		T.call(this);
 
 		for(String previousTaskId : getPreviousTasks().getValue()) {
 			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
-			lambda.execute(previousTask);
+			try {
+
+				lambda.execute(previousTask);
+
+			}catch(Break b) {
+				break;
+			}
 		}
 	}
 
-	public void forEachSibling(TaskLambda lambda) {
+	public void forEachSibling(TaskForEach lambda) {
 		T.call(this);
 		
 		Task parent = parent();
@@ -236,18 +258,24 @@ public class Task implements NtroModelValue, TaskNode {
 		return taskPath.toString();
 	}
 
-	public void forEachStartTaskLocal(TaskLambda lambda) {
+	public void forEachStartTaskLocal(TaskForEach lambda) {
 		T.call(this);
 
 		for(String subTaskId : getSubTasks().getValue()) {
 			Task subTask = graph.findTaskByPath(new Path(subTaskId));
 			if(subTask.isStartTaskLocal()) {
-				lambda.execute(subTask);
+				try {
+
+					lambda.execute(subTask);
+
+				}catch(Break b) {
+					break;
+				}
 			}
 		}
 	}
 
-	public void forEachReachableTaskLocal(TaskLambda lambda) {
+	public void forEachReachableTaskLocal(TaskForEach lambda) {
 		T.call(this);
 		
 		forEachReachableTaskLocalImpl(parent(), new HashSet<>(), lambda);
@@ -255,7 +283,7 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void forEachReachableTaskLocalImpl(Task parent,
 			                                  Set<Task> visitedTasks,
-			                                  TaskLambda lambda) {
+			                                  TaskForEach lambda) {
 		T.call(this);
 		
 		if(Ntro.collections().setContainsExact(visitedTasks, this)) return;
@@ -265,7 +293,14 @@ public class Task implements NtroModelValue, TaskNode {
 			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
 			
 			if(nextTask.parent() == parent) {
-				lambda.execute(nextTask);
+				try {
+
+					lambda.execute(nextTask);
+
+				}catch(Break b) {
+					break;
+				}
+
 				nextTask.forEachReachableTaskLocalImpl(parent, 
 						                               visitedTasks, 
 						                               lambda);
@@ -289,7 +324,7 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 
-	public void forEachSubTaskInOrder(TaskLambda lambda) {
+	public void forEachSubTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
 		Set<Task> visitedTasks = new HashSet<>();
@@ -311,14 +346,14 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
-	public void forEachPreviousTaskInOrder(TaskLambda lambda) {
+	public void forEachPreviousTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
 		// TODO: order according to the graph
 		forEachPreviousTask(lambda);
 	}
 
-	public void forEachNextTaskInOrder(TaskLambda lambda) {
+	public void forEachNextTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
 		// TODO: order according to the graph
@@ -500,6 +535,48 @@ public class Task implements NtroModelValue, TaskNode {
 		T.call(this);
 		
 		return String.valueOf(getEntryTasks().size() + getExitTasks().size());
+	}
+
+	public void forEachTaskBackwardsTransitive(TaskForEach lambda) {
+		T.call(this);
+		
+		forEachPreviousTask(pt -> {
+			pt.forEachTaskBackwardsTransitive(lambda);
+		});
+		
+		if(!isRootTask()) {
+			parent().forEachTaskBackwardsTransitive(lambda);
+		}
+	}
+
+	public Task findTaskBackwards(TaskMatcher matcher) {
+		T.call(this);
+		
+		Task task = null;
+		
+		
+		return task;
+	}
+
+	public boolean hasAtomicTaskOfType(Class<? extends AtomicTask> taskClass) {
+		T.call(this);
+		
+		Boolean hasAtomicTask = false;
+		
+		hasAtomicTask = getEntryTasks().reduceTo(Boolean.class, hasAtomicTask, (index, task, hasTask) -> {
+			if(hasTask) {
+
+				throw new Break();
+
+			}else if(task.getClass().equals(taskClass)) {
+				
+				hasTask = true;
+			}
+
+			return hasTask;
+		});
+
+		return false;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
@@ -14,6 +15,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
@@ -210,11 +212,17 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		this.coursePath = coursePath;
 	}
 
-	public void forEachTask(TaskLambda lambda) {
+	public void forEachTask(TaskForEach lambda) {
 		T.call(this);
 		
 		for(Task task : tasks.getValue().values()) {
-			lambda.execute(task);
+			try {
+				
+				lambda.execute(task);
+				
+			}catch(Break b) {
+				break;
+			}
 		}
 	}
 
