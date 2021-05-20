@@ -21,7 +21,7 @@ public class AtomicTask implements NtroModelValue {
 		
 		if(description.contains("{dépôtGit}")) {
 			
-			parentTask.addEntryTask(new GitRepoTask(parentTask.getPath()));
+			parentTask.addEntryTask(new GitRepoTask(parentTask.getPath()), atomicTaskListener);
 		}
 
 		if(description.contains("{remiseGit}")) {
@@ -38,19 +38,17 @@ public class AtomicTask implements NtroModelValue {
 			
 			GitExerciseTask gitTask = new GitExerciseTask(repoPath);
 
-			parentTask.addExitTask(gitTask);
-			
-			atomicTaskListener.onAtomicTaskAdded(parentTask, gitTask);
+			parentTask.addExitTask(gitTask, atomicTaskListener);
 		}
 
 		if(description.contains("{texteCourt}")) {
 			
-			parentTask.addExitTask(new ShortTextTask());
+			parentTask.addExitTask(new ShortTextTask(), atomicTaskListener);
 		}
 		
 		if(parentTask.getExitTasks().size() == 0) {
 
-			parentTask.addExitTask(new ShortTextTask());
+			parentTask.addExitTask(new ShortTextTask(), atomicTaskListener);
 		}
 	}
 

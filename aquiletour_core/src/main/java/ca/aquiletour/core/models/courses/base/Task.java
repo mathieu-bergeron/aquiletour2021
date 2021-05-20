@@ -466,21 +466,23 @@ public class Task implements NtroModelValue, TaskNode {
 		return date;
 	}
 
-	public void addEntryTask(AtomicTask task) {
+	public void addEntryTask(AtomicTask atomicTask, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 		
-		if(!getEntryTasks().contains(task)) {
-			task.setId(nextAtomicTaskId());
-			getEntryTasks().addItem(task);
+		if(!getEntryTasks().contains(atomicTask)) {
+			atomicTask.setId(nextAtomicTaskId());
+			getEntryTasks().addItem(atomicTask);
+			atomicTaskListener.onAtomicTaskAdded(this, atomicTask);
 		}
 	}
 
-	public void addExitTask(AtomicTask task) {
+	public void addExitTask(AtomicTask atomicTask, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 
-		if(!getExitTasks().contains(task)) {
-			task.setId(nextAtomicTaskId());
-			getExitTasks().addItem(task);
+		if(!getExitTasks().contains(atomicTask)) {
+			atomicTask.setId(nextAtomicTaskId());
+			getExitTasks().addItem(atomicTask);
+			atomicTaskListener.onAtomicTaskAdded(this, atomicTask);
 		}
 	}
 	
