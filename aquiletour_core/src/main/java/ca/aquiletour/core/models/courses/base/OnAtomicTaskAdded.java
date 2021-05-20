@@ -4,6 +4,6 @@ import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 
 public interface OnAtomicTaskAdded {
 	
-	void onTaskAdded(AtomicTask task);
+	void onAtomicTaskAdded(Task task, AtomicTask atomicTask);
 
 }

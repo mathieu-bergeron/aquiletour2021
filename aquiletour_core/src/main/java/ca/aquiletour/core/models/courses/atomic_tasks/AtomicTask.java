@@ -40,7 +40,7 @@ public class AtomicTask implements NtroModelValue {
 
 			parentTask.addExitTask(gitTask);
 			
-			atomicTaskListener.onTaskAdded(gitTask);
+			atomicTaskListener.onAtomicTaskAdded(parentTask, gitTask);
 		}
 
 		if(description.contains("{texteCourt}")) {

@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.CoursePathStudent;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
@@ -219,12 +220,12 @@ public class CourseManager {
 		}
 	}
 
-	private static void registerExercice(CoursePath coursePath, Task task, CourseModelTeacher course) {
+	private static void registerGitExercise(CourseModelTeacher course, CoursePath coursePath, Task task, GitExerciseTask gitTask) {
 		T.call(CourseManager.class);
 
 		for(GroupDescription groupDescription : course.getGroups().getValue()) {
 			String groupId = groupDescription.getGroupId();
-			GitMessages.registerExercice(coursePath, groupId, task.getPath());
+			GitMessages.registerExercise(coursePath, groupId, task.getPath(), gitTask);
 		}
 	}
 
@@ -321,9 +322,12 @@ public class CourseManager {
 				
 				course.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime, new OnAtomicTaskAdded() {
 					@Override
-					public void onTaskAdded(AtomicTask task) {
+					public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
 						T.call(this);
-						
+
+						if(atomicTask instanceof GitExerciseTask) {
+							registerGitExercise(course, coursePath, task, (GitExerciseTask) atomicTask);
+						}
 					}
 				});
 			}

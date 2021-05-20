@@ -50,7 +50,7 @@ public class Task implements NtroModelValue, TaskNode {
 		updateTitle(task.getTitle().getValue());
 		updateDescription(task.getDescription().getValue(), new OnAtomicTaskAdded() {
 			@Override
-			public void onTaskAdded(AtomicTask task) {
+			public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
 				T.call(this);
 			}
 		});

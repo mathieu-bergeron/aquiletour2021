@@ -10,6 +10,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -18,8 +19,10 @@ import ca.ntro.services.Ntro;
 
 public class GitMessages {
 
-	public static void registerExercice(CoursePath coursePath, String groupId, Path taskPath) {
+	public static void registerExercise(CoursePath coursePath, String groupId, Path taskPath, GitExerciseTask gitTask) {
 		T.call(GitMessages.class);
+		
+		T.here();
 
 		String directoryName = "exercice";
 		
@@ -31,6 +34,7 @@ public class GitMessages {
 		registerExerciceMessage.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
 		registerExerciceMessage.setGroupId(groupId);
 		registerExerciceMessage.setExercisePath(taskPath.toString());
+		registerExerciceMessage.setRepoPath(gitTask.getRepoPath().toString());
 		registerExerciceMessage.setSourceFolderPath(taskPath.toString());
 		registerExerciceMessage.setCompletionKeywords(directoryName);
 		
