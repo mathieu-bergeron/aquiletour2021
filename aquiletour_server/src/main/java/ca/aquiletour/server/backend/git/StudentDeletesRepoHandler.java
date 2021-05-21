@@ -21,7 +21,6 @@ public class StudentDeletesRepoHandler extends BackendMessageHandler<StudentDele
 				                                  		message.getStudentId(),
 				                                  		message.getTaskPath(), 
 				                                  		message.getAtomicTaskId());
-		
 	}
 
 	@Override

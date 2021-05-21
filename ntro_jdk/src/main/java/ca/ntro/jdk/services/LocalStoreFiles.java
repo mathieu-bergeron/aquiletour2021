@@ -89,6 +89,8 @@ public class LocalStoreFiles extends ModelStore {
 			FileOutputStream out = new FileOutputStream(file);
 			out.write(jsonString.getBytes());
 			out.close();
+			
+			//System.out.println("Saved: " + file.getAbsolutePath());
 
 		} catch (IOException e) {
 			Log.fatalError("Cannot write " + file.toString(), e);

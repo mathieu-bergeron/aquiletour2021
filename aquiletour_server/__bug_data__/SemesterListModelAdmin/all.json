@@ -1,0 +1,23 @@
+{
+  "_C": "SemesterListModelAdmin",
+  "semesters": {
+    "_C": "ObservableSemesterList",
+    "value": [
+      {
+        "semesterId": "H2021",
+        "_C": "SemesterModelAdmin",
+        "semesterSchedule": {
+          "weeks": {
+            "_C": "ObservableSemesterWeekList",
+            "value": []
+          },
+          "_C": "SemesterSchedule"
+        }
+      }
+    ]
+  },
+  "currentSemesterId": {
+    "_C": "StoredString",
+    "value": "H2021"
+  }
+}

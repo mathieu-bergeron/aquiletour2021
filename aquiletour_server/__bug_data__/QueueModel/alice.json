@@ -1,0 +1,45 @@
+{
+  "appointments": {
+    "_C": "ObservableAppointmentList",
+    "value": []
+  },
+  "messageByGroupId": {
+    "_C": "MessageById",
+    "value": {}
+  },
+  "_C": "QueueModel",
+  "studentIds": [],
+  "messageByCourseId": {
+    "_C": "MessageById",
+    "value": {}
+  },
+  "appointmentDurationSeconds": {
+    "_C": "StoredInteger",
+    "value": 300
+  },
+  "currentTime": {
+    "_C": "ObservableTime",
+    "value": {
+      "_C": "NtroDate",
+      "epochSeconds": -1
+    }
+  },
+  "isOpenByCourseId": {
+    "_C": "IsOpenById",
+    "value": {}
+  },
+  "maxId": 0,
+  "teacherId": "5cf5b9952b183f915e93",
+  "isOpenByGroupId": {
+    "_C": "IsOpenById",
+    "value": {}
+  },
+  "firstAppointmentTime": {
+    "_C": "ObservableTime",
+    "value": {
+      "_C": "NtroDate",
+      "epochSeconds": -1
+    }
+  },
+  "courseId": "alice"
+}
