@@ -4,7 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
-import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;

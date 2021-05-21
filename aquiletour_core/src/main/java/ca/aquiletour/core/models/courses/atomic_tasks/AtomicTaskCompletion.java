@@ -43,4 +43,10 @@ public class AtomicTaskCompletion implements NtroModelValue {
 	public void setAtomicTaskId(String atomicTaskId) {
 		this.atomicTaskId = atomicTaskId;
 	}
+	
+	public boolean isCompleted() {
+		T.call(this);
+		
+		return true;
+	}
 }

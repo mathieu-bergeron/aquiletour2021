@@ -2,7 +2,7 @@ package ca.aquiletour.core.models.courses.base;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.system.trace.T;

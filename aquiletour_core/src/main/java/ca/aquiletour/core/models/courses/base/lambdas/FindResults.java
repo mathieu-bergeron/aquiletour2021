@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.base.functionnal;
+package ca.aquiletour.core.models.courses.base.lambdas;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.base.functionnal;
+package ca.aquiletour.core.models.courses.base.lambdas;
 
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.ntro.core.models.functionnal.Break;

@@ -1,17 +1,28 @@
 package ca.aquiletour.core.models.courses.base;
 
+import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
-import ca.aquiletour.core.models.courses.base.functionnal.VisitDirection;
-import ca.aquiletour.core.models.courses.base.functionnal.TaskForEach;
-import ca.aquiletour.core.models.courses.base.functionnal.FindResult;
-import ca.aquiletour.core.models.courses.base.functionnal.FindResults;
-import ca.aquiletour.core.models.courses.base.functionnal.TaskMatcher;
-import ca.aquiletour.core.models.courses.base.functionnal.TaskReducer;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.lambdas.FindResult;
+import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskMatcher;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskReducer;
+import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForParent;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForPreviousTasks;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForSubTasks;
+import ca.aquiletour.core.models.courses.status.StatusDone;
+import ca.aquiletour.core.models.courses.status.StatusTodo;
+import ca.aquiletour.core.models.courses.status.TaskStatus;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -24,13 +35,11 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-import static ca.aquiletour.core.models.courses.base.functionnal.VisitDirection.*;
-
 public class Task implements NtroModelValue, TaskNode {
 	
 	private TaskGraph graph;
 
-	private Path path = new Path();
+	private TaskPath path = new TaskPath();
 
 	private StoredString title = new StoredString();
 	private StoredString description = new StoredString();
@@ -94,11 +103,11 @@ public class Task implements NtroModelValue, TaskNode {
 		this.nextTasks = nextTasks;
 	}
 
-	public Path getPath() {
+	public TaskPath getPath() {
 		return path;
 	}
 
-	public void setPath(Path taskPath) {
+	public void setPath(TaskPath taskPath) {
 		this.path = taskPath;
 	}
 
@@ -431,7 +440,11 @@ public class Task implements NtroModelValue, TaskNode {
 
 
 	public boolean isRootTask() {
-		return parent() == null;
+		return !hasParent();
+	}
+
+	public boolean hasParent() {
+		return parent() !=  null;
 	}
 
 	public StoredString getTitle() {
@@ -790,4 +803,99 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
+	public boolean isDone(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return status(completions).isDone();
+	}
+
+	
+	public TaskStatus status(StudentCompletionsByTaskId completions) {
+		T.call(this);
+		
+		CompletionByAtomicTaskId atomicTaskCompletions = completions.valueOf(this.id());
+		TaskStatus status = null;
+		
+		if(hasParent() && !parent().areEntryTasksDone(atomicTaskCompletions)) {
+			status = new BlockedWaitingForParent(parent().getPath());
+		}
+		
+		if(status == null) {
+			List<Task> previousTasksNotDone = tasksNotDone(completions, getPreviousTasks());
+			if(!previousTasksNotDone.isEmpty()) {
+				status = new BlockedWaitingForPreviousTasks(previousTasksNotDone);
+			}
+		}
+
+		if(status == null && !areEntryTasksDone(atomicTaskCompletions)) {
+			status = new StatusTodo();
+		}
+
+		if(status == null) {
+			List<Task> subTasksNotDone = tasksNotDone(completions, getSubTasks());
+			if(!subTasksNotDone.isEmpty()) {
+				status = new BlockedWaitingForSubTasks(subTasksNotDone);
+			}
+		}
+
+		if(status == null && !areExitTasksDone(atomicTaskCompletions)) {
+			status = new StatusTodo();
+		}
+		
+		if(status == null) {
+			status = new StatusDone();
+		}
+		
+		return status;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Task> tasksNotDone(StudentCompletionsByTaskId completions, StoredTaskIds tasks){
+		T.call(this);
+		
+		return tasks.reduceTo(List.class, new ArrayList<Task>(), (index, taskId, accumulator) -> {
+			Task task = graph.findTaskByPath(new Path(taskId));
+			
+			if(!task.isDone(completions)) {
+				accumulator.add(task);
+			}
+
+			return accumulator;
+		});
+	}
+
+	private boolean areEntryTasksDone(CompletionByAtomicTaskId completions) {
+		T.call(this);
+
+		return areAtomicTasksDone(completions, getEntryTasks());
+	}
+
+	private boolean areExitTasksDone(CompletionByAtomicTaskId completions) {
+		T.call(this);
+
+		return areAtomicTasksDone(completions, getExitTasks());
+	}
+
+	private boolean areAtomicTasksDone(CompletionByAtomicTaskId completions, StoredAtomicTasks atomicTasks) {
+		T.call(this);
+
+		return atomicTasks.reduceTo(Boolean.class, true, (index, entryTask, parentEntryDone) -> {
+			if(!parentEntryDone) {
+				throw new Break();
+			}
+			
+			AtomicTaskCompletion completion = null;
+			if(completions != null) {
+				completion = completions.valueOf(entryTask.getId());
+			}
+
+			if(completion == null
+					|| !completion.isCompleted()) {
+				
+				parentEntryDone = false;
+			}
+			
+			return parentEntryDone;
+		});
+	}
 }

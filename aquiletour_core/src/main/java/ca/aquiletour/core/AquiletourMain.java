@@ -33,11 +33,11 @@ import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.short_text.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.StoredCourseDate;
@@ -45,6 +45,7 @@ import ca.aquiletour.core.models.courses.base.StoredTaskIds;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
 import ca.aquiletour.core.models.courses.base.StoredAtomicTasks;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
@@ -390,6 +391,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(GitRepoCloned.class);
 
 		Ntro.registerSerializableClass(DefaultAtomicTask.class);
+
+		Ntro.registerSerializableClass(TaskPath.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

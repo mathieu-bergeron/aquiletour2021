@@ -17,6 +17,7 @@ import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
@@ -266,7 +267,7 @@ public class AquiletourBackendRequestHandler {
 			String taskTitle = parameters.get("taskId")[0];
 			
 			Path parentPath = new Path("/");
-			Path taskPath = new Path("/" + taskId);
+			TaskPath taskPath = new TaskPath("/" + taskId);
 
 			Task task = new Task();
 			task.updateTitle(taskTitle);
@@ -471,7 +472,7 @@ public class AquiletourBackendRequestHandler {
 			String parentTaskId = parameters.get("taskId")[0];
 			String newSubTaskId = parameters.get("newSubTaskId")[0];
 			String taskTitle = parameters.get("taskTitle")[0];
-			Path newTaskPath = new Path(parentTaskId + "/" + newSubTaskId);
+			TaskPath newTaskPath = new TaskPath(parentTaskId + "/" + newSubTaskId);
 			
 			Task task = new Task();
 			task.setPath(newTaskPath);
@@ -496,7 +497,7 @@ public class AquiletourBackendRequestHandler {
 			Path nextPath = new Path(nextTaskId);
 			Path parentPath = nextPath.parent();
 
-			Path newPreviousTaskPath = new Path(parentPath.toString() + "/" + newPreviousTaskId);
+			TaskPath newPreviousTaskPath = new TaskPath(parentPath.toString() + "/" + newPreviousTaskId);
 
 			Task newPreviousTask = new Task();
 			newPreviousTask.setPath(newPreviousTaskPath);
@@ -517,7 +518,7 @@ public class AquiletourBackendRequestHandler {
 
 			String nextTaskId = parameters.get("taskId")[0];
 			String existingTaskPathString = parameters.get("linkToPreviousTaskPath")[0];
-			Path existingTaskPath = new Path(existingTaskPathString);
+			TaskPath existingTaskPath = new TaskPath(existingTaskPathString);
 
 			Task previousTask = new Task();
 			previousTask.setPath(existingTaskPath);
@@ -542,7 +543,7 @@ public class AquiletourBackendRequestHandler {
 			Path previousPath = new Path(previousTaskId);
 			Path parentPath = previousPath.parent();
 
-			Path newNextTaskPath = new Path(parentPath.toString() + "/" + newNextTaskId);
+			TaskPath newNextTaskPath = new TaskPath(parentPath.toString() + "/" + newNextTaskId);
 
 			Task newNextTask = new Task();
 			newNextTask.setPath(newNextTaskPath);
@@ -562,7 +563,7 @@ public class AquiletourBackendRequestHandler {
 																							     sessionData);
 			String previousTaskId = parameters.get("taskId")[0];
 			String existingTaskPathSting = parameters.get("linkToNextTaskPath")[0];
-			Path existingTaskPath = new Path(existingTaskPathSting);
+			TaskPath existingTaskPath = new TaskPath(existingTaskPathSting);
 			
 			Task nextTask = new Task();
 			nextTask.setPath(existingTaskPath);

@@ -6,6 +6,7 @@ import java.util.List;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.User;
@@ -152,7 +153,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 			CourseListManager.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
 			DashboardManager.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
 			
-			List<CurrentTaskStudent> currentTasksStudent = teacherCourse.currentTasksStudent(student.getId());
+			List<CurrentTaskStudent> currentTasksStudent = teacherCourse.currentTasksForStudent(student.getId());
 			
 			DashboardManager.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, CurrentTaskStudent.class, message.coursePath(), currentTasksStudent, student);
 		}

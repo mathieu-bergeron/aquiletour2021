@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.base.functionnal;
+package ca.aquiletour.core.models.courses.base.lambdas;
 
 public enum VisitDirection {
 	PREVIOUS,

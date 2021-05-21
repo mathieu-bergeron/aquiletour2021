@@ -1,11 +1,15 @@
 package ca.aquiletour.core.models.courses.teacher;
 
+import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
+import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
@@ -213,17 +217,23 @@ public class CourseModelTeacher extends CourseModel {
 		});
 	}
 
-	public List<CurrentTaskStudent> currentTasksStudent(String studentId) {
+	public List<CurrentTaskStudent> currentTasksForStudent(String studentId) {
 		T.call(this);
 		
-		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
+		StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
 		
-		/* TODO:
-		 * 
-		 * visit the graph
-		 * stop when a task is not completed (and memorize it)
-		 * 
-		 */
+		FindResults findResults = rootTask().findAll(new VisitDirection[]{SUB, NEXT}, true, (task) -> {
+			return task.status(studentCompletions).isTodo();
+		});
+		
+		findResults.sort((result1, result2) -> {
+			return Integer.compare(result1.getMinDistance(), result2.getMinDistance());
+		});
+		
+		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
+		findResults.forEach(r -> {
+			currentTasks.add(new CurrentTaskStudent(r.getTask()));
+		});
 		
 		return currentTasks;
 	}

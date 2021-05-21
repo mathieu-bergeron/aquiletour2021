@@ -11,6 +11,7 @@ import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
@@ -274,7 +275,7 @@ public class CourseManager {
 				T.call(this);
 				
 				Task rootTask = new Task();
-				rootTask.setPath(new Path("/"));
+				rootTask.setPath(new TaskPath("/"));
 
 				course.registerRootTask(rootTask);
 				course.setCoursePath(coursePath);
