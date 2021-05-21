@@ -16,6 +16,8 @@ public class GitExerciseTask extends AtomicTask {
 	public GitExerciseTask(Path repoPath) {
 		super();
 		T.call(this);
+		
+		this.repoPath = repoPath;
 	}
 
 	@Override

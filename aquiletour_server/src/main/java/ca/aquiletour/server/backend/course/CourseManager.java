@@ -222,11 +222,17 @@ public class CourseManager {
 
 	private static void registerGitExercise(CourseModelTeacher course, CoursePath coursePath, Task task, GitExerciseTask gitTask) {
 		T.call(CourseManager.class);
-
-		for(GroupDescription groupDescription : course.getGroups().getValue()) {
-			String groupId = groupDescription.getGroupId();
-			GitMessages.registerExercise(coursePath, groupId, task.getPath(), gitTask);
-		}
+		
+		course.getGroups().forEachItem((i, group) -> {
+			String groupId = group.getGroupId();
+			group.getStudents().forEachItem((j, studentId) ->{
+				GitMessages.registerExercise(coursePath, 
+						                     groupId, 
+						                     studentId, 
+						                     task.getPath(), 
+						                     gitTask);
+			});
+		});
 	}
 
 	private static void deleteExercice(CoursePath coursePath, Task task, CourseModelTeacher course) {

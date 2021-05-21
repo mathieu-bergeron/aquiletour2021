@@ -2,6 +2,7 @@ package ca.aquiletour.core.models.courses.atomic_tasks;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.short_text.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.Task;
@@ -32,6 +33,7 @@ public class AtomicTask implements NtroModelValue {
 				return t.hasAtomicTaskOfType(GitRepoTask.class);
 			});
 			
+			
 			if(findResults.size() > 0) {
 				repoPath = findResults.closest().getTask().getPath();
 			}
@@ -48,7 +50,7 @@ public class AtomicTask implements NtroModelValue {
 		
 		if(parentTask.getExitTasks().size() == 0) {
 
-			parentTask.addExitTask(new ShortTextTask(), atomicTaskListener);
+			parentTask.addExitTask(new DefaultAtomicTask(), atomicTaskListener);
 		}
 	}
 

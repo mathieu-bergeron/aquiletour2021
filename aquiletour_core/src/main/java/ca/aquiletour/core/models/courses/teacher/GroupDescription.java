@@ -47,7 +47,9 @@ public class GroupDescription implements NtroModelValue {
 		T.call(this);
 
 		for(User student : studentsToAdd) {
-			getStudents().addItem(student.getId());
+			if(!getStudents().contains(student.getRegistrationId())) {
+				getStudents().addItem(student.getRegistrationId());
+			}
 		}
 	}
 }

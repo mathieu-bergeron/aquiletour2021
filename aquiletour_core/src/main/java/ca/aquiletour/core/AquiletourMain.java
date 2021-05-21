@@ -37,6 +37,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTa
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.short_text.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.StoredCourseDate;
@@ -387,6 +388,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(GitRepoSubmitted.class);
 		Ntro.registerSerializableClass(GitRepoCloned.class);
+
+		Ntro.registerSerializableClass(DefaultAtomicTask.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

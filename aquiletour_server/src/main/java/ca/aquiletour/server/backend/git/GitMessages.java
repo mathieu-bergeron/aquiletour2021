@@ -19,7 +19,11 @@ import ca.ntro.services.Ntro;
 
 public class GitMessages {
 
-	public static void registerExercise(CoursePath coursePath, String groupId, Path taskPath, GitExerciseTask gitTask) {
+	public static void registerExercise(CoursePath coursePath, 
+										String groupId, 
+										String studentId,
+										Path taskPath, 
+										GitExerciseTask gitTask) {
 		T.call(GitMessages.class);
 		
 		T.here();
@@ -31,8 +35,10 @@ public class GitMessages {
 		}
 		
 		RegisterExercise registerExerciceMessage = Ntro.messages().create(RegisterExercise.class);
+		registerExerciceMessage.setSemesterId(coursePath.semesterId());
 		registerExerciceMessage.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
 		registerExerciceMessage.setGroupId(groupId);
+		registerExerciceMessage.setStudentId(studentId);
 		registerExerciceMessage.setExercisePath(taskPath.toString());
 		registerExerciceMessage.setRepoPath(gitTask.getRepoPath().toString());
 		registerExerciceMessage.setSourceFolderPath(taskPath.toString());

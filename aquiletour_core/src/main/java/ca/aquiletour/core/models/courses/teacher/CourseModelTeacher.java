@@ -66,14 +66,24 @@ public class CourseModelTeacher extends CourseModel {
 	public void addGroup(String groupId, List<User> studentsToAdd) {
 		T.call(this);
 		
-		GroupDescription group = new GroupDescription();
-
-		getGroups().addItem(group);
+		GroupDescription group = groupById(groupId);
 		
-		group.setGroupId(groupId);
+		if(group == null) {
+			group = new GroupDescription();
+			getGroups().addItem(group);
+			group.setGroupId(groupId);
+		}
+		
 		group.addStudents(studentsToAdd);
 	}
 	
+	private GroupDescription groupById(String groupId) {
+		T.call(this);
+
+		return getGroups().findFirst(GroupDescription.class, (index, group) -> {
+			return group.getGroupId().equals(groupId);
+		});
+	}
 	
 	@Override
 	public AquiletourDate taskEndTimeForGroup(String groupId, String taskId) {

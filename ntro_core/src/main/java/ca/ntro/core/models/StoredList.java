@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.ntro.core.models.functionnal.Break;
 import ca.ntro.core.models.functionnal.ListIterator;
+import ca.ntro.core.models.functionnal.ListMatcher;
 import ca.ntro.core.models.functionnal.ListReducer;
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
@@ -364,6 +365,22 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 		}
 
 		return accumulator;
+	}
+
+	public I findFirst(Class<I> itemClass, ListMatcher<I> matcher) {
+		T.call(this);
+
+		return reduceTo(itemClass, null, (index, item, accumulator) ->{
+			if(accumulator != null) {
+				throw new Break();
+			}
+			
+			if(matcher.match(index, item)) {
+				accumulator = item;
+			}
+			
+			return accumulator;
+		});
 	}
 	
 }
