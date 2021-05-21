@@ -400,8 +400,8 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 	}
 
 	protected AtomicTaskCompletion atomicTaskCompletion(StudentCompletionsByTaskId studentCompletions, 
-			                                               Path taskPath,
-			                                               String atomicTaskId) {
+			                                            Path taskPath,
+			                                            String atomicTaskId) {
 		T.call(this);
 		
 		AtomicTaskCompletion result = null;

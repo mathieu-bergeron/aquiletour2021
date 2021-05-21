@@ -4,10 +4,10 @@
   "authToken": "",
   "adminMode": false,
   "registrationId": "alice",
-  "hasPassword": true,
-  "id": "2659f2dc44404d5399b9",
+  "hasPassword": false,
+  "id": "188ef209aa0e0bf7d83d",
   "email": "alice@cmontmorency.qc.ca",
-  "passwordHash": "2bf59c41336286c946a6841afa8890a27c5629a9",
+  "passwordHash": "",
   "lastname": "",
   "studentMode": false
 }

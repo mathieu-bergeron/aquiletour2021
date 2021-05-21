@@ -59,4 +59,10 @@ public class CourseModelStudent extends CourseModel {
 				                    taskPath,
 				                    atomicTaskId);
 	}
+
+	public void updateGroupId(String groupId) {
+		T.call(this);
+		
+		getGroupId().set(groupId);
+	}
 }

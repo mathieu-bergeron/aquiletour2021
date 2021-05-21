@@ -185,8 +185,15 @@ public abstract class ModelStore {
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
 		}else if(args.size() == 1){
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+		}else if(args.size() == 2){
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName
+														+ " " + args.get(0) 
+														+ " " + args.get(1));
 		}else {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0) + " " + args.get(1));
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName
+														+ " " + args.get(0) 
+														+ " " + args.get(1) 
+														+ " " + args.get(2));
 		}
 
 		DocumentPath documentPath = valuePath.getDocumentPath();

@@ -11,6 +11,7 @@ import ca.aquiletour.core.models.courses.base.functionnal.VisitDirection;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 import static ca.aquiletour.core.models.courses.base.functionnal.VisitDirection.*;
 
@@ -66,7 +67,7 @@ public class AtomicTask implements NtroModelValue {
 		return result;
 	}
 
-	private String id = "";
+	private String id = idFromType(this.getClass());
 
 	public String getId() {
 		return id;
@@ -74,5 +75,9 @@ public class AtomicTask implements NtroModelValue {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public static String idFromType(Class<? extends AtomicTask> taskType) {
+		return Ntro.introspector().getSimpleNameForClass(taskType);
 	}
 }

@@ -382,6 +382,7 @@ public class CourseManager {
 	public static void createStudentCourse(ModelStoreSync modelStore, 
 										   CoursePath coursePath,
 			                               CourseModelTeacher courseTeacher, 
+			                               String groupId,
 			                               User student) {
 		T.call(CourseManager.class);
 		
@@ -393,8 +394,8 @@ public class CourseManager {
 			@Override
 			public void initialize(CourseModelStudent newModel) {
 				T.call(this);
-			
-					
+				
+				newModel.updateGroupId(groupId);
 				newModel.copyCourse(courseTeacher);
 			}
 		});

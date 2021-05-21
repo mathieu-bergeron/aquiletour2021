@@ -1,9 +1,11 @@
 package ca.aquiletour.server.backend.git;
 
 import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendMessageHandlerError;
@@ -25,7 +27,7 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 				                                                                       message.coursePath(), 
 				                                                                       message.getStudentId(), 
 				                                                                       message.taskPath(), 
-				                                                                       message.atomicTaskId());
+				                                                                       AtomicTask.idFromType(GitRepoTask.class));
 		
 		GitRepoCloned gitRepoCloned = new GitRepoCloned();
 		
@@ -37,14 +39,14 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 				                                        message.coursePath(), 
 				                                        message.getStudentId(), 
 				                                        message.taskPath(), 
-				                                        message.atomicTaskId(), 
+				                                        AtomicTask.idFromType(GitRepoTask.class),
 				                                        gitRepoCloned);
 
 		CourseManager.updateAtomicTaskCompletionTeacher(modelStore, 
 				                                        message.coursePath(), 
 				                                        message.getStudentId(), 
 				                                        message.taskPath(), 
-				                                        message.atomicTaskId(), 
+				                                        AtomicTask.idFromType(GitRepoTask.class),
 				                                        gitRepoCloned);
 	}
 

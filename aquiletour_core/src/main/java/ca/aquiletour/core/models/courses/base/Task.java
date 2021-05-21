@@ -528,24 +528,37 @@ public class Task implements NtroModelValue, TaskNode {
 
 	public void addEntryTask(AtomicTask atomicTask, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
-		
-		if(!getEntryTasks().contains(atomicTask)) {
-			atomicTask.setId(nextAtomicTaskId());
-			getEntryTasks().addItem(atomicTask);
-			atomicTaskListener.onAtomicTaskAdded(this, atomicTask);
-		}
+
+		addAtomicTask(atomicTask, atomicTaskListener, getEntryTasks());
 	}
 
 	public void addExitTask(AtomicTask atomicTask, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 
-		if(!getExitTasks().contains(atomicTask)) {
-			atomicTask.setId(nextAtomicTaskId());
-			getExitTasks().addItem(atomicTask);
+		addAtomicTask(atomicTask, atomicTaskListener, getExitTasks());
+	}
+	
+	private void addAtomicTask(AtomicTask atomicTask, 
+							   OnAtomicTaskAdded atomicTaskListener, 
+							   StoredAtomicTasks storedTasks) {
+		T.call(this);
+
+		AtomicTask existingTask = atomicTaskByType(atomicTask.getClass(), storedTasks);
+		if(existingTask == null) {
+			storedTasks.addItem(atomicTask);
 			atomicTaskListener.onAtomicTaskAdded(this, atomicTask);
 		}
 	}
-	
+
+	private AtomicTask atomicTaskByType(Class<? extends AtomicTask> taskType,
+							            StoredAtomicTasks storedTasks) {
+		T.call(this);
+		
+		return storedTasks.findFirst(AtomicTask.class, (index, task) -> {
+			return task.getClass().equals(taskType);
+		});
+	}
+
 	private AtomicTask atomicTaskById(String id) {
 		T.call(this);
 		
