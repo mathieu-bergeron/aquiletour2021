@@ -813,7 +813,11 @@ public class Task implements NtroModelValue, TaskNode {
 	public TaskStatus status(StudentCompletionsByTaskId completions) {
 		T.call(this);
 		
-		CompletionByAtomicTaskId atomicTaskCompletions = completions.valueOf(this.id());
+		CompletionByAtomicTaskId atomicTaskCompletions = null;
+		if(completions != null) {
+			atomicTaskCompletions = completions.valueOf(this.id());
+		}
+
 		TaskStatus status = null;
 		
 		if(hasParent() && !parent().areEntryTasksDone(atomicTaskCompletions)) {
