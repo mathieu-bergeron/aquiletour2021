@@ -249,13 +249,36 @@ public class CourseModelTeacher extends CourseModel {
 		return numberOfStudents;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CurrentTaskTeacher> currentTasksTeacher() {
 		T.call(this);
 		
-		List<CurrentTaskTeacher> currentTasks = new ArrayList<>();
-		
-		return currentTasks;
+		return rootTask().reduceTo(List.class, new VisitDirection[]{SUB,NEXT}, true, new ArrayList<CurrentTaskTeacher>(), (distance, task, currentTasks) -> {
+			getGroups().forEachItem((i, group) -> {
+				group.getStudents().forEachItem((j, studentId) -> {
+
+					StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
+					if(task.status(studentCompletions).isTodo()) {
+						
+						CurrentTaskTeacher currentTask = CurrentTaskTeacher.currentTaskByPath(currentTasks, task.getPath());
+						
+						if(currentTask != null) {
+
+							currentTask.incrementNumberOfStudent(1);
+
+						}else {
+							
+							currentTask = new CurrentTaskTeacher(task);
+							currentTasks.add(currentTask);
+						}
+					}
+				});
+			});
+
+			return currentTasks;
+		});
 	}
+	
 
 	public void updateAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId, AtomicTaskCompletion completionToAdd) {
 		T.call(this);

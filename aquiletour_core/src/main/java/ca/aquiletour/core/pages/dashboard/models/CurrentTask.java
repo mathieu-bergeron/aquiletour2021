@@ -44,4 +44,5 @@ public abstract class CurrentTask implements NtroModelValue {
 	public void setTaskTitle(StoredString taskTitle) {
 		this.taskTitle = taskTitle;
 	}
+
 }
