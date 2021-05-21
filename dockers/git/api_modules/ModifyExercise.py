@@ -25,7 +25,7 @@ def process(api_req, maria_conn, lite_conn):
 #        api_req['groupId'] = None
     if not 'repoPath' in api_req:
         api_req['repoPath'] = '/'
-    if maria_conn:
+    if maria_conn and lite_conn:
         try:
             semester = utils.normalize_data.normalize_session(api_req['semesterId'])
             course = utils.normalize_data.normalize_courseId(api_req['courseId'])
@@ -38,10 +38,11 @@ def process(api_req, maria_conn, lite_conn):
                 ( api_req['newRepoPath'], api_req['newSourceFolderPath'], api_req['newCompletionKeywords'], # SET
                 semester, course, group, api_req['exercisePath'] )) # WHERE
             maria_conn.commit()
-            response = JSONResponse()
+            body = utils.task_utils.add_task({'_C':'UpdateTask', 'semesterId':semester, 'courseId':course, 'groupId':group}, 9, lite_conn)
+            response = JSONResponse(content = body)
             response.status_code = status.HTTP_200_OK
-            utils.task_utils.add_task({'_C':'UpdateTask', 'semesterId':semester, 'courseId':course, 'groupId':group}, 9, lite_conn)
         except mysql.connector.errors.IntegrityError:
+            maria_conn.rollback()
             print('Duplicate exercise or invalid data')
             response = Response()
             response.status_code = status.HTTP_304_NOT_MODIFIED
@@ -50,6 +51,7 @@ def process(api_req, maria_conn, lite_conn):
             response = JSONResponse()
             response.status_code = status.HTTP_400_BAD_REQUEST
         except KeyError:
+            maria_conn.rollback()
             response = JSONResponse()
             response.status_code = status.HTTP_400_BAD_REQUEST
     else:

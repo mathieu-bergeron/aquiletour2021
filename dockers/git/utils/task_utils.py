@@ -21,10 +21,11 @@ def add_task(task, priority, lite_conn):
     cur = lite_conn.cursor()
     str_task = json.dumps(task, sort_keys=True)
     cur.execute('SELECT * FROM tasks\
-                WHERE ans_date IS NULL AND request=?',(str_task,))
+                WHERE start_date IS NULL AND request=?',(str_task,))
     row = cur.fetchone()
     if row:
         body = {'request_id' : row[0]}
+        lite_conn.rollback()
     else:
         cur.execute('''INSERT INTO tasks(priority,req_date,request) 
                     VALUES (?,DateTime('now','localtime'),?)''',

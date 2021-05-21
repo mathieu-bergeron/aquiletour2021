@@ -137,7 +137,8 @@ if __name__=="__main__":
                         priority INTEGER,
                         req_date TEXT,
                         request TEXT,
-                        ans_date TEXT,
+                        start_date TEXT,
+                        end_date TEXT,
                         answer TEXT,
                         ack_date TEXT);''')
 # TEST DATA - Begin
@@ -173,6 +174,8 @@ if __name__=="__main__":
             VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 3/Atelier 4', '/', '/420-ZF5/AT04', 'AT04')''')
         cur2.execute('''INSERT INTO exercise 
             VALUES ('H2021','nicolas.leduc/420-ZF5','03', '/Semaine 3/Atelier 2', '/', '/420-ZF5/AT02', 'Atelier 2')''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('A2020','nicolas.leduc/420-ZC6','01', '/', '/', '/', NULL)''')
 #        cur2.execute('''INSERT INTO exercise 
 #            VALUES ('H2021','nicolas.leduc/420-ZF5','03', '/Semaine 15/Reprise', '/', '/420-ZF5/TPRE', 'TPRE')''')
         conn2.commit()
