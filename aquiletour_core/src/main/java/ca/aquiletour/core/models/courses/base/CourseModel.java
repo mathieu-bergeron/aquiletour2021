@@ -110,6 +110,12 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 				previousTask.addNextTask(existingNextTask);
 				existingNextTask.addPreviousTask(previousTask);
 				
+				GraphPath cycle = rootTask().findFirstCycle();
+				if(cycle != null) {
+					previousTask.removeNextTask(existingNextTask.id());
+					existingNextTask.removePreviousTask(previousTask.id());
+				}
+				
 			}else {
 
 				addNewNextTask(previousTask, nextTask);
@@ -159,6 +165,12 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 				
 				nextTask.addPreviousTask(existingPreviousTask);
 				existingPreviousTask.addNextTask(nextTask);
+
+				GraphPath cycle = rootTask().findFirstCycle();
+				if(cycle != null) {
+					nextTask.removePreviousTask(existingPreviousTask.id());
+					existingPreviousTask.removeNextTask(nextTask.id());
+				}
 				
 			}else {
 

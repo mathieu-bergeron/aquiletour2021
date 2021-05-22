@@ -9,6 +9,7 @@ import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.lambdas.BreakableAccumulator;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResult;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
@@ -620,6 +621,34 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
+	// FIXME: O(n^n) implementation
+	//        that does memorize the cycle path
+	public GraphPath findFirstCycle() {
+		T.call(this);
+		
+		return reduceTo(GraphPath.class, new VisitDirection[] {SUB,NEXT}, true, null, (d, task, outerCycle)-> {
+			if(outerCycle != null) {
+				// FIXME: break not respected by Task.reduceTo
+				// T.here();
+				throw new Break();
+			}
+
+			return task.reduceTo(GraphPath.class, new VisitDirection[] {SUB,NEXT}, true, outerCycle, (distance, reachableTask, cycle) -> {
+				if(cycle != null) {
+					throw new Break();
+				}
+				
+				if(distance > 0 && reachableTask == task) {
+					cycle =  new GraphPath();
+					cycle.addName(task.id());
+				}
+
+				return cycle;
+			});
+			
+		});
+	}
+
 	public <R extends Object> R reduceTo(Class<R> resultClass, 
 			                             VisitDirection[] howToVisitNodes, 
 										 boolean transitive,
@@ -631,9 +660,10 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		try {
 			accumulator = reducer.reduce(0, this, accumulator);
+			accumulator = reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, visistedNodes);
 		} catch(Break b) {}
 		
-		return reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, visistedNodes);
+		return accumulator;
 	}
 
 	private <R extends Object> R reduceToImpl(Class<R> resultClass, 
@@ -642,7 +672,7 @@ public class Task implements NtroModelValue, TaskNode {
 										      R accumulator,
 			                                  TaskReducer<R> reducer,
 			                                  int distance,
-			                                  Set<String> visitedNodes) {
+			                                  Set<String> visitedNodes) throws Break {
 		T.call(this);
 		
 		for(VisitDirection direction : howToVisitNodes) {
@@ -698,6 +728,7 @@ public class Task implements NtroModelValue, TaskNode {
 		return accumulator;
 	}
 
+	@SuppressWarnings("unchecked")
 	private <R extends Object> R reduceToForTasksToVisit(Class<R> resultClass, 
 			                                             VisitDirection[] howToVisitNodes, 
 										                 boolean transitive,
@@ -705,23 +736,57 @@ public class Task implements NtroModelValue, TaskNode {
 			                                             TaskReducer<R> reducer,
 			                                             int distance,
 			                                             Set<String> visitedNodes,
-			                                             StoredTaskIds tasksToVisit) {
+			                                             StoredTaskIds tasksToVisit) throws Break {
 		T.call(this);
-
-		return tasksToVisit.reduceTo(resultClass, accumulator, (index, taskId, accumulatorArg) -> {
+		
+		return tasksToVisit.reduceTo(resultClass, accumulator, (index, taskId, innerAccumulator) -> {
 			Task taskToVisit = graph.findTaskByPath(new Path(taskId));
-
-			reduceToForTaskToVisit(resultClass, 
-					 		       howToVisitNodes, 
-					 		       transitive, 
-					 		       accumulator, 
-					 		       reducer, 
-					 		       distance, 
-					 		       visitedNodes, 
-					 		       taskToVisit);
-
-			return accumulatorArg;
+			
+			return reduceToForTaskToVisit(resultClass, 
+										  howToVisitNodes, 
+										  transitive, 
+										  innerAccumulator,
+										  reducer, 
+										  distance, 
+										  visitedNodes, 
+										  taskToVisit);
 		});
+		
+		/* FIXME: breakable version
+		BreakableAccumulator<R> outerBreakable = new BreakableAccumulator<R>(accumulator);
+
+		outerBreakable = tasksToVisit.reduceTo(BreakableAccumulator.class, outerBreakable, (index, taskId, innerBreakable) -> {
+			Task taskToVisit = graph.findTaskByPath(new Path(taskId));
+			
+			if(innerBreakable.shouldBreak()) {
+				throw new Break();
+			}
+			
+			try {
+				R innerAccumulator = reduceToForTaskToVisit(resultClass, 
+													        howToVisitNodes, 
+														    transitive, 
+														    (R) innerBreakable.getAccumulator(), 
+														    reducer, 
+														    distance, 
+														    visitedNodes, 
+														    taskToVisit);
+				
+				innerBreakable.setAccumulator(innerAccumulator);
+				
+			}catch(Break b) {
+				innerBreakable.setShouldBreak(true);
+			}
+
+			return innerBreakable;
+		});
+
+		if(outerBreakable.shouldBreak()) {
+			throw new Break();
+		}
+
+		return outerBreakable.getAccumulator();
+		*/
 	}
 
 	private <R extends Object> R reduceToForTaskToVisit(Class<R> resultClass, 
@@ -731,21 +796,17 @@ public class Task implements NtroModelValue, TaskNode {
 			                                            TaskReducer<R> reducer, 
 			                                            int distance, 
 			                                            Set<String> visitedNodes, 
-			                                            Task taskToVisit) {
+			                                            Task taskToVisit) throws Break {
 		T.call(this);
 		
-		try {
+		accumulator = reducer.reduce(distance, taskToVisit, accumulator);
 
-			accumulator = reducer.reduce(distance, taskToVisit, accumulator);
+		if(transitive && !visitedNodes.contains(taskToVisit.id())) {
+			visitedNodes.add(taskToVisit.id());
 
-			if(transitive && !visitedNodes.contains(taskToVisit.id())) {
-				visitedNodes.add(taskToVisit.id());
+			accumulator = taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance, visitedNodes);
+		}
 
-				accumulator = taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance, visitedNodes);
-			}
-
-		} catch(Break b) { }
-		
 		return accumulator;
 	}
 	
@@ -902,4 +963,5 @@ public class Task implements NtroModelValue, TaskNode {
 			return parentEntryDone;
 		});
 	}
+
 }
