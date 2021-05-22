@@ -21,7 +21,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 

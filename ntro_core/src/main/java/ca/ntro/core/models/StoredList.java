@@ -3,10 +3,10 @@ package ca.ntro.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.ntro.core.models.functionnal.Break;
-import ca.ntro.core.models.functionnal.ListIterator;
-import ca.ntro.core.models.functionnal.ListMatcher;
-import ca.ntro.core.models.functionnal.ListReducer;
+import ca.ntro.core.models.lambdas.Break;
+import ca.ntro.core.models.lambdas.ListIterator;
+import ca.ntro.core.models.lambdas.ListMatcher;
+import ca.ntro.core.models.lambdas.ListReducer;
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ItemRemovedListener;

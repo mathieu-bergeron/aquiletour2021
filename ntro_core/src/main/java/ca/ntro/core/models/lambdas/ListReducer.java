@@ -1,4 +1,4 @@
-package ca.ntro.core.models.functionnal;
+package ca.ntro.core.models.lambdas;
 
 public interface ListReducer<ACC extends Object, V extends Object> {
 

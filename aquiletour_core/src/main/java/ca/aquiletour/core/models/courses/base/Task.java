@@ -31,7 +31,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
-import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;

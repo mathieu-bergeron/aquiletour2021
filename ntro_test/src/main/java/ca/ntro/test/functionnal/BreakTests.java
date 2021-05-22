@@ -4,7 +4,7 @@ package ca.ntro.test.functionnal;
 import org.junit.Test;
 
 import ca.ntro.core.models.StoredList;
-import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.services.Ntro;
 
 import static ca.ntro.assertions.Factory.that;

@@ -15,7 +15,7 @@ import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 

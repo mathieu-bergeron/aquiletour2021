@@ -1,4 +1,4 @@
-package ca.ntro.jdk.test.functionnal;
+package ca.ntro.jdk.test.lambdas;
 
 import org.junit.BeforeClass;
 

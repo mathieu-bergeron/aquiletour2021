@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 
 public class FindResults extends ArrayList<FindResult> {

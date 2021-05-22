@@ -4,7 +4,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.functionnal.Break;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 
 public class TaskBreadcrumbs implements NtroModel {
