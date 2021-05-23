@@ -116,8 +116,13 @@ public class ModelStoreSync {
 			
 			synchronized (model) {
 				updater.update(model);
+				// FIXME:
+				// modelNeedsSaving(model);
 			}
 			
+			// FIXME: rather queue the save action 
+			//        the ModelStore needs to know NOT to remove
+			//        the model from memory before it is saved
 			save(model);
 
 		}else {
