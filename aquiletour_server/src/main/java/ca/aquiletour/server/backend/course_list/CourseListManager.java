@@ -8,7 +8,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -16,20 +16,20 @@ import ca.ntro.core.system.trace.T;
 
 public class CourseListManager {
 
-	public static void validateCourseListItem(CourseListItem courseDescription) throws BackendMessageHandlerError {
+	public static void validateCourseListItem(CourseListItem courseDescription) throws BackendError {
 		T.call(CourseListManager.class);
 		
 		// forbidden chars: ' " ¤ /
 
 		if(courseDescription.getCourseId().contains(" ")) {
-			throw new BackendMessageHandlerError("Le code de cours ne doit pas contenir d'espace");
+			throw new BackendError("Le code de cours ne doit pas contenir d'espace");
 		}
 	}
 
 	public static <CLM extends CourseListModel> void addSemesterForUser(ModelStoreSync modelStore, 
 																	    Class<CLM> courseListModelClass,
 			                                                            String semesterId, 
-			                                                            User user) {
+			                                                            User user) throws BackendError {
 
 		T.call(CourseListManager.class);
 		
@@ -39,7 +39,7 @@ public class CourseListManager {
 	public static <CLM extends CourseListModel> void addSemesterForUserId(ModelStoreSync modelStore, 
 			                                                              Class<CLM> courseListModelClass,
 			                                                              String semesterId, 
-			                                                              String userId) {
+			                                                              String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
 
@@ -60,7 +60,7 @@ public class CourseListManager {
 	public static <CLM extends CourseListModel> void addCourseForUser(ModelStoreSync modelStore, 
 			 														  Class<CLM> courseListModelClass,
 			                                                          CourseListItem courseDescription, 
-			                                                          User teacher) {
+			                                                          User teacher) throws BackendError {
 		T.call(CourseListManager.class);
 		
 		modelStore.updateModel(courseListModelClass, "admin", teacher.getId(), new ModelUpdater<CLM>() {
@@ -78,7 +78,7 @@ public class CourseListManager {
 																     String semesterId, 
 																     String courseId, 
 																     String groupId, 
-																     User user) {
+																     User user) throws BackendError {
 
 		T.call(CourseListManager.class);
 		
@@ -91,7 +91,7 @@ public class CourseListManager {
 																	   String semesterId, 
 																	   String courseId, 
 																	   String groupId, 
-																	   String userId) {
+																	   String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
 
@@ -109,7 +109,7 @@ public class CourseListManager {
 																		 Class<CLM> courseListModelClass, 
 																		 String semesterId, 
 																		 String courseId, 
-																		 String userId) {
+																		 String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
 
@@ -127,7 +127,7 @@ public class CourseListManager {
 			 														   Class<CLM> courseListModelClass, 
 			 														   String semesterId, 
 			 														   String courseId, 
-			 														   User user) { 
+			 														   User user) throws BackendError { 
 		T.call(CourseListManager.class);
 		
 		closeQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
@@ -138,7 +138,7 @@ public class CourseListManager {
 			 															Class<CLM> courseListModelClass, 
 			 															String semesterId, 
 			 															String courseId, 
-			 															String userId) {
+			 															String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
 
@@ -157,7 +157,7 @@ public class CourseListManager {
 																      Class<CLM> courseListModelClass, 
 																      String semesterId, 
 																      String courseId, 
-																      User user) {
+																      User user) throws BackendError {
 
 		T.call(CourseListManager.class);
 		
@@ -191,7 +191,7 @@ public class CourseListManager {
 	public static <CLM extends CourseListModel> void addTask(ModelStoreSync modelStore, 
 			 												 Class<CLM> courseListModelClass,
 			                                                 CoursePath coursePath, 
-			                                                 TaskDescription task) {
+			                                                 TaskDescription task) throws BackendError {
 		T.call(CourseListManager.class);
 		
 		modelStore.updateModel(courseListModelClass, "admin", coursePath.teacherId(), new ModelUpdater<CLM>() {

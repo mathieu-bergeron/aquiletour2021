@@ -11,10 +11,14 @@ import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.services.Ntro;
 
 public class SemesterListManager {
@@ -22,7 +26,7 @@ public class SemesterListManager {
 	public static void addScheduleItemForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
 			                                  ScheduleItem scheduleItem, 
-			                                  User user) {
+			                                  User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -32,7 +36,7 @@ public class SemesterListManager {
 	public static void addScheduleItemForUserId(ModelStoreSync modelStore, 
 			                                    String semesterId, 
 			                                    ScheduleItem scheduleItem,
-			                                    String userId) {
+			                                    String userId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 
@@ -54,7 +58,7 @@ public class SemesterListManager {
 																		      Class<SL> modelClass, 
 																		      String semesterId, 
 																		      CalendarWeek semesterWeek, 
-																		      User user) {
+																		      User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -65,7 +69,7 @@ public class SemesterListManager {
 			                                                                  Class<SL> modelClass, 
 			                                                                  String semesterId, 
 			                                                                  CalendarWeek semesterWeek, 
-			                                                                  String modelId) {
+			                                                                  String modelId) throws BackendError {
 		T.call(SemesterListManager.class);
 
 		modelStore.updateModel(modelClass, 
@@ -85,7 +89,7 @@ public class SemesterListManager {
 	public static <SL extends SemesterListModel<?>>  void deleteSemesterFromModel(ModelStoreSync modelStore, 
 																			   Class<SL> modelClass, 
 																			   String semesterId, 
-																			   String modelId) {
+																			   String modelId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -111,7 +115,7 @@ public class SemesterListManager {
 							  Class<SM> semesterModelClass,
 							  String semesterId, 
 							  boolean adminControlled,
-							  String userId) {
+							  String userId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -142,7 +146,7 @@ public class SemesterListManager {
 							  Class<SM> semesterModelClass,
 							  SemesterModel semesterToAdd,
 							  boolean adminControlled,
-							  String userId) {
+							  String userId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -176,7 +180,7 @@ public class SemesterListManager {
 	}
 
 	public static void addManagedSemestersForTeacher(ModelStoreSync modelStore, 
-			                                         User user) {
+			                                         User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -184,15 +188,30 @@ public class SemesterListManager {
 	}
 
 	public static void addManagedSemestersToModel(ModelStoreSync modelStore, 
-			                                      String modelId) {
+			                                      String modelId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 
 		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		
+		Optionnal<BackendError> backendError = new Optionnal<>();
 
 		semesterList.getSemesters().forEachItem((index, semester) -> {
-			addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
+			try {
+
+				addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
+
+			}catch(BackendError e) {
+				backendError.set(e);
+				throw new Break();
+			}
 		});
+		
+		if(!backendError.isEmpty()) {
+			try {
+				throw backendError.get();
+			} catch (EmptyOptionException e) {}
+		}
 	}
 
 	public static <SL extends SemesterListModel<?>> void createSemesterListForModelId(ModelStoreSync modelStore, 
@@ -212,7 +231,7 @@ public class SemesterListManager {
 	public static <SL extends SemesterListModel<?>>  void deleteSemesterForUser(ModelStoreSync modelStore, 
 																		        Class<SL> modelClass,
 			 														            String semesterId, 
-			 														            User user) {
+			 														            User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -226,7 +245,7 @@ public class SemesterListManager {
 					               Class<SM> semesterModelClass,
 					               String semesterId, 
 					               boolean adminControlled,
-					               User user) {
+					               User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -237,7 +256,7 @@ public class SemesterListManager {
 																					  Class<SL> modelClass,
 																				      String semesterId, 
 																				      boolean currentSemester, 
-																				      String userId) {
+																				      String userId) throws BackendError {
 		T.call(SemesterListManager.class);
 
 		if(!modelStore.ifModelExists(modelClass, "admin", userId)) {
@@ -273,7 +292,7 @@ public class SemesterListManager {
 																					Class<SL> modelClass, 
 																					String semesterId, 
 																					boolean currentSemester, 
-																					User user) {
+																					User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		selectCurrentSemesterForModelId(modelStore, modelClass, semesterId, currentSemester, user.getId());
@@ -284,7 +303,7 @@ public class SemesterListManager {
 			                                   String semesterId, 
 			                                   String courseId, 
 			                                   String groupId, 
-			                                   String userId) {
+			                                   String userId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 
@@ -307,7 +326,7 @@ public class SemesterListManager {
 			                                 String semesterId, 
 			                                 String courseId, 
 			                                 String groupId, 
-			                                 User user) {
+			                                 User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		

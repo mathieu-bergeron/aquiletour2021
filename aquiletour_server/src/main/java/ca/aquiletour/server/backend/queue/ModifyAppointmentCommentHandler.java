@@ -2,14 +2,14 @@ package ca.aquiletour.server.backend.queue;
 
 import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentCommentMessage;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
 public class ModifyAppointmentCommentHandler extends BackendMessageHandler<ModifyAppointmentCommentMessage>{
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, ModifyAppointmentCommentMessage message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, ModifyAppointmentCommentMessage message) throws BackendError {
 		T.call(this);
 		
 		T.here();

@@ -4,14 +4,14 @@ import ca.aquiletour.core.messages.git.DeleteGitRepo;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
 public class StudentDeletesRepoHandler extends BackendMessageHandler<StudentDeletesRepoMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, StudentDeletesRepoMessage message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, StudentDeletesRepoMessage message) throws BackendError {
 		T.call(this);
 
 		GitMessages.sendMessage(new DeleteGitRepo(message));
@@ -24,7 +24,7 @@ public class StudentDeletesRepoHandler extends BackendMessageHandler<StudentDele
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, StudentDeletesRepoMessage message) {
+	public void handleLater(ModelStoreSync modelStore, StudentDeletesRepoMessage message) throws BackendError {
 		T.call(this);
 
 		CourseManager.removeAtomicTaskCompletionTeacher(modelStore, 

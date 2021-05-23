@@ -10,6 +10,7 @@ import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -20,7 +21,7 @@ public class DashboardManager {
 	public static <DM extends DashboardModel<?>> void addDashboardItemForUser(ModelStoreSync modelStore, 
 																		   Class<DM> dashboardModelClass, 
 																		   CourseListItem courseListItem, 
-																		   User user) {
+																		   User user) throws BackendError {
 		T.call(DashboardManager.class);
 
 		modelStore.updateModel(dashboardModelClass, "admin", user.getId(), new ModelUpdater<DM>() {
@@ -51,7 +52,7 @@ public class DashboardManager {
 																	         Class<CT> currentTaskClass,
 																	         CoursePath coursePath,
 																	         List<CT> currentTasks,
-			 														         String userId) {
+			 														         String userId) throws BackendError {
 		T.call(DashboardManager.class);
 
 		modelStore.updateModel(dashboardModelClass, "admin", userId, new ModelUpdater<DM>() {
@@ -70,7 +71,7 @@ public class DashboardManager {
 																	         Class<CT> currentTaskClass,
 																	         CoursePath coursePath,
 																	         List<CT> currentTasks,
-			 														         User user) {
+			 														         User user) throws BackendError {
 		T.call(DashboardManager.class);
 		
 		updateCurrentTasksForUserId(modelStore, dashboardModelClass, currentTaskClass, coursePath, currentTasks, user.getId());

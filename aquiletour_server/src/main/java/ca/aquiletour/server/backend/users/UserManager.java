@@ -23,9 +23,11 @@ import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.digest.PasswordDigest;
@@ -83,7 +85,7 @@ public class UserManager {
 		return userId;
 	}
 
-	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) {
+	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
@@ -126,7 +128,7 @@ public class UserManager {
 		return isValid;
 	}
 
-	public static void createUsers(ModelStoreSync modelStore, List<User> usersToAdd) {
+	public static void createUsers(ModelStoreSync modelStore, List<User> usersToAdd) throws BackendError {
 		T.call(UserManager.class);
 
 		for(User user : usersToAdd) {
@@ -134,7 +136,7 @@ public class UserManager {
 		}
 	}
 
-	public static void createUser(ModelStoreSync modelStore, User user) {
+	public static void createUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
@@ -148,7 +150,7 @@ public class UserManager {
 		}
 	}
 
-	private static void updateExistingUser(ModelStoreSync modelStore, User user) {
+	private static void updateExistingUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
@@ -159,7 +161,7 @@ public class UserManager {
 		});
 	}
 
-	private static void initializeUserModels(ModelStoreSync modelStore, User user) {
+	private static void initializeUserModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		if(user instanceof Admin) {
@@ -195,7 +197,7 @@ public class UserManager {
 		CourseListManager.createCourseListForUser(modelStore, CourseListModelStudent.class, user);
 	}
 
-	private static void storeStudentId(ModelStoreSync modelStore, User user) {
+	private static void storeStudentId(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		modelStore.updateModel(UserList.class, "admin", Constants.STUDENT_LIST_MODEL_ID, new ModelUpdater<UserList>() {
@@ -212,7 +214,7 @@ public class UserManager {
 	}
 
 
-	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) {
+	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		QueueManager.createQueue(modelStore, user.getRegistrationId(), user);
@@ -227,7 +229,7 @@ public class UserManager {
 		SemesterListManager.addManagedSemestersForTeacher(modelStore, user);
 	}
 
-	private static void storeTeacherId(ModelStoreSync modelStore, User user) {
+	private static void storeTeacherId(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		modelStore.updateModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, new ModelUpdater<UserList>() {
@@ -248,7 +250,7 @@ public class UserManager {
 		modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(user));
 	}
 
-	public static void updateScreenName(ModelStoreSync modelStore, String screenName, User user) {
+	public static void updateScreenName(ModelStoreSync modelStore, String screenName, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
@@ -262,7 +264,7 @@ public class UserManager {
 		});
 	}
 
-	public static void toggleStudentMode(ModelStoreSync modelStore, User user) {
+	public static void toggleStudentMode(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
@@ -278,7 +280,7 @@ public class UserManager {
 		});
 	}
 
-	public static void toggleAdminMode(ModelStoreSync modelStore, User user) {
+	public static void toggleAdminMode(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
@@ -295,7 +297,7 @@ public class UserManager {
 	}
 
 
-	public static void resetUserAfterLogout(ModelStoreSync modelStore, User user) {
+	public static void resetUserAfterLogout(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
@@ -362,7 +364,7 @@ public class UserManager {
 									                       String registrationId, 
 									                       String programId, 
 									                       String phoneNumber, 
-									                       String email) {
+									                       String email) throws BackendError {
 		T.call(UserManager.class);
 		
 		String studentId = null;
@@ -411,7 +413,7 @@ public class UserManager {
 												 String lastName, 
 												 String programId, 
 												 String phoneNumber,
-												 String email) {
+												 String email) throws BackendError {
 		T.call(UserManager.class);
 		
 		Student student = createUser(modelStore, 
@@ -434,7 +436,7 @@ public class UserManager {
 										        String registrationId,
 										        String firstName, 
 										        String lastName, 
-										        String email) {
+										        String email) throws BackendError {
 		T.call(UserManager.class);
 		
 		U user = null;
@@ -465,7 +467,11 @@ public class UserManager {
 				                                        Constants.TEACHER_LIST_MODEL_ID);
 
 		for(String teacherId : teacherList.userIds()) {
-			lambda.execute(teacherId);
+			try {
+				lambda.execute(teacherId);
+			} catch(Break b) {
+				break;
+			}
 		}
 	}
 

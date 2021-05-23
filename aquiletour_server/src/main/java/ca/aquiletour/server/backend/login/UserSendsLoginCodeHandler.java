@@ -5,6 +5,7 @@ import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.RegisteredSockets;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -16,7 +17,7 @@ import ca.ntro.users.NtroSession;
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) throws BackendError {
 		T.call(this);
 
 		String loginCode = message.getLoginCode().replace(" ", "");

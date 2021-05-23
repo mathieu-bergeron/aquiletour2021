@@ -4,6 +4,7 @@ import java.util.List;
 
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.group_list.models.GroupListModel;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -16,7 +17,7 @@ public class GroupListManager {
 			                           String courseId, 
 			                           String groupId, 
 			                           List<User> studentsToAdd,
-			                           User user) {
+			                           User user) throws BackendError {
 
 		T.call(GroupListManager.class);
 		
@@ -28,7 +29,7 @@ public class GroupListManager {
 			                             String courseId, 
 			                             String groupId,
 										 List<User> studentsToAdd,
-			                             String userId) {
+			                             String userId) throws BackendError {
 
 		T.call(GroupListManager.class);
 
@@ -48,7 +49,7 @@ public class GroupListManager {
 	
 	public static void addSemesterForUserId(ModelStoreSync modelStore, 
 			                                String semesterId, 
-			                                String userId) {
+			                                String userId) throws BackendError {
 
 		T.call(GroupListManager.class);
 
@@ -77,7 +78,7 @@ public class GroupListManager {
 	
 	public static void addSemesterForUser(ModelStoreSync modelStore, 
 			                              String semesterId, 
-			                              User user) {
+			                              User user) throws BackendError {
 
 		T.call(GroupListManager.class);
 		
@@ -88,7 +89,7 @@ public class GroupListManager {
 	public static void addCourseForUserId(ModelStoreSync modelStore, 
 			                              String semesterId, 
 			                              String courseId, 
-			                              String userId) {
+			                              String userId) throws BackendError {
 
 		T.call(GroupListManager.class);
 
@@ -109,7 +110,7 @@ public class GroupListManager {
 	public static void addCourseForUser(ModelStoreSync modelStore, 
 			                            String semesterId, 
 			                            String courseId, 
-			                            User user) {
+			                            User user) throws BackendError {
 
 		T.call(GroupListManager.class);
 		

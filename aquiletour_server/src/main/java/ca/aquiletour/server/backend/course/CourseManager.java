@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CycleDetectedError;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
@@ -20,18 +21,23 @@ import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.backend.git.GitMessages;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.models.StoredProperty;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 
 public class CourseManager {
 
 	public static void removeNextTask(ModelStoreSync modelStore, 
 			                          String courseId, 
 			                          Path taskToModify,
-                                      Path taskToDelete) {
+                                      Path taskToDelete) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -47,7 +53,7 @@ public class CourseManager {
 	public static void removeSubTask(ModelStoreSync modelStore, 
 			                         CoursePath coursePath, 
 			                         Path taskToModify, 
-			                         Path taskToDelete) {
+			                         Path taskToDelete) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -63,7 +69,7 @@ public class CourseManager {
 	public static void removePreviousTask(ModelStoreSync modelStore, 
 			                              String courseId, 
 			                              Path taskToModify, 
-			                              Path taskToDelete) {
+			                              Path taskToDelete) throws BackendError {
 		T.call(CourseManager.class);
 		
 		modelStore.updateModel(CourseModelTeacher.class, "admin", courseId, new ModelUpdater<CourseModelTeacher>() {
@@ -77,7 +83,7 @@ public class CourseManager {
 
 	public static void deleteTask(ModelStoreSync modelStore, 
 								  CoursePath coursePath,
-			                      Path taskToDelete) {
+			                      Path taskToDelete) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -100,7 +106,7 @@ public class CourseManager {
 	public static void addPreviousTask(ModelStoreSync modelStore, 
 			                           CoursePath coursePath, 
 			                           Path nextPath, 
-			                           Task previousTask) {
+			                           Task previousTask) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -110,7 +116,7 @@ public class CourseManager {
 	public static void addNextTask(ModelStoreSync modelStore, 
 								   CoursePath coursePath,
 			                       Path previousPath, 
-			                       Task nextTask) {
+			                       Task nextTask) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -121,7 +127,7 @@ public class CourseManager {
 	public static void addSubTask(ModelStoreSync modelStore, 
 			                      CoursePath coursePath, 
 			                      Path parentTaskPath, 
-			                      Task task) {
+			                      Task task) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -132,13 +138,13 @@ public class CourseManager {
 			                   CoursePath coursePath, 
 			                   Path parentTaskPath, 
 			                   Task task, 
-			                   TaskType taskType) {
+			                   TaskType taskType) throws BackendError {
 
 		T.call(CourseManager.class);
 		
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
-			public void update(CourseModelTeacher course) {
+			public void update(CourseModelTeacher course) throws BackendError {
 				T.call(this);
 				addTaskToCourseModel(parentTaskPath, task, course, taskType);
 			}
@@ -148,7 +154,7 @@ public class CourseManager {
 	public static void addPreviousTaskForStudents(ModelStoreSync modelStore, 
 			                      			      CoursePath coursePath, 
 			                      			      Path nextTaskPath, 
-			                      			      Task task) {
+			                      			      Task task) throws BackendError {
 
 		T.call(CourseManager.class);
 
@@ -158,7 +164,7 @@ public class CourseManager {
 	public static void addSubTaskForStudents(ModelStoreSync modelStore, 
 			                      			 CoursePath coursePath, 
 			                      			 Path parentTaskPath, 
-			                      			 Task task) {
+			                      			 Task task) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -168,7 +174,7 @@ public class CourseManager {
 	public static void addNextTaskForStudents(ModelStoreSync modelStore, 
 			                      			  CoursePath coursePath, 
 			                      			  Path previousTaskPath, 
-			                      			  Task task) {
+			                      			  Task task) throws BackendError {
 
 		T.call(CourseManager.class);
 
@@ -179,45 +185,71 @@ public class CourseManager {
 			                               CoursePath coursePath, 
 			                               Path anchorTaskPath, 
 			                               Task task,
-			                               TaskType taskType) {
+			                               TaskType taskType) throws BackendError {
 		T.call(CourseManager.class);
 		
 		CourseModelTeacher courseTeacher = modelStore.getModel(CourseModelTeacher.class, "admin", coursePath);
+		
+		Optionnal<BackendError> backendError = new Optionnal<BackendError>(null);
 		
 		if(courseTeacher != null) {
 			courseTeacher.getGroups().forEachItem((i, group) -> {
 				group.getStudents().forEachItem((j, studentId) -> {
 					
 					CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+					
+					try {
 
-					modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
-						@Override
-						public void update(CourseModelStudent courseStudent) {
-							T.call(this);
+						modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+							@Override
+							public void update(CourseModelStudent courseStudent) throws BackendError {
+								T.call(this);
+								
+								addTaskToCourseModel(anchorTaskPath, task, courseStudent, taskType);
+							}
+						});
 
-							addTaskToCourseModel(anchorTaskPath, task, courseStudent, taskType);
-						}
-					});
+					} catch(BackendError e) {
+						backendError.set(e);
+						throw new Break();
+					}
 				});
 			});
 		}
+		
+		if(!backendError.isEmpty()) {
+			try {
+
+				throw backendError.get();
+
+			} catch (EmptyOptionException e) {}
+		}
 	}
 
-	private static void addTaskToCourseModel(Path anchorTaskPath, Task task, CourseModel courseModel, TaskType taskType) {
+	private static void addTaskToCourseModel(Path anchorTaskPath, 
+											 Task task, 
+											 CourseModel courseModel, 
+											 TaskType taskType) throws BackendError {
 		T.call(CourseManager.class);
+		
+		try {
 
-		switch(taskType) {
-			case PREVIOUS_TASK:
-				courseModel.addPreviousTaskTo(anchorTaskPath, task);
-				break;
+			switch(taskType) {
+				case PREVIOUS_TASK:
+					courseModel.addPreviousTaskTo(anchorTaskPath, task);
+					break;
 
-			case SUBTASK:
-				courseModel.addSubTaskTo(anchorTaskPath, task);
-				break;
+				case SUBTASK:
+					courseModel.addSubTaskTo(anchorTaskPath, task);
+					break;
 
-			case NEXT_TASK:
-				courseModel.addNextTaskTo(anchorTaskPath, task);
-				break;
+				case NEXT_TASK:
+					courseModel.addNextTaskTo(anchorTaskPath, task);
+					break;
+			}
+
+		}catch(CycleDetectedError e){
+			throw new BackendError("Ce lien créerait une dépendance cyclique et ne peut donc pas être ajouté.");
 		}
 	}
 
@@ -247,7 +279,7 @@ public class CourseManager {
 
 	public static void updateCourseTitle(ModelStoreSync modelStore, 
 			                             CoursePath coursePath, 
-			                             String courseTitle) {
+			                             String courseTitle) throws BackendError {
 
 		T.call(CourseManager.class);
 
@@ -298,7 +330,7 @@ public class CourseManager {
 			                    CoursePath coursePath,
 			                    String groupId,
 			                    List<User> studentsToAdd,
-			                    User user) {
+			                    User user) throws BackendError {
 
 		T.call(CourseManager.class);
 
@@ -318,7 +350,7 @@ public class CourseManager {
 	                                  String taskTitle, 
 			                          String taskDescription, 
 			                          CourseDate endTime, 
-			                          User user) {
+			                          User user) throws BackendError {
 		
 		T.call(CourseManager.class);
 
@@ -344,7 +376,7 @@ public class CourseManager {
 	public static void updateCourseSchedule(ModelStoreSync modelStore, 
                          	                CoursePath coursePath,
 						                    SemesterSchedule semesterSchedule, 
-						                    TeacherSchedule teacherSchedule) {
+						                    TeacherSchedule teacherSchedule) throws BackendError {
 		T.call(CourseManager.class);
 
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
@@ -361,7 +393,7 @@ public class CourseManager {
 			                               CoursePath coursePath, 
 			                               Path taskPath, 
 			                               String atomicTaskId,
-			                               User user) {
+			                               User user) throws BackendError {
 		T.call(CourseManager.class);
 
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
@@ -407,7 +439,7 @@ public class CourseManager {
 			                                              String studentId, 
 			                                              Path taskPath, 
 			                                              String atomicTaskId, 
-			                                              AtomicTaskCompletion newCompletion) {
+			                                              AtomicTaskCompletion newCompletion) throws BackendError {
 		T.call(CourseManager.class);
 
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
@@ -424,7 +456,7 @@ public class CourseManager {
 			                                             CoursePath coursePath, 
 			                                             String studentId, 
 			                                             Path taskPath, 
-			                                             String atomicTaskId) {
+			                                             String atomicTaskId) throws BackendError {
 		T.call(CourseManager.class);
 
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
@@ -442,7 +474,7 @@ public class CourseManager {
 			                                              String studentId, 
 			                                              Path taskPath, 
 			                                              String atomicTaskId, 
-			                                              AtomicTaskCompletion newCompletion) {
+			                                              AtomicTaskCompletion newCompletion) throws BackendError {
 		T.call(CourseManager.class);
 
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
@@ -461,7 +493,7 @@ public class CourseManager {
 			                                             CoursePath coursePath, 
 			                                             String studentId, 
 			                                             Path taskPath, 
-			                                             String atomicTaskId) {
+			                                             String atomicTaskId) throws BackendError {
 		T.call(CourseManager.class);
 
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);

@@ -1,5 +1,6 @@
 package ca.ntro.core.models;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
@@ -88,7 +89,7 @@ public class ModelStoreSync {
 	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,
 			                                      Path modelPath, 
-			                                      ModelUpdater<M> updater){
+			                                      ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 
 		updateModel(modelClass, authToken, modelStore.documentId(modelPath), updater);
@@ -97,7 +98,7 @@ public class ModelStoreSync {
 	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,
 			                                      String modelId, 
-			                                      ModelUpdater<M> updater){
+			                                      ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 
 		if(ifModelExists(modelClass, authToken, modelId)) {

@@ -4,6 +4,7 @@ import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.server.backend.course.CourseManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -11,7 +12,7 @@ import ca.ntro.core.system.trace.T;
 public class StudentRegistersRepoHandler extends BackendMessageHandler<StudentRegistersRepoMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, StudentRegistersRepoMessage message) {
+	public void handleNow(ModelStoreSync modelStore, StudentRegistersRepoMessage message) throws BackendError {
 		T.call(this);
 		
 		GitMessages.sendMessage(new RegisterGitRepo(message));
@@ -30,7 +31,7 @@ public class StudentRegistersRepoHandler extends BackendMessageHandler<StudentRe
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, StudentRegistersRepoMessage message) {
+	public void handleLater(ModelStoreSync modelStore, StudentRegistersRepoMessage message) throws BackendError {
 		T.call(this);
 
 		GitRepoSubmitted gitRepoSubmitted = new GitRepoSubmitted();

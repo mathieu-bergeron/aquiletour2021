@@ -6,6 +6,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
@@ -44,7 +45,7 @@ public class QueueManager {
 	}
 
 	public static void deleteQueue(ModelStoreSync modelStore,
-			                       String queueId) {
+			                       String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
 
@@ -58,7 +59,7 @@ public class QueueManager {
 	}
 
 	public static void openQueue(ModelStoreSync modelStore,
-			                     String queueId) {
+			                     String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
 		
@@ -73,7 +74,7 @@ public class QueueManager {
 	}
 
 	public static void closeQueue(ModelStoreSync modelStore,
-			                      String queueId) {
+			                      String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
 
@@ -124,7 +125,7 @@ public class QueueManager {
 
 	public static void addAppointmentForUser(ModelStoreSync modelStore,
 			                                 String queueId,
-			                                 User user) {
+			                                 User user) throws BackendError {
 
 		T.call(QueueManager.class);
 
@@ -185,7 +186,7 @@ public class QueueManager {
 		return appointment;
 	}
 
-	public static void deleteAppointment(ModelStoreSync modelStore, String queueId, String appointmentId) {
+	public static void deleteAppointment(ModelStoreSync modelStore, String queueId, String appointmentId) throws BackendError {
 		T.call(QueueManager.class);
 		
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
@@ -210,7 +211,7 @@ public class QueueManager {
 			                           String queueId, 
 			                           String appointmentId, 
 			                           String destinationId,
-			                           String beforeOrAfter) {
+			                           String beforeOrAfter) throws BackendError {
 
 		T.call(QueueManager.class);
 		
@@ -224,7 +225,7 @@ public class QueueManager {
 		});
 	}
 
-	public static void modifyAppointmentTimes(ModelStoreSync modelStore, int timeIncrementSeconds, User user) {
+	public static void modifyAppointmentTimes(ModelStoreSync modelStore, int timeIncrementSeconds, User user) throws BackendError {
 		T.call(QueueManager.class);
 		
 		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
@@ -237,7 +238,7 @@ public class QueueManager {
 		});
 	}
 
-	public static void modifyAppointmentDurations(ModelStoreSync modelStore, int durationIncrementSeconds, User user) {
+	public static void modifyAppointmentDurations(ModelStoreSync modelStore, int durationIncrementSeconds, User user) throws BackendError {
 		T.call(QueueManager.class);
 		
 		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
@@ -253,7 +254,7 @@ public class QueueManager {
 	public static void modifyAppointmentComment(ModelStoreSync modelStore, 
 			                                    String queueId, 
 			                                    String comment, 
-			                                    User student) {
+			                                    User student) throws BackendError {
 		T.call(QueueManager.class);
 
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {

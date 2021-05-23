@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -49,8 +49,14 @@ public abstract class BackendServiceServer extends BackendService {
 					@Override
 					protected void runTask() {
 						T.call(this);
+						
+						try {
 
-						handler.handleLater(new ModelStoreSync(Ntro.modelStore()), message);
+							handler.handleLater(new ModelStoreSync(Ntro.modelStore()), message);
+
+						} catch (BackendError e) {
+							Log.error("[BackendError] " + e.getMessage());
+						}
 					}
 
 					@Override
@@ -58,7 +64,7 @@ public abstract class BackendServiceServer extends BackendService {
 					}
 				});
 				
-			}catch(BackendMessageHandlerError e) {
+			}catch(BackendError e) {
 				
 				NtroErrorMessage displayErrorMessage = Ntro.messages().create(NtroErrorMessage.class);
 				displayErrorMessage.setMessage(e.getMessage());

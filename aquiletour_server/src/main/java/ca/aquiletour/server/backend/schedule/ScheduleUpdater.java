@@ -11,6 +11,7 @@ import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTe
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
@@ -18,7 +19,7 @@ public class ScheduleUpdater {
 
 	public static void updateSchedulesForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
-			                                  User user) {
+			                                  User user) throws BackendError {
 		T.call(ScheduleUpdater.class);
 		
 		updateSchedulesForUserId(modelStore, semesterId, user.getId());
@@ -26,7 +27,7 @@ public class ScheduleUpdater {
 
 	public static void updateSchedulesForUserId(ModelStoreSync modelStore, 
 			                                    String semesterId, 
-			                                    String userId) {
+			                                    String userId) throws BackendError {
 		T.call(ScheduleUpdater.class);
 
 		SemesterSchedule semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 

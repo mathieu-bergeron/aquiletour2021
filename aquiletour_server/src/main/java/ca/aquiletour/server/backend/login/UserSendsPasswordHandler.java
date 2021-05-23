@@ -7,7 +7,7 @@ import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
@@ -18,7 +18,7 @@ import ca.ntro.users.NtroSession;
 public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPasswordMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, UserSendsPasswordMessage message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, UserSendsPasswordMessage message) throws BackendError {
 		T.call(this);
 
 		String authToken = message.getUser().getAuthToken();

@@ -8,18 +8,21 @@ import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTe
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 
 public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCurrentSemester> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, SelectCurrentSemester message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, SelectCurrentSemester message) throws BackendError {
 		T.call(this);
 
 		if(!SessionManager.isUserAuthenticated(modelStore, message.getUser())) {
-			throw new BackendMessageHandlerError("Permission refusée");
+			throw new BackendError("Permission refusée");
 		}
 		
 		if(message.getUser().actsAsAdmin()) {
@@ -38,22 +41,38 @@ public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCu
 															 message.getUser());
 		}else {
 			
-			throw new BackendMessageHandlerError("Permission refusée");
+			throw new BackendError("Permission refusée");
 		}
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, SelectCurrentSemester message) {
+	public void handleLater(ModelStoreSync modelStore, SelectCurrentSemester message) throws BackendError {
 		T.call(this);
+		
 
 		if(message.getUser().actsAsAdmin()) {
+			
+			Optionnal<BackendError> backendError = new Optionnal<>();
+			
 			UserManager.forEachTeacherId(modelStore, teacherId -> {
-				SemesterListManager.selectCurrentSemesterForModelId(modelStore,
-																	SemesterListModelTeacher.class,
-																	message.getSemesterId(),
-																	message.getCurrentSemester(),
-																	teacherId);
+				try {
+
+					SemesterListManager.selectCurrentSemesterForModelId(modelStore,
+																		SemesterListModelTeacher.class,
+																		message.getSemesterId(),
+																		message.getCurrentSemester(),
+																		teacherId);
+				}catch(BackendError e) {
+					backendError.set(e);
+					throw new Break();
+				}
 			});
+			
+			if(!backendError.isEmpty()) {
+				try {
+					throw backendError.get();
+				} catch (EmptyOptionException e) {}
+			}
 		}
 	}
 }

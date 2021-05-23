@@ -22,6 +22,7 @@ import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -32,7 +33,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	private String groupId;
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AddStudentCsvMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddStudentCsvMessage message) throws BackendError {
 		T.call(this);
 		
 		String csvString = message.getCsvString();
@@ -74,7 +75,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		return groupName;
 	}
 
-	private List<User> parseCsv(ModelStoreSync modelStore, String csvString) {
+	private List<User> parseCsv(ModelStoreSync modelStore, String csvString) throws BackendError {
 		T.call(this);
 		
 		List<User> usersToAdd = new ArrayList<>();
@@ -107,7 +108,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) {
+	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) throws BackendError {
 		T.call(this);
 		
 		User teacher = message.getUser();

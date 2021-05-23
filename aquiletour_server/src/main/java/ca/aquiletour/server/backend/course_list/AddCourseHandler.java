@@ -10,14 +10,14 @@ import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.backend.BackendMessageHandlerError;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
 public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AddCourseMessage message) throws BackendMessageHandlerError {
+	public void handleNow(ModelStoreSync modelStore, AddCourseMessage message) throws BackendError {
 		T.call(this);
 		
 		User teacher = message.getUser();
@@ -40,7 +40,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, AddCourseMessage message) {
+	public void handleLater(ModelStoreSync modelStore, AddCourseMessage message) throws BackendError {
 		T.call(this);
 		
 		GroupListManager.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseListItem().getCourseId(), message.getUser());

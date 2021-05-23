@@ -261,77 +261,11 @@ public class Task implements NtroModelValue, TaskNode {
 		return taskPath.toString();
 	}
 
-	public void forEachStartTaskLocal(TaskForEach lambda) {
-		T.call(this);
-
-		for(String subTaskId : getSubTasks().getValue()) {
-			Task subTask = graph.findTaskByPath(new Path(subTaskId));
-			if(subTask.isStartTaskLocal()) {
-				try {
-
-					lambda.execute(subTask);
-
-				}catch(Break b) {
-					break;
-				}
-			}
-		}
-	}
-
-	public void forEachReachableTaskLocal(TaskForEach lambda) {
-		T.call(this);
-		
-		forEachReachableTaskLocalImpl(parent(), new HashSet<>(), lambda);
-	}
-
-	public void forEachReachableTaskLocalImpl(Task parent,
-			                                  Set<Task> visitedTasks,
-			                                  TaskForEach lambda) {
-		T.call(this);
-		
-		if(Ntro.collections().setContainsExact(visitedTasks, this)) return;
-		visitedTasks.add(this);
-
-		for(String nextTaskId : getNextTasks().getValue()) {
-			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
-			
-			if(nextTask.parent() == parent) {
-				try {
-
-					lambda.execute(nextTask);
-
-				}catch(Break b) {
-					break;
-				}
-
-				nextTask.forEachReachableTaskLocalImpl(parent, 
-						                               visitedTasks, 
-						                               lambda);
-			}
-		}
-	}
-
-
-	public boolean isStartTaskLocal() {
-		boolean isStartTaskLocal = true;
-
-		for(String previousTaskId : getPreviousTasks().getValue()) {
-			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
-			if(previousTask.parent() == parent()) {
-				isStartTaskLocal = false;
-				break;
-			}
-		}
-
-		return isStartTaskLocal;
-	}
-
 	public void forEachSubTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
-		FindResults findResults = getSubTasks().reduceTo(FindResults.class, new FindResults(), (index, subTaskId, accumulator) -> {
-			Task subTask = graph.findTaskByPath(new Path(subTaskId));
-			
+		FindResults findResults = reduceToForStoredTasks(getSubTasks(), FindResults.class, new FindResults(), (index, subTask, accumulator) -> {
+
 			FindResult distanceToSubTask = distanceToTask(new VisitDirection[] {SUB, NEXT}, subTask);
 			
 			accumulator.addOrUpdateFindResult(distanceToSubTask);
@@ -346,12 +280,6 @@ public class Task implements NtroModelValue, TaskNode {
 		findResults.forEachTask(lambda);
 	}
 
-	private FindResult distanceToTask(Task task) {
-		T.call(this);
-
-		return distanceToTask(new VisitDirection[] {PARENT, SUB, PREVIOUS, NEXT}, task);
-	}
-	
 	private FindResult distanceToTask(VisitDirection[] howToVisitTasks, Task task) {
 		T.call(this);
 		
@@ -376,9 +304,8 @@ public class Task implements NtroModelValue, TaskNode {
 	public void forEachPreviousTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 
-		FindResults findResults = getPreviousTasks().reduceTo(FindResults.class, new FindResults(), (index, previousTaskId, accumulator) -> {
-			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
-			
+		FindResults findResults = reduceToForStoredTasks(getPreviousTasks(), FindResults.class, new FindResults(), (index, previousTask, accumulator) -> {
+
 			FindResult distanceToPreviousTask = distanceToTask(new VisitDirection[] {PREVIOUS}, previousTask);
 			
 			accumulator.addOrUpdateFindResult(distanceToPreviousTask);
@@ -396,8 +323,7 @@ public class Task implements NtroModelValue, TaskNode {
 	public void forEachNextTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 
-		FindResults findResults = getNextTasks().reduceTo(FindResults.class, new FindResults(), (index, nextTaskId, accumulator) -> {
-			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
+		FindResults findResults = reduceToForStoredTasks(getNextTasks(), FindResults.class, new FindResults(), (index, nextTask, accumulator) -> {
 			
 			FindResult distanceToNextTask = distanceToTask(new VisitDirection[] {NEXT}, nextTask);
 			
@@ -625,11 +551,9 @@ public class Task implements NtroModelValue, TaskNode {
 	//        that does memorize the cycle path
 	public GraphPath findFirstCycle() {
 		T.call(this);
-		
+
 		return reduceTo(GraphPath.class, new VisitDirection[] {SUB,NEXT}, true, null, (d, task, outerCycle)-> {
 			if(outerCycle != null) {
-				// FIXME: break not respected by Task.reduceTo
-				// T.here();
 				throw new Break();
 			}
 
@@ -660,154 +584,181 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		try {
 			accumulator = reducer.reduce(0, this, accumulator);
-			accumulator = reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, visistedNodes);
 		} catch(Break b) {}
+
+		BreakableAccumulator<R> breakableAccumulator = reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, visistedNodes);
+		accumulator = breakableAccumulator.getAccumulator();
 		
 		return accumulator;
 	}
 
-	private <R extends Object> R reduceToImpl(Class<R> resultClass, 
-			                                  VisitDirection[] howToVisitNodes, 
-										      boolean transitive,
-										      R accumulator,
-			                                  TaskReducer<R> reducer,
-			                                  int distance,
-			                                  Set<String> visitedNodes) throws Break {
+	private <R extends Object> BreakableAccumulator<R> reduceToImpl(Class<R> resultClass, 
+			                                                        VisitDirection[] howToVisitNodes, 
+										                            boolean transitive,
+										                            R accumulator,
+			                                                        TaskReducer<R> reducer,
+			                                                        int distance,
+			                                                        Set<String> visitedNodes) {
 		T.call(this);
 		
+		BreakableAccumulator<R> breakableAccumulator = new BreakableAccumulator<R>(accumulator);
+		
 		for(VisitDirection direction : howToVisitNodes) {
-			switch(direction) {
-				case PREVIOUS:
-					accumulator = reduceToForTasksToVisit(resultClass, 
-							                              howToVisitNodes, 
-							                              transitive, 
-							                              accumulator, 
-							                              reducer, 
-							                              distance+1, 
-							                              visitedNodes,
-							                              getPreviousTasks());
-					break;
+			if(direction == PREVIOUS) {
 
-				case SUB:
-					accumulator = reduceToForTasksToVisit(resultClass, 
-							                              howToVisitNodes, 
-							                              transitive, 
-							                              accumulator, 
-							                              reducer, 
-							                              distance+1, 
-							                              visitedNodes, 
-							                              getSubTasks());
-					break;
+				breakableAccumulator = reduceToForTasksToVisit(resultClass, 
+													           howToVisitNodes, 
+													           transitive, 
+													           accumulator, 
+													           reducer, 
+													           distance+1, 
+													           visitedNodes,
+													           getPreviousTasks());
 
-				case NEXT:
-					accumulator = reduceToForTasksToVisit(resultClass, 
-							                              howToVisitNodes, 
-							                              transitive, 
-							                              accumulator, 
-							                              reducer, 
-							                              distance+1, 
-							                              visitedNodes, 
-							                              getNextTasks());
-					break;
+				accumulator = breakableAccumulator.getAccumulator();
 
-				case PARENT:
-					if(!isRootTask()) {
-						accumulator = reduceToForTaskToVisit(resultClass, 
-								                             howToVisitNodes, 
-											                 transitive, 
-											                 accumulator, 
-											                 reducer, 
-											                 distance+1, 
-											                 visitedNodes, 
-											                 parent());
+				if(breakableAccumulator.shouldBreak()) {
+					break;
+				}
+
+			}else if(direction == SUB) {
+
+				breakableAccumulator = reduceToForTasksToVisit(resultClass, 
+													           howToVisitNodes, 
+													           transitive, 
+													           accumulator, 
+													           reducer, 
+													           distance+1, 
+													           visitedNodes, 
+													           getSubTasks());
+
+				accumulator = breakableAccumulator.getAccumulator();
+
+				if(breakableAccumulator.shouldBreak()) {
+					break;
+				}
+
+			}else if(direction == NEXT) {
+
+				breakableAccumulator = reduceToForTasksToVisit(resultClass, 
+													           howToVisitNodes, 
+													           transitive, 
+													           accumulator, 
+													           reducer, 
+													           distance+1, 
+													           visitedNodes, 
+													           getNextTasks());
+
+				accumulator = breakableAccumulator.getAccumulator();
+
+				if(breakableAccumulator.shouldBreak()) {
+					break;
+				}
+				
+			}else if(direction == PARENT) {
+
+				if(!isRootTask()) {
+					breakableAccumulator = reduceToForTaskToVisit(resultClass, 
+																  howToVisitNodes, 
+																  transitive, 
+																  accumulator, 
+																  reducer, 
+																  distance+1, 
+																  visitedNodes, 
+																  parent());
+					
+					accumulator = breakableAccumulator.getAccumulator();
+					if(breakableAccumulator.shouldBreak()) {
+						break;
 					}
-					break;
+				}
 			}
 		}
 		
-		return accumulator;
+		return breakableAccumulator;
 	}
-
-	@SuppressWarnings("unchecked")
-	private <R extends Object> R reduceToForTasksToVisit(Class<R> resultClass, 
-			                                             VisitDirection[] howToVisitNodes, 
-										                 boolean transitive,
-										                 R accumulator,
-			                                             TaskReducer<R> reducer,
-			                                             int distance,
-			                                             Set<String> visitedNodes,
-			                                             StoredTaskIds tasksToVisit) throws Break {
+	
+	private <ACC extends Object> ACC reduceToForStoredTasks(StoredTaskIds storedTasksIds, 
+			                                               Class<ACC> accumulatorClass, 
+			                                               ACC accumulator, 
+			                                               TaskReducer<ACC> reducer){
+		
+		return storedTasksIds.reduceTo(accumulatorClass, accumulator, (index, taskId, innerAccumulator) -> {
+			Task task = graph.findTaskByPath(new Path(taskId));
+			
+			return reducer.reduce(index, task, innerAccumulator);
+		});
+	}
+	
+	private <R extends Object> BreakableAccumulator<R> reduceToForTasksToVisit(Class<R> resultClass, 
+			                                                                   VisitDirection[] howToVisitNodes, 
+										                                       boolean transitive,
+										                                       R accumulator,
+			                                                                   TaskReducer<R> reducer,
+			                                                                   int distance,
+			                                                                   Set<String> visitedNodes,
+			                                                                   StoredTaskIds tasksToVisit) {
 		T.call(this);
 		
-		return tasksToVisit.reduceTo(resultClass, accumulator, (index, taskId, innerAccumulator) -> {
-			Task taskToVisit = graph.findTaskByPath(new Path(taskId));
-			
-			return reduceToForTaskToVisit(resultClass, 
-										  howToVisitNodes, 
-										  transitive, 
-										  innerAccumulator,
-										  reducer, 
-										  distance, 
-										  visitedNodes, 
-										  taskToVisit);
-		});
+		BreakableAccumulator<R> breakableAccumulator = new BreakableAccumulator<R>(accumulator);
 		
-		/* FIXME: breakable version
-		BreakableAccumulator<R> outerBreakable = new BreakableAccumulator<R>(accumulator);
-
-		outerBreakable = tasksToVisit.reduceTo(BreakableAccumulator.class, outerBreakable, (index, taskId, innerBreakable) -> {
-			Task taskToVisit = graph.findTaskByPath(new Path(taskId));
-			
-			if(innerBreakable.shouldBreak()) {
+		accumulator = reduceToForStoredTasks(tasksToVisit, resultClass, accumulator, (index, taskToVisit, innerAccumulator) -> {
+			if(breakableAccumulator.shouldBreak()) {
 				throw new Break();
 			}
 			
-			try {
-				R innerAccumulator = reduceToForTaskToVisit(resultClass, 
-													        howToVisitNodes, 
-														    transitive, 
-														    (R) innerBreakable.getAccumulator(), 
-														    reducer, 
-														    distance, 
-														    visitedNodes, 
-														    taskToVisit);
-				
-				innerBreakable.setAccumulator(innerAccumulator);
-				
-			}catch(Break b) {
-				innerBreakable.setShouldBreak(true);
+			BreakableAccumulator<R> innerBreakable = reduceToForTaskToVisit(resultClass, 
+																			howToVisitNodes, 
+																			transitive, 
+																			innerAccumulator,
+																			reducer, 
+																			distance, 
+																			visitedNodes, 
+																			taskToVisit);
+			
+			innerAccumulator = innerBreakable.getAccumulator();
+			
+			if(innerBreakable.shouldBreak()) {
+				breakableAccumulator.setShouldBreak(true);
 			}
 
-			return innerBreakable;
+			return innerAccumulator;
 		});
-
-		if(outerBreakable.shouldBreak()) {
-			throw new Break();
-		}
-
-		return outerBreakable.getAccumulator();
-		*/
+		
+		breakableAccumulator.setAccumulator(accumulator);
+		
+		return breakableAccumulator;
 	}
 
-	private <R extends Object> R reduceToForTaskToVisit(Class<R> resultClass, 
-			                                            VisitDirection[] howToVisitNodes, 
-			                                            boolean transitive, 
-			                                            R accumulator, 
-			                                            TaskReducer<R> reducer, 
-			                                            int distance, 
-			                                            Set<String> visitedNodes, 
-			                                            Task taskToVisit) throws Break {
+	private <R extends Object> BreakableAccumulator<R> reduceToForTaskToVisit(Class<R> resultClass, 
+			                                                                  VisitDirection[] howToVisitNodes, 
+			                                                                  boolean transitive, 
+			                                                                  R accumulator, 
+			                                                                  TaskReducer<R> reducer, 
+			                                                                  int distance, 
+			                                                                  Set<String> visitedNodes, 
+			                                                                  Task taskToVisit) {
 		T.call(this);
 		
-		accumulator = reducer.reduce(distance, taskToVisit, accumulator);
+		BreakableAccumulator<R> breakableAccumulator = new BreakableAccumulator<R>(accumulator);
 
-		if(transitive && !visitedNodes.contains(taskToVisit.id())) {
-			visitedNodes.add(taskToVisit.id());
+		try { 
 
-			accumulator = taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance, visitedNodes);
+			accumulator = reducer.reduce(distance, taskToVisit, accumulator);
+			breakableAccumulator.setAccumulator(accumulator);
+
+			if(transitive && !visitedNodes.contains(taskToVisit.id())) {
+				visitedNodes.add(taskToVisit.id());
+
+				breakableAccumulator = taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance, visitedNodes);
+			}
+
+		}catch(Break b) {
+			
+			breakableAccumulator.setShouldBreak(true);
 		}
 
-		return accumulator;
+		return breakableAccumulator;
 	}
 	
 	
@@ -917,10 +868,8 @@ public class Task implements NtroModelValue, TaskNode {
 	@SuppressWarnings("unchecked")
 	private List<Task> tasksNotDone(StudentCompletionsByTaskId completions, StoredTaskIds tasks){
 		T.call(this);
-		
-		return tasks.reduceTo(List.class, new ArrayList<Task>(), (index, taskId, accumulator) -> {
-			Task task = graph.findTaskByPath(new Path(taskId));
-			
+
+		return reduceToForStoredTasks(tasks, List.class, new ArrayList<Task>(), (index, task, accumulator) -> {
 			if(!task.isDone(completions)) {
 				accumulator.add(task);
 			}

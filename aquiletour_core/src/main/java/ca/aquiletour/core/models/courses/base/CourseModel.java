@@ -94,7 +94,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	public void addNextTaskTo(Path previousPath, Task nextTask) {
+	public void addNextTaskTo(Path previousPath, Task nextTask) throws CycleDetectedError {
 		T.call(this);
 		
 		nextTask.setGraph(asGraph());
@@ -114,6 +114,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 				if(cycle != null) {
 					previousTask.removeNextTask(existingNextTask.id());
 					existingNextTask.removePreviousTask(previousTask.id());
+					throw new CycleDetectedError();
 				}
 				
 			}else {
@@ -150,7 +151,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		tasks.putEntry(nextTask.id(), nextTask);
 	}
 
-	public void addPreviousTaskTo(Path path, Task previousTask) {
+	public void addPreviousTaskTo(Path path, Task previousTask) throws CycleDetectedError {
 		T.call(this);
 		
 		previousTask.setGraph(asGraph());
@@ -170,6 +171,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 				if(cycle != null) {
 					nextTask.removePreviousTask(existingPreviousTask.id());
 					existingPreviousTask.removeNextTask(nextTask.id());
+					throw new CycleDetectedError();
 				}
 				
 			}else {

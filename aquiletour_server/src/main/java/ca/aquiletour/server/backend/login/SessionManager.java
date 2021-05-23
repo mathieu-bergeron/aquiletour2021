@@ -11,6 +11,7 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.users.UserManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -98,7 +99,7 @@ public class SessionManager {
 	public static User createAuthenticatedUser(ModelStoreSync modelStore, 
 			                                   String authToken, 
 			                                   String userId, 
-			                                   NtroSession session) {
+			                                   NtroSession session) throws BackendError {
 		T.call(SessionManager.class);
 
 		User existingUser = null;
