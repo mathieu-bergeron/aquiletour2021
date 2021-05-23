@@ -94,6 +94,15 @@ public class ModelStoreSync {
 
 		updateModel(modelClass, authToken, modelStore.documentId(modelPath), updater);
 	}
+
+	public <M extends NtroModel> void readModel(Class<? extends NtroModel> modelClass, 
+												String authToken,
+			                                    Path modelPath, 
+			                                    ModelReader<M> reader) {
+		T.call(this);
+
+		readModel(modelClass, authToken, modelStore.documentId(modelPath), reader);
+	}
 	
 	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,
@@ -105,9 +114,30 @@ public class ModelStoreSync {
 			
 			M model = (M) getModel(modelClass, authToken, modelId);
 			
-			updater.update(model);
+			synchronized (model) {
+				updater.update(model);
+			}
 			
 			save(model);
+
+		}else {
+			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
+		}
+	}
+
+	public <M extends NtroModel> void readModel(Class<? extends NtroModel> modelClass, 
+												String authToken,
+			                                    String modelId, 
+			                                    ModelReader<M> reader) {
+		T.call(this);
+
+		if(ifModelExists(modelClass, authToken, modelId)) {
+
+			M model = (M) getModel(modelClass, authToken, modelId);
+			
+			synchronized (model) {
+				reader.read(model);
+			}
 
 		}else {
 			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
@@ -131,7 +161,9 @@ public class ModelStoreSync {
 
 		M model = (M) getModel(modelClass, authToken, modelId);
 
-		initializer.initialize(model);
+		synchronized (model) {
+			initializer.initialize(model);
+		}
 			
 		save(model);
 	}
