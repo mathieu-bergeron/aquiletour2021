@@ -24,9 +24,11 @@ import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
+import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.StoredProperty;
+import ca.ntro.core.models.ValueReader;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
@@ -508,17 +510,23 @@ public class CourseManager {
 		});
 	}
 
-	public static AtomicTaskCompletion getAtomicTaskCompletionStudent(ModelStoreSync modelStore, 
-			                                                          CoursePath coursePath, 
-			                                                          String studentId, 
-			                                                          Path taskPath, 
-			                                                          String atomicTaskId) {
+	public static void readAtomicTaskCompletionStudent(ModelStoreSync modelStore, 
+			                                           CoursePath coursePath, 
+			                                           String studentId, 
+			                                           Path taskPath, 
+			                                           String atomicTaskId,
+			                                           ValueReader<AtomicTaskCompletion> valueReader) {
 		T.call(CourseManager.class);
 
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
 		
-		CourseModelStudent model = modelStore.getModel(CourseModelStudent.class, "admin", coursePathStudent);
-		
-		return model.atomicTaskCompletion(taskPath, atomicTaskId);
+		modelStore.readModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelReader<CourseModelStudent>() {
+			@Override
+			public void read(CourseModelStudent model) {
+				T.call(this);
+				
+				valueReader.read(model.atomicTaskCompletion(taskPath, atomicTaskId));
+			}
+		});
 	}
 }

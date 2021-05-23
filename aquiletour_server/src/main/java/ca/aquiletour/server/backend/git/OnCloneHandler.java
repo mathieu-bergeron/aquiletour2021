@@ -10,6 +10,7 @@ import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ValueReader;
 import ca.ntro.core.system.trace.T;
 
 public class OnCloneHandler extends BackendMessageHandler<OnClone> {
@@ -23,17 +24,23 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 	public void handleLater(ModelStoreSync modelStore, OnClone message) throws BackendError {
 		T.call(this);
 
-		AtomicTaskCompletion completion = CourseManager.getAtomicTaskCompletionStudent(modelStore, 
-				                                                                       message.coursePath(), 
-				                                                                       message.getStudentId(), 
-				                                                                       message.taskPath(), 
-				                                                                       AtomicTask.idFromType(GitRepoTask.class));
-		
 		GitRepoCloned gitRepoCloned = new GitRepoCloned();
-		
-		if(completion instanceof GitRepoCompletion) {
-			gitRepoCloned.setRepoUrl(((GitRepoCompletion) completion).getRepoUrl());
-		}
+
+		CourseManager.readAtomicTaskCompletionStudent(modelStore, 
+												      message.coursePath(), 
+												      message.getStudentId(), 
+												      message.taskPath(), 
+												      AtomicTask.idFromType(GitRepoTask.class),
+												      new ValueReader<AtomicTaskCompletion>() {
+														@Override
+														public void read(AtomicTaskCompletion completion) {
+															T.call(this);
+															
+															if(completion instanceof GitRepoCompletion) {
+																gitRepoCloned.setRepoUrl(((GitRepoCompletion) completion).getRepoUrl());
+															}
+														}
+												});
 		
 		CourseManager.updateAtomicTaskCompletionStudent(modelStore, 
 				                                        message.coursePath(), 
