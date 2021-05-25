@@ -206,17 +206,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
 		});
 
-		homeLink.setAttribute("href", "/" + Constants.HOME_URL_SEGMENT);
 		homeLink.show();
 		
 		if(!user.actsAsAdmin()) {
+			homeLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
 			dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
 			courseListLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
 			
 			dashboardLink.show();
 			courseListLink.show();
+
+		}else {
+			homeLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
 		}
-		
+
 		if(user.actsAsTeacher()) {
 			semesterListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
 			semesterListLink.show();
