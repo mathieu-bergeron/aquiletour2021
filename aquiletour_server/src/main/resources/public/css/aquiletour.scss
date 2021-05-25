@@ -1,34 +1,6 @@
 $primary: purple;
 
 
-
-/*progress bar*/
-input[type="checkbox"] { 
-  height: 15px; 
-  width: 15px; 
-  margin-right: 10px;
-}	
-
-.ready { font-size: 1.5em; }
-.ui-progressbar-value { background-color: lightgreen!important; }
-.progressbar {
-  position: relative;
-  width: auto; 
-}
-
-.progressbar-bar { 
-  height: 25px;
-  margin: 10px 0;
-  border-radius: 7px;
-}
-
-.progressbar-label {
-  position: absolute;
-  top: 2px;
-  left: 45%;
-  z-index: 2;
-}
-
 /*cards*/
 .card{
   height: fit-content!important;
