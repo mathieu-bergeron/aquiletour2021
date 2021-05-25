@@ -54,11 +54,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private HtmlElement homeLink;
 	private HtmlElement dashboardLink;
-	private HtmlElement coursesLinkTeacher;
-	private HtmlElement coursesLinkStudent;
+	private HtmlElement courseListLink;
 	private HtmlElement groupListLink;
 	private HtmlElement openQueueListLink;
-	private HtmlElement calendarListLink;
+	private HtmlElement semesterListLink;
 	private HtmlElement queueLink;
 
 	private HtmlElement loginDropdown;
@@ -95,9 +94,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
 		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
-		coursesLinkTeacher = getRootElement().find("#courses-link-teacher").get(0);
-		coursesLinkStudent = getRootElement().find("#courses-link-student").get(0);
-		calendarListLink = getRootElement().find("#calendar-list-link").get(0);
+		courseListLink = getRootElement().find("#course-list-link").get(0);
+		semesterListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
 
 		loginDropdown = getRootElement().find("#login-dropdown").get(0);
@@ -135,7 +133,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(homeLink);
 		MustNot.beNull(dashboardLink);
 		MustNot.beNull(openQueueListLink);
-		MustNot.beNull(calendarListLink);
+		MustNot.beNull(semesterListLink);
 		MustNot.beNull(loginButton);
 		MustNot.beNull(loginDropdown);
 		MustNot.beNull(loginMenuMessage);
@@ -155,8 +153,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(queueLink);
 		MustNot.beNull(userNameInput);
 		MustNot.beNull(showPasswordMenuLink);
-		MustNot.beNull(coursesLinkTeacher);
-		MustNot.beNull(coursesLinkStudent);
+		MustNot.beNull(courseListLink);
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
@@ -166,8 +163,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
-
-		initializeLinks();
 
 		onContextChange(context);
 		
@@ -182,44 +177,79 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		alertPrimary.hide();
 	}
 
-	private void initializeLinks() {
-		T.call(this);
-		
-		homeLink.setAttribute("href", "/" + Constants.HOME_URL_SEGMENT);
-
-		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
-
-		coursesLinkTeacher.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
-		coursesLinkStudent.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
-
-
-		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
-
-		loginButton.addEventListener("click", new HtmlEventListener() {
-			@Override
-			public void onEvent() {
-				T.call(this);
-				ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
-				showLoginMessage.setMessageToUser("");
-				Ntro.messages().send(showLoginMessage);
-			}
-		});
-
-		logoutLinks.forEach(e -> {
-			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
-		});
-	}
-
 	@Override
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
-		
 		
 		User user = (User) context.user();
 		String userName = user.getFirstname();
 
 		addUserIdToValue.appendToAttribute("value", user.getId());
 
+		adjustLoginMenu(user, userName);
+		adjustLinks(user);
+	}
+
+
+	private void adjustLinks(User user) {
+		T.call(this);
+		
+		courseListLink.hide();
+		openQueueListLink.hide();
+		semesterListLink.hide();
+		groupListLink.hide();
+		queueLink.hide();
+		dashboardLink.hide();
+
+		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+		logoutLinks.forEach(e -> {
+			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
+		});
+
+		homeLink.setAttribute("href", "/" + Constants.HOME_URL_SEGMENT);
+		homeLink.show();
+		
+		if(!user.actsAsAdmin()) {
+			dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
+			courseListLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
+			
+			dashboardLink.show();
+			courseListLink.show();
+		}
+		
+		if(user.actsAsTeacher()) {
+			semesterListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
+			semesterListLink.show();
+		}
+		
+		if(user.actsAsTeacher() && !user.actsAsAdmin()) {
+
+			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
+
+			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getRegistrationId());
+			
+			toggleStudentModeButton.text("Mode étudiant");
+			
+			if(user.getHasPassword()) {
+				showPasswordMenuLink.text("Modifier mon mot de passe");
+			}else {
+				showPasswordMenuLink.text("Ajouter un mot de passe");
+			}
+
+			groupListLink.show();
+			queueLink.show();
+		}
+		
+		if(!user.actsAsTeacher() && !user.actsAsTeacher()) {
+			toggleStudentModeButton.text("Mode enseignant");
+
+			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
+			openQueueListLink.show();
+		}
+	}
+
+
+	private void adjustLoginMenu(User user, String userName) {
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
 		loginMenuEnterPassword.hide();
@@ -285,43 +315,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			userNameContainer.hide();
 			toggleStudentModeContainer.hide();
 		}
-		
-		coursesLinkTeacher.hide();
-		openQueueListLink.hide();
-		calendarListLink.hide();
-		groupListLink.hide();
-		queueLink.hide();
-		
-		if(user.actsAsTeacher()) {
-			
-			toggleStudentModeButton.text("Mode étudiant");
-			
-			if(user.getHasPassword()) {
-				showPasswordMenuLink.text("Modifier mon mot de passe");
-			}else {
-				showPasswordMenuLink.text("Ajouter un mot de passe");
-			}
-
-			calendarListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
-			calendarListLink.show();
-
-			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
-			groupListLink.show();
-			
-			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getRegistrationId());
-			queueLink.show();
-			
-			coursesLinkStudent.hide();
-			coursesLinkTeacher.show();
-			
-		} else {
-
-			toggleStudentModeButton.text("Mode enseignant");
-
-			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
-			openQueueListLink.show();
-		}
-		
 	}
 
 
