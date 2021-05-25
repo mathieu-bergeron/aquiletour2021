@@ -243,7 +243,7 @@ public class AquiletourBackendRequestHandler {
 	private static void sendCourseListMessages(Path subPath, Map<String, String[]> parameters, User user) {
 		T.call(AquiletourBackendRequestHandler.class);
 		
-		if(parameters.containsKey("newCourseId")) {
+		if(parameters.containsKey("addCourse")) {
 			
 			String semesterId = parameters.get("semesterId")[0];
 			String courseTitle = parameters.get("courseTitle")[0];
@@ -255,9 +255,15 @@ public class AquiletourBackendRequestHandler {
 			addCourseMessage.setSemesterId(semesterId);
 			addCourseMessage.setCourseListItem(courseListItem);
 			Ntro.backendService().sendMessageToBackend(addCourseMessage);
-		}
 
-		else if(parameters.containsKey("taskId")) {
+		} else if(parameters.containsKey("duplicateCourse")) {
+			
+			String duplicateCourseId = parameters.get("duplicateCourseId")[0];
+			
+			System.out.println("TODO: " + duplicateCourseId);
+
+
+		} else if(parameters.containsKey("taskId")) {
 			
 			String teacherId = user.getId();
 			String semesterId = parameters.get("semesterId")[0];

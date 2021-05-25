@@ -116,14 +116,15 @@ public class ModelStoreSync {
 			
 			synchronized (model) {
 				updater.update(model);
+				// FIXME: rather queue the save action 
+				//        the ModelStore needs to know NOT to remove
+				//        the model from memory before it is saved
+				save(model);
+
 				// FIXME:
-				// modelNeedsSaving(model);
+				//modelStore.modelNeedsSaving(model);
 			}
 			
-			// FIXME: rather queue the save action 
-			//        the ModelStore needs to know NOT to remove
-			//        the model from memory before it is saved
-			save(model);
 
 		}else {
 			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);

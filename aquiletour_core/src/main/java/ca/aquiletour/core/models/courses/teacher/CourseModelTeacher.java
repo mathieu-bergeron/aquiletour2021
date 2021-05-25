@@ -7,7 +7,6 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
@@ -226,12 +225,12 @@ public class CourseModelTeacher extends CourseModel {
 			return task.status(studentCompletions).isTodo();
 		});
 		
-		findResults.sort((result1, result2) -> {
+		findResults.asList().sort((result1, result2) -> {
 			return Integer.compare(result1.getMinDistance(), result2.getMinDistance());
 		});
 		
 		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
-		findResults.forEach(r -> {
+		findResults.asList().forEach(r -> {
 			currentTasks.add(new CurrentTaskStudent(r.getTask()));
 		});
 		

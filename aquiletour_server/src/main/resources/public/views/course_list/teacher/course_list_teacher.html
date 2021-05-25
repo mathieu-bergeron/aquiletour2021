@@ -77,8 +77,6 @@
                                 aria-selected="false">Dupliquer un cours existant</button>
                     </li>
                 </ul>
-                <form action="" method="post">
-                    <input name="semesterId" id="semester-id-input" style="display:none;"></input>
                     <div class="tab-content" id="add-course-tab">
 
                         <div class="tab-pane fade show active" 
@@ -86,41 +84,44 @@
                              role="tabpanel" 
                              aria-labelledby="new-course-tab">
 
-                            <div class="form-group row mb-2 mx-2">
-                                <label for="title">Titre du cours</label>
-                                <input name="courseTitle" id="course-title-input"></input>
-                            </div>
-                            <div class="form-group row mb-3 mx-2">
-                                <label for="code">Code du cours</label>
-                                <input name="newCourseId" id="course-code-input"></input>
-                                <div class="d-flex" id="course-code-in-link-container">
-                                    <span class="flex-fill"></span>
-                                    <span class=""><i>dans un lien: </i></span><span class="course-code-in-link"></span>
-                                </div>
-                            </div>
-                            <!--
+                            <form action="" method="post">
+                                <input class="add-semester-id-to-value" name="semesterId" style="display:none;"></input>
                                 <div class="form-group row mb-2 mx-2">
-                                <label for="code">Description</label>
-                                <textarea  name="courseDescription" id="course-description-input"></textarea>
+                                    <label for="title">Titre du cours</label>
+                                    <input name="courseTitle" id="course-title-input"></input>
                                 </div>
-                            -->
+                                <div class="form-group row mb-3 mx-2">
+                                    <label for="code">Code du cours</label>
+                                    <input name="newCourseId" id="course-code-input"></input>
+                                    <div class="d-flex" id="course-code-in-link-container">
+                                        <span class="flex-fill"></span>
+                                        <span class=""><i>dans un lien: </i></span><span class="course-code-in-link"></span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0">         
+                                    <input class="btn btn-primary" type="submit" name="addCourse" value="Ajouter"></input>
+                                    <button class="btn btn-secondary" id="close-modal-button" type="button" data-dismiss="modal">Annuler</button>          
+                                </div>  
+                            </form>
                         </div>
                         <div class="tab-pane fade" 
                              id="copy-course-pane" 
                              role="tabpanel" 
                              aria-labelledby="copy-course-tab">
 
-                            <div class="form-group row mb-3 mx-2">
-                                <label for="copyCourse">Cours à dupliquer</label>
-                                <input name="copyCourse" id="copy-course-input"></input>
-                            </div>
+                            <form action="" method="post">
+                                <input class="add-semester-id-to-value" name="semesterId" style="display:none;"></input>
+                                <div class="form-group row mb-3 mx-2">
+                                    <label for="duplicateCourseId">Session/code du cours à dupliquer</label>
+                                    <input name="duplicateCourseId" id="copy-course-input"></input>
+                                </div>
+                                <div class="modal-footer border-0">         
+                                    <input class="btn btn-primary" type="submit" name="duplicateCourse" value="Dupliquer"></input>
+                                    <button class="btn btn-secondary" id="close-modal-button" type="button" data-dismiss="modal">Annuler</button>          
+                                </div>  
+                            </form>
                         </div>
                     </div>
-                    <div class="modal-footer border-0">         
-                        <button class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
-                        <button class="btn btn-secondary" id="close-modal-button" type="button" data-dismiss="modal">Annuler</button>          
-                    </div>  
-                </form>
             </div>       
         </div>
     </div>

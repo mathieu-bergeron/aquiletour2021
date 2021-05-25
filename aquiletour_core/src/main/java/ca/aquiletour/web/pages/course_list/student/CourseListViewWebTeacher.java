@@ -7,12 +7,13 @@ import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 
 public class CourseListViewWebTeacher extends CourseListViewWeb implements CourseListViewTeacher {
 	
 	private HtmlElement addItemButton;
 	private HtmlElement modalTitle;
-	private HtmlElement semesterIdInput;
+	private HtmlElements addSemesterIdToValue;
 
 	protected HtmlElement getAddItemButton() {
 		return addItemButton;
@@ -29,11 +30,10 @@ public class CourseListViewWebTeacher extends CourseListViewWeb implements Cours
 
 		addItemButton = getRootElement().find("#add-item-button").get(0);
 		modalTitle = getRootElement().find("#modal-title").get(0);
-		semesterIdInput = this.getRootElement().find("#semester-id-input").get(0);
+		addSemesterIdToValue = this.getRootElement().find(".add-semester-id-to-value");
 		
 		MustNot.beNull(addItemButton);
 		MustNot.beNull(modalTitle);
-		MustNot.beNull(semesterIdInput);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class CourseListViewWebTeacher extends CourseListViewWeb implements Cours
 		T.call(this);
 		super.identifyCurrentSemester(semesterId);
 		
-		semesterIdInput.value(semesterId);
+		addSemesterIdToValue.appendToAttribute("value", semesterId);
 
 		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
 			

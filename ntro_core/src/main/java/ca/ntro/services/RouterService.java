@@ -44,8 +44,9 @@ public abstract class RouterService {
 
 	public void sendMessagesFor(NtroContext<?, ?> context, Path path, Map<String, String[]> parameters) {
 		T.call(this);
-		
-		System.out.println("parameters");
+
+		System.out.println("path: " + path.toString());
+		System.out.println("parameters: ");
 		for(Map.Entry<String, String[]> entry : parameters.entrySet()) {
 			System.out.println(entry.getKey() + ": " + entry.getValue()[0]);
 		}
