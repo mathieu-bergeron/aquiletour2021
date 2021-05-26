@@ -7,6 +7,7 @@ import java.util.Map;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.AtomicTaskMessage;
 import ca.aquiletour.core.messages.git.RegisterGitRepo;
+import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
@@ -461,311 +462,34 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 		
 		if(path.nameCount() >= 1) {
+			sendQueueMenuMessages(parameters, user, path.name(0));
 			sendAppointmentMessages(parameters, user, path.name(0));
 		}
 	}
 
-	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, SessionData sessionData) throws UserInputError {
+	private static void sendQueueMenuMessages(Map<String, String[]> parameters, User user, String teacherId) {
 		T.call(AquiletourBackendRequestHandler.class);
-
-		if(parameters.containsKey("newSubTaskId")) {
-
-			AddSubTaskMessage addSubTaskMessage = AquiletourRequestHandler.createCourseMessage(AddSubTaskMessage.class,
-																							   path,
-																							   parameters,
-																							   sessionData);
-
-			String parentTaskId = parameters.get("taskId")[0];
-			String newSubTaskId = parameters.get("newSubTaskId")[0];
-			String taskTitle = parameters.get("taskTitle")[0];
-			TaskPath newTaskPath = new TaskPath(parentTaskId + "/" + newSubTaskId);
+		
+		if(parameters.containsKey("openQueueCourseId")) {
 			
-			Task task = new Task();
-			task.setPath(newTaskPath);
-			task.updateTitle(taskTitle);
-
-			addSubTaskMessage.setParentPath(new Path(parentTaskId));
-			addSubTaskMessage.setSubTask(task);
-			Ntro.messages().send(addSubTaskMessage);
-
-		}else if(parameters.containsKey("newPreviousTaskId")
-				&& parameters.get("newPreviousTaskId")[0].length() > 0) {
-
-			AddPreviousTaskMessage addPreviousTaskMessage = AquiletourRequestHandler.createCourseMessage(AddPreviousTaskMessage.class,
-																							             path,
-																							             parameters,
-																							             sessionData);
-
-			String nextTaskId = parameters.get("taskId")[0];
-			String newPreviousTaskId = parameters.get("newPreviousTaskId")[0];
-			String taskTitle = parameters.get("previousTaskTitle")[0];
-			
-			Path nextPath = new Path(nextTaskId);
-			Path parentPath = nextPath.parent();
-
-			TaskPath newPreviousTaskPath = new TaskPath(parentPath.toString() + "/" + newPreviousTaskId);
-
-			Task newPreviousTask = new Task();
-			newPreviousTask.setPath(newPreviousTaskPath);
-			newPreviousTask.updateTitle(taskTitle);
-
-			addPreviousTaskMessage.setNextPath(nextPath);
-			addPreviousTaskMessage.setPreviousTask(newPreviousTask);
-			
-			Ntro.messages().send(addPreviousTaskMessage);
-
-		}else if(parameters.containsKey("linkToPreviousTaskPath")
-				&& parameters.get("linkToPreviousTaskPath")[0].length() > 0) {
-
-			AddPreviousTaskMessage addPreviousTaskMessage = AquiletourRequestHandler.createCourseMessage(AddPreviousTaskMessage.class,
-																							             path,
-																							             parameters,
-																							             sessionData);
-
-			String nextTaskId = parameters.get("taskId")[0];
-			String existingTaskPathString = parameters.get("linkToPreviousTaskPath")[0];
-			TaskPath existingTaskPath = new TaskPath(existingTaskPathString);
-
-			Task previousTask = new Task();
-			previousTask.setPath(existingTaskPath);
-			
-			addPreviousTaskMessage.setNextPath(new Path(nextTaskId));
-			addPreviousTaskMessage.setPreviousTask(previousTask);
-			
-			Ntro.messages().send(addPreviousTaskMessage);
-
-		}else if(parameters.containsKey("newNextTaskId")
-				&& parameters.get("newNextTaskId")[0].length() > 0) {
-
-			AddNextTaskMessage addNextTaskMessage = AquiletourRequestHandler.createCourseMessage(AddNextTaskMessage.class,
-																							     path,
-																							     parameters,
-																							     sessionData);
-
-			String previousTaskId = parameters.get("taskId")[0];
-			String newNextTaskId = parameters.get("newNextTaskId")[0];
-			String taskTitle = parameters.get("nextTaskTitle")[0];
-			
-			Path previousPath = new Path(previousTaskId);
-			Path parentPath = previousPath.parent();
-
-			TaskPath newNextTaskPath = new TaskPath(parentPath.toString() + "/" + newNextTaskId);
-
-			Task newNextTask = new Task();
-			newNextTask.setPath(newNextTaskPath);
-			newNextTask.updateTitle(taskTitle);
-
-			addNextTaskMessage.setPreviousPath(previousPath);
-			addNextTaskMessage.setNextTask(newNextTask);
-			
-			Ntro.messages().send(addNextTaskMessage);
-
-		}else if(parameters.containsKey("linkToNextTaskPath")
-				&& parameters.get("linkToNextTaskPath")[0].length() > 0) {
-
-			AddNextTaskMessage addNextTaskMessage = AquiletourRequestHandler.createCourseMessage(AddNextTaskMessage.class,
-																							     path,
-																							     parameters,
-																							     sessionData);
-			String previousTaskId = parameters.get("taskId")[0];
-			String existingTaskPathSting = parameters.get("linkToNextTaskPath")[0];
-			TaskPath existingTaskPath = new TaskPath(existingTaskPathSting);
-			
-			Task nextTask = new Task();
-			nextTask.setPath(existingTaskPath);
-
-			addNextTaskMessage.setPreviousPath(new Path(previousTaskId));
-			addNextTaskMessage.setNextTask(nextTask);
-
-			Ntro.messages().send(addNextTaskMessage);
-
-		}else if(parameters.containsKey("delete")) {
-
-			DeleteTaskMessage deleteTaskMessage = AquiletourRequestHandler.createCourseMessage(DeleteTaskMessage.class,
-																							   path,
-																							   parameters,
-																							   sessionData);
-			String taskId = parameters.get("delete")[0];
-			Path taskPath = new Path();
-			taskPath.parseFileName(taskId);
-			
-			deleteTaskMessage.setTaskToDelete(taskPath);
-
-			Ntro.messages().send(deleteTaskMessage);
-
-		}else if(parameters.containsKey("removePreviousTask")) {
-
-			RemovePreviousTaskMessage removePreviousTaskMessage = AquiletourRequestHandler.createCourseMessage(RemovePreviousTaskMessage.class,
-																							                   path,
-																							                   parameters,
-																							                   sessionData);
-			String toRemoveId = parameters.get("removePreviousTask")[0];
-			Path toRemovePath = new Path();
-			toRemovePath.parseFileName(toRemoveId);
-
-			String toModifyId = parameters.get("from")[0];
-			Path toModifyPath = new Path();
-			toModifyPath.parseFileName(toModifyId);
-			
-			removePreviousTaskMessage.setTaskToModify(toModifyPath);
-			removePreviousTaskMessage.setTaskToRemove(toRemovePath);
-
-			Ntro.messages().send(removePreviousTaskMessage);
-
-		}else if(parameters.containsKey("removeSubTask")) {
-
-			RemoveSubTaskMessage removeSubTaskMessage = AquiletourRequestHandler.createCourseMessage(RemoveSubTaskMessage.class,
-																							         path,
-																							         parameters,
-																							         sessionData);
-
-			String toRemoveId = parameters.get("removeSubTask")[0];
-			Path toRemovePath = new Path();
-			toRemovePath.parseFileName(toRemoveId);
-
-			String toModifyId = parameters.get("from")[0];
-			Path toModifyPath = new Path();
-			toModifyPath.parseFileName(toModifyId);
-			
-			removeSubTaskMessage.setTaskToModify(toModifyPath);
-			removeSubTaskMessage.setTaskToRemove(toRemovePath);
-
-			Ntro.messages().send(removeSubTaskMessage);
-
-		}else if(parameters.containsKey("removeNextTask")) {
-
-			RemoveNextTaskMessage removeNextTaskMessage = AquiletourRequestHandler.createCourseMessage(RemoveNextTaskMessage.class,
-																							           path,
-																							           parameters,
-																							           sessionData);
-
-			String toRemoveId = parameters.get("removeNextTask")[0];
-			Path toRemovePath = new Path();
-			toRemovePath.parseFileName(toRemoveId);
-
-			String toModifyId = parameters.get("from")[0];
-			Path toModifyPath = new Path();
-			toModifyPath.parseFileName(toModifyId);
-			
-			removeNextTaskMessage.setTaskToModify(toModifyPath);
-			removeNextTaskMessage.setTaskToRemove(toRemovePath);
-
-			Ntro.messages().send(removeNextTaskMessage);
-
-		}else if(parameters.containsKey("endTimeWeek")) {
-
-			UpdateTaskInfoMessage updateTaskInfo = AquiletourRequestHandler.createCourseMessage(UpdateTaskInfoMessage.class,
-																					            path,
-																					            parameters,
-																					            sessionData);
-			String title = parameters.get("taskTitle")[0];
-			String description = parameters.get("taskDescription")[0];
-			String endTimeWeekText = parameters.get("endTimeWeek")[0];
-			String endTimeScheduleItemId = parameters.get("endTimeScheduleItem")[0];
-			String endTimeStartOrEnd = parameters.get("endTimeStartOrEnd")[0];
-
-			updateTaskInfo.setTaskTitle(title);
-			updateTaskInfo.setTaskDescription(description);
-
-			int endTimeWeek = 0;
-			
-			try {
-
-				endTimeWeek = Integer.parseInt(endTimeWeekText);
-				
-			}catch(NumberFormatException e) {
-				throw new UserInputError("SVP entrer un nombre pour la semaine");
+			String semesterId  = parameters.get("semesterId")[0];
+			String courseId  = parameters.get("openQueueCourseId")[0];
+			boolean isQueueOpen = false;
+			if(parameters.containsKey("isQueueOpen")
+					&& parameters.get("isQueueOpen")[0].equals("on")) {
+				isQueueOpen = true;
 			}
 
-			CourseDateScheduleItem endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId, endTimeStartOrEnd);
+			UpdateIsQueueOpenMessage updateIsQueueOpenMessage = Ntro.messages().create(UpdateIsQueueOpenMessage.class);
+			updateIsQueueOpenMessage.setSemesterId(semesterId);
+			updateIsQueueOpenMessage.setTeacherId(teacherId);
+			updateIsQueueOpenMessage.setCourseId(courseId);
+			updateIsQueueOpenMessage.setIsQueueOpen(isQueueOpen);
+			Ntro.messages().send(updateIsQueueOpenMessage);
 			
-			updateTaskInfo.setEndTime(endTime);
+		}else if(parameters.containsKey("openQueueGroupId")) {
 			
-			Ntro.messages().send(updateTaskInfo);
-
-		} else if(parameters.containsKey("StudentRegistersRepo")) {
-
-			StudentRegistersRepoMessage studentRegistersRepo = createAquiletourGitMessage(StudentRegistersRepoMessage.class,
-																					      path,
-																					      parameters,
-																					      sessionData);
-
-
-			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
-
-		} else if(parameters.containsKey("StudentDeletesRepo")) {
-
-			StudentDeletesRepoMessage studentDeletesRepoMessage = createAquiletourGitMessage(StudentDeletesRepoMessage.class,
-																					         path,
-																					         parameters,
-																					         sessionData);
-			Ntro.backendService().sendMessageToBackend(studentDeletesRepoMessage);
-
-		} else if(parameters.containsKey("atomicTaskCompletedId")) {
-				
-				String atomicTaskId = parameters.get("atomicTaskCompletedId")[0];
-				String taskId = parameters.get("taskId")[0];
-				Path taskPath = new Path();
-				taskPath.parseFileName(taskId);
-
-				TaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseMessage(TaskCompletedMessage.class,
-																						                 path,
-																							             parameters,
-             																							 sessionData);
-				taskCompletedMessage.setTaskPath(taskPath);
-				taskCompletedMessage.setAtomicTaskId(atomicTaskId);
-				
-				Ntro.messages().send(taskCompletedMessage);
-
-				throw new RuntimeException("FIXME");
-			}
-	}
-
-	static <MSG extends AquiletourGitMessage> MSG createAquiletourGitMessage(Class<MSG> messageClass, 
-			                                                             Path path, 
-			                                                             Map<String, String[]> parameters,
-			                                                             SessionData sessionData) {
-		T.call(AquiletourBackendRequestHandler.class);
-
-		MSG message = createAtomicTaskMessage(messageClass,
-										      path,
-											  parameters,
-											  sessionData);
-
-		String studentId = parameters.get("studentId")[0];
-		String groupId = parameters.get("groupId")[0];
-		Path repoPath = new Path(parameters.get("repoPath")[0]);
-		String repoUrl = parameters.get("repoUrl")[0];
-
-		message.setStudentId(studentId);
-		message.setGroupId(groupId);
-		message.setRepoPath(repoPath);
-		message.setRepoUrl(repoUrl);
-		
-		return message;
-	}
-
-	static <MSG extends AtomicTaskMessage> MSG createAtomicTaskMessage(Class<MSG> messageClass, 
-			                                                           Path path, 
-			                                                           Map<String, String[]> parameters,
-			                                                           SessionData sessionData) {
-		T.call(AquiletourBackendRequestHandler.class);
-
-		MSG message = AquiletourRequestHandler.createCourseMessage(messageClass,
-																   path,
-																   parameters,
-																   sessionData);
-		
-		if(parameters.containsKey("atomicTaskId")) {
-
-			message.setAtomicTaskId(parameters.get("atomicTaskId")[0]);
-
-		}else {
-			
-			Log.fatalError("Cannot create AtomicTaskMessage: atomicTaskId is not defined");
 		}
-
-		return message;
 	}
 
 	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {
@@ -835,6 +559,311 @@ public class AquiletourBackendRequestHandler {
 			Ntro.messages().send(modifyAppointmentComment);
 		}
 	}
+
+
+	private static void sendCourseMessages(Path path, Map<String, String[]> parameters, SessionData sessionData) throws UserInputError {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		if(parameters.containsKey("newSubTaskId")) {
+
+			AddSubTaskMessage addSubTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(AddSubTaskMessage.class,
+																							       path,
+																							       parameters,
+																							       sessionData);
+
+			String parentTaskId = parameters.get("taskId")[0];
+			String newSubTaskId = parameters.get("newSubTaskId")[0];
+			String taskTitle = parameters.get("taskTitle")[0];
+			TaskPath newTaskPath = new TaskPath(parentTaskId + "/" + newSubTaskId);
+			
+			Task task = new Task();
+			task.setPath(newTaskPath);
+			task.updateTitle(taskTitle);
+
+			addSubTaskMessage.setParentPath(new Path(parentTaskId));
+			addSubTaskMessage.setSubTask(task);
+			Ntro.messages().send(addSubTaskMessage);
+
+		}else if(parameters.containsKey("newPreviousTaskId")
+				&& parameters.get("newPreviousTaskId")[0].length() > 0) {
+
+			AddPreviousTaskMessage addPreviousTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(AddPreviousTaskMessage.class,
+																							             path,
+																							             parameters,
+																							             sessionData);
+
+			String nextTaskId = parameters.get("taskId")[0];
+			String newPreviousTaskId = parameters.get("newPreviousTaskId")[0];
+			String taskTitle = parameters.get("previousTaskTitle")[0];
+			
+			Path nextPath = new Path(nextTaskId);
+			Path parentPath = nextPath.parent();
+
+			TaskPath newPreviousTaskPath = new TaskPath(parentPath.toString() + "/" + newPreviousTaskId);
+
+			Task newPreviousTask = new Task();
+			newPreviousTask.setPath(newPreviousTaskPath);
+			newPreviousTask.updateTitle(taskTitle);
+
+			addPreviousTaskMessage.setNextPath(nextPath);
+			addPreviousTaskMessage.setPreviousTask(newPreviousTask);
+			
+			Ntro.messages().send(addPreviousTaskMessage);
+
+		}else if(parameters.containsKey("linkToPreviousTaskPath")
+				&& parameters.get("linkToPreviousTaskPath")[0].length() > 0) {
+
+			AddPreviousTaskMessage addPreviousTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(AddPreviousTaskMessage.class,
+																							             path,
+																							             parameters,
+																							             sessionData);
+
+			String nextTaskId = parameters.get("taskId")[0];
+			String existingTaskPathString = parameters.get("linkToPreviousTaskPath")[0];
+			TaskPath existingTaskPath = new TaskPath(existingTaskPathString);
+
+			Task previousTask = new Task();
+			previousTask.setPath(existingTaskPath);
+			
+			addPreviousTaskMessage.setNextPath(new Path(nextTaskId));
+			addPreviousTaskMessage.setPreviousTask(previousTask);
+			
+			Ntro.messages().send(addPreviousTaskMessage);
+
+		}else if(parameters.containsKey("newNextTaskId")
+				&& parameters.get("newNextTaskId")[0].length() > 0) {
+
+			AddNextTaskMessage addNextTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(AddNextTaskMessage.class,
+																							     path,
+																							     parameters,
+																							     sessionData);
+
+			String previousTaskId = parameters.get("taskId")[0];
+			String newNextTaskId = parameters.get("newNextTaskId")[0];
+			String taskTitle = parameters.get("nextTaskTitle")[0];
+			
+			Path previousPath = new Path(previousTaskId);
+			Path parentPath = previousPath.parent();
+
+			TaskPath newNextTaskPath = new TaskPath(parentPath.toString() + "/" + newNextTaskId);
+
+			Task newNextTask = new Task();
+			newNextTask.setPath(newNextTaskPath);
+			newNextTask.updateTitle(taskTitle);
+
+			addNextTaskMessage.setPreviousPath(previousPath);
+			addNextTaskMessage.setNextTask(newNextTask);
+			
+			Ntro.messages().send(addNextTaskMessage);
+
+		}else if(parameters.containsKey("linkToNextTaskPath")
+				&& parameters.get("linkToNextTaskPath")[0].length() > 0) {
+
+			AddNextTaskMessage addNextTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(AddNextTaskMessage.class,
+																							     path,
+																							     parameters,
+																							     sessionData);
+			String previousTaskId = parameters.get("taskId")[0];
+			String existingTaskPathSting = parameters.get("linkToNextTaskPath")[0];
+			TaskPath existingTaskPath = new TaskPath(existingTaskPathSting);
+			
+			Task nextTask = new Task();
+			nextTask.setPath(existingTaskPath);
+
+			addNextTaskMessage.setPreviousPath(new Path(previousTaskId));
+			addNextTaskMessage.setNextTask(nextTask);
+
+			Ntro.messages().send(addNextTaskMessage);
+
+		}else if(parameters.containsKey("delete")) {
+
+			DeleteTaskMessage deleteTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(DeleteTaskMessage.class,
+																							   path,
+																							   parameters,
+																							   sessionData);
+			String taskId = parameters.get("delete")[0];
+			Path taskPath = new Path();
+			taskPath.parseFileName(taskId);
+			
+			deleteTaskMessage.setTaskToDelete(taskPath);
+
+			Ntro.messages().send(deleteTaskMessage);
+
+		}else if(parameters.containsKey("removePreviousTask")) {
+
+			RemovePreviousTaskMessage removePreviousTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(RemovePreviousTaskMessage.class,
+																							                   path,
+																							                   parameters,
+																							                   sessionData);
+			String toRemoveId = parameters.get("removePreviousTask")[0];
+			Path toRemovePath = new Path();
+			toRemovePath.parseFileName(toRemoveId);
+
+			String toModifyId = parameters.get("from")[0];
+			Path toModifyPath = new Path();
+			toModifyPath.parseFileName(toModifyId);
+			
+			removePreviousTaskMessage.setTaskToModify(toModifyPath);
+			removePreviousTaskMessage.setTaskToRemove(toRemovePath);
+
+			Ntro.messages().send(removePreviousTaskMessage);
+
+		}else if(parameters.containsKey("removeSubTask")) {
+
+			RemoveSubTaskMessage removeSubTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(RemoveSubTaskMessage.class,
+																							         path,
+																							         parameters,
+																							         sessionData);
+
+			String toRemoveId = parameters.get("removeSubTask")[0];
+			Path toRemovePath = new Path();
+			toRemovePath.parseFileName(toRemoveId);
+
+			String toModifyId = parameters.get("from")[0];
+			Path toModifyPath = new Path();
+			toModifyPath.parseFileName(toModifyId);
+			
+			removeSubTaskMessage.setTaskToModify(toModifyPath);
+			removeSubTaskMessage.setTaskToRemove(toRemovePath);
+
+			Ntro.messages().send(removeSubTaskMessage);
+
+		}else if(parameters.containsKey("removeNextTask")) {
+
+			RemoveNextTaskMessage removeNextTaskMessage = AquiletourRequestHandler.createCourseTaskMessage(RemoveNextTaskMessage.class,
+																							           path,
+																							           parameters,
+																							           sessionData);
+
+			String toRemoveId = parameters.get("removeNextTask")[0];
+			Path toRemovePath = new Path();
+			toRemovePath.parseFileName(toRemoveId);
+
+			String toModifyId = parameters.get("from")[0];
+			Path toModifyPath = new Path();
+			toModifyPath.parseFileName(toModifyId);
+			
+			removeNextTaskMessage.setTaskToModify(toModifyPath);
+			removeNextTaskMessage.setTaskToRemove(toRemovePath);
+
+			Ntro.messages().send(removeNextTaskMessage);
+
+		}else if(parameters.containsKey("endTimeWeek")) {
+
+			UpdateTaskInfoMessage updateTaskInfo = AquiletourRequestHandler.createCourseTaskMessage(UpdateTaskInfoMessage.class,
+																					            path,
+																					            parameters,
+																					            sessionData);
+			String title = parameters.get("taskTitle")[0];
+			String description = parameters.get("taskDescription")[0];
+			String endTimeWeekText = parameters.get("endTimeWeek")[0];
+			String endTimeScheduleItemId = parameters.get("endTimeScheduleItem")[0];
+			String endTimeStartOrEnd = parameters.get("endTimeStartOrEnd")[0];
+
+			updateTaskInfo.setTaskTitle(title);
+			updateTaskInfo.setTaskDescription(description);
+
+			int endTimeWeek = 0;
+			
+			try {
+
+				endTimeWeek = Integer.parseInt(endTimeWeekText);
+				
+			}catch(NumberFormatException e) {
+				throw new UserInputError("SVP entrer un nombre pour la semaine");
+			}
+
+			CourseDateScheduleItem endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId, endTimeStartOrEnd);
+			
+			updateTaskInfo.setEndTime(endTime);
+			
+			Ntro.messages().send(updateTaskInfo);
+
+		} else if(parameters.containsKey("StudentRegistersRepo")) {
+
+			StudentRegistersRepoMessage studentRegistersRepo = createAquiletourGitMessage(StudentRegistersRepoMessage.class,
+																					      path,
+																					      parameters,
+																					      sessionData);
+
+
+			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
+
+		} else if(parameters.containsKey("StudentDeletesRepo")) {
+
+			StudentDeletesRepoMessage studentDeletesRepoMessage = createAquiletourGitMessage(StudentDeletesRepoMessage.class,
+																					         path,
+																					         parameters,
+																					         sessionData);
+			Ntro.backendService().sendMessageToBackend(studentDeletesRepoMessage);
+
+		} else if(parameters.containsKey("atomicTaskCompletedId")) {
+				
+				String atomicTaskId = parameters.get("atomicTaskCompletedId")[0];
+				String taskId = parameters.get("taskId")[0];
+				Path taskPath = new Path();
+				taskPath.parseFileName(taskId);
+
+				TaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseTaskMessage(TaskCompletedMessage.class,
+																						                 path,
+																							             parameters,
+             																							 sessionData);
+				taskCompletedMessage.setTaskPath(taskPath);
+				taskCompletedMessage.setAtomicTaskId(atomicTaskId);
+				
+				Ntro.messages().send(taskCompletedMessage);
+
+				throw new RuntimeException("FIXME");
+			}
+	}
+
+	static <MSG extends AquiletourGitMessage> MSG createAquiletourGitMessage(Class<MSG> messageClass, 
+			                                                             Path path, 
+			                                                             Map<String, String[]> parameters,
+			                                                             SessionData sessionData) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		MSG message = createAtomicTaskMessage(messageClass,
+										      path,
+											  parameters,
+											  sessionData);
+
+		String studentId = parameters.get("studentId")[0];
+		String groupId = parameters.get("groupId")[0];
+		Path repoPath = new Path(parameters.get("repoPath")[0]);
+		String repoUrl = parameters.get("repoUrl")[0];
+
+		message.setStudentId(studentId);
+		message.setGroupId(groupId);
+		message.setRepoPath(repoPath);
+		message.setRepoUrl(repoUrl);
+		
+		return message;
+	}
+
+	static <MSG extends AtomicTaskMessage> MSG createAtomicTaskMessage(Class<MSG> messageClass, 
+			                                                           Path path, 
+			                                                           Map<String, String[]> parameters,
+			                                                           SessionData sessionData) {
+		T.call(AquiletourBackendRequestHandler.class);
+
+		MSG message = AquiletourRequestHandler.createCourseTaskMessage(messageClass,
+																   path,
+																   parameters,
+																   sessionData);
+		
+		if(parameters.containsKey("atomicTaskId")) {
+
+			message.setAtomicTaskId(parameters.get("atomicTaskId")[0]);
+
+		}else {
+			
+			Log.fatalError("Cannot create AtomicTaskMessage: atomicTaskId is not defined");
+		}
+
+		return message;
+	}
+
 
 	private static void sendModifyAppointmentDurationsMessage(int incrementSeconds) {
 		T.call(AquiletourBackendRequestHandler.class);

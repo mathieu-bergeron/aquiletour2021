@@ -1,8 +1,8 @@
 package ca.aquiletour.core.messages;
 
-import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.course.CourseTaskMessage;
 
-public class AddStudentCsvMessage extends CourseMessage {
+public class AddStudentCsvMessage extends CourseTaskMessage {
 	
 	private String csvFilename;
 	private String csvString;

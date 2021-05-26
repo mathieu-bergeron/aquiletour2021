@@ -267,4 +267,17 @@ public class QueueManager {
 		});
 		
 	}
+
+	public static void updateIsQueueOpen(ModelStoreSync modelStore, String courseId, boolean isQueueOpen, User user) throws BackendError {
+		T.call(QueueManager.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.updateIsQueueOpenForCourseId(courseId, isQueueOpen);
+			}
+		});
+	}
 }

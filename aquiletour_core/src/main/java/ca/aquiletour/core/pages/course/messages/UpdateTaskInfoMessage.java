@@ -1,10 +1,10 @@
 package ca.aquiletour.core.pages.course.messages;
 
-import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.ntro.core.Path;
 
-public class UpdateTaskInfoMessage extends CourseMessage {
+public class UpdateTaskInfoMessage extends CourseTaskMessage {
 	
 	private Path taskToModify;
 	private String taskTitle;

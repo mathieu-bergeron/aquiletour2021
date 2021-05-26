@@ -7,6 +7,7 @@ import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.OnNewCommits;
+import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
@@ -72,6 +73,7 @@ import ca.aquiletour.server.backend.queue.ModifyAppointmentTimesHandler;
 import ca.aquiletour.server.backend.queue.MoveAppointmentHandler;
 import ca.aquiletour.server.backend.queue.TeacherClosesQueueHandler;
 import ca.aquiletour.server.backend.queue.TeacherUsesQueueHandler;
+import ca.aquiletour.server.backend.queue.UpdateIsQueueOpenHandler;
 import ca.aquiletour.server.backend.semester_list.AddScheduleItemHandler;
 import ca.aquiletour.server.backend.semester_list.AddSemesterHandler;
 import ca.aquiletour.server.backend.semester_list.AddSemesterWeekHandler;
@@ -130,6 +132,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(DeleteSemesterMessage.class, new DeleteSemesterHandler());
 		addBackendMessageHandler(StudentDeletesRepoMessage.class, new StudentDeletesRepoHandler());
 		addBackendMessageHandler(OnClone.class, new OnCloneHandler());
+		addBackendMessageHandler(UpdateIsQueueOpenMessage.class, new UpdateIsQueueOpenHandler());
 	}
 
 }

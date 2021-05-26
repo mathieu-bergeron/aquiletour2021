@@ -1,9 +1,9 @@
 package ca.aquiletour.core.pages.course.messages;
 
-import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.ntro.core.Path;
 
-public class DeleteTaskMessage extends CourseMessage {
+public class DeleteTaskMessage extends CourseTaskMessage {
 	
 	private Path taskToDelete;
 

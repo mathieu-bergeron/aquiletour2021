@@ -386,4 +386,10 @@ public class QueueModel implements NtroModel {
 			Log.warning("Appointment not found for student: " + studentId);
 		}
 	}
+
+	public void updateIsQueueOpenForCourseId(String courseId, boolean isQueueOpen) {
+		T.call(this);
+		
+		isOpenByCourseId.putEntry(courseId, isQueueOpen);
+	}
 }

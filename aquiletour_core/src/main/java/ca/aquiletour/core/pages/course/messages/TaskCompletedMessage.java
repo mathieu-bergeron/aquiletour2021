@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.course.messages;
 
-import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.course.CourseTaskMessage;
 
-public class TaskCompletedMessage extends CourseMessage {
+public class TaskCompletedMessage extends CourseTaskMessage {
 	
 	private String atomicTaskId;
 

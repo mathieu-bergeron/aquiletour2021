@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.course;
 
-public class AtomicTaskMessage extends CourseMessage {
+public class AtomicTaskMessage extends CourseTaskMessage {
 	
 	private String atomicTaskId;
 

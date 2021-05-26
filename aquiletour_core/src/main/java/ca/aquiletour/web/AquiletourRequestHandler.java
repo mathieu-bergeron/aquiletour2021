@@ -3,7 +3,7 @@ package ca.aquiletour.web;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Admin;
@@ -253,7 +253,7 @@ public class AquiletourRequestHandler {
 		Ntro.messages().send(showQueuesMessage);
 	}
 	
-	static <MSG extends CourseMessage> MSG createCourseMessage(Class<MSG> messageClass, 
+	static <MSG extends CourseTaskMessage> MSG createCourseTaskMessage(Class<MSG> messageClass, 
 			                                                   Path path, 
 			                                                   Map<String, String[]> parameters,
 			                                                   SessionData sessionData) {
@@ -289,11 +289,11 @@ public class AquiletourRequestHandler {
 			if(teacherId.equals(user.getRegistrationId())
 					&& user.actsAsTeacher()) {
 
-				showCourseMessage = createCourseMessage(ShowCourseMessageTeacher.class, path, parameters, sessionData);
+				showCourseMessage = createCourseTaskMessage(ShowCourseMessageTeacher.class, path, parameters, sessionData);
 				
 			}else {
 				
-				showCourseMessage = createCourseMessage(ShowCourseMessageStudent.class, path, parameters, sessionData);
+				showCourseMessage = createCourseTaskMessage(ShowCourseMessageStudent.class, path, parameters, sessionData);
 
 			}
 			
