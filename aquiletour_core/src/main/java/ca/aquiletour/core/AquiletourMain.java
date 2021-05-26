@@ -25,6 +25,7 @@ import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterGitRepo;
+import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
@@ -127,12 +128,14 @@ import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.models.IsOpenById;
-import ca.aquiletour.core.pages.queue.models.MessageById;
 import ca.aquiletour.core.pages.queue.models.ObservableTime;
 import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queue.models.ObservableTags;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.queue.models.QueueSettings;
+import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
+import ca.aquiletour.core.pages.queue.models.SettingsByCourseId;
+import ca.aquiletour.core.pages.queue.models.SettingsByGroupId;
 import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -395,8 +398,12 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(DefaultAtomicTask.class);
 		Ntro.registerSerializableClass(TaskPath.class);
 
-		Ntro.registerSerializableClass(IsOpenById.class);
-		Ntro.registerSerializableClass(MessageById.class);
+		Ntro.registerSerializableClass(QueueSettings.class);
+		Ntro.registerSerializableClass(QueueSettingsCourse.class);
+		Ntro.registerSerializableClass(SettingsByCourseId.class);
+		Ntro.registerSerializableClass(SettingsByGroupId.class);
+
+		Ntro.registerSerializableClass(UpdateIsQueueOpenMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

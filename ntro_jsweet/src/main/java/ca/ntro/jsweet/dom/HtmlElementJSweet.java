@@ -211,8 +211,12 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public String getAttribute(String name) {
 		T.call(this);
-
-		return jQueryElement.attr(name);
+		
+		String value = jQueryElement.attr(name);
+		if(value == undefined) {
+			value = null;
+		}
+		return value;
 	}
 
 	@Override

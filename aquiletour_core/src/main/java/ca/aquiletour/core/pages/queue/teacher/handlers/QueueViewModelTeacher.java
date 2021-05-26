@@ -1,11 +1,11 @@
 package ca.aquiletour.core.pages.queue.teacher.handlers;
 
-import java.util.Map;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
-import ca.ntro.core.models.listeners.MapObserver;
+import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
@@ -19,98 +19,30 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 
 		super.handle(model, view, subViewLoader);
 		
-		observeIsOpenByCourseId(model, view);
-		observeIsOpenByGroupId(model, view);
-	}
-
-	private void observeIsOpenByGroupId(QueueModel model, QueueViewTeacher view) {
-		T.call(this);
-		
-		model.getIsOpenByGroupId().removeObservers();
-		model.getIsOpenByGroupId().observe(new MapObserver<Boolean>() {
-
+		model.getMainSettings().getIsQueueOpen().observe(new ValueObserver<Boolean>() {
 			@Override
-			public void onValueChanged(Map<String, Boolean> oldValue, Map<String, Boolean> value) {
+			public void onDeleted(Boolean lastValue) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
+				view.updateIsQueueOpenCheckbox(Constants.ALL_COURSES_ID, false);
 			}
-
+			
 			@Override
-			public void onValue(Map<String, Boolean> value) {
+			public void onValue(Boolean value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
+				view.updateIsQueueOpenCheckbox(Constants.ALL_COURSES_ID, value);
 			}
-
+			
 			@Override
-			public void onDeleted(Map<String, Boolean> lastValue) {
+			public void onValueChanged(Boolean oldValue, Boolean value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
-			}
-
-			@Override
-			public void onClearEntries() {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-			}
-
-			@Override
-			public void onEntryAdded(String key, Boolean value) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-			}
-
-			@Override
-			public void onEntryRemoved(String key, Boolean value) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
+				view.updateIsQueueOpenCheckbox(Constants.ALL_COURSES_ID, value);
 			}
 		});
 	}
 
-	private void observeIsOpenByCourseId(QueueModel model, QueueViewTeacher view) {
-		T.call(this);
-		
-		model.getIsOpenByCourseId().removeObservers();
-		model.getIsOpenByCourseId().observe(new MapObserver<Boolean>() {
-			@Override
-			public void onEntryAdded(String key, Boolean value) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-				view.updateIsQueueOpenCheckbox(key, value);
-			}
-
-			@Override
-			public void onClearEntries() {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-			}
-			
-			@Override
-			public void onDeleted(Map<String, Boolean> lastValue) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-			}
-			
-			@Override
-			public void onValue(Map<String, Boolean> value) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-			}
-			
-			@Override
-			public void onValueChanged(Map<String, Boolean> oldValue, Map<String, Boolean> value) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-			}
-			
-			@Override
-			public void onEntryRemoved(String key, Boolean value) {
-				T.call(this);
-				updateIsQueueOpen(model, view);
-				view.updateIsQueueOpenCheckbox(key, false);
-			}
-		});
-	}
 	
 	private void updateIsQueueOpen(QueueModel model, QueueViewTeacher view) {
 		T.call(this);

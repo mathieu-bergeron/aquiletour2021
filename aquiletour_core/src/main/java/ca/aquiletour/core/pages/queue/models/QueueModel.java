@@ -25,74 +25,35 @@ public class QueueModel implements NtroModel {
 	private String teacherId = "";
 	private String courseId = "";
 
-	private IsOpenById isOpenByCourseId = new IsOpenById();
-	private IsOpenById isOpenByGroupId = new IsOpenById();
-	private MessageById messageByCourseId = new MessageById();
-	private MessageById messageByGroupId = new MessageById();
+	private QueueSettings mainSettings = new QueueSettings();
+	private SettingsByCourseId settingsByCourseId = new SettingsByCourseId();
 
 	public boolean isQueueOpen() {
 		T.call(this);
 
-		boolean isOpen = false;
+		boolean isOpen = mainSettings.isQueueOpen();
 		
-		isOpen = isQueueOpenForSomeId(isOpen, isOpenByCourseId);
-		isOpen = isQueueOpenForSomeId(isOpen, isOpenByGroupId);
-
+		if(!isOpen) {
+			
+			isOpen = isQueueOpenForSomeCourse(isOpen);
+		}
+		
 		return isOpen;
 	}
 
-	private boolean isQueueOpenForSomeId(boolean isQueueOpen, IsOpenById isOpenById) {
+	private boolean isQueueOpenForSomeCourse(boolean isOpen) {
 		T.call(this);
 
-		return isOpenById.reduceTo(Boolean.class, isQueueOpen, (key, isOpenForId, isOpen) -> {
-			if(isOpen) {
+		isOpen = settingsByCourseId.reduceTo(Boolean.class, isOpen, (courseId, courseSettings, currentIsOpen) -> {
+			if(currentIsOpen) {
 				throw new Break();
 			}
 
-			if(isOpenForId) {
-				isOpen = true;
-			}
-
-			return isOpen;
+			return courseSettings.isQueueOpen();
 		});
+
+		return isOpen;
 	}
-	
-	public IsOpenById getIsOpenByCourseId() {
-		return isOpenByCourseId;
-	}
-
-	public void setIsOpenByCourseId(IsOpenById isOpenByCourseId) {
-		this.isOpenByCourseId = isOpenByCourseId;
-	}
-
-	public IsOpenById getIsOpenByGroupId() {
-		return isOpenByGroupId;
-	}
-
-	public void setIsOpenByGroupId(IsOpenById isOpenByGroupId) {
-		this.isOpenByGroupId = isOpenByGroupId;
-	}
-
-
-	public MessageById getMessageByCourseId() {
-		return messageByCourseId;
-	}
-
-
-	public void setMessageByCourseId(MessageById messageByCourseId) {
-		this.messageByCourseId = messageByCourseId;
-	}
-
-
-	public MessageById getMessageByGroupId() {
-		return messageByGroupId;
-	}
-
-
-	public void setMessageByGroupId(MessageById messageByGroupId) {
-		this.messageByGroupId = messageByGroupId;
-	}
-
 
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
@@ -390,6 +351,35 @@ public class QueueModel implements NtroModel {
 	public void updateIsQueueOpenForCourseId(String courseId, boolean isQueueOpen) {
 		T.call(this);
 		
-		isOpenByCourseId.putEntry(courseId, isQueueOpen);
+		if(courseId.equals(Constants.ALL_COURSES_ID)) {
+
+			mainSettings.updateIsQueueOpen(isQueueOpen);
+
+		}else {
+			
+			QueueSettingsCourse courseSettings = settingsByCourseId.valueOf(courseId);
+			if(courseSettings == null) {
+				courseSettings = new QueueSettingsCourse();
+				settingsByCourseId.putEntry(courseId, courseSettings);
+			}
+			
+			courseSettings.updateIsQueueOpen(isQueueOpen);
+		}
+	}
+
+	public QueueSettings getMainSettings() {
+		return mainSettings;
+	}
+
+	public void setMainSettings(QueueSettings mainSettings) {
+		this.mainSettings = mainSettings;
+	}
+
+	public SettingsByCourseId getSettingsByCourseId() {
+		return settingsByCourseId;
+	}
+
+	public void setSettingsByCourseId(SettingsByCourseId settingsByCourseId) {
+		this.settingsByCourseId = settingsByCourseId;
 	}
 }
