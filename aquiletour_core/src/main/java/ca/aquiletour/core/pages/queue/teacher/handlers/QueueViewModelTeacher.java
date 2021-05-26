@@ -49,6 +49,8 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 		
 		boolean isQueueOpenNow = model.isQueueOpen();
 		
+		System.out.println(isQueueOpenNow);
+		
 		if(isQueueOpen != isQueueOpenNow) {
 			isQueueOpen = isQueueOpenNow;
 			view.displayIfQueueOpen(isQueueOpen);

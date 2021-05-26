@@ -36,6 +36,8 @@ import static def.dom.Globals.history;
 
 import static def.dom.Globals.window;
 
+import static def.js.Globals.undefined;
+
 public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
@@ -211,7 +213,7 @@ public class HtmlElementJSweet extends HtmlElement {
 	@Override
 	public String getAttribute(String name) {
 		T.call(this);
-		
+
 		String value = jQueryElement.attr(name);
 		if(value == undefined) {
 			value = null;
