@@ -280,4 +280,38 @@ public class QueueManager {
 			}
 		});
 	}
+
+	public static void addCourseSettings(ModelStoreSync modelStore, 
+			                             String courseId, 
+			                             String courseTitle, 
+			                             User user) throws BackendError {
+		T.call(QueueManager.class);
+
+		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.addCourseSettings(courseId);
+				queue.updateCourseTitle(courseId, courseTitle);
+			}
+		});
+	}
+
+	public static void addGroup(ModelStoreSync modelStore, 
+			                    String courseId, 
+			                    String groupId, 
+			                    User user) throws BackendError {
+
+		T.call(QueueManager.class);
+
+		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.addGroupSettings(courseId, groupId);
+			}
+		});
+	}
 }

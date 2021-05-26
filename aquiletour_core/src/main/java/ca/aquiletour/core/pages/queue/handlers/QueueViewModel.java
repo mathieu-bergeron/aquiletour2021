@@ -1,8 +1,6 @@
 package ca.aquiletour.core.pages.queue.handlers;
 
 
-import java.util.List;
-
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
@@ -24,9 +22,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		T.call(this);
 		
 		view.clearQueue();
-		
-		view.initializeCloseQueueButton(model.getCourseId());
-		
+
 		observeAppointments(model, view, subViewLoader);
 	}
 

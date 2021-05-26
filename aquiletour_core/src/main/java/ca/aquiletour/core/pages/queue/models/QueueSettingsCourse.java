@@ -50,4 +50,18 @@ public class QueueSettingsCourse extends QueueSettings {
 	public void setCourseTitle(StoredString courseTitle) {
 		this.courseTitle = courseTitle;
 	}
+
+	public void updateTitle(String courseTitle) {
+		T.call(this);
+		
+		getCourseTitle().set(courseTitle);
+	}
+
+	public void addGroupSettings(String groupId) {
+		T.call(this);
+
+		if(!getSettingsByGroupId().containsKey(groupId)) {
+			getSettingsByGroupId().putEntry(groupId, new QueueSettings());
+		}
+	}
 }

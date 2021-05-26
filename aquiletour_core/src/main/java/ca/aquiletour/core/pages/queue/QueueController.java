@@ -21,10 +21,10 @@ public abstract class QueueController extends NtroController<RootController> {
 		setModelLoader(new EmptyModelLoader());
 
 		setViewLoader(viewClass(), context().lang());
-
 		addSubViewLoader(subViewClass(), context().lang());
-
+		
 		addControllerMessageHandler(showMessageClass(), showHandler());
+
 		addModelViewSubViewHandler(subViewClass(), viewModel()); 
 
 	}

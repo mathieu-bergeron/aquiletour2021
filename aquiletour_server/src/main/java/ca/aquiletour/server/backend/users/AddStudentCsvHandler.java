@@ -21,6 +21,7 @@ import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
+import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
@@ -141,6 +142,11 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 							   groupId,
 							   studentsToAdd,
 							   teacher);
+		
+		QueueManager.addGroup(modelStore, 
+						      message.getCourseId(),
+				              groupId, 
+				              teacher);
 
 		CourseModelTeacher teacherCourse = CourseManager.getCourse(modelStore, 
 													   CourseModelTeacher.class,

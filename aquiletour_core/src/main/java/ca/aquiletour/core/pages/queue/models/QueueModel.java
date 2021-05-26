@@ -382,4 +382,39 @@ public class QueueModel implements NtroModel {
 	public void setSettingsByCourseId(SettingsByCourseId settingsByCourseId) {
 		this.settingsByCourseId = settingsByCourseId;
 	}
+
+	public void addCourseSettings(String courseId) {
+		T.call(this);
+		
+		if(!getSettingsByCourseId().containsKey(courseId)) {
+			getSettingsByCourseId().putEntry(courseId, new QueueSettingsCourse());
+		}
+	}
+
+	public void updateCourseTitle(String courseId, String courseTitle) {
+		T.call(this);
+		
+		QueueSettingsCourse courseSettings = getSettingsByCourseId().valueOf(courseId);
+		if(courseSettings != null) {
+			
+			courseSettings.updateTitle(courseTitle);
+			
+		}else {
+			Log.warning("Cannot find courseId " + courseId);
+		}
+	}
+
+	public void addGroupSettings(String courseId, String groupId) {
+		T.call(this);
+
+		QueueSettingsCourse courseSettings = getSettingsByCourseId().valueOf(courseId);
+		if(courseSettings != null) {
+			
+			courseSettings.addGroupSettings(groupId);
+			
+		}else {
+			Log.warning("[addGroupSettings] Cannot find courseId " + courseId);
+		}
+		
+	}
 }
