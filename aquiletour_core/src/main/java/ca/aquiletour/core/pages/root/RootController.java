@@ -31,7 +31,7 @@ import ca.aquiletour.core.pages.course_list.CourseListController;
 import ca.aquiletour.core.pages.course_list.student.CourseListControllerStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListControllerTeacher;
 import ca.aquiletour.core.pages.dashboard.student.DashboardControllerStudent;
-import ca.aquiletour.core.pages.dashboard.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.student.messages.ShowDashboardMessageStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.DashboardControllerTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.group_list.GroupListController;
@@ -65,19 +65,23 @@ import ca.ntro.services.Ntro;
 
 public class RootController extends NtroRootController {
 	
-	// FIXME: ugly, but modelStore does not support
-	//        two models of the same kind
-	private boolean ifRoleSpecificSubControllersAdded = false;
-	
 	@Override
 	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
 		
 		setViewLoader(RootView.class, context.lang());
-		
-		// FIXME: modelStore does not support
-		//        two models of the same kind (or with the same DocumentPath)
-		addRoleSpecificSubControllers(context);
+
+		addWindowViewHandler(new RootViewHandler());
+
+		addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
+		addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
+		addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
+		addSubController(CourseListControllerTeacher.class, Constants.COURSE_LIST_URL_SEGMENT);
+
+		addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
+		addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
+		addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
+		addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
 
 		addSubController(OpenQueueListController.class, Constants.QUEUES_URL_SEGMENT);
 	
@@ -93,8 +97,6 @@ public class RootController extends NtroRootController {
 		addSubController(SemesterListControllerTeacher.class, Constants.SEMESTER_LIST_URL_SEGMENT);
 
 		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
-
-		addWindowViewHandler(new RootViewHandler());
 		
 		addViewMessageHandler(NtroErrorMessage.class, new NtroErrorHandler());
 
@@ -119,7 +121,7 @@ public class RootController extends NtroRootController {
 
 				}else if(context().user() instanceof Student){
 
-					ShowStudentDashboardMessage showDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+					ShowDashboardMessageStudent showDashboardMessage = Ntro.messages().create(ShowDashboardMessageStudent.class);
 					Ntro.messages().send(showDashboardMessage);
 
 				}else {
@@ -143,48 +145,8 @@ public class RootController extends NtroRootController {
 		RootView view = (RootView) getView();
 
 		view.onContextChange(context);
-		
-		addRoleSpecificSubControllers(context);
 	}
 
-	private void addRoleSpecificSubControllers(NtroContext<?,?> context) {
-		T.call(this);
-
-		
-		if(ifRoleSpecificSubControllersAdded) return;
-		
-		// FIXME: does this work? Would be useful
-		//        to display the student version even 
-		//        when logged in as teacher
-
-		/*
-		if(context.user() instanceof Teacher
-				|| context.user() instanceof TeacherGuest) {
-		*/
-			
-			addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
-			addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
-			addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
-			addSubController(CourseListControllerTeacher.class, Constants.COURSE_LIST_URL_SEGMENT);
-			
-			ifRoleSpecificSubControllersAdded = true;
-			
-		/*
-		}else if(context.user() instanceof Student
-				|| context.user() instanceof StudentGuest){
-		*/
-
-			addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
-			addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
-			addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
-			addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
-
-			ifRoleSpecificSubControllersAdded = true;
-
-		/*
-		}
-		*/
-	}
 
 	@Override
 	protected void onFailure(Exception e) {

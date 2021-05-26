@@ -5,8 +5,8 @@ import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
-import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
-import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
+import ca.aquiletour.core.pages.queue.teacher.messages.ShowQueueMessageTeacher;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -49,14 +49,14 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 				if(Ntro.currentUser() instanceof Teacher ||
 						Ntro.currentUser() instanceof TeacherGuest) {
 					
-					ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
-					showTeacherQueueMessage.setCourseId(queue.getId());
+					ShowQueueMessageTeacher showTeacherQueueMessage = Ntro.messages().create(ShowQueueMessageTeacher.class);
+					showTeacherQueueMessage.setQueueId(queue.getId());
 					Ntro.messages().send(showTeacherQueueMessage);
 
 				}else {
 					
-					ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
-					showStudentQueueMessage.setCourseId(queue.getId());
+					ShowQueueMessageStudent showStudentQueueMessage = Ntro.messages().create(ShowQueueMessageStudent.class);
+					showStudentQueueMessage.setQueueId(queue.getId());
 					Ntro.messages().send(showStudentQueueMessage);
 				}
 			}

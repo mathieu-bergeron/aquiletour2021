@@ -2,10 +2,14 @@ package ca.aquiletour.core.pages.queue.student;
 
 import ca.aquiletour.core.pages.queue.QueueController;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
-import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueHandler;
-import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
-import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueHandler;
-import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.handlers.ShowQueueHandler;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
+import ca.aquiletour.core.pages.queue.student.handlers.QueueViewModelStudent;
+import ca.aquiletour.core.pages.queue.student.handlers.ShowQueueHandlerStudent;
+import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
+import ca.aquiletour.core.pages.queue.student.views.AppointmentViewStudent;
+import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.system.trace.T;
 
@@ -15,18 +19,34 @@ public  class QueueControllerStudent extends QueueController {
 	protected Class<? extends QueueView> viewClass() {
 		T.call(this);
 
-		return StudentQueueView.class;
+		return QueueViewStudent.class;
 	}
-
 
 	@Override
-	protected void installParentViewMessageHandler() {
+	protected QueueViewModel<?> viewModel() {
 		T.call(this);
-		
-		addControllerMessageHandler(ShowStudentQueueMessage.class, new ShowStudentQueueHandler());
-		addSubViewLoader(AppointmentViewStudent.class, context().lang());
-		
-		addModelViewSubViewHandler(AppointmentViewStudent.class, new QueueViewModel()); //TODO doesn't do anything
+
+		return new QueueViewModelStudent();
 	}
 
+	@Override 
+	protected ShowQueueHandler<?, ?> showHandler() {
+		T.call(this);
+
+		return new ShowQueueHandlerStudent();
+	}
+
+	@Override
+	protected Class<? extends ShowQueueMessage> showMessageClass() {
+		T.call(this);
+
+		return ShowQueueMessageStudent.class;
+	}
+
+	@Override
+	protected Class<? extends AppointmentView> subViewClass() {
+		T.call(this);
+
+		return AppointmentViewStudent.class;
+	}
 }

@@ -1,19 +1,18 @@
 package ca.aquiletour.core.pages.dashboard.student.handlers;
 
-import ca.aquiletour.core.pages.dashboard.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.student.messages.ShowDashboardMessageStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardViewStudent;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
-import ca.ntro.core.system.trace.T;
 
-public class ShowStudentDashboardHandler extends ParentViewMessageHandler<RootView,
+public class ShowDashboardHandlerStudent extends ParentViewMessageHandler<RootView,
                                                                    DashboardViewStudent,
-                                                                   ShowStudentDashboardMessage> {
+                                                                   ShowDashboardMessageStudent> {
 
 	@Override
 	protected void handle(RootView parentView, 
 			              DashboardViewStudent currentView, 
-			              ShowStudentDashboardMessage message) {
+			              ShowDashboardMessageStudent message) {
 		
 		parentView.showDashboard(currentView);
 	}

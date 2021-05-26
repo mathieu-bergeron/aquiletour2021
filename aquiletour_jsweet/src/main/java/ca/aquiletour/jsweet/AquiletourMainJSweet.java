@@ -1,6 +1,7 @@
 package ca.aquiletour.jsweet;
 
 import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
@@ -28,7 +29,12 @@ public class AquiletourMainJSweet extends AquiletourMain {
 
 		super.runTask();
 		
-		callRouterForCurrentLocation();
+		if(window.location.pathname.isEmpty()
+				|| window.location.pathname.equals("/")) {
+			Ntro.router().sendMessagesFor(Ntro.context(), Constants.DASHBOARD_URL_SEGMENT, "");
+		}else {
+			callRouterForCurrentLocation();
+		}
 		
 		window.onpopstate = new Function<PopStateEvent, Object>() {
 			@Override

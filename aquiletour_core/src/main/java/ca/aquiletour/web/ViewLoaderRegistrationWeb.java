@@ -23,10 +23,10 @@ import ca.aquiletour.core.pages.home.HomeView;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
-import ca.aquiletour.core.pages.queue.student.AppointmentViewStudent;
-import ca.aquiletour.core.pages.queue.student.StudentQueueView;
-import ca.aquiletour.core.pages.queue.teacher.AppointmentViewTeacher;
-import ca.aquiletour.core.pages.queue.teacher.TeacherQueueView;
+import ca.aquiletour.core.pages.queue.student.views.AppointmentViewStudent;
+import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
+import ca.aquiletour.core.pages.queue.teacher.views.AppointmentViewTeacher;
+import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.admin.views.SemesterListViewAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.views.SemesterViewAdmin;
@@ -117,7 +117,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(DashboardItemViewWebStudent.class));
 
-		ViewLoaders.registerViewLoader(StudentQueueView.class,
+		ViewLoaders.registerViewLoader(QueueViewStudent.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 				.setHtmlUrl("/views/queue/student/queue_student.html")
@@ -125,7 +125,7 @@ public class ViewLoaderRegistrationWeb {
 				.setTranslationsUrl("/i18n/fr/string.json")
 				.setTargetClass(QueueViewWebStudent.class));
 		
-		ViewLoaders.registerViewLoader(TeacherQueueView.class,
+		ViewLoaders.registerViewLoader(QueueViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/queue/teacher/queue_teacher.html")

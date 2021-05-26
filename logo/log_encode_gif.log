@@ -13,105 +13,105 @@ ffmpeg version 4.2.4 Copyright (c) 2000-2020 the FFmpeg developers
 Splitting the commandline.
 Reading option '-v' ... matched as option 'v' (set logging level) with argument 'debug'.
 Reading option '-nostdin' ... matched as option 'stdin' (enable or disable interaction on standard input) with argument 0.
-Reading option '-progress' ... matched as option 'progress' (write program-readable progress information) with argument '/tmp/KritaFFmpegProgress.qborHP'.
+Reading option '-progress' ... matched as option 'progress' (write program-readable progress information) with argument '/tmp/KritaFFmpegProgress.CCJyXX'.
 Reading option '-r' ... matched as option 'r' (set frame rate (Hz value, fraction or abbreviation)) with argument '25'.
 Reading option '-start_number' ... matched as AVOption 'start_number' with argument '0'.
 Reading option '-i' ... matched as input url with argument '/home/mbergeron/aquiletour2021/logo/frame%04d.png'.
 Reading option '-i' ... matched as input url with argument '/home/mbergeron/aquiletour2021/logo/palette.png'.
-Reading option '-lavfi' ... matched as option 'lavfi' (create a complex filtergraph) with argument 'scale=w=104:h=50[0:v];[0:v][1:v] paletteuse'.
+Reading option '-lavfi' ... matched as option 'lavfi' (create a complex filtergraph) with argument 'scale=w=42:h=20[0:v];[0:v][1:v] paletteuse'.
 Reading option '-y' ... matched as option 'y' (overwrite output files) with argument '1'.
 Reading option '/home/mbergeron/aquiletour2021/logo/loading.gif' ... matched as output url.
 Finished splitting the commandline.
 Parsing a group of options: global .
 Applying option v (set logging level) with argument debug.
 Applying option nostdin (enable or disable interaction on standard input) with argument 0.
-Applying option progress (write program-readable progress information) with argument /tmp/KritaFFmpegProgress.qborHP.
-[file @ 0x55f4769fd880] Setting default whitelist 'file,crypto'
-Applying option lavfi (create a complex filtergraph) with argument scale=w=104:h=50[0:v];[0:v][1:v] paletteuse.
+Applying option progress (write program-readable progress information) with argument /tmp/KritaFFmpegProgress.CCJyXX.
+[file @ 0x55622d18a880] Setting default whitelist 'file,crypto'
+Applying option lavfi (create a complex filtergraph) with argument scale=w=42:h=20[0:v];[0:v][1:v] paletteuse.
 Applying option y (overwrite output files) with argument 1.
 Successfully parsed a group of options.
 Parsing a group of options: input url /home/mbergeron/aquiletour2021/logo/frame%04d.png.
 Applying option r (set frame rate (Hz value, fraction or abbreviation)) with argument 25.
 Successfully parsed a group of options.
 Opening an input file: /home/mbergeron/aquiletour2021/logo/frame%04d.png.
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0000.png' for reading
-[file @ 0x55f4769ff100] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f4769fa9c0] Statistics: 2181 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0001.png' for reading
-[file @ 0x55f4769f2e00] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f4769fbd80] Statistics: 2181 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0002.png' for reading
-[file @ 0x55f4769f3a00] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f4769f3ac0] Statistics: 2248 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0003.png' for reading
-[file @ 0x55f476a809c0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a80a80] Statistics: 2248 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0004.png' for reading
-[file @ 0x55f476a809c0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a81700] Statistics: 2286 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0005.png' for reading
-[file @ 0x55f476a81700] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a823c0] Statistics: 2286 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0006.png' for reading
-[file @ 0x55f476a81700] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a823c0] Statistics: 2285 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0007.png' for reading
-[file @ 0x55f476a823c0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a8bc00] Statistics: 2285 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0008.png' for reading
-[file @ 0x55f476a8bcc0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a8c9c0] Statistics: 2503 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0009.png' for reading
-[file @ 0x55f476a8bcc0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a8d980] Statistics: 2503 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0010.png' for reading
-[file @ 0x55f476a8d980] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a8d800] Statistics: 2643 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0011.png' for reading
-[file @ 0x55f476a8d8c0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a8f080] Statistics: 2643 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0012.png' for reading
-[file @ 0x55f476a8fd80] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a8efc0] Statistics: 3007 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0013.png' for reading
-[file @ 0x55f476a90cc0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a90d80] Statistics: 3007 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0014.png' for reading
-[file @ 0x55f476a8efc0] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a91b00] Statistics: 3109 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0015.png' for reading
-[file @ 0x55f476a92880] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a92940] Statistics: 3109 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0016.png' for reading
-[file @ 0x55f476a92880] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a92bc0] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0017.png' for reading
-[file @ 0x55f476a92880] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a92940] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0018.png' for reading
-[file @ 0x55f476a94940] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a92980] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0019.png' for reading
-[file @ 0x55f476a95900] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a959c0] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0020.png' for reading
-[file @ 0x55f476a92a80] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a96880] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0021.png' for reading
-[file @ 0x55f476a96880] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a92a40] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0022.png' for reading
-[file @ 0x55f476a98380] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a986c0] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0023.png' for reading
-[file @ 0x55f476a98480] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a99600] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0024.png' for reading
-[file @ 0x55f476a9a480] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a99640] Statistics: 3138 bytes read, 0 seeks
-[image2 @ 0x55f476a00480] Opening '/home/mbergeron/aquiletour2021/logo/frame0025.png' for reading
-[file @ 0x55f476a9b440] Setting default whitelist 'file,crypto'
-[AVIOContext @ 0x55f476a9b500] Statistics: 3138 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0000.png' for reading
+[file @ 0x55622d18c100] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d1879c0] Statistics: 2253 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0001.png' for reading
+[file @ 0x55622d188e00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d17fe00] Statistics: 2253 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0002.png' for reading
+[file @ 0x55622d180ac0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d180b80] Statistics: 2335 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0003.png' for reading
+[file @ 0x55622d1818c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d20da00] Statistics: 2335 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0004.png' for reading
+[file @ 0x55622d20e740] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d20e800] Statistics: 2367 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0005.png' for reading
+[file @ 0x55622d20e6c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21fec0] Statistics: 2367 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0006.png' for reading
+[file @ 0x55622d218080] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d20e740] Statistics: 2342 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0007.png' for reading
+[file @ 0x55622d218f00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d218fc0] Statistics: 2342 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0008.png' for reading
+[file @ 0x55622d219d00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d218f40] Statistics: 2617 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0009.png' for reading
+[file @ 0x55622d21aac0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21ab80] Statistics: 2617 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0010.png' for reading
+[file @ 0x55622d21ba40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21ab80] Statistics: 2787 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0011.png' for reading
+[file @ 0x55622d21c8c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21c980] Statistics: 2787 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0012.png' for reading
+[file @ 0x55622d21d8c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21d980] Statistics: 3199 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0013.png' for reading
+[file @ 0x55622d21d8c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21e9c0] Statistics: 3199 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0014.png' for reading
+[file @ 0x55622d21e9c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21f9c0] Statistics: 3321 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0015.png' for reading
+[file @ 0x55622d21f9c0] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21fd00] Statistics: 3321 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0016.png' for reading
+[file @ 0x55622d21fd00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21fa40] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0017.png' for reading
+[file @ 0x55622d21fa40] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21fb00] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0018.png' for reading
+[file @ 0x55622d21fb00] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d223380] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0019.png' for reading
+[file @ 0x55622d223240] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d21fb80] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0020.png' for reading
+[file @ 0x55622d225000] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d2250c0] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0021.png' for reading
+[file @ 0x55622d21fc80] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d226040] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0022.png' for reading
+[file @ 0x55622d225100] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d226f00] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0023.png' for reading
+[file @ 0x55622d225100] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d227e80] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0024.png' for reading
+[file @ 0x55622d227e80] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d228100] Statistics: 3337 bytes read, 0 seeks
+[image2 @ 0x55622d18d480] Opening '/home/mbergeron/aquiletour2021/logo/frame0025.png' for reading
+[file @ 0x55622d228100] Setting default whitelist 'file,crypto'
+[AVIOContext @ 0x55622d2281c0] Statistics: 3337 bytes read, 0 seeks
 Input #0, image2, from '/home/mbergeron/aquiletour2021/logo/frame%04d.png':
   Duration: 00:00:01.04, start: 0.000000, bitrate: N/A
     Stream #0:0, 26, 1/25: Video: png, 1 reference frame, rgba(pc), 103x49 [SAR 3937:3937 DAR 103:49], 0/1, 25 fps, 25 tbr, 25 tbn, 25 tbc
@@ -119,22 +119,22 @@ Successfully opened the file.
 Parsing a group of options: input url /home/mbergeron/aquiletour2021/logo/palette.png.
 Successfully parsed a group of options.
 Opening an input file: /home/mbergeron/aquiletour2021/logo/palette.png.
-[NULL @ 0x55f476a9d180] Opening '/home/mbergeron/aquiletour2021/logo/palette.png' for reading
-[file @ 0x55f4769fc8c0] Setting default whitelist 'file,crypto'
-[png_pipe @ 0x55f476a9d180] Format png_pipe probed with size=2048 and score=99
-[png_pipe @ 0x55f476a9d180] Before avformat_find_stream_info() pos: 0 bytes read:764 seeks:0 nb_streams:1
-[png_pipe @ 0x55f476a9d180] After avformat_find_stream_info() pos: 764 bytes read:764 seeks:0 frames:1
+[NULL @ 0x55622d228340] Opening '/home/mbergeron/aquiletour2021/logo/palette.png' for reading
+[file @ 0x55622d1898c0] Setting default whitelist 'file,crypto'
+[png_pipe @ 0x55622d228340] Format png_pipe probed with size=2048 and score=99
+[png_pipe @ 0x55622d228340] Before avformat_find_stream_info() pos: 0 bytes read:974 seeks:0 nb_streams:1
+[png_pipe @ 0x55622d228340] After avformat_find_stream_info() pos: 974 bytes read:974 seeks:0 frames:1
 Input #1, png_pipe, from '/home/mbergeron/aquiletour2021/logo/palette.png':
   Duration: N/A, bitrate: N/A
     Stream #1:0, 1, 1/25: Video: png, 1 reference frame, rgba(pc), 16x16 [SAR 1:1 DAR 1:1], 0/1, 25 tbr, 25 tbn, 25 tbc
 Successfully opened the file.
-[Parsed_scale_0 @ 0x55f476a9ea80] Setting 'w' to value '104'
-[Parsed_scale_0 @ 0x55f476a9ea80] Setting 'h' to value '50'
-[Parsed_scale_0 @ 0x55f476a9ea80] w:104 h:50 flags:'bilinear' interl:0
+[Parsed_scale_0 @ 0x55622d22c200] Setting 'w' to value '42'
+[Parsed_scale_0 @ 0x55622d22c200] Setting 'h' to value '20'
+[Parsed_scale_0 @ 0x55622d22c200] w:42 h:20 flags:'bilinear' interl:0
 Parsing a group of options: output url /home/mbergeron/aquiletour2021/logo/loading.gif.
 Successfully parsed a group of options.
 Opening an output file: /home/mbergeron/aquiletour2021/logo/loading.gif.
-[file @ 0x55f476aa1b80] Setting default whitelist 'file,crypto'
+[file @ 0x55622d22cbc0] Setting default whitelist 'file,crypto'
 Successfully opened the file.
 detected 4 logical cores
 Stream mapping:
@@ -142,76 +142,76 @@ Stream mapping:
   Stream #1:0 (png) -> paletteuse:palette
   paletteuse -> Stream #0:0 (gif)
 cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
-[image2 @ 0x55f476a00480] Thread message queue blocking; consider raising the thread_queue_size option (current value: 8)
+[image2 @ 0x55622d18d480] Thread message queue blocking; consider raising the thread_queue_size option (current value: 8)
 cur_dts is invalid st:0 (0) [init:0 i_done:0 finish:0] (this is harmless if it occurs once at the start per stream)
     Last message repeated 5 times
-[Parsed_scale_0 @ 0x55f476af8480] Setting 'w' to value '104'
-[Parsed_scale_0 @ 0x55f476af8480] Setting 'h' to value '50'
-[Parsed_scale_0 @ 0x55f476af8480] w:104 h:50 flags:'bilinear' interl:0
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] Setting 'video_size' to value '103x49'
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] Setting 'pix_fmt' to value '26'
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] Setting 'time_base' to value '1/25'
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] Setting 'pixel_aspect' to value '3937/3937'
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] Setting 'sws_param' to value 'flags=2'
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] Setting 'frame_rate' to value '25/1'
-[graph 0 input from stream 0:0 @ 0x55f476a8d800] w:103 h:49 pixfmt:rgba tb:1/25 fr:25/1 sar:3937/3937 sws_param:flags=2
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] Setting 'video_size' to value '16x16'
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] Setting 'pix_fmt' to value '26'
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] Setting 'time_base' to value '1/25'
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] Setting 'pixel_aspect' to value '1/1'
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] Setting 'sws_param' to value 'flags=2'
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] Setting 'frame_rate' to value '25/1'
-[graph 0 input from stream 1:0 @ 0x55f476b7b4c0] w:16 h:16 pixfmt:rgba tb:1/25 fr:25/1 sar:1/1 sws_param:flags=2
-[format @ 0x55f476af8d40] Setting 'pix_fmts' to value 'rgb8|bgr8|rgb4_byte|bgr4_byte|gray|pal8'
-[auto_scaler_0 @ 0x55f476b7f800] w:iw h:ih flags:'bilinear' interl:0
-[Parsed_paletteuse_1 @ 0x55f476af9140] auto-inserting filter 'auto_scaler_0' between the filter 'graph 0 input from stream 1:0' and the filter 'Parsed_paletteuse_1'
-[AVFilterGraph @ 0x55f476af74c0] query_formats: 6 queried, 4 merged, 1 already done, 0 delayed
-[swscaler @ 0x55f476b808c0] Forcing full internal H chroma due to input having non subsampled chroma
-[Parsed_scale_0 @ 0x55f476af8480] w:103 h:49 fmt:rgba sar:3937/3937 -> w:104 h:50 fmt:bgra sar:2575/2548 flags:0x2
-[swscaler @ 0x55f476b9a8c0] Forcing full internal H chroma due to input having non subsampled chroma
-[auto_scaler_0 @ 0x55f476b7f800] w:16 h:16 fmt:rgba sar:1/1 -> w:16 h:16 fmt:bgra sar:1/1 flags:0x2
-[Parsed_paletteuse_1 @ 0x55f476af9140] [framesync @ 0x55f476af9248] Selected 1/25 time base
-[Parsed_paletteuse_1 @ 0x55f476af9140] [framesync @ 0x55f476af9248] Sync level 2
+[Parsed_scale_0 @ 0x55622d285a00] Setting 'w' to value '42'
+[Parsed_scale_0 @ 0x55622d285a00] Setting 'h' to value '20'
+[Parsed_scale_0 @ 0x55622d285a00] w:42 h:20 flags:'bilinear' interl:0
+[graph 0 input from stream 0:0 @ 0x55622d285f80] Setting 'video_size' to value '103x49'
+[graph 0 input from stream 0:0 @ 0x55622d285f80] Setting 'pix_fmt' to value '26'
+[graph 0 input from stream 0:0 @ 0x55622d285f80] Setting 'time_base' to value '1/25'
+[graph 0 input from stream 0:0 @ 0x55622d285f80] Setting 'pixel_aspect' to value '3937/3937'
+[graph 0 input from stream 0:0 @ 0x55622d285f80] Setting 'sws_param' to value 'flags=2'
+[graph 0 input from stream 0:0 @ 0x55622d285f80] Setting 'frame_rate' to value '25/1'
+[graph 0 input from stream 0:0 @ 0x55622d285f80] w:103 h:49 pixfmt:rgba tb:1/25 fr:25/1 sar:3937/3937 sws_param:flags=2
+[graph 0 input from stream 1:0 @ 0x55622d308a40] Setting 'video_size' to value '16x16'
+[graph 0 input from stream 1:0 @ 0x55622d308a40] Setting 'pix_fmt' to value '26'
+[graph 0 input from stream 1:0 @ 0x55622d308a40] Setting 'time_base' to value '1/25'
+[graph 0 input from stream 1:0 @ 0x55622d308a40] Setting 'pixel_aspect' to value '1/1'
+[graph 0 input from stream 1:0 @ 0x55622d308a40] Setting 'sws_param' to value 'flags=2'
+[graph 0 input from stream 1:0 @ 0x55622d308a40] Setting 'frame_rate' to value '25/1'
+[graph 0 input from stream 1:0 @ 0x55622d308a40] w:16 h:16 pixfmt:rgba tb:1/25 fr:25/1 sar:1/1 sws_param:flags=2
+[format @ 0x55622d308940] Setting 'pix_fmts' to value 'rgb8|bgr8|rgb4_byte|bgr4_byte|gray|pal8'
+[auto_scaler_0 @ 0x55622d30d080] w:iw h:ih flags:'bilinear' interl:0
+[Parsed_paletteuse_1 @ 0x55622d286740] auto-inserting filter 'auto_scaler_0' between the filter 'graph 0 input from stream 1:0' and the filter 'Parsed_paletteuse_1'
+[AVFilterGraph @ 0x55622d231640] query_formats: 6 queried, 4 merged, 1 already done, 0 delayed
+[swscaler @ 0x55622d30e180] Forcing full internal H chroma due to input having non subsampled chroma
+[Parsed_scale_0 @ 0x55622d285a00] w:103 h:49 fmt:rgba sar:3937/3937 -> w:42 h:20 fmt:bgra sar:1030/1029 flags:0x2
+[swscaler @ 0x55622d32a1c0] Forcing full internal H chroma due to input having non subsampled chroma
+[auto_scaler_0 @ 0x55622d30d080] w:16 h:16 fmt:rgba sar:1/1 -> w:16 h:16 fmt:bgra sar:1/1 flags:0x2
+[Parsed_paletteuse_1 @ 0x55622d286740] [framesync @ 0x55622d286848] Selected 1/25 time base
+[Parsed_paletteuse_1 @ 0x55622d286740] [framesync @ 0x55622d286848] Sync level 2
 Output #0, gif, to '/home/mbergeron/aquiletour2021/logo/loading.gif':
   Metadata:
     encoder         : Lavf58.29.100
-    Stream #0:0, 0, 1/100: Video: gif, 1 reference frame, pal8, 104x50 [SAR 2575:2548 DAR 103:49], 0/1, q=2-31, 200 kb/s, 25 fps, 100 tbn, 25 tbc (default)
+    Stream #0:0, 0, 1/100: Video: gif, 1 reference frame, pal8, 42x20 [SAR 1030:1029 DAR 103:49], 0/1, q=2-31, 200 kb/s, 25 fps, 100 tbn, 25 tbc (default)
     Metadata:
       encoder         : Lavc58.54.100 gif
 Clipping frame in rate conversion by 0.000008
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 12x5 image at pos (40;8) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 11x5 image at pos (33;8) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 10x5 image at pos (27;8) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 11x12 image at pos (19;16) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 11x12 image at pos (25;22) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 25x16 image at pos (31;28) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 15x8 image at pos (51;37) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
-[gif @ 0x55f476aa0f00] 23x8 image at pos (61;38) [area:104x50]
-[gif @ 0x55f476aa0f00] 1x1 image at pos (103;49) [area:104x50]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 7x4 image at pos (16;2) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 6x4 image at pos (12;2) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 7x8 image at pos (9;2) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 7x6 image at pos (6;6) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 6x5 image at pos (10;9) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 11x7 image at pos (12;11) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 10x4 image at pos (18;14) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
+[gif @ 0x55622d22ff80] 11x3 image at pos (23;15) [area:42x20]
+[gif @ 0x55622d22ff80] 1x1 image at pos (41;19) [area:42x20]
     Last message repeated 8 times
-[Parsed_paletteuse_1 @ 0x55f476af9140] [framesync @ 0x55f476af9248] Sync level 0
-[out_0_0 @ 0x55f476b7c180] EOF on sink link out_0_0:default.
+[Parsed_paletteuse_1 @ 0x55622d286740] [framesync @ 0x55622d286848] Sync level 0
+[out_0_0 @ 0x55622d3095c0] EOF on sink link out_0_0:default.
 No more output streams to write to, finishing.
-frame=   26 fps=0.0 q=-0.0 Lsize=       4kB time=00:00:01.01 bitrate=  32.5kbits/s speed=54.8x    
-[AVIOContext @ 0x55f4769fdd40] Statistics: 0 seeks, 1 writeouts
-video:4kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.489716%
+frame=   26 fps=0.0 q=-0.0 Lsize=       3kB time=00:00:01.01 bitrate=  22.5kbits/s speed=81.1x    
+[AVIOContext @ 0x55622d18ad40] Statistics: 0 seeks, 1 writeouts
+video:3kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 0.709975%
 Input file #0 (/home/mbergeron/aquiletour2021/logo/frame%04d.png):
-  Input stream #0:0 (video): 26 packets read (71904 bytes); 26 frames decoded; 
-  Total: 26 packets (71904 bytes) demuxed
+  Input stream #0:0 (video): 26 packets read (75812 bytes); 26 frames decoded; 
+  Total: 26 packets (75812 bytes) demuxed
 Input file #1 (/home/mbergeron/aquiletour2021/logo/palette.png):
-  Input stream #1:0 (video): 1 packets read (764 bytes); 1 frames decoded; 
-  Total: 1 packets (764 bytes) demuxed
+  Input stream #1:0 (video): 1 packets read (974 bytes); 1 frames decoded; 
+  Total: 1 packets (974 bytes) demuxed
 Output file #0 (/home/mbergeron/aquiletour2021/logo/loading.gif):
-  Output stream #0:0 (video): 26 frames encoded; 26 packets muxed (4084 bytes); 
-  Total: 26 packets (4084 bytes) muxed
+  Output stream #0:0 (video): 26 frames encoded; 26 packets muxed (2817 bytes); 
+  Total: 26 packets (2817 bytes) muxed
 27 frames successfully decoded, 0 decoding errors
-[AVIOContext @ 0x55f476a9f100] Statistics: 0 seeks, 1 writeouts
-[AVIOContext @ 0x55f4769fbb40] Statistics: 764 bytes read, 0 seeks
+[AVIOContext @ 0x55622d22cdc0] Statistics: 0 seeks, 1 writeouts
+[AVIOContext @ 0x55622d227e80] Statistics: 974 bytes read, 0 seeks

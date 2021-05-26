@@ -21,7 +21,7 @@ import ca.aquiletour.core.pages.course_list.student.messages.SelectCourseListSub
 import ca.aquiletour.core.pages.course_list.student.messages.ShowCourseListMessageStudent;
 import ca.aquiletour.core.pages.course_list.teacher.messages.SelectCourseListSubsetTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.messages.ShowCourseListMessageTeacher;
-import ca.aquiletour.core.pages.dashboard.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.student.messages.ShowDashboardMessageStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListForTimePeriodMessage;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
@@ -32,8 +32,8 @@ import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
-import ca.aquiletour.core.pages.queue.student.messages.ShowStudentQueueMessage;
-import ca.aquiletour.core.pages.queue.teacher.messages.ShowTeacherQueueMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
+import ca.aquiletour.core.pages.queue.teacher.messages.ShowQueueMessageTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
@@ -235,7 +235,7 @@ public class AquiletourRequestHandler {
 			
 		}else if(user instanceof Student || (user instanceof Teacher && !user.actsAsTeacher())){
 			
-			ShowStudentDashboardMessage showStudentDashboardMessage = Ntro.messages().create(ShowStudentDashboardMessage.class);
+			ShowDashboardMessageStudent showStudentDashboardMessage = Ntro.messages().create(ShowDashboardMessageStudent.class);
 			Ntro.messages().send(showStudentDashboardMessage);
 
 		}else {
@@ -326,14 +326,14 @@ public class AquiletourRequestHandler {
 				teacherUsesQueueMessage.setCourseId(teacherId);
 				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
 
-				ShowTeacherQueueMessage showTeacherQueueMessage = Ntro.messages().create(ShowTeacherQueueMessage.class);
-				showTeacherQueueMessage.setCourseId(teacherId);
+				ShowQueueMessageTeacher showTeacherQueueMessage = Ntro.messages().create(ShowQueueMessageTeacher.class);
+				showTeacherQueueMessage.setQueueId(teacherId);
 				Ntro.messages().send(showTeacherQueueMessage);
 
 			}else {
 				
-				ShowStudentQueueMessage showStudentQueueMessage = Ntro.messages().create(ShowStudentQueueMessage.class);
-				showStudentQueueMessage.setCourseId(teacherId);
+				ShowQueueMessageStudent showStudentQueueMessage = Ntro.messages().create(ShowQueueMessageStudent.class);
+				showStudentQueueMessage.setQueueId(teacherId);
 				Ntro.messages().send(showStudentQueueMessage);
 			}
 		}

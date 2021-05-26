@@ -25,7 +25,8 @@ public abstract class NtroWindowWeb extends NtroWindow {
 		HtmlElement body = getDocument().select("body").get(0);
 
 		NtroViewWeb rootViewWeb = (NtroViewWeb) rootView;
-
+		
+		body.deleteChildrenForever();
 		body.appendElement(rootViewWeb.getRootElement());
 		
 		/*

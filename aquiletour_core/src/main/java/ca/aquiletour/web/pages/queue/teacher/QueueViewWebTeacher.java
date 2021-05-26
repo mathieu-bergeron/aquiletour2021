@@ -2,6 +2,7 @@ package ca.aquiletour.web.pages.queue.teacher;
 
 import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
+import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
@@ -11,7 +12,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 
-public class QueueViewWebTeacher extends QueueViewWeb implements QueueView {
+public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeacher {
 
 	private HtmlElement queueId;
 

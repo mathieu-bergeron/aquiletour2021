@@ -1,5 +1,8 @@
 package ca.aquiletour.core.pages.queue;
 
+import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
+import ca.aquiletour.core.pages.queue.handlers.ShowQueueHandler;
+import ca.aquiletour.core.pages.queue.messages.ShowQueueMessage;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.aquiletour.core.pages.root.RootController;
@@ -19,31 +22,26 @@ public abstract class QueueController extends NtroController<RootController> {
 
 		setViewLoader(viewClass(), context().lang());
 
-		installParentViewMessageHandler();
+		addSubViewLoader(subViewClass(), context().lang());
+
+		addControllerMessageHandler(showMessageClass(), showHandler());
+		addModelViewSubViewHandler(subViewClass(), viewModel()); 
 
 	}
 	
+	protected abstract QueueViewModel<?> viewModel();
+	protected abstract ShowQueueHandler<?, ?> showHandler();
+	protected abstract Class<? extends ShowQueueMessage> showMessageClass();
+	protected abstract Class<? extends AppointmentView> subViewClass();
 	protected abstract Class<? extends QueueView> viewClass();
-	protected abstract void installParentViewMessageHandler();
-	
 	
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
-		
-//		 TODO: we can automatize this!
-//				      simply reset the tasks with the new lang
-				if(!previousContext.hasSameLang(context())) {
-					setViewLoader(viewClass(), context().lang());
-					addSubViewLoader(AppointmentView.class, context().lang());
-				}
-		
 	}
 
 	@Override
 	protected void onFailure(Exception e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
