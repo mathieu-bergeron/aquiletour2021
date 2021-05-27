@@ -24,12 +24,17 @@ def process_requests():
         lite_cur = lite_conn.cursor()
 #        maria_cur = maria_conn.cursor()
         while True:
-            lite_cur.execute('SELECT * FROM tasks WHERE ans_date IS NULL \
+            lite_cur.execute('SELECT * FROM tasks WHERE start_date IS NULL \
                 ORDER BY priority,req_date')
             print(lite_cur)
             row = lite_cur.fetchone()
             if row:
                 print(row)
+#                time.sleep(60)
+                lite_cur.execute('UPDATE tasks \
+                    SET start_date = DateTime("now","localtime") \
+                    WHERE task_id = ?', (row[0],))
+                lite_conn.commit()                
                 # Extract request type
                 try:
                     request = json.loads(row[3])
@@ -45,7 +50,7 @@ def process_requests():
                     print('BAD REQUEST FORMAT: ' + str(request))
                     result = (True, json.dumps({'status': 'BAD REQUEST FORMAT'}))
                 lite_cur.execute('UPDATE tasks \
-                    SET answer = ?, ans_date = DateTime("now","localtime") \
+                    SET answer = ?, end_date = DateTime("now","localtime") \
                     WHERE task_id = ?', (result[1],row[0]))
                 if result[0]:
                     lite_cur.execute('UPDATE tasks \

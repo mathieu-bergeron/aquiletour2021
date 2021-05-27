@@ -7,6 +7,7 @@ import utils.normalize_data
 import git
 import utils.task_utils
 import utils.data_matcher
+import utils.net_utils
 
 #  {
 #      "_C": "HookTask",
@@ -32,7 +33,7 @@ def process(task_req, maria_conn, lite_conn):
 # >>> rep.git.status()
 # rep.commit().diff('HEAD~1')[1].a_blob.data_stream.read() # ou b_blob
 #rep.commit().tree.trees[0].blobs[1].data_stream.read() # parcourir un commit...
-def update_commit_db(semester, course, group, repo_path, depot, depotPath, maria_conn):
+def update_commit_db(semester, course, group, student, repo_path, depot, depotPath, maria_conn):
     repo = git.Repo(depotPath)
     cur = maria_conn.cursor()
     # Trouver dernier commit du depot
@@ -45,6 +46,15 @@ def update_commit_db(semester, course, group, repo_path, depot, depotPath, maria
 #    last_commit = '4091faf65b9d875d3c23dc7b373e02ae858b21b7' + '..'
     ex_list, rp_list, fp_list, kw_list = utils.task_utils.find_exercise_for_course(semester,course,group,maria_conn)
     repo = git.Repo(depotPath)
+    ex_comp_list = []
+    new_commits = {}
+    new_commits['_C'] = 'OnNewCommits'
+    new_commits['semesterId'] = semester
+    new_commits['courseId'] = course
+    new_commits['groupId'] = group
+    new_commits['studentId'] = student
+    new_commits['latestCommitBeforeThis'] = last_commit
+    new_commits['commits'] = []
     for commit in repo.iter_commits(last_commit, reverse = True):
 #        print(commit)
         commit_id = commit.hexsha
@@ -55,7 +65,23 @@ def update_commit_db(semester, course, group, repo_path, depot, depotPath, maria
         # None # TODO: Match des exercices keyword avec summary
         cur.execute('INSERT INTO commit VALUES (%s,%s,%s,%s,%s,%s)',
             (depot, commit_id, commit_date, commit_sum, commit_msg, completed_ex))
-        maria_conn.commit()
+        if completed_ex:
+            ex_comp = {}
+            ex_comp['_C'] = 'OnExerciseCompleted'
+            ex_comp['semesterId'] = semester
+            ex_comp['courseId'] = course
+            ex_comp['groupId'] = group
+            ex_comp['studentId'] = student
+            ex_comp['exercisePath'] = completed_ex
+            ex_comp_list.append(ex_comp)
+        one_commit = {}
+        one_commit['_C'] = 'Commit'
+        one_commit['commitId'] = commit_id
+        one_commit['exercisePathIfCompleted'] = completed_ex
+        one_commit['commitMessageFirstLine'] = commit_sum
+        one_commit['commitMessage'] = commit_msg
+        one_commit['timeStamp'] = int(commit_date.timestamp())
+        one_commit['modifiedFiles'] = []
         for file_name,stat in commit.stats.files.items():
             insert = stat['insertions']
             delete = stat['deletions']
@@ -65,7 +91,16 @@ def update_commit_db(semester, course, group, repo_path, depot, depotPath, maria
 #            print(file_name + ' : ' + exercice)
             cur.execute('INSERT INTO commit_file VALUES (%s,%s,%s,%s,%s,%s,%s)',
                 (depot, commit_id, file_name, insert, delete, effort, exercice))
-            maria_conn.commit()
+            one_file = {}
+            one_file['path'] = file_name
+            one_file['estimatedEffort'] = effort
+            one_file['exercisePath'] = exercice
+            one_commit['modifiedFiles'].append(one_file)
+        new_commits['commits'].append(one_commit)
+        maria_conn.commit()
+    utils.net_utils.send_message(new_commits)
+    for ex_comp in ex_comp_list:
+        utils.net_utils.send_message(ex_comp)
 # delete from element where (url_depot, commit_id) in (select url_depot, commit_id from commit where commit_date > '2020-09-30');
 # delete from commit where commit_date > '2020-09-30';
     # Pour tous les commit suivants
@@ -83,19 +118,35 @@ def hook_task(depot, maria_conn):
         depotDir = record[0].split('/')
         depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record[1]
         depotPath = os.path.join('depot',record[2],record[3],record[4],record[5],depotDir)
+        message = {}
+        message['repoUrl'] = record[0]
+        message['semesterId'] = record[2]
+        message['courseId'] = record[3]
+        message['groupId'] = record[4]
+        message['studentId'] = record[5]
+        message['repoPath'] = record[6]
 #        print(depotPath)
         try:
             if not os.path.isdir(depotPath) :
                 print(depotPath + ' not exists, cloning!')
                 git.Repo.clone_from(depot,depotPath)
+                message['_C'] = 'OnClone'
             else :
                 print(depotPath + ' exists, pulling!')
                 git.Repo(depotPath).remotes.origin.pull()
-            answer = update_commit_db(record[2],record[3],record[4],record[6],depot, depotPath, maria_conn)
+                message['_C'] = 'OnPull'
+            utils.net_utils.send_message(message)
+            answer = update_commit_db(record[2],record[3],record[4],record[5],record[6],depot, depotPath, maria_conn)
             if not answer:
                 answer = 'DONE'
         except git.exc.GitCommandError:
-            answer = 'DEPOT not accessible on server'
+            if not os.path.isdir(depotPath) :
+                answer = 'CLONE FAILED: DEPOT not accessible on server'
+                message['_C'] = 'OnCloneFailed'
+            else:
+                answer = 'PULL FAILED: DEPOT not accessible on server'
+                message['_C'] = 'OnPullFailed'
+            utils.net_utils.send_message(message)
         #   Not there... Error
         # Fetch / Clone depot
         #   Not possible ... Error
