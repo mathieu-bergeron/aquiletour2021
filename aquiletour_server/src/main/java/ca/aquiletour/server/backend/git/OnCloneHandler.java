@@ -25,22 +25,17 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 		T.call(this);
 
 		GitRepoCloned gitRepoCloned = new GitRepoCloned();
+		
+		String repoUrl = message.getRepoUrl();
+		
+		if(repoUrl == null || repoUrl.isEmpty()) {
 
-		CourseManager.readAtomicTaskCompletionStudent(modelStore, 
-												      message.coursePath(), 
-												      message.getStudentId(), 
-												      message.taskPath(), 
-												      AtomicTask.idFromType(GitRepoTask.class),
-												      new ValueReader<AtomicTaskCompletion>() {
-														@Override
-														public void read(AtomicTaskCompletion completion) {
-															T.call(this);
-															
-															if(completion instanceof GitRepoCompletion) {
-																gitRepoCloned.setRepoUrl(((GitRepoCompletion) completion).getRepoUrl());
-															}
-														}
-												});
+			fetchRepoUrlFromPreviousCompletion(modelStore, message, gitRepoCloned);
+
+		}else {
+
+			gitRepoCloned.setRepoUrl(repoUrl);
+		}
 		
 		CourseManager.updateAtomicTaskCompletionStudent(modelStore, 
 				                                        message.coursePath(), 
@@ -57,4 +52,25 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 				                                        gitRepoCloned);
 	}
 
+	private void fetchRepoUrlFromPreviousCompletion(ModelStoreSync modelStore, 
+			                                        OnClone message, 
+			                                        GitRepoCloned gitRepoCloned) {
+		T.call(this);
+
+		CourseManager.readAtomicTaskCompletionStudent(modelStore, 
+													  message.coursePath(), 
+													  message.getStudentId(), 
+													  message.taskPath(), 
+													  AtomicTask.idFromType(GitRepoTask.class),
+													  new ValueReader<AtomicTaskCompletion>() {
+														@Override
+														public void read(AtomicTaskCompletion completion) {
+															T.call(this);
+															
+															if(completion instanceof GitRepoCompletion) {
+																gitRepoCloned.setRepoUrl(((GitRepoCompletion) completion).getRepoUrl());
+															}
+														}
+												});
+	}
 }

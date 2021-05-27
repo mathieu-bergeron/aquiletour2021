@@ -18,7 +18,23 @@
         },
         "currentTasks": {
           "_C": "CurrentTasks",
-          "value": []
+          "value": [
+            {
+              "taskPath": {
+                "names": [],
+                "_C": "TaskPath"
+              },
+              "_C": "CurrentTaskTeacher",
+              "taskTitle": {
+                "_C": "StoredString",
+                "value": "Structure de données"
+              },
+              "numberOfStudents": {
+                "_C": "StoredInteger",
+                "value": 3
+              }
+            }
+          ]
         }
       }
     ]

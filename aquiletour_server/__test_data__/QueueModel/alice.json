@@ -1,22 +1,4 @@
 {
-  "appointments": {
-    "_C": "ObservableAppointmentList",
-    "value": []
-  },
-  "messageByGroupId": {
-    "_C": "MessageById",
-    "value": {}
-  },
-  "_C": "QueueModel",
-  "studentIds": [],
-  "messageByCourseId": {
-    "_C": "MessageById",
-    "value": {}
-  },
-  "appointmentDurationSeconds": {
-    "_C": "StoredInteger",
-    "value": 300
-  },
   "currentTime": {
     "_C": "ObservableTime",
     "value": {
@@ -24,15 +6,55 @@
       "epochSeconds": -1
     }
   },
-  "isOpenByCourseId": {
-    "_C": "IsOpenById",
-    "value": {}
+  "appointments": {
+    "_C": "ObservableAppointmentList",
+    "value": []
   },
   "maxId": 0,
-  "teacherId": "188ef209aa0e0bf7d83d",
-  "isOpenByGroupId": {
-    "_C": "IsOpenById",
-    "value": {}
+  "mainSettings": {
+    "showAppointmentTimes": {
+      "_C": "StoredBoolean",
+      "value": false
+    },
+    "_C": "QueueSettings",
+    "messageToStudents": {
+      "_C": "StoredString",
+      "value": ""
+    },
+    "isQueueOpen": {
+      "_C": "StoredBoolean",
+      "value": false
+    }
+  },
+  "teacherId": "ca7fe107b1bff6faf665",
+  "_C": "QueueModel",
+  "settingsByCourseId": {
+    "_C": "SettingsByCourseId",
+    "value": {
+      "strudon": {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "showAppointmentTimes": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "_C": "QueueSettingsCourse",
+        "settingsByGroupId": {
+          "_C": "SettingsByGroupId",
+          "value": {}
+        },
+        "messageToStudents": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        }
+      }
+    }
   },
   "firstAppointmentTime": {
     "_C": "ObservableTime",
@@ -41,5 +63,10 @@
       "epochSeconds": -1
     }
   },
-  "courseId": "alice"
+  "studentIds": [],
+  "courseId": "alice",
+  "appointmentDurationSeconds": {
+    "_C": "StoredInteger",
+    "value": 300
+  }
 }

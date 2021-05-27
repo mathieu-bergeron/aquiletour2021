@@ -1,14 +1,24 @@
 package ca.aquiletour.core.models.courses.base.lambdas;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 
-public class FindResults extends ArrayList<FindResult> {
-	private static final long serialVersionUID = -5465197643346101186L;
+public class FindResults  {
+	
+	private List<FindResult> results = new ArrayList<>();
+
+	public List<FindResult> getResults() {
+		return results;
+	}
+
+	public void setResults(List<FindResult> results) {
+		this.results = results;
+	}
 
 	public void addOrUpdateFindResult(int distance, Task task) {
 		T.call(this);
@@ -18,7 +28,7 @@ public class FindResults extends ArrayList<FindResult> {
 		if(result == null) {
 			
 			result = new FindResult(task, distance, distance);
-			asList().add(result);
+			getResults().add(result);
 
 		}else {
 			
@@ -33,7 +43,7 @@ public class FindResults extends ArrayList<FindResult> {
 		
 		if(result == null) {
 			
-			asList().add(resultToAdd);
+			getResults().add(resultToAdd);
 			
 		}else {
 			
@@ -48,7 +58,7 @@ public class FindResults extends ArrayList<FindResult> {
 		
 		if(task != null && task.id() != null) {
 
-			for(FindResult candidate : asList()) {
+			for(FindResult candidate : getResults()) {
 				
 				if(candidate.getTask() != null && 
 						task.id().equals(candidate.getTask().id())) {
@@ -67,7 +77,7 @@ public class FindResults extends ArrayList<FindResult> {
 		
 		FindResult result = null;
 		
-		for(FindResult candidate : asList()) {
+		for(FindResult candidate : getResults()) {
 			if(result == null) {
 				result = candidate;
 			}else if(candidate.getMinDistance() < result.getMinDistance()){
@@ -78,15 +88,10 @@ public class FindResults extends ArrayList<FindResult> {
 		return result;
 	}
 
-	// JSWEET: (FindResult candidate: this) does not compile
-	public List<FindResult> asList(){
-		return (List<FindResult>) this;
-	}
-
 	public void forEachTask(TaskForEach lambda) {
 		T.call(this);
 		
-		for(FindResult result : asList()) {
+		for(FindResult result : getResults()) {
 			try {
 
 				lambda.execute(result.getTask());
@@ -95,6 +100,25 @@ public class FindResults extends ArrayList<FindResult> {
 				break;
 			}
 		}
+	}
+
+	public int size() {
+		T.call(this);
+		
+		return getResults().size();
+	}
+
+	public FindResult get(int i) {
+		T.call(this);
+		
+		return getResults().get(i);
+		
+	}
+
+	public void sort(Comparator<? super FindResult> comparator) {
+		T.call(this);
+
+		getResults().sort(comparator);
 	}
 
 }

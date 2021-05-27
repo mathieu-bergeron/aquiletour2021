@@ -88,6 +88,8 @@ import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
 import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
+import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
+import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
@@ -404,6 +406,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SettingsByGroupId.class);
 
 		Ntro.registerSerializableClass(UpdateIsQueueOpenMessage.class);
+		Ntro.registerSerializableClass(StudentRegistersRepoMessage.class);
+		Ntro.registerSerializableClass(StudentDeletesRepoMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

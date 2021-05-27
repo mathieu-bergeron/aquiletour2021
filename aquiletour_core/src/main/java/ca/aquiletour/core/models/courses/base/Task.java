@@ -272,8 +272,8 @@ public class Task implements NtroModelValue, TaskNode {
 			
 			return accumulator;
 		});
-		
-		findResults.asList().sort((findResult1, findResult2) -> {
+
+		findResults.sort((findResult1, findResult2) -> {
 			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
 		});
 		
@@ -313,7 +313,7 @@ public class Task implements NtroModelValue, TaskNode {
 			return accumulator;
 		});
 		
-		findResults.asList().sort((findResult1, findResult2) -> {
+		findResults.sort((findResult1, findResult2) -> {
 			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
 		});
 		
@@ -332,7 +332,7 @@ public class Task implements NtroModelValue, TaskNode {
 			return accumulator;
 		});
 		
-		findResults.asList().sort((findResult1, findResult2) -> {
+		findResults.sort((findResult1, findResult2) -> {
 			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
 		});
 
