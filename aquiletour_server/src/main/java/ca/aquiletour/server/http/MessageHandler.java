@@ -66,9 +66,7 @@ public class MessageHandler extends AbstractHandler {
 		T.call(this);
 		
 		
-		
         if (request.getMethod().equals("POST")) {
-
         	
         	String body = ModelHandler.readBody(baseRequest);
 

@@ -187,7 +187,7 @@ if __name__=="__main__":
     # Start other process with a Queue
         p = Process(target=depot_manager.task_processor.process_requests)
         p.start()
-        uvicorn.run("git_server:app", host='192.168.5.49')
+        uvicorn.run("git_server:app", host='127.0.0.1')
     # Stop other process
         p.join()
         print('DONE')

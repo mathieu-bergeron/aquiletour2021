@@ -60,3 +60,6 @@ build_*
 __task_graphs__
 __backend_task_graphs__
 aquiletour_server/TMP
+
+# Git module
+dockers/git/depot/
