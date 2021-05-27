@@ -183,36 +183,27 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void appendEntryTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
+	public void appendEntryTask(String groupId, AtomicTask task) {
 		T.call(this);
 		
 		if(task instanceof GitRepoTask) {
 			
-			appendGitRepoEntryTask(groupId, (GitRepoTask) task, completion);
+			appendGitRepoEntryTask(groupId, (GitRepoTask) task);
 
 		}else if(task instanceof GitExerciseTask) {
 			
 		}
 	}
 
-	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask, AtomicTaskCompletion completion) {
+	private void addCompletionToGitRepoEntryTask(String groupId, GitRepoTask gitRepoTask, AtomicTaskCompletion completion) {
 		T.call(this);
 		
-		if(completion == null) {
-			
-			HtmlElement formElement = gitRepoTaskSubmitUrl.clone();
-			
-			identifyGitRepo(groupId, repoTask, formElement);
-
-			entryTasksContainer.appendElement(formElement);
-			formElement.show();
-
-		}else if(completion instanceof GitRepoSubmitted){
+		if(completion instanceof GitRepoSubmitted){
 			
 			GitRepoSubmitted gitRepoSubmitted = (GitRepoSubmitted) completion;
 
 			HtmlElement formElement = gitRepoTaskCloningRepo.clone();
-			identifyGitRepo(groupId, repoTask, formElement);
+			identifyGitRepo(groupId, gitRepoTask, formElement);
 
 			HtmlElements addRepoUrlToValue = formElement.find(".add-repo-url-to-value");
 			addRepoUrlToValue.appendToAttribute("value", gitRepoSubmitted.getRepoUrl());
@@ -240,8 +231,27 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		}
 	}
 
+	private String atomicTaskId(AtomicTask task) {
+		T.call(this);
+		
+		return "atomic-task-" + task.getId();
+	}
+
+	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask) {
+		T.call(this);
+		
+		HtmlElement formElement = gitRepoTaskSubmitUrl.clone();
+		
+		identifyGitRepo(groupId, repoTask, formElement);
+
+		entryTasksContainer.appendElement(formElement);
+		formElement.show();
+	}
+
 	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement formElement) {
 		T.call(this);
+
+		formElement.addClass(atomicTaskId(repoTask));
 
 		HtmlElements addStudentIdToValue = formElement.find(".add-student-id-to-value");
 		HtmlElements addGroupIdToValue = formElement.find(".add-group-id-to-value");
@@ -255,11 +265,28 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
+	public void appendExitTask(String groupId, AtomicTask task) {
 		T.call(this);
 		
 	}
 
+	@Override
+	public void addCompletionToEntryTask(String groupId, AtomicTask atomicTask, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		removeEntryTask(atomicTask);
 
+		if(atomicTask instanceof GitRepoTask) {
+			addCompletionToGitRepoEntryTask(groupId, (GitRepoTask) atomicTask, completion);
+		}
+	}
 
+	@Override
+	public void removeEntryTask(AtomicTask atomicTask) {
+		T.call(this);
+		
+		getRootElement().find("." + atomicTaskId(atomicTask)).forEach(e -> {
+			e.deleteForever();
+		});
+	}
 }

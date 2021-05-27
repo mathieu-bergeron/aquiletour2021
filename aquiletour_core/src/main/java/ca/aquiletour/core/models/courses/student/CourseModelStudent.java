@@ -1,7 +1,10 @@
 package ca.aquiletour.core.models.courses.student;
 
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
@@ -65,4 +68,5 @@ public class CourseModelStudent extends CourseModel {
 		
 		getGroupId().set(groupId);
 	}
+
 }

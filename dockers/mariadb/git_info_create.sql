@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS git_info;
 CREATE DATABASE IF NOT EXISTS git_info;
 USE git_info;
 

@@ -3,6 +3,7 @@ package ca.aquiletour.core.models.courses.base;
 import java.util.Map;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
@@ -429,4 +430,18 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		
 		return result;
 	}
+
+	public AtomicTask atomicTask(TaskPath taskPath, String atomicTaskId) {
+		T.call(this);
+		
+		AtomicTask atomicTask = null;
+		
+		Task task = findTaskByPath(taskPath);
+		if(task != null) {
+			atomicTask = task.atomicTaskById(atomicTaskId);
+		}
+		
+		return atomicTask;
+	}
+
 }

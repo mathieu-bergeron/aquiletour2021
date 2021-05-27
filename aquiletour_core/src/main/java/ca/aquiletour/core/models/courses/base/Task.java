@@ -499,7 +499,7 @@ public class Task implements NtroModelValue, TaskNode {
 		});
 	}
 
-	private AtomicTask atomicTaskById(String id) {
+	AtomicTask atomicTaskById(String id) {
 		T.call(this);
 		
 		AtomicTask task = null;
