@@ -260,13 +260,10 @@ public class CourseManager {
 		
 		course.getGroups().forEachItem((i, group) -> {
 			String groupId = group.getGroupId();
-			group.getStudents().forEachItem((j, studentId) ->{
-				GitMessages.registerExercise(coursePath, 
-						                     groupId, 
-						                     studentId, 
-						                     task.getPath(), 
-						                     gitTask);
-			});
+			GitMessages.registerExercise(coursePath, 
+										 groupId, 
+										 task.getPath(), 
+										 gitTask);
 		});
 	}
 
