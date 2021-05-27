@@ -1,0 +1,56 @@
+{
+  "dashboardItems": {
+    "_C": "DashboardItems",
+    "value": [
+      {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "_C": "DashboardItemStudent",
+        "coursePath": {
+          "names": [
+            "alice",
+            "H2021",
+            "strudon"
+          ],
+          "_C": "CoursePath"
+        },
+        "currentTasks": {
+          "_C": "CurrentTasks",
+          "value": [
+            {
+              "taskPath": {
+                "names": [],
+                "_C": "TaskPath"
+              },
+              "_C": "CurrentTaskStudent",
+              "endTime": {
+                "_C": "StoredAquiletourDate",
+                "value": {
+                  "semesterWeek": 1,
+                  "_C": "CourseDateScheduleItem",
+                  "scheduleItemId": "1",
+                  "weekOf": {
+                    "_C": "NtroDate",
+                    "epochSeconds": -1
+                  },
+                  "startOrEnd": "end"
+                }
+              },
+              "taskTitle": {
+                "_C": "StoredString",
+                "value": "Structure de données"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "_C": "DashboardModelStudent",
+  "statusMessage": {
+    "_C": "StoredString",
+    "value": ""
+  }
+}

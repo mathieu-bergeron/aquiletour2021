@@ -1,8 +1,7 @@
 package ca.aquiletour.core.messages.course;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.users.User;
-import ca.ntro.core.Path;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 
 public class CourseMessage extends NtroUserMessage<User> {
@@ -10,7 +9,6 @@ public class CourseMessage extends NtroUserMessage<User> {
 	private String teacherId;
 	private String courseId;
 	private String semesterId;
-	private Path taskPath = new Path("/");
 	
 	public String getTeacherId() {
 		return teacherId;
@@ -38,13 +36,5 @@ public class CourseMessage extends NtroUserMessage<User> {
 	
 	public CoursePath coursePath() {
 		return new CoursePath(teacherId, semesterId, courseId);
-	}
-
-	public Path getTaskPath() {
-		return taskPath;
-	}
-
-	public void setTaskPath(Path taskPath) {
-		this.taskPath = taskPath;
 	}
 }

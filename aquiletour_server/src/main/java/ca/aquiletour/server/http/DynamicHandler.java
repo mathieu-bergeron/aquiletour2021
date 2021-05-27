@@ -41,19 +41,17 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.users.Teacher;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.Teacher;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
-import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
-import ca.aquiletour.server.AquiletourConfig;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -226,7 +224,7 @@ public class DynamicHandler extends AbstractHandler {
 	private String readPart(Part part) throws IOException {
 		StringBuilder builder = new StringBuilder();
 		InputStream inputStream = part.getInputStream();
-		Scanner scanner = new Scanner(inputStream);
+		Scanner scanner = new Scanner(inputStream, Constants.CSV_FILE_ENCODING);
 		while(scanner.hasNextLine()) {
 			builder.append(scanner.nextLine());
 			builder.append(System.lineSeparator());
@@ -254,13 +252,17 @@ public class DynamicHandler extends AbstractHandler {
 	private void setCurrentSemester() {
 		T.call(this);
 		
-		ModelLoader modelLoader = Ntro.modelStore().getLoader(SemesterListModel.class, "admin", Ntro.currentUser().getId());
-		modelLoader.execute();
-		SemesterListModel semesterList = (SemesterListModel) modelLoader.getModel();
-		Ntro.modelStore().save(semesterList);
+		SessionData sessionData = null;
+		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
+			sessionData = (SessionData) Ntro.currentSession().getSessionData();
+		}else {
+			sessionData = new SessionData();
+		}
+
+		if(sessionData.getCurrentSemester() == null || sessionData.getCurrentSemester().isEmpty()) {
+			sessionData.setCurrentSemester(SemesterListManager.getCurrentSemester(new ModelStoreSync(Ntro.modelStore())));
+		}
 		
-		SessionData sessionData = new SessionData();
-		sessionData.setCurrentSemester(semesterList.getCurrentSemesterId().getValue());
 		Ntro.currentSession().setSessionData(sessionData);
 	}
 
@@ -296,10 +298,16 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 	private NtroContext<User, SessionData> createNtroContext() {
+		T.call(this);
+
 		NtroContext<User, SessionData> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
 		context.registerUser((User) Ntro.currentUser());
-		context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
+			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		}else {
+			context.registerSessionData(new SessionData());
+		}
 		return context;
 	}
 

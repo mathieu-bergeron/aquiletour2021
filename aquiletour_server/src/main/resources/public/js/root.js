@@ -4,8 +4,6 @@ function initializeRoot(viewRootElement, jSweet){
 
     const navBarA = viewRootElement.find('.navbar-nav>li>a');
 
-    const itsNotMeLink = viewRootElement.find('#its-not-me-link');
-
     const loginDropdown = viewRootElement.find('#login-dropdown');
     const loginButton = viewRootElement.find('#login-button');
     const loginMenuMessage = viewRootElement.find('#login-menu-message');
@@ -15,6 +13,8 @@ function initializeRoot(viewRootElement, jSweet){
 
     const studentLoginCollapse = viewRootElement.find('#student-login-collapse');
     const teacherLoginCollapse = viewRootElement.find('#teacher-login-collapse');
+
+    const submitLinks = viewRootElement.find('.submit-link');
 
     //testToast.toast('show');
 
@@ -51,9 +51,9 @@ function initializeRoot(viewRootElement, jSweet){
         loginTabTeacher.addClass('login-tab-selected');
     });
 
-    itsNotMeLink.on('click', function(e){
+    submitLinks.on('click', function(e){
         e.preventDefault();
-        const formId = itsNotMeLink.attr("form");
+        const formId = $(this).attr("form");
         const form = viewRootElement.find("#" + formId);
         form.submit();
     });

@@ -14,4 +14,10 @@ public class StoredString extends StoredProperty<String> {
 		T.call(this);
 	}
 
+	public boolean isEmpty() {
+		T.call(this);
+		
+		return getValue().isEmpty();
+	}
+
 }

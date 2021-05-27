@@ -1,0 +1,94 @@
+{
+  "_C": "CourseModelTeacher",
+  "coursePath": {
+    "names": [
+      "alice",
+      "H2021",
+      "test"
+    ],
+    "_C": "CoursePath"
+  },
+  "scheduledDates": {
+    "_C": "TaskDatesByGroupId",
+    "value": {}
+  },
+  "completions": {
+    "_C": "StudentCompletionsByStudentId",
+    "value": {}
+  },
+  "groups": {
+    "_C": "GroupDescriptions",
+    "value": []
+  },
+  "siblingSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  },
+  "siblingCourses": {
+    "_C": "CourseIds",
+    "value": []
+  },
+  "overridenDates": {
+    "_C": "TaskDatesByGroupId",
+    "value": {}
+  },
+  "tasks": {
+    "_C": "ObservableTaskMap",
+    "course": {
+      "_R": ""
+    },
+    "value": {
+      "/": {
+        "path": {
+          "names": [],
+          "_C": "Path"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "endTime": {
+          "_C": "StoredCourseDate",
+          "value": {
+            "semesterWeek": 0,
+            "_C": "CourseDateScheduleItem",
+            "scheduleItemId": "",
+            "weekOf": {
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            },
+            "startOrEnd": "end"
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Test"
+        },
+        "graph": {
+          "_R": ""
+        }
+      }
+    }
+  }
+}

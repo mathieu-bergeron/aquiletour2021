@@ -4,7 +4,6 @@ package ca.aquiletour.core.pages.dashboard.models;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;

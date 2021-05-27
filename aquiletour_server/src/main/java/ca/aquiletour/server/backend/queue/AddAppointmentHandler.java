@@ -4,12 +4,13 @@ package ca.aquiletour.server.backend.queue;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.users.Guest;
-import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.Guest;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.models.user.TeacherGuest;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -19,7 +20,7 @@ import ca.ntro.services.Ntro;
 public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AddAppointmentMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddAppointmentMessage message) throws BackendError {
 		T.call(this);
 
 		User user = message.getUser();
@@ -37,7 +38,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 
 		}else {
 
-			QueueUpdater.addAppointmentForUser(modelStore, courseId, user);
+			QueueManager.addAppointmentForUser(modelStore, courseId, user);
 		}
 	}
 
@@ -45,6 +46,6 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	public void handleLater(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
 
-		QueueUpdater.addAppointmentUpdates(modelStore, message.getCourseId());
+		QueueManager.addAppointmentUpdates(modelStore, message.getCourseId());
 	}
 }

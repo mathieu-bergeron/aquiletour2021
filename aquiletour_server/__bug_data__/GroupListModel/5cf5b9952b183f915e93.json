@@ -1,0 +1,18 @@
+{
+  "_C": "GroupListModel",
+  "groups": {
+    "_C": "ObservableGroupList",
+    "value": []
+  },
+  "semesterCourses": {
+    "_C": "SemesterCourses",
+    "value": {
+      "H2021": {
+        "_C": "ObservableCourseList",
+        "value": [
+          "test"
+        ]
+      }
+    }
+  }
+}

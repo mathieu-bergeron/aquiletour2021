@@ -1,63 +1,6 @@
 $primary: purple;
 
 
-//DASHBOARD
-.flex-container {
-  /* We first create a flex layout context */
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  /* Then we define the flow direction 
-       and if we allow the items to wrap 
-     * Remember this is the same as:
-     * flex-direction: row;
-     * flex-wrap: wrap;
-     */
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-flow: row wrap;
-  flex-flow: row wrap;
-  /* Then we define how is distributed the remaining space */
-  -webkit-box-pack: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-around;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  
-  
-  
-  margin-left: auto;
-  margin-right: auto;
-  
-}
-/*progress bar*/
-input[type="checkbox"] { 
-  height: 15px; 
-  width: 15px; 
-  margin-right: 10px;
-}	
-
-.ready { font-size: 1.5em; }
-.ui-progressbar-value { background-color: lightgreen!important; }
-.progressbar {
-  position: relative;
-  width: auto; 
-}
-
-.progressbar-bar { 
-  height: 25px;
-  margin: 10px 0;
-  border-radius: 7px;
-}
-
-.progressbar-label {
-  position: absolute;
-  top: 2px;
-  left: 45%;
-  z-index: 2;
-}
-
 /*cards*/
 .card{
   height: fit-content!important;

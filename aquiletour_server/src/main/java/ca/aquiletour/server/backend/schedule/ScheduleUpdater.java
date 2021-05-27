@@ -3,14 +3,15 @@ package ca.aquiletour.server.backend.schedule;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
-import ca.aquiletour.server.backend.course.CourseUpdater;
-import ca.aquiletour.server.backend.course_list.CourseListUpdater;
-import ca.aquiletour.server.backend.semester_list.SemesterListUpdater;
+import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
+import ca.aquiletour.server.backend.course.CourseManager;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 
@@ -18,29 +19,41 @@ public class ScheduleUpdater {
 
 	public static void updateSchedulesForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
-			                                  User user) {
+			                                  User user) throws BackendError {
+		T.call(ScheduleUpdater.class);
+		
+		updateSchedulesForUserId(modelStore, semesterId, user.getId());
+	}
+
+	public static void updateSchedulesForUserId(ModelStoreSync modelStore, 
+			                                    String semesterId, 
+			                                    String userId) throws BackendError {
 		T.call(ScheduleUpdater.class);
 
-		SemesterSchedule semesterSchedule = SemesterListUpdater.getSemesterSchedule(modelStore, 
+		SemesterSchedule semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 
+																				    SemesterListModelTeacher.class,
 				                                                                    semesterId, 
-				                                                                    user);
+				                                                                    userId);
 		
-		TeacherSchedule teacherSchedule = SemesterListUpdater.getTeacherSchedule(modelStore, 
+		TeacherSchedule teacherSchedule = SemesterListManager.getTeacherSchedule(modelStore, 
 				                                                                 semesterId, 
-				                                                                 user);
+				                                                                 userId);
 
 		
-		List<CoursePath> teacherCourses = CourseListUpdater.getCourseList(modelStore, 
+		List<CoursePath> teacherCourses = CourseListManager.getCourseList(modelStore, 
 																	      CourseListModelTeacher.class,
 				                                                          semesterId, 
-				                                                          user);
+				                                                          userId);
 		
-		for(CoursePath coursePath : teacherCourses) {
-			CourseUpdater.updateCourseSchedule(modelStore,
-											   coursePath,
-											   semesterSchedule,
-											   teacherSchedule,
-											   user);
+		if(semesterSchedule != null
+				&& teacherSchedule != null) {
+
+			for(CoursePath coursePath : teacherCourses) {
+				CourseManager.updateCourseSchedule(modelStore,
+												   coursePath,
+												   semesterSchedule,
+												   teacherSchedule);
+			}
 		}
 	}
 

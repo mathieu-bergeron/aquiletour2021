@@ -1,70 +1,114 @@
 package ca.aquiletour.core.models.courses.base;
 
+import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ca.aquiletour.core.models.courses.task_types.GitRepoTask;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.lambdas.BreakableAccumulator;
+import ca.aquiletour.core.models.courses.base.lambdas.FindResult;
+import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskMatcher;
+import ca.aquiletour.core.models.courses.base.lambdas.TaskReducer;
+import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForParent;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForPreviousTasks;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForSubTasks;
+import ca.aquiletour.core.models.courses.status.StatusDone;
+import ca.aquiletour.core.models.courses.status.StatusTodo;
+import ca.aquiletour.core.models.courses.status.TaskStatus;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.StoredString;
+import ca.ntro.core.models.lambdas.Break;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
 public class Task implements NtroModelValue, TaskNode {
 	
 	private TaskGraph graph;
-	
-	private Path path = new Path();
+
+	private TaskPath path = new TaskPath();
 
 	private StoredString title = new StoredString();
 	private StoredString description = new StoredString();
-	private ObservableCourseDate endTime = new ObservableCourseDate();
+	private StoredCourseDate endTime = new StoredCourseDate();
 
-	private ObservableTaskTypeList taskTypes = new ObservableTaskTypeList();
+	private StoredAtomicTasks entryTasks = new StoredAtomicTasks();
+	private StoredAtomicTasks exitTasks = new StoredAtomicTasks();
 	
-	private ObservableTaskIdList previousTasks = new ObservableTaskIdList();
-	private ObservableTaskIdList subTasks = new ObservableTaskIdList();
-	private ObservableTaskIdList nextTasks = new ObservableTaskIdList();
-	
+	private StoredTaskIds previousTasks = new StoredTaskIds();
+	private StoredTaskIds subTasks = new StoredTaskIds();
+	private StoredTaskIds nextTasks = new StoredTaskIds();
 
-	public ObservableTaskIdList getPreviousTasks() {
+	public void copyTask(Task task) {
+		T.call(this);
+		
+		setPath(task.getPath());
+
+		updateTitle(task.getTitle().getValue());
+		updateDescription(task.getDescription().getValue(), new OnAtomicTaskAdded() {
+			@Override
+			public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
+				T.call(this);
+			}
+		});
+		updateEndTime(task.getEndTime().getValue());
+		
+		copyTaskIds(task.getPreviousTasks(), previousTasks);
+		copyTaskIds(task.getSubTasks(), subTasks);
+		copyTaskIds(task.getNextTasks(), nextTasks);
+	}
+	
+	private void copyTaskIds(StoredTaskIds from, StoredTaskIds to) {
+		T.call(this);
+		
+		for(String taskId : from.getValue()) {
+			to.addItem(taskId);
+		}
+	}
+
+	public StoredTaskIds getPreviousTasks() {
 		return previousTasks;
 	}
 
-	public void setPreviousTasks(ObservableTaskIdList previousTasks) {
+	public void setPreviousTasks(StoredTaskIds previousTasks) {
 		this.previousTasks = previousTasks;
 	}
 
-	public ObservableTaskIdList getSubTasks() {
+	public StoredTaskIds getSubTasks() {
 		return subTasks;
 	}
 
-	public void setSubTasks(ObservableTaskIdList subTasks) {
+	public void setSubTasks(StoredTaskIds subTasks) {
 		this.subTasks = subTasks;
 	}
 
-	public ObservableTaskIdList getNextTasks() {
+	public StoredTaskIds getNextTasks() {
 		return nextTasks;
 	}
 
-	public void setNextTasks(ObservableTaskIdList nextTasks) {
+	public void setNextTasks(StoredTaskIds nextTasks) {
 		this.nextTasks = nextTasks;
 	}
 
-	public Path getPath() {
+	public TaskPath getPath() {
 		return path;
 	}
 
-	public void setPath(Path taskPath) {
+	public void setPath(TaskPath taskPath) {
 		this.path = taskPath;
 	}
 
@@ -135,34 +179,34 @@ public class Task implements NtroModelValue, TaskNode {
 		this.graph = graph;
 	}
 	
-	public void forEachSubTask(TaskLambda lambda) {
+	public void forEachSubTask(TaskForEach lambda) {
 		T.call(this);
-
-		for(String subTaskId : getSubTasks().getValue()) {
-			Task subTask = graph.findTaskByPath(new Path(subTaskId));
-			lambda.execute(subTask);
-		}
+		
+		reduceTo(Void.class, new VisitDirection[]{SUB}, false, null, (distance, task, accumulatorArg) ->{
+			lambda.execute(task);
+			return accumulatorArg;
+		});
 	}
 
-	public void forEachNextTask(TaskLambda lambda) {
+	public void forEachNextTask(TaskForEach lambda) {
 		T.call(this);
 
-		for(String nextTaskId : getNextTasks().getValue()) {
-			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
-			lambda.execute(nextTask);
-		}
+		reduceTo(Void.class, new VisitDirection[]{NEXT}, false, null, (distance, task, accumulatorArg) ->{
+			lambda.execute(task);
+			return accumulatorArg;
+		});
 	}
 
-	public void forEachPreviousTask(TaskLambda lambda) {
+	public void forEachPreviousTask(TaskForEach lambda) {
 		T.call(this);
 
-		for(String previousTaskId : getPreviousTasks().getValue()) {
-			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
-			lambda.execute(previousTask);
-		}
+		reduceTo(Void.class, new VisitDirection[]{PREVIOUS}, false, null, (distance, task, accumulatorArg) ->{
+			lambda.execute(task);
+			return accumulatorArg;
+		});
 	}
 
-	public void forEachSibling(TaskLambda lambda) {
+	public void forEachSibling(TaskForEach lambda) {
 		T.call(this);
 		
 		Task parent = parent();
@@ -208,96 +252,91 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 	public String id() {
-		return getPath().toString();
+		return idFromPath(getPath());
+	}
+	
+	public static String idFromPath(Path taskPath) {
+		T.call(Task.class);
+		
+		return taskPath.toString();
 	}
 
-	public void forEachStartTaskLocal(TaskLambda lambda) {
-		T.call(this);
-
-		for(String subTaskId : getSubTasks().getValue()) {
-			Task subTask = graph.findTaskByPath(new Path(subTaskId));
-			if(subTask.isStartTaskLocal()) {
-				lambda.execute(subTask);
-			}
-		}
-	}
-
-	public void forEachReachableTaskLocal(TaskLambda lambda) {
+	public void forEachSubTaskInOrder(TaskForEach lambda) {
 		T.call(this);
 		
-		forEachReachableTaskLocalImpl(parent(), new HashSet<>(), lambda);
-	}
+		FindResults findResults = reduceToForStoredTasks(getSubTasks(), FindResults.class, new FindResults(), (index, subTask, accumulator) -> {
 
-	public void forEachReachableTaskLocalImpl(Task parent,
-			                                  Set<Task> visitedTasks,
-			                                  TaskLambda lambda) {
-		T.call(this);
-		
-		if(Ntro.collections().setContainsExact(visitedTasks, this)) return;
-		visitedTasks.add(this);
-
-		for(String nextTaskId : getNextTasks().getValue()) {
-			Task nextTask = graph.findTaskByPath(new Path(nextTaskId));
+			FindResult distanceToSubTask = distanceToTask(new VisitDirection[] {SUB, NEXT}, subTask);
 			
-			if(nextTask.parent() == parent) {
-				lambda.execute(nextTask);
-				nextTask.forEachReachableTaskLocalImpl(parent, 
-						                               visitedTasks, 
-						                               lambda);
-			}
-		}
-	}
-
-
-	public boolean isStartTaskLocal() {
-		boolean isStartTaskLocal = true;
-
-		for(String previousTaskId : getPreviousTasks().getValue()) {
-			Task previousTask = graph.findTaskByPath(new Path(previousTaskId));
-			if(previousTask.parent() == parent()) {
-				isStartTaskLocal = false;
-				break;
-			}
-		}
-
-		return isStartTaskLocal;
-	}
-
-
-	public void forEachSubTaskInOrder(TaskLambda lambda) {
-		T.call(this);
-		
-		Set<Task> visitedTasks = new HashSet<>();
-		
-		forEachStartTaskLocal(st -> {
-
-			if(Ntro.collections().setContainsExact(visitedTasks, st)) return;
-			visitedTasks.add(st);
+			accumulator.addOrUpdateFindResult(distanceToSubTask);
 			
-			lambda.execute(st);
-			
-			st.forEachReachableTaskLocal(rt -> {
-
-				if(Ntro.collections().setContainsExact(visitedTasks, rt)) return;
-				visitedTasks.add(rt);
-				
-				lambda.execute(rt);
-			});
+			return accumulator;
 		});
+
+		findResults.sort((findResult1, findResult2) -> {
+			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
+		});
+		
+		findResults.forEachTask(lambda);
 	}
 
-	public void forEachPreviousTaskInOrder(TaskLambda lambda) {
+	private FindResult distanceToTask(VisitDirection[] howToVisitTasks, Task task) {
 		T.call(this);
 		
-		// TODO: order according to the graph
-		forEachPreviousTask(lambda);
+		FindResult result = null;
+		
+		FindResults findResults = findAll(howToVisitTasks, true, visitedTask -> {
+			return visitedTask == task;
+		});
+		
+		if(findResults.size() == 1) {
+
+			result = findResults.get(0);
+			
+		}else {
+			
+			Log.warning("Should not find more than one task");
+		}
+
+		return result;
 	}
 
-	public void forEachNextTaskInOrder(TaskLambda lambda) {
+	public void forEachPreviousTaskInOrder(TaskForEach lambda) {
 		T.call(this);
+
+		FindResults findResults = reduceToForStoredTasks(getPreviousTasks(), FindResults.class, new FindResults(), (index, previousTask, accumulator) -> {
+
+			FindResult distanceToPreviousTask = distanceToTask(new VisitDirection[] {PREVIOUS}, previousTask);
+			
+			accumulator.addOrUpdateFindResult(distanceToPreviousTask);
+			
+			return accumulator;
+		});
 		
-		// TODO: order according to the graph
-		forEachNextTask(lambda);
+		findResults.sort((findResult1, findResult2) -> {
+			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
+		});
+		
+		findResults.forEachTask(lambda);
+	}
+
+	public void forEachNextTaskInOrder(TaskForEach lambda) {
+		T.call(this);
+
+		FindResults findResults = reduceToForStoredTasks(getNextTasks(), FindResults.class, new FindResults(), (index, nextTask, accumulator) -> {
+			
+			FindResult distanceToNextTask = distanceToTask(new VisitDirection[] {NEXT}, nextTask);
+			
+			accumulator.addOrUpdateFindResult(distanceToNextTask);
+			
+			return accumulator;
+		});
+		
+		findResults.sort((findResult1, findResult2) -> {
+			return Integer.compare(findResult1.getMaxDistance(), findResult2.getMaxDistance());
+		});
+
+		findResults.forEachTask(lambda);
 	}
 
 	public void removeTask(String taskId) {
@@ -328,7 +367,11 @@ public class Task implements NtroModelValue, TaskNode {
 
 
 	public boolean isRootTask() {
-		return parent() == null;
+		return !hasParent();
+	}
+
+	public boolean hasParent() {
+		return parent() !=  null;
 	}
 
 	public StoredString getTitle() {
@@ -347,15 +390,17 @@ public class Task implements NtroModelValue, TaskNode {
 		this.description = description;
 	}
 
-	public void updateDescription(String description) {
+	public void updateDescription(String description, OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 		
 		getDescription().set(description);
 		
-		getTaskTypes().clearItems();
-		for(TaskType taskType : TaskType.typesFromDescription(description)) {
-			getTaskTypes().addItem(taskType);
-		}
+		AtomicTask.addAtomicTasksFromDescription(this, description, atomicTaskListener);
+	}
+	
+	public void deleteAtomicTask(String taskId) {
+		T.call(this);
+		
 	}
 	
 	public void updateTitle(String title) {
@@ -370,20 +415,28 @@ public class Task implements NtroModelValue, TaskNode {
 		getEndTime().set(endTime);
 	}
 
-	public ObservableCourseDate getEndTime() {
+	public StoredCourseDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(ObservableCourseDate endTime) {
+	public void setEndTime(StoredCourseDate endTime) {
 		this.endTime = endTime;
 	}
-
-	public ObservableTaskTypeList getTaskTypes() {
-		return taskTypes;
+	
+	public StoredAtomicTasks getEntryTasks() {
+		return entryTasks;
 	}
 
-	public void setTaskTypes(ObservableTaskTypeList taskTypes) {
-		this.taskTypes = taskTypes;
+	public void setEntryTasks(StoredAtomicTasks entryTasks) {
+		this.entryTasks = entryTasks;
+	}
+
+	public StoredAtomicTasks getExitTasks() {
+		return exitTasks;
+	}
+
+	public void setExitTasks(StoredAtomicTasks exitTasks) {
+		this.exitTasks = exitTasks;
 	}
 
 	public void updateDate(SemesterSchedule semesterSchedule) {
@@ -412,20 +465,452 @@ public class Task implements NtroModelValue, TaskNode {
 
 		return date;
 	}
+
+	public void addEntryTask(AtomicTask atomicTask, OnAtomicTaskAdded atomicTaskListener) {
+		T.call(this);
+
+		addAtomicTask(atomicTask, atomicTaskListener, getEntryTasks());
+	}
+
+	public void addExitTask(AtomicTask atomicTask, OnAtomicTaskAdded atomicTaskListener) {
+		T.call(this);
+
+		addAtomicTask(atomicTask, atomicTaskListener, getExitTasks());
+	}
 	
-	public boolean hasType(Class<? extends TaskType> type) {
+	private void addAtomicTask(AtomicTask atomicTask, 
+							   OnAtomicTaskAdded atomicTaskListener, 
+							   StoredAtomicTasks storedTasks) {
+		T.call(this);
+
+		AtomicTask existingTask = atomicTaskByType(atomicTask.getClass(), storedTasks);
+		if(existingTask == null) {
+			storedTasks.addItem(atomicTask);
+			atomicTaskListener.onAtomicTaskAdded(this, atomicTask);
+		}
+	}
+
+	private AtomicTask atomicTaskByType(Class<? extends AtomicTask> taskType,
+							            StoredAtomicTasks storedTasks) {
 		T.call(this);
 		
-		boolean hasType = false;
+		return storedTasks.findFirst(AtomicTask.class, (index, task) -> {
+			return task.getClass().equals(taskType);
+		});
+	}
+
+	AtomicTask atomicTaskById(String id) {
+		T.call(this);
 		
-		for(TaskType candidate : taskTypes.getValue()) {
-			if(candidate.getClass().equals(type)) {
-				hasType = true;
+		AtomicTask task = null;
+		
+		task = atomicTaskById(id, entryTasks);
+		
+		if(task == null) {
+			
+			task = atomicTaskById(id, exitTasks);
+		}
+		
+		return task;
+	}
+
+	private AtomicTask atomicTaskById(String id, StoredAtomicTasks tasks) {
+		T.call(this);
+		
+		AtomicTask task = null;
+		
+		for(AtomicTask candidate : tasks.getValue()) {
+			if(id.equals(candidate.getId())) {
+				task = candidate;
 				break;
 			}
 		}
 		
-		return hasType;
-		
+		return task;
 	}
+	
+	private String nextAtomicTaskId() {
+		T.call(this);
+		
+		return String.valueOf(getEntryTasks().size() + getExitTasks().size());
+	}
+
+	public void forEachTaskBackwardsTransitive(TaskForEach lambda) {
+		T.call(this);
+
+		if(!isRootTask()) {
+			parent().forEachTaskBackwardsTransitive(lambda);
+		}
+		
+		forEachPreviousTask(pt -> {
+			pt.forEachTaskBackwardsTransitive(lambda);
+		});
+	}
+
+	// FIXME: O(n^n) implementation
+	//        that does memorize the cycle path
+	public GraphPath findFirstCycle() {
+		T.call(this);
+
+		return reduceTo(GraphPath.class, new VisitDirection[] {SUB,NEXT}, true, null, (d, task, outerCycle)-> {
+			if(outerCycle != null) {
+				throw new Break();
+			}
+
+			return task.reduceTo(GraphPath.class, new VisitDirection[] {SUB,NEXT}, true, outerCycle, (distance, reachableTask, cycle) -> {
+				if(cycle != null) {
+					throw new Break();
+				}
+				
+				if(distance > 0 && reachableTask == task) {
+					cycle =  new GraphPath();
+					cycle.addName(task.id());
+				}
+
+				return cycle;
+			});
+			
+		});
+	}
+
+	public <R extends Object> R reduceTo(Class<R> resultClass, 
+			                             VisitDirection[] howToVisitNodes, 
+										 boolean transitive,
+										 R accumulator,
+			                             TaskReducer<R> reducer) {
+		
+		Set<String> visistedNodes = new HashSet<>();
+		visistedNodes.add(this.id());
+		
+		try {
+			accumulator = reducer.reduce(0, this, accumulator);
+		} catch(Break b) {}
+
+		BreakableAccumulator<R> breakableAccumulator = reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, 0, visistedNodes);
+		accumulator = breakableAccumulator.getAccumulator();
+		
+		return accumulator;
+	}
+
+	private <R extends Object> BreakableAccumulator<R> reduceToImpl(Class<R> resultClass, 
+			                                                        VisitDirection[] howToVisitNodes, 
+										                            boolean transitive,
+										                            R accumulator,
+			                                                        TaskReducer<R> reducer,
+			                                                        int distance,
+			                                                        Set<String> visitedNodes) {
+		T.call(this);
+		
+		BreakableAccumulator<R> breakableAccumulator = new BreakableAccumulator<R>(accumulator);
+		
+		for(VisitDirection direction : howToVisitNodes) {
+			if(direction == PREVIOUS) {
+
+				breakableAccumulator = reduceToForTasksToVisit(resultClass, 
+													           howToVisitNodes, 
+													           transitive, 
+													           accumulator, 
+													           reducer, 
+													           distance+1, 
+													           visitedNodes,
+													           getPreviousTasks());
+
+				accumulator = breakableAccumulator.getAccumulator();
+
+				if(breakableAccumulator.shouldBreak()) {
+					break;
+				}
+
+			}else if(direction == SUB) {
+
+				breakableAccumulator = reduceToForTasksToVisit(resultClass, 
+													           howToVisitNodes, 
+													           transitive, 
+													           accumulator, 
+													           reducer, 
+													           distance+1, 
+													           visitedNodes, 
+													           getSubTasks());
+
+				accumulator = breakableAccumulator.getAccumulator();
+
+				if(breakableAccumulator.shouldBreak()) {
+					break;
+				}
+
+			}else if(direction == NEXT) {
+
+				breakableAccumulator = reduceToForTasksToVisit(resultClass, 
+													           howToVisitNodes, 
+													           transitive, 
+													           accumulator, 
+													           reducer, 
+													           distance+1, 
+													           visitedNodes, 
+													           getNextTasks());
+
+				accumulator = breakableAccumulator.getAccumulator();
+
+				if(breakableAccumulator.shouldBreak()) {
+					break;
+				}
+				
+			}else if(direction == PARENT) {
+
+				if(!isRootTask()) {
+					breakableAccumulator = reduceToForTaskToVisit(resultClass, 
+																  howToVisitNodes, 
+																  transitive, 
+																  accumulator, 
+																  reducer, 
+																  distance+1, 
+																  visitedNodes, 
+																  parent());
+					
+					accumulator = breakableAccumulator.getAccumulator();
+					if(breakableAccumulator.shouldBreak()) {
+						break;
+					}
+				}
+			}
+		}
+		
+		return breakableAccumulator;
+	}
+	
+	private <ACC extends Object> ACC reduceToForStoredTasks(StoredTaskIds storedTasksIds, 
+			                                               Class<ACC> accumulatorClass, 
+			                                               ACC accumulator, 
+			                                               TaskReducer<ACC> reducer){
+		
+		return storedTasksIds.reduceTo(accumulatorClass, accumulator, (index, taskId, innerAccumulator) -> {
+			Task task = graph.findTaskByPath(new Path(taskId));
+			
+			return reducer.reduce(index, task, innerAccumulator);
+		});
+	}
+	
+	private <R extends Object> BreakableAccumulator<R> reduceToForTasksToVisit(Class<R> resultClass, 
+			                                                                   VisitDirection[] howToVisitNodes, 
+										                                       boolean transitive,
+										                                       R accumulator,
+			                                                                   TaskReducer<R> reducer,
+			                                                                   int distance,
+			                                                                   Set<String> visitedNodes,
+			                                                                   StoredTaskIds tasksToVisit) {
+		T.call(this);
+		
+		BreakableAccumulator<R> breakableAccumulator = new BreakableAccumulator<R>(accumulator);
+		
+		accumulator = reduceToForStoredTasks(tasksToVisit, resultClass, accumulator, (index, taskToVisit, innerAccumulator) -> {
+			if(breakableAccumulator.shouldBreak()) {
+				throw new Break();
+			}
+			
+			BreakableAccumulator<R> innerBreakable = reduceToForTaskToVisit(resultClass, 
+																			howToVisitNodes, 
+																			transitive, 
+																			innerAccumulator,
+																			reducer, 
+																			distance, 
+																			visitedNodes, 
+																			taskToVisit);
+			
+			innerAccumulator = innerBreakable.getAccumulator();
+			
+			if(innerBreakable.shouldBreak()) {
+				breakableAccumulator.setShouldBreak(true);
+			}
+
+			return innerAccumulator;
+		});
+		
+		breakableAccumulator.setAccumulator(accumulator);
+		
+		return breakableAccumulator;
+	}
+
+	private <R extends Object> BreakableAccumulator<R> reduceToForTaskToVisit(Class<R> resultClass, 
+			                                                                  VisitDirection[] howToVisitNodes, 
+			                                                                  boolean transitive, 
+			                                                                  R accumulator, 
+			                                                                  TaskReducer<R> reducer, 
+			                                                                  int distance, 
+			                                                                  Set<String> visitedNodes, 
+			                                                                  Task taskToVisit) {
+		T.call(this);
+		
+		BreakableAccumulator<R> breakableAccumulator = new BreakableAccumulator<R>(accumulator);
+
+		try { 
+
+			accumulator = reducer.reduce(distance, taskToVisit, accumulator);
+			breakableAccumulator.setAccumulator(accumulator);
+
+			if(transitive && !visitedNodes.contains(taskToVisit.id())) {
+				visitedNodes.add(taskToVisit.id());
+
+				breakableAccumulator = taskToVisit.reduceToImpl(resultClass, howToVisitNodes, transitive, accumulator, reducer, distance, visitedNodes);
+			}
+
+		}catch(Break b) {
+			
+			breakableAccumulator.setShouldBreak(true);
+		}
+
+		return breakableAccumulator;
+	}
+	
+	
+
+	public FindResults findAll(VisitDirection[] howToVisitNodes, 
+							   boolean transitive,
+							   TaskMatcher matcher) {
+		T.call(this);
+		
+		return reduceTo(FindResults.class, 
+					    howToVisitNodes, 
+				        transitive, 
+				        new FindResults(),
+
+		 (distance, task, findAllResults) -> {
+
+			 if(matcher.match(task)) {
+				 findAllResults.addOrUpdateFindResult(distance, task);
+			 }
+			 
+			 return findAllResults;
+		});
+	}
+
+	public boolean hasAtomicTaskOfType(Class<? extends AtomicTask> taskClass) {
+		T.call(this);
+		
+		
+		Boolean hasTaskOfType = false;
+		
+		hasTaskOfType = hasAtomicTaskOfType(taskClass, entryTasks);
+		
+		if(!hasTaskOfType) {
+			hasTaskOfType = hasAtomicTaskOfType(taskClass, exitTasks);
+		}
+
+		return hasTaskOfType;
+	}
+	
+	private boolean hasAtomicTaskOfType(Class<? extends AtomicTask> taskClass, StoredAtomicTasks atomicTasks) {
+		T.call(this);
+
+		return atomicTasks.reduceTo(Boolean.class, false, (index, task, hasTask) -> {
+			if(hasTask) {
+
+				throw new Break();
+
+			}else if(task.getClass().equals(taskClass)) {
+				
+				hasTask = true;
+			}
+
+			return hasTask;
+		});
+	}
+
+	public boolean isDone(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return status(completions).isDone();
+	}
+
+	
+	public TaskStatus status(StudentCompletionsByTaskId completions) {
+		T.call(this);
+		
+		CompletionByAtomicTaskId atomicTaskCompletions = null;
+		if(completions != null) {
+			atomicTaskCompletions = completions.valueOf(this.id());
+		}
+
+		TaskStatus status = null;
+		
+		if(hasParent() && !parent().areEntryTasksDone(atomicTaskCompletions)) {
+			status = new BlockedWaitingForParent(parent().getPath());
+		}
+		
+		if(status == null) {
+			List<Task> previousTasksNotDone = tasksNotDone(completions, getPreviousTasks());
+			if(!previousTasksNotDone.isEmpty()) {
+				status = new BlockedWaitingForPreviousTasks(previousTasksNotDone);
+			}
+		}
+
+		if(status == null && !areEntryTasksDone(atomicTaskCompletions)) {
+			status = new StatusTodo();
+		}
+
+		if(status == null) {
+			List<Task> subTasksNotDone = tasksNotDone(completions, getSubTasks());
+			if(!subTasksNotDone.isEmpty()) {
+				status = new BlockedWaitingForSubTasks(subTasksNotDone);
+			}
+		}
+
+		if(status == null && !areExitTasksDone(atomicTaskCompletions)) {
+			status = new StatusTodo();
+		}
+		
+		if(status == null) {
+			status = new StatusDone();
+		}
+		
+		return status;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Task> tasksNotDone(StudentCompletionsByTaskId completions, StoredTaskIds tasks){
+		T.call(this);
+
+		return reduceToForStoredTasks(tasks, List.class, new ArrayList<Task>(), (index, task, accumulator) -> {
+			if(!task.isDone(completions)) {
+				accumulator.add(task);
+			}
+
+			return accumulator;
+		});
+	}
+
+	private boolean areEntryTasksDone(CompletionByAtomicTaskId completions) {
+		T.call(this);
+
+		return areAtomicTasksDone(completions, getEntryTasks());
+	}
+
+	private boolean areExitTasksDone(CompletionByAtomicTaskId completions) {
+		T.call(this);
+
+		return areAtomicTasksDone(completions, getExitTasks());
+	}
+
+	private boolean areAtomicTasksDone(CompletionByAtomicTaskId completions, StoredAtomicTasks atomicTasks) {
+		T.call(this);
+
+		return atomicTasks.reduceTo(Boolean.class, true, (index, entryTask, parentEntryDone) -> {
+			if(!parentEntryDone) {
+				throw new Break();
+			}
+			
+			AtomicTaskCompletion completion = null;
+			if(completions != null) {
+				completion = completions.valueOf(entryTask.getId());
+			}
+
+			if(completion == null
+					|| !completion.isCompleted()) {
+				
+				parentEntryDone = false;
+			}
+			
+			return parentEntryDone;
+		});
+	}
+
 }

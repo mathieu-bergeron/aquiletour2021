@@ -17,8 +17,12 @@
 
 package ca.ntro.jdk.services;
 
+import java.util.Map;
+
+import ca.ntro.core.Path;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonParser;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
@@ -129,7 +133,7 @@ public class InitializationTaskJdk extends InitializationTask {
 
 	@Override
 	protected ConfigService provideConfigService() {
-		throw new RuntimeException("provideConfigService must be overriden");
+		return new ConfigService();
 	}
 
 
@@ -141,7 +145,22 @@ public class InitializationTaskJdk extends InitializationTask {
 
 	@Override
 	protected RouterService provideRouterService() {
-		throw new RuntimeException("provideConfigService must be overriden");
+		return new RouterService() {
+
+			@Override
+			public void sendFrontendMessagesFor(NtroContext<?, ?> context, Path path,
+					Map<String, String[]> parameters) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void sendBackendMessagesFor(NtroContext<?, ?> context, Path path, Map<String, String[]> parameters) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
 	}
 
 

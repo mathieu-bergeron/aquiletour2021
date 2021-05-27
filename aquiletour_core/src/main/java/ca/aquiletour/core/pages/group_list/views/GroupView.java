@@ -11,4 +11,6 @@ public interface GroupView extends ItemView {
 	void clearStudents();
 	void appendStudent(StudentDescription student);
 
+	void displayStudentsSummary(String summary);
+
 }

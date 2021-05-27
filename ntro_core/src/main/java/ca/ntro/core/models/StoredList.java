@@ -3,6 +3,10 @@ package ca.ntro.core.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ntro.core.models.lambdas.Break;
+import ca.ntro.core.models.lambdas.ListIterator;
+import ca.ntro.core.models.lambdas.ListMatcher;
+import ca.ntro.core.models.lambdas.ListReducer;
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ItemRemovedListener;
@@ -37,7 +41,14 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 	
 	public I item(int id) {
 		T.call(this);
-		return getValue().get(id);
+		
+		I item = null;
+
+		synchronized (getValue()) {
+			item = getValue().get(id);
+		}
+
+		return item;
 	}
 
 	public void insertItem(int index, I item) {
@@ -270,7 +281,15 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 	}
 
 	public boolean contains(I item) {
-		return Ntro.collections().listContainsEquals(getValue(), item);
+		T.call(this);
+
+		boolean contains = false;
+
+		synchronized (getValue()) {
+			contains = Ntro.collections().listContainsEquals(getValue(), item);
+		}
+
+		return contains;
 	}
 
 	public void onItemRemoved(ItemRemovedListener<I> listener) {
@@ -307,4 +326,61 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 			}
 		});
 	}
+
+	public boolean isEmpty() {
+		T.call(this);
+
+		return size() == 0;
+	}
+	
+	public void forEachItem(ListIterator<I> lambda) {
+		T.call(this);
+
+		synchronized (getValue()) {
+			for(int i = 0; i < size(); i++) {
+				try {
+
+					lambda.on(i, item(i));
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+	}
+	
+	public <R extends Object> R reduceTo(Class<R> accumlatorClass, R accumulator, ListReducer<R,I> reducer) {
+		T.call(this);
+
+		synchronized (getValue()) {
+			for(int i = 0; i < size(); i++) {
+				try {
+
+					accumulator = reducer.reduce(i, item(i), accumulator);
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+
+		return accumulator;
+	}
+
+	public I findFirst(Class<I> itemClass, ListMatcher<I> matcher) {
+		T.call(this);
+
+		return reduceTo(itemClass, null, (index, item, accumulator) ->{
+			if(accumulator != null) {
+				throw new Break();
+			}
+			
+			if(matcher.match(index, item)) {
+				accumulator = item;
+			}
+			
+			return accumulator;
+		});
+	}
+	
 }

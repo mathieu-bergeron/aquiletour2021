@@ -1,0 +1,13 @@
+{
+  "firstname": "alice",
+  "_C": "Admin",
+  "authToken": "",
+  "adminMode": false,
+  "registrationId": "alice",
+  "hasPassword": false,
+  "id": "ca7fe107b1bff6faf665",
+  "email": "alice@cmontmorency.qc.ca",
+  "passwordHash": "",
+  "lastname": "",
+  "studentMode": false
+}

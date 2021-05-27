@@ -36,6 +36,8 @@ import static def.dom.Globals.history;
 
 import static def.dom.Globals.window;
 
+import static def.js.Globals.undefined;
+
 public class HtmlElementJSweet extends HtmlElement {
 
 	private JQuery jQueryElement;
@@ -212,7 +214,11 @@ public class HtmlElementJSweet extends HtmlElement {
 	public String getAttribute(String name) {
 		T.call(this);
 
-		return jQueryElement.attr(name);
+		String value = jQueryElement.attr(name);
+		if(value == undefined) {
+			value = null;
+		}
+		return value;
 	}
 
 	@Override
@@ -428,5 +434,12 @@ public class HtmlElementJSweet extends HtmlElement {
 		T.call(this);
 
 		jQueryElement.removeClass(styleClass);
+	}
+
+	@Override
+	public HtmlElement clone() {
+		T.call(this);
+
+		return new HtmlElementJSweet(jQueryElement.clone(false));
 	}
 }

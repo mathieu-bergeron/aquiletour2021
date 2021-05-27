@@ -31,13 +31,15 @@ import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.http.DynamicHandler;
-import ca.aquiletour.server.http.GitHandler;
 import ca.aquiletour.server.http.MessageHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.core.Constants;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.services.Ntro;
@@ -62,6 +64,9 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		Ntro.jsonService().setPrettyPrinting(true);
 		
 		sendTimePassesMessages();
+
+		UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+		SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _resources)
@@ -116,7 +121,6 @@ public class AquiletourMainServer extends NtroTaskAsync {
 
 		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX));
 		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
-//		handlers.addHandler(GitHandler.createGitHandler(ca.aquiletour.core.Constants.GIT_API_URL_PATH));
 		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.SOCKET_PREFIX));
 		handlers.addHandler(MessageHandler.createMessageHandler(Constants.HTTP_PREFIX));
 		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));

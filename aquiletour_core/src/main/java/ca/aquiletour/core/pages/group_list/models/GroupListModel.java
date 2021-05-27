@@ -2,10 +2,9 @@ package ca.aquiletour.core.pages.group_list.models;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 
 public class GroupListModel implements NtroModel {
 	

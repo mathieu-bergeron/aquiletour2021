@@ -27,6 +27,7 @@ public class CourseListItemViewWebTeacher extends CourseListItemViewWeb implemen
 	private HtmlElements addCourseIdToValue;
 	private HtmlElements addCourseIdToId;
 	private HtmlElements addCourseIdToForm;
+	private HtmlElements addCourseIdToDataTarget;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -47,6 +48,7 @@ public class CourseListItemViewWebTeacher extends CourseListItemViewWeb implemen
 		addCourseIdToValue = this.getRootElement().find(".add-course-id-to-value");
 		addCourseIdToId = this.getRootElement().find(".add-course-id-to-id");
 		addCourseIdToForm = this.getRootElement().find(".add-course-id-to-form");
+		addCourseIdToDataTarget = this.getRootElement().find(".add-course-id-to-data-target");
 
 		MustNot.beNull(addGroupModalTitle);
 		MustNot.beNull(groupList);
@@ -61,6 +63,7 @@ public class CourseListItemViewWebTeacher extends CourseListItemViewWeb implemen
 		Ntro.verify(that(addCourseIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addCourseIdToId.size() > 0).isTrue());
 		Ntro.verify(that(addCourseIdToForm.size() > 0).isTrue());
+		Ntro.verify(that(addCourseIdToDataTarget.size() > 0).isTrue());
 	}
 
 	@Override
@@ -75,6 +78,7 @@ public class CourseListItemViewWebTeacher extends CourseListItemViewWeb implemen
 		addCourseIdToValue.appendToAttribute("value", courseListItem.getCourseId());
 		addCourseIdToId.appendToAttribute("id", courseListItem.getCourseId());
 		addCourseIdToForm.appendToAttribute("form", courseListItem.getCourseId());
+		addCourseIdToDataTarget.appendToAttribute("data-target", courseListItem.getCourseId());
 	}
 
 	@Override

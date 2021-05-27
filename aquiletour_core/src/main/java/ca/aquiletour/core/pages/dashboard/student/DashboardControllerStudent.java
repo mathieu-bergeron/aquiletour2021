@@ -3,8 +3,8 @@ package ca.aquiletour.core.pages.dashboard.student;
 import ca.aquiletour.core.pages.dashboard.DashboardController;
 import ca.aquiletour.core.pages.dashboard.handlers.DashboardViewModel;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
-import ca.aquiletour.core.pages.dashboard.student.handlers.ShowStudentDashboardHandler;
-import ca.aquiletour.core.pages.dashboard.student.messages.ShowStudentDashboardMessage;
+import ca.aquiletour.core.pages.dashboard.student.handlers.ShowDashboardHandlerStudent;
+import ca.aquiletour.core.pages.dashboard.student.messages.ShowDashboardMessageStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardCourseViewStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardViewStudent;
@@ -24,7 +24,7 @@ public class DashboardControllerStudent extends DashboardController {
 	protected void installParentViewMessageHandler() {
 		T.call(this);
 		
-		addParentViewMessageHandler(ShowStudentDashboardMessage.class, new ShowStudentDashboardHandler());
+		addParentViewMessageHandler(ShowDashboardMessageStudent.class, new ShowDashboardHandlerStudent());
 		
 		addSubViewLoader(DashboardCourseViewStudent.class, context().lang());
 		

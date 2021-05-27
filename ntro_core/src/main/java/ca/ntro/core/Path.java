@@ -59,6 +59,10 @@ public class Path implements JsonSerializable {
 		return startsWith;
 	}
 	
+	public Path clone() {
+		return subPath(0, names.size()-1);
+	}
+
 	public Path subPath(int beginIndex) {
 		return subPath(beginIndex, names.size()-1);
 	}

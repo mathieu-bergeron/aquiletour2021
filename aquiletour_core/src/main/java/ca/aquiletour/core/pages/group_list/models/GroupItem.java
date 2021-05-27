@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.group_list.models;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.group.StudentDescription;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -48,8 +48,8 @@ public class GroupItem implements NtroModelValue {
 
 		for(User studentToAdd : studentsToAdd) {
 			StudentDescription studentDescription = new StudentDescription();
-			studentDescription.setName(studentToAdd.getName());
-			studentDescription.setSurname(studentToAdd.getSurname());
+			studentDescription.setName(studentToAdd.getFirstname());
+			studentDescription.setSurname(studentToAdd.getLastname());
 			
 			MustNot.beNull(studentToAdd.getId());
 			
@@ -65,5 +65,16 @@ public class GroupItem implements NtroModelValue {
 
 	public void setStudents(ObservableStudentList students) {
 		this.students = students;
+	}
+
+	public String studentsSummary() {
+		T.call(this);
+		
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(students.size());
+		builder.append(" étudiants");
+		
+		return builder.toString();
 	}
 }

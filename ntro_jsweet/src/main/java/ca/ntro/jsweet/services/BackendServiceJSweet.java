@@ -1,7 +1,8 @@
 package ca.ntro.jsweet.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 import java.util.Map;
 
 import ca.ntro.core.system.trace.__T;
@@ -14,6 +15,11 @@ import def.dom.WebSocket;
 import static def.dom.Globals.window;
 
 public class BackendServiceJSweet extends BackendService {
+	
+	// FIXME: would be cleaner wait for
+	//        WebSocket to be open using an initialization task
+	private boolean isOpen = false;
+	private final List<NtroMessage> queuedMessages = new ArrayList<>();
 	
 	private final WebSocket webSocket;
 	
@@ -54,6 +60,11 @@ public class BackendServiceJSweet extends BackendService {
 
 			sendMessageToBackend(registerSocketNtroMessage);
 			
+			isOpen = true;
+			for(NtroMessage queuedMessage : queuedMessages) {
+				sendMessageToBackend(queuedMessage);
+			}
+			
 			return null;
 		};
 	}
@@ -62,7 +73,11 @@ public class BackendServiceJSweet extends BackendService {
 	public void sendMessageToBackend(NtroMessage message) {
 		__T.call(this, "sendMessageToBackend");
 		
-		webSocket.send(Ntro.jsonService().toString(message));
+		if(isOpen) {
+			webSocket.send(Ntro.jsonService().toString(message));
+		}else {
+			queuedMessages.add(message);
+		}
 	}
 
 	@Override

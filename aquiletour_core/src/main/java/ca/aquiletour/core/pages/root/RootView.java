@@ -29,7 +29,7 @@ public interface RootView extends NtroView {
 	void showGitLateStudents(LateStudentsView gitLateStudentsView);
 	void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView);
 	void showCourse(CourseView currentView);
-	void showCalendarList(SemesterListView currentView);
+	void showSemesterList(SemesterListView currentView);
 	void showCourseList(CourseListView currentView);
 	void showGroupList(GroupListView currentView);
 
@@ -38,4 +38,5 @@ public interface RootView extends NtroView {
 	void onContextChange(NtroContext<?,?> context);
 	void displayUserScreenName(String screenName);
 	void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages);
+	void showPasswordMenu();
 }

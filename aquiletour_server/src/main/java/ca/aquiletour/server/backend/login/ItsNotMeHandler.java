@@ -14,7 +14,7 @@ public class ItsNotMeHandler extends BackendMessageHandler<ItsNotMeMessage> {
 	public void handleNow(ModelStoreSync modelStore, ItsNotMeMessage message) {
 		T.call(this);
 		
-		Ntro.currentSession().setUser(InitializeSessionHandler.createGuestSession(modelStore));
+		Ntro.currentSession().setUser(SessionManager.createGuestSession(modelStore));
 
 		if(message.getDelayedMessages().isEmpty()) {
 

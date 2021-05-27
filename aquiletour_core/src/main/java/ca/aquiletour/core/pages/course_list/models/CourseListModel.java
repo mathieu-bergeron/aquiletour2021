@@ -7,14 +7,14 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class CourseListModel implements NtroModel {
 	
-	private ObservableSemesterIdList semesters = new ObservableSemesterIdList();
+	private SemesterIds semesters = new SemesterIds();
 	private ObservableCourseDescriptionList courses = new ObservableCourseDescriptionList();
 
-	public ObservableSemesterIdList getSemesters() {
+	public SemesterIds getSemesters() {
 		return semesters;
 	}
 
-	public void setSemesters(ObservableSemesterIdList semesters) {
+	public void setSemesters(SemesterIds semesters) {
 		this.semesters = semesters;
 	}
 

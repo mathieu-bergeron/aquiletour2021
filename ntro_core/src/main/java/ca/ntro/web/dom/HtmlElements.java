@@ -14,7 +14,11 @@ public abstract class HtmlElements {
 
 		this.forEach(e -> {
 			String value = e.getAttribute(name);
-			value += toAppend;
+			if(value == null) {
+				value = toAppend;
+			}else {
+				value += toAppend;
+			}
 			e.setAttribute(name, value);
 		});
 	}

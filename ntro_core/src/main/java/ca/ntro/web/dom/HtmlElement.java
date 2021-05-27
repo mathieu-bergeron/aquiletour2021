@@ -72,6 +72,7 @@ public abstract class HtmlElement {
 		String styleString = getStyleString();
 
 		styleString = styleString.replace("display:none !important;", "");
+		styleString = styleString.replace("display:none;", "");
 
 		setAttribute("style", styleString);
 	}
@@ -80,6 +81,7 @@ public abstract class HtmlElement {
 		String styleString = getStyleString();
 		
 		if(!styleString.contains("display:none !important;")){
+			styleString = styleString.replace("display:none;", "");
 			styleString += " display:none !important;";
 		}
 		
@@ -99,4 +101,6 @@ public abstract class HtmlElement {
 
 	public abstract void addClass(String styleClass);
 	public abstract void removeClass(String styleClass);
+
+	public abstract HtmlElement clone();
 }

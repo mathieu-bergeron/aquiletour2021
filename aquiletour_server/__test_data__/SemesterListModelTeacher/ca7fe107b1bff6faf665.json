@@ -1,0 +1,43 @@
+{
+  "_C": "SemesterListModelTeacher",
+  "semesters": {
+    "_C": "ObservableSemesterList",
+    "value": [
+      {
+        "semesterId": "H2021",
+        "_C": "SemesterModelTeacher",
+        "semesterSchedule": {
+          "weeks": {
+            "_C": "ObservableSemesterWeekList",
+            "value": []
+          },
+          "_C": "SemesterSchedule"
+        },
+        "teacherSchedule": {
+          "semesterId": "",
+          "scheduleItems": {
+            "_C": "ScheduleItems",
+            "value": []
+          },
+          "teacherId": "",
+          "_C": "TeacherSchedule"
+        },
+        "courseGroups": {
+          "_C": "ObservableCourseGroupList",
+          "value": [
+            {
+              "_C": "CourseGroup",
+              "groupId": "01",
+              "courseId": "strudon"
+            }
+          ]
+        },
+        "adminControlled": true
+      }
+    ]
+  },
+  "currentSemesterId": {
+    "_C": "StoredString",
+    "value": "H2021"
+  }
+}

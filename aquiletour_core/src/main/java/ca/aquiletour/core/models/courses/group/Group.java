@@ -2,13 +2,13 @@ package ca.aquiletour.core.models.courses.group;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.users.Student;
+import ca.aquiletour.core.models.user.Student;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
 public class Group implements NtroModelValue {
 
-	private String groupId;
+	private String groupId = "";
 	private ObservableStudentMap students = new ObservableStudentMap();
 
 	public ObservableStudentMap getStudents() {
@@ -37,9 +37,7 @@ public class Group implements NtroModelValue {
 		
 		for(Student student : studentsToAdd) {
 			
-			
 		}
-		
 		
 		return null;
 	}

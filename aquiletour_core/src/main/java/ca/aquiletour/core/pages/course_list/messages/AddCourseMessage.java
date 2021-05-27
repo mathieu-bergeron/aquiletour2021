@@ -1,9 +1,9 @@
 package ca.aquiletour.core.pages.course_list.messages;
 
-import ca.aquiletour.core.messages.course.CourseMessage;
+import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 
-public class AddCourseMessage extends CourseMessage {
+public class AddCourseMessage extends CourseTaskMessage {
 
 	private CourseListItem courseListItem;
 

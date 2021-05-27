@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages;
 
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroMessage;
 
 public class InitializeSessionMessage extends NtroMessage {

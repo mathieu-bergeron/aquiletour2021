@@ -7,9 +7,9 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
@@ -29,7 +29,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	private HtmlElement previousTaskList;
 	private HtmlElement nextTaskList;
 	private HtmlElement nextTaskContainer;
-	private HtmlElement taskTypeContainer;
+
 
 	private HtmlElement uneditableDescription;
 	private HtmlElement uneditableEndtime;
@@ -45,7 +45,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		nextTaskContainer= this.getRootElement().find("#next-task-container").get(0);
 		previousTaskList = this.getRootElement().find("#previous-task-list").get(0);
 		nextTaskList = this.getRootElement().find("#next-task-list").get(0);
-		taskTypeContainer = this.getRootElement().find("#task-type-container").get(0);
 		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
 		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
@@ -57,7 +56,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(previousTaskContainer);
 		MustNot.beNull(nextTaskList);
 		MustNot.beNull(nextTaskContainer);
-		MustNot.beNull(taskTypeContainer);
 		MustNot.beNull(uneditableEndtime);
 		MustNot.beNull(uneditableDescription);
 		
@@ -235,29 +233,9 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		uneditableDescription.text(description);
 	}
 
-	@Override
-	public void appendTaskType(TaskType item) {
-		T.call(this);
-		
-		String taskTypeText = taskTypeContainer.text();
-		
-		if(taskTypeText == null || taskTypeText.isEmpty()) {
-			
-			taskTypeContainer.text(item.toString());
+	
 
-		}else {
 
-			taskTypeContainer.text(taskTypeText + ", " + item.toString());
-		}
-	}
-
-	@Override
-	public void clearTaskTypes() {
-		T.call(this);
-
-		taskTypeContainer.deleteChildrenForever();
-		taskTypeContainer.text("");
-	}
 
 	@Override
 	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {

@@ -2,8 +2,6 @@ package ca.aquiletour.core.pages.semester_list.handlers;
 
 
 import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.models.schedule.ScheduleItem;
-import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
@@ -13,28 +11,40 @@ import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListModel, SemesterListView> {
+public abstract class SemesterListViewModel<SLM extends SemesterListModel<SM>, 
+											SM extends SemesterModel,
+                                            SLV extends SemesterListView, 
+                                            SV extends SemesterView> 
 
+       extends ModelViewSubViewHandler<SLM, SLV> {
+
+	@SuppressWarnings("unchecked")
 	@Override
-	protected void handle(SemesterListModel model, SemesterListView view, ViewLoader subViewLoader) {
+	protected void handle(SLM model, SLV view, ViewLoader subViewLoader) {
 		T.call(this);
 
-		model.getSemesters().onItemAdded(new ItemAddedListener<SemesterModel>() {
+		model.getSemesters().onItemAdded(new ItemAddedListener<SM>() {
 			@Override
-			public void onItemAdded(int index, SemesterModel item) {
+			public void onItemAdded(int index, SM item) {
 				T.call(this);
 
-				observeSemester(view, subViewLoader, item);
+				SV semesterView = (SV) subViewLoader.createView();
+				
+				observeSemester(view, semesterView, item, isCurrentSemester(model, item));
 			}
 		});
 	}
 
-	private void observeSemester(SemesterListView view, ViewLoader subViewLoader, SemesterModel semester) {
+	private boolean isCurrentSemester(SLM model, SM item) {
 		T.call(this);
 
-		SemesterView semesterView = (SemesterView) subViewLoader.createView();
+		return model.getCurrentSemesterId().getValue().equals(item.getSemesterId());
+	}
 
-		displaySemester(semester, semesterView);
+	protected void observeSemester(SLV view, SV semesterView, SM semester, boolean isCurrentSemester) {
+		T.call(this);
+
+		displaySemester(semester, semesterView, isCurrentSemester);
 		
 		view.appendSemester(semesterView);
 		
@@ -45,38 +55,15 @@ public class SemesterListViewModel extends ModelViewSubViewHandler<SemesterListM
 				T.call(this);
 
 				semesterView.appendSemesterWeek(item);
-				semesterView.displaySemesterSummary(semester.semesterSummary());
-			}
-		});
-		
-		semester.getCourseGroups().removeObservers();
-		semester.getCourseGroups().onItemAdded(new ItemAddedListener<CourseGroup>() {
-			@Override
-			public void onItemAdded(int index, CourseGroup item) {
-				T.call(this);
-
-				semesterView.appendCourseGroupe(item);
-			}
-		});
-		
-		semester.getTeacherSchedule().getScheduleItems().removeObservers();
-		semester.getTeacherSchedule().getScheduleItems().onItemAdded(new ItemAddedListener<ScheduleItem>() {
-			@Override
-			public void onItemAdded(int index, ScheduleItem item) {
-				T.call(this);
-
-				semesterView.appendScheduleItem(item);
-				semesterView.displayScheduleSummary(semester.scheduleSummary());
+				semesterView.displayCalendarSummary(semester.semesterSummary());
 			}
 		});
 	}
 
-	private void displaySemester(SemesterModel semester, SemesterView semesterView) {
+	protected void displaySemester(SM semester, SV semesterView, boolean isCurrentSemester) {
 		T.call(this);
 
-		semesterView.displaySemester(semester);
-		semesterView.displaySemesterSummary(semester.semesterSummary());
-		semesterView.displayScheduleSummary(semester.scheduleSummary());
-		semesterView.displayAvailabilitySummary(semester.availabilitySummary());
+		semesterView.displaySemester(semester, isCurrentSemester);
+		semesterView.displayCalendarSummary(semester.semesterSummary());
 	}
 }

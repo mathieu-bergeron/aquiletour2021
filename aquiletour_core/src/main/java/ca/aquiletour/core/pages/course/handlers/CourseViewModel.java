@@ -2,12 +2,16 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
+import org.apache.log4j.net.SyslogAppender;
+
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.model.CompletionByStudentId;
-import ca.aquiletour.core.models.courses.model.CourseModel;
-import ca.aquiletour.core.models.courses.student.TaskCompletion;
-import ca.aquiletour.core.models.courses.task_types.TaskType;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
+import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -68,43 +72,13 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
-			observeCompletionByTaskId(model, view);
+			observeCompletions(model, view);
 		}
 	}
 
-	protected void observeCompletionByTaskId(M model, V view) {
-		T.call(this);
+	protected abstract void observeCompletions(M model, V view);
 
-		model.getCompletions().removeObservers();
-		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByStudentId>() {
-			@Override
-			public void onEntryAdded(String taskId, CompletionByStudentId completionByStudentId) {
-				T.call(this);
-				
-				observeCompletionByStudentId(view, taskId, completionByStudentId);
-			}
-		});
-	}
-
-	protected void observeCompletionByStudentId(V view, 
-											  String taskId, 
-											  CompletionByStudentId completionByStudentId) {
-		T.call(this);
-
-		completionByStudentId.removeObservers();
-		if(currentTask() != null && currentTask().id().equals(taskId)) {
-			completionByStudentId.onEntryAdded(new EntryAddedListener<TaskCompletion>() {
-				@Override
-				public void onEntryAdded(String studentId, TaskCompletion value) {
-					T.call(this);
-					
-					displayStudentCompletion(studentId, value, view);
-				}
-			});
-		}
-	}
-	
-	protected abstract void displayStudentCompletion(String studentId, TaskCompletion completion, V view);
+	protected abstract void displayStudentCompletion(String studentId, V view);
 
 	private void removeAllObservers() {
 		T.call(this);
@@ -114,7 +88,8 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 		currentTask.getNextTasks().removeObservers();
 		currentTask.getDescription().removeObservers();
 		currentTask.getEndTime().removeObservers();
-		currentTask.getTaskTypes().removeObservers();
+		currentTask.getEntryTasks().removeObservers();
+		currentTask.getExitTasks().removeObservers();
 		currentTask.getTitle().removeObservers();
 	}
 
@@ -134,7 +109,8 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
 		observeCurrentTaskEndTime(model, view);
-		observeCurrentTaskTypes(view);
+		observeEntryTasks(model, view);
+		observeExitTasks(model, view);
 
 		observeSubTasks(model, view, subViewLoader);
 		
@@ -182,31 +158,56 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 		
 		if(!isEditable()) {
 			
-			description = TaskType.removeTypesFromDescription(value);
+			description = AtomicTask.removeAtomicTasksFromDescription(value);
 
 		}
 
 		view.displayTaskDescription(description, isEditable());
 	}
 
-	private void observeCurrentTaskTypes(V view) {
+	private void observeEntryTasks(M model, V view) {
 		T.call(this);
 
-		view.clearTaskTypes();
-		currentTask.getTaskTypes().removeObservers();
-		currentTask.getTaskTypes().onItemAdded(new ItemAddedListener<TaskType>() {
+		view.clearEntryTasks();
+		currentTask.getEntryTasks().removeObservers();
+		currentTask.getEntryTasks().onItemAdded(new ItemAddedListener<AtomicTask>() {
 			@Override
-			public void onItemAdded(int index, TaskType item) {
+			public void onItemAdded(int index, AtomicTask item) {
 				T.call(this);
 				
-				view.appendTaskType(item);
+				displayEntryTask(model, view, item);
 			}
 		});
 		
-		currentTask.getTaskTypes().onClearItems(new ClearItemsListener() {
+		currentTask.getEntryTasks().onClearItems(new ClearItemsListener() {
 			@Override
 			public void onClearItems() {
-				view.clearTaskTypes();
+				view.clearEntryTasks();
+			}
+		});
+	}
+	
+	protected abstract void displayEntryTask(M model, V view, AtomicTask task);
+	protected abstract void displayExitTask(M model, V view, AtomicTask task);
+
+	private void observeExitTasks(M model, V view) {
+		T.call(this);
+
+		view.clearExitTasks();
+		currentTask.getExitTasks().removeObservers();
+		currentTask.getExitTasks().onItemAdded(new ItemAddedListener<AtomicTask>() {
+			@Override
+			public void onItemAdded(int index, AtomicTask item) {
+				T.call(this);
+				
+				displayExitTask(model, view, item);
+			}
+		});
+		
+		currentTask.getExitTasks().onClearItems(new ClearItemsListener() {
+			@Override
+			public void onClearItems() {
+				view.clearExitTasks();
 			}
 		});
 	}
@@ -403,7 +404,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
 
-				displaySubtasksInOrder(model, view, subViewLoader);
+				displayNextTasksInOrder(model, view, subViewLoader);
 			}
 			
 			@Override
@@ -459,8 +460,8 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 
 		view.clearNextTasks();
 
-		currentTask.forEachNextTaskInOrder(st -> {
-			view.appendNextTask(model.getCoursePath(), st);
+		currentTask.forEachNextTaskInOrder(nt -> {
+			view.appendNextTask(model.getCoursePath(), nt);
 		});
 	}
 }

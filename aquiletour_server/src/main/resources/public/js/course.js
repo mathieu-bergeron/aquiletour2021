@@ -12,7 +12,7 @@ function initializeCourse(viewRootElement, jSweet){
     var margin = parseInt(breadcrumb.css("marginLeft"));
 
     canvas.setWidth((breadcrumb.outerWidth() + margin));
-    canvas.setHeight(100);
+    canvas.setHeight(30);
 
     canvas.on('mouse:over', function(e){
 

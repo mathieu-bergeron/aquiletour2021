@@ -2,24 +2,22 @@ package ca.aquiletour.core.pages.semester_list.models;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
-import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
-import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class SemesterListModel implements NtroModel {
+public abstract class SemesterListModel<SM extends SemesterModel> implements NtroModel {
 	
 	private StoredString currentSemesterId = new StoredString(Constants.DRAFTS_SEMESTER_ID);
-	private ObservableSemesterList semesters = new ObservableSemesterList();
+	private ObservableSemesterList<SM> semesters = new ObservableSemesterList<SM>();
 
-	public ObservableSemesterList getSemesters() {
+	public ObservableSemesterList<SM> getSemesters() {
 		return semesters;
 	}
 
-	public void setSemesters(ObservableSemesterList semesters) {
+	public void setSemesters(ObservableSemesterList<SM> semesters) {
 		this.semesters = semesters;
 	}
 	
@@ -32,29 +30,44 @@ public class SemesterListModel implements NtroModel {
 	}
 
 
-	public SemesterModel semesterById(String semesterId) {
-		SemesterModel semester = null;
+	public SM semesterById(String semesterId) {
+		T.call(this);
+
+		int semesterIndex = semesterIndexById(semesterId);
+		SM semester = null;
 		
-		for(int i = 0; i < getSemesters().size(); i++) {
-			SemesterModel candidate = getSemesters().item(i);
-			if(candidate.getSemesterId().equals(semesterId)) {
-				semester = candidate;
-				break;
-			}
+		if(semesterIndex != -1) {
+			semester = getSemesters().item(semesterIndex);
 		}
 
 		return semester;
 	}
 
-	public boolean ifSemesterIdExists(String semesterId) {
-		return semesterById(semesterId) != null;
+	public int semesterIndexById(String semesterId) {
+		T.call(this);
+
+		int index = -1;
+		
+		for(int i = 0; i < getSemesters().size(); i++) {
+			SemesterModel candidate = getSemesters().item(i);
+			if(candidate.getSemesterId().equals(semesterId)) {
+				index = i;
+				break;
+			}
+		}
+
+		return index;
 	}
 
-	public void addSemester(SemesterModel semester) {
+	public boolean ifSemesterIdExists(String semesterId) {
+		return semesterIndexById(semesterId) != -1;
+	}
+
+	public void addSemester(SM semester) {
 		T.call(this);
 		
 		if(!ifSemesterIdExists(semester.getSemesterId())) {
-			semesters.addItem(semester);
+			semesters.insertItem(0, semester);
 		}
 	}
 
@@ -79,36 +92,7 @@ public class SemesterListModel implements NtroModel {
 		getCurrentSemesterId().set(semesterId);
 	}
 
-	public void addCourseGroup(String semesterId, String courseId, String groupId) {
-		T.call(this);
 
-		SemesterModel semester = semesterById(semesterId);
-		
-		if(semester != null) {
-			
-			semester.addCourseGroup(courseId, groupId);
-			
-		} else {
-			
-			Log.warning("Semester not found: " + semesterId);
-		}
-	}
-
-	public void addScheduleItem(String semesterId, ScheduleItem scheduleItem) {
-		T.call(this);
-
-		SemesterModel semester = semesterById(semesterId);
-		
-		if(semester != null) {
-			
-			semester.addScheduleItem(scheduleItem);
-			
-		} else {
-			
-			Log.warning("Semester not found: " + semesterId);
-		}
-		
-	}
 
 	public SemesterSchedule semesterSchedule(String semesterId) {
 		T.call(this);
@@ -128,21 +112,19 @@ public class SemesterListModel implements NtroModel {
 		return schedule;
 	}
 
-	public TeacherSchedule teacherSchedule(String semesterId) {
+
+	public void removeSemester(String semesterId) {
 		T.call(this);
 
-		SemesterModel semester = semesterById(semesterId);
-		TeacherSchedule schedule = null;
-		
-		if(semester != null) {
+		int semesterIndex = semesterIndexById(semesterId);
+
+		if(semesterIndex != -1) {
 			
-			schedule = semester.getTeacherSchedule();
+			getSemesters().removeItemAtIndex(semesterIndex);
 			
 		} else {
 			
 			Log.warning("Semester not found: " + semesterId);
 		}
-		
-		return schedule;
 	}
 }

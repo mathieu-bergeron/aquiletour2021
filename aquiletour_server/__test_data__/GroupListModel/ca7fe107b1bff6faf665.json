@@ -1,0 +1,48 @@
+{
+  "_C": "GroupListModel",
+  "groups": {
+    "_C": "ObservableGroupList",
+    "value": [
+      {
+        "semesterId": "H2021",
+        "_C": "GroupItem",
+        "groupId": "01",
+        "students": {
+          "_C": "ObservableStudentList",
+          "value": [
+            {
+              "_C": "StudentDescription",
+              "surname": "Bérancourt",
+              "name": "Bob",
+              "id": "fe1150a38a1c4681a352"
+            },
+            {
+              "_C": "StudentDescription",
+              "surname": "Ngo",
+              "name": "Nicolas",
+              "id": "0fc79b9b4b9887f62160"
+            },
+            {
+              "_C": "StudentDescription",
+              "surname": "Saens",
+              "name": "Richardson",
+              "id": "c1d05fd672d220385e20"
+            }
+          ]
+        },
+        "courseId": "strudon"
+      }
+    ]
+  },
+  "semesterCourses": {
+    "_C": "SemesterCourses",
+    "value": {
+      "H2021": {
+        "_C": "ObservableCourseList",
+        "value": [
+          "strudon"
+        ]
+      }
+    }
+  }
+}

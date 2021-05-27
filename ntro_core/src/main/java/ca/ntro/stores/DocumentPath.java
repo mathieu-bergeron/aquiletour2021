@@ -24,7 +24,7 @@ public class DocumentPath implements JsonSerializable {
 		this.collection = collection;
 	}
 	
-	public DocumentPath clone() {
+	public DocumentPath cloneModelValue() {
 		DocumentPath clone = new DocumentPath();
 
 		clone.setCollection(collection);

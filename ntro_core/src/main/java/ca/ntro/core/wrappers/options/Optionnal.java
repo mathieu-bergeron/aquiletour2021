@@ -21,6 +21,9 @@ public class Optionnal<V extends Object> {
 	
 	private V value;
 	private State state = State.NONE;
+
+	public Optionnal() {
+	}
 	
 	public Optionnal(V value) {
 		set(value);

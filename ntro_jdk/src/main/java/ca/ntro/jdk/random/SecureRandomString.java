@@ -1,17 +1,16 @@
 package ca.ntro.jdk.random;
 
 import java.security.SecureRandom;
-import java.util.Base64;
+import org.apache.commons.codec.binary.Hex;
 
 // from: https://neilmadden.blog/2018/08/30/moving-away-from-uuids/ 
 public class SecureRandomString {
 	private static final SecureRandom random = new SecureRandom();
-	private static final Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
 
-	public static String generate() {
-		byte[] buffer = new byte[20];
+	public static String generate(int length) {
+		byte[] buffer = new byte[length];
 		random.nextBytes(buffer);
-		return encoder.encodeToString(buffer);
+		return Hex.encodeHexString(buffer);
 	}
 
 	public static String generateLoginCode() {

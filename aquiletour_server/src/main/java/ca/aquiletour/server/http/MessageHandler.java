@@ -66,11 +66,11 @@ public class MessageHandler extends AbstractHandler {
 		T.call(this);
 		
 		
-		System.out.println("MessagesHandler");
-		
         if (request.getMethod().equals("POST")) {
         	
         	String body = ModelHandler.readBody(baseRequest);
+
+			System.out.println("MessagesHandler: " + body);
         	
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, body);
 			

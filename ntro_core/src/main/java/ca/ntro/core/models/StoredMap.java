@@ -5,13 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.models.lambdas.Break;
+import ca.ntro.core.models.lambdas.MapIterator;
+import ca.ntro.core.models.lambdas.MapMapper;
+import ca.ntro.core.models.lambdas.MapReducer;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> {
+public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> implements NtroCloneable<StoredMap<V>> {
 
 	private List<MapObserver<V>> mapObservers = new ArrayList<>();
 
@@ -36,8 +40,10 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 	}
 
 	public void putEntry(String key, V value) {
-		
-		getValue().put(key, value);
+
+		synchronized (getValue()) {
+			getValue().put(key, value);
+		}
 		
 		if(ifStoredConnected()) {
 
@@ -59,7 +65,15 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 	}
 
 	public V valueOf(String key) {
-		return getValue().get(key);
+		T.call(this);
+		
+		V value = null;
+		
+		synchronized (getValue()) {
+			value = getValue().get(key);
+		}
+		
+		return value;
 	}
 	
 	public void removeEntry(String key) {
@@ -105,8 +119,14 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 
 	public boolean containsKey(String key) {
 		T.call(this);
+		
+		boolean contains = false;
+		
+		synchronized (getValue()) {
+			contains = getValue().containsKey(key);
+		}
 
-		return getValue().containsKey(key);
+		return contains;
 	}
 
 	public void removeObservers() {
@@ -118,8 +138,10 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 	public void clear() {
 		T.call(this);
 		
-		getValue().clear();
-
+		synchronized (getValue()) {
+			getValue().clear();
+		}
+		
 		for(MapObserver<V> mapObserver : mapObservers) {
 			mapObserver.onClearEntries();
 		}
@@ -156,4 +178,85 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		});
 	}
 	
+	@Override
+	public StoredMap<V> cloneModelValue() throws CloneNotSupportedException {
+		T.call(this);
+		
+		StoredMap<V> clone = new StoredMap<>();
+		
+		for(Map.Entry<String, V> entry : getValue().entrySet()) {
+			
+			V value = entry.getValue();
+			
+			if(value instanceof NtroCloneable) {
+				
+				clone.putEntry(entry.getKey(), ((NtroCloneable<V>)value).cloneModelValue());
+				
+			}else {
+
+				throw new CloneNotSupportedException("To clone a Map, its values must implement NtroCloneable");
+			}
+		}
+		
+		return clone;
+	}
+
+	public <R extends Object> R reduceTo(Class<R> valueClass, R accumulator, MapReducer<R,V> reducer) {
+		T.call(this);
+		
+		synchronized (getValue()) {
+			for(Map.Entry<String, V> entry : getValue().entrySet()) {
+				try {
+
+					accumulator = reducer.reduce(entry.getKey(), entry.getValue(), accumulator);
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+
+		return accumulator;
+	}
+	
+	public void forEachEntry(MapIterator<V> lambda) {
+		T.call(this);
+
+		synchronized (getValue()) {
+			for(Map.Entry<String, V> entry : getValue().entrySet()) {
+				try {
+
+					lambda.on(entry.getKey(), entry.getValue());
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+	}
+
+	public void map(MapMapper<V> lambda) {
+		T.call(this);
+		
+		Map<String, V> toUpdate = new HashMap<>();
+
+		synchronized (getValue()) {
+			for(Map.Entry<String, V> entry : getValue().entrySet()) {
+				try {
+
+					V newValue = lambda.map(entry.getKey(), entry.getValue());
+					if(!entry.getValue().equals(newValue)) {
+						toUpdate.put(entry.getKey(), newValue);
+					}
+
+				}catch(Break b) {
+					break;
+				}
+			}
+		}
+
+		for(Map.Entry<String, V> entryUpdate : toUpdate.entrySet()) {
+			putEntry(entryUpdate.getKey(), entryUpdate.getValue());
+		}
+	}
 }

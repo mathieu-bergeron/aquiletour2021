@@ -2,8 +2,8 @@ package ca.aquiletour.core.pages.git.commit_list.messages;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.models.courses.model.CourseModel;
 import ca.aquiletour.core.messages.git.GetCommitsForPathAndTimePeriod;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.pages.git.commit_list.CommitListController;
 import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.root.RootView;
@@ -22,18 +22,15 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		GetCommitsForPath getCommitListMessage = null;
 		if (message instanceof ShowCommitListForTimePeriodMessage) {
 			
-			GetCommitsForPathAndTimePeriod getMessage = Ntro.messages().create(GetCommitsForPathAndTimePeriod.class);		
-			getMessage.loadStudentExerciseInfo(message);
-			getCommitListMessage = getMessage;
-			
+			getCommitListMessage = new GetCommitsForPathAndTimePeriod((ShowCommitListForTimePeriodMessage) message);
+
 		} else {
-			
-			getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
-			getCommitListMessage.loadStudentExerciseInfo(message);
+
+			getCommitListMessage = new GetCommitsForPath(message);
 		}
 
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
-		currentController.setSubModelLoader(CourseModel.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
+		currentController.setSubModelLoader(CourseModelTeacher.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showGitCommitList(currentView);

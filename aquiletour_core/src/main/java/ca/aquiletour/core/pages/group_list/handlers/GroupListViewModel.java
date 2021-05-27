@@ -163,6 +163,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 
 					GroupView subView = (GroupView) subViewLoader.createView();
 					subView.displayGroupDescription(item);
+					subView.displayStudentsSummary(item.studentsSummary());
 
 					view.appendItem(subView);
 					

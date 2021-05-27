@@ -1,8 +1,9 @@
 package ca.aquiletour.server.backend.open_queues_list;
 
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
@@ -26,7 +27,7 @@ public class QueuesUpdater {
 
 	public static void createQueue(ModelStoreSync modelStore,
 			                       String queueId,
-			                       User teacher) {
+			                       User teacher) throws BackendError {
 
 		T.call(QueuesUpdater.class);
 
@@ -48,14 +49,14 @@ public class QueuesUpdater {
 
 		OpenQueue queueSummary = new OpenQueue();
 		queueSummary.setId(queueId);
-		queueSummary.setTeacherName(teacher.getName());
-		queueSummary.setTeacherSurname(teacher.getSurname());
+		queueSummary.setTeacherName(teacher.getFirstname());
+		queueSummary.setTeacherSurname(teacher.getLastname());
 
 		return queueSummary;
 	}
 
 	public static void deleteQueue(ModelStoreSync modelStore,
-			                       String queueId) {
+			                       String queueId) throws BackendError {
 
 		T.call(QueuesUpdater.class);
 		
@@ -65,7 +66,7 @@ public class QueuesUpdater {
 	
 	private static void deleteQueueFrom(ModelStoreSync modelStore,
 			                           String queueStoreId,
-			                           String queueId) {
+			                           String queueId) throws BackendError {
 		T.call(QueuesUpdater.class);
 
 		modelStore.updateModel(OpenQueueListModel.class, 
@@ -82,7 +83,7 @@ public class QueuesUpdater {
 	}
 
 	public static void openQueue(ModelStoreSync modelStore,
-			                     String queueId) {
+			                     String queueId) throws BackendError {
 
 		T.call(QueuesUpdater.class);
 
@@ -105,7 +106,7 @@ public class QueuesUpdater {
 	}
 
 	public static void closeQueue(ModelStoreSync modelStore,
-			                      String queueId) {
+			                      String queueId) throws BackendError {
 
 		T.call(QueuesUpdater.class);
 		

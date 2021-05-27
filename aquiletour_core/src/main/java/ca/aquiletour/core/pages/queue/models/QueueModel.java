@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
-import ca.ntro.core.models.StoredString;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
 public class QueueModel implements NtroModel {
-	
 	
 	private ObservableTime currentTime = new ObservableTime();
 
@@ -26,13 +24,36 @@ public class QueueModel implements NtroModel {
 	private int maxId;
 	private String teacherId = "";
 	private String courseId = "";
-	
-	private StoredString currentCourseId = new StoredString();
-	private StoredString currentGroupId = new StoredString();
-	
-	// TODO: the queue is open for some courseGroups
-	private List<CourseGroup> openForCourseGroups = new ArrayList<>();
-	private List<CourseGroup> selectedCourseGroupes = new ArrayList<>();
+
+	private QueueSettings mainSettings = new QueueSettings();
+	private SettingsByCourseId settingsByCourseId = new SettingsByCourseId();
+
+	public boolean isQueueOpen() {
+		T.call(this);
+
+		boolean isOpen = mainSettings.isQueueOpen();
+		
+		if(!isOpen) {
+			
+			isOpen = isQueueOpenForSomeCourse(isOpen);
+		}
+		
+		return isOpen;
+	}
+
+	private boolean isQueueOpenForSomeCourse(boolean isOpen) {
+		T.call(this);
+
+		isOpen = settingsByCourseId.reduceTo(Boolean.class, isOpen, (courseId, courseSettings, currentIsOpen) -> {
+			if(currentIsOpen) {
+				throw new Break();
+			}
+
+			return courseSettings.isQueueOpen();
+		});
+
+		return isOpen;
+	}
 
 	public void addAppointment(Appointment appointment) {
 		T.call(this);
@@ -237,22 +258,6 @@ public class QueueModel implements NtroModel {
 		return index >= 0 && index < getAppointments().size();
 	}
 
-	public StoredString getCurrentCourseId() {
-		return currentCourseId;
-	}
-
-	public void setCurrentCourseId(StoredString currentCourseId) {
-		this.currentCourseId = currentCourseId;
-	}
-
-	public StoredString getCurrentGroupId() {
-		return currentGroupId;
-	}
-
-	public void setCurrentGroupId(StoredString currentGroupId) {
-		this.currentGroupId = currentGroupId;
-	}
-
 	public ObservableTime getCurrentTime() {
 		return currentTime;
 	}
@@ -266,9 +271,9 @@ public class QueueModel implements NtroModel {
 		
 		firstAppointmentTime.incrementBySeconds(timeIncrementSeconds);
 
-		for(Appointment appointment : getAppointments().getValue()) {
+		getAppointments().forEachItem((index, appointment) -> {
 			appointment.incrementTimeSeconds(timeIncrementSeconds);
-		}
+		});
 	}
 
 	public void modifyAppointmentDurations(int durationIncrementSeconds) {
@@ -282,35 +287,23 @@ public class QueueModel implements NtroModel {
 	private void recomputeAppointmentTimes() {
 		T.call(this);
 
-		NtroDate currentTime = firstAppointmentTime.getValue();
+		NtroDate firstTime = firstAppointmentTime.getValue();
 		
-		if(!queueEmpty()) {
+		getAppointments().reduceTo(NtroDate.class, firstTime, (index, appointment, currentTime) -> {
+			if(index != 0) {
+				currentTime = currentTime.deltaSeconds(appointmentDurationSeconds.getValue());
+			}
 
-			firstAppointment().updateTime(currentTime);
-		}
+			appointment.updateTime(currentTime);
 
-		for(int i = 1 ; i < appointments.size(); i++) {
-			currentTime = currentTime.deltaSeconds(appointmentDurationSeconds.getValue());
-			appointments.item(i).updateTime(currentTime);
-		}
+			return currentTime;
+		});
 	}
 
 	private boolean queueEmpty() {
 		T.call(this);
 		
 		return getAppointments().size() == 0;
-	}
-
-	private Appointment firstAppointment() {
-		T.call(this);
-		
-		Appointment result = null;
-
-		if(getAppointments().size() > 0) {
-			result = getAppointments().item(0);
-		}
-
-		return result;
 	}
 
 	private Appointment findLatestAppointment() {
@@ -353,5 +346,75 @@ public class QueueModel implements NtroModel {
 		}else {
 			Log.warning("Appointment not found for student: " + studentId);
 		}
+	}
+
+	public void updateIsQueueOpenForCourseId(String courseId, boolean isQueueOpen) {
+		T.call(this);
+		
+		if(courseId.equals(Constants.ALL_COURSES_ID)) {
+
+			mainSettings.updateIsQueueOpen(isQueueOpen);
+
+		}else {
+			
+			QueueSettingsCourse courseSettings = settingsByCourseId.valueOf(courseId);
+			if(courseSettings == null) {
+				courseSettings = new QueueSettingsCourse();
+				settingsByCourseId.putEntry(courseId, courseSettings);
+			}
+			
+			courseSettings.updateIsQueueOpen(isQueueOpen);
+		}
+	}
+
+	public QueueSettings getMainSettings() {
+		return mainSettings;
+	}
+
+	public void setMainSettings(QueueSettings mainSettings) {
+		this.mainSettings = mainSettings;
+	}
+
+	public SettingsByCourseId getSettingsByCourseId() {
+		return settingsByCourseId;
+	}
+
+	public void setSettingsByCourseId(SettingsByCourseId settingsByCourseId) {
+		this.settingsByCourseId = settingsByCourseId;
+	}
+
+	public void addCourseSettings(String courseId) {
+		T.call(this);
+		
+		if(!getSettingsByCourseId().containsKey(courseId)) {
+			getSettingsByCourseId().putEntry(courseId, new QueueSettingsCourse());
+		}
+	}
+
+	public void updateCourseTitle(String courseId, String courseTitle) {
+		T.call(this);
+		
+		QueueSettingsCourse courseSettings = getSettingsByCourseId().valueOf(courseId);
+		if(courseSettings != null) {
+			
+			courseSettings.updateTitle(courseTitle);
+			
+		}else {
+			Log.warning("Cannot find courseId " + courseId);
+		}
+	}
+
+	public void addGroupSettings(String courseId, String groupId) {
+		T.call(this);
+
+		QueueSettingsCourse courseSettings = getSettingsByCourseId().valueOf(courseId);
+		if(courseSettings != null) {
+			
+			courseSettings.addGroupSettings(groupId);
+			
+		}else {
+			Log.warning("[addGroupSettings] Cannot find courseId " + courseId);
+		}
+		
 	}
 }

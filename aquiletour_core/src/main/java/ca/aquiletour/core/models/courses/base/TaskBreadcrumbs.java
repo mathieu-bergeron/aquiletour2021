@@ -2,7 +2,9 @@ package ca.aquiletour.core.models.courses.base;
 
 import java.util.List;
 
+import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 
 public class TaskBreadcrumbs implements NtroModel {
@@ -17,11 +19,17 @@ public class TaskBreadcrumbs implements NtroModel {
 		this.trunk = trunk;
 	}
 	
-	public void forEachTask(TaskLambda lambda) {
+	public void forEachTask(TaskForEach lambda) {
 		T.call(this);
 
 		for(Task task : trunk) {
-			lambda.execute(task);
+			try {
+
+				lambda.execute(task);
+
+			}catch(Break b) {
+				break;
+			}
 		}
 	}
 }

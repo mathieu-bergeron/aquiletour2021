@@ -1,7 +1,8 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.model.CourseModel;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -9,10 +10,10 @@ import ca.ntro.core.system.trace.T;
 public class RemoveSubTaskHandler extends BackendMessageHandler<RemoveSubTaskMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, RemoveSubTaskMessage message) {
+	public void handleNow(ModelStoreSync modelStore, RemoveSubTaskMessage message) throws BackendError {
 		T.call(this);
 		
-		CourseUpdater.removeSubTask(modelStore, message.coursePath(), message.getTaskToModify(), message.getTaskToRemove());
+		CourseManager.removeSubTask(modelStore, message.coursePath(), message.getTaskToModify(), message.getTaskToRemove());
 	}
 
 	@Override

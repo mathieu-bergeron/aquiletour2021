@@ -10,33 +10,30 @@
         </div>
     </div>
 
-    <div>
-
-        <div class="d-flex justify-content-start align-items-center" style="min-height:4rem;">
-            <button class="add-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
-                    data-target="#queue"
-                    role="button" 
-                    aria-expanded="false" 
-                    aria-controls="queue">
-                File d'attente
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                    <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-                </svg>
-            </button>
-            <div class="flex-fill ms-2 me-2"></div>
-            <div class="d-flex align-items-center">
-                <span class="me-2"><a href="#" id="queue-link">ouvert</a></span>
-                <div class="form-check form-switch">
-                    <form class="add-course-id-to-id" action="" method="post" id="open-queue-form">
-                        <input class="add-course-id-to-value" name="openQueueCourseId" style="display:none;"></input>
-                        <input class="form-check-input aquiletour-checkbox add-course-id-to-form" name="ifQueueOpen" type="checkbox" form="open-queue-form">
-                    </form>
-                </div>
+    <div class="d-flex justify-content-start align-items-center" style="min-height:4rem;">
+        <button class="add-course-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
+                data-target="#queue"
+                role="button" 
+                aria-expanded="false" 
+                aria-controls="queue">
+            File d'attente
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+                <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+            </svg>
+        </button>
+        <div class="flex-fill ms-2 me-2"></div>
+        <div class="d-flex align-items-center">
+            <span class="me-2"><a href="#" id="queue-link">ouvert</a></span>
+            <div class="form-check form-switch">
+                <form class="add-course-id-to-id" action="" method="post" id="open-queue-form">
+                    <input class="add-course-id-to-value" name="openQueueCourseId" style="display:none;"></input>
+                    <input class="form-check-input aquiletour-checkbox add-course-id-to-form" name="ifQueueOpen" type="checkbox" form="open-queue-form">
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="collapse add-id-to-id" id="queue">
+    <div class="collapse add-course-id-to-id" id="queue">
         <div class="card card-body">
             <div class="d-flex justify-content-start align-items-baseline">
                 <div>Message aux étudiants</div>
@@ -59,7 +56,7 @@
     </div>
 
     <div class="d-flex justify-content-start align-items-center" style="min-height:4rem;">
-        <button class="add-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
+        <button class="add-course-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
                 data-target="#tasks"
                 role="button" 
                 aria-expanded="false" 
@@ -69,11 +66,11 @@
                 <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
             </svg>
         </button>
-        <div class="flex-fill ms-2 me-2"/>
-            <div class="me-2" id="tasks-summary"></div>
-        </div>
+        <div class="flex-fill ms-2 me-2"></div>
+        <div class="me-2" id="tasks-summary"></div>
+    </div>
 
-        <div class="collapse add-id-to-id" id="tasks">
+        <div class="collapse add-course-id-to-id" id="tasks">
             <div class="card card-body">
                 <ul class="list-group" id="task-list">
                 </ul>
@@ -92,7 +89,7 @@
 
         <div id="group-container">
             <div class="d-flex  justify-content-start align-items-center" style="min-height:4rem;">
-                <button class="add-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
+                <button class="add-course-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
                         data-target="#groups"
                         role="button" 
                         aria-expanded="false" 
@@ -102,147 +99,151 @@
                         <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
                     </svg>
                 </button>
-                <div class="flex-fill ms-2 me-2"/>
-                    <div class="me-2" id="groups-summary"></div>
-                </div>
+                <div class="flex-fill ms-2 me-2"></div>
+                <div class="me-2" id="groups-summary"></div>
+            </div>
 
-                <div class="collapse add-id-to-id" id="groups">
-                    <div class="card card-body">
-                        <ul class="list-group" id="group-list">
-                        </ul>
-                        <div class="d-flex justify-content-end mb-3">
-                            <button class="btn btn-secondary btn-sm mt-2" style="line-height:0px" data-toggle="modal" data-target="#add-group-modal">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                </svg>
-                            </button>
-                        </div>
+            <div class="collapse add-course-id-to-id" id="groups">
+                <div class="card card-body">
+                    <ul class="list-group" id="group-list">
+                    </ul>
+                    <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-secondary btn-sm mt-2" style="line-height:0px" data-toggle="modal" data-target="#add-group-modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
-
-            <!--
-                <div id="logs-container">
-                <div class="d-flex  justify-content-start align-items-center" style="min-height:4rem;">
-                <button class="add-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
-                data-target="#logs"
-                role="button" 
-                aria-expanded="false" 
-                aria-controls="logs">
-                Historiques
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
-                <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-                </svg>
-                </button>
-                <div class="flex-fill ms-2 me-2"/>
-                <div class="me-2" id="logs-summary"></div>
-                </div>
-
-                <div class="collapse add-id-to-id" id="logs">
-                <div class="card card-body">
-                <ul class="list-group">
-                <li class="list-group-item"><a href="#">Historique des questions</a></li>
-                <li class="list-group-item"><a href="#">Historique des remises</a></li>
-                <li class="list-group-item"><a href="#">Historique des messages</a></li>
-                <li class="list-group-item"><a href="#">Tout</a></li>
-                </ul>
-                </div>
-                </div>
-                </div>
-            -->
-
-
-                </div>
         </div>
-    </div>
 
-    <div class="modal fade add-task-id-to-id" id="add-subtask-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content dashboard-mContent">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="add-subtask-modal-title">Ajouter une étape</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form action="" method="post" class="add-subtask-form">
-                        <input class="add-semester-id-to-value" name="semesterId" style="display:none;" value=""></input>
-                        <input class="add-course-id-to-value" name="courseId" style="display:none;" value=""></input>
-                        <div class="form-group row mb-2 mx-2">
-                            <label for="title">Titre de l'étape</label>
-                            <input name="taskTitle" id="task-title-input"></input>
-                        </div>
-                        <div class="form-group row mb-3 mx-2">
-                            <label for="code">Code de l'étape</label>
-                            <input name="taskId" id="task-id-input"></input>
-                            <div class="d-flex" id="task-id-li-container">
-                                <span class="flex-fill"></span>
-                                <span class=""><i>dans un lien: </i></span><span class="course-code-in-link"></span>
-                            </div>
-                        </div>
-                        <div class="modal-footer border-0">         
-                            <button class="btn btn-primary" type="submit" id="add-subtask-submit-button">Ajouter</button>  
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
-                        </div>  
-                    </form>
-                </div>       
+        <!--
+            <div id="logs-container">
+            <div class="d-flex  justify-content-start align-items-center" style="min-height:4rem;">
+            <button class="add-id-to-data-target ms-2 btn btn-secondary section-toggle section-collapsed"
+            data-target="#logs"
+            role="button" 
+            aria-expanded="false" 
+            aria-controls="logs">
+            Historiques
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down" viewBox="0 0 16 16">
+            <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+            </svg>
+            </button>
+            <div class="flex-fill ms-2 me-2"/>
+            <div class="me-2" id="logs-summary"></div>
             </div>
+
+            <div class="collapse add-id-to-id" id="logs">
+            <div class="card card-body">
+            <ul class="list-group">
+            <li class="list-group-item"><a href="#">Historique des questions</a></li>
+            <li class="list-group-item"><a href="#">Historique des remises</a></li>
+            <li class="list-group-item"><a href="#">Historique des messages</a></li>
+            <li class="list-group-item"><a href="#">Tout</a></li>
+            </ul>
+            </div>
+            </div>
+            </div>
+        -->
+
+
+            </div>
+    </div>
+</div>
+
+<div class="modal fade add-task-id-to-id" id="add-subtask-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content dashboard-mContent">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add-subtask-modal-title">Ajouter une étape</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="" method="post" class="add-subtask-form">
+                    <input class="add-semester-id-to-value" name="semesterId" style="display:none;" value=""></input>
+                    <input class="add-course-id-to-value" name="courseId" style="display:none;" value=""></input>
+                    <div class="form-group row mb-2 mx-2">
+                        <label for="title">Titre de l'étape</label>
+                        <input name="taskTitle" id="task-title-input"></input>
+                    </div>
+                    <div class="form-group row mb-3 mx-2">
+                        <label for="code">Code de l'étape</label>
+                        <input name="taskId" id="task-id-input"></input>
+                        <div class="d-flex" id="task-id-li-container">
+                            <span class="flex-fill"></span>
+                            <span class=""><i>dans un lien: </i></span><span class="course-code-in-link"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">         
+                        <button class="btn btn-primary" type="submit" id="add-subtask-submit-button">Ajouter</button>  
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+                    </div>  
+                </form>
+            </div>       
         </div>
     </div>
+</div>
 
 
-    <div class="modal fade" id="add-group-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <form action="" method="post" id="add-group-form" enctype="multipart/form-data">
-            <input class="add-semester-id-to-value" name="semesterId" style="display:none;"></input>
-            <input class="add-course-id-to-value" name="courseId" style="display:none;"></input>
-        </form>
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 id="add-group-modal-title"></h4>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+<div class="modal fade" id="add-group-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form action="" method="post" id="add-group-form" enctype="multipart/form-data">
+        <input class="add-semester-id-to-value" name="semesterId" style="display:none;"></input>
+        <input class="add-course-id-to-value" name="courseId" style="display:none;"></input>
+    </form>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="add-group-modal-title"></h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!--
                     <ul class="nav nav-tabs mb-3" id="add-course-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#csv-file-tab" type="button" role="tab" aria-controls="home" aria-selected="true">Fichier .csv</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Groupe personnalisé</button>
-                        </li>
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#csv-file-tab" type="button" role="tab" aria-controls="home" aria-selected="true">Fichier .csv</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Groupe personnalisé</button>
+                    </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="csv-file-tab" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="tab-pane fade show active" id="csv-file-tab" role="tabpanel" aria-labelledby="home-tab">
+                -->
 
-                            <div class="form-group row ms-3 me-3">
-                                <label for="csvFile" class="mb-1">Fichier .csv de ColNet, p.ex. <i>4206APMO-000001.csv</i></label>
-                                <input form="add-group-form" class="form-control" type="file" name="csvFile" id="csv-file-input"/><br>
-                            </div>
-                            </form>
+                <div class="form-group row ms-3 me-3">
+                    <label for="csvFile" class="mb-1">Fichier .csv de ColNet, p.ex. <i>4206APMO-000001.csv</i></label>
+                    <input form="add-group-form" class="form-control" type="file" name="csvFile" id="csv-file-input"/><br>
+                </div>
+                </form>
 
-                            <!--
-                                <div class="form-group row mb-2 mx-2">
-                                <label for="code">Description</label>
-                                <textarea  name="courseDescription" id="course-description-input"></textarea>
-                                </div>
-                            -->
-                        </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <div class="form-group row mb-3 mx-2">
-                                <label for="copyCourse">Code du groupe</label>
-                                <input form="add-group-form" name="copyCourse" id="copy-course-input"></input>
-                            </div>
-                        </div>
+                <!--
+                    <div class="form-group row mb-2 mx-2">
+                    <label for="code">Description</label>
+                    <textarea  name="courseDescription" id="course-description-input"></textarea>
                     </div>
+                -->
+                    </div>
+                    <!--
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="form-group row mb-3 mx-2">
+                        <label for="copyCourse">Code du groupe</label>
+                        <input form="add-group-form" name="copyCourse" id="copy-course-input"></input>
+                        </div>
+                        </div>
+                        </div>
+                    -->
                     <div class="modal-footer border-0 mt-3">         
                         <button form="add-group-form" type="submit" class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
                     </div>  
-                </div>       
-            </div>
+            </div>       
         </div>
     </div>
+</div>
 </div>
 
 

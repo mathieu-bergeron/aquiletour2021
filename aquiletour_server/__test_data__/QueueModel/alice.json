@@ -8,89 +8,59 @@
   },
   "appointments": {
     "_C": "ObservableAppointmentList",
-    "value": [
-      {
+    "value": []
+  },
+  "maxId": 0,
+  "mainSettings": {
+    "showAppointmentTimes": {
+      "_C": "StoredBoolean",
+      "value": false
+    },
+    "_C": "QueueSettings",
+    "messageToStudents": {
+      "_C": "StoredString",
+      "value": ""
+    },
+    "isQueueOpen": {
+      "_C": "StoredBoolean",
+      "value": false
+    }
+  },
+  "teacherId": "ca7fe107b1bff6faf665",
+  "_C": "QueueModel",
+  "settingsByCourseId": {
+    "_C": "SettingsByCourseId",
+    "value": {
+      "strudon": {
         "courseTitle": {
           "_C": "StoredString",
-          "value": ""
+          "value": "Structure de données"
         },
-        "studentId": "1234500",
-        "_C": "Appointment",
-        "studentSurname": "Bérancourt",
-        "studentName": "Bob",
-        "comment": {
-          "_C": "StoredString",
-          "value": "Étape 10 #éval"
+        "showAppointmentTimes": {
+          "_C": "StoredBoolean",
+          "value": false
         },
-        "id": "1",
-        "taskTitle": {
-          "_C": "StoredString",
-          "value": ""
+        "_C": "QueueSettingsCourse",
+        "settingsByGroupId": {
+          "_C": "SettingsByGroupId",
+          "value": {}
         },
-        "time": {
-          "_C": "ObservableTime",
-          "value": {
-            "_C": "NtroDate",
-            "epochSeconds": 1620061145
-          }
-        },
-        "tags": {
-          "_C": "ObservableTags",
-          "value": [
-            "éval"
-          ]
-        }
-      },
-      {
-        "courseTitle": {
+        "messageToStudents": {
           "_C": "StoredString",
           "value": ""
         },
-        "studentId": "1234501",
-        "_C": "Appointment",
-        "studentSurname": "Ngo",
-        "studentName": "Nicolas",
-        "comment": {
-          "_C": "StoredString",
-          "value": "Module 2 #débogage"
-        },
-        "id": "2",
-        "taskTitle": {
-          "_C": "StoredString",
-          "value": ""
-        },
-        "time": {
-          "_C": "ObservableTime",
-          "value": {
-            "_C": "NtroDate",
-            "epochSeconds": 1620061445
-          }
-        },
-        "tags": {
-          "_C": "ObservableTags",
-          "value": [
-            "débogage"
-          ]
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
         }
       }
-    ]
-  },
-  "maxId": 2,
-  "currentCourseId": {
-    "_C": "StoredString",
-    "value": ""
-  },
-  "teacherId": "alice",
-  "_C": "QueueModel",
-  "currentGroupId": {
-    "_C": "StoredString",
-    "value": ""
+    }
   },
   "firstAppointmentTime": {
     "_C": "ObservableTime",
     "value": {
       "_C": "NtroDate",
-      "epochSeconds": 1620061145
+      "epochSeconds": -1
     }
   },
   "studentIds": [],

@@ -185,8 +185,15 @@ public abstract class ModelStore {
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
 		}else if(args.size() == 1){
 			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+		}else if(args.size() == 2){
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName
+														+ " " + args.get(0) 
+														+ " " + args.get(1));
 		}else {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0) + " " + args.get(1));
+			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName
+														+ " " + args.get(0) 
+														+ " " + args.get(1) 
+														+ " " + args.get(2));
 		}
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
@@ -275,6 +282,22 @@ public abstract class ModelStore {
 			localHeapByPath.remove(documentPath);
 		}
 		
+	}
+
+	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      String documentId) {
+		T.call(this);
+		
+		deleteDocument(documentPath(modelClass, documentId));
+	}
+
+	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
+												  String authToken,
+			                                      Path modelPath) {
+		T.call(this);
+
+		deleteDocument(documentPath(modelClass, documentId(modelPath)));
 	}
 
 	protected abstract void deleteDocument(DocumentPath documentPath);

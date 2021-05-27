@@ -2,7 +2,7 @@ package ca.aquiletour.web;
 import java.util.Map;
 
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;

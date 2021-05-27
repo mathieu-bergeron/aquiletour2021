@@ -21,7 +21,7 @@ import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
 
-public abstract class LocalStoreFiles extends ModelStore {
+public class LocalStoreFiles extends ModelStore {
 	
 	protected String getFileName() {
 		T.call(this);
@@ -89,6 +89,8 @@ public abstract class LocalStoreFiles extends ModelStore {
 			FileOutputStream out = new FileOutputStream(file);
 			out.write(jsonString.getBytes());
 			out.close();
+			
+			//System.out.println("Saved: " + file.getAbsolutePath());
 
 		} catch (IOException e) {
 			Log.fatalError("Cannot write " + file.toString(), e);
@@ -98,7 +100,7 @@ public abstract class LocalStoreFiles extends ModelStore {
 	@Override
 	protected void deleteDocument(DocumentPath documentPath) {
 		T.call(this);
-
+		
 		File modelFile = getModelFile(documentPath);
 		
 		modelFile.delete();
@@ -132,6 +134,18 @@ public abstract class LocalStoreFiles extends ModelStore {
 
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected JsonLoader jsonLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		// TODO Auto-generated method stub
 		
 	}

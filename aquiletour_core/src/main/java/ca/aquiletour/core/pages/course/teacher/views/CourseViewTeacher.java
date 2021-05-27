@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.course.teacher.views;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.views.widgets.SemesterDropdown;
@@ -14,6 +15,9 @@ public interface CourseViewTeacher extends CourseView, SemesterDropdown {
 	void identifyCurrentTask(CoursePath coursePath, Task task);
 
 	void showEditableComponents(boolean show);
+
+	void appendEntryTask(AtomicTask task);
+	void appendExitTask(AtomicTask task);
 	
 	void appendCompletion(String studentId);
 }

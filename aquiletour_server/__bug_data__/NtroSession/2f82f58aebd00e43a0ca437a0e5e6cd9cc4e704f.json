@@ -1,0 +1,24 @@
+{
+  "sessionData": {
+    "failedPasswordAttemps": 0,
+    "currentSemester": "",
+    "_C": "SessionData",
+    "loginCode": "563026"
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "alice",
+    "_C": "Admin",
+    "authToken": "2f82f58aebd00e43a0ca437a0e5e6cd9cc4e704f",
+    "adminMode": false,
+    "registrationId": "alice",
+    "hasPassword": false,
+    "id": "5cf5b9952b183f915e93",
+    "email": "alice@cmontmorency.qc.ca",
+    "passwordHash": "",
+    "lastname": "",
+    "studentMode": false
+  },
+  "timeToLiveMiliseconds": 270000
+}

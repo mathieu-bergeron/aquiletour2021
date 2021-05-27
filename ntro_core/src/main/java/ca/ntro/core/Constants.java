@@ -30,4 +30,6 @@ public class Constants {
 	public static final String MESSAGES_URL_PATH_HTTP = HTTP_PREFIX + "/" + MESSAGES_SEGMENT;
 	public static final String RESOURCES_URL_PREFIX = "/_resources";
 	public static final String MODELS_URL_PREFIX = "/_models";
+	
+	public static final int RANDOM_STRING_DEFAULT_LENGTH = 20;
 }

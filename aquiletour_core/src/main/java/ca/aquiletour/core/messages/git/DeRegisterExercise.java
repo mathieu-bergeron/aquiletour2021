@@ -1,5 +1,7 @@
 package ca.aquiletour.core.messages.git;
 
-public class DeRegisterExercise extends ExerciseMessage {
+import ca.aquiletour.core.messages.git.base.GitApiExerciseMessage;
+
+public class DeRegisterExercise extends GitApiExerciseMessage {
 	
 }

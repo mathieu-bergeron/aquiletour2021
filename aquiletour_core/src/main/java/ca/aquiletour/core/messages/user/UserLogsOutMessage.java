@@ -1,7 +1,8 @@
 package ca.aquiletour.core.messages.user;
 
-import ca.ntro.messages.NtroMessage;
+import ca.aquiletour.core.models.user.User;
+import ca.ntro.messages.NtroUserMessage;
 
-public class UserLogsOutMessage extends NtroMessage {
+public class UserLogsOutMessage extends NtroUserMessage<User> {
 
 }

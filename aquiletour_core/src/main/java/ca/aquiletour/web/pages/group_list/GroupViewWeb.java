@@ -17,6 +17,7 @@ import static ca.ntro.assertions.Factory.that;
 public class GroupViewWeb extends NtroViewWeb implements GroupView {
 	
 	private HtmlElement studentList;
+	private HtmlElement studentsSummary;
 	private HtmlElements addGroupIdToText;
 	
 	@Override
@@ -24,9 +25,11 @@ public class GroupViewWeb extends NtroViewWeb implements GroupView {
 		T.call(this);
 
 		studentList = this.getRootElement().find("#student-list").get(0);
+		studentsSummary = this.getRootElement().find(".students-summary").get(0);
 		addGroupIdToText = this.getRootElement().find(".add-group-id-to-text");
 
 		MustNot.beNull(studentList);
+		MustNot.beNull(studentsSummary);
 
 		Ntro.verify(that(addGroupIdToText.size() > 0).isTrue());
 	}
@@ -75,5 +78,12 @@ public class GroupViewWeb extends NtroViewWeb implements GroupView {
 		
 		HtmlElement studentLi = studentList.createElement(liHtml);
 		studentList.appendElement(studentLi);
+	}
+
+	@Override
+	public void displayStudentsSummary(String summary) {
+		T.call(this);
+		
+		studentsSummary.text(summary);
 	}
 }

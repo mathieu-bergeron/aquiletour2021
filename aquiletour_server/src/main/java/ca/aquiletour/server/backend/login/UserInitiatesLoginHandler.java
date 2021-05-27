@@ -1,14 +1,14 @@
 package ca.aquiletour.server.backend.login;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.TeacherGuest;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.models.user.TeacherGuest;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.RegisteredSockets;
-import ca.aquiletour.server.email.TestEmail;
+import ca.aquiletour.server.backend.users.UserManager;
+import ca.aquiletour.server.email.SendEmail;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -23,17 +23,18 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+		T.call(this);
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
-		String providedId = message.getProvidedId();
+		String registrationId = message.getRegistrationId();
 		User userToRegister = null;
 
-		NtroSession session = InitializeSessionHandler.getStoredSession(modelStore, authToken);
+		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
 
-			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, providedId, session);
+			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, registrationId, session);
 
 		}else {
 			
@@ -46,7 +47,13 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		setUserNtroMessage.setUser(userToRegister);
 		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
 		
-		if(message.getDelayedMessages().isEmpty()) {
+		if(message.getDelayedMessages().isEmpty() && userToRegister.getHasPassword()) {
+
+			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
+			showLoginMenuMessage.setMessageToUser("SVP entrer votre mot de passe");
+			Ntro.messages().send(showLoginMenuMessage);
+
+		} else if(message.getDelayedMessages().isEmpty() && !userToRegister.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
@@ -60,33 +67,40 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}
 	}
 
-	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String providedId, NtroSession session) {
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String registrationId, NtroSession session) {
+		T.call(this);
 
 		User userToRegister;
-		
-		if(isStudentId(providedId)) {
+
+		if(isStudentId(registrationId)) {
 			
-			userToRegister = new StudentGuest();
+			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, registrationId);
 			
 		}else {
 
-			userToRegister = new TeacherGuest();
+			userToRegister = UserManager.createGuestUser(modelStore, TeacherGuest.class, registrationId);
 		}
 
-		if(modelStore.ifModelExists(User.class, "TODO", providedId)) {
-
-			User existingUser = modelStore.getModel(User.class, "TODO", providedId);
-			userToRegister.copyPublicInfomation(existingUser);
-
-		}else {
-
-			userToRegister.setName(providedId);
-			userToRegister.setEmail(providedId + "@" + Constants.EMAIL_HOST);
-		}
-
-		userToRegister.setId(providedId);
 		userToRegister.setAuthToken(authToken);
 		
+		SessionData sessionData = new SessionData();
+
+		if(!userToRegister.getHasPassword()) {
+
+			String loginCode = sendLoginCode(userToRegister);
+			sessionData.setLoginCode(loginCode);
+		}
+
+		session.setUser(userToRegister.toSessionUser());
+		session.setSessionData(sessionData);
+		modelStore.save(session);
+
+		return userToRegister;
+	}
+
+	public static String sendLoginCode(User userToRegister) {
+		T.call(UserInitiatesLoginHandler.class);
+
 		String loginCode = SecureRandomString.generateLoginCode();
 
 		Ntro.threadService().executeLater(new NtroTaskSync() {
@@ -94,23 +108,16 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			protected void runTask() {
 				T.call(this);
 
-				T.values(loginCode, userToRegister.getName(), userToRegister.getEmail());
-				TestEmail.sendCode(loginCode, userToRegister.getName(), userToRegister.getEmail());
+				T.values(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
+				SendEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
 			}
 
 			@Override
 			protected void onFailure(Exception e) {
 			}
 		});
-		
-		SessionData sessionData = new SessionData();
-		sessionData.setLoginCode(loginCode.replace(" ", ""));
 
-		session.setUser(userToRegister.toSessionUser());
-		session.setSessionData(sessionData);
-		modelStore.save(session);
-
-		return userToRegister;
+		return loginCode.replace(" ", "");
 	}
 
 	private boolean isStudentId(String providedId) {

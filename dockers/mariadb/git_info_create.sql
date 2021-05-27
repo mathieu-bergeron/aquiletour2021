@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS git_info;
 CREATE DATABASE IF NOT EXISTS git_info;
 USE git_info;
 
@@ -41,7 +42,7 @@ CREATE TABLE IF NOT EXISTS repository (
 	group_id CHAR(2) NOT NULL CHECK (group_id RLIKE '^[0-9][0-9]$'),
 	student VARCHAR(127) NOT NULL CHECK (student RLIKE '^[a-z0-9.-]+$'),
 	repo_path VARCHAR(255) NOT NULL
-	#FOREIGN KEY (session_id, course_id, group_id, repo_path) REFERENCES exercise(session_id, course_id, group_id, repo_path)
+#	FOREIGN KEY (session_id, course_id, group_id, repo_path) REFERENCES exercise(session_id, course_id, group_id, repo_path)
 # 	TODO: Trigger to validate data
 	);
 
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS commit (
 	exercise_path VARCHAR(255),
 	PRIMARY KEY (repo_url, commit_id),
 	FOREIGN KEY (repo_url) REFERENCES repository(repo_url)
-	#FOREIGN KEY (exercise_path) REFERENCES exercise(exercise_path)
+#	FOREIGN KEY (exercise_path) REFERENCES exercise(exercise_path)
 # 	TODO: Trigger to validate data
 	);
 
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS commit_file (
 	exercise_path VARCHAR(255) NOT NULL,
 	PRIMARY KEY (repo_url, commit_id, file_path),
 	FOREIGN KEY (repo_url, commit_id) REFERENCES commit(repo_url, commit_id)
-	#FOREIGN KEY (exercise_path) REFERENCES exercise(exercise_path)
+#	FOREIGN KEY (exercise_path) REFERENCES exercise(exercise_path)
 # 	TODO: Trigger to validate data
 	);
 

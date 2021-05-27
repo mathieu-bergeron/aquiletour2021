@@ -1,0 +1,34 @@
+{
+  "courses": {
+    "_C": "ObservableCourseDescriptionList",
+    "value": [
+      {
+        "courseTitle": "Test",
+        "semesterId": "H2021",
+        "teacherId": "alice",
+        "_C": "CourseListItem",
+        "queueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "groupsSummary": "0 groupes",
+        "groupIds": {
+          "_C": "ObservableGroupIdList",
+          "value": []
+        },
+        "courseDescription": "",
+        "courseId": "test",
+        "tasksSummary": "0 étapes",
+        "tasks": {
+          "_C": "ObservableTaskDescriptions",
+          "value": []
+        }
+      }
+    ]
+  },
+  "_C": "CourseListModelTeacher",
+  "semesters": {
+    "_C": "SemesterIds",
+    "value": []
+  }
+}

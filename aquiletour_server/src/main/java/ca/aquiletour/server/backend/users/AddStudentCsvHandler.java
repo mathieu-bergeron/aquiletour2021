@@ -3,11 +3,13 @@ package ca.aquiletour.server.backend.users;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.model.CourseModel;
-import ca.aquiletour.core.models.users.Student;
-import ca.aquiletour.core.models.users.User;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.user.Student;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
@@ -15,11 +17,13 @@ import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
-import ca.aquiletour.server.backend.course.CourseUpdater;
-import ca.aquiletour.server.backend.course_list.CourseListUpdater;
-import ca.aquiletour.server.backend.dashboard.DashboardUpdater;
-import ca.aquiletour.server.backend.group_list.GroupListUpdater;
-import ca.aquiletour.server.backend.semester_list.SemesterListUpdater;
+import ca.aquiletour.server.backend.course.CourseManager;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
+import ca.aquiletour.server.backend.dashboard.DashboardManager;
+import ca.aquiletour.server.backend.group_list.GroupListManager;
+import ca.aquiletour.server.backend.queue.QueueManager;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -30,16 +34,16 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	private String groupId;
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, AddStudentCsvMessage message) {
+	public void handleNow(ModelStoreSync modelStore, AddStudentCsvMessage message) throws BackendError {
 		T.call(this);
 		
 		String csvString = message.getCsvString();
 		String csvFilename = message.getCsvFilename();
 		
 		groupId = groupNameFromCsvFileName(csvFilename);
-		studentsToAdd = parseCsv(csvString);
+		studentsToAdd = parseCsv(modelStore, csvString);
 		
-		CourseListUpdater.addGroupForUser(modelStore, 
+		CourseListManager.addGroupForUser(modelStore, 
 										  CourseListModelTeacher.class,
 				                          message.getSemesterId(), 
 				                          message.getCourseId(), 
@@ -72,7 +76,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		return groupName;
 	}
 
-	private List<User> parseCsv(String csvString) {
+	private List<User> parseCsv(ModelStoreSync modelStore, String csvString) throws BackendError {
 		T.call(this);
 		
 		List<User> usersToAdd = new ArrayList<>();
@@ -81,20 +85,22 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		for (int i = 0; i < cutByLine.length; i++) {
 			String line = cutByLine[i];
-			Student newUser = new Student();
-			if(i == 0) {//first line is not a student, its the class name
-				
-			} else {
+			if(i > 0){ //first line is not a student, its the class name
 				String[] cutBySeparator = line.split(";");
-				newUser.setSurname(cutBySeparator[0]);//FamilleA
-				newUser.setName(cutBySeparator[1]);//PrenomA
-				// FIXME: hide DA
-				//        use a SHA1 digest as userId
-				newUser.setId(cutBySeparator[2].substring(2));//DA 
-				newUser.setProgramId(cutBySeparator[3]);//program number
-//					newUser.setName(cutBySeparator[4]);//?
-				newUser.setPhoneNumber(cutBySeparator[5]);//phone
-				newUser.setEmail(newUser.getId() + "@cmontmorency.qc.ca");
+				String lastName = cutBySeparator[0];
+				String firstName = cutBySeparator[1];
+				String registrationId = cutBySeparator[2].substring(2);
+				String programId = cutBySeparator[3];
+				String phoneNumber = cutBySeparator[5];
+				String email = registrationId + "@" + Constants.EMAIL_HOST;
+
+				Student newUser = UserManager.createStudentUsingRegistrationId(modelStore, 
+																			   firstName, 
+																			   lastName, 
+																			   registrationId, 
+																			   programId, 
+																			   phoneNumber, 
+																			   email);
 				usersToAdd.add(newUser);
 			}		
 		}
@@ -103,56 +109,64 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) {
+	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) throws BackendError {
 		T.call(this);
 		
 		User teacher = message.getUser();
 
-		CoursePath coursePath = new CoursePath(teacher.getId(), message.getSemesterId(), message.getCourseId());
+		CoursePath coursePath = new CoursePath(teacher.getRegistrationId(), message.getSemesterId(), message.getCourseId());
 
-		UserUpdater.addUsers(modelStore, studentsToAdd);
+		UserManager.createUsers(modelStore, studentsToAdd);
 
-		GroupListUpdater.addGroupForUser(modelStore, 
+		GroupListManager.addGroupForUser(modelStore, 
 				                         message.getSemesterId(), 
 				                         message.getCourseId(), 
 				                         groupId, 
 				                         studentsToAdd,
 				                         teacher);
 
-		SemesterListUpdater.addCourseGroupForUser(modelStore, 
+		SemesterListManager.addCourseGroupForUser(modelStore, 
 				                                  message.getSemesterId(), 
 				                                  message.getCourseId(), 
 				                                  groupId, 
 				                                  teacher);
 		
-		CourseListItem courseItem = CourseListUpdater.getCourseItem(modelStore, 
+		CourseListItem courseItem = CourseListManager.getCourseItem(modelStore, 
 															    CourseListModelTeacher.class,
 				                                                message.getSemesterId(),
 				                                                message.getCourseId(),
 				                                                teacher.getId());
 
-		CourseUpdater.addGroup(modelStore, 
+		CourseManager.addGroup(modelStore, 
 							   coursePath,
 							   groupId,
 							   studentsToAdd,
 							   teacher);
+		
+		QueueManager.addGroup(modelStore, 
+						      message.getCourseId(),
+				              groupId, 
+				              teacher);
 
-		CourseModel course = CourseUpdater.getCourse(modelStore, 
-													 CourseModel.class,
-													 message.coursePath());
+		CourseModelTeacher teacherCourse = CourseManager.getCourse(modelStore, 
+													   CourseModelTeacher.class,
+													   coursePath);
 		
 		for(User student : studentsToAdd) {
-			CourseListUpdater.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
-			CourseListUpdater.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
-			DashboardUpdater.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
+
+			CourseManager.createStudentCourse(modelStore, coursePath, teacherCourse, groupId, student);
 			
-			List<CurrentTaskStudent> currentTasksStudent = course.currentTasksStudent(student.getId());
+			CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
+			CourseListManager.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
+			DashboardManager.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
 			
-			DashboardUpdater.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, CurrentTaskStudent.class, message.coursePath(), currentTasksStudent, student);
+			List<CurrentTaskStudent> currentTasksStudent = teacherCourse.currentTasksForStudent(student.getId());
+			
+			DashboardManager.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, CurrentTaskStudent.class, coursePath, currentTasksStudent, student);
 		}
 		
-		List<CurrentTaskTeacher> currentTasksTeacher = course.currentTasksTeacher();
-		
-		DashboardUpdater.updateCurrentTasksForUserId(modelStore, DashboardModelTeacher.class, CurrentTaskTeacher.class, message.coursePath(), currentTasksTeacher, message.getTeacherId());
+		List<CurrentTaskTeacher> currentTasksTeacher = teacherCourse.currentTasksTeacher();
+
+		DashboardManager.updateCurrentTasksForUserId(modelStore, DashboardModelTeacher.class, CurrentTaskTeacher.class, coursePath, currentTasksTeacher, message.getTeacherId());
 	}
 }

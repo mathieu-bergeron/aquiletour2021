@@ -54,4 +54,10 @@ public class TeacherSchedule implements NtroModel {
 
 		return item;
 	}
+
+	public String summary() {
+		T.call(this);
+		
+		return getScheduleItems().summary();
+	}
 }

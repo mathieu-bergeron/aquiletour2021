@@ -1,10 +1,18 @@
 package ca.aquiletour.core;
 
 public class Constants {
+
+	public static final int DEFAULT_USER_ID_LENGTH = 10;
+
+	public static final String CSV_FILE_ENCODING = "latin1";
+	
+	public static final boolean DISABLE_EMAILS = true;
 	
 	public static final int APPOINTMENT_DURATION_MINUTES = 5;
 	public static final int APPOINTMENT_TIME_INCREMENT_SECONDS = 5*60;
 	public static final int APPOINTMENT_DURATION_INCREMENT_SECONDS = 60;
+	
+	public static final int MAX_PASSWORD_ATTEMPS = 3;
 	
 	public static String LANG = "fr";
 	
@@ -29,7 +37,7 @@ public class Constants {
 	public static final String LOGIN_URL_SEGMENT = "connexion";
 	public static final String LOGOUT_URL_SEGMENT = "deconnexion";
 	public static final String HOME_URL_SEGMENT = "accueil";
-	public static final String SEMESTER_LIST_URL_SEGMENT = "planifier";
+	public static final String SEMESTER_LIST_URL_SEGMENT = "sessions";
 	public static final String GIT_COMMIT_LIST_URL_SEGMENT = "progression_git";
 	public static final String GIT_LATE_STUDENTS_URL_SEGMENT = "retards_git";
 	public static final String GIT_STUDENT_SUMMARIES_URL_SEGMENT = "sommaires_git";
@@ -56,8 +64,16 @@ public class Constants {
 	public static final String ALL_COURSES_ID = "_c";
 	public static final String ALL_COURSES_TEXT = "Tous les cours";
 
+	public static final String ALL_USERS_ID = "_u";
+	public static final String ALL_USERS_TEXT = "Tout le monde";
+
 	public static final String CREATE_COURSE_TEXT = "Ajouter un cours";
-	
+
+	public static final String ADMIN_CONTROLLED_SEMESTER_LIST_ID = "all";
+
+	public static final String STUDENT_LIST_MODEL_ID = "students";
+	public static final String TEACHER_LIST_MODEL_ID = "teachers";
+	public static final String ADMIN_LIST_MODEL_ID = "admins";
 	
 
 }

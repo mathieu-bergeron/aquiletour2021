@@ -2,9 +2,9 @@ package ca.aquiletour.web.pages.login;
 
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.models.users.Guest;
-import ca.aquiletour.core.models.users.StudentGuest;
-import ca.aquiletour.core.models.users.TeacherGuest;
+import ca.aquiletour.core.models.user.Guest;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.pages.login.LoginView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -64,7 +64,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 				String userId = loginInputStep1.value();
 
 				UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
-				userInitiatesLoginMessage.setProvidedId(userId);
+				userInitiatesLoginMessage.setRegistrationId(userId);
 				Ntro.messages().send(userInitiatesLoginMessage);
 			}
 		});

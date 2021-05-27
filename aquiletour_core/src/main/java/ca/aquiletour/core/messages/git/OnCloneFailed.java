@@ -1,6 +1,8 @@
 package ca.aquiletour.core.messages.git;
 
-public class OnCloneFailed extends StudentExerciseMessage {
+import ca.aquiletour.core.messages.git.base.GitApiRepoMessage;
+
+public class OnCloneFailed extends GitApiRepoMessage {
 
 
 }

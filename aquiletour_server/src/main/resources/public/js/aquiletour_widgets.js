@@ -1,6 +1,33 @@
 function initializeWidgets(viewRootElement){
     initializeCheckboxes(viewRootElement);
     initializeSectionToggles(viewRootElement);
+    initializeDatepickers(viewRootElement);
+}
+
+function initializeDatepickers(rootElement){
+
+    const datepickers = rootElement.find(".aquiletour-datepicker");
+
+    datepickers.datepicker({
+            'closeText': "Fermer",
+            'prevText': "Précédent",
+            'nextText': "Suivant",
+            'currentText': "Aujourd'hui",
+            'monthNames': [ "janvier", "février", "mars", "avril", "mai", "juin",
+                        "juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
+            'monthNamesShort': [ "janv.", "févr.", "mars", "avril", "mai", "juin",
+                        "juil.", "août", "sept.", "oct.", "nov.", "déc." ],
+            'dayNames': [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
+            'dayNamesShort': [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
+            'dayNamesMin': [ "D", "L", "M", "M", "J", "V", "S" ],
+            'weekHeader': "Sem.",
+            'dateFormat': "dd/mm/yy",
+            'firstDay': 0,
+            'isRTL': false,
+            'showMonthAfterYear': false,
+            'yearSuffix': ""
+    });
+
 }
 
 function initializeCheckboxes(rootElement){
@@ -10,6 +37,11 @@ function initializeCheckboxes(rootElement){
     checkboxes.off();
     checkboxes.on('click', function(){
         const thisCheckbox = $(this);
+        if(thisCheckbox.attr("checked") === undefined){
+            thisCheckbox.val("on");
+        }else{
+            thisCheckbox.val("off");
+        }
         const formId = $(this).attr("form");
         const form = rootElement.find("#" + formId);
         form.submit();
@@ -42,6 +74,7 @@ function initializeSectionToggles(rootElement){
 
         toggle.off();
         toggle.on('click', function(){
+            console.log(collapseTarget.length);
             collapseTarget.collapse("toggle");
             toggleSectionToggle(toggle);
 

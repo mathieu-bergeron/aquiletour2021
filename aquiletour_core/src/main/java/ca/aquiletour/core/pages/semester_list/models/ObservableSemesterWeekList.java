@@ -5,4 +5,5 @@ import ca.ntro.core.models.StoredList;
 
 public class ObservableSemesterWeekList extends StoredList<CalendarWeek> {
 
+
 }

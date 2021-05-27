@@ -22,7 +22,7 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 
 		HtmlElement semesterDropdownHead = getRootElement().find("#semester-dropdown-head").get(0);
 		HtmlElement semesterDropdownTail = getRootElement().find("#semester-dropdown-tail").get(0);
-		itemContainer = this.getRootElement().find("#courses-container").get(0);
+		itemContainer = this.getRootElement().find("#item-container").get(0);
 		
 		MustNot.beNull(semesterDropdownHead);
 		MustNot.beNull(semesterDropdownTail);

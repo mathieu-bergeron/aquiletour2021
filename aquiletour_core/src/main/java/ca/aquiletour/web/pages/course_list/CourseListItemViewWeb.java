@@ -1,17 +1,13 @@
 package ca.aquiletour.web.pages.course_list;
 
 
-import static ca.ntro.assertions.Factory.that;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.models.TaskDescription;
 import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class CourseListItemViewWeb extends NtroViewWeb implements CourseListItemView {
