@@ -1,9 +1,12 @@
 package ca.aquiletour.core.models.courses;
 
+import ca.aquiletour.core.Constants;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
 public class CoursePath extends Path {
+	
+	private static final CoursePath allCourses = new CoursePath(Constants.ALL_TEACHERS_ID, Constants.ALL_SEMESTERS_ID, Constants.ALL_COURSES_ID);
 	
 	private final int TEACHER_INDEX = 0;
 	private final int SEMESTER_INDEX = 1;
@@ -11,6 +14,11 @@ public class CoursePath extends Path {
 
 	public CoursePath() {
 		super();
+		T.call(this);
+	}
+
+	public CoursePath(String path) {
+		super(path);
 		T.call(this);
 	}
 
@@ -56,5 +64,24 @@ public class CoursePath extends Path {
 		
 		return toFileName();
 	}
-	
+
+
+	public static CoursePath allCourses() {
+		T.call(CoursePath.class);
+		
+		return allCourses;
+	}
+
+	public boolean isAllCourses() {
+		T.call(this);
+
+		return this == allCourses;
+	}
+
+	public static CoursePath fromKey(String courseKey) {
+		T.call(CoursePath.class);
+		
+		return new CoursePath(courseKey);
+	}
+
 }

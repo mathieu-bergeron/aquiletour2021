@@ -6,9 +6,12 @@ import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
+import ca.aquiletour.core.validator.ValidationError;
+import ca.aquiletour.core.validator.Validator;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.email.SendEmail;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
@@ -22,19 +25,29 @@ import ca.ntro.users.NtroSession;
 public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiatesLoginMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) throws BackendError {
 		T.call(this);
 
 		User user = message.getUser();
 		String authToken = user.getAuthToken();
-		String registrationId = message.getRegistrationId();
+		String userId = message.getRegistrationId();
 		User userToRegister = null;
+		
+		try {
+
+			Validator.mustBeValidId(userId);
+			
+		}catch(ValidationError e) {
+			throw new BackendError(e.getMessage() + ". SVP entrer votre DA ou le début de votre courriel (sans le @)");
+		}
+		
+		userId = User.normalizeUserId(userId);
 
 		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		
 		if(session != null) {
 
-			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, registrationId, session);
+			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, userId, session);
 
 		}else {
 			

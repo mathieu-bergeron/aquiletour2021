@@ -17,6 +17,8 @@
 
 package ca.aquiletour.core;
 
+import java.util.List;
+
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.DeleteGitRepo;
@@ -136,7 +138,7 @@ import ca.aquiletour.core.pages.queue.models.ObservableTags;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
-import ca.aquiletour.core.pages.queue.models.SettingsByCourseId;
+import ca.aquiletour.core.pages.queue.models.SettingsByCourseKey;
 import ca.aquiletour.core.pages.queue.models.SettingsByGroupId;
 import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
@@ -169,12 +171,12 @@ import ca.ntro.users.NtroSession;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 	
-	public static String currentSemester() {
+	public static List<String> activeSemesterIds() {
 		T.call(AquiletourMain.class);
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		
-		return sessionData.getCurrentSemester();
+		return sessionData.getActiveSemesterIds();
 	}
 
 	protected abstract void registerViewLoaders();
@@ -402,7 +404,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(QueueSettings.class);
 		Ntro.registerSerializableClass(QueueSettingsCourse.class);
-		Ntro.registerSerializableClass(SettingsByCourseId.class);
+		Ntro.registerSerializableClass(SettingsByCourseKey.class);
 		Ntro.registerSerializableClass(SettingsByGroupId.class);
 
 		Ntro.registerSerializableClass(UpdateIsQueueOpenMessage.class);

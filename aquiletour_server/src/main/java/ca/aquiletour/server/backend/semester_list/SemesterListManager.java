@@ -1,18 +1,23 @@
 package ca.aquiletour.server.backend.semester_list;
 
+import java.util.List;
+
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
+import ca.aquiletour.core.pages.semester_list.admin.models.SemesterModelAdmin;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
+import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.lambdas.Break;
@@ -255,7 +260,7 @@ public class SemesterListManager {
 	public static <SL extends SemesterListModel>  void selectCurrentSemesterForModelId(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass,
 																				      String semesterId, 
-																				      boolean currentSemester, 
+																				      boolean isActive, 
 																				      String userId) throws BackendError {
 		T.call(SemesterListManager.class);
 
@@ -277,12 +282,7 @@ public class SemesterListManager {
 			public void update(SL semesterList) {
 				T.call(this);
 				
-				if(currentSemester) {
-					semesterList.selectCurrentSemester(semesterId);
-				}else {
-					semesterList.selectCurrentSemester(Constants.DRAFTS_SEMESTER_ID);
-				}
-				
+				semesterList.updateActiveSemesterId(semesterId, isActive);
 			}
 		});
 	}
@@ -392,30 +392,19 @@ public class SemesterListManager {
 		createSemesterListForModelId(modelStore, SemesterListModelAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 	}
 
-	public static String getCurrentSemester(ModelStoreSync modelStore) {
+	public static void addActiveSemesterIds(ModelStoreSync modelStore, List<String> activeSemesterIds) {
 		T.call(SemesterListManager.class);
 		
-		String currentSemesterId = null;
-		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
-		
-		if(semesterList.getCurrentSemesterId() != null &&
-				!semesterList.getCurrentSemesterId().isEmpty()) {
-			
-			currentSemesterId = semesterList.getCurrentSemesterId().getValue();
+		modelStore.readModel(SemesterListModel.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID, new ModelReader<SemesterListModel<SemesterModelAdmin>>() {
+			@Override
+			public void read(SemesterListModel<SemesterModelAdmin> existingModel) {
+				T.call(this);
 
-		}else if(semesterList.getSemesters() != null
-				&& semesterList.getSemesters().size() > 0) {
-			
-			currentSemesterId = semesterList.getSemesters().item(0).getSemesterId();
-		}
-		
-		if(currentSemesterId == null ||
-				currentSemesterId.isEmpty()) {
-			
-			currentSemesterId = Constants.DRAFTS_SEMESTER_ID;
-		}
-
-		return currentSemesterId;
+				existingModel.getActiveSemesterIds().forEachItem((index, semesterId) -> {
+					activeSemesterIds.add(semesterId);
+				});
+			}
+		});
 	}
 		
 }

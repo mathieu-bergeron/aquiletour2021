@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.login;
 
 import java.util.Set;
 
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
@@ -9,13 +10,14 @@ import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.server.backend.queue.QueueManager;
+import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;
+import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
 public class SessionManager {
@@ -34,6 +36,9 @@ public class SessionManager {
 
 		session.setUser(user);
 		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
+
+		SessionData sessionData = (SessionData) session.getSessionData();
+		SemesterListManager.addActiveSemesterIds(modelStore, sessionData.getActiveSemesterIds());
 		
 		modelStore.save(session);
 			

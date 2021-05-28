@@ -175,4 +175,10 @@ public class User extends NtroUser {
 		
 		return getHasPassword();
 	}
+
+	public static String normalizeUserId(String userId) {
+		T.call(User.class);
+		
+		return userId.toLowerCase();
+	}
 }

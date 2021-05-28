@@ -1,5 +1,8 @@
 package ca.aquiletour.core.models.session;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.aquiletour.core.Constants;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.users.NtroSessionData;
@@ -8,7 +11,7 @@ public class SessionData extends NtroSessionData {
 
 	private int failedPasswordAttemps = 0;
 	private String loginCode = "";
-	private String currentSemester = "";
+	private List<String> activeSemesterIds = new ArrayList<>();
 
 	public String getLoginCode() {
 		return loginCode;
@@ -18,12 +21,12 @@ public class SessionData extends NtroSessionData {
 		this.loginCode = loginCode;
 	}
 
-	public String getCurrentSemester() {
-		return currentSemester;
+	public List<String> getActiveSemesterIds() {
+		return activeSemesterIds;
 	}
 
-	public void setCurrentSemester(String currentSemester) {
-		this.currentSemester = currentSemester;
+	public void setActiveSemesterIds(List<String> activeSemesterIds) {
+		this.activeSemesterIds = activeSemesterIds;
 	}
 
 	public int getFailedPasswordAttemps() {

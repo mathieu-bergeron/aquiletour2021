@@ -124,10 +124,9 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("loginStep01")
-				&& parameters.containsKey("studentId") 
-				&& !parameters.get("studentId")[0].isEmpty()) {
+				&& parameters.containsKey("studentId")) {
 			
-			String userId = parameters.get("studentId")[0];
+			String userId = parameters.get("studentId")[0].trim();
 			
 			sendLoginMessage(userId, parameters);
 
@@ -135,7 +134,7 @@ public class AquiletourBackendRequestHandler {
 				&& parameters.containsKey("teacherId") 
 				&& !parameters.get("teacherId")[0].isEmpty()) {
 			
-			String userId = parameters.get("teacherId")[0];
+			String userId = parameters.get("teacherId")[0].trim();
 			
 			sendLoginMessage(userId, parameters);
 
@@ -291,14 +290,12 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("openQueueCourseId")) {
 			
 			String courseId = parameters.get("openQueueCourseId")[0];
-			String semesterId = ((SessionData) Ntro.currentSession().getSessionData()).getCurrentSemester();
 			
 			if(parameters.containsKey("ifQueueOpen")
 					&& parameters.get("ifQueueOpen")[0].equals("on")) {
 				
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
 				teacherUsesQueueMessage.setCourseId(courseId);
-				teacherUsesQueueMessage.setSemesterId(semesterId);
 				Ntro.messages().send(teacherUsesQueueMessage);
 				
 			}else {

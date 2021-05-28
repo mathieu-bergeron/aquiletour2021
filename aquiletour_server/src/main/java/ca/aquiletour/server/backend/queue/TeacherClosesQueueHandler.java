@@ -24,7 +24,7 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 
-		CourseListManager.closeQueueForUser(modelStore, CourseListModelTeacher.class, sessionData.getCurrentSemester(), message.getCourseId(), message.getUser());
+		CourseListManager.closeQueueForUser(modelStore, CourseListModelTeacher.class, /* FIXME*/ null, message.getCourseId(), message.getUser());
 	}
 
 	@Override

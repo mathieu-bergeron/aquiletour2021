@@ -64,6 +64,12 @@ public class Constants {
 	public static final String ALL_COURSES_ID = "_c";
 	public static final String ALL_COURSES_TEXT = "Tous les cours";
 
+	public static final String ALL_SEMESTERS_ID = "_s";
+	public static final String ALL_SEMESTERS_TEXT = "Toutes les sessions";
+
+	public static final String ALL_TEACHERS_ID = "_t";
+	public static final String ALL_TEACHERS_TEXT = "Tous les profs";
+
 	public static final String ALL_USERS_ID = "_u";
 	public static final String ALL_USERS_TEXT = "Tout le monde";
 

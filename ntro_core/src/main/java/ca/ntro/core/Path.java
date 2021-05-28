@@ -235,6 +235,24 @@ public class Path implements JsonSerializable {
 		}
 
 		return false;
+
+	}
+	public boolean isRootPath() {
+		T.call(this);
+
+		return nameCount() == 0;
+	}
+
+	public String toKey() {
+		T.call(this);
+
+		return toString();
+	}
+
+	public String toHtmlId() {
+		T.call(this);
+
+		return toFileName();
 	}
 
 }

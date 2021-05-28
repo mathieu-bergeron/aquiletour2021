@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.queue.teacher;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
@@ -17,8 +17,6 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuCoursesContainer;
 	private HtmlElement queueMenuCourseTemplate;
 	private HtmlElement queueMenuGroupTemplate;
-
-	private HtmlElements addSemesterIdToValue;
 
 	private HtmlElements addAllCoursesIdToId;
 	private HtmlElements addAllCoursesIdToValue;
@@ -45,14 +43,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuCourseTemplate.hide();
 		queueMenuGroupTemplate.hide(); 
 
-		addSemesterIdToValue = this.getRootElement().find(".add-semester-id-to-value");
-
 		addAllCoursesIdToId = this.getRootElement().find(".add-all-courses-id-to-id");
 		addAllCoursesIdToValue = this.getRootElement().find(".add-all-courses-id-to-value");
 		addAllCoursesIdToForm = this.getRootElement().find(".add-all-courses-id-to-form");
 		
-		SessionData sessionData = (SessionData) context.sessionData();
-		addSemesterIdToValue.appendToAttribute("value", sessionData.getCurrentSemester());
 		
 		addAllCoursesIdToId.appendToAttribute("id", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToValue.appendToAttribute("value", Constants.ALL_COURSES_ID);
@@ -71,24 +65,27 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	}
 
 	@Override
-	public void displayIfQueueOpen(String courseId, 
+	public void displayIfQueueOpen(CoursePath coursePath, 
 			                       boolean isOpen) {
+		T.call(this);
+		
+		displayIfQueueOpen(coursePath, null, isOpen);
 	}
 
 	@Override
-	public void displayIfQueueOpen(String courseId, 
+	public void displayIfQueueOpen(CoursePath coursePath,
 			                       String groupId, 
 			                       boolean isOpen) {
 		T.call(this);
 		
 		String id = "is-queue-open-checkbox";
-		if(queueId != null) {
-			id += queueId;
+		if(!coursePath.isAllCourses()) {
+			id += coursePath.toFileName();
 		}
 		if(groupId != null) {
 			id += groupId;
 		}
-		
+
 		HtmlElement isQueueOpenCheckbox = getRootElement().find("#"+id).get(0);
 		
 		if(isQueueOpenCheckbox != null) {
@@ -118,90 +115,93 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 
 	@Override
-	public void removeFromQueueMenu(String courseId) {
+	public void removeFromQueueMenu(CoursePath coursePath) {
 		T.call(this);
 		
-		HtmlElement courseElement = findCourseElement(courseId);
+		HtmlElement courseElement = findCourseElement(coursePath);
 		if(courseElement != null) {
 			courseElement.deleteForever();
 		}
 	}
 
-	private HtmlElement findCourseElement(String courseId) {
+	private HtmlElement findCourseElement(CoursePath coursePath) {
 		T.call(this);
-		return queueMenuCoursesContainer.find("#" + courseElementId(courseId)).get(0);
+		return queueMenuCoursesContainer.find("#" + courseElementId(coursePath)).get(0);
 	}
 
-	private HtmlElement findGroupElement(String groupId, String courseId) {
+	private HtmlElement findGroupElement(CoursePath coursePath, String groupId) {
 		T.call(this);
 		
 		HtmlElement groupElement = null;
 
-		HtmlElement courseElement = findCourseElement(courseId);
+		HtmlElement courseElement = findCourseElement(coursePath);
 		
 		if(courseElement != null) {
-			groupElement = courseElement.find("#" + groupElementId(courseId, groupId)).get(0);
+			groupElement = courseElement.find("#" + groupElementId(coursePath, groupId)).get(0);
 		}
 		return groupElement;
 	}
 
 	@Override
-	public void removeFromQueueMenu(String courseId, String groupId) {
+	public void removeFromQueueMenu(CoursePath coursePath, String groupId) {
 		T.call(this);
 
-		HtmlElement groupElement = findGroupElement(courseId, groupId);
+		HtmlElement groupElement = findGroupElement(coursePath, groupId);
 		if(groupElement != null) {
 			groupElement.deleteForever();
 		}
 	}
 	
-	private String courseElementId(String courseId){
+	private String courseElementId(CoursePath coursePath){
 		T.call(this);
 
-		return "course-" + courseId;
+		return "course-" + coursePath.semesterId() + "-" + coursePath.courseId();
 	}
 
-	private String groupElementId(String courseId, String groupId){
+	private String groupElementId(CoursePath coursePath, String groupId){
 		T.call(this);
 		
-		return "group-" + courseId + "-" + groupId;
+		return "group-" + coursePath.semesterId() + "-" +  coursePath.courseId() + "-" + groupId;
 	}
 
 	@Override
-	public void addToQueueMenu(String courseId) {
+	public void addToQueueMenu(CoursePath coursePath) {
 		T.call(this);
 		
 		HtmlElement courseElement = queueMenuCourseTemplate.clone();
-		courseElement.setAttribute("id", courseElementId(courseId));
+		courseElement.setAttribute("id", courseElementId(coursePath));
 		courseElement.show();
 		
-		identifyCourseId(courseElement, courseId);
+		identifyCourseId(courseElement, coursePath);
 		
 		queueMenuCoursesContainer.appendElement(courseElement);
 	}
 	
-	private void identifyCourseId(HtmlElement element, String courseId) {
+	private void identifyCourseId(HtmlElement element, CoursePath coursePath) {
 		T.call(this);
+
+		HtmlElements addSemesterIdToValue = element.find("add-semester-id-to-value");
+		addSemesterIdToValue.appendToAttribute("value", coursePath.semesterId());
 
 		HtmlElements addCourseIdToId = element.find("add-course-id-to-id");
 		HtmlElements addCourseIdToValue = element.find("add-course-id-to-value");
 		HtmlElements addCourseIdToForm = element.find("add-course-id-to-form");
 		
-		addCourseIdToId.appendToAttribute("id", courseId);
-		addCourseIdToValue.appendToAttribute("value", courseId);
-		addCourseIdToForm.appendToAttribute("form", courseId);
+		addCourseIdToId.appendToAttribute("id", coursePath.courseId());
+		addCourseIdToValue.appendToAttribute("value", coursePath.courseId());
+		addCourseIdToForm.appendToAttribute("form", coursePath.courseId());
 	}
 
 	@Override
-	public void addToQueueMenu(String courseId, String groupId) {
+	public void addToQueueMenu(CoursePath coursePath, String groupId) {
 		T.call(this);
 		
-		HtmlElement courseElement = findCourseElement(courseId);
+		HtmlElement courseElement = findCourseElement(coursePath);
 		
 		if(courseElement != null) {
 			
 			HtmlElement groupElement = queueMenuGroupTemplate.clone();
-			groupElement.setAttribute("id", groupElementId(courseId, groupId));
+			groupElement.setAttribute("id", groupElementId(coursePath, groupId));
 			groupElement.show();
 			
 			HtmlElement groupIdElement = groupElement.find(".queue-menu-group-id").get(0);
@@ -209,17 +209,17 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 				groupIdElement.text(groupId);
 			}
 			
-			identifyCourseId(groupElement, courseId);
+			identifyCourseId(groupElement, coursePath);
 
 			courseElement.appendElement(groupElement);
 		}
 	}
 
 	@Override
-	public void displayCourseTitle(String courseId, String title) {
+	public void displayCourseTitle(CoursePath coursePath, String title) {
 		T.call(this);
 		
-		HtmlElement courseElement = findCourseElement(courseId);
+		HtmlElement courseElement = findCourseElement(coursePath);
 		if(courseElement != null) {
 			HtmlElement titleElement = courseElement.find(".queue-menu-course-title").get(0);
 			if(titleElement != null) {

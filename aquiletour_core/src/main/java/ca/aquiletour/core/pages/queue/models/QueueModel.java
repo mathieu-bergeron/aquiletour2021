@@ -1,9 +1,8 @@
 package ca.aquiletour.core.pages.queue.models;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
 import ca.ntro.core.models.lambdas.Break;
@@ -13,20 +12,19 @@ import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
 public class QueueModel implements NtroModel {
-	
+
+	private String queueId;
+	private int maxId;
+
 	private ObservableTime currentTime = new ObservableTime();
 
 	private StoredInteger appointmentDurationSeconds = new StoredInteger(Constants.APPOINTMENT_DURATION_MINUTES * 60);
 	private ObservableTime firstAppointmentTime = new ObservableTime();
 
 	private ObservableAppointmentList appointments = new ObservableAppointmentList();
-	private List<String> studentIds = new ArrayList<>();
-	private int maxId;
-	private String teacherId = "";
-	private String courseId = "";
 
 	private QueueSettings mainSettings = new QueueSettings();
-	private SettingsByCourseId settingsByCourseId = new SettingsByCourseId();
+	private SettingsByCourseKey settingsByCourseKey = new SettingsByCourseKey();
 
 	public boolean isQueueOpen() {
 		T.call(this);
@@ -44,7 +42,7 @@ public class QueueModel implements NtroModel {
 	private boolean isQueueOpenForSomeCourse(boolean isOpen) {
 		T.call(this);
 
-		isOpen = settingsByCourseId.reduceTo(Boolean.class, isOpen, (courseId, courseSettings, currentIsOpen) -> {
+		isOpen = getSettingsByCourseKey().reduceTo(Boolean.class, isOpen, (courseId, courseSettings, currentIsOpen) -> {
 			if(currentIsOpen) {
 				throw new Break();
 			}
@@ -137,32 +135,6 @@ public class QueueModel implements NtroModel {
 		this.maxId = maxId;
 	}
 
-	public void addStudentId(String studentId) {
-		T.call(this);
-
-		studentIds.add(studentId);
-		;
-	}
-
-	public void deleteStudent(String studentId) {
-		T.call(this);
-
-		studentIds.remove(studentId);
-		;
-	}
-
-	public List<String> getStudentIds() {
-		T.call(this);
-
-		return studentIds;
-	}
-
-	public void setStudentIds(List<String> studentIds) {
-		T.call(this);
-
-		this.studentIds = studentIds;
-	}
-	
 	public void moveAppointment(String toMoveId, String anchorId, String beforeOrAfter) {
 		T.call(this);
 		
@@ -203,25 +175,9 @@ public class QueueModel implements NtroModel {
 		firstAppointmentTime.set(Ntro.calendar().now());
 	}
 
-	public String getTeacherId() {
-		return teacherId;
-	}
-
-	public void setTeacherId(String teacherId) {
-		this.teacherId = teacherId;
-	}
-
 	public void clearQueue() {
 		appointments.clearItems();
 		setMaxId(0);
-	}
-
-	public String getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
 	}
 
 	public Appointment appointmentById(String appointmentId) {
@@ -357,10 +313,10 @@ public class QueueModel implements NtroModel {
 
 		}else {
 			
-			QueueSettingsCourse courseSettings = settingsByCourseId.valueOf(courseId);
+			QueueSettingsCourse courseSettings = settingsByCourseKey.valueOf(courseId);
 			if(courseSettings == null) {
 				courseSettings = new QueueSettingsCourse();
-				settingsByCourseId.putEntry(courseId, courseSettings);
+				settingsByCourseKey.putEntry(courseId, courseSettings);
 			}
 			
 			courseSettings.updateIsQueueOpen(isQueueOpen);
@@ -375,39 +331,35 @@ public class QueueModel implements NtroModel {
 		this.mainSettings = mainSettings;
 	}
 
-	public SettingsByCourseId getSettingsByCourseId() {
-		return settingsByCourseId;
+	public SettingsByCourseKey getSettingsByCourseKey() {
+		return settingsByCourseKey;
 	}
 
-	public void setSettingsByCourseId(SettingsByCourseId settingsByCourseId) {
-		this.settingsByCourseId = settingsByCourseId;
-	}
-
-	public void addCourseSettings(String courseId) {
+	public void addCourseSettings(CoursePath coursePath) {
 		T.call(this);
 		
-		if(!getSettingsByCourseId().containsKey(courseId)) {
-			getSettingsByCourseId().putEntry(courseId, new QueueSettingsCourse());
+		if(!getSettingsByCourseKey().containsKey(coursePath.toString())) {
+			getSettingsByCourseKey().putEntry(coursePath.toString(), new QueueSettingsCourse());
 		}
 	}
 
-	public void updateCourseTitle(String courseId, String courseTitle) {
+	public void updateCourseTitle(CoursePath coursePath, String courseTitle) {
 		T.call(this);
 		
-		QueueSettingsCourse courseSettings = getSettingsByCourseId().valueOf(courseId);
+		QueueSettingsCourse courseSettings = getSettingsByCourseKey().valueOf(coursePath.toKey());
 		if(courseSettings != null) {
 			
 			courseSettings.updateTitle(courseTitle);
 			
 		}else {
-			Log.warning("Cannot find courseId " + courseId);
+			Log.warning("Cannot find coursePath " + coursePath);
 		}
 	}
 
 	public void addGroupSettings(String courseId, String groupId) {
 		T.call(this);
 
-		QueueSettingsCourse courseSettings = getSettingsByCourseId().valueOf(courseId);
+		QueueSettingsCourse courseSettings = getSettingsByCourseKey().valueOf(courseId);
 		if(courseSettings != null) {
 			
 			courseSettings.addGroupSettings(groupId);
@@ -416,5 +368,17 @@ public class QueueModel implements NtroModel {
 			Log.warning("[addGroupSettings] Cannot find courseId " + courseId);
 		}
 		
+	}
+
+	public String getQueueId() {
+		return queueId;
+	}
+
+	public void setQueueId(String queueId) {
+		this.queueId = queueId;
+	}
+
+	public void setSettingsByCourseKey(SettingsByCourseKey settingsByCourseKey) {
+		this.settingsByCourseKey = settingsByCourseKey;
 	}
 }

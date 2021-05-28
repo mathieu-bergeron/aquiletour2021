@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.queue;
 
 import java.util.List;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
@@ -15,17 +16,15 @@ import ca.ntro.services.Ntro;
 
 public class QueueManager {
 
-	public static void createQueue(ModelStoreSync modelStore,
-								   String queueId,
-			                       User user) {
+	public static void createQueueForUser(ModelStoreSync modelStore,
+								   		  User user) {
 
 		T.call(QueueManager.class);
 		
-		createQueue(modelStore, user.getId(), queueId);
+		createQueue(modelStore, user.getId());
 	}
 
 	public static void createQueue(ModelStoreSync modelStore,
-								   String teacherId,
 			                       String queueId) {
 
 		T.call(QueueManager.class);
@@ -38,8 +37,7 @@ public class QueueManager {
 			public void initialize(QueueModel newQueue) {
 				T.call(this);
 
-				newQueue.setTeacherId(teacherId);
-				newQueue.setCourseId(queueId);
+				newQueue.setQueueId(queueId);
 			}
 		});
 	}
@@ -93,36 +91,6 @@ public class QueueManager {
 		});
 	}
 
-	public static int addStudentsToQueue(ModelStoreSync modelStore, 
-			                             String queueId, 
-			                             List<User> studentsToAdd) {
-		T.call(QueueManager.class);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-
-		int numberOfStudentAdded = 0;
-		
-		for(User student : studentsToAdd) {
-			String studentId = student.getId();
-			
-			if(!queue.getStudentIds().contains(studentId)) {
-
-				queue.getStudentIds().add(studentId);
-				numberOfStudentAdded++;
-			}
-		}
-
-		if(numberOfStudentAdded > 0) {
-			modelStore.save(queue);
-		}
-		
-		modelStore.closeWithoutSaving(queue);
-
-		return numberOfStudentAdded;
-	}
-
 	public static void addAppointmentForUser(ModelStoreSync modelStore,
 			                                 String queueId,
 			                                 User user) throws BackendError {
@@ -160,8 +128,6 @@ public class QueueManager {
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}
 
-	// FIXME: much better to increment number of appointments
-	//        if two threads add appointements, this size() could be wrong
 	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
 		T.call(QueueManager.class);
 
@@ -169,9 +135,6 @@ public class QueueManager {
 
 		// FIXME: use increment insted
 		int nbAppointment = queue.getAppointments().size();
-
-		String teacherId = queue.getTeacherId();
-		List<String> studentIds = queue.getStudentIds();
 
 		modelStore.closeWithoutSaving(queue);
 	}
@@ -282,7 +245,7 @@ public class QueueManager {
 	}
 
 	public static void addCourseSettings(ModelStoreSync modelStore, 
-			                             String courseId, 
+										 CoursePath coursePath,
 			                             String courseTitle, 
 			                             User user) throws BackendError {
 		T.call(QueueManager.class);
@@ -292,8 +255,8 @@ public class QueueManager {
 			public void update(QueueModel queue) {
 				T.call(this);
 				
-				queue.addCourseSettings(courseId);
-				queue.updateCourseTitle(courseId, courseTitle);
+				queue.addCourseSettings(coursePath);
+				queue.updateCourseTitle(coursePath, courseTitle);
 			}
 		});
 	}

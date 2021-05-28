@@ -4,11 +4,12 @@ package ca.aquiletour.core.pages.queue.teacher.handlers;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
-import ca.aquiletour.core.pages.queue.models.SettingsByCourseId;
+import ca.aquiletour.core.pages.queue.models.SettingsByCourseKey;
 import ca.aquiletour.core.pages.queue.models.SettingsByGroupId;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.ntro.core.models.StoredBoolean;
@@ -17,6 +18,7 @@ import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 	
@@ -28,21 +30,21 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 		super.handle(model, view, subViewLoader);
 		
 		observeMainSettings(model, model.getMainSettings(), view);
-		observeSettingsByCourseId(model, model.getSettingsByCourseId(), view);
+		observeSettingsByCourseId(model, model.getSettingsByCourseKey(), view);
 	}
 
-	private void observeSettingsByCourseId(QueueModel model, SettingsByCourseId settingsByCourseId, QueueViewTeacher view) {
+	private void observeSettingsByCourseId(QueueModel model, SettingsByCourseKey settingsByCourseKey, QueueViewTeacher view) {
 		T.call(this);
 		
 		view.clearQueueMenu();
-		settingsByCourseId.removeObservers();
-		settingsByCourseId.observe(new MapObserver<QueueSettingsCourse>() {
+		settingsByCourseKey.removeObservers();
+		settingsByCourseKey.observe(new MapObserver<QueueSettingsCourse>() {
 			@Override
-			public void onEntryAdded(String courseId, QueueSettingsCourse value) {
+			public void onEntryAdded(String courseKey, QueueSettingsCourse value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
-				view.addToQueueMenu(courseId);
-				observeCourseSettings(model, courseId, value, view);
+				view.addToQueueMenu(CoursePath.fromKey(courseKey));
+				observeCourseSettings(model, CoursePath.fromKey(courseKey), value, view);
 			}
 			
 			@Override
@@ -70,16 +72,16 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			}
 
 			@Override
-			public void onEntryRemoved(String courseId, QueueSettingsCourse value) {
+			public void onEntryRemoved(String courseKey, QueueSettingsCourse value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
-				view.removeFromQueueMenu(courseId);
+				view.removeFromQueueMenu(CoursePath.fromKey(courseKey));
 			}
 		});
 	}
 	
 	private void observeSettingsByGroupId(QueueModel model, 
-			 							  String courseId, 
+			 							  CoursePath coursePath, 
 			 							  SettingsByGroupId settingsByGroupId, 
 			 							  QueueViewTeacher view) {
 		T.call(this);
@@ -113,7 +115,7 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			@Override
 			public void onEntryAdded(String groupId, QueueSettings value) {
 				T.call(this);
-				view.addToQueueMenu(courseId, groupId);
+				view.addToQueueMenu(coursePath, groupId);
 				updateIsQueueOpen(model, view);
 			}
 
@@ -121,7 +123,7 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			public void onEntryRemoved(String groupId, QueueSettings value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
-				view.removeFromQueueMenu(courseId, groupId);
+				view.removeFromQueueMenu(coursePath, groupId);
 			}
 		});
 		
@@ -130,7 +132,7 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 	}
 
 	protected void observeIsQueueOpen(QueueModel model, 
-			                          String courseId, 
+			                          CoursePath coursePath,
 			                          String groupId, 
 			                          StoredBoolean isQueueOpen, 
 			                          QueueViewTeacher view) {
@@ -142,7 +144,7 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			public void onValue(Boolean value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
-				view.displayIfQueueOpen(courseId, groupId, false);
+				view.displayIfQueueOpen(coursePath, groupId, false);
 			}
 
 			@Override
@@ -154,20 +156,23 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			@Override
 			public void onValueChanged(Boolean oldValue, Boolean value) {
 				updateIsQueueOpen(model, view);
-				view.displayIfQueueOpen(courseId, groupId, value);
+				view.displayIfQueueOpen(coursePath, groupId, value);
 			}
 		});
 	}
 
-	protected void observeCourseSettings(QueueModel model, String courseId, QueueSettingsCourse courseSettings, QueueViewTeacher view) {
+	protected void observeCourseSettings(QueueModel model, 
+			                             CoursePath coursePath, 
+			                             QueueSettingsCourse courseSettings, 
+			                             QueueViewTeacher view) {
 		T.call(this);
 		
-		observeSettingsByGroupId(model, courseId, courseSettings.getSettingsByGroupId(), view);
-		observeIsQueueOpen(model, courseId, null, courseSettings.getIsQueueOpen(), view);
-		observeCourseTitle(courseId, courseSettings.getCourseTitle(),view);
+		observeSettingsByGroupId(model, coursePath, courseSettings.getSettingsByGroupId(), view);
+		observeIsQueueOpen(model, coursePath, null, courseSettings.getIsQueueOpen(), view);
+		observeCourseTitle(coursePath, courseSettings.getCourseTitle(),view);
 	}
 
-	private void observeCourseTitle(String courseId, StoredString courseTitle, QueueViewTeacher view) {
+	private void observeCourseTitle(CoursePath coursePath, StoredString courseTitle, QueueViewTeacher view) {
 		T.call(this);
 		
 		courseTitle.removeObservers();
@@ -175,7 +180,7 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			@Override
 			public void onValue(String value) {
 				T.call(this);
-				view.displayCourseTitle(courseId, value);
+				view.displayCourseTitle(coursePath, value);
 			}
 
 			@Override
@@ -185,25 +190,27 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			@Override
 			public void onValueChanged(String oldValue, String value) {
 				T.call(this);
-				view.displayCourseTitle(courseId, value);
+				view.displayCourseTitle(coursePath, value);
 			}
 		});
 	}
 
 	protected void observeGroupSettings(QueueModel model, 
-			                            String courseId, 
+										CoursePath coursePath,
 			                            String groupId, 
 			                            QueueSettings settings, 
 			                            QueueViewTeacher view) {
 		T.call(this);
 		
-		observeIsQueueOpen(model, courseId, groupId, settings.getIsQueueOpen(), view);
+		observeIsQueueOpen(model, coursePath, groupId, settings.getIsQueueOpen(), view);
 	}
 
-	protected void observeMainSettings(QueueModel model, QueueSettings mainSettings, QueueViewTeacher view) {
+	protected void observeMainSettings(QueueModel model, 
+			                           QueueSettings mainSettings, 
+			                           QueueViewTeacher view) {
 		T.call(this);
 
-		observeIsQueueOpen(model, Constants.ALL_COURSES_ID, null, mainSettings.getIsQueueOpen(), view);
+		observeIsQueueOpen(model, CoursePath.allCourses(), null, mainSettings.getIsQueueOpen(), view);
 	}
 
 	private void updateIsQueueOpen(QueueModel model, QueueViewTeacher view) {

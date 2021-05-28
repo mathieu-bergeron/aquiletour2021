@@ -34,10 +34,6 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	                  coursePath.toUrlPath() + 
 	                  task.id();
 		
-		if(!AquiletourMain.currentSemester().equals(coursePath.semesterId())) {
-			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId();
-		}
-		
 		taskTitleLink.setAttribute("href", href);
 	}
 }

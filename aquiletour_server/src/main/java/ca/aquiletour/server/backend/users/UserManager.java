@@ -218,7 +218,7 @@ public class UserManager {
 	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
-		QueueManager.createQueue(modelStore, user.getId(), user);
+		QueueManager.createQueueForUser(modelStore, user);
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
 
