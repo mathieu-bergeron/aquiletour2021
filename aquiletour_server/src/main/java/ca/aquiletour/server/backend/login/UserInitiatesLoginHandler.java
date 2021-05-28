@@ -85,8 +85,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		SessionData sessionData = new SessionData();
 
-		if(!userToRegister.getHasPassword()) {
-
+		if(!userToRegister.hasPassword()) {
 			String loginCode = sendLoginCode(userToRegister);
 			sessionData.setLoginCode(loginCode);
 		}

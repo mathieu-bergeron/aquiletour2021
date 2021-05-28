@@ -114,7 +114,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		User teacher = message.getUser();
 
-		CoursePath coursePath = new CoursePath(teacher.getRegistrationId(), message.getSemesterId(), message.getCourseId());
+		CoursePath coursePath = new CoursePath(teacher.getId(), message.getSemesterId(), message.getCourseId());
 
 		UserManager.createUsers(modelStore, studentsToAdd);
 

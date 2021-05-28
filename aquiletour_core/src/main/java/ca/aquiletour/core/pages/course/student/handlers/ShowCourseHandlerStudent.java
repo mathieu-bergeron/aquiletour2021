@@ -32,6 +32,6 @@ public class ShowCourseHandlerStudent extends ShowCourseHandler {
 	protected CoursePath coursePathFromMessage(ShowCourseMessage message) {
 		T.call(this);
 		
-		return CoursePathStudent.fromCoursePath(message.coursePath(), ((User)Ntro.currentUser()).getRegistrationId());
+		return CoursePathStudent.fromCoursePath(message.coursePath(), ((User)Ntro.currentUser()).getId());
 	}
 }

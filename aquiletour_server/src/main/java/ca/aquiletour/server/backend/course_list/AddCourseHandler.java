@@ -25,7 +25,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		CourseListItem item = message.getCourseListItem();
 		
-		CoursePath path = new CoursePath(teacher.getRegistrationId(), item.getSemesterId(), item.getCourseId());
+		CoursePath path = new CoursePath(teacher.getId(), item.getSemesterId(), item.getCourseId());
 		
 		CourseListManager.validateCourseListItem(item);
 			

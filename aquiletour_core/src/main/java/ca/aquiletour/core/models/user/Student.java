@@ -33,15 +33,6 @@ public class Student extends User {
 	}
 
 	@Override
-	public User toSessionUser() {
-		Student sessionUser = new Student();
-		
-		copySessionOnlyInfo(sessionUser);
-		
-		return sessionUser;
-	}
-
-	@Override
 	protected void copySessionOnlyInfo(User sessionUser) {
 		super.copySessionOnlyInfo(sessionUser);
 		

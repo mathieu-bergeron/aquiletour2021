@@ -23,7 +23,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		T.call(this);
 
 		User user = (User) Ntro.currentUser();
-		boolean isOwner = currentCoursePath().teacherId().equals(user.getRegistrationId());
+		boolean isOwner = currentCoursePath().teacherId().equals(user.getId());
 		
 		boolean isStructure = currentGroupId().equals(Constants.COURSE_STRUCTURE_ID);
 		

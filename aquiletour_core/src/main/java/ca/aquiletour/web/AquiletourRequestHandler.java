@@ -286,7 +286,7 @@ public class AquiletourRequestHandler {
 			
 			ShowCourseMessage showCourseMessage = null;
 			
-			if(teacherId.equals(user.getRegistrationId())
+			if(teacherId.equals(user.getId())
 					&& user.actsAsTeacher()) {
 
 				showCourseMessage = createCourseTaskMessage(ShowCourseMessageTeacher.class, path, parameters, sessionData);
@@ -319,7 +319,7 @@ public class AquiletourRequestHandler {
 
 
 			if(user instanceof Teacher 
-					&& user.getRegistrationId().equals(teacherId)
+					&& user.getId().equals(teacherId)
 					&& user.actsAsTeacher()) {
 
 				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);

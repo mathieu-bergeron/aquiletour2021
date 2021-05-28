@@ -7,15 +7,6 @@ public class Teacher extends User {
 	private boolean studentMode = false;
 
 	@Override
-	public User toSessionUser() {
-		Teacher sessionUser = new Teacher();
-		
-		copySessionOnlyInfo(sessionUser);
-
-		return sessionUser;
-	}
-
-	@Override
 	protected void copySessionOnlyInfo(User sessionUser) {
 		T.call(this);
 		super.copySessionOnlyInfo(sessionUser);

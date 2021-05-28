@@ -2,7 +2,7 @@ package ca.aquiletour.core;
 
 public class Constants {
 
-	public static final int DEFAULT_USER_ID_LENGTH = 10;
+	public static final int DEFAULT_USER_ID_LENGTH = 3;
 
 	public static final String CSV_FILE_ENCODING = "latin1";
 	

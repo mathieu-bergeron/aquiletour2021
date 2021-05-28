@@ -114,11 +114,11 @@ public class SessionManager {
 			User newUser = null;
 			Set<String> adminRegistrationIds = UserManager.getAdminRegistrationIds(modelStore);
 			
-			if(session.getUser() instanceof TeacherGuest && !adminRegistrationIds.contains(sessionUser.getRegistrationId())) {
+			if(session.getUser() instanceof TeacherGuest && !adminRegistrationIds.contains(sessionUser.getId())) {
 
 				newUser = new Teacher();
 
-			} else if(session.getUser() instanceof TeacherGuest && adminRegistrationIds.contains(sessionUser.getRegistrationId())) {
+			} else if(session.getUser() instanceof TeacherGuest && adminRegistrationIds.contains(sessionUser.getId())) {
 
 				newUser = new Admin();
 
@@ -128,7 +128,7 @@ public class SessionManager {
 			}
 			
 			newUser.copyPublicInfomation(sessionUser);
-			newUser.setFirstname(sessionUser.getRegistrationId());
+			newUser.setFirstname(sessionUser.getId());
 			newUser.setId(userId);
 
 			UserManager.createUser(modelStore, newUser);

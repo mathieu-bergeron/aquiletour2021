@@ -3,7 +3,6 @@ package ca.aquiletour.core.pages.dashboard.models;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;

@@ -1,11 +1,12 @@
 package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroUser;
 
 public class User extends NtroUser {
 	
-	private String registrationId = "";
+	private String uuid = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String email = "";
@@ -21,12 +22,12 @@ public class User extends NtroUser {
 		this.email = email;
 	}
 
-	public String getRegistrationId() {
-		return registrationId;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setRegistrationId(String registrationId) {
-		this.registrationId = registrationId;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getFirstname() {
@@ -69,7 +70,8 @@ public class User extends NtroUser {
 	public void copyPublicInfomation(User user) {
 		T.call(this);
 
-		setRegistrationId(user.getRegistrationId());
+		setId(user.getId());
+		setUuid(user.getUuid());
 		setFirstname(user.getFirstname());
 		setLastname(user.getLastname());
 		setEmail(user.getEmail());
@@ -77,7 +79,7 @@ public class User extends NtroUser {
 	}
 
 	public User toSessionUser() {
-		User sessionUser = new User();
+		User sessionUser = Ntro.factory().newInstance(this.getClass());
 
 		copySessionOnlyInfo(sessionUser);
 
@@ -88,7 +90,7 @@ public class User extends NtroUser {
 		T.call(this);
 
 		sessionUser.setId(getId());
-		sessionUser.setRegistrationId(getRegistrationId());
+		sessionUser.setUuid(getUuid());
 		sessionUser.setAuthToken(getAuthToken());
 		sessionUser.setFirstname(getFirstname());
 		sessionUser.setLastname(getLastname());
@@ -166,5 +168,11 @@ public class User extends NtroUser {
 		updateFirstNameIfEmpty(user.getFirstname());
 		updateLastNameIfEmpty(user.getLastname());
 		updateEmailIfEmpty(user.getEmail());
+	}
+
+	public boolean hasPassword() {
+		T.call(this);
+		
+		return getHasPassword();
 	}
 }

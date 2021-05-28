@@ -271,7 +271,7 @@ public class QueueManager {
 	public static void updateIsQueueOpen(ModelStoreSync modelStore, String courseId, boolean isQueueOpen, User user) throws BackendError {
 		T.call(QueueManager.class);
 		
-		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
@@ -287,7 +287,7 @@ public class QueueManager {
 			                             User user) throws BackendError {
 		T.call(QueueManager.class);
 
-		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
@@ -305,7 +305,7 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);

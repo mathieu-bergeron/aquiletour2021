@@ -250,7 +250,7 @@ public class AquiletourBackendRequestHandler {
 			String courseTitle = parameters.get("courseTitle")[0];
 			String courseId = parameters.get("newCourseId")[0];
 			
-			CourseListItem courseListItem = new CourseListItem(user.getRegistrationId(), semesterId, courseId, courseTitle);
+			CourseListItem courseListItem = new CourseListItem(user.getId(), semesterId, courseId, courseTitle);
 			
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setSemesterId(semesterId);

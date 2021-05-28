@@ -258,7 +258,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		HtmlElements addRepoPathToValue = formElement.find(".add-repo-path-to-value");
 		HtmlElements addAtomicTaskIdToValue = formElement.find(".add-atomic-task-id-to-value");
 		
-		addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getRegistrationId());
+		addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getId());
 		addGroupIdToValue.appendToAttribute("value", groupId);
 		addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
 		addAtomicTaskIdToValue.appendToAttribute("value", repoTask.getId());

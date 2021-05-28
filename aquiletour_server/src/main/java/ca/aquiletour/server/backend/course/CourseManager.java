@@ -418,7 +418,7 @@ public class CourseManager {
 			                               User student) {
 		T.call(CourseManager.class);
 		
-		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getRegistrationId());
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getId());
 		
 		System.out.println(coursePathStudent.toFileName());
 		

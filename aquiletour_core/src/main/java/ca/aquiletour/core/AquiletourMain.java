@@ -81,7 +81,7 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserIdMap;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.RegistrationId;
+import ca.aquiletour.core.models.user_registration.UserUuid;
 import ca.aquiletour.core.models.user_registration.UserId;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -383,7 +383,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StoredAquiletourDate.class);
 
 		Ntro.registerSerializableClass(UserList.class);
-		Ntro.registerSerializableClass(RegistrationId.class);
+		Ntro.registerSerializableClass(UserUuid.class);
 		Ntro.registerSerializableClass(UserId.class);
 		Ntro.registerSerializableClass(UserIdMap.class);
 

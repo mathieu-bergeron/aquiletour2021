@@ -10,7 +10,7 @@ import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.RegistrationId;
+import ca.aquiletour.core.models.user_registration.UserUuid;
 import ca.aquiletour.core.models.user_registration.UserId;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
@@ -37,13 +37,14 @@ import ca.ntro.stores.DocumentPath;
 
 public class UserManager {
 	
-	private static int USER_ID_LENGTH = Constants.DEFAULT_USER_ID_LENGTH;
 	private static int NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH = 10;
 
-	private synchronized static String generateUniqueUserId(ModelStoreSync modelStore) {
+	private synchronized static String generateUuid(ModelStoreSync modelStore) {
 		T.call(UserManager.class);
-		
-		String uniqueId;
+
+		int userIdLength = Constants.DEFAULT_USER_ID_LENGTH;
+
+		String uuid;
 		int numberOfCollisions = -1;
 		
 		do {
@@ -51,30 +52,30 @@ public class UserManager {
 			numberOfCollisions++;
 			if(numberOfCollisions >= NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH) {
 				numberOfCollisions = -1;
-				USER_ID_LENGTH++;
+				userIdLength++;
 			}
 
-			uniqueId = SecureRandomString.generate(USER_ID_LENGTH);
+			uuid = SecureRandomString.generate(userIdLength);
 
-		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
+		} while(modelStore.ifModelExists(UserId.class, "admin", uuid));
 
-		return uniqueId;
+		return uuid;
 	}
 
-	private static String generateAndStoreUserId(ModelStoreSync modelStore, String registrationId) {
+	private static String generateAndStoreUuid(ModelStoreSync modelStore, String userId) {
 		T.call(UserManager.class);
 		
-		String userId = generateUniqueUserId(modelStore);
-		
-		modelStore.createModel(RegistrationId.class, "admin", userId, new ModelInitializer<RegistrationId>() {
+		String uuid = generateUuid(modelStore);
+
+		modelStore.createModel(UserUuid.class, "admin", userId, new ModelInitializer<UserUuid>() {
 			@Override
-			public void initialize(RegistrationId newModel) {
+			public void initialize(UserUuid newModel) {
 				T.call(this);
-				newModel.setRegistrationId(registrationId);
+				newModel.setUuid(uuid);
 			}
 		});
 
-		modelStore.createModel(UserId.class, "admin", registrationId, new ModelInitializer<UserId>() {
+		modelStore.createModel(UserId.class, "admin", uuid, new ModelInitializer<UserId>() {
 			@Override
 			public void initialize(UserId newModel) {
 				T.call(this);
@@ -82,7 +83,7 @@ public class UserManager {
 			}
 		});
 
-		return userId;
+		return uuid;
 	}
 
 	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) throws BackendError {
@@ -217,7 +218,7 @@ public class UserManager {
 	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
-		QueueManager.createQueue(modelStore, user.getRegistrationId(), user);
+		QueueManager.createQueue(modelStore, user.getId(), user);
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
 
@@ -361,44 +362,27 @@ public class UserManager {
 	public static Student createStudentUsingRegistrationId(ModelStoreSync modelStore, 
 									                       String firstName, 
 									                       String lastName, 
-									                       String registrationId, 
+									                       String userId, 
 									                       String programId, 
 									                       String phoneNumber, 
 									                       String email) throws BackendError {
 		T.call(UserManager.class);
 		
-		String studentId = null;
+		String uuid = null;
 
-		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(UserUuid.class, "admin", userId)) {
 
-			studentId = modelStore.getModel(UserId.class, "admin", registrationId).getUserId();
+			uuid = modelStore.getModel(UserUuid.class, "admin", userId).getUuid();
 
 		}else {
-			
-			String newId = generateUniqueUserId(modelStore);
-			
-			modelStore.createModel(UserId.class, "admin", registrationId, new ModelInitializer<UserId>() {
-				@Override
-				public void initialize(UserId newModel) {
-					T.call(this);
-					newModel.setUserId(newId);
-				}
-			});
 
-			studentId = newId;
-
-			modelStore.createModel(RegistrationId.class, "admin", studentId, new ModelInitializer<RegistrationId>() {
-				@Override
-				public void initialize(RegistrationId newModel) {
-					T.call(this);
-					newModel.setRegistrationId(registrationId);
-				}
-			});
+			uuid = generateAndStoreUuid(modelStore, userId);
+			
 		}
 
 		return createStudentForUserId(modelStore, 
-									  studentId, 
-									  registrationId,
+									  uuid, 
+									  userId,
 									  firstName, 
 									  lastName, 
 									  programId, 
@@ -407,8 +391,8 @@ public class UserManager {
 	}
 
 	public static Student createStudentForUserId(ModelStoreSync modelStore, 
-												 String studentId,
-												 String registrationId,
+												 String userId,
+												 String uuid,
 												 String firstName, 
 												 String lastName, 
 												 String programId, 
@@ -418,8 +402,8 @@ public class UserManager {
 		
 		Student student = createUser(modelStore, 
 				                     Student.class, 
-				                     studentId, 
-				                     registrationId,
+				                     userId, 
+				                     uuid,
 				                     firstName, 
 				                     lastName, 
 				                     email);
@@ -433,7 +417,7 @@ public class UserManager {
 	public static <U extends User> U createUser(ModelStoreSync modelStore, 
 										        Class<U> modelClass,
 										        String userId,
-										        String registrationId,
+										        String uuid,
 										        String firstName, 
 										        String lastName, 
 										        String email) throws BackendError {
@@ -451,7 +435,7 @@ public class UserManager {
 
 			user = Ntro.factory().newInstance(modelClass);
 			user.setId(userId);
-			user.setRegistrationId(registrationId);
+			user.setUuid(uuid);
 			user.updateInfoIfEmpty(firstName, lastName, email);
 			createUser(modelStore, user);
 		}
@@ -514,13 +498,13 @@ public class UserManager {
 		return modelStore.getModel(User.class, "admin", userId);
 	}
 
-	public static User getUserByRegistrationId(ModelStoreSync modelStore, String registrationId) {
+	public static User getUserByUuid(ModelStoreSync modelStore, String uuid) {
 		T.call(UserManager.class);
 		
 		User user = null;
 
-		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
-			String userId = modelStore.getModel(UserId.class, "admin", registrationId).getUserId();
+		if(modelStore.ifModelExists(UserId.class, "admin", uuid)) {
+			String userId = modelStore.getModel(UserId.class, "admin", uuid).getUserId();
 			user = getUserById(modelStore, userId);
 		}
 
@@ -542,28 +526,29 @@ public class UserManager {
 
 	public static User createGuestUser(ModelStoreSync modelStore, 
 									   Class<? extends User> guestUserClass,
-									   String registrationId) {
+									   String userId) {
 		T.call(UserManager.class);
 		
 		User newUser = Ntro.factory().newInstance(guestUserClass);
-		newUser.setRegistrationId(registrationId);
+		newUser.setId(userId);
 		
-		User existingUser = UserManager.getUserByRegistrationId(modelStore, registrationId);
-		
+		User existingUser = UserManager.getUserById(modelStore, userId);
+
 		if(existingUser != null) {
 
 			newUser.copyPublicInfomation(existingUser);
 			newUser.setId(existingUser.getId());
+			newUser.setUuid(existingUser.getUuid());
 
 		}else {
 
-			String userId = generateAndStoreUserId(modelStore, registrationId);
-			newUser.setFirstname(registrationId);
-			newUser.setEmail(registrationId + "@" + Constants.EMAIL_HOST);
+			String uuid = generateAndStoreUuid(modelStore, userId);
 			newUser.setId(userId);
+			newUser.setUuid(uuid);
+			newUser.setFirstname(userId);
+			newUser.setEmail(userId + "@" + Constants.EMAIL_HOST);
 		}
 
 		return newUser;
 	}
-
 }
