@@ -67,18 +67,21 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}
 	}
 
-	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String registrationId, NtroSession session) {
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, 
+			                                   String authToken, 
+			                                   String userId, 
+			                                   NtroSession session) {
 		T.call(this);
-
+		
 		User userToRegister;
 
-		if(isStudentId(registrationId)) {
+		if(isStudentId(userId)) {
 			
-			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, registrationId);
+			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, userId);
 			
 		}else {
 
-			userToRegister = UserManager.createGuestUser(modelStore, TeacherGuest.class, registrationId);
+			userToRegister = UserManager.createGuestUser(modelStore, TeacherGuest.class, userId);
 		}
 
 		userToRegister.setAuthToken(authToken);
@@ -93,6 +96,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		session.setUser(userToRegister.toSessionUser());
 		session.setSessionData(sessionData);
 		modelStore.save(session);
+		
 
 		return userToRegister;
 	}

@@ -495,7 +495,14 @@ public class UserManager {
 	public static User getUserById(ModelStoreSync modelStore, String userId) {
 		T.call(UserManager.class);
 		
-		return modelStore.getModel(User.class, "admin", userId);
+		User user = null;
+		
+		if(modelStore.ifModelExists(User.class, "admin", userId)) {
+
+			user = modelStore.getModel(User.class, "admin", userId);
+		}
+		
+		return user;
 	}
 
 	public static User getUserByUuid(ModelStoreSync modelStore, String uuid) {
@@ -548,6 +555,7 @@ public class UserManager {
 			newUser.setFirstname(userId);
 			newUser.setEmail(userId + "@" + Constants.EMAIL_HOST);
 		}
+		
 
 		return newUser;
 	}
