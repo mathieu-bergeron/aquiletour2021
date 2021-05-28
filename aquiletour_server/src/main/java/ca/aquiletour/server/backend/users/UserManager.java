@@ -381,8 +381,8 @@ public class UserManager {
 		}
 
 		return createStudentForUserId(modelStore, 
-									  uuid, 
 									  userId,
+									  uuid, 
 									  firstName, 
 									  lastName, 
 									  programId, 
