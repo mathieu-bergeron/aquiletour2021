@@ -1,5 +1,11 @@
 {
   "_C": "SemesterListModelTeacher",
+  "activeSemesterIds": {
+    "_C": "ActiveSemesterIds",
+    "value": [
+      "H2021"
+    ]
+  },
   "semesters": {
     "_C": "ObservableSemesterList",
     "value": [
@@ -24,20 +30,10 @@
         },
         "courseGroups": {
           "_C": "ObservableCourseGroupList",
-          "value": [
-            {
-              "_C": "CourseGroup",
-              "groupId": "01",
-              "courseId": "strudon"
-            }
-          ]
+          "value": []
         },
         "adminControlled": true
       }
     ]
-  },
-  "currentSemesterId": {
-    "_C": "StoredString",
-    "value": "H2021"
   }
 }

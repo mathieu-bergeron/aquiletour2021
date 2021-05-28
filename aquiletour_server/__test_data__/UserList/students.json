@@ -3,10 +3,7 @@
   "userIdMap": {
     "_C": "UserIdMap",
     "value": {
-      "0fc79b9b4b9887f62160": true,
-      "ca7fe107b1bff6faf665": true,
-      "fe1150a38a1c4681a352": true,
-      "c1d05fd672d220385e20": true
+      "alice": true
     }
   }
 }

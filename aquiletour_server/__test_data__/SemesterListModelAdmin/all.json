@@ -1,5 +1,11 @@
 {
   "_C": "SemesterListModelAdmin",
+  "activeSemesterIds": {
+    "_C": "ActiveSemesterIds",
+    "value": [
+      "H2021"
+    ]
+  },
   "semesters": {
     "_C": "ObservableSemesterList",
     "value": [
@@ -15,9 +21,5 @@
         }
       }
     ]
-  },
-  "currentSemesterId": {
-    "_C": "StoredString",
-    "value": "H2021"
   }
 }

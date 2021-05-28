@@ -1,0 +1,285 @@
+{
+  "_C": "CourseModelTeacher",
+  "coursePath": {
+    "names": [
+      "alice",
+      "H2021",
+      "StruDon"
+    ],
+    "_C": "CoursePath"
+  },
+  "scheduledDates": {
+    "_C": "TaskDatesByGroupId",
+    "value": {}
+  },
+  "completions": {
+    "_C": "StudentCompletionsByStudentId",
+    "value": {}
+  },
+  "groups": {
+    "_C": "GroupDescriptions",
+    "value": []
+  },
+  "siblingSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  },
+  "siblingCourses": {
+    "_C": "CourseIds",
+    "value": []
+  },
+  "overridenDates": {
+    "_C": "TaskDatesByGroupId",
+    "value": {}
+  },
+  "tasks": {
+    "_C": "ObservableTaskMap",
+    "course": {
+      "_R": ""
+    },
+    "value": {
+      "/ateliers/depotgit": {
+        "path": {
+          "_R": "/tasks/value//ateliers/atelier1/exitTasks/value/0/repoPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/ateliers/atelier1"
+          ]
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": "{dépôtGit}"
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": [
+            {
+              "_C": "DefaultAtomicTask",
+              "id": "DefaultAtomicTask"
+            }
+          ]
+        },
+        "endTime": {
+          "_C": "StoredCourseDate",
+          "value": {
+            "semesterWeek": 1,
+            "_C": "CourseDateScheduleItem",
+            "scheduleItemId": "1",
+            "weekOf": {
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            },
+            "startOrEnd": "end"
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": [
+            {
+              "_C": "GitRepoTask",
+              "id": "GitRepoTask",
+              "repoPath": {
+                "_R": "/tasks/value//ateliers/atelier1/exitTasks/value/0/repoPath"
+              }
+            }
+          ]
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Remise du dépôt Git"
+        },
+        "graph": {
+          "_R": ""
+        }
+      },
+      "/ateliers/atelier1": {
+        "path": {
+          "names": [
+            "ateliers",
+            "atelier1"
+          ],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": "{remiseGit}"
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": [
+            {
+              "_C": "GitExerciseTask",
+              "id": "GitExerciseTask",
+              "repoPath": {
+                "names": [
+                  "ateliers",
+                  "depotgit"
+                ],
+                "_C": "TaskPath"
+              }
+            }
+          ]
+        },
+        "endTime": {
+          "_C": "StoredCourseDate",
+          "value": {
+            "semesterWeek": 1,
+            "_C": "CourseDateScheduleItem",
+            "scheduleItemId": "1",
+            "weekOf": {
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            },
+            "startOrEnd": "end"
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/ateliers/depotgit"
+          ]
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Atelier 1"
+        },
+        "graph": {
+          "_R": ""
+        }
+      },
+      "/ateliers": {
+        "path": {
+          "names": [
+            "ateliers"
+          ],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/ateliers/depotgit",
+            "/ateliers/atelier1"
+          ]
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "endTime": {
+          "_C": "StoredCourseDate",
+          "value": {
+            "semesterWeek": 0,
+            "_C": "CourseDateScheduleItem",
+            "scheduleItemId": "",
+            "weekOf": {
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            },
+            "startOrEnd": "end"
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Ateliers"
+        },
+        "graph": {
+          "_R": ""
+        }
+      },
+      "/": {
+        "path": {
+          "names": [],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/ateliers"
+          ]
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "endTime": {
+          "_C": "StoredCourseDate",
+          "value": {
+            "semesterWeek": 0,
+            "_C": "CourseDateScheduleItem",
+            "scheduleItemId": "",
+            "weekOf": {
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            },
+            "startOrEnd": "end"
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "graph": {
+          "_R": ""
+        }
+      }
+    }
+  }
+}

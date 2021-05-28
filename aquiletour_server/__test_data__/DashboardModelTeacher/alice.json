@@ -12,29 +12,13 @@
           "names": [
             "alice",
             "H2021",
-            "strudon"
+            "StruDon"
           ],
           "_C": "CoursePath"
         },
         "currentTasks": {
           "_C": "CurrentTasks",
-          "value": [
-            {
-              "taskPath": {
-                "names": [],
-                "_C": "TaskPath"
-              },
-              "_C": "CurrentTaskTeacher",
-              "taskTitle": {
-                "_C": "StoredString",
-                "value": "Structure de données"
-              },
-              "numberOfStudents": {
-                "_C": "StoredInteger",
-                "value": 3
-              }
-            }
-          ]
+          "value": []
         }
       }
     ]
