@@ -13,7 +13,7 @@ import ca.ntro.services.Ntro;
 
 public class QueueModel implements NtroModel {
 
-	private String queueId;
+	private String queueId = "";
 	private int maxId;
 
 	private ObservableTime currentTime = new ObservableTime();
