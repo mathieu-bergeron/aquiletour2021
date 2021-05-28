@@ -1,5 +1,6 @@
 package ca.aquiletour.core.validator;
 
+import ca.aquiletour.core.Constants;
 import ca.ntro.core.system.trace.T;
 
 public class Validator {
@@ -42,6 +43,12 @@ public class Validator {
 		for(String illegalChar : illegalChars) {
 			if(id.contains(illegalChar)) {
 				throw new ValidationError("Ne peut contenir le caractère " + illegalChar);
+			}
+		}
+
+		for(String reservedId : Constants.RESERVED_IDS) {
+			if(id.equals(reservedId)) {
+				throw new ValidationError("Le code " + id + " est réservé pour le système");
 			}
 		}
 	}

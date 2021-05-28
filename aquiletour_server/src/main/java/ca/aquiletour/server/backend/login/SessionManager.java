@@ -17,7 +17,6 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.random.SecureRandomString;
-import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
 public class SessionManager {
@@ -37,8 +36,9 @@ public class SessionManager {
 		session.setUser(user);
 		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
 
-		SessionData sessionData = (SessionData) session.getSessionData();
+		SessionData sessionData = new SessionData();
 		SemesterListManager.addActiveSemesterIds(modelStore, sessionData.getActiveSemesterIds());
+		session.setSessionData(sessionData);
 		
 		modelStore.save(session);
 			

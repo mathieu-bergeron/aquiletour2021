@@ -126,8 +126,11 @@ public class AquiletourRequestHandler {
 		ShowGroupListMessage showGroupListMessage = Ntro.messages().create(ShowGroupListMessage.class);
 		Ntro.messages().send(showGroupListMessage);
 
-		String currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
-		
+		String currentSemesterId = Constants.ACTIVE_SEMESTERS_ID;
+		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+			currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+		}
+
 		String currentCourseId = null;
 		if(parameters.containsKey(Constants.COURSE_URL_PARAM)) {
 			currentCourseId = parameters.get(Constants.COURSE_URL_PARAM)[0];
@@ -164,7 +167,10 @@ public class AquiletourRequestHandler {
 
 			Ntro.messages().send(showCourseListMessage);
 			
-			String currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+			String currentSemesterId = Constants.ACTIVE_SEMESTERS_ID;
+			if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
+				currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+			}
 
 			SelectCourseListSubset selectCourseListSubset = null;
 

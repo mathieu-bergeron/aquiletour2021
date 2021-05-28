@@ -20,16 +20,18 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 	protected void handle(M model, V view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
 		
-		System.out.println("CourseListViewModel");
-		
 		if(currentSemesterId == null) {
 			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, view);
 			observeSemesterIdList(model, view);
 		}
 		
-		if(!message.getSemesterId().equals(currentSemesterId)) {
-			currentSemesterId = message.getSemesterId();
-
+		String semesterId = message.getSemesterId();
+		if(semesterId == null) {
+			semesterId = Constants.ACTIVE_SEMESTERS_ID;
+		}
+		
+		if(!semesterId.equals(currentSemesterId)) {
+			currentSemesterId = semesterId;
 			changeCurrentSemester(model, view, subViewLoader);
 		}
 	}
@@ -86,7 +88,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 			@Override
 			public void onItemAdded(int index, CourseListItem description) {
 				T.call(this);
-
+				
 				if(description.getSemesterId().equals(currentSemesterId)) {
 
 					CourseListItemView subView = (CourseListItemView) subViewLoader.createView();

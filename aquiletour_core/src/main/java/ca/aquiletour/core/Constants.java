@@ -1,5 +1,7 @@
 package ca.aquiletour.core;
 
+import ca.aquiletour.core.messages.git.DeRegisterExercise;
+
 public class Constants {
 
 	public static final int DEFAULT_USER_ID_LENGTH = 3;
@@ -64,8 +66,8 @@ public class Constants {
 	public static final String ALL_COURSES_ID = "_c";
 	public static final String ALL_COURSES_TEXT = "Tous les cours";
 
-	public static final String ALL_SEMESTERS_ID = "_s";
-	public static final String ALL_SEMESTERS_TEXT = "Toutes les sessions";
+	public static final String ACTIVE_SEMESTERS_ID = "_ss";
+	public static final String ACTIVE_SEMESTERS_TEXT = "Session(s) en cours";
 
 	public static final String ALL_TEACHERS_ID = "_t";
 	public static final String ALL_TEACHERS_TEXT = "Tous les profs";
@@ -80,6 +82,13 @@ public class Constants {
 	public static final String STUDENT_LIST_MODEL_ID = "students";
 	public static final String TEACHER_LIST_MODEL_ID = "teachers";
 	public static final String ADMIN_LIST_MODEL_ID = "admins";
+	
+	public static final String[] RESERVED_IDS = {DRAFTS_SEMESTER_ID, 
+		                         				 COURSE_STRUCTURE_ID, 
+		                         				 ALL_GROUPS_ID, 
+		                         				 ACTIVE_SEMESTERS_ID, 
+		                         				 ALL_TEACHERS_ID, 
+		                         				 ALL_USERS_ID};
 	
 
 }

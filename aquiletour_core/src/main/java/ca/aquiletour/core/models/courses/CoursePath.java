@@ -6,7 +6,7 @@ import ca.ntro.core.system.trace.T;
 
 public class CoursePath extends Path {
 	
-	private static final CoursePath allCourses = new CoursePath(Constants.ALL_TEACHERS_ID, Constants.ALL_SEMESTERS_ID, Constants.ALL_COURSES_ID);
+	private static final CoursePath allCourses = new CoursePath(Constants.ALL_TEACHERS_ID, Constants.ACTIVE_SEMESTERS_ID, Constants.ALL_COURSES_ID);
 	
 	private final int TEACHER_INDEX = 0;
 	private final int SEMESTER_INDEX = 1;
