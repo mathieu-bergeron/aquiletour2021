@@ -10,8 +10,8 @@ import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.UserUuid;
-import ca.aquiletour.core.models.user_registration.UserId;
+import ca.aquiletour.core.models.user_registration.UuidByUserId;
+import ca.aquiletour.core.models.user_registration.UserIdByUuid;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
@@ -57,7 +57,7 @@ public class UserManager {
 
 			uuid = SecureRandomString.generate(userIdLength);
 
-		} while(modelStore.ifModelExists(UserId.class, "admin", uuid));
+		} while(modelStore.ifModelExists(UserIdByUuid.class, "admin", uuid));
 
 		return uuid;
 	}
@@ -67,17 +67,17 @@ public class UserManager {
 		
 		String uuid = generateUuid(modelStore);
 
-		modelStore.createModel(UserUuid.class, "admin", userId, new ModelInitializer<UserUuid>() {
+		modelStore.createModel(UuidByUserId.class, "admin", userId, new ModelInitializer<UuidByUserId>() {
 			@Override
-			public void initialize(UserUuid newModel) {
+			public void initialize(UuidByUserId newModel) {
 				T.call(this);
 				newModel.setUuid(uuid);
 			}
 		});
 
-		modelStore.createModel(UserId.class, "admin", uuid, new ModelInitializer<UserId>() {
+		modelStore.createModel(UserIdByUuid.class, "admin", uuid, new ModelInitializer<UserIdByUuid>() {
 			@Override
-			public void initialize(UserId newModel) {
+			public void initialize(UserIdByUuid newModel) {
 				T.call(this);
 				newModel.setUserId(userId);
 			}
@@ -370,9 +370,9 @@ public class UserManager {
 		
 		String uuid = null;
 
-		if(modelStore.ifModelExists(UserUuid.class, "admin", userId)) {
+		if(modelStore.ifModelExists(UuidByUserId.class, "admin", userId)) {
 
-			uuid = modelStore.getModel(UserUuid.class, "admin", userId).getUuid();
+			uuid = modelStore.getModel(UuidByUserId.class, "admin", userId).getUuid();
 
 		}else {
 
@@ -473,7 +473,7 @@ public class UserManager {
 		
 		boolean ifExists = false;
 
-		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(UserIdByUuid.class, "admin", registrationId)) {
 			ifExists = true;
 		}
 		
@@ -510,8 +510,8 @@ public class UserManager {
 		
 		User user = null;
 
-		if(modelStore.ifModelExists(UserId.class, "admin", uuid)) {
-			String userId = modelStore.getModel(UserId.class, "admin", uuid).getUserId();
+		if(modelStore.ifModelExists(UserIdByUuid.class, "admin", uuid)) {
+			String userId = modelStore.getModel(UserIdByUuid.class, "admin", uuid).getUserId();
 			user = getUserById(modelStore, userId);
 		}
 
