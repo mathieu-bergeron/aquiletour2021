@@ -9,7 +9,7 @@ import ca.ntro.core.system.trace.T;
 public class Validator {
 	
 	private static final int MIN_ID_LENGTH = 1;
-	private static final int MAX_ID_LENGTH = 100;
+	private static final int MAX_ID_LENGTH = 60;
 
 	private static final String[] acceptableChars = new String[] 
 			{
