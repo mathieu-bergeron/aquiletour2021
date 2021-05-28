@@ -12,6 +12,7 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -43,7 +44,7 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 		
 		queueLink.addEventListener("click", new HtmlEventListener() {
 			@Override
-			public void onEvent() {
+			public void onEvent(HtmlEvent e) {
 				T.call(this);
 				
 				if(Ntro.currentUser() instanceof Teacher ||

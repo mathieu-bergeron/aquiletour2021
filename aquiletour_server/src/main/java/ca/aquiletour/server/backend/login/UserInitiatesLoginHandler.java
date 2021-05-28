@@ -6,8 +6,8 @@ import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
-import ca.aquiletour.core.validator.ValidationError;
-import ca.aquiletour.core.validator.Validator;
+import ca.aquiletour.core.utils.ValidationError;
+import ca.aquiletour.core.utils.Validator;
 import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.email.SendEmail;
@@ -32,6 +32,8 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		String authToken = user.getAuthToken();
 		String userId = message.getRegistrationId();
 		User userToRegister = null;
+
+		userId = Validator.deAccent(userId);
 		
 		try {
 

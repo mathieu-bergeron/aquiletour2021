@@ -3,6 +3,6 @@ package ca.ntro.web.dom;
 
 public interface HtmlEventListener {
 	
-	void onEvent();
+	void onEvent(HtmlEvent e);
 
 }

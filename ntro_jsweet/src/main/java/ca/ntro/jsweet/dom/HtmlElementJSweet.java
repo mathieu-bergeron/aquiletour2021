@@ -13,6 +13,7 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
 import def.dom.Element;
@@ -60,10 +61,7 @@ public class HtmlElementJSweet extends HtmlElement {
 			public Object apply(JQueryEventObject t, Object u) {
 				T.call(this);
 
-				// FIXME: only for <a>?
-				t.preventDefault();
-
-				listener.onEvent();
+				listener.onEvent(new HtmlEventJSweet(t));
 
 				return null;
 			}
@@ -231,8 +229,10 @@ public class HtmlElementJSweet extends HtmlElement {
 			removeListeners();
 			addEventListener("click", new HtmlEventListener() {
 				@Override
-				public void onEvent() {
+				public void onEvent(HtmlEvent e) {
 					T.call(this);
+					
+					e.preventDefault();
 					
 					String fullHref = value;
 					

@@ -9,6 +9,7 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 
 public class AppointmentViewWebTeacher extends AppointmentViewWeb implements AppointmentView {
@@ -35,7 +36,7 @@ public class AppointmentViewWebTeacher extends AppointmentViewWeb implements App
 
 		deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {
 			@Override
-			public void onEvent() {
+			public void onEvent(HtmlEvent e) {
 				DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
 				deleteAppointmentMessage.setCourseId(queueId);
 				deleteAppointmentMessage.setAppointmentId(appointment.getId());

@@ -11,6 +11,7 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -58,7 +59,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 
 		loginButtonStep1.addEventListener("click", new HtmlEventListener() {
 			@Override
-			public void onEvent() {
+			public void onEvent(HtmlEvent e) {
 				T.call(this);
 				
 				String userId = loginInputStep1.value();
@@ -71,7 +72,7 @@ public class LoginViewWeb extends NtroViewWeb implements LoginView {
 
 		loginButtonStep2.addEventListener("click", new HtmlEventListener() {
 			@Override
-			public void onEvent() {
+			public void onEvent(HtmlEvent e) {
 				T.call(this);
 
 				String loginCode = loginInputStep2.value();

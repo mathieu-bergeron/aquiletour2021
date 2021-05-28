@@ -10,6 +10,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import static ca.ntro.assertions.Factory.that;
 
@@ -62,7 +63,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 			deleteAppointmentForm.show();
 			deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {
 				@Override
-				public void onEvent() {
+				public void onEvent(HtmlEvent e) {
 					DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
 					deleteAppointmentMessage.setCourseId(queueId);
 					deleteAppointmentMessage.setAppointmentId(appointment.getId());

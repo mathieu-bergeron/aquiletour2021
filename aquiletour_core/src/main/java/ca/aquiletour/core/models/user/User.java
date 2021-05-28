@@ -1,5 +1,6 @@
 package ca.aquiletour.core.models.user;
 
+import ca.aquiletour.core.utils.Validator;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroUser;
@@ -178,7 +179,7 @@ public class User extends NtroUser {
 
 	public static String normalizeUserId(String userId) {
 		T.call(User.class);
-		
-		return userId.toLowerCase();
+
+		return Validator.normalizeId(userId.toLowerCase());
 	}
 }

@@ -443,5 +443,6 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		
 		return atomicTask;
 	}
+	
 
 }
