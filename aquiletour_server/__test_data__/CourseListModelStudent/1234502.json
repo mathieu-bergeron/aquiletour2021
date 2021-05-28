@@ -44,9 +44,11 @@
       }
     ]
   },
-  "_C": "CourseListModelTeacher",
+  "_C": "CourseListModelStudent",
   "semesters": {
     "_C": "SemesterIds",
-    "value": []
+    "value": [
+      "H2021"
+    ]
   }
 }

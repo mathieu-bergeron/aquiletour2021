@@ -30,7 +30,13 @@
         },
         "courseGroups": {
           "_C": "ObservableCourseGroupList",
-          "value": []
+          "value": [
+            {
+              "_C": "CourseGroup",
+              "groupId": "01",
+              "courseId": "StruDon"
+            }
+          ]
         },
         "adminControlled": true
       }

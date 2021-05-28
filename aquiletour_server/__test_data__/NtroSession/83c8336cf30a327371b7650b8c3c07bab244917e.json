@@ -1,0 +1,24 @@
+{
+  "sessionData": {
+    "failedPasswordAttemps": 0,
+    "_C": "SessionData",
+    "loginCode": "009026",
+    "activeSemesterIds": []
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "Bob",
+    "phoneNumber": "",
+    "_C": "Student",
+    "authToken": "83c8336cf30a327371b7650b8c3c07bab244917e",
+    "hasPassword": false,
+    "id": "1234500",
+    "uuid": "e17dff",
+    "email": "1234500@cmontmorency.qc.ca",
+    "passwordHash": "",
+    "programId": "420.AA",
+    "lastname": "Bérancourt"
+  },
+  "timeToLiveMiliseconds": 390000
+}

@@ -1,5 +1,5 @@
 {
-  "_C": "CourseModelTeacher",
+  "_C": "CourseModelStudent",
   "coursePath": {
     "names": [
       "alice",
@@ -8,40 +8,13 @@
     ],
     "_C": "CoursePath"
   },
-  "scheduledDates": {
-    "_C": "TaskDatesByGroupId",
-    "value": {}
+  "groupId": {
+    "_C": "StoredString",
+    "value": "01"
   },
   "completions": {
-    "_C": "StudentCompletionsByStudentId",
-    "value": {
-      "1234500": {
-        "_C": "StudentCompletionsByTaskId",
-        "value": {
-          "/ateliers/depotgit": {
-            "_C": "CompletionByAtomicTaskId",
-            "value": {}
-          }
-        }
-      }
-    }
-  },
-  "groups": {
-    "_C": "GroupDescriptions",
-    "value": [
-      {
-        "_C": "GroupDescription",
-        "groupId": "01",
-        "students": {
-          "_C": "StudentIdList",
-          "value": [
-            "1234500",
-            "1234501",
-            "1234502"
-          ]
-        }
-      }
-    ]
+    "_C": "StudentCompletionsByTaskId",
+    "value": {}
   },
   "siblingSemesters": {
     "_C": "SemesterIds",
@@ -51,10 +24,6 @@
     "_C": "CourseIds",
     "value": []
   },
-  "overridenDates": {
-    "_C": "TaskDatesByGroupId",
-    "value": {}
-  },
   "tasks": {
     "_C": "ObservableTaskMap",
     "course": {
@@ -63,7 +32,7 @@
     "value": {
       "/ateliers/depotgit": {
         "path": {
-          "_R": "/tasks/value//ateliers/atelier1/exitTasks/value/0/repoPath"
+          "_R": "/tasks/value//ateliers/depotgit/entryTasks/value/0/repoPath"
         },
         "nextTasks": {
           "_C": "StoredTaskIds",
@@ -109,7 +78,11 @@
               "_C": "GitRepoTask",
               "id": "GitRepoTask",
               "repoPath": {
-                "_R": "/tasks/value//ateliers/atelier1/exitTasks/value/0/repoPath"
+                "names": [
+                  "ateliers",
+                  "depotgit"
+                ],
+                "_C": "TaskPath"
               }
             }
           ]
@@ -154,11 +127,8 @@
               "_C": "GitExerciseTask",
               "id": "GitExerciseTask",
               "repoPath": {
-                "names": [
-                  "ateliers",
-                  "depotgit"
-                ],
-                "_C": "TaskPath"
+                "names": [],
+                "_C": "Path"
               }
             }
           ]
@@ -219,7 +189,12 @@
         },
         "exitTasks": {
           "_C": "StoredAtomicTasks",
-          "value": []
+          "value": [
+            {
+              "_C": "DefaultAtomicTask",
+              "id": "DefaultAtomicTask"
+            }
+          ]
         },
         "endTime": {
           "_C": "StoredCourseDate",
@@ -272,7 +247,12 @@
         },
         "exitTasks": {
           "_C": "StoredAtomicTasks",
-          "value": []
+          "value": [
+            {
+              "_C": "DefaultAtomicTask",
+              "id": "DefaultAtomicTask"
+            }
+          ]
         },
         "endTime": {
           "_C": "StoredCourseDate",
