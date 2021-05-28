@@ -63,3 +63,7 @@ aquiletour_server/TMP
 
 # Git module
 dockers/git/depot/
+
+#Cert
+dockers/httprouter/aiguilleurca.key
+dockers/httprouter/d706a8e1929c0867.crt
