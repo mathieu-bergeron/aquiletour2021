@@ -152,6 +152,10 @@ def hook_task(depot, maria_conn):
         #   Not possible ... Error
         # Extract history to depotDB
     else:
+        message = {}
+        message['_C'] = 'OnUnknownRepoURL'
+        message['repoUrl'] = depot
+        utils.net_utils.send_message(message)
         print('DEPOT NOT FOUND: ' + depot)
         answer = 'DEPOT NOT FOUND'
     return (True, json.dumps({'status': answer}))
