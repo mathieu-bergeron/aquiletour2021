@@ -12,14 +12,14 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class DashboardModel<CT extends CurrentTask> implements NtroModel {
 
-	private DashboardItems dashboardItems = new DashboardItems();
+	private DashboardItems<CT> dashboardItems = new DashboardItems<>();
 	private StoredString statusMessage = new StoredString();
 
-	public DashboardItems getDashboardItems() {
+	public DashboardItems<CT> getDashboardItems() {
 		return dashboardItems;
 	}
 
-	public void setDashboardItems(DashboardItems dashboardItems) {
+	public void setDashboardItems(DashboardItems<CT> dashboardItems) {
 		this.dashboardItems = dashboardItems;
 	}
 

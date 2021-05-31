@@ -1,11 +1,12 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
+import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 
-public class DashboardItemViewWebTeacher extends DashboardItemViewWeb implements DashboardCourseViewTeacher {
+public class DashboardItemViewWebTeacher extends DashboardItemViewWeb<CurrentTaskTeacher> implements DashboardCourseViewTeacher {
 	
 	private String taskHtml = "<li class=\"list-group-item\">\n"
 			+ "<div class=\"d-flex\">\n"
@@ -24,5 +25,6 @@ public class DashboardItemViewWebTeacher extends DashboardItemViewWeb implements
 
 		
 	}
+
 
 }
