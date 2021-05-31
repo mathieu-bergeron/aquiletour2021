@@ -1,36 +1,32 @@
 package ca.aquiletour.web.pages.dashboard.student;
 
-import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardCourseViewStudent;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
-import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 
 public class DashboardItemViewWebStudent extends DashboardItemViewWeb<CurrentTaskStudent> implements DashboardCourseViewStudent {
 
-	private HtmlElement makeAppointmentForm;
+	private String taskLiHtml = "                <div class=\"d-flex justify-content-start\">\n"
+			+ "                    <a href=\"#\">Atelier 2</a>\n"
+			+ "                    <div class=\"flex-fill\"></div>\n"
+			+ "                    <form action=\"\" method=\"post\" id=\"make-appointment-form\">\n"
+			+ "                        <input name=\"makeAppointment\" style=\"display:none;\"></input>\n"
+			+ "                        <input type=\"submit\" class=\"btn btn-primary btn-sm\" value=\"Prendre rendez-vous\"></input>\n"
+			+ "                    </form>\n"
+			+ "                </div>\n"
+			+ "";
 
 	@Override
-	public void initializeViewWeb(NtroContext<?,?> context) {
+	protected HtmlElement createTaskLi(int index, CurrentTaskStudent currentTask) {
 		T.call(this);
-		super.initializeViewWeb(context);
-
-		makeAppointmentForm = this.getRootElement().find("#make-appointment-form").get(0);
-
-		MustNot.beNull(makeAppointmentForm);
-    }
-
-	@Override
-	public void identifyCourse(CoursePath coursePath) {
-		T.call(this);
-		super.identifyCourse(coursePath);
 		
-		makeAppointmentForm.setAttribute("action", "/" + Constants.QUEUE_URL_SEGMENT + "/" + item.getCoursePath().teacherId());
+		// FIXME: must get at least teacherId for link to Queue
+		
+		HtmlElement taskLi = getRootElement().createElement("taskLiHtml");
+
+		return taskLi;
 	}
 
 

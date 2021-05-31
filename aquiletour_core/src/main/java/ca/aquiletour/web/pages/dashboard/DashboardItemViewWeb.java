@@ -50,6 +50,8 @@ public abstract class DashboardItemViewWeb<CT extends CurrentTask> extends NtroV
 		
 		taskListUl.appendElement(taskLi);
 	}
+	
+	protected abstract HtmlElement createTaskLi(int index, CT currentTask);
 
 	@Override
 	public void updateTaskTitle(int index, String value) {
