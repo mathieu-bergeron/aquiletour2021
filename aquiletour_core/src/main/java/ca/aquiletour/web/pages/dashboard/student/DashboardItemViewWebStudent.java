@@ -27,7 +27,7 @@ public class DashboardItemViewWebStudent extends DashboardItemViewWeb<CurrentTas
 		taskHref.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + currentTask.getTaskPath().toString());
 		taskHref.text(currentTask.getTaskTitle().getValue());
 		
-		HtmlElement hFill = container.createElement("<div class='d-fill me-3'></div>");
+		HtmlElement hFill = container.createElement("<div class='d-fill ms-3 me-3'></div>");
 		container.appendElement(hFill);
 		
 		HtmlElement makeAppointmentForm = container.createElement("<form method='post'></form>");
