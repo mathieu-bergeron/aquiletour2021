@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.dashboard;
 
-import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.views.DashboardItemView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.ntro.core.mvc.NtroContext;

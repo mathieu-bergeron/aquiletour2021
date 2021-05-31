@@ -13,14 +13,17 @@ import ca.ntro.web.mvc.NtroViewWeb;
 public abstract class DashboardItemViewWeb<CT extends CurrentTask> extends NtroViewWeb implements DashboardItemView<CT> {
 
 	private HtmlElement titleLink;
+	private HtmlElement taskListUl;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
-		titleLink = this.getRootElement().find("#course-title-link").get(0);
+		titleLink = this.getRootElement().find(".course-title-link").get(0);
+		taskListUl = this.getRootElement().find(".task-list-ul").get(0);
 		
 		MustNot.beNull(titleLink);
+		MustNot.beNull(taskListUl);
 	}
 
 	@Override
@@ -43,6 +46,9 @@ public abstract class DashboardItemViewWeb<CT extends CurrentTask> extends NtroV
 	public void insertTask(int index, CT currentTask) {
 		T.call(this);
 		
+		HtmlElement taskLi = taskListUl.createElement("");
+		
+		taskListUl.appendElement(taskLi);
 	}
 
 	@Override
