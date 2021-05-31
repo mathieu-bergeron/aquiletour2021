@@ -39,8 +39,6 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 			public void onEntryAdded(String taskId, CompletionByAtomicTaskId completions) {
 				T.call(this);
 				
-				T.here();
-				
 				if(taskId.equals(currentTask().id())) {
 					observeAtomicTaskCompletions(model, completions, view, model.getGroupId().getValue());
 					displayStudentCompletion(null, view);

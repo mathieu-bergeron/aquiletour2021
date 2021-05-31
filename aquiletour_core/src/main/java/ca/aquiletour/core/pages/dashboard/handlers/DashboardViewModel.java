@@ -1,6 +1,10 @@
 package ca.aquiletour.core.pages.dashboard.handlers;
 
 
+import java.util.List;
+
+import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
@@ -11,6 +15,7 @@ import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class DashboardViewModel<M extends DashboardModel<CT>, 
                                 CT extends CurrentTask,
@@ -18,11 +23,17 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 
        extends ModelViewSubViewHandler<M, V> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void handle(M model, V view, ViewLoader subViewLoader) {
 		T.call(this);
 		
+		observeDashboardItems(model, view, subViewLoader);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void observeDashboardItems(M model, V view, ViewLoader subViewLoader) {
+		T.call(this);
+
 		model.getDashboardItems().removeObservers();
 		model.getDashboardItems().onItemAdded(new ItemAddedListener<DashboardItem<CT>>() {
 			@Override
@@ -35,7 +46,6 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 				
 				observeDashboardItem(item, subView);
 			}
-
 		});
 	}
 	
@@ -48,16 +58,20 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 		
 		observeCourseTitle(dashboardItem, subView);
 
-		observeCurrentTasks(dashboardItem, subView);
+		observeCurrentTasks(dashboardItem, dashboardItem.getCoursePath(), subView);
 	}
 
-	private void observeCurrentTasks(DashboardItem<CT> dashboardItem, DashboardItemView<CT> subView) {
+	private void observeCurrentTasks(DashboardItem<CT> dashboardItem, 
+			                         CoursePath coursePath, 
+			                         DashboardItemView<CT> subView) {
+		T.call(this);
+
 		dashboardItem.getCurrentTasks().onItemAdded(new ItemAddedListener<CT>() {
 			@Override
 			public void onItemAdded(int index, CT currentTask) {
 				T.call(this);
 				
-				subView.insertTask(index, currentTask);
+				subView.insertTask(index, coursePath, currentTask);
 				observeCurrentTask(subView, index, currentTask);
 			}
 		});

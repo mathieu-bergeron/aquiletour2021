@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
@@ -28,7 +29,9 @@ public class DashboardItemViewWebTeacher extends DashboardItemViewWeb<CurrentTas
 	}
 
 	@Override
-	protected HtmlElement createTaskLi(int index, CurrentTaskTeacher currentTask) {
+	protected HtmlElement createTaskLi(int index, 
+									   CoursePath coursePath,
+			                           CurrentTaskTeacher currentTask) {
 		T.call(this);
 		
 		HtmlElement taskLi = getRootElement().createElement(taskLiHtml);

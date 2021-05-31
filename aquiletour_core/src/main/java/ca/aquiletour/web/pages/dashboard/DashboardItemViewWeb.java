@@ -43,15 +43,15 @@ public abstract class DashboardItemViewWeb<CT extends CurrentTask> extends NtroV
 	}
 
 	@Override
-	public void insertTask(int index, CT currentTask) {
+	public void insertTask(int index, CoursePath coursePath, CT currentTask) {
 		T.call(this);
 		
-		HtmlElement taskLi = taskListUl.createElement("");
-		
+		HtmlElement taskLi = createTaskLi(index, coursePath, currentTask);
+
 		taskListUl.appendElement(taskLi);
 	}
 	
-	protected abstract HtmlElement createTaskLi(int index, CT currentTask);
+	protected abstract HtmlElement createTaskLi(int index, CoursePath coursePath, CT currentTask);
 
 	@Override
 	public void updateTaskTitle(int index, String value) {

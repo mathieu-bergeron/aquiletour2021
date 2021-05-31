@@ -1,6 +1,5 @@
 package ca.aquiletour.core.pages.dashboard.models;
 
-
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
@@ -35,9 +34,9 @@ public abstract class DashboardModel<CT extends CurrentTask> implements NtroMode
 		T.call(this);
 		
 		DashboardItem<CT> item = createDashboardItem();
-		dashboardItems.addItem(item); // XXX: must add before setting stored values
-		
 		updateDashboardItem(courseListItem, item);
+
+		dashboardItems.addItem(item);
 	}
 
 	private void updateDashboardItem(CourseListItem courseListItem, DashboardItem<CT> item) {
