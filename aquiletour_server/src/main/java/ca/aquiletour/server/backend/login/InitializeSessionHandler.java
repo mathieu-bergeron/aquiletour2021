@@ -34,6 +34,7 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		if(session != null) {
 			
 			user = SessionManager.updateExistingSession(modelStore, session);
+			Ntro.sessionService().registerCurrentSession(session);
 			
 		}else {
 

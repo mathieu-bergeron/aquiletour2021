@@ -28,7 +28,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
 		SessionData sessionData = null;
-		
+
 		if(session != null) {
 			sessionData = (SessionData) session.getSessionData();
 		}

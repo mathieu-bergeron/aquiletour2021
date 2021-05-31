@@ -20,8 +20,10 @@ import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
@@ -607,8 +609,8 @@ public class CourseManager {
 	@SuppressWarnings("unchecked")
 	public static <CM extends CourseModel<CT>, CT extends CurrentTask> 
 	        List<CT> getCurrentTasks(ModelStoreSync modelStore, 
-	        		             Class<CM> courseModelClass, 
-	        		             CoursePath coursePath) {
+	        		                 Class<CM> courseModelClass, 
+	        		                 CoursePath coursePath) {
 
 		T.call(CourseManager.class);
 		
@@ -626,6 +628,20 @@ public class CourseManager {
 		});
 		
 		return currentTasks;
+	}
+
+	public static void updateSessionData(ModelStoreSync modelStore, 
+			                             SessionData sessionData, 
+			                             CoursePath coursePath, 
+			                             User user) {
+
+		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, user.getId());
+		
+		List<CurrentTaskStudent> currentTasks = getCurrentTasks(modelStore, CourseModelStudent.class, coursePathStudent);
+		
+		sessionData.updateCurrentTasks(coursePath, currentTasks);
 	}
 
 }

@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
+import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
+import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
+import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
@@ -256,6 +260,24 @@ public class CourseListManager {
 		T.call(CourseListManager.class);
 		
 		createCourseListForModelId(modelStore, modelClass, user.getId());
+	}
+
+	public static void updateSessionData(ModelStoreSync modelStore, SessionData sessionData, User user) {
+		T.call(CourseListManager.class);
+		
+		modelStore.readModel(CourseListModelStudent.class, "admin", user.getId(), new ModelReader<CourseListModelStudent>() {
+			@Override
+			public void read(CourseListModelStudent courseListModel) {
+				T.call(this);
+				
+				courseListModel.getCourses().forEachItem((index, courseListItem) -> {
+					T.call(this);
+					
+					CourseManager.updateSessionData(modelStore, sessionData, courseListItem.coursePath(), user);
+				});
+			}
+		});
+		
 	}
 
 }

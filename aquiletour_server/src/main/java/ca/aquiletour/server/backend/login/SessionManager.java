@@ -15,6 +15,7 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_session.SessionsByUserId;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
+import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.registered_sockets.AuthTokenIterator;
@@ -32,6 +33,7 @@ import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
+import ca.ntro.users.NtroSessionData;
 
 public class SessionManager {
 
@@ -55,7 +57,9 @@ public class SessionManager {
 		session.setSessionData(sessionData);
 		
 		modelStore.save(session);
-			
+		
+		Ntro.sessionService().registerCurrentSession(session);
+
 		return user;
 	}
 
@@ -104,18 +108,27 @@ public class SessionManager {
 
 			actualUser = UserManager.getStoredUser(modelStore, oldSessionUser);
 			
-			
 			User sessionUser = actualUser.toSessionUser();
 			sessionUser.setAuthToken(oldSessionUser.getAuthToken());
 			session.setUser(sessionUser);
 			modelStore.save(session);
-			
+
 			actualUser.setAuthToken(sessionUser.getAuthToken());
 		}
 
 		return actualUser;
 	}
 
+
+	public static SessionData createSessionData(ModelStoreSync modelStore, User user) {
+		T.call(SessionManager.class);
+		
+		SessionData sessionData = new SessionData();
+		
+		CourseListManager.updateSessionData(modelStore, sessionData, user);
+
+		return sessionData;
+	}
 
 	public static User createAuthenticatedUser(ModelStoreSync modelStore, 
 			                                   String authToken, 
@@ -165,14 +178,13 @@ public class SessionManager {
 		session.setUser(newSessionUser);
 		modelStore.save(session);
 		
-		memorizeSessionByUserId(modelStore, authToken, userId);
 
 		return existingUser;
 	}
 
-	private static void memorizeSessionByUserId(ModelStoreSync modelStore, 
-			                                    String authToken, 
-			                                    String userId) throws BackendError {
+	public static void memorizeSessionByUserId(ModelStoreSync modelStore, 
+			                                   String authToken, 
+			                                   String userId) throws BackendError {
 
 		T.call(SessionManager.class);
 

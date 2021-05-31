@@ -50,6 +50,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		if(session != null) {
 
 			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, userId, session);
+			
 
 		}else {
 			
@@ -85,8 +86,11 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, 
 			                                   String authToken, 
 			                                   String userId, 
-			                                   NtroSession session) {
+			                                   NtroSession session) throws BackendError {
 		T.call(this);
+		
+		
+		SessionManager.memorizeSessionByUserId(modelStore, authToken, userId);
 		
 		User userToRegister;
 
@@ -101,7 +105,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 		userToRegister.setAuthToken(authToken);
 		
-		SessionData sessionData = new SessionData();
+		SessionData sessionData = SessionManager.createSessionData(modelStore, userToRegister);
 
 		if(!userToRegister.hasPassword()) {
 			String loginCode = sendLoginCode(userToRegister);
@@ -112,6 +116,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		session.setSessionData(sessionData);
 		modelStore.save(session);
 		
+		Ntro.currentSession().setSessionData(sessionData);
 
 		return userToRegister;
 	}
