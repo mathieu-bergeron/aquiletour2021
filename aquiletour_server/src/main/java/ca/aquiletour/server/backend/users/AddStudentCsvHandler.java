@@ -164,8 +164,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 			
 			DashboardManager.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, CurrentTaskStudent.class, coursePath, currentTasksStudent, student);
 		}
-		
-		List<CurrentTaskTeacher> currentTasksTeacher = teacherCourse.currentTasksTeacher();
+
+		List<CurrentTaskTeacher> currentTasksTeacher = teacherCourse.updateCurrentTasks(Constants.NUMBER_OF_CURRENT_TASKS_TEACHER);
 
 		DashboardManager.updateCurrentTasksForUserId(modelStore, DashboardModelTeacher.class, CurrentTaskTeacher.class, coursePath, currentTasksTeacher, message.getTeacherId());
 	}

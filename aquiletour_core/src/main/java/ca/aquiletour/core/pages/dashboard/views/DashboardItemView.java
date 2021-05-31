@@ -11,4 +11,5 @@ public interface DashboardItemView<CT extends CurrentTask> extends NtroView {
 
 	public void insertTask(int index, CoursePath coursePath, CT currentTask);
 	public void updateTaskTitle(int index, String value);
+
 }

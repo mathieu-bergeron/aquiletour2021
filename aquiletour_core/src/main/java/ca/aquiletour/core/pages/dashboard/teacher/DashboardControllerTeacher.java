@@ -1,13 +1,13 @@
 package ca.aquiletour.core.pages.dashboard.teacher;
 
 import ca.aquiletour.core.pages.dashboard.DashboardController;
-import ca.aquiletour.core.pages.dashboard.handlers.DashboardViewModel;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
+import ca.aquiletour.core.pages.dashboard.teacher.handlers.DashboardViewModelTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.handlers.ShowTeacherDashboardHandler;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
-import ca.aquiletour.core.pages.dashboard.teacher.views.TeacherDashboardView;
+import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardViewTeacher;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.ntro.core.system.trace.T;
 
@@ -17,7 +17,7 @@ public class DashboardControllerTeacher extends DashboardController {
 	protected Class<? extends DashboardView> viewClass() {
 		T.call(this);
 
-		return TeacherDashboardView.class;
+		return DashboardViewTeacher.class;
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class DashboardControllerTeacher extends DashboardController {
 		addParentViewMessageHandler(ShowTeacherDashboardMessage.class, new ShowTeacherDashboardHandler());
 		addSubViewLoader(DashboardCourseViewTeacher.class, context().lang());
 		
-		addModelViewSubViewHandler(DashboardCourseViewTeacher.class, new DashboardViewModel());
+		addModelViewSubViewHandler(DashboardCourseViewTeacher.class, new DashboardViewModelTeacher());
 	}
 
 	@Override

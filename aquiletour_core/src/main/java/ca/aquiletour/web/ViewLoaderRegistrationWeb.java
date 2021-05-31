@@ -7,7 +7,7 @@ import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardCourseViewStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardViewStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
-import ca.aquiletour.core.pages.dashboard.teacher.views.TeacherDashboardView;
+import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardViewTeacher;
 import ca.aquiletour.core.pages.course_list.student.views.CourseListItemViewStudent;
 import ca.aquiletour.core.pages.course_list.student.views.CourseListViewStudent;
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListItemViewTeacher;
@@ -85,7 +85,7 @@ public class ViewLoaderRegistrationWeb {
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(RootViewWeb.class));
 
-		ViewLoaders.registerViewLoader(TeacherDashboardView.class,
+		ViewLoaders.registerViewLoader(DashboardViewTeacher.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
 			     	.setHtmlUrl("/views/dashboard/teacher/dashboard_teacher.html")

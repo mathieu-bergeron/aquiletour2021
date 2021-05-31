@@ -15,6 +15,7 @@ public class Constants {
 	public static final int APPOINTMENT_DURATION_INCREMENT_SECONDS = 60;
 	
 	public static final int MAX_PASSWORD_ATTEMPS = 3;
+
 	
 	public static String LANG = "fr";
 	
@@ -89,6 +90,6 @@ public class Constants {
 		                         				 ACTIVE_SEMESTERS_ID, 
 		                         				 ALL_TEACHERS_ID, 
 		                         				 ALL_USERS_ID};
-	
 
+	public static final int NUMBER_OF_CURRENT_TASKS_TEACHER = 3;
 }

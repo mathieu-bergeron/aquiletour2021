@@ -3,8 +3,11 @@ package ca.aquiletour.core.models.courses.teacher;
 import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
@@ -249,13 +252,12 @@ public class CourseModelTeacher extends CourseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CurrentTaskTeacher> currentTasksTeacher() {
+	public List<CurrentTaskTeacher> updateCurrentTasks(int numberOfTasks) {
 		T.call(this);
 		
-		return rootTask().reduceTo(List.class, new VisitDirection[]{SUB,NEXT}, true, new ArrayList<CurrentTaskTeacher>(), (distance, task, currentTasks) -> {
+		List<CurrentTaskTeacher> allCurrentTasks = rootTask().reduceTo(List.class, new VisitDirection[]{SUB,NEXT}, true, new ArrayList<CurrentTaskTeacher>(), (distance, task, currentTasks) -> {
 			getGroups().forEachItem((i, group) -> {
 				group.getStudents().forEachItem((j, studentId) -> {
-
 					StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
 					if(task.status(studentCompletions).isTodo()) {
 						
@@ -276,6 +278,19 @@ public class CourseModelTeacher extends CourseModel {
 
 			return currentTasks;
 		});
+		
+		allCurrentTasks.sort((currentTask1, currentTask2) -> {
+			return Integer.compare(currentTask1.getNumberOfStudents().getValue(), currentTask2.getNumberOfStudents().getValue());
+		});
+		
+		List<CurrentTaskTeacher> someCurrentTasks = new ArrayList<>();
+
+		for(int i = 0; i < allCurrentTasks.size() && i < numberOfTasks; i++) {
+
+			someCurrentTasks.add(allCurrentTasks.get(i));
+		}
+
+		return someCurrentTasks;
 	}
 	
 

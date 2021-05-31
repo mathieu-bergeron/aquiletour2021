@@ -10,16 +10,6 @@ import ca.ntro.web.dom.HtmlElement;
 
 public class DashboardItemViewWebStudent extends DashboardItemViewWeb<CurrentTaskStudent> implements DashboardCourseViewStudent {
 
-	private String taskLiHtml = "<div class=\"d-flex justify-content-start\">\n"
-			+ "<a href=\"#\">Atelier 2</a>\n"
-			+ "<div class=\"flex-fill\"></div>\n"
-			+ "<form action=\"\" method=\"post\" id=\"make-appointment-form\">\n"
-			+ "<input name=\"makeAppointment\" style=\"display:none;\"></input>\n"
-			+ "<input type=\"submit\" class=\"btn btn-primary btn-sm\" value=\"Prendre rendez-vous\"></input>\n"
-			+ "</form>\n"
-			+ "</div>\n"
-			+ "";
-
 	@Override
 	protected HtmlElement createTaskLi(int index, 
 			                           CoursePath coursePath, 
@@ -36,9 +26,19 @@ public class DashboardItemViewWebStudent extends DashboardItemViewWeb<CurrentTas
 		container.appendElement(taskHref);
 		taskHref.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + currentTask.getTaskPath().toString());
 		taskHref.text(currentTask.getTaskTitle().getValue());
+		
+		HtmlElement hFill = container.createElement("<div class='d-fill me-3'></div>");
+		container.appendElement(hFill);
+		
+		HtmlElement makeAppointmentForm = container.createElement("<form method='post'></form>");
+		container.appendElement(makeAppointmentForm);
+		makeAppointmentForm.setAttribute("action", "/" + Constants.QUEUE_URL_SEGMENT + "/" + queueId);
+		
+		HtmlElement makeAppointmentButton = container.createElement("<input class='btn btn-secondary btn-sm' type='submit'></input>");
+		makeAppointmentForm.appendElement(makeAppointmentButton);
+		makeAppointmentButton.value("Poser une question");
+		makeAppointmentButton.setAttribute("name", "makeAppointment");
 
 		return taskLi;
 	}
-
-
 }

@@ -1,10 +1,6 @@
 package ca.aquiletour.core.pages.dashboard.handlers;
 
-
-import java.util.List;
-
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;
@@ -15,11 +11,10 @@ import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 
-public class DashboardViewModel<M extends DashboardModel<CT>, 
-                                CT extends CurrentTask,
-                                V extends DashboardView> 
+public abstract class DashboardViewModel<M extends DashboardModel<CT>, 
+                                        CT extends CurrentTask,
+                                        V extends DashboardView> 
 
        extends ModelViewSubViewHandler<M, V> {
 
@@ -54,8 +49,7 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 		
 		subView.identifyCourse(dashboardItem.getCoursePath());
 
-		dashboardItem.getCurrentTasks().removeObservers();
-		
+
 		observeCourseTitle(dashboardItem, subView);
 
 		observeCurrentTasks(dashboardItem, dashboardItem.getCoursePath(), subView);
@@ -66,6 +60,7 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 			                         DashboardItemView<CT> subView) {
 		T.call(this);
 
+		dashboardItem.getCurrentTasks().removeObservers();
 		dashboardItem.getCurrentTasks().onItemAdded(new ItemAddedListener<CT>() {
 			@Override
 			public void onItemAdded(int index, CT currentTask) {
@@ -103,7 +98,13 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 		});
 	}
 
+
+
+
 	private void observeCourseTitle(DashboardItem<CT> dashboardItem, DashboardItemView<CT> subView) {
+		T.call(this);
+
+		dashboardItem.getCourseTitle().removeObservers();
 		dashboardItem.getCourseTitle().observe(new ValueObserver<String>() {
 			
 			@Override
@@ -123,7 +124,4 @@ public class DashboardViewModel<M extends DashboardModel<CT>,
 			}
 		});
 	}
-
-
-
 }
