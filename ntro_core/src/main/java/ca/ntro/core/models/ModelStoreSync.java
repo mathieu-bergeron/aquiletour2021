@@ -103,6 +103,47 @@ public class ModelStoreSync {
 
 		readModel(modelClass, authToken, modelStore.documentId(modelPath), reader);
 	}
+
+	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<? extends NtroModel> modelClass, 
+												                     String authToken,
+			                                                         Path modelPath, 
+			                                                         Class<ACC> accumulatorClass,
+			                                                         ACC accumulator,
+			                                                         ModelReducer<M,ACC> reducer) {
+		T.call(this);
+
+		return reduceModel(modelClass, 
+				           authToken, 
+				           modelStore.documentId(modelPath), 
+				           accumulatorClass,
+				           accumulator,
+				           reducer);
+	}
+
+	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<? extends NtroModel> modelClass, 
+												                     String authToken,
+												                     String modelId,
+			                                                         Class<ACC> accumulatorClass,
+			                                                         ACC accumulator,
+			                                                         ModelReducer<M,ACC> reducer) {
+		T.call(this);
+		
+		ACC result = null;
+
+		if(ifModelExists(modelClass, authToken, modelId)) {
+
+			M model = (M) getModel(modelClass, authToken, modelId);
+
+			synchronized (model) {
+				result = reducer.reduce(model, accumulator);
+			}
+
+		}else {
+			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
+		}
+		
+		return result;
+	}
 	
 	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,

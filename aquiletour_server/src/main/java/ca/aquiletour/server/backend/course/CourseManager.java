@@ -21,6 +21,7 @@ import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
@@ -601,6 +602,30 @@ public class CourseManager {
 				valueReader.read(model.atomicTaskCompletion(taskPath, atomicTaskId));
 			}
 		});
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <CM extends CourseModel<CT>, CT extends CurrentTask> 
+	        List<CT> getCurrentTasks(ModelStoreSync modelStore, 
+	        		             Class<CM> courseModelClass, 
+	        		             CoursePath coursePath) {
+
+		T.call(CourseManager.class);
+		
+		List<CT> currentTasks = new ArrayList<>();
+
+		modelStore.readModel(courseModelClass, "admin", coursePath, new ModelReader<CM>() {
+			@Override
+			public void read(CM courseModel) {
+				T.call(this);
+
+				for(Object currentTask : courseModel.currentTasks()) {
+					currentTasks.add((CT) currentTask);
+				}
+			}
+		});
+		
+		return currentTasks;
 	}
 
 }

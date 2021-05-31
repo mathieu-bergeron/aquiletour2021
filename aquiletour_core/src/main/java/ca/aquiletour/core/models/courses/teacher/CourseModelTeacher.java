@@ -27,7 +27,7 @@ import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModelTeacher extends CourseModel {
+public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 
 	private GroupDescriptions groups = new GroupDescriptions();
 
@@ -219,26 +219,6 @@ public class CourseModelTeacher extends CourseModel {
 		});
 	}
 
-	public List<CurrentTaskStudent> currentTasksForStudent(String studentId) {
-		T.call(this);
-		
-		StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
-		
-		FindResults findResults = rootTask().findAll(new VisitDirection[]{SUB, NEXT}, true, (task) -> {
-			return task.status(studentCompletions).isTodo();
-		});
-		
-		findResults.getResults().sort((result1, result2) -> {
-			return Integer.compare(result1.getMinDistance(), result2.getMinDistance());
-		});
-		
-		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
-		findResults.getResults().forEach(r -> {
-			currentTasks.add(new CurrentTaskStudent(r.getTask()));
-		});
-		
-		return currentTasks;
-	}
 
 	private int numberOfStudents() {
 		
@@ -251,10 +231,37 @@ public class CourseModelTeacher extends CourseModel {
 		return numberOfStudents;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<CurrentTaskTeacher> updateCurrentTasks(int numberOfTasks) {
+	public void updateAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId, AtomicTaskCompletion completionToAdd) {
 		T.call(this);
-		
+
+		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
+		if(studentCompletions == null) {
+			studentCompletions = new StudentCompletionsByTaskId();
+			completions.putEntry(studentId, studentCompletions);
+		}
+
+		updateAtomicTaskCompletion(studentCompletions, 
+				                   taskPath, 
+				                   atomicTaskId, 
+				                   completionToAdd);
+	}
+
+	public void removeAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId) {
+		T.call(this);
+
+		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
+		if(studentCompletions != null) {
+			removeAtomicTaskCompletion(studentCompletions, 
+									   taskPath, 
+									   atomicTaskId);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CurrentTaskTeacher> currentTasks() {
+		T.call(this);
+
 		List<CurrentTaskTeacher> allCurrentTasks = rootTask().reduceTo(List.class, new VisitDirection[]{SUB,NEXT}, true, new ArrayList<CurrentTaskTeacher>(), (distance, task, currentTasks) -> {
 			getGroups().forEachItem((i, group) -> {
 				group.getStudents().forEachItem((j, studentId) -> {
@@ -282,41 +289,7 @@ public class CourseModelTeacher extends CourseModel {
 		allCurrentTasks.sort((currentTask1, currentTask2) -> {
 			return Integer.compare(currentTask1.getNumberOfStudents().getValue(), currentTask2.getNumberOfStudents().getValue());
 		});
-		
-		List<CurrentTaskTeacher> someCurrentTasks = new ArrayList<>();
 
-		for(int i = 0; i < allCurrentTasks.size() && i < numberOfTasks; i++) {
-
-			someCurrentTasks.add(allCurrentTasks.get(i));
-		}
-
-		return someCurrentTasks;
-	}
-	
-
-	public void updateAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId, AtomicTaskCompletion completionToAdd) {
-		T.call(this);
-
-		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
-		if(studentCompletions == null) {
-			studentCompletions = new StudentCompletionsByTaskId();
-			completions.putEntry(studentId, studentCompletions);
-		}
-
-		updateAtomicTaskCompletion(studentCompletions, 
-				                   taskPath, 
-				                   atomicTaskId, 
-				                   completionToAdd);
-	}
-
-	public void removeAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId) {
-		T.call(this);
-
-		StudentCompletionsByTaskId studentCompletions = completions.valueOf(studentId);
-		if(studentCompletions != null) {
-			removeAtomicTaskCompletion(studentCompletions, 
-									   taskPath, 
-									   atomicTaskId);
-		}
+		return allCurrentTasks;
 	}
 }

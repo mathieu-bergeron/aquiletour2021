@@ -37,4 +37,10 @@ public class CoursePathStudent extends CoursePath {
 		path.addName(getNames().get(STUDENT_INDEX));
 		return path;
 	}
+
+	public CoursePath toCoursePath() {
+		T.call(this);
+
+		return new CoursePath(teacherId(), semesterId(), courseId());
+	}
 }

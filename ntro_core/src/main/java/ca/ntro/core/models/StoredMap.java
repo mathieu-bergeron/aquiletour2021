@@ -54,9 +54,6 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 			args.add(value);
 			modelStore().onValueMethodInvoked(valuePath(),"putEntry",args);
 
-		}else {
-			
-			Log.warning("putEntry invoked while not connected to modelStore");
 		}
 		
 		for(MapObserver<V> mapObserver : mapObservers) {
@@ -88,9 +85,6 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 
 			modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
 
-		}else {
-
-			Log.warning("removeEntry invoked while not connected to modelStore");
 		}
 		
 		if(value != null) {

@@ -1,5 +1,6 @@
 package ca.aquiletour.core.models.courses.base;
 
+import java.util.List;
 import java.util.Map;
 
 import ca.aquiletour.core.models.courses.CoursePath;
@@ -14,13 +15,14 @@ import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseModel implements NtroModel, TaskGraph {
+public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, TaskGraph {
 
 	private CoursePath coursePath = new CoursePath();
 	private SemesterIds siblingSemesters = new SemesterIds();
@@ -443,6 +445,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		
 		return atomicTask;
 	}
-	
+
+	public abstract List<CT> currentTasks();
 
 }

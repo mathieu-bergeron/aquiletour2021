@@ -65,9 +65,6 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 			args.add(item);
 			modelStore().onValueMethodInvoked(valuePath(),"insertItem",args);
 			
-		}else {
-			
-			Log.warning("insertItem invoked while model store not connected");
 		}
 		
 		for(ListObserver<I> listObserver : listObservers) {
@@ -93,9 +90,6 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 			
 			modelStore().onValueMethodInvoked(valuePath(),"clearItems",args);
 
-		}else {
-
-			Log.warning("clearItems invoked while model store not connected");
 		}
 
 		for(ListObserver<I> listObserver : listObservers) {
@@ -117,9 +111,6 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 			args.add(item);
 			modelStore().onValueMethodInvoked(valuePath(),"addItem",args);
 			
-		}else {
-
-			Log.warning("addItem invoked while model store not connected");
 		}
 
 		for(ListObserver<I> listObserver : listObservers) {
@@ -152,9 +143,6 @@ public abstract class StoredList<I extends Object> extends StoredProperty<List<I
 			args.add(index);
 			modelStore().onValueMethodInvoked(valuePath(),"removeItemAtIndex",args);
 
-		}else {
-			
-			Log.warning("removeItemAtIndex invoked while model store not connected");
 		}
 
 		for(ListObserver<I> listObserver : listObservers) {

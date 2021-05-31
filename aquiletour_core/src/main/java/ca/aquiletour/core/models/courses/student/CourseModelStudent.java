@@ -1,14 +1,23 @@
 package ca.aquiletour.core.models.courses.student;
 
+import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
+import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModelStudent extends CourseModel {
+public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	
 	private StoredString groupId = new StoredString();
 	private StudentCompletionsByTaskId completions = new StudentCompletionsByTaskId();
@@ -64,6 +73,26 @@ public class CourseModelStudent extends CourseModel {
 		T.call(this);
 		
 		getGroupId().set(groupId);
+	}
+
+	@Override
+	public List<CurrentTaskStudent> currentTasks() {
+		T.call(this);
+		
+		FindResults findResults = rootTask().findAll(new VisitDirection[]{SUB, NEXT}, true, (task) -> {
+			return task.status(getCompletions()).isTodo();
+		});
+		
+		findResults.getResults().sort((result1, result2) -> {
+			return Integer.compare(result1.getMinDistance(), result2.getMinDistance());
+		});
+		
+		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
+		findResults.getResults().forEach(r -> {
+			currentTasks.add(new CurrentTaskStudent(r.getTask()));
+		});
+		
+		return currentTasks;
 	}
 
 }

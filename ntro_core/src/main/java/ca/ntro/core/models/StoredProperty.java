@@ -66,9 +66,6 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 			args.add(newValue);
 			modelStore().onValueMethodInvoked(valuePath(),"set",args);
 
-		}else {
-
-			Log.warning("set invoked while model store not connected");
 		}
 		
 		for(ValueObserver<V> observer : observers) {
