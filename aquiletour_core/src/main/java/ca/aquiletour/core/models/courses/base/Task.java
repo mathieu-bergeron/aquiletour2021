@@ -9,6 +9,7 @@ import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.base.lambdas.BreakableAccumulator;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResult;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
@@ -51,6 +52,12 @@ public class Task implements NtroModelValue, TaskNode {
 	private StoredTaskIds previousTasks = new StoredTaskIds();
 	private StoredTaskIds subTasks = new StoredTaskIds();
 	private StoredTaskIds nextTasks = new StoredTaskIds();
+	
+	public Task() {
+		T.call(this);
+
+		exitTasks.addItem(new DefaultAtomicTask());
+	}
 
 	public void copyTask(Task task) {
 		T.call(this);
@@ -892,14 +899,14 @@ public class Task implements NtroModelValue, TaskNode {
 	private boolean areAtomicTasksDone(CompletionByAtomicTaskId completions, StoredAtomicTasks atomicTasks) {
 		T.call(this);
 
-		return atomicTasks.reduceTo(Boolean.class, true, (index, entryTask, tasksDone) -> {
+		return atomicTasks.reduceTo(Boolean.class, true, (index, atomicTask, tasksDone) -> {
 			if(!tasksDone) {
 				throw new Break();
 			}
 
 			AtomicTaskCompletion completion = null;
 			if(completions != null) {
-				completion = completions.valueOf(entryTask.getId());
+				completion = completions.valueOf(atomicTask.getId());
 			}
 
 			if(completion == null

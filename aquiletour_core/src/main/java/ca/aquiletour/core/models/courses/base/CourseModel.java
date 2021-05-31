@@ -146,10 +146,10 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	private void addNewTask(Task nextTask) {
+	private void addNewTask(Task newTask) {
 		T.call(this);
-
-		tasks.putEntry(nextTask.id(), nextTask);
+		
+		tasks.putEntry(newTask.id(), newTask);
 	}
 
 	public void addPreviousTaskTo(Path path, Task previousTask) throws CycleDetectedError {

@@ -7,7 +7,7 @@ public class DefaultAtomicTask extends AtomicTask {
 	
 	@Override
 	public String toString() {
-		return "Défaut";
+		return "Cochable";
 	}
 
 	@Override
