@@ -892,11 +892,11 @@ public class Task implements NtroModelValue, TaskNode {
 	private boolean areAtomicTasksDone(CompletionByAtomicTaskId completions, StoredAtomicTasks atomicTasks) {
 		T.call(this);
 
-		return atomicTasks.reduceTo(Boolean.class, true, (index, entryTask, parentEntryDone) -> {
-			if(!parentEntryDone) {
+		return atomicTasks.reduceTo(Boolean.class, true, (index, entryTask, tasksDone) -> {
+			if(!tasksDone) {
 				throw new Break();
 			}
-			
+
 			AtomicTaskCompletion completion = null;
 			if(completions != null) {
 				completion = completions.valueOf(entryTask.getId());
@@ -905,10 +905,10 @@ public class Task implements NtroModelValue, TaskNode {
 			if(completion == null
 					|| !completion.isCompleted()) {
 				
-				parentEntryDone = false;
+				tasksDone = false;
 			}
-			
-			return parentEntryDone;
+
+			return tasksDone;
 		});
 	}
 

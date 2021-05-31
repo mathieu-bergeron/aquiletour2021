@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.user_registration;
+package ca.aquiletour.core.models.user_uuid;
 
 import ca.ntro.core.models.NtroModel;
 
