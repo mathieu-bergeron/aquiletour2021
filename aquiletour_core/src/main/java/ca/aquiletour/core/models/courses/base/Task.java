@@ -401,12 +401,15 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
+		getEntryTasks().clearItems();
+		getExitTasks().clearItems();
+
 		AtomicTask.addAtomicTasksFromDescription(this, description, atomicTaskListener);
 	}
 	
-	public void deleteAtomicTask(String taskId) {
+	public void deleteAtomicTask(String atomicTaskId) {
 		T.call(this);
-		
+
 	}
 	
 	public void updateTitle(String title) {

@@ -21,6 +21,9 @@ public class CoursePathStudent extends CoursePath {
 		addName(studentId);
 	}
 
+	public CoursePathStudent(CoursePath coursePath, String studentId) {
+	}
+
 	public String studentId() {
 		T.call(this);
 

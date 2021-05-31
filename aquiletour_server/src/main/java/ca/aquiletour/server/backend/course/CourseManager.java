@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.course;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.CoursePath;
@@ -372,6 +373,81 @@ public class CourseManager {
 		});
 	}
 
+	public static void updateTaskInfoForStudentId(ModelStoreSync modelStore, 
+			                          			  CoursePath coursePath, 
+			                          			  Path taskPath, 
+			                          			  String taskTitle, 
+			                          			  String taskDescription, 
+			                          			  CourseDate endTime, 
+			                          			  String studentId) throws BackendError {
+		
+		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+		
+		modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+			@Override
+			public void update(CourseModelStudent courseModel) throws BackendError {
+				T.call(this);
+				
+				courseModel.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime, new OnAtomicTaskAdded() {
+					@Override
+					public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
+						T.call(this);
+					}
+				});
+			}
+		} );
+	}
+
+	public static void updateTaskInfoForStudents(ModelStoreSync modelStore, 
+			 								     CoursePath coursePath, 
+			 								     Path taskPath, 
+			 								     String taskTitle, 
+			 								     String taskDescription, 
+			 								     CourseDate endTime, 
+			 								     User user) throws BackendError {
+		T.call(CourseManager.class);
+		
+		List<String> studentIds = getStudentIds(modelStore, coursePath);
+		
+		for(String studentId : studentIds) {
+			
+			updateTaskInfoForStudentId(modelStore, 
+					                   coursePath, 
+					                   taskPath, 
+					                   taskTitle, 
+					                   taskDescription, 
+					                   endTime, 
+					                   studentId);
+		}
+	}
+
+	public static List<String> getStudentIds(ModelStoreSync modelStore, 
+			 								 CoursePath coursePath) {
+
+		T.call(CourseManager.class);
+		
+		List<String> studentIds = new ArrayList<>();
+		
+		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, new ModelReader<CourseModelTeacher>() {
+			@Override
+			public void read(CourseModelTeacher courseModel) {
+				T.call(this);
+
+				courseModel.getGroups().forEachItem((i, g) -> {
+					g.getStudents().forEachItem((j, studentId) ->{
+						if(!studentIds.contains(studentId)) {
+							studentIds.add(studentId);
+						}
+					});
+				});
+			}
+		});
+
+		return studentIds;
+	}
+
 	public static void updateCourseSchedule(ModelStoreSync modelStore, 
                          	                CoursePath coursePath,
 						                    SemesterSchedule semesterSchedule, 
@@ -526,4 +602,5 @@ public class CourseManager {
 			}
 		});
 	}
+
 }
