@@ -3,6 +3,7 @@ package ca.aquiletour.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.MessageServiceJdk;
 import ca.ntro.messages.NtroMessage;

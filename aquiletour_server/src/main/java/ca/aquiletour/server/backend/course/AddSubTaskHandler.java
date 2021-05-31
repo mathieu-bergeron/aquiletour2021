@@ -15,12 +15,17 @@ public class AddSubTaskHandler extends BackendMessageHandler<AddSubTaskMessage> 
 	public void handleNow(ModelStoreSync modelStore, AddSubTaskMessage message) throws BackendError {
 		T.call(this);
 		
-		CourseManager.addSubTask(modelStore, message.coursePath(), message.getParentPath(), message.getSubTask());
-		CourseListManager.addTask(modelStore, 
-								  CourseListModelTeacher.class,
-								  message.coursePath(),
-								  TaskDescription.fromTask(message.getSubTask()));
-								   
+		CourseManager.addSubTask(modelStore, 
+				                 message.coursePath(), 
+				                 message.getParentPath(), 
+				                 message.getSubTask());
+
+		if(message.getParentPath().isRootPath()) {
+			CourseListManager.addTask(modelStore, 
+									  CourseListModelTeacher.class,
+									  message.coursePath(),
+									  TaskDescription.fromTask(message.getSubTask()));
+		}
 	}
 
 	@Override

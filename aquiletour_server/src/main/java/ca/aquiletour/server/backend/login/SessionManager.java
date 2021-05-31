@@ -1,7 +1,10 @@
 package ca.aquiletour.server.backend.login;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
@@ -10,13 +13,24 @@ import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.core.models.user_session.SessionsByUserId;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
+import ca.aquiletour.server.registered_sockets.AuthTokenIterator;
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
+import ca.ntro.core.models.ModelInitializer;
+import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.jdk.random.SecureRandomString;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
 public class SessionManager {
@@ -90,6 +104,7 @@ public class SessionManager {
 
 			actualUser = UserManager.getStoredUser(modelStore, oldSessionUser);
 			
+			
 			User sessionUser = actualUser.toSessionUser();
 			sessionUser.setAuthToken(oldSessionUser.getAuthToken());
 			session.setUser(sessionUser);
@@ -100,6 +115,7 @@ public class SessionManager {
 
 		return actualUser;
 	}
+
 
 	public static User createAuthenticatedUser(ModelStoreSync modelStore, 
 			                                   String authToken, 
@@ -148,14 +164,70 @@ public class SessionManager {
 		
 		session.setUser(newSessionUser);
 		modelStore.save(session);
+		
+		memorizeSessionByUserId(modelStore, authToken, userId);
 
 		return existingUser;
 	}
 
-	public static void deleteSession(ModelStoreSync modelStore, String authToken) {
+	private static void memorizeSessionByUserId(ModelStoreSync modelStore, 
+			                                    String authToken, 
+			                                    String userId) throws BackendError {
+
+		T.call(SessionManager.class);
+
+		if(modelStore.ifModelExists(SessionsByUserId.class, "admin", userId)) {
+			modelStore.updateModel(SessionsByUserId.class, "admin", userId, new ModelUpdater<SessionsByUserId>() {
+				@Override
+				public void update(SessionsByUserId sessionsByUserId) throws BackendError {
+					T.call(this);
+					sessionsByUserId.addSession(authToken);
+				}
+			});
+		}else {
+			modelStore.createModel(SessionsByUserId.class, "admin", userId, new ModelInitializer<SessionsByUserId>() {
+				@Override
+				public void initialize(SessionsByUserId sessionsByUserId) {
+					T.call(this);
+					sessionsByUserId.addSession(authToken);
+				}
+			});
+		}
+	}
+
+	private static void forgetSessionByUserId(ModelStoreSync modelStore, 
+			                                  String authToken, 
+			                                  String userId) throws BackendError {
+
+		T.call(SessionManager.class);
+		
+		Optionnal<Boolean> shouldDeleteModel = new Optionnal<>(false);
+
+		modelStore.updateModel(SessionsByUserId.class, "admin", userId, new ModelUpdater<SessionsByUserId>() {
+			@Override
+			public void update(SessionsByUserId sessionsByUserId) throws BackendError {
+				T.call(this);
+				sessionsByUserId.removeSession(authToken);
+				
+				if(sessionsByUserId.isEmpty()) {
+					shouldDeleteModel.set(true);
+				}
+			}
+		});
+		
+		try {
+			if(shouldDeleteModel.get()) {
+				modelStore.deleteModel(SessionsByUserId.class, "admin", userId);
+			}
+		} catch (EmptyOptionException e) {}
+	}
+
+	public static void deleteSession(ModelStoreSync modelStore, String authToken, User user) throws BackendError {
 		T.call(SessionManager.class);
 
 		modelStore.deleteModel(NtroSession.class, "admin", authToken);
+		
+		forgetSessionByUserId(modelStore, authToken, user.getId());
 	}
 
 	public static boolean isUserAuthenticated(ModelStoreSync modelStore, User user) {
@@ -191,6 +263,49 @@ public class SessionManager {
 		
 		return isAuthenticated;
 	}
+	
+	public static void forEachUserSession(ModelStoreSync modelStore, String userId, AuthTokenIterator lambda) throws BackendError {
+		T.call(SessionManager.class);
+		
+		List<String> authTokens = new ArrayList<>();
+		
+		modelStore.readModel(SessionsByUserId.class, "admin", userId, new ModelReader<SessionsByUserId>() {
+			@Override
+			public void read(SessionsByUserId sessionsByUserId) {
+				T.call(this);
+				
+				for(String authToken: sessionsByUserId.getUserAuthTokens()) {
+					authTokens.add(authToken);
+				}
+			}
+		});
+		
+		for(String authToken : authTokens) {
+			lambda.execute(authToken);
+		}
+	}
 
+	public static void updateCurrentTasks(ModelStoreSync modelStore, 
+			                              CoursePath coursePath, 
+			                              List<CurrentTaskStudent> currentTasks, 
+			                              String userId) throws BackendError {
 
+		T.call(SessionManager.class);
+
+		forEachUserSession(modelStore, userId, authToken -> {
+			modelStore.updateModel(NtroSession.class, "admin", authToken, new ModelUpdater<NtroSession>() {
+				@Override
+				public void update(NtroSession session) throws BackendError {
+					T.call(this);
+
+					SessionData sessionData = (SessionData) session.getSessionData();
+					sessionData.updateCurrentTasks(coursePath, currentTasks);
+
+					NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+					updateSessionMessage.setSession(session);
+					RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);
+				}
+			});
+		});
+	}
 }

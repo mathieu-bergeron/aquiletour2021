@@ -37,6 +37,7 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
@@ -171,7 +172,7 @@ public class DynamicHandler extends AbstractHandler {
 	private void executeBackend(Request baseRequest, HttpServletResponse response, Path path,
 			Map<String, String[]> parameters) throws IOException {
 
-		NtroContext<User, SessionData> context = createNtroContext();
+		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
 
 		try {
 
@@ -253,7 +254,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		handleRedirections(baseRequest, response, path);
 
-		NtroContext<User, SessionData> context = createNtroContext();
+		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
 
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
@@ -276,19 +277,6 @@ public class DynamicHandler extends AbstractHandler {
 		Ntro.reset();
 	}
 
-	private NtroContext<User, SessionData> createNtroContext() {
-		T.call(this);
-
-		NtroContext<User, SessionData> context = new NtroContext<>();
-		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.currentUser());
-		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
-			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
-		}else {
-			context.registerSessionData(new SessionData());
-		}
-		return context;
-	}
 
 	private void handleRedirections(Request baseRequest, HttpServletResponse response, Path path) {
 		// FIXME: there must be a better way to redirect to login

@@ -5,7 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
-import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;

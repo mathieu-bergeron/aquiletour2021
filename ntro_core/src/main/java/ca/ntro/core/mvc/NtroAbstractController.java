@@ -73,7 +73,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		this.path = path;
 	}
 	
-	public NtroContext context() {
+	public NtroContext<?,?> context() {
 		T.call(this);
 		
 		return context;
@@ -367,17 +367,14 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		setSubModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelId));
 	}
 
-	public void changeUser(NtroUser user) {
+	public void changeContext(NtroContext<?,?> newContext) {
 		
-		// FIXME: clone context
-		NtroContext<?,?> oldContext = context;
-
-		context.registerUser(user);
+		NtroContext<?,?> oldContext = context();
 
 		onChangeContext(oldContext, context);
 
 		for(NtroAbstractController subController : subControllers) {
-			subController.changeUser(user);
+			subController.onChangeContext(oldContext, context);
 		}
 
 		if(this instanceof NtroRootController) {

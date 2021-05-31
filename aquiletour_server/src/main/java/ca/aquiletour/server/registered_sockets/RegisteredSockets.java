@@ -1,4 +1,4 @@
-package ca.aquiletour.server;
+package ca.aquiletour.server.registered_sockets;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -12,6 +12,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
@@ -107,6 +108,20 @@ public class RegisteredSockets {
 
 		sendMessageToUserId(user.getId(), message);
 	}
+
+	public static void forEachSocket(String userId, AuthTokenIterator lambda) throws BackendError {
+		T.call(RegisteredSockets.class);
+
+		Set<String> userTokens = tokensByUserId.get(userId);
+		if(userTokens != null) {
+			synchronized(userTokens) {
+				for(String authToken : userTokens) {
+					lambda.execute(authToken);
+				}
+			}
+		}
+	}
+
 
 	public static void sendMessageToUserId(String userId, NtroMessage message) {
 		T.call(RegisteredSockets.class);

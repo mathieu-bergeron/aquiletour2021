@@ -8,9 +8,9 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.utils.ValidationError;
 import ca.aquiletour.core.utils.Validator;
-import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.email.SendEmail;
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
@@ -18,7 +18,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
@@ -58,9 +58,9 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 		Ntro.currentSession().setUser(userToRegister);
 		
-		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
-		setUserNtroMessage.setUser(userToRegister);
-		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+		updateSessionMessage.setSession(Ntro.currentSession());
+		RegisteredSockets.sendMessageToUser(userToRegister, updateSessionMessage);
 		
 		if(message.getDelayedMessages().isEmpty() && userToRegister.getHasPassword()) {
 

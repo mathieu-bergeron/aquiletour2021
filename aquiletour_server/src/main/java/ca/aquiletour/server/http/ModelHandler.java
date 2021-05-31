@@ -1,6 +1,6 @@
 package ca.aquiletour.server.http;
 
-import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;

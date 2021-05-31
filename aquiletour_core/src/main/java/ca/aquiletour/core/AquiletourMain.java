@@ -73,7 +73,9 @@ import ca.aquiletour.core.models.schedule.ScheduleItems;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
+import ca.aquiletour.core.models.session.CurrentTasksByCourseKey;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.session.TaskTitleByTaskKey;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
@@ -83,6 +85,7 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserIdMap;
 import ca.aquiletour.core.models.user_list.UserList;
+import ca.aquiletour.core.models.user_session.SessionsByUserId;
 import ca.aquiletour.core.models.user_uuid.UserIdByUuid;
 import ca.aquiletour.core.models.user_uuid.UuidByUserId;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
@@ -165,12 +168,26 @@ import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 import ca.ntro.users.NtroSession;
 
 public abstract class AquiletourMain extends NtroTaskSync {
+
+	public static NtroContext<User, SessionData> createNtroContext() {
+		T.call(AquiletourMain.class);
+
+		NtroContext<User, SessionData> context = new NtroContext<>();
+		context.registerLang(Constants.LANG); // TODO
+		context.registerUser((User) Ntro.currentUser());
+		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
+			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		}else {
+			context.registerSessionData(new SessionData());
+		}
+		return context;
+	}
 	
 	public static List<String> activeSemesterIds() {
 		T.call(AquiletourMain.class);
@@ -202,13 +219,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		rootController.execute();
 		
-		Ntro.backendService().handleMessageFromBackend(NtroSetUserMessage.class, new MessageHandler<NtroSetUserMessage>() {
+		Ntro.backendService().handleMessageFromBackend(NtroUpdateSessionMessage.class, new MessageHandler<NtroUpdateSessionMessage>() {
 			@Override
-			public void handle(NtroSetUserMessage message) {
-				Ntro.currentSession().setUser(message.getUser());
-				Ntro.sessionService().registerCurrentSession(Ntro.currentSession()); // XXX: saves session
-
-				rootController.changeUser(message.getUser());
+			public void handle(NtroUpdateSessionMessage message) {
+				NtroSession session = message.getSession();
+				Ntro.sessionService().registerCurrentSession(session);
+				
+				rootController.changeContext(AquiletourMain.createNtroContext());
 			}
 		});
 		
@@ -228,7 +245,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 					session.setUser(teacher);
 					Ntro.sessionService().registerCurrentSession(session); // XXX: saves session
 
-					rootController.changeUser(teacher);
+					rootController.changeContext(AquiletourMain.createNtroContext());
 				}
 			}
 		});
@@ -413,6 +430,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentDeletesRepoMessage.class);
 
 		Ntro.registerSerializableClass(ActiveSemesterIds.class);
+		Ntro.registerSerializableClass(CurrentTasksByCourseKey.class);
+		Ntro.registerSerializableClass(TaskTitleByTaskKey.class);
+
+		Ntro.registerSerializableClass(SessionsByUserId.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

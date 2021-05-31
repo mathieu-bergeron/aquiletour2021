@@ -10,13 +10,9 @@ import ca.ntro.services.Ntro;
 
 public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage> {
 	
-	private String authToken;
-
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UserLogsOutMessage message) throws BackendError {
 		T.call(this);
-		
-		authToken = Ntro.currentUser().getAuthToken();
 		
 		UserManager.resetUserAfterLogout(modelStore, message.getUser());
 
@@ -24,9 +20,9 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, UserLogsOutMessage message) {
+	public void handleLater(ModelStoreSync modelStore, UserLogsOutMessage message) throws BackendError {
 		T.call(this);
 
-		SessionManager.deleteSession(modelStore, authToken);
+		SessionManager.deleteSession(modelStore, message.getAuthToken(), message.getUser());
 	}
 }

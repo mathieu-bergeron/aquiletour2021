@@ -32,7 +32,7 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		}
 
 		if(session != null) {
-
+			
 			user = SessionManager.updateExistingSession(modelStore, session);
 			
 		}else {

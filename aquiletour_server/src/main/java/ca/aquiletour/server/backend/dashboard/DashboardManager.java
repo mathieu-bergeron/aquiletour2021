@@ -19,6 +19,7 @@ import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.backend.course.CourseManager;
+import ca.aquiletour.server.backend.login.SessionManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelReader;
@@ -102,8 +103,36 @@ public class DashboardManager {
 		
 		List<CT> currentTasks = CourseManager.getCurrentTasks(modelStore, courseModelClass, coursePath);
 
-		updateCurrentTasks(modelStore, dashboardModelClass, coursePath, userId, currentTasks);
+		CoursePath coursePathTeacher = coursePath;
+		if(coursePath instanceof CoursePathStudent) {
+			coursePathTeacher = ((CoursePathStudent) coursePath).toCoursePath();
+		}
+		
+		if(currentTaskClass.equals(CurrentTaskStudent.class)) {
+			SessionManager.updateCurrentTasks(modelStore, 
+										      coursePathTeacher,
+					                          currentTasksStudent(currentTasks),
+					                          userId);
+		}
+
+		updateCurrentTasks(modelStore, 
+				           dashboardModelClass, 
+				           coursePathTeacher, 
+				           userId, 
+				           currentTasks);
 	}
+	
+	private static <CT extends CurrentTask> List<CurrentTaskStudent> currentTasksStudent(List<CT> currentTasks){
+		T.call(DashboardManager.class);
+		
+		List<CurrentTaskStudent> currentTasksStudent = new ArrayList<>();
+		for(CT currentTask : currentTasks) {
+			currentTasksStudent.add((CurrentTaskStudent) currentTask);
+		}
+		
+		return currentTasksStudent;
+	}
+
 
 	private static 
 	        <DM extends DashboardModel<CT>, CT extends CurrentTask> 
@@ -120,14 +149,8 @@ public class DashboardManager {
 			@Override
 			public void update(DM dashboardModel) throws BackendError {
 				T.call(this);
-				
-				CoursePath teacherCoursePath = coursePath;
-				
-				if(coursePath instanceof CoursePathStudent) {
-					teacherCoursePath = ((CoursePathStudent) coursePath).toCoursePath();
-				}
 
-				dashboardModel.updateCurrentTasks(teacherCoursePath, currentTasks);
+				dashboardModel.updateCurrentTasks(coursePath, currentTasks);
 			}
 		});
 	}

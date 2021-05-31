@@ -21,10 +21,12 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
 import ca.aquiletour.core.pages.course_list.CourseListController;
@@ -152,5 +154,6 @@ public class RootController extends NtroRootController {
 	protected void onFailure(Exception e) {
 		T.call(this);
 	}
+
 
 }

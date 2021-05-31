@@ -4,13 +4,13 @@ package ca.aquiletour.server.backend.login;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
@@ -45,9 +45,9 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		Ntro.currentSession().setUser(userToRegister);
 
-		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
-		setUserNtroMessage.setUser(userToRegister);
-		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+		updateSessionMessage.setSession(Ntro.currentSession());
+		RegisteredSockets.sendMessageToUser(userToRegister, updateSessionMessage);
 		
 		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
 			Ntro.messages().send(delayedMessage);
