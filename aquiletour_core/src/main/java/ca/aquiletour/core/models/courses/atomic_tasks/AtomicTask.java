@@ -49,7 +49,8 @@ public class AtomicTask implements NtroModelValue {
 			parentTask.addExitTask(new ShortTextTask(), atomicTaskListener);
 		}
 		
-		if(parentTask.getExitTasks().size() == 0) {
+		if(parentTask.getExitTasks().size() == 0
+				&& parentTask.getSubTasks().size() == 0) {
 
 			parentTask.addExitTask(new DefaultAtomicTask(), atomicTaskListener);
 		}

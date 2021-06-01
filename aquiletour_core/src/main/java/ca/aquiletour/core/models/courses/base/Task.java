@@ -160,6 +160,8 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		if(!subTasks.contains(task.id())) {
 			subTasks.addItem(task.id());
+			
+			refreshAtomicTasks();
 		}
 	}
 	
@@ -401,10 +403,26 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
+		refreshAtomicTasks(description, atomicTaskListener);
+	}
+
+	private void refreshAtomicTasks(String description, OnAtomicTaskAdded atomicTaskListener) {
+		T.call(this);
+
 		getEntryTasks().clearItems();
 		getExitTasks().clearItems();
 
 		AtomicTask.addAtomicTasksFromDescription(this, description, atomicTaskListener);
+	}
+
+	private void refreshAtomicTasks() {
+		T.call(this);
+		
+		refreshAtomicTasks(getDescription().getValue(), new OnAtomicTaskAdded() {
+			@Override
+			public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
+			}
+		});
 	}
 	
 	public void deleteAtomicTask(String atomicTaskId) {
