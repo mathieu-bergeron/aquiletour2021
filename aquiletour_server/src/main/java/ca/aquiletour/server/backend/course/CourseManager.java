@@ -196,7 +196,7 @@ public class CourseManager {
 		
 		CourseModelTeacher courseTeacher = modelStore.getModel(CourseModelTeacher.class, "admin", coursePath);
 		
-		Optionnal<BackendError> backendError = new Optionnal<BackendError>(null);
+		Optionnal<BackendError> backendError = new Optionnal<BackendError>();
 		
 		if(courseTeacher != null) {
 			courseTeacher.getGroups().forEachItem((i, group) -> {
