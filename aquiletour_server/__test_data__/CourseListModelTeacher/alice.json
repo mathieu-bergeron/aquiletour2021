@@ -14,9 +14,7 @@
         "groupsSummary": "0 groupes",
         "groupIds": {
           "_C": "ObservableGroupIdList",
-          "value": [
-            "01"
-          ]
+          "value": []
         },
         "courseDescription": "",
         "courseId": "StruDon",
@@ -28,16 +26,6 @@
               "_C": "TaskDescription",
               "taskTitle": "Ateliers",
               "taskId": "ateliers"
-            },
-            {
-              "_C": "TaskDescription",
-              "taskTitle": "Remise du dépôt Git",
-              "taskId": "depotgit"
-            },
-            {
-              "_C": "TaskDescription",
-              "taskTitle": "Atelier 1",
-              "taskId": "atelier1"
             }
           ]
         }

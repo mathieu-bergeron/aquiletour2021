@@ -18,26 +18,7 @@
         },
         "currentTasks": {
           "_C": "CurrentTasks",
-          "value": [
-            {
-              "taskPath": {
-                "names": [
-                  "ateliers",
-                  "depotgit"
-                ],
-                "_C": "TaskPath"
-              },
-              "_C": "CurrentTaskTeacher",
-              "taskTitle": {
-                "_C": "StoredString",
-                "value": "Remise du dépôt Git"
-              },
-              "numberOfStudents": {
-                "_C": "StoredInteger",
-                "value": 3
-              }
-            }
-          ]
+          "value": []
         }
       }
     ]
