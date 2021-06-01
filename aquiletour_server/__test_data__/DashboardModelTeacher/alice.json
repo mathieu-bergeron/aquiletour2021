@@ -1,0 +1,11 @@
+{
+  "dashboardItems": {
+    "_C": "DashboardItems",
+    "value": []
+  },
+  "_C": "DashboardModelTeacher",
+  "statusMessage": {
+    "_C": "StoredString",
+    "value": ""
+  }
+}

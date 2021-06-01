@@ -1,0 +1,46 @@
+{
+  "currentTime": {
+    "_C": "ObservableTime",
+    "value": {
+      "_C": "NtroDate",
+      "epochSeconds": -1
+    }
+  },
+  "queueId": "alice",
+  "appointments": {
+    "_C": "ObservableAppointmentList",
+    "value": []
+  },
+  "maxId": 0,
+  "mainSettings": {
+    "showAppointmentTimes": {
+      "_C": "StoredBoolean",
+      "value": false
+    },
+    "_C": "QueueSettings",
+    "messageToStudents": {
+      "_C": "StoredString",
+      "value": ""
+    },
+    "isQueueOpen": {
+      "_C": "StoredBoolean",
+      "value": false
+    }
+  },
+  "_C": "QueueModel",
+  "firstAppointmentTime": {
+    "_C": "ObservableTime",
+    "value": {
+      "_C": "NtroDate",
+      "epochSeconds": -1
+    }
+  },
+  "settingsByCourseKey": {
+    "_C": "SettingsByCourseKey",
+    "value": {}
+  },
+  "appointmentDurationSeconds": {
+    "_C": "StoredInteger",
+    "value": 300
+  }
+}

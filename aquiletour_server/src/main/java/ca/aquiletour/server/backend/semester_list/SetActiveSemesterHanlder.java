@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.semester_list;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
-import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
+import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemester;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
@@ -15,10 +15,10 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
 
-public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCurrentSemester> {
+public class SetActiveSemesterHanlder extends BackendMessageHandler<SetActiveSemester> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, SelectCurrentSemester message) throws BackendError {
+	public void handleNow(ModelStoreSync modelStore, SetActiveSemester message) throws BackendError {
 		T.call(this);
 
 		if(!SessionManager.isUserAuthenticated(modelStore, message.getUser())) {
@@ -27,18 +27,18 @@ public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCu
 		
 		if(message.getUser().actsAsAdmin()) {
 
-			SemesterListManager.selectCurrentSemesterForModelId(modelStore,
-					 										    SemesterListModelAdmin.class,
-															    message.getSemesterId(),
-															    message.getCurrentSemester(),
-															    Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+			SemesterListManager.setActiveSemestersForModelId(modelStore,
+					 										SemesterListModelAdmin.class,
+															message.getSemesterId(),
+															message.getIsActive(),
+															Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 		}else if(message.getUser().actsAsTeacher()) {
 
-			SemesterListManager.selectCurrentSemesterForUser(modelStore,
-					 										 SemesterListModelTeacher.class,
-															 message.getSemesterId(),
-															 message.getCurrentSemester(),
-															 message.getUser());
+			SemesterListManager.setActiveSemestersForModelId(modelStore,
+					 									     SemesterListModelTeacher.class,
+														     message.getSemesterId(),
+													         message.getIsActive(),
+													         message.getUser().getId());
 		}else {
 			
 			throw new BackendError("Permission refusée");
@@ -46,7 +46,7 @@ public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCu
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, SelectCurrentSemester message) throws BackendError {
+	public void handleLater(ModelStoreSync modelStore, SetActiveSemester message) throws BackendError {
 		T.call(this);
 		
 
@@ -57,11 +57,11 @@ public class SelectCurrentSemesterHandler extends BackendMessageHandler<SelectCu
 			UserManager.forEachTeacherId(modelStore, teacherId -> {
 				try {
 
-					SemesterListManager.selectCurrentSemesterForModelId(modelStore,
-																		SemesterListModelTeacher.class,
-																		message.getSemesterId(),
-																		message.getCurrentSemester(),
-																		teacherId);
+					SemesterListManager.setActiveSemestersForModelId(modelStore,
+																	SemesterListModelTeacher.class,
+																	message.getSemesterId(),
+																	message.getIsActive(),
+																	teacherId);
 				}catch(BackendError e) {
 					backendError.set(e);
 					throw new Break();

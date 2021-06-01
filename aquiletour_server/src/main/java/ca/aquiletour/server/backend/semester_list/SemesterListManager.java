@@ -7,6 +7,7 @@ import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
@@ -257,11 +258,11 @@ public class SemesterListManager {
 		addSemesterToModel(modelStore, modelClass, semesterModelClass, semesterId, adminControlled, user.getId());
 	}
 
-	public static <SL extends SemesterListModel>  void selectCurrentSemesterForModelId(ModelStoreSync modelStore, 
-																					  Class<SL> modelClass,
-																				      String semesterId, 
-																				      boolean isActive, 
-																				      String userId) throws BackendError {
+	public static <SL extends SemesterListModel>  void setActiveSemestersForModelId(ModelStoreSync modelStore, 
+																				   Class<SL> modelClass,
+																				   String semesterId, 
+																				   boolean isActive, 
+																				   String userId) throws BackendError {
 		T.call(SemesterListManager.class);
 
 		if(!modelStore.ifModelExists(modelClass, "admin", userId)) {
@@ -288,14 +289,14 @@ public class SemesterListManager {
 	}
 
 
-	public static <SL extends SemesterListModel> void selectCurrentSemesterForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel> void setActiveSemesterForUser(ModelStoreSync modelStore, 
 																					Class<SL> modelClass, 
 																					String semesterId, 
 																					boolean currentSemester, 
 																					User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
-		selectCurrentSemesterForModelId(modelStore, modelClass, semesterId, currentSemester, user.getId());
+		setActiveSemestersForModelId(modelStore, modelClass, semesterId, currentSemester, user.getId());
 	}
 	
 	

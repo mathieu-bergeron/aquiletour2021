@@ -1,0 +1,28 @@
+{
+  "sessionData": {
+    "failedPasswordAttemps": 0,
+    "currentTasksByCourseKey": {
+      "currentTasksByCourseKey": {},
+      "_C": "CurrentTasksByCourseKey"
+    },
+    "_C": "SessionData",
+    "loginCode": "",
+    "activeSemesterIds": []
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "alice",
+    "_C": "Admin",
+    "authToken": "5c5946ae0030fc0583c252495d679c01a149963f",
+    "adminMode": false,
+    "hasPassword": true,
+    "id": "alice",
+    "uuid": "fe351a",
+    "email": "alice@cmontmorency.qc.ca",
+    "passwordHash": "",
+    "lastname": "",
+    "studentMode": false
+  },
+  "timeToLiveMiliseconds": 300000
+}

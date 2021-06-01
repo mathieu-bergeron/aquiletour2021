@@ -21,7 +21,8 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		T.call(this);
 		
 		if(currentSemesterId == null) {
-			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, view);
+			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, Constants.DRAFTS_SEMESTER_TEXT, view);
+			appendToSemesterDropdown(Constants.ACTIVE_SEMESTERS_ID, Constants.ACTIVE_SEMESTERS_TEXT, view);
 			observeSemesterIdList(model, view);
 		}
 		
@@ -36,15 +37,10 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		}
 	}
 
-	private void appendToSemesterDropdown(String semesterId, V view) {
+	private void appendToSemesterDropdown(String semesterId, String text, V view) {
 		T.call(this);
 		
 		String href = "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId;
-		String text = semesterId;
-		
-		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
-			text = Constants.DRAFTS_SEMESTER_TEXT;
-		}
 		
 		view.appendToSemesterDropdown(semesterId, href, text);
 	}
@@ -52,13 +48,13 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 	private void observeSemesterIdList(M model, V view) {
 		T.call(this);
 		
-		model.getSemesters().removeObservers();
-		model.getSemesters().onItemAdded(new ItemAddedListener<String>() {
+		model.getAllSemesters().removeObservers();
+		model.getAllSemesters().onItemAdded(new ItemAddedListener<String>() {
 			@Override
 			public void onItemAdded(int index, String item) {
 				T.call(this);
 				
-				appendToSemesterDropdown(item, view);
+				appendToSemesterDropdown(item, item, view);
 			}
 		});
 	}
@@ -89,7 +85,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 			public void onItemAdded(int index, CourseListItem description) {
 				T.call(this);
 				
-				if(description.getSemesterId().equals(currentSemesterId)) {
+				if(shouldDisplayCourse(model, description)) {
 
 					CourseListItemView subView = (CourseListItemView) subViewLoader.createView();
 					subView.displayCourseListItem(description);
@@ -99,7 +95,26 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 					observeCourseDescription(description, subView);
 				}
 			}
+
 		});
+	}
+
+	private boolean shouldDisplayCourse(M model, CourseListItem description) {
+		T.call(this);
+		
+		boolean shouldDisplay = false;
+		
+		if(currentSemesterId.equals(Constants.ACTIVE_SEMESTERS_ID)) {
+			
+			shouldDisplay = model.isActiveSemester(description.getSemesterId());
+			
+		}else {
+			
+			shouldDisplay = currentSemesterId.equals(description.getSemesterId());
+
+		}
+
+		return shouldDisplay;
 	}
 
 	protected abstract void observeCourseDescription(CourseListItem courseItem, CourseListItemView itemView);

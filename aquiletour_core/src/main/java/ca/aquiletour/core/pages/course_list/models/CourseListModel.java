@@ -7,15 +7,24 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class CourseListModel implements NtroModel {
 	
-	private SemesterIds semesters = new SemesterIds();
+	private SemesterIds activeSemesters = new SemesterIds();
+	private SemesterIds allSemesters = new SemesterIds();
 	private ObservableCourseDescriptionList courses = new ObservableCourseDescriptionList();
 
-	public SemesterIds getSemesters() {
-		return semesters;
+	public SemesterIds getAllSemesters() {
+		return allSemesters;
 	}
 
-	public void setSemesters(SemesterIds semesters) {
-		this.semesters = semesters;
+	public void setAllSemesters(SemesterIds allSemesters) {
+		this.allSemesters = allSemesters;
+	}
+	
+	public SemesterIds getActiveSemesters() {
+		return activeSemesters;
+	}
+
+	public void setActiveSemesters(SemesterIds activeSemesters) {
+		this.activeSemesters = activeSemesters;
 	}
 
 	public ObservableCourseDescriptionList getCourses() {
@@ -36,8 +45,8 @@ public abstract class CourseListModel implements NtroModel {
 	public void addSemesterId(String semesterId) {
 		T.call(this);
 
-		if(!semesters.contains(semesterId)) {
-			semesters.addItem(semesterId);
+		if(!allSemesters.contains(semesterId)) {
+			allSemesters.addItem(semesterId);
 		}
 	}
 
@@ -100,4 +109,11 @@ public abstract class CourseListModel implements NtroModel {
 			course.updateQueueOpen(false);
 		}
 	}
+
+	public boolean isActiveSemester(String semesterId) {
+		T.call(this);
+
+		return getActiveSemesters().contains(semesterId);
+	}
+
 }

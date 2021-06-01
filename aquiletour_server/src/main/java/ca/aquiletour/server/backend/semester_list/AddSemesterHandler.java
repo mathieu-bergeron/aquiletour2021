@@ -29,12 +29,14 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 		}
 		
 		if(message.getUser().actsAsAdmin()) {
+
+			boolean adminControlledSemester = true;
 			
 			SemesterListManager.addSemesterToModel(modelStore, 
 					                               SemesterListModelAdmin.class, 
 					                               SemesterModelAdmin.class,
 					                               message.getSemesterId(), 
-					                               true,
+					                               adminControlledSemester,
 					                               Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 			
 		}else if(message.getUser().actsAsTeacher()){
@@ -72,8 +74,13 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 														   message.getSemesterId(), 
 														   adminControlledSemester,
 														   teacherId);
-				}catch(BackendError e) {
 					
+					CourseListManager.addSemesterForUserId(modelStore, 
+							                               CourseListModelTeacher.class, 
+							                               message.getSemesterId(), 
+							                               teacherId);
+				}catch(BackendError e) {
+
 				}
 			});
 			

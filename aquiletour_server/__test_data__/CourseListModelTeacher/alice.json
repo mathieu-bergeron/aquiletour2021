@@ -42,6 +42,6 @@
   "_C": "CourseListModelTeacher",
   "semesters": {
     "_C": "SemesterIds",
-    "value": []
+    "value": ["H2021"]
   }
 }

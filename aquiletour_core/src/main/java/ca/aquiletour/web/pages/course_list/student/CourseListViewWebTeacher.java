@@ -106,13 +106,19 @@ public class CourseListViewWebTeacher extends CourseListViewWeb implements Cours
 			
 			String text = "Ajouter un cours aux brouillons";
 
+			getAddItemButton().show();
 			getAddItemButton().text(text);
 			getModelTitle().text(text);
+
+		}else if(semesterId.equals(Constants.ACTIVE_SEMESTERS_ID)) {
+			
+			getAddItemButton().hide();
 			
 		}else {
 			
 			String text = "Ajouter un cours à la session " + semesterId;
 
+			getAddItemButton().show();
 			getAddItemButton().text(text);
 			getModelTitle().text(text);
 		}

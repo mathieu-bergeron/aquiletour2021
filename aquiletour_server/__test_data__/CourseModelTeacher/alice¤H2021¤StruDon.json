@@ -183,12 +183,7 @@
         },
         "exitTasks": {
           "_C": "StoredAtomicTasks",
-          "value": [
-            {
-              "_C": "DefaultAtomicTask",
-              "id": "DefaultAtomicTask"
-            }
-          ]
+          "value": []
         },
         "endTime": {
           "_C": "StoredCourseDate",
@@ -300,14 +295,17 @@
         },
         "description": {
           "_C": "StoredString",
-          "value": ""
+          "value": "{remiseGit}"
         },
         "exitTasks": {
           "_C": "StoredAtomicTasks",
           "value": [
             {
-              "_C": "DefaultAtomicTask",
-              "id": "DefaultAtomicTask"
+              "_C": "GitExerciseTask",
+              "id": "GitExerciseTask",
+              "repoPath": {
+                "_R": "/tasks/value//tps/entryTasks/value/0/repoPath"
+              }
             }
           ]
         },
@@ -364,12 +362,7 @@
         },
         "exitTasks": {
           "_C": "StoredAtomicTasks",
-          "value": [
-            {
-              "_C": "DefaultAtomicTask",
-              "id": "DefaultAtomicTask"
-            }
-          ]
+          "value": []
         },
         "endTime": {
           "_C": "StoredCourseDate",
@@ -422,12 +415,7 @@
         },
         "exitTasks": {
           "_C": "StoredAtomicTasks",
-          "value": [
-            {
-              "_C": "DefaultAtomicTask",
-              "id": "DefaultAtomicTask"
-            }
-          ]
+          "value": []
         },
         "endTime": {
           "_C": "StoredCourseDate",

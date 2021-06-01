@@ -3,10 +3,10 @@ package ca.aquiletour.core.pages.semester_list.messages;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 
-public class SelectCurrentSemester extends NtroUserMessage<User> {
+public class SetActiveSemester extends NtroUserMessage<User> {
 	
 	private String semesterId;
-	private boolean currentSemester;
+	private boolean isActive;
 
 	public String getSemesterId() {
 		return semesterId;
@@ -16,11 +16,11 @@ public class SelectCurrentSemester extends NtroUserMessage<User> {
 		this.semesterId = semesterId;
 	}
 
-	public boolean getCurrentSemester() {
-		return currentSemester;
+	public boolean getIsActive() {
+		return isActive;
 	}
 
-	public void setCurrentSemester(boolean currentSemester) {
-		this.currentSemester = currentSemester;
+	public void setIsActive(boolean currentSemester) {
+		this.isActive = currentSemester;
 	}
 }
