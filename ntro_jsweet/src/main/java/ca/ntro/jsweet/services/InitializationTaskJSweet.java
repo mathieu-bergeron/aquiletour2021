@@ -21,7 +21,6 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
@@ -76,14 +75,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 		__T.call(this, "provideViewLoaderWeb");
 
 		return ViewLoaderWebJSweet.class;
-	}
-
-
-	@Override
-	protected JsonParser provideJsonParser() {
-		__T.call(this, "provideJsonParser");
-		
-		return new JsonParserJSweet();
 	}
 
 	@Override

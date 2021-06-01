@@ -17,7 +17,6 @@
 
 package ca.ntro.services;
 
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
@@ -69,7 +68,6 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract StackAnalyzer provideStackAnalyzer();
 	protected abstract ResourceLoader provideResourceLoader();
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
-	protected abstract JsonParser provideJsonParser();
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
 	protected abstract Class<? extends BackendService> provideBackendServiceClass();

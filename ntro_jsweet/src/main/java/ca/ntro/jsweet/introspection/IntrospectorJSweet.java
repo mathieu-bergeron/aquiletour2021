@@ -35,14 +35,6 @@ import static jsweet.util.Lang.typeof;
 
 public class IntrospectorJSweet extends Introspector {
 
-	@Override
-	public Object buildValueForSetter(Method setter, Object jsonValue) {
-		T.call(this);
-
-		// XXX: setter does not contain type information in JSweet
-		return buildValue(jsonValue);
-	}
-
 	private Object buildValue(Object jsonValue) {
 		T.call(this);
 

@@ -20,7 +20,6 @@ package ca.ntro.jdk.services;
 import java.util.Map;
 
 import ca.ntro.core.Path;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
@@ -73,13 +72,6 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideViewLoaderWeb");
 
 		return ViewLoaderWebJdk.class;
-	}
-
-	@Override
-	protected JsonParser provideJsonParser() {
-		__T.call(InitializationTaskJdk.class, "provideJsonParser");
-
-		return new JsonParserJdk();
 	}
 
 	@Override
