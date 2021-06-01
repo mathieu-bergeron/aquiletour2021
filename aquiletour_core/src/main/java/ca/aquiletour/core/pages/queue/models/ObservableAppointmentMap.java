@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.models.StoredMap;
-import ca.ntro.core.system.trace.T;
 
 public class ObservableAppointmentMap extends StoredMap<Appointment> {
 

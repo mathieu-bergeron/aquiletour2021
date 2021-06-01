@@ -367,7 +367,7 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 
 	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
 	
-	private void copyTasks(CourseModel course) {
+	private void copyTasks(CourseModel<?> course) {
 		T.call(this);
 		
 		getTasks().setCourse(this);
@@ -379,7 +379,7 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 		}
 	}
 
-	public void copyCourse(CourseModel course) {
+	public void copyCourse(CourseModel<?> course) {
 		T.call(this);
 		
 		coursePath = course.getCoursePath();

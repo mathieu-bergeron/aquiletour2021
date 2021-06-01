@@ -18,7 +18,6 @@
 package ca.aquiletour.server;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Timer;
 import java.util.TimerTask;
 

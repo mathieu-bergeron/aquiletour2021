@@ -2,16 +2,10 @@ package ca.aquiletour.server.backend.login;
 
 
 import ca.aquiletour.core.messages.InitializeSessionMessage;
-import ca.aquiletour.core.models.user.Guest;
-import ca.aquiletour.core.models.user.StudentGuest;
-import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 

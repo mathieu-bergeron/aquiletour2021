@@ -1,9 +1,5 @@
 package ca.aquiletour.core.pages.git.commit_list;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.ntro.core.models.NtroModel;
 

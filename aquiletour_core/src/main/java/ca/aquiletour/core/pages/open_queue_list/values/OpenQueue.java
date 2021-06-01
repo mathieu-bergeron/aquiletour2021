@@ -1,7 +1,6 @@
 package ca.aquiletour.core.pages.open_queue_list.values;
 
 import ca.ntro.core.json.JsonSerializable;
-import ca.ntro.core.system.trace.T;
 
 public class OpenQueue implements JsonSerializable {
 	

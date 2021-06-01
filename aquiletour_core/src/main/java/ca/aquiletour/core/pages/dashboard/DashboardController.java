@@ -22,7 +22,7 @@ public abstract class DashboardController extends NtroController<RootController>
 	}
 	
 	protected abstract Class<? extends DashboardView> viewClass();
-	protected abstract Class<? extends DashboardModel> modelClass();
+	protected abstract Class<? extends DashboardModel<?>> modelClass();
 	protected abstract void installParentViewMessageHandler();
 	
 	@Override

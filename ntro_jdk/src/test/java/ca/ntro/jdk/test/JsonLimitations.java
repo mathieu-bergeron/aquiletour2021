@@ -86,9 +86,15 @@ public class JsonLimitations {
 		assertTrue(list.get(0) instanceof ListItemA);
 		assertTrue(list.get(1) instanceof ListItemB);
 		
-		new FileOutputStream(new File("jsonLimitations.json")).write(gson.toJson(list).getBytes());
+		FileOutputStream outputStream = new FileOutputStream(new File("jsonLimitations.json"));
+		outputStream.write(gson.toJson(list).getBytes());
+		outputStream.close();
 		
-		List<ListItem> parsedList = gson.fromJson(new FileReader(new File("jsonLimitations.json")), List.class);
+		FileReader fileReader = new FileReader(new File("jsonLimitations.json"));
+
+		@SuppressWarnings("unchecked")
+		List<ListItem> parsedList = gson.fromJson(fileReader, List.class);
+		fileReader.close();
 		
 		// XXX: in JSON, there is not type information 
 		//      for objects in the list

@@ -22,10 +22,10 @@ public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardV
 	}
 
 	@Override
-	public void appendDashboardItem(DashboardItemView itemView) {
+	public void appendDashboardItem(DashboardItemView<?> itemView) {
 		T.call(this);
 		
-		DashboardItemViewWeb subView = (DashboardItemViewWeb) itemView;
+		DashboardItemViewWeb<?> subView = (DashboardItemViewWeb<?>) itemView;
 
 		dashboardItemContainer.appendElement(subView.getRootElement());
 	}

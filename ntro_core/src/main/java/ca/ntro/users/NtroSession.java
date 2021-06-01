@@ -1,7 +1,6 @@
 package ca.ntro.users;
 
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.NtroModelValue;
 
 public class NtroSession implements NtroModel {
 

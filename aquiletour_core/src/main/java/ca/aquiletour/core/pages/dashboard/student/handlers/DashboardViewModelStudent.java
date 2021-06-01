@@ -1,13 +1,11 @@
 package ca.aquiletour.core.pages.dashboard.student.handlers;
 
 import ca.aquiletour.core.pages.dashboard.handlers.DashboardViewModel;
-import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardItemStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardItemViewStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardViewStudent;
-import ca.aquiletour.core.pages.dashboard.views.DashboardItemView;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.system.trace.T;
 

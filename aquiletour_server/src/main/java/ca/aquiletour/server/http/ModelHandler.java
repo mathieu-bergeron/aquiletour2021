@@ -50,15 +50,6 @@ public class ModelHandler extends AbstractHandler {
         this.modelsUrlPrefix = modelsUrlPrefix;
     }
 
-    private String[] uriParts(String uri) {
-        String[] parts = uri.split("/");
-        String[] ret = new String[parts.length - 1];
-
-        System.arraycopy(parts, 1, ret, 0, parts.length - 1);
-
-        return ret;
-    }
-
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

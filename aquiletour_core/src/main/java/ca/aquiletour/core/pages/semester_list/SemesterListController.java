@@ -34,7 +34,7 @@ public abstract class SemesterListController extends NtroController<RootControll
 	protected abstract Class<? extends ShowSemesterListMessage> showMessageClass();
 	protected abstract ShowSemesterListHandler showMessageHandler();
 	protected abstract Class<? extends SemesterView> subViewClass();
-	protected abstract Class<? extends SemesterListModel> modelClass();
+	protected abstract Class<? extends SemesterListModel<?>> modelClass();
 	protected abstract String modelId(NtroContext<?,?> context);
 	protected abstract ModelViewSubViewHandler<?,?> viewModel();
 	

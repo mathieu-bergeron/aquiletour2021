@@ -5,7 +5,8 @@ import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 
-public abstract class ViewHandler<CB extends NtroAbstractController, V extends NtroView> extends Handler implements TaskWrapper {
+public abstract class ViewHandler<CB extends NtroAbstractController, V extends NtroView> 
+                extends Handler<NtroAbstractController> implements TaskWrapper {
 	
 	private NtroTask mainTask = new ViewHandlerTask<CB, V>(this);
 

@@ -27,7 +27,6 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.web.widgets.BootstrapAlert;
 import ca.aquiletour.core.pages.login.LoginView;
-import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
@@ -38,9 +37,7 @@ import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElementLambda;
 import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {

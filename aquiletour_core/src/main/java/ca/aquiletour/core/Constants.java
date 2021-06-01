@@ -1,7 +1,5 @@
 package ca.aquiletour.core;
 
-import ca.aquiletour.core.messages.git.DeRegisterExercise;
-
 public class Constants {
 
 	public static final int DEFAULT_USER_ID_LENGTH = 3;

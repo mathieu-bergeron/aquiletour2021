@@ -7,7 +7,6 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.aquiletour.core.models.dates.AquiletourDate;

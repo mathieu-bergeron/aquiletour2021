@@ -2,7 +2,6 @@ package ca.aquiletour.core.models.schedule;
 
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDayOfWeek;
 
 public class TeacherSchedule implements NtroModel {
 	

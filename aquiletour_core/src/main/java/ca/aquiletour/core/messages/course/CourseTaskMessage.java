@@ -4,7 +4,7 @@ import ca.ntro.core.Path;
 
 public class CourseTaskMessage extends CourseMessage {
 
-	private Path taskPath = new Path("/");
+	private Path taskPath = Path.fromRawPath("/");
 
 	public Path getTaskPath() {
 		return taskPath;

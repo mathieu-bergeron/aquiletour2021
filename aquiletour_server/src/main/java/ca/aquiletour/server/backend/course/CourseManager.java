@@ -31,7 +31,6 @@ import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
-import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.ValueReader;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
@@ -234,7 +233,7 @@ public class CourseManager {
 
 	private static void addTaskToCourseModel(Path anchorTaskPath, 
 											 Task task, 
-											 CourseModel courseModel, 
+											 CourseModel<?> courseModel, 
 											 TaskType taskType) throws BackendError {
 		T.call(CourseManager.class);
 		
@@ -292,7 +291,7 @@ public class CourseManager {
 				T.call(this);
 				
 				course.updateCourseTitle(courseTitle);
-				Task rootTask = course.findTaskByPath(new Path("/"));
+				Task rootTask = course.findTaskByPath(Path.fromRawPath("/"));
 				rootTask.updateTitle(courseTitle);
 			}
 		});
@@ -310,7 +309,7 @@ public class CourseManager {
 				T.call(this);
 				
 				Task rootTask = new Task();
-				rootTask.setPath(new TaskPath("/"));
+				rootTask.setPath(TaskPath.fromRawPath("/"));
 
 				course.registerRootTask(rootTask);
 				course.setCoursePath(coursePath);

@@ -4,8 +4,6 @@ import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
-import ca.ntro.models.NtroDayOfWeek;
 
 public class CourseDateScheduleItem extends CourseDate {
 	

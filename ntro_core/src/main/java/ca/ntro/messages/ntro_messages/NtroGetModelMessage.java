@@ -4,8 +4,9 @@ import ca.ntro.core.models.NtroModel;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.messages.NtroUserMessage;
 import ca.ntro.stores.DocumentPath;
+import ca.ntro.users.NtroUser;
 
-public class NtroGetModelMessage extends NtroUserMessage implements NtroModelMessage {
+public class NtroGetModelMessage extends NtroUserMessage<NtroUser> implements NtroModelMessage {
 	
 	private DocumentPath documentPath;
 	private Class<? extends NtroModel> targetClass;

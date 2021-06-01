@@ -1,10 +1,7 @@
 package ca.aquiletour.core.pages.git.student_summaries.messages;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.GetStudentSummaries;
-import ca.aquiletour.core.pages.git.commit_list.CommitListController;
-import ca.aquiletour.core.pages.git.commit_list.CommitListView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesController;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.root.RootView;

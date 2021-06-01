@@ -1,6 +1,5 @@
 package ca.aquiletour.server.backend.course;
 
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;

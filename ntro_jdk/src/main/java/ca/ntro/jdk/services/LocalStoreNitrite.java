@@ -12,8 +12,6 @@ import org.dizitart.no2.Cursor;
 
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
-import ca.ntro.core.json.JsonObject;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.trace.T;
@@ -22,7 +20,6 @@ import ca.ntro.services.ModelStore;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
-import ca.ntro.users.NtroUser;
 
 public class LocalStoreNitrite extends ModelStore {
 	

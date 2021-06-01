@@ -17,8 +17,6 @@
 
 package ca.ntro.core.system.assertions;
 
-import java.util.Arrays;
-
 public class ContainsExpr extends AssertExpr {
 	
 	private AssertExpr element;

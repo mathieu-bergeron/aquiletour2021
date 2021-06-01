@@ -21,9 +21,17 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		T.call(this);
 		
 		if(currentSemesterId == null) {
+			appendToSemesterDropdown("_4","Corbeille", view);
+			appendToSemesterDropdown("_3","Archives", view);
+			appendToSemesterDropdown("_2","Brouillons", view);
+			appendToSemesterDropdown("_1","En cours", view);
+			currentSemesterId = "_1";
+			/*
+			 * 
 			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, Constants.DRAFTS_SEMESTER_TEXT, view);
 			appendToSemesterDropdown(Constants.ACTIVE_SEMESTERS_ID, Constants.ACTIVE_SEMESTERS_TEXT, view);
 			observeSemesterIdList(model, view);
+			*/
 		}
 		
 		String semesterId = message.getSemesterId();
@@ -45,6 +53,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		view.appendToSemesterDropdown(semesterId, href, text);
 	}
 
+	@SuppressWarnings("unused")
 	private void observeSemesterIdList(M model, V view) {
 		T.call(this);
 		

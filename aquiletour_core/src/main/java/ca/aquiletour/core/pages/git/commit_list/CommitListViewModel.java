@@ -81,7 +81,7 @@ public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitL
 		
 		long deadline = -1;
 
-		Path path = new Path(exercisePath);
+		Path path = Path.fromRawPath(exercisePath);
 		Task task = courseModel.findTaskByPath(path);
 		
 		if(task != null) {

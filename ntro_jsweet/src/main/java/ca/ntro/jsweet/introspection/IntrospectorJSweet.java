@@ -26,7 +26,6 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.system.trace.T;
 import def.js.Array;
 import def.js.Function;

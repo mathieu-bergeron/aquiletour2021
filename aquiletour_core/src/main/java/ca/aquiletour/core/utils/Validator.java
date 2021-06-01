@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
+import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
 public class Validator {
@@ -163,6 +164,18 @@ public class Validator {
 			String charI = id.substring(i,i+1);
 			if(!isAcceptableChar(charI)) {
 				throw new ValidationError("Ne peut contenir le caractère " + charI);
+			}
+		}
+		
+		String[] reservedChars = new String[] {Path.PATH_SEPARATOR, Path.KEY_SEPARATOR, Path.FILENAME_SEPARATOR, Path.HTML_ID_SEPARATOR};
+		
+		for(String reservedChar : reservedChars) {
+			if(id.contains(reservedChar)) {
+				if(reservedChar.length() == 1) {
+					throw new ValidationError("Ne peut contenir le caractère " + reservedChar);
+				}else {
+					throw new ValidationError("Ne peut contenir les caractères " + reservedChar);
+				}
 			}
 		}
 

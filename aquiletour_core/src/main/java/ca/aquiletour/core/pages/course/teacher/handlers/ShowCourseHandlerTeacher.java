@@ -12,7 +12,7 @@ import ca.ntro.core.system.trace.T;
 public class ShowCourseHandlerTeacher extends ShowCourseHandler {
 
 	@Override
-	protected Class<? extends CourseModel> modelClass() {
+	protected Class<? extends CourseModel<?>> modelClass() {
 		T.call(this);
 		
 		return CourseModelTeacher.class;

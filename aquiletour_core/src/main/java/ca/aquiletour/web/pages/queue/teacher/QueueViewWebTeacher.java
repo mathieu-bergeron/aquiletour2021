@@ -80,7 +80,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		
 		String id = "is-queue-open-checkbox";
 		if(!coursePath.isAllCourses()) {
-			id += coursePath.toFileName();
+			id += coursePath.toHtmlId();
 		}
 		if(groupId != null) {
 			id += groupId;

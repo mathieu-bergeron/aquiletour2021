@@ -1,8 +1,6 @@
 package ca.aquiletour.core.pages.git.values;
 
 import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredBoolean;
-import ca.ntro.core.system.trace.T;
 
 public class StudentSummary implements NtroModelValue {
 

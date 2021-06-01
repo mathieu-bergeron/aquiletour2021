@@ -47,12 +47,10 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -137,7 +135,7 @@ public class DynamicHandler extends AbstractHandler {
 
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
-		Path path = new Path(baseRequest.getRequestURI().toString());
+		Path path = Path.fromRawPath(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 		executeBackend(baseRequest, response, path, parameters);
@@ -400,6 +398,7 @@ public class DynamicHandler extends AbstractHandler {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	private void eraseCookie(HttpServletResponse response, String name) {
 		T.call(this);
 		

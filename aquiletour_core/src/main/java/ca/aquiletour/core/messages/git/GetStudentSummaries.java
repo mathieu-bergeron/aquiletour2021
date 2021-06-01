@@ -27,7 +27,7 @@ public class GetStudentSummaries extends ShowStudentSummariesMessage implements 
 	protected Path documentIdAsPath() {
 		T.call(this);
 
-		Path exercisePath = new Path(getExercisePath());
+		Path exercisePath = Path.fromRawPath(getExercisePath());
 
 		Path path = new Path();
 		path.getNames().add(getCourseId());

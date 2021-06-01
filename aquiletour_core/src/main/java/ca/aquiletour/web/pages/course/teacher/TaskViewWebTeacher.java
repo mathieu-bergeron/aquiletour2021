@@ -6,13 +6,7 @@ import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.pages.course.teacher.views.TaskViewTeacher;
 import ca.aquiletour.web.pages.course.TaskViewWeb;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
-import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
-
-import static ca.ntro.assertions.Factory.that;
 
 public class TaskViewWebTeacher extends TaskViewWeb implements TaskViewTeacher {
 

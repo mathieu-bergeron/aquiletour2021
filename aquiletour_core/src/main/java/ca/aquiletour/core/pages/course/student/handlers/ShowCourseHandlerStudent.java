@@ -15,7 +15,7 @@ import ca.ntro.services.Ntro;
 public class ShowCourseHandlerStudent extends ShowCourseHandler {
 
 	@Override
-	protected Class<? extends CourseModel> modelClass() {
+	protected Class<? extends CourseModel<?>> modelClass() {
 		T.call(this);
 
 		return CourseModelStudent.class;

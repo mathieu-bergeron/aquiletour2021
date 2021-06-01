@@ -3,14 +3,9 @@ package ca.aquiletour.core.models.courses.teacher;
 import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
-import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
@@ -20,7 +15,6 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.lambdas.Break;
@@ -217,18 +211,6 @@ public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 
 			return groupId;
 		});
-	}
-
-
-	private int numberOfStudents() {
-		
-		int numberOfStudents = 0;
-		
-		for(GroupDescription group : getGroups().getValue()) {
-			numberOfStudents += group.getStudents().size();
-		}
-		
-		return numberOfStudents;
 	}
 
 	public void updateAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId, AtomicTaskCompletion completionToAdd) {

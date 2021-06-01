@@ -6,7 +6,6 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
-import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.models.ModelStoreSync;

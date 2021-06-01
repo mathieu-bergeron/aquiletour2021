@@ -136,7 +136,7 @@ public class HtmlElementJSweet extends HtmlElement {
 
 						history.pushState(null, formId, href);
 						
-						Ntro.router().sendMessagesFor(Ntro.context(), new Path(href), parameters);
+						Ntro.router().sendMessagesFor(Ntro.context(), Path.fromRawPath(href), parameters);
 
 						return null;
 					}

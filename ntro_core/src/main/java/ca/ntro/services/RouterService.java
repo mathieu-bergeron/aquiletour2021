@@ -25,7 +25,7 @@ public abstract class RouterService {
 		
 		Map<String, String[]> parameters = new HashMap<>();
 		
-		Path path = new Path(rawPath);
+		Path path = Path.fromRawPath(rawPath);
 		
 		if(rawParameters.startsWith("?")) {
 			rawParameters = rawParameters.substring(1);

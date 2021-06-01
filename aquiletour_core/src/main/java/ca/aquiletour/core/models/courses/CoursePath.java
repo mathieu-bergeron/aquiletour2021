@@ -17,11 +17,6 @@ public class CoursePath extends Path {
 		T.call(this);
 	}
 
-	public CoursePath(String path) {
-		super(path);
-		T.call(this);
-	}
-
 	public CoursePath(String teacherId, String semesterId, String courseId) {
 		super();
 		
@@ -29,7 +24,6 @@ public class CoursePath extends Path {
 		addName(semesterId);
 		addName(courseId);
 	}
-
 
 	public Path toUrlPath() {
 		T.call(this);
@@ -81,7 +75,11 @@ public class CoursePath extends Path {
 	public static CoursePath fromKey(String courseKey) {
 		T.call(CoursePath.class);
 		
-		return new CoursePath(courseKey);
+		CoursePath coursePath = new CoursePath();
+
+		coursePath.copyNamesOf(Path.fromKey(courseKey));
+
+		return coursePath;
 	}
 
 }

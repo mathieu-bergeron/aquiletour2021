@@ -6,7 +6,6 @@ import java.util.Map;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.AtomicTaskMessage;
-import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
@@ -66,7 +65,6 @@ import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.Ntro;
-import jsweet.util.StringTypes.param;
 
 public class AquiletourBackendRequestHandler {
 	
@@ -272,8 +270,8 @@ public class AquiletourBackendRequestHandler {
 			String taskId = parameters.get("taskId")[0];
 			String taskTitle = parameters.get("taskId")[0];
 			
-			Path parentPath = new Path("/");
-			TaskPath taskPath = new TaskPath("/" + taskId);
+			Path parentPath = Path.fromRawPath("/");
+			TaskPath taskPath = TaskPath.fromRawPath("/" + taskId);
 
 			Task task = new Task();
 			task.updateTitle(taskTitle);
@@ -571,13 +569,13 @@ public class AquiletourBackendRequestHandler {
 			String parentTaskId = parameters.get("taskId")[0];
 			String newSubTaskId = parameters.get("newSubTaskId")[0];
 			String taskTitle = parameters.get("taskTitle")[0];
-			TaskPath newTaskPath = new TaskPath(parentTaskId + "/" + newSubTaskId);
+			TaskPath newTaskPath = TaskPath.fromRawPath(parentTaskId + "/" + newSubTaskId);
 			
 			Task task = new Task();
 			task.setPath(newTaskPath);
 			task.updateTitle(taskTitle);
 
-			addSubTaskMessage.setParentPath(new Path(parentTaskId));
+			addSubTaskMessage.setParentPath(Path.fromRawPath(parentTaskId));
 			addSubTaskMessage.setSubTask(task);
 			Ntro.messages().send(addSubTaskMessage);
 
@@ -593,10 +591,10 @@ public class AquiletourBackendRequestHandler {
 			String newPreviousTaskId = parameters.get("newPreviousTaskId")[0];
 			String taskTitle = parameters.get("previousTaskTitle")[0];
 			
-			Path nextPath = new Path(nextTaskId);
+			Path nextPath = Path.fromRawPath(nextTaskId);
 			Path parentPath = nextPath.parent();
 
-			TaskPath newPreviousTaskPath = new TaskPath(parentPath.toString() + "/" + newPreviousTaskId);
+			TaskPath newPreviousTaskPath = TaskPath.fromRawPath(parentPath.toString() + "/" + newPreviousTaskId);
 
 			Task newPreviousTask = new Task();
 			newPreviousTask.setPath(newPreviousTaskPath);
@@ -617,12 +615,12 @@ public class AquiletourBackendRequestHandler {
 
 			String nextTaskId = parameters.get("taskId")[0];
 			String existingTaskPathString = parameters.get("linkToPreviousTaskPath")[0];
-			TaskPath existingTaskPath = new TaskPath(existingTaskPathString);
+			TaskPath existingTaskPath = TaskPath.fromRawPath(existingTaskPathString);
 
 			Task previousTask = new Task();
 			previousTask.setPath(existingTaskPath);
 			
-			addPreviousTaskMessage.setNextPath(new Path(nextTaskId));
+			addPreviousTaskMessage.setNextPath(Path.fromRawPath(nextTaskId));
 			addPreviousTaskMessage.setPreviousTask(previousTask);
 			
 			Ntro.messages().send(addPreviousTaskMessage);
@@ -639,10 +637,10 @@ public class AquiletourBackendRequestHandler {
 			String newNextTaskId = parameters.get("newNextTaskId")[0];
 			String taskTitle = parameters.get("nextTaskTitle")[0];
 			
-			Path previousPath = new Path(previousTaskId);
+			Path previousPath = Path.fromRawPath(previousTaskId);
 			Path parentPath = previousPath.parent();
 
-			TaskPath newNextTaskPath = new TaskPath(parentPath.toString() + "/" + newNextTaskId);
+			TaskPath newNextTaskPath = TaskPath.fromRawPath(parentPath.toString() + "/" + newNextTaskId);
 
 			Task newNextTask = new Task();
 			newNextTask.setPath(newNextTaskPath);
@@ -662,12 +660,12 @@ public class AquiletourBackendRequestHandler {
 																							     sessionData);
 			String previousTaskId = parameters.get("taskId")[0];
 			String existingTaskPathSting = parameters.get("linkToNextTaskPath")[0];
-			TaskPath existingTaskPath = new TaskPath(existingTaskPathSting);
+			TaskPath existingTaskPath = TaskPath.fromRawPath(existingTaskPathSting);
 			
 			Task nextTask = new Task();
 			nextTask.setPath(existingTaskPath);
 
-			addNextTaskMessage.setPreviousPath(new Path(previousTaskId));
+			addNextTaskMessage.setPreviousPath(Path.fromRawPath(previousTaskId));
 			addNextTaskMessage.setNextTask(nextTask);
 
 			Ntro.messages().send(addNextTaskMessage);
@@ -679,9 +677,8 @@ public class AquiletourBackendRequestHandler {
 																							   parameters,
 																							   sessionData);
 			String taskId = parameters.get("delete")[0];
-			Path taskPath = new Path();
-			taskPath.parseFileName(taskId);
-			
+			Path taskPath = Path.fromFileName(taskId);
+
 			deleteTaskMessage.setTaskToDelete(taskPath);
 
 			Ntro.messages().send(deleteTaskMessage);
@@ -693,12 +690,10 @@ public class AquiletourBackendRequestHandler {
 																							                   parameters,
 																							                   sessionData);
 			String toRemoveId = parameters.get("removePreviousTask")[0];
-			Path toRemovePath = new Path();
-			toRemovePath.parseFileName(toRemoveId);
+			Path toRemovePath = Path.fromFileName(toRemoveId);
 
 			String toModifyId = parameters.get("from")[0];
-			Path toModifyPath = new Path();
-			toModifyPath.parseFileName(toModifyId);
+			Path toModifyPath = Path.fromFileName(toModifyId);
 			
 			removePreviousTaskMessage.setTaskToModify(toModifyPath);
 			removePreviousTaskMessage.setTaskToRemove(toRemovePath);
@@ -713,12 +708,10 @@ public class AquiletourBackendRequestHandler {
 																							         sessionData);
 
 			String toRemoveId = parameters.get("removeSubTask")[0];
-			Path toRemovePath = new Path();
-			toRemovePath.parseFileName(toRemoveId);
+			Path toRemovePath = Path.fromFileName(toRemoveId);
 
 			String toModifyId = parameters.get("from")[0];
-			Path toModifyPath = new Path();
-			toModifyPath.parseFileName(toModifyId);
+			Path toModifyPath = Path.fromFileName(toModifyId);
 			
 			removeSubTaskMessage.setTaskToModify(toModifyPath);
 			removeSubTaskMessage.setTaskToRemove(toRemovePath);
@@ -733,12 +726,10 @@ public class AquiletourBackendRequestHandler {
 																							           sessionData);
 
 			String toRemoveId = parameters.get("removeNextTask")[0];
-			Path toRemovePath = new Path();
-			toRemovePath.parseFileName(toRemoveId);
+			Path toRemovePath = Path.fromFileName(toRemoveId);
 
 			String toModifyId = parameters.get("from")[0];
-			Path toModifyPath = new Path();
-			toModifyPath.parseFileName(toModifyId);
+			Path toModifyPath = Path.fromFileName(toModifyId);
 			
 			removeNextTaskMessage.setTaskToModify(toModifyPath);
 			removeNextTaskMessage.setTaskToRemove(toRemovePath);
@@ -798,8 +789,7 @@ public class AquiletourBackendRequestHandler {
 				
 				String atomicTaskId = parameters.get("atomicTaskCompletedId")[0];
 				String taskId = parameters.get("taskId")[0];
-				Path taskPath = new Path();
-				taskPath.parseFileName(taskId);
+				Path taskPath = Path.fromFileName(taskId);
 
 				TaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseTaskMessage(TaskCompletedMessage.class,
 																						                 path,
@@ -827,7 +817,7 @@ public class AquiletourBackendRequestHandler {
 
 		String studentId = parameters.get("studentId")[0];
 		String groupId = parameters.get("groupId")[0];
-		Path repoPath = new Path(parameters.get("repoPath")[0]);
+		Path repoPath = Path.fromRawPath(parameters.get("repoPath")[0]);
 		String repoUrl = parameters.get("repoUrl")[0];
 
 		message.setStudentId(studentId);

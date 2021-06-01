@@ -414,6 +414,7 @@ public class IntrospectorJdk extends Introspector {
 		return modifiers(constructor.getModifiers());
 	}
 
+	@SuppressWarnings("unused")
 	private static List<String> modifiers(Method method){
 		T.call(IntrospectorJdk.class);
 

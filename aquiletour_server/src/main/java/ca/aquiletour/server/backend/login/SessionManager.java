@@ -33,7 +33,6 @@ import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
-import ca.ntro.users.NtroSessionData;
 
 public class SessionManager {
 

@@ -1,11 +1,8 @@
 package ca.aquiletour.core.pages.semester_list.models;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.StoredList;
-import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 

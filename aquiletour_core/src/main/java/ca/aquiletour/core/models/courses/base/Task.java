@@ -555,12 +555,6 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		return task;
 	}
-	
-	private String nextAtomicTaskId() {
-		T.call(this);
-		
-		return String.valueOf(getEntryTasks().size() + getExitTasks().size());
-	}
 
 	public void forEachTaskBackwardsTransitive(TaskForEach lambda) {
 		T.call(this);
@@ -711,7 +705,7 @@ public class Task implements NtroModelValue, TaskNode {
 			                                               TaskReducer<ACC> reducer){
 		
 		return storedTasksIds.reduceTo(accumulatorClass, accumulator, (index, taskId, innerAccumulator) -> {
-			Task task = graph.findTaskByPath(new Path(taskId));
+			Task task = graph.findTaskByPath(Path.fromRawPath(taskId));
 			
 			return reducer.reduce(index, task, innerAccumulator);
 		});

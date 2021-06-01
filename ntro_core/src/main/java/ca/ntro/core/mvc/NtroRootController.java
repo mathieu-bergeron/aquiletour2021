@@ -1,7 +1,6 @@
 package ca.ntro.core.mvc;
 
 import ca.ntro.core.system.trace.T;
-import ca.ntro.users.NtroUser;
 
 public abstract class NtroRootController extends NtroAbstractController {
 	

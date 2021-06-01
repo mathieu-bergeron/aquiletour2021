@@ -3,7 +3,6 @@ package ca.aquiletour.core.pages.queue.teacher.handlers;
 
 import java.util.Map;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
@@ -18,7 +17,6 @@ import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 
 public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 	

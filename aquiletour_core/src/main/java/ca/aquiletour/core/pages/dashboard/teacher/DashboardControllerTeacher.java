@@ -31,7 +31,7 @@ public class DashboardControllerTeacher extends DashboardController {
 	}
 
 	@Override
-	protected Class<? extends DashboardModel> modelClass() {
+	protected Class<? extends DashboardModel<?>> modelClass() {
 		T.call(this);
 
 		return DashboardModelTeacher.class;

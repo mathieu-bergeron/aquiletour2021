@@ -110,6 +110,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 		
 	}
 
+	@SuppressWarnings("unused")
 	private AtomicTaskCompletion getCompletion(CourseModelStudent model, AtomicTask atomicTask) {
 		T.call(this);
 		

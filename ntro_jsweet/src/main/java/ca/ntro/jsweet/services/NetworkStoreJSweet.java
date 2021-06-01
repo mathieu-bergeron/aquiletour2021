@@ -16,8 +16,6 @@ import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
 
-import static def.es6.Globals.fetch;
-
 import java.util.List;
 
 public class NetworkStoreJSweet extends ModelStore {
@@ -35,10 +33,6 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		T.call(this);
-	}
-
-	private String fullId(DocumentPath documentPath) {
-		return documentPath.getCollection() + "/" + documentPath.getDocumentId();
 	}
 
 	@Override

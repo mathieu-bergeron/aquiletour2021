@@ -4,9 +4,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.javascript.jscomp.Es6ExtractClasses;
-
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -43,7 +40,7 @@ public abstract class JsonParser {
 		return result;
 	}
 
-	public static void registerSerializableClass(Class _class) {
+	public static void registerSerializableClass(Class<?> _class) {
 		T.call(JsonParser.class);
 		
 		classes.put(Ntro.introspector().getSimpleNameForClass(_class), Ntro.introspector().getFullNameForClass(_class));

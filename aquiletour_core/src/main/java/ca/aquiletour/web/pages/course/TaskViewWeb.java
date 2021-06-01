@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.course;
 
-import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;

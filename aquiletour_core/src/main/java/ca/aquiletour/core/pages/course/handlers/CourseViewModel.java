@@ -20,7 +20,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseViewModel<M extends CourseModel, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
+public abstract class CourseViewModel<M extends CourseModel<?>, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
 	private CoursePath currentCoursePath;
 	private Task currentTask;

@@ -2,8 +2,6 @@ package ca.ntro.jsweet.services;
 
 import ca.ntro.services.Ntro;
 import ca.ntro.services.SessionService;
-import ca.ntro.services.UserService;
-import ca.ntro.users.NtroUser;
 import ca.ntro.users.NtroSession;
 
 import static def.es6.Globals.Cookies;

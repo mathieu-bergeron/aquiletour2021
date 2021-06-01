@@ -17,8 +17,6 @@ import ca.ntro.test.introspector.ntro_bug.MyStoredList;
 
 import static ca.ntro.assertions.Factory.thatObject;
 import static ca.ntro.assertions.Factory.thatList;
-import static ca.ntro.assertions.Factory.that;
-
 import java.util.List;
 import java.util.Set;
 

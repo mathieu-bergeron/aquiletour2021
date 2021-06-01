@@ -5,25 +5,25 @@ import ca.ntro.core.system.trace.T;
 
 public class ObservableTaskMap extends StoredMap<Task> {
 	
-	private CourseModel course = null;
+	private CourseModel<?> course = null;
 
 	public ObservableTaskMap() {
 		super();
 		T.call(this);
 	}
 
-	public ObservableTaskMap(CourseModel course) {
+	public ObservableTaskMap(CourseModel<?> course) {
 		super();
 		T.call(this);
 		
 		this.course = course;
 	}
 	
-	public CourseModel getCourse() {
+	public CourseModel<?> getCourse() {
 		return course;
 	}
 
-	public void setCourse(CourseModel course) {
+	public void setCourse(CourseModel<?> course) {
 		this.course = course;
 	}
 	

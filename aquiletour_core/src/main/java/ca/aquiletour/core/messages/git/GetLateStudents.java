@@ -28,7 +28,7 @@ public class GetLateStudents extends ShowLateStudentsMessage implements NtroMode
 
 		System.out.println(getExercisePath());
 		System.out.println(getCourseId());
-		Path exercisePath = new Path(getExercisePath());
+		Path exercisePath = Path.fromRawPath(getExercisePath());
 
 		Path path = new Path();
 		path.getNames().add(getCourseId());

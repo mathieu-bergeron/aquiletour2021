@@ -5,7 +5,6 @@ import ca.aquiletour.core.pages.course_list.handlers.ShowCourseListHandler;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroController;

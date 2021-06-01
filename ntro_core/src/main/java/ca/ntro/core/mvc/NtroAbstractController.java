@@ -13,8 +13,6 @@ import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroUser;
-
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.SUB_MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
@@ -63,7 +61,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		return getTask().execute();
 	}
 	
-	void setContext(NtroContext context) {
+	void setContext(NtroContext<?,?> context) {
 		this.context = context;
 	}
 
@@ -113,7 +111,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 
 		handler.setMessageId(messageId);
 
@@ -283,7 +281,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		ViewLoader subViewLoader = (ViewLoader) getTask().getSubTask(ViewLoader.class, subViewLoaderTaskId);
 		handler.setSubViewLoader(subViewLoader);
 		
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 		handler.setMessageId(messageId);
 
@@ -325,7 +323,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?> handler) {
 		T.call(this);
 
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 		handler.setMessageId(messageId);
 

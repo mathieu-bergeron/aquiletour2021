@@ -1,7 +1,6 @@
 package ca.aquiletour.server.backend.semester_list;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemester;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;

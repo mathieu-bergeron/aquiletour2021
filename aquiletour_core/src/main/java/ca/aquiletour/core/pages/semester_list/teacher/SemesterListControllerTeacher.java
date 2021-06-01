@@ -1,7 +1,6 @@
 package ca.aquiletour.core.pages.semester_list.teacher;
 
 import ca.aquiletour.core.pages.semester_list.SemesterListController;
-import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.handlers.ShowSemesterListHandler;
 import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
@@ -34,7 +33,7 @@ public class SemesterListControllerTeacher extends SemesterListController {
 	}
 
 	@Override
-	protected Class<? extends SemesterListModel> modelClass() {
+	protected Class<? extends SemesterListModel<?>> modelClass() {
 		T.call(this);
 		
 		return SemesterListModelTeacher.class;

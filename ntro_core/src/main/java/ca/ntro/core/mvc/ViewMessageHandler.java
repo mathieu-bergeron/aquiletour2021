@@ -8,7 +8,7 @@ import ca.ntro.messages.NtroMessage;
 
 public abstract class ViewMessageHandler<V extends NtroView, 
                                          MSG extends NtroMessage> 
-                extends Handler
+                extends Handler<NtroAbstractController>
                 implements TaskWrapper {
 
 	private ViewMessageHandlerTask<V,MSG> mainTask;

@@ -17,7 +17,6 @@
 
 package ca.ntro.jdk.regex;
 
-import ca.ntro.core.regex.Matcher;
 import ca.ntro.core.regex.Pattern;
 import ca.ntro.core.regex.RegEx;
 

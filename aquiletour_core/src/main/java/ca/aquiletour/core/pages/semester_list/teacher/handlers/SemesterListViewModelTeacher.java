@@ -1,10 +1,8 @@
 package ca.aquiletour.core.pages.semester_list.teacher.handlers;
 
-import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.pages.semester_list.handlers.SemesterListViewModel;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
-import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
 import ca.aquiletour.core.pages.semester_list.teacher.views.SemesterListViewTeacher;

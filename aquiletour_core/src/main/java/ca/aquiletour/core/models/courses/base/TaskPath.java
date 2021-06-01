@@ -9,9 +9,15 @@ public class TaskPath extends Path {
 		super();
 		T.call(this);
 	}
-
-	public TaskPath(String string) {
-		super(string);
-		T.call(this);
+	
+	public static TaskPath fromRawPath(String rawPath) {
+		T.call(TaskPath.class);
+		
+		TaskPath taskPath = new TaskPath();
+		
+		taskPath.copyNamesOf(Path.fromRawPath(rawPath));
+		
+		return taskPath;
 	}
+
 }

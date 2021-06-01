@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.bases;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.views.ItemView;
 import ca.aquiletour.core.views.ListView;
 import ca.aquiletour.web.widgets.BootstrapDropdown;

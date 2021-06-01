@@ -1,8 +1,6 @@
 package ca.aquiletour.server.backend;
 
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.OnClone;

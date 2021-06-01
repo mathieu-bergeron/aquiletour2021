@@ -96,7 +96,7 @@ public class GitApiRepoMessage extends NtroMessage {
 	public Path taskPath() {
 		T.call(this);
 		
-		Path taskPath = new Path(getRepoPath());
+		Path taskPath = Path.fromRawPath(getRepoPath());
 
 		return taskPath;
 	}

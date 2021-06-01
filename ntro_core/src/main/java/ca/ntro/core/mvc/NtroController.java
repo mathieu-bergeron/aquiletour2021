@@ -34,7 +34,7 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 		
 		handler.getTask().addPreviousTask(messageHandlerTask);
 	}
@@ -50,7 +50,7 @@ public abstract class NtroController<AC extends NtroAbstractController> extends 
 		getTask().addSubTask(handler.getTask());
 		addPreviousTaskTo(handler.getTask(), ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
 
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 
 		handler.getTask().addPreviousTask(messageHandlerTask);
 	}

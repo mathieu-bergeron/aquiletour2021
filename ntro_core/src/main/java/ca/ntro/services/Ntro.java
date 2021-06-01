@@ -31,7 +31,6 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.NtroSession;
-import ca.ntro.users.NtroSessionData;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {

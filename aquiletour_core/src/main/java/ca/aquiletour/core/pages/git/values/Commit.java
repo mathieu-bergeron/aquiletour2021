@@ -1,12 +1,9 @@
 package ca.aquiletour.core.pages.git.values;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.ntro.core.models.NtroModelValue;
-import ca.ntro.core.models.StoredBoolean;
-import ca.ntro.core.system.trace.T;
 
 public class Commit implements NtroModelValue {
 	

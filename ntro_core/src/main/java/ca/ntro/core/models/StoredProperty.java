@@ -6,7 +6,6 @@ import java.util.List;
 import ca.ntro.core.models.listeners.DeletionListener;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.models.listeners.ValueObserver;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class StoredProperty<V extends Object> extends StoredValue {

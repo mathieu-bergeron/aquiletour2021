@@ -5,7 +5,6 @@ import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmi
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
-import ca.aquiletour.server.backend.schedule.ScheduleUpdater;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;

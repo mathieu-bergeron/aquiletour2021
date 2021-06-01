@@ -11,7 +11,6 @@ import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.StoredString;

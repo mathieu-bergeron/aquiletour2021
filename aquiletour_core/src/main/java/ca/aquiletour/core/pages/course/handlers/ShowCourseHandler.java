@@ -45,5 +45,5 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 	protected abstract CoursePath coursePathFromMessage(ShowCourseMessage message);
 	
 	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
-	protected abstract Class<? extends CourseModel> modelClass();
+	protected abstract Class<? extends CourseModel<?>> modelClass();
 }
