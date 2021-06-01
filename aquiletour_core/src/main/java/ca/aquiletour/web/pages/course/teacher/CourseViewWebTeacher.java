@@ -170,12 +170,12 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void displayTaskDescription(String description, boolean editable) {
+	public void updateTaskDescription(String description, boolean editable) {
 		T.call(this);
 		
 		if(!editable) {
 			
-			super.displayTaskDescription(description, editable);
+			super.updateTaskDescription(description, editable);
 			
 		}else {
 
@@ -185,12 +185,12 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+	public void updateTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 		
 		if(!editable) {
 
-			super.displayTaskEndTime(endTime, editable);
+			super.updateTaskEndTime(endTime, editable);
 
 		}else if(endTime instanceof CourseDateScheduleItem) {
 			

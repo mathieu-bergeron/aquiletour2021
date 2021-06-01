@@ -227,20 +227,39 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void displayTaskDescription(String description, boolean editable) {
+	public void updateTaskDescription(String description, boolean editable) {
 		T.call(this);
 
 		uneditableDescription.text(description);
 	}
 
-	
-
-
-
 	@Override
-	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+	public void updateTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 
 		uneditableEndtime.text(endTime.toString());
+	}
+
+	@Override
+	public void displayTaskDescription(boolean shouldDisplay) {
+		T.call(this);
+
+		if(shouldDisplay) {
+			uneditableDescription.show();
+		}else {
+			uneditableDescription.hide();
+		}
+	}
+
+	@Override
+	public void displayTaskEndTime(boolean shouldDisplay) {
+		T.call(this);
+
+		if(shouldDisplay) {
+			uneditableEndtime.show();
+		
+		}else {
+			uneditableEndtime.hide();
+		}
 	}
 }

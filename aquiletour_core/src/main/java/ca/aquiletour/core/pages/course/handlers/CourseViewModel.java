@@ -2,23 +2,17 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
-import org.apache.log4j.net.SyslogAppender;
 
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
-import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.models.listeners.ClearItemsListener;
-import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
@@ -128,6 +122,9 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	private void observeCurrentTaskDescription(V view) {
 		T.call(this);
 		
+		view.displayTaskDescription(false);
+
+		currentTask.getDescription().removeObservers();
 		currentTask.getDescription().observe(new ValueObserver<String>() {
 
 			@Override
@@ -153,6 +150,8 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 
 	private void displayTaskDescription(V view, String value) {
 		T.call(this);
+		
+		view.displayTaskDescription(true);
 
 		String description = value;
 		
@@ -162,7 +161,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 
 		}
 
-		view.displayTaskDescription(description, isEditable());
+		view.updateTaskDescription(description, isEditable());
 	}
 
 	private void observeEntryTasks(M model, V view) {
@@ -216,6 +215,9 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	private void observeCurrentTaskEndTime(M model, V view) {
 		T.call(this);
 		
+		view.displayTaskEndTime(false);
+
+		currentTask.getEndTime().removeObservers();
 		currentTask.getEndTime().observe(new ValueObserver<CourseDate>() {
 
 			@Override
@@ -244,9 +246,11 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	private void displayCurrentTaskEndTime(M model, V view) {
 		T.call(this);
 		
+		view.displayTaskEndTime(true);
+		
 		AquiletourDate endTime = model.taskEndTimeForGroup(currentGroupId(), currentTask.id());
 
-		view.displayTaskEndTime(endTime, isEditable());
+		view.updateTaskEndTime(endTime, isEditable());
 	}
 
 

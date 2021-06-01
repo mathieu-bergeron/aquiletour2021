@@ -33,14 +33,17 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement taskCompletedContainer;
 	private HtmlElement taskCompletedCheckbox;
 
-	private HtmlElement entryTasksContainer;
-	private HtmlElement exitTasksContainer;
+	private HtmlElement parentTaskLink;
+
+	private HtmlElement doneContainer;
+	private HtmlElement todoContainer;
+
+	private HtmlElement doneTasksContainer;
+	private HtmlElement todoTasksContainer;
 
 	private HtmlElements addTaskIdToForm;
 	private HtmlElements addTaskIdToValue;
 	private HtmlElements addTaskIdToId;
-
-	private String gitProgressionText;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -52,12 +55,17 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitRepoTaskCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
 		gitRepoTaskCloneFailed = this.getRootElement().find(".git-repo-task-clone-failed").get(0);
 
+		parentTaskLink = this.getRootElement().find("#parent-task-link").get(0);
+
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
 		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
 
-		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
-		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
+		doneContainer = this.getRootElement().find("#done-container").get(0);
+		todoContainer = this.getRootElement().find("#todo-container").get(0);
+
+		doneTasksContainer = this.getRootElement().find("#done-tasks-container").get(0);
+		todoTasksContainer = this.getRootElement().find("#todo-tasks-container").get(0);
 
 		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
@@ -72,14 +80,17 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(gitProgressionLink);
 		MustNot.beNull(taskCompletedContainer);
 		MustNot.beNull(taskCompletedCheckbox);
-		MustNot.beNull(entryTasksContainer);
-		MustNot.beNull(exitTasksContainer);
+
+		MustNot.beNull(doneContainer);
+		MustNot.beNull(todoContainer);
+
+		MustNot.beNull(doneTasksContainer);
+		MustNot.beNull(todoTasksContainer);
+
 
 		Ntro.verify(that(addTaskIdToForm.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
-		
-		gitProgressionText = gitProgressionLink.text();
 
 		gitRepoTaskSubmitUrl.hide();
 		gitRepoTaskCloningRepo.hide();
@@ -90,6 +101,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	@Override
 	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
+		
+		if(!task.isRootTask()){
+			parentTaskLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + task.parent().getPath().toString());
+		}else {
+			parentTaskLink.hide();
+		}
 
 		addTaskIdToForm.appendToAttribute("form", task.getPath().toFileName());
 		addTaskIdToValue.appendToAttribute("value", task.getPath().toFileName());
@@ -100,8 +117,6 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 				                                + task.id()
 												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
 												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId());
-
-		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + coursePath.toUrlPath() + task.id());
 	}
 
 	@Override
@@ -119,7 +134,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+	public void updateTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 		
 	}
@@ -172,14 +187,14 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	public void clearEntryTasks() {
 		T.call(this);
 
-		entryTasksContainer.deleteChildrenForever();
+		doneTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
 	public void clearExitTasks() {
 		T.call(this);
 
-		exitTasksContainer.deleteChildrenForever();
+		todoTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
@@ -211,7 +226,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			repoUrl.text(gitRepoSubmitted.getRepoUrl());
 
-			entryTasksContainer.appendElement(formElement);
+			doneTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloned){
@@ -223,7 +238,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			repoUrl.text(gitRepoCloned.getRepoUrl());
 
-			entryTasksContainer.appendElement(formElement);
+			doneTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloneFailed){
@@ -244,7 +259,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		identifyGitRepo(groupId, repoTask, formElement);
 
-		entryTasksContainer.appendElement(formElement);
+		doneTasksContainer.appendElement(formElement);
 		formElement.show();
 	}
 
@@ -289,4 +304,29 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			e.deleteForever();
 		});
 	}
+
+	@Override
+	public void displayDoneTasks(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+			doneContainer.show();
+		}else {
+			doneContainer.hide();
+		}
+	}
+
+	@Override
+	public void displayTodoTasks(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+			todoContainer.show();
+		}else {
+			todoContainer.hide();
+		}
+	}
+
+
+
 }

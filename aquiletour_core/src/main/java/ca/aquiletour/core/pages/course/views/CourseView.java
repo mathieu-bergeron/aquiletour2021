@@ -1,7 +1,6 @@
 package ca.aquiletour.core.pages.course.views;
 
 import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -28,8 +27,12 @@ public interface CourseView extends NtroView  {
 	void appendNextTask(CoursePath coursePath, Task nextTask);
 
 	void displayTaskTitle(String title, boolean editable);
-	void displayTaskDescription(String description, boolean editable);
-	void displayTaskEndTime(AquiletourDate endTime, boolean editable);
+
+	void displayTaskDescription(boolean shouldDisplay);
+	void updateTaskDescription(String description, boolean editable);
+
+	void displayTaskEndTime(boolean shouldDisplay);
+	void updateTaskEndTime(AquiletourDate endTime, boolean editable);
 
 	void clearEntryTasks();
 	void clearExitTasks();

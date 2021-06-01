@@ -24,7 +24,7 @@
     "phoneNumber": "",
     "_C": "Student",
     "authToken": "0dd0821feae1bc925d017cd627c611a2a84cc1dd",
-    "hasPassword": false,
+    "hasPassword": true,
     "id": "1234500",
     "uuid": "44c9bd",
     "email": "1234500@cmontmorency.qc.ca",
@@ -32,5 +32,5 @@
     "programId": "420.AA",
     "lastname": "Bérancourt"
   },
-  "timeToLiveMiliseconds": 90000
+  "timeToLiveMiliseconds": 7710000
 }

@@ -11,6 +11,10 @@ public interface CourseViewStudent extends CourseView  {
 	void enableCompletionCheckbox(boolean enable);
 	void checkCompletion(boolean check);
 
+	
+	void displayDoneTasks(boolean shouldDisplay);
+	void displayTodoTasks(boolean shouldDisplay);
+
 	void appendEntryTask(String groupId, AtomicTask task);
 	void removeEntryTask(AtomicTask atomicTask);
 	void addCompletionToEntryTask(String groupId, AtomicTask atomicTask , AtomicTaskCompletion completion);
