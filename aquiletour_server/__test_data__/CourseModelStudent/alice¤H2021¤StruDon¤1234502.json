@@ -1,5 +1,5 @@
 {
-  "_C": "CourseModelTeacher",
+  "_C": "CourseModelStudent",
   "coursePath": {
     "names": [
       "alice",
@@ -8,17 +8,13 @@
     ],
     "_C": "CoursePath"
   },
-  "scheduledDates": {
-    "_C": "TaskDatesByGroupId",
-    "value": {}
+  "groupId": {
+    "_C": "StoredString",
+    "value": "01"
   },
   "completions": {
-    "_C": "StudentCompletionsByStudentId",
+    "_C": "StudentCompletionsByTaskId",
     "value": {}
-  },
-  "groups": {
-    "_C": "GroupDescriptions",
-    "value": []
   },
   "siblingSemesters": {
     "_C": "SemesterIds",
@@ -27,10 +23,6 @@
   "siblingCourses": {
     "_C": "CourseIds",
     "value": []
-  },
-  "overridenDates": {
-    "_C": "TaskDatesByGroupId",
-    "value": {}
   },
   "tasks": {
     "_C": "ObservableTaskMap",
@@ -73,9 +65,10 @@
           "value": {
             "semesterWeek": 1,
             "_C": "CourseDateScheduleItem",
-            "scheduleItemId": "2",
+            "scheduleItemId": "1",
             "weekOf": {
-              "_R": "/tasks/value///endTime/value/weekOf"
+              "_C": "NtroDate",
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
@@ -137,7 +130,8 @@
             "_C": "CourseDateScheduleItem",
             "scheduleItemId": "1",
             "weekOf": {
-              "_R": "/tasks/value///endTime/value/weekOf"
+              "_C": "NtroDate",
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
@@ -197,7 +191,8 @@
             "_C": "CourseDateScheduleItem",
             "scheduleItemId": "1",
             "weekOf": {
-              "_R": "/tasks/value///endTime/value/weekOf"
+              "_C": "NtroDate",
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
@@ -248,7 +243,8 @@
               "_C": "GitExerciseTask",
               "id": "GitExerciseTask",
               "repoPath": {
-                "_R": "/tasks/value//tps/entryTasks/value/0/repoPath"
+                "names": [],
+                "_C": "Path"
               }
             }
           ]
@@ -256,11 +252,12 @@
         "endTime": {
           "_C": "StoredCourseDate",
           "value": {
-            "semesterWeek": 2,
+            "semesterWeek": 1,
             "_C": "CourseDateScheduleItem",
-            "scheduleItemId": "2",
+            "scheduleItemId": "1",
             "weekOf": {
-              "_R": "/tasks/value//tps/endTime/value/weekOf"
+              "_C": "NtroDate",
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
@@ -314,11 +311,12 @@
         "endTime": {
           "_C": "StoredCourseDate",
           "value": {
-            "semesterWeek": 2,
+            "semesterWeek": 0,
             "_C": "CourseDateScheduleItem",
-            "scheduleItemId": "2",
+            "scheduleItemId": "",
             "weekOf": {
-              "_R": "/tasks/value//tps/endTime/value/weekOf"
+              "_C": "NtroDate",
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
@@ -379,7 +377,7 @@
             "scheduleItemId": "1",
             "weekOf": {
               "_C": "NtroDate",
-              "epochSeconds": 1623038400
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }
@@ -432,12 +430,12 @@
         "endTime": {
           "_C": "StoredCourseDate",
           "value": {
-            "semesterWeek": 2,
+            "semesterWeek": 1,
             "_C": "CourseDateScheduleItem",
             "scheduleItemId": "1",
             "weekOf": {
               "_C": "NtroDate",
-              "epochSeconds": 1623643200
+              "epochSeconds": -1
             },
             "startOrEnd": "end"
           }

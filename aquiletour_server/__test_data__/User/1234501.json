@@ -1,0 +1,13 @@
+{
+  "firstname": "Nicolas",
+  "phoneNumber": "450 555-1111",
+  "_C": "Student",
+  "authToken": "",
+  "hasPassword": false,
+  "id": "1234501",
+  "uuid": "0e77ae",
+  "email": "1234501@cmontmorency.qc.ca",
+  "passwordHash": "",
+  "programId": "420.AA",
+  "lastname": "Ngo"
+}

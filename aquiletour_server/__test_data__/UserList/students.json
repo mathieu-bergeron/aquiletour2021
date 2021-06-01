@@ -3,7 +3,10 @@
   "userIdMap": {
     "_C": "UserIdMap",
     "value": {
-      "alice": true
+      "1234500": true,
+      "alice": true,
+      "1234501": true,
+      "1234502": true
     }
   }
 }
