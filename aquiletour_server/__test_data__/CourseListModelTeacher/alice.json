@@ -26,6 +26,11 @@
               "_C": "TaskDescription",
               "taskTitle": "Ateliers",
               "taskId": "ateliers"
+            },
+            {
+              "_C": "TaskDescription",
+              "taskTitle": "TPs",
+              "taskId": "tps"
             }
           ]
         }
