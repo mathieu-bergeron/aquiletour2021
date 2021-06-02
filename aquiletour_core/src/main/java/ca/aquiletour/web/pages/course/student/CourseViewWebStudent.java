@@ -316,11 +316,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	public void displayTodoTasks(boolean shouldDisplay) {
 		T.call(this);
 		
-		if(shouldDisplay) {
-			todoContainer.show();
-		}else {
-			todoContainer.hide();
-		}
+		todoContainer.display(shouldDisplay);
 	}
 
 	@Override

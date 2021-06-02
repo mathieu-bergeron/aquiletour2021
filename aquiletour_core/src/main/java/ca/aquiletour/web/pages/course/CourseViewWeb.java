@@ -139,14 +139,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void displaySubTasks(boolean shouldDisplay) {
 		T.call(this);
 		
-		if(shouldDisplay) {
-
-			subTaskContainer.show();
-			
-		}else {
-
-			subTaskContainer.hide();
-		}
+		subTaskContainer.display(shouldDisplay);
 	}
 
 	@Override
@@ -247,23 +240,14 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void displayTaskDescription(boolean shouldDisplay) {
 		T.call(this);
 
-		if(shouldDisplay) {
-			uneditableDescription.show();
-		}else {
-			uneditableDescription.hide();
-		}
+		uneditableDescription.display(shouldDisplay);
 	}
 
 	@Override
 	public void displayTaskEndTime(boolean shouldDisplay) {
 		T.call(this);
 
-		if(shouldDisplay) {
-			uneditableEndtime.show();
-		
-		}else {
-			uneditableEndtime.hide();
-		}
+		uneditableEndtime.display(shouldDisplay);
 	}
 
 	@Override
