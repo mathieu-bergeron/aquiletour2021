@@ -79,10 +79,8 @@ public abstract class ModelStore {
 
 	public String documentId(Path modelPath) {
 		T.call(this);
-
-		String documentId = modelPath.toFileName();
-
-		return documentId;
+		
+		return modelPath.toFileName();
 	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String documentId){

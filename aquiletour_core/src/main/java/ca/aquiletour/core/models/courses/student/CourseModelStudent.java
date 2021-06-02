@@ -10,6 +10,7 @@ import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
@@ -27,6 +28,8 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	@Override
 	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		T.call(this);
+		
+		T.here();
 
 		getTasks().forEachEntry((key, task) -> {
 
@@ -39,6 +42,21 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 				endTimes.putEntry(key, date);
 			}
 		});
+	}
+
+	@Override
+	public AquiletourDate taskEndTimeForGroup(String groupId, String taskId) {
+		T.call(this);
+		
+		AquiletourDate endTime = null;
+		
+		endTime = endTimes.valueOf(taskId);
+		
+		if(endTime == null) {
+			endTime = super.taskEndTimeForGroup(groupId, taskId);
+		}
+		
+		return endTime;
 	}
 
 	public StoredString getGroupId() {

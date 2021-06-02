@@ -5,7 +5,6 @@ import java.util.List;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.User;
@@ -45,18 +44,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                          message.getCourseId(), 
 				                          groupId, 
 				                          message.getUser());
-
-
-		/*
-		int numberOfStudentAdded = QueueUpdater.addStudentsToQueue(modelStore, queueId, studentsToAdd);
-			
-		DashboardUpdater.incrementNumberOfStudents(modelStore, queueId, teacher.getId(), numberOfStudentAdded);
-
-		// FIXME: we need a real id
-		CourseDashboard queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
-
-		DashboardUpdater.addQueueForUser(modelStore, queueSummary, teacher);
-		*/
 	}
 
 	private String groupNameFromCsvFileName(String csvFilename) {
@@ -110,8 +97,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		User teacher = message.getUser();
 
-		CoursePath coursePath = new CoursePath(teacher.getId(), message.getSemesterId(), message.getCourseId());
-
 		UserManager.createUsers(modelStore, studentsToAdd);
 
 		GroupListManager.addGroupForUser(modelStore, 
@@ -134,7 +119,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                                                teacher.getId());
 
 		CourseManager.addGroup(modelStore, 
-							   coursePath,
+							   message.coursePath(),
 							   groupId,
 							   studentsToAdd,
 							   teacher);
@@ -146,17 +131,17 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 		CourseModelTeacher teacherCourse = CourseManager.getCourse(modelStore, 
 													   CourseModelTeacher.class,
-													   coursePath);
+													   message.coursePath());
 
 		for(User student : studentsToAdd) {
 
-			CourseManager.createStudentCourse(modelStore, coursePath, teacherCourse, groupId, student);
+			CourseManager.createStudentCourse(modelStore, message.coursePath(), teacherCourse, groupId, student);
 			
 			CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
 			CourseListManager.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
 			DashboardManager.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
 		}
 		
-		DashboardManager.updateCurrentTasks(modelStore, coursePath);
+		DashboardManager.updateCurrentTasks(modelStore, message.coursePath());
 	}
 }
