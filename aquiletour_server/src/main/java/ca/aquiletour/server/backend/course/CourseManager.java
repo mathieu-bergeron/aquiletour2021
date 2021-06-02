@@ -17,6 +17,7 @@ import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
@@ -351,7 +352,7 @@ public class CourseManager {
 		                              Path taskPath, 
 	                                  String taskTitle, 
 			                          String taskDescription, 
-			                          CourseDate endTime, 
+			                          AquiletourDate endTime, 
 			                          User user) throws BackendError {
 		
 		T.call(CourseManager.class);
@@ -380,7 +381,7 @@ public class CourseManager {
 			                          			  Path taskPath, 
 			                          			  String taskTitle, 
 			                          			  String taskDescription, 
-			                          			  CourseDate endTime, 
+			                          			  AquiletourDate endTime, 
 			                          			  String studentId) throws BackendError {
 		
 		T.call(CourseManager.class);
@@ -407,7 +408,7 @@ public class CourseManager {
 			 								     Path taskPath, 
 			 								     String taskTitle, 
 			 								     String taskDescription, 
-			 								     CourseDate endTime, 
+			 								     AquiletourDate endTime, 
 			 								     User user) throws BackendError {
 		T.call(CourseManager.class);
 		
@@ -464,6 +465,32 @@ public class CourseManager {
 				course.updateSchedule(semesterSchedule, teacherSchedule);
 			}
 		});
+	}
+
+	public static void updateCourseScheduleForStudents(ModelStoreSync modelStore, 
+                         	                           CoursePath coursePath,
+						                               SemesterSchedule semesterSchedule, 
+						                               TeacherSchedule teacherSchedule) throws BackendError {
+		T.call(CourseManager.class);
+
+		List<String> studentIds = CourseManager.getStudentIds(modelStore, coursePath);
+		
+		System.out.println(studentIds.size());
+		
+		for(String studentId : studentIds) {
+
+			
+			CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+			
+			modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>(){
+				@Override
+				public void update(CourseModelStudent courseModelStudent) throws BackendError {
+					T.call(this);
+					
+					courseModelStudent.updateSchedule(semesterSchedule, teacherSchedule);
+				}
+			});
+		}
 	}
 
 	public static void taskCompletedByUser(ModelStoreSync modelStore, 

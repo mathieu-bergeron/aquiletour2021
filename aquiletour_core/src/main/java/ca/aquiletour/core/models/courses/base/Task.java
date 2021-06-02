@@ -25,8 +25,10 @@ import ca.aquiletour.core.models.courses.status.StatusTodo;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.dates.StoredAquiletourDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
@@ -44,7 +46,7 @@ public class Task implements NtroModelValue, TaskNode {
 
 	private StoredString title = new StoredString();
 	private StoredString description = new StoredString();
-	private StoredCourseDate endTime = new StoredCourseDate();
+	private StoredAquiletourDate endTime = new StoredAquiletourDate();
 
 	private StoredAtomicTasks entryTasks = new StoredAtomicTasks();
 	private StoredAtomicTasks exitTasks = new StoredAtomicTasks();
@@ -436,17 +438,17 @@ public class Task implements NtroModelValue, TaskNode {
 		getTitle().set(title);
 	}
 	
-	public void updateEndTime(CourseDate endTime) {
+	public void updateEndTime(AquiletourDate endTime) {
 		T.call(this);
 		
 		getEndTime().set(endTime);
 	}
 
-	public StoredCourseDate getEndTime() {
+	public StoredAquiletourDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(StoredCourseDate endTime) {
+	public void setEndTime(StoredAquiletourDate endTime) {
 		this.endTime = endTime;
 	}
 	
@@ -469,7 +471,7 @@ public class Task implements NtroModelValue, TaskNode {
 	public void updateDate(SemesterSchedule semesterSchedule) {
 		T.call(this);
 		
-		CourseDate endTimeDate = endTime.getValue();
+		AquiletourDate endTimeDate = endTime.getValue();
 		
 		boolean updated = endTimeDate.updateDate(semesterSchedule);
 		
@@ -486,7 +488,7 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		SemesterDate date = null;
 
-		CourseDate endTimeDate = endTime.getValue();
+		AquiletourDate endTimeDate = endTime.getValue();
 		
 		date = endTimeDate.resolveDate(courseId, groupId, semesterSchedule, teacherSchedule);
 

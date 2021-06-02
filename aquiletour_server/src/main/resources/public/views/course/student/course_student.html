@@ -38,27 +38,15 @@
                         </a>
                         <h5 class="mt-1 mb-1 me-3" id="task-title"></h5>
                         <div class="flex-fill"></div>
-                        <div class="d-flex align-items-center" id="task-completed-container">
-                            <div class="me-3">À terminer avant:</div>
+                        <div class="d-flex align-items-center" id="endtime-container">
+                            <div class="me-3" id="endtime-label">À terminer avant:</div>
                             <div class="border p-2 bg-warning text-dark" id="uneditable-endtime">
-                                14 juin 2010 à 23:59
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center" id="task-completed-container">
-                            <div class="me-3">Terminé le:</div>
-                            <div class="border p-2 bg-success text-dark" id="uneditable-endtime">
-                                14 juin 2010 à 23:59
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center" id="task-completed-container">
-                            <div class="me-3">En retard depuis:</div>
-                            <div class="border p-2 bg-danger text-dark" id="uneditable-endtime">
                                 14 juin 2010 à 23:59
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class='card-body bg-transparent border' style="opacity:0.5;">
+                <div class='card-body bg-transparent border'>
                     <div class="border pt-3 pb-3 ps-2 pe-2" id="uneditable-description">
                     </div>
                     <div class="d-flex justify-content-end mt-3 align-items-center">
@@ -78,11 +66,12 @@
                                           <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                                     </svg>
                             </h6>
+                                <a class="me-1" href="#">Terminer d'abord le TP2</a>
                         </div>
                         <div class="d-flex justify-content-between" id="todo-tasks-container">
                         </div>
                         <div class="d-flex justify-content-around">
-                            <div class="border">
+                            <div class="border" style="opacity:0.5">
                                 <div class="me-3">Confirmer que j'ai terminé</div>
                                 <div class="form-check form-switch" 
                                      style="padding-right:0px;margin-right:-1rem;">
@@ -94,11 +83,10 @@
                                                type="checkbox" 
                                                form="task-completed-form">
                                     </form>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                                          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                                    </svg>
                                 </div>
-                            </div>
-                            OU
-                            <div>
-                                <a class="me-1" href="#">Terminer d'abord le TP2</a>
                             </div>
                         </div>
                     </div>

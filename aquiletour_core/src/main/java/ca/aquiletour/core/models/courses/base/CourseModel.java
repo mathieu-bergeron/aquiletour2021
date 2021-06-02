@@ -313,7 +313,7 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 	public void updateTaskInfo(Path taskPath, 
 			                   String taskTitle, 
 			                   String taskDescription, 
-			                   CourseDate endTime,
+			                   AquiletourDate endTime,
 			                   OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 
@@ -362,10 +362,10 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 		T.call(this);
 		
 		updateSchedule(semesterSchedule);
-		updateGroupSchedules(semesterSchedule, teacherSchedule);
+		updateSchedules(semesterSchedule, teacherSchedule);
 	}
 
-	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
+	protected abstract void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
 	
 	private void copyTasks(CourseModel<?> course) {
 		T.call(this);

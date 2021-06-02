@@ -9,6 +9,8 @@ import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
+import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
+import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
@@ -20,11 +22,23 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	
 	private StoredString groupId = new StoredString();
 	private StudentCompletionsByTaskId completions = new StudentCompletionsByTaskId();
+	private EndTimeByTaskId endTimes = new EndTimeByTaskId();
 
 	@Override
-	protected void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
+	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		T.call(this);
-		// FIMXE: only in CourseTeacher?
+
+		getTasks().forEachEntry((key, task) -> {
+
+			SemesterDate date = task.resolveDate(getCoursePath().courseId(), 
+					                             groupId.getValue(), 
+					                             semesterSchedule, 
+					                             teacherSchedule);
+
+			if(date != null) {
+				endTimes.putEntry(key, date);
+			}
+		});
 	}
 
 	public StoredString getGroupId() {
@@ -41,6 +55,14 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 
 	public void setCompletions(StudentCompletionsByTaskId completions) {
 		this.completions = completions;
+	}
+
+	public EndTimeByTaskId getEndTimes() {
+		return endTimes;
+	}
+
+	public void setEndTimes(EndTimeByTaskId endTimes) {
+		this.endTimes = endTimes;
 	}
 
 	public void updateAtomicTaskCompletion(Path taskPath, String atomicTaskId, AtomicTaskCompletion newCompletion) {

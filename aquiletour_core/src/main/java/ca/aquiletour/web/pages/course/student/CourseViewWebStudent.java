@@ -30,10 +30,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement gitRepoTaskCloneFailed;
 
 	private HtmlElement gitProgressionLink;
-	private HtmlElement taskCompletedContainer;
-	private HtmlElement taskCompletedCheckbox;
+
 
 	private HtmlElement parentTaskLink;
+
+	private HtmlElement endtimeContainer;
+	private HtmlElement endtimeLabel;
 
 	private HtmlElement doneContainer;
 	private HtmlElement todoContainer;
@@ -58,8 +60,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		parentTaskLink = this.getRootElement().find("#parent-task-link").get(0);
 
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
-		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
-		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
+
+		endtimeContainer = this.getRootElement().find("#endtime-container").get(0);
+		endtimeLabel = this.getRootElement().find("#endtime-label").get(0);
 
 		doneContainer = this.getRootElement().find("#done-container").get(0);
 		todoContainer = this.getRootElement().find("#todo-container").get(0);
@@ -78,8 +81,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(gitRepoTaskCloneFailed);
 
 		MustNot.beNull(gitProgressionLink);
-		MustNot.beNull(taskCompletedContainer);
-		MustNot.beNull(taskCompletedCheckbox);
+
+
+		MustNot.beNull(endtimeLabel);
 
 		MustNot.beNull(doneContainer);
 		MustNot.beNull(todoContainer);
@@ -134,53 +138,31 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
+	public void displayTaskEndTime(boolean shouldDisplay) {
+		T.call(this);
+
+		if(shouldDisplay) {
+			endtimeContainer.show();
+		
+		}else {
+			endtimeContainer.hide();
+		}
+	}
+
+	@Override
 	public void updateTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 		
-	}
-
-	@Override
-	public void displayCompletionCheckbox(boolean show) {
-		T.call(this);
+		super.updateTaskEndTime(endTime, editable);
 		
-		if(show) {
-
-			taskCompletedContainer.show();
-
-		}else {
-
-			taskCompletedContainer.hide();
-		}
-	}
-
-	@Override
-	public void checkCompletion(boolean check) {
-		T.call(this);
+		// done: Terminé le  ---  bg-sucess
+		// late: En retard depuis --- bg-danger
 		
-		if(check) {
-			
-			taskCompletedCheckbox.setAttribute("checked", "true");
-			
-		}else {
-
-			taskCompletedCheckbox.removeAttribute("checked");
-		}
-	}
-
-	@Override
-	public void enableCompletionCheckbox(boolean enable) {
-		T.call(this);
-
-		if(enable) {
-			
-			taskCompletedCheckbox.removeAttribute("checked");
-			
-		}else {
-
-			taskCompletedCheckbox.setAttribute("disabled", "true");
-
-		}
+		uneditableEndTime().removeClass("bg-danger");
+		uneditableEndTime().removeClass("bg-success");
+		uneditableEndTime().addClass("bg-warning");
 		
+		endtimeLabel.text("À terminer avant");
 	}
 
 	@Override

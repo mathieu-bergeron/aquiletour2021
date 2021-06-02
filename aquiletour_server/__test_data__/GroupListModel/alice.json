@@ -36,13 +36,6 @@
   },
   "semesterCourses": {
     "_C": "SemesterCourses",
-    "value": {
-      "H2021": {
-        "_C": "ObservableCourseList",
-        "value": [
-          "StruDon"
-        ]
-      }
-    }
+    "value": {}
   }
 }

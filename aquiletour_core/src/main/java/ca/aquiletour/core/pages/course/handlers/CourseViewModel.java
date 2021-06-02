@@ -2,7 +2,6 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
-
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
@@ -66,11 +65,11 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
-			observeCompletions(model, view);
+			observeTaskCompletions(model, view);
 		}
 	}
 
-	protected abstract void observeCompletions(M model, V view);
+	protected abstract void observeTaskCompletions(M model, V view);
 
 	protected abstract void displayStudentCompletion(String studentId, V view);
 
@@ -218,23 +217,23 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 		view.displayTaskEndTime(false);
 
 		currentTask.getEndTime().removeObservers();
-		currentTask.getEndTime().observe(new ValueObserver<CourseDate>() {
+		currentTask.getEndTime().observe(new ValueObserver<AquiletourDate>() {
 
 			@Override
-			public void onValue(CourseDate value) {
+			public void onValue(AquiletourDate value) {
 				T.call(this);
 				
 				displayCurrentTaskEndTime(model, view);
 			}
 
 			@Override
-			public void onDeleted(CourseDate lastValue) {
+			public void onDeleted(AquiletourDate lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValueChanged(CourseDate oldValue, CourseDate value) {
+			public void onValueChanged(AquiletourDate oldValue, AquiletourDate value) {
 				T.call(this);
 				
 				displayCurrentTaskEndTime(model, view);
@@ -246,11 +245,14 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 	private void displayCurrentTaskEndTime(M model, V view) {
 		T.call(this);
 		
-		view.displayTaskEndTime(true);
 		
 		AquiletourDate endTime = model.taskEndTimeForGroup(currentGroupId(), currentTask.id());
+		
+		if(endTime != null && endTime.isDefined()) {
 
-		view.updateTaskEndTime(endTime, isEditable());
+			view.displayTaskEndTime(true);
+			view.updateTaskEndTime(endTime, isEditable());
+		}
 	}
 
 

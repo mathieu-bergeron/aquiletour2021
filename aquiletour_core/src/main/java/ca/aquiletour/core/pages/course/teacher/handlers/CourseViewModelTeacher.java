@@ -43,7 +43,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		view.showEditableComponents(isEditable());
 	}
 
-	protected void observeCompletions(CourseModelTeacher model, CourseViewTeacher view) {
+	protected void observeTaskCompletions(CourseModelTeacher model, CourseViewTeacher view) {
 		T.call(this);
 
 		model.getCompletions().removeObservers();

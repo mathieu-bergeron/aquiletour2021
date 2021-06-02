@@ -61,6 +61,12 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		previousTaskContainer.hide();
 		nextTaskContainer.hide();
 	}
+	
+	protected HtmlElement uneditableEndTime() {
+		T.call(this);
+		
+		return uneditableEndtime;
+	}
 
 	@Override
 	public void showUneditableComponents(boolean show) {

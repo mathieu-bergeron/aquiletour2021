@@ -6,7 +6,7 @@
       "_C": "CurrentTasksByCourseKey"
     },
     "_C": "SessionData",
-    "loginCode": "406549",
+    "loginCode": "059251",
     "activeSemesterIds": []
   },
   "_C": "NtroSession",
@@ -14,15 +14,15 @@
   "user": {
     "firstname": "alice",
     "_C": "Admin",
-    "authToken": "4c39643d69a1a3a95fdea5403c8ac76b5699a4c1",
+    "authToken": "f8001fb4e7d860b4335a6aa36a94f23d29281d5a",
     "adminMode": false,
     "hasPassword": true,
     "id": "alice",
-    "uuid": "fe351a",
+    "uuid": "1d4864",
     "email": "alice@cmontmorency.qc.ca",
     "passwordHash": "",
     "lastname": "",
     "studentMode": false
   },
-  "timeToLiveMiliseconds": 690000
+  "timeToLiveMiliseconds": 870000
 }

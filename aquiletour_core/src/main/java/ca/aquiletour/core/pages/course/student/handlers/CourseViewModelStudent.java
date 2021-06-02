@@ -26,11 +26,9 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	@Override
 	protected void displayStudentCompletion(String studentId, CourseViewStudent view) {
 		T.call(this);
-
-		view.checkCompletion(true);
 	}
 
-	protected void observeCompletions(CourseModelStudent model, CourseViewStudent view) {
+	protected void observeTaskCompletions(CourseModelStudent model, CourseViewStudent view) {
 		T.call(this);
 		
 		model.getCompletions().removeObservers();

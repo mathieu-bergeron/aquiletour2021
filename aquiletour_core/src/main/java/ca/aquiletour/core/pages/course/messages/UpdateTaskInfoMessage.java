@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.course.messages;
 
 import ca.aquiletour.core.messages.course.CourseTaskMessage;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.ntro.core.Path;
 
@@ -9,7 +10,7 @@ public class UpdateTaskInfoMessage extends CourseTaskMessage {
 	private Path taskToModify;
 	private String taskTitle;
 	private String taskDescription;
-	private CourseDate endTime;
+	private AquiletourDate endTime;
 
 	public Path getTaskToModify() {
 		return taskToModify;
@@ -35,11 +36,11 @@ public class UpdateTaskInfoMessage extends CourseTaskMessage {
 		this.taskDescription = taskDescription;
 	}
 
-	public CourseDate getEndTime() {
+	public AquiletourDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(CourseDate endTime) {
+	public void setEndTime(AquiletourDate endTime) {
 		this.endTime = endTime;
 	}
 

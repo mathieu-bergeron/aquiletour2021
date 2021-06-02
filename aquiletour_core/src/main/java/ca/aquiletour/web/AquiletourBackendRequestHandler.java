@@ -20,6 +20,7 @@ import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
@@ -750,18 +751,29 @@ public class AquiletourBackendRequestHandler {
 
 			updateTaskInfo.setTaskTitle(title);
 			updateTaskInfo.setTaskDescription(description);
-
-			int endTimeWeek = 0;
 			
-			try {
-
-				endTimeWeek = Integer.parseInt(endTimeWeekText);
+			AquiletourDate endTime = null;
+			
+			if(endTimeWeekText.isEmpty() 
+					&& endTimeScheduleItemId.isEmpty()
+					&& endTimeStartOrEnd.isEmpty()) {
 				
-			}catch(NumberFormatException e) {
-				throw new UserInputError("SVP entrer un nombre pour la semaine");
-			}
+				endTime = AquiletourDate.undefined();
+				
+			}else {
+				int endTimeWeek = 0;
+				
+				try {
 
-			CourseDateScheduleItem endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId, endTimeStartOrEnd);
+					endTimeWeek = Integer.parseInt(endTimeWeekText);
+					
+				}catch(NumberFormatException e) {
+					throw new UserInputError("SVP entrer un nombre pour la semaine");
+				}
+
+				endTime = new CourseDateScheduleItem(endTimeWeek, endTimeScheduleItemId, endTimeStartOrEnd);
+				
+			}
 			
 			updateTaskInfo.setEndTime(endTime);
 			

@@ -28,20 +28,21 @@
               "_C": "TaskDescription",
               "taskTitle": "Ateliers",
               "taskId": "ateliers"
-            },
-            {
-              "_C": "TaskDescription",
-              "taskTitle": "TPs",
-              "taskId": "tps"
             }
           ]
         }
       }
     ]
   },
-  "_C": "CourseListModelTeacher",
-  "semesters": {
+  "allSemesters": {
     "_C": "SemesterIds",
-    "value": ["H2021"]
+    "value": [
+      "H2021"
+    ]
+  },
+  "_C": "CourseListModelTeacher",
+  "activeSemesters": {
+    "_C": "SemesterIds",
+    "value": []
   }
 }

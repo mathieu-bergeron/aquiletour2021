@@ -14,9 +14,13 @@ import ca.ntro.core.system.trace.T;
 
 public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoMessage> {
 
+	private SemesterSchedule semesterSchedule;
+	private TeacherSchedule teacherSchedule;
+
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UpdateTaskInfoMessage message) throws BackendError {
 		T.call(this);
+
 		
 		CourseManager.updateTaskInfo(modelStore, 
 				                     message.coursePath(), 
@@ -26,14 +30,14 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 				                     message.getEndTime(),
 				                     message.getUser());
 
-		SemesterSchedule semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 
-																					SemesterListModelTeacher.class,
-				                                                                    message.getSemesterId(), 
-				                                                                    message.getUser());
+		semesterSchedule = SemesterListManager.getSemesterSchedule(modelStore, 
+																   SemesterListModelTeacher.class,
+				                                                   message.getSemesterId(), 
+				                                                   message.getUser());
 		
-		TeacherSchedule teacherSchedule = SemesterListManager.getTeacherSchedule(modelStore, 
-				                                                                 message.getSemesterId(), 
-				                                                                 message.getUser());
+		teacherSchedule = SemesterListManager.getTeacherSchedule(modelStore, 
+				                                                 message.getSemesterId(), 
+				                                                 message.getUser());
 
 		CourseManager.updateCourseSchedule(modelStore,
 										   message.coursePath(),
@@ -45,6 +49,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 	public void handleLater(ModelStoreSync modelStore, UpdateTaskInfoMessage message) throws BackendError {
 		T.call(this);
 
+
 		CourseManager.updateTaskInfoForStudents(modelStore, 
 				                     			message.coursePath(), 
 				                     			message.getTaskPath(),
@@ -55,6 +60,11 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 
 		DashboardManager.updateCurrentTasks(modelStore, 
 											message.coursePath());
+
+		CourseManager.updateCourseScheduleForStudents(modelStore,
+										              message.coursePath(),
+										              semesterSchedule,
+										              teacherSchedule);
 
 	}
 

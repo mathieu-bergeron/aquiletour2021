@@ -1,5 +1,7 @@
 package ca.aquiletour.core.models.dates;
 
+import ca.aquiletour.core.models.schedule.SemesterSchedule;
+import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
@@ -85,7 +87,27 @@ public class SemesterDate extends AquiletourDate {
 		getCalendarDate().adjustTime(time);
 	}
 
-	
+	@Override
+	public boolean isDefined() {
+		T.call(this);
 
+		return true;
+	}
 
+	@Override
+	public boolean updateDate(SemesterSchedule semesterSchedule) {
+		T.call(this);
+
+		return false;
+	}
+
+	@Override
+	public SemesterDate resolveDate(String courseId, 
+			                        String groupId, 
+			                        SemesterSchedule semesterSchedule, 
+			                        TeacherSchedule teacherSchedule) {
+		T.call(this);
+		
+		return this;
+	}
 }

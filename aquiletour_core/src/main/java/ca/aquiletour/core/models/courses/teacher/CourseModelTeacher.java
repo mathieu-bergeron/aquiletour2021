@@ -122,7 +122,7 @@ public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 	}
 
 	@Override
-	protected void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
+	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		T.call(this);
 
 		scheduledDates.clear();
