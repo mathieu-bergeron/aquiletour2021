@@ -97,7 +97,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 			}
 		});
 
-		view.selectSemester(semesterId);
+		view.selectCategory(semesterId);
 	}
 	
 	private void appendToSemesterDropdown(String semesterId, CourseViewTeacher view) {
@@ -106,7 +106,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		String href = "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId;
 		String text = semesterId;
 		
-		view.appendToSemesterDropdown(semesterId, href, text);
+		view.appendToCategoryDropdown(semesterId, href, text);
 	}
 
 	private void appendToGroupDropdown(String groupId, CourseViewTeacher view) {

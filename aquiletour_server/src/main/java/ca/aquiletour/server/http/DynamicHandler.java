@@ -157,12 +157,17 @@ public class DynamicHandler extends AbstractHandler {
 			Ntro.messages().sendQueuedMessages();
 		}
 
+
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
 		if(!baseRequest.isHandled()) {
+
 			response.setContentType("text/html; charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
+
+			setSessionCookie(response);
+
 			writeResponse(window, baseRequest, out);
 		}
 	}
@@ -183,7 +188,6 @@ public class DynamicHandler extends AbstractHandler {
 			Ntro.messages().send(displayErrorMessage);
 		}
 
-		setSessionCookie(response);
 
 		sendCsvMessage(baseRequest);
 	}

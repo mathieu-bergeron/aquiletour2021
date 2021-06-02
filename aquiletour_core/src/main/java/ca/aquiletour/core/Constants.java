@@ -45,6 +45,7 @@ public class Constants {
 
 	public static final String USER_URL_PARAM = "u";
 	public static final String SEMESTER_URL_PARAM = "s";
+	public static final String CATEGORY_URL_PARAM = "cy";
 	public static final String COURSE_URL_PARAM = "c";
 	public static final String GROUP_URL_PARAM = "g";
 	public static final String DELETE_QUEUE_URL_PARAM = "dQ";

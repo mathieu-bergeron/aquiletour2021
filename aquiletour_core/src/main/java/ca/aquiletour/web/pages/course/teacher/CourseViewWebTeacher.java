@@ -110,21 +110,21 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void insertIntoSemesterDropdown(int index, String semesterId, String href, String text) {
+	public void insertIntoCategoryDropdown(int index, String semesterId, String href, String text) {
 		T.call(this);
 		
 		semesterDropdown.insert(index, semesterId, href, text);
 	}
 
 	@Override
-	public void appendToSemesterDropdown(String semesterId, String href, String text) {
+	public void appendToCategoryDropdown(String semesterId, String href, String text) {
 		T.call(this);
 
 		semesterDropdown.append(semesterId, href, text);
 	}
 
 	@Override
-	public void selectSemester(String semesterId) {
+	public void selectCategory(String semesterId) {
 		T.call(this);
 		
 		semesterDropdown.select(semesterId);

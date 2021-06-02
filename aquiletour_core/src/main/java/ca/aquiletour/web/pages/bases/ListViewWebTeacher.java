@@ -36,9 +36,9 @@ public abstract class ListViewWebTeacher<IV extends ItemView> extends ListViewWe
 	}
 
 	@Override
-	public void identifyCurrentSemester(String semesterId) {
+	public void displayActiveSemesters(String semesterId) {
 		T.call(this);
-		super.identifyCurrentSemester(semesterId);
+		super.displayActiveSemesters(semesterId);
 		
 		semesterIdInput.value(semesterId);
 	}

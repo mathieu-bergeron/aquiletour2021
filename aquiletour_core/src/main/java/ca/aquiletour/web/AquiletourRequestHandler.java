@@ -2,6 +2,7 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
@@ -164,9 +165,10 @@ public class AquiletourRequestHandler {
 
 			Ntro.messages().send(showCourseListMessage);
 			
-			String currentSemesterId = Constants.ACTIVE_SEMESTERS_ID;
-			if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
-				currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
+			String currentCategoryId = AquiletourMain.currentCategoryId();
+			if(parameters.containsKey(Constants.CATEGORY_URL_PARAM)) {
+				currentCategoryId = parameters.get(Constants.CATEGORY_URL_PARAM)[0];
+				AquiletourMain.setCurrentCategoryId(currentCategoryId);
 			}
 
 			SelectCourseListSubset selectCourseListSubset = null;
@@ -177,7 +179,7 @@ public class AquiletourRequestHandler {
 				selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetStudent.class);
 			}
 
-			selectCourseListSubset.setSemesterId(currentSemesterId);
+			selectCourseListSubset.setCategoryId(currentCategoryId);
 			Ntro.messages().send(selectCourseListSubset);
 		}
 	}

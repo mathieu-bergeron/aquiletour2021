@@ -95,9 +95,9 @@ public class CourseListViewWebTeacher extends CourseListViewWeb implements Cours
 	}
 
 	@Override
-	public void identifyCurrentSemester(String semesterId) {
+	public void displayActiveSemesters(String semesterId) {
 		T.call(this);
-		super.identifyCurrentSemester(semesterId);
+		super.displayActiveSemesters(semesterId);
 		
 		addSemesterIdToValue.appendToAttribute("value", semesterId);
 

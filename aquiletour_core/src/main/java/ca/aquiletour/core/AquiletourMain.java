@@ -205,6 +205,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 
 		sessionData.setCurrentCategoryId(categoryId);
+		
+		// XXX: saves session in cookie in JSweet
+		Ntro.sessionService().registerCurrentSession(Ntro.currentSession());
 	}
 
 	protected abstract void registerViewLoaders();

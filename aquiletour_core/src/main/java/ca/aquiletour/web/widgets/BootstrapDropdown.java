@@ -45,13 +45,13 @@ public class BootstrapDropdown {
 		HtmlElements links = dropdownTail.find("#" + id);
 		
 		if(links != null) {
-
+			
 			HtmlElement link = links.get(0);
 			
 			if(link != null) {
 
 				clearSelection();
-
+				
 				String linkId = link.getAttribute("id");
 				String linkHref = link.getAttribute("href");
 				String linkText = link.text();
