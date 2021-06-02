@@ -25,6 +25,7 @@ import ca.aquiletour.core.models.courses.status.StatusTodo;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.teacher.StudentCompletionsByStudentId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -859,10 +860,7 @@ public class Task implements NtroModelValue, TaskNode {
 	public TaskStatus status(StudentCompletionsByTaskId completions) {
 		T.call(this);
 		
-		CompletionByAtomicTaskId atomicTaskCompletions = null;
-		if(completions != null) {
-			atomicTaskCompletions = completions.valueOf(this.id());
-		}
+		CompletionByAtomicTaskId atomicTaskCompletions = atomicTaskCompletions(completions);
 
 		TaskStatus status = null;
 		
@@ -898,6 +896,18 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		return status;
 	}
+
+	private CompletionByAtomicTaskId atomicTaskCompletions(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		CompletionByAtomicTaskId atomicTaskCompletions = null;
+
+		if(completions != null) {
+			atomicTaskCompletions = completions.valueOf(this.id());
+		}
+
+		return atomicTaskCompletions;
+	}
 	
 	@SuppressWarnings("unchecked")
 	private List<Task> tasksNotDone(StudentCompletionsByTaskId completions, StoredTaskIds tasks){
@@ -916,6 +926,18 @@ public class Task implements NtroModelValue, TaskNode {
 		T.call(this);
 
 		return areAtomicTasksDone(completions, getEntryTasks());
+	}
+
+	public boolean areEntryTasksDone(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return areEntryTasksDone(atomicTaskCompletions(completions));
+	}
+
+	public boolean areExitTasksDone(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return areExitTasksDone(atomicTaskCompletions(completions));
 	}
 
 	private boolean areExitTasksDone(CompletionByAtomicTaskId completions) {
@@ -945,6 +967,12 @@ public class Task implements NtroModelValue, TaskNode {
 
 			return tasksDone;
 		});
+	}
+
+	public boolean hasExitTasks() {
+		T.call(this);
+
+		return getExitTasks().size() > 0;
 	}
 
 }

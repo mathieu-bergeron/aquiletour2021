@@ -11,6 +11,7 @@ public interface CourseView extends NtroView  {
 	void displayBreadcrumbs(CoursePath coursePath, TaskBreadcrumbs breadcrumps);
 
 	void displaySubTasks(boolean shouldDisplay);
+	void enableSubTasks(boolean shouldEnable);
 	void clearSubtasks();
 	void insertSubtask(int index, TaskView taskView);
 	void appendSubtask(TaskView taskView);

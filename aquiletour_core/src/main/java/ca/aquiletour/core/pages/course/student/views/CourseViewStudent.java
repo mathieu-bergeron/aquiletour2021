@@ -23,4 +23,5 @@ public interface CourseViewStudent extends CourseView  {
 	void displayToCompleteFirst(boolean shouldDisplay);
 	void updateToCompleteFirst(StatusBlocked status);
 
+
 }

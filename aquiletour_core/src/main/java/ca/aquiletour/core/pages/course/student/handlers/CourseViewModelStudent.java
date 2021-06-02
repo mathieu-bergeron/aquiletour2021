@@ -33,12 +33,15 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 		super.observeCurrentTask(model, groupId, view, subViewLoader);
 		
 		displayTaskStatus(currentTask().status(model.getCompletions()), view);
+		
+		view.enableSubTasks(currentTask().areEntryTasksDone(model.getCompletions()));
 	}
 
 	private void displayTaskStatus(TaskStatus status, CourseViewStudent view) {
 		T.call(this);
 		
-		if(status.isBlocked()) {
+		if(status.isBlocked() 
+				&& currentTask().hasExitTasks()) {
 
 			view.displayToCompleteFirst(true);
 			view.updateToCompleteFirst((StatusBlocked) status);
@@ -47,6 +50,8 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 			
 			view.displayToCompleteFirst(false);
 		}
+		
+		
 	}
 
 	@Override

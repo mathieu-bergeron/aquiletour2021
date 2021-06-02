@@ -49,7 +49,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		uneditableEndtime = this.getRootElement().find("#uneditable-endtime").get(0);
 		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
-
 		MustNot.beNull(subTaskList);
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
@@ -60,9 +59,6 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		MustNot.beNull(nextTaskContainer);
 		MustNot.beNull(uneditableEndtime);
 		MustNot.beNull(uneditableDescription);
-		
-		previousTaskContainer.hide();
-		nextTaskContainer.hide();
 	}
 	
 	protected HtmlElement uneditableEndTime() {
@@ -215,23 +211,15 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	@Override
 	public void displayPreviousTasks(boolean shouldDisplay) {
 		T.call(this);
-		
-		if(shouldDisplay) {
-			previousTaskContainer.show();
-		}else {
-			previousTaskContainer.hide();
-		}
+
+		previousTaskContainer.setVisibility(shouldDisplay);
 	}
 
 	@Override
 	public void displayNextTasks(boolean shouldDisplay) {
 		T.call(this);
 
-		if(shouldDisplay) {
-			nextTaskContainer.show();
-		}else {
-			nextTaskContainer.hide();
-		}
+		nextTaskContainer.setVisibility(shouldDisplay);
 	}
 
 	@Override
@@ -276,5 +264,12 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		}else {
 			uneditableEndtime.hide();
 		}
+	}
+
+	@Override
+	public void enableSubTasks(boolean shouldEnable) {
+		T.call(this);
+		
+		subTaskContainer.setEnabled(shouldEnable);
 	}
 }

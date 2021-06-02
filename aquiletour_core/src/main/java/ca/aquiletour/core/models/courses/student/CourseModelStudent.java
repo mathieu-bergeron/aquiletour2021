@@ -125,12 +125,12 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 		findResults.getResults().sort((result1, result2) -> {
 			return Integer.compare(result1.getMinDistance(), result2.getMinDistance());
 		});
-		
+
 		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
 		findResults.getResults().forEach(r -> {
 			currentTasks.add(new CurrentTaskStudent(r.getTask()));
 		});
-		
+
 		return currentTasks;
 	}
 

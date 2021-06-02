@@ -25,6 +25,8 @@ import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
 
+	private HtmlElement subTaskLock;
+
 	private HtmlElement gitRepoTaskSubmitUrl;
 	private HtmlElement gitRepoTaskCloningRepo;
 	private HtmlElement gitRepoTaskCloned;
@@ -56,6 +58,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		super.initializeViewWeb(context);
 
+		subTaskLock = this.getRootElement().find("#subtask-lock").get(0);
+
 		gitRepoTaskSubmitUrl = this.getRootElement().find(".git-repo-task-submit-url").get(0);
 		gitRepoTaskCloningRepo = this.getRootElement().find(".git-repo-task-cloning-repo").get(0);
 		gitRepoTaskCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
@@ -81,6 +85,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
 
+		MustNot.beNull(subTaskLock);
 
 		MustNot.beNull(gitRepoTaskSubmitUrl);
 		MustNot.beNull(gitRepoTaskCloningRepo);
@@ -105,6 +110,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
 		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
 
+		
+		subTaskLock.hide();
 		gitRepoTaskSubmitUrl.hide();
 		gitRepoTaskCloningRepo.hide();
 		gitRepoTaskCloned.hide();
@@ -341,5 +348,14 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			toCompleteFirstLink.setAttribute("href", status.href());
 		}
 	}
+
+	@Override
+	public void enableSubTasks(boolean shouldEnable) {
+		T.call(this);
+		
+		super.enableSubTasks(shouldEnable);
+		subTaskLock.setVisibility(shouldEnable);
+	}
+
 
 }

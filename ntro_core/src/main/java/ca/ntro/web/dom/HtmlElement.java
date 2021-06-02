@@ -66,6 +66,53 @@ public abstract class HtmlElement {
 
 	public abstract void trigger(String event);
 	
+	public void setVisibility(boolean shouldDisplay) {
+		T.call(this);
+
+		String styleString = getStyleString();
+		
+		if(shouldDisplay) {
+
+			styleString = styleString.replace("visibility:hidden !important;", "");
+			styleString = styleString.replace("visibility:hidden;", "");
+			
+		}else if(!styleString.contains("visibility:hidden !important")){
+
+			styleString = styleString.replace("visibility:hidden;", "");
+			styleString += " visibility:hidden !important;";
+		}
+
+		setAttribute("style", styleString);
+	}
+
+	public void setEnabled(boolean shouldEnable) {
+		T.call(this);
+
+		String styleString = getStyleString();
+		
+		if(shouldEnable) {
+
+			styleString = styleString.replace("opacity:0.5 !important;", "");
+			styleString = styleString.replace("opacity:0.5;", "");
+			
+		}else if(!styleString.contains("opacity:0.5 !important")){
+
+			styleString = styleString.replace("opacity:0.5;", "");
+			styleString += " opacity:0.5 !important;";
+		}
+
+		setAttribute("style", styleString);
+	}
+
+	public void display(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+			show();
+		}else {
+			hide();
+		}
+	}
 	
 	
 	public void show() {
