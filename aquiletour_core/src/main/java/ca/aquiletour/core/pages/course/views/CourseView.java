@@ -10,19 +10,18 @@ public interface CourseView extends NtroView  {
 
 	void displayBreadcrumbs(CoursePath coursePath, TaskBreadcrumbs breadcrumps);
 
+	void displaySubTasks(boolean shouldDisplay);
 	void clearSubtasks();
 	void insertSubtask(int index, TaskView taskView);
 	void appendSubtask(TaskView taskView);
 
 	void identifyCurrentTask(CoursePath coursePath, Task task);
 
-	void hidePreviousTasks();
-	void showPreviousTasks();
+	void displayPreviousTasks(boolean shouldDisplay);
 	void clearPreviousTasks();
 	void appendPreviousTask(CoursePath coursePath, Task previousTask);
 
-	void hideNextTasks();
-	void showNextTasks();
+	void displayNextTasks(boolean shouldDisplay);
 	void clearNextTasks();
 	void appendNextTask(CoursePath coursePath, Task nextTask);
 
@@ -38,5 +37,6 @@ public interface CourseView extends NtroView  {
 	void clearExitTasks();
 
 	void showUneditableComponents(boolean show);
+
 
 }

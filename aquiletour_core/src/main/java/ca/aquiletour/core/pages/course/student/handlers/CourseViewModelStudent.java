@@ -4,6 +4,9 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForParent;
+import ca.aquiletour.core.models.courses.status.StatusBlocked;
+import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
@@ -24,12 +27,37 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	}
 
 	@Override
+	protected void observeCurrentTask(CourseModelStudent model, String groupId, CourseViewStudent view, ViewLoader subViewLoader) {
+		T.call(this);
+
+		super.observeCurrentTask(model, groupId, view, subViewLoader);
+		
+		displayTaskStatus(currentTask().status(model.getCompletions()), view);
+	}
+
+	private void displayTaskStatus(TaskStatus status, CourseViewStudent view) {
+		T.call(this);
+		
+		if(status.isBlocked()) {
+
+			view.displayToCompleteFirst(true);
+			view.updateToCompleteFirst((StatusBlocked) status);
+			
+		}else {
+			
+			view.displayToCompleteFirst(false);
+		}
+	}
+
+	@Override
 	protected void displayStudentCompletion(String studentId, CourseViewStudent view) {
 		T.call(this);
 	}
 
 	protected void observeTaskCompletions(CourseModelStudent model, CourseViewStudent view) {
 		T.call(this);
+		
+		view.displayDoneTasks(false);
 		
 		model.getCompletions().removeObservers();
 		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByAtomicTaskId>() {

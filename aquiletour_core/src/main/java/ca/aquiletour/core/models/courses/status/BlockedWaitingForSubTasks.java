@@ -17,4 +17,7 @@ public class BlockedWaitingForSubTasks extends BlockedWaitingForTasks {
 		T.call(this);
 	}
 
+	public String text() {
+		return "Il manque une sous-étape";
+	}
 }

@@ -26,4 +26,8 @@ public class BlockedWaitingForParent extends StatusBlocked {
 	public void setParentPath(TaskPath parentPath) {
 		this.parentPath = parentPath;
 	}
+
+	public String text() {
+		return "Il manque une remise dans une tâche parent";
+	}
 }

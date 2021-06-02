@@ -844,6 +844,17 @@ public class Task implements NtroModelValue, TaskNode {
 		return status(completions).isDone();
 	}
 
+	public boolean isTodo(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return status(completions).isTodo();
+	}
+
+	public boolean isBlocked(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return status(completions).isBlocked();
+	}
 	
 	public TaskStatus status(StudentCompletionsByTaskId completions) {
 		T.call(this);

@@ -23,6 +23,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 	private HtmlElement taskTitle;
 	private HtmlElement subTaskContainer;
+	private HtmlElement subTaskList;
 	private HtmlElement breadcrumbsContainer;
 	private HtmlElement previousTaskContainer;
 	private HtmlElement previousTaskList;
@@ -37,6 +38,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
+		subTaskList = this.getRootElement().find("#subtask-list").get(0);
 		subTaskContainer = this.getRootElement().find("#subtask-container").get(0);
 		breadcrumbsContainer = this.getRootElement().find("#breadcrumbs-container").get(0);
 		taskTitle = this.getRootElement().find("#task-title").get(0);
@@ -48,6 +50,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		uneditableDescription = this.getRootElement().find("#uneditable-description").get(0);
 
 
+		MustNot.beNull(subTaskList);
 		MustNot.beNull(subTaskContainer);
 		MustNot.beNull(breadcrumbsContainer);
 		MustNot.beNull(taskTitle);
@@ -90,14 +93,14 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		
 		HtmlElement taskElement = ((TaskViewWeb) taskView).getRootElement();
 
-		if(index >= 0 && index < subTaskContainer.children("*").size()) {
+		if(index >= 0 && index < subTaskList.children("*").size()) {
 
-			HtmlElement anchorElement = subTaskContainer.children("*").get(index);
-			subTaskContainer.insertBefore(anchorElement);
+			HtmlElement anchorElement = subTaskList.children("*").get(index);
+			subTaskList.insertBefore(anchorElement);
 
 		}else {
 
-			subTaskContainer.appendElement(taskElement);
+			subTaskList.appendElement(taskElement);
 		}
 	}
 
@@ -136,12 +139,25 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 		return Ntro.jsonService().toString(siblings);
 	}
 
+	@Override
+	public void displaySubTasks(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+
+			subTaskContainer.show();
+			
+		}else {
+
+			subTaskContainer.hide();
+		}
+	}
 
 	@Override
 	public void clearSubtasks() {
 		T.call(this);
 		
-		subTaskContainer.deleteChildrenForever();
+		subTaskList.deleteChildrenForever();
 	}
 
 	@Override
@@ -150,7 +166,7 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 
 		HtmlElement taskElement = ((TaskViewWeb) taskView).getRootElement();
 		
-		subTaskContainer.appendElement(taskElement);
+		subTaskList.appendElement(taskElement);
 	}
 
 	@Override
@@ -197,31 +213,25 @@ public abstract class CourseViewWeb extends NtroViewWeb implements CourseView {
 	}
 
 	@Override
-	public void hidePreviousTasks() {
+	public void displayPreviousTasks(boolean shouldDisplay) {
 		T.call(this);
 		
-		previousTaskContainer.hide();
+		if(shouldDisplay) {
+			previousTaskContainer.show();
+		}else {
+			previousTaskContainer.hide();
+		}
 	}
 
 	@Override
-	public void showPreviousTasks() {
+	public void displayNextTasks(boolean shouldDisplay) {
 		T.call(this);
-		
-		previousTaskContainer.show();
-	}
 
-	@Override
-	public void hideNextTasks() {
-		T.call(this);
-		
-		nextTaskContainer.hide();
-	}
-
-	@Override
-	public void showNextTasks() {
-		T.call(this);
-		
-		nextTaskContainer.show();
+		if(shouldDisplay) {
+			nextTaskContainer.show();
+		}else {
+			nextTaskContainer.hide();
+		}
 	}
 
 	@Override

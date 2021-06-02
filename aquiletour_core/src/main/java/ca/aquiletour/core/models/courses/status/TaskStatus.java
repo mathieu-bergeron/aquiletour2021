@@ -16,4 +16,10 @@ public class TaskStatus {
 		return false;
 	}
 
+	public boolean isBlocked() {
+		T.call(this);
+
+		return false;
+	}
+
 }

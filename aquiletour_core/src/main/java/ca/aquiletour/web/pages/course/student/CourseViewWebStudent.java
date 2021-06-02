@@ -10,6 +10,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.status.StatusBlocked;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
@@ -36,6 +37,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 	private HtmlElement endtimeContainer;
 	private HtmlElement endtimeLabel;
+
+	private HtmlElement toCompleteFirstContainer;
+	private HtmlElement toCompleteFirstLink;
 
 	private HtmlElement doneContainer;
 	private HtmlElement todoContainer;
@@ -64,6 +68,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		endtimeContainer = this.getRootElement().find("#endtime-container").get(0);
 		endtimeLabel = this.getRootElement().find("#endtime-label").get(0);
 
+		toCompleteFirstContainer = this.getRootElement().find("#to-complete-first-container").get(0);
+		toCompleteFirstLink = this.getRootElement().find("#to-complete-first-link").get(0);
+
 		doneContainer = this.getRootElement().find("#done-container").get(0);
 		todoContainer = this.getRootElement().find("#todo-container").get(0);
 
@@ -82,6 +89,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		MustNot.beNull(gitProgressionLink);
 
+		MustNot.beNull(toCompleteFirstContainer);
+		MustNot.beNull(toCompleteFirstLink);
 
 		MustNot.beNull(endtimeLabel);
 
@@ -169,14 +178,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	public void clearEntryTasks() {
 		T.call(this);
 
-		doneTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
 	public void clearExitTasks() {
 		T.call(this);
 
-		todoTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
@@ -309,6 +316,30 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		}
 	}
 
+	@Override
+	public void displayToCompleteFirst(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+			
+			toCompleteFirstContainer.show();
+			
+		}else {
 
+			toCompleteFirstContainer.hide();
+		}
+	}
+
+	@Override
+	public void updateToCompleteFirst(StatusBlocked status) {
+		T.call(this);
+		
+		toCompleteFirstLink.text(status.text());
+		if(status.href().isEmpty()) {
+			toCompleteFirstLink.removeAttribute("href");
+		}else {
+			toCompleteFirstLink.setAttribute("href", status.href());
+		}
+	}
 
 }
