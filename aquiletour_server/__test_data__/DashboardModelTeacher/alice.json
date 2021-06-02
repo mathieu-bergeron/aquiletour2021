@@ -1,7 +1,46 @@
 {
   "dashboardItems": {
     "_C": "DashboardItems",
-    "value": []
+    "value": [
+      {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "_C": "DashboardItemTeacher",
+        "coursePath": {
+          "names": [
+            "alice",
+            "H2021",
+            "StruDon"
+          ],
+          "_C": "CoursePath"
+        },
+        "currentTasks": {
+          "_C": "CurrentTasks",
+          "value": [
+            {
+              "taskPath": {
+                "names": [
+                  "ateliers",
+                  "atelier1"
+                ],
+                "_C": "TaskPath"
+              },
+              "_C": "CurrentTaskTeacher",
+              "taskTitle": {
+                "_C": "StoredString",
+                "value": "Atelier 1"
+              },
+              "numberOfStudents": {
+                "_C": "StoredInteger",
+                "value": 3
+              }
+            }
+          ]
+        }
+      }
+    ]
   },
   "_C": "DashboardModelTeacher",
   "statusMessage": {

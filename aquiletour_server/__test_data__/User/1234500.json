@@ -3,11 +3,11 @@
   "phoneNumber": "450 555-0000",
   "_C": "Student",
   "authToken": "",
-  "hasPassword": true,
+  "hasPassword": false,
   "id": "1234500",
-  "uuid": "19cf75",
+  "uuid": "0e84cd",
   "email": "1234500@cmontmorency.qc.ca",
-  "passwordHash": "57038a4c69f8921a4e95a8dd4ba75df6b60b009c",
+  "passwordHash": "",
   "programId": "420.AA",
   "lastname": "Bérancourt"
 }

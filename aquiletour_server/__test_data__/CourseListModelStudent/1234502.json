@@ -23,13 +23,7 @@
         "tasksSummary": "0 étapes",
         "tasks": {
           "_C": "ObservableTaskDescriptions",
-          "value": [
-            {
-              "_C": "TaskDescription",
-              "taskTitle": "Ateliers",
-              "taskId": "ateliers"
-            }
-          ]
+          "value": []
         }
       }
     ]

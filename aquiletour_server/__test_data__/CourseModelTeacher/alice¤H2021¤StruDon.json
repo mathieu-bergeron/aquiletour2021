@@ -10,7 +10,29 @@
   },
   "scheduledDates": {
     "_C": "TaskDatesByGroupId",
-    "value": {}
+    "value": {
+      "01": {
+        "_C": "EndTimeByTaskId",
+        "value": {
+          "/ateliers/atelier1": {
+            "scheduleOf": {
+              "dayOfWeek": 0,
+              "_C": "NtroDayOfWeek"
+            },
+            "semesterWeek": 1,
+            "_C": "SemesterDate",
+            "semesterDay": {
+              "dayOfWeek": 0,
+              "_C": "NtroDayOfWeek"
+            },
+            "calendarDate": {
+              "_C": "NtroDate",
+              "epochSeconds": 1623076800
+            }
+          }
+        }
+      }
+    }
   },
   "completions": {
     "_C": "StudentCompletionsByStudentId",
@@ -18,7 +40,20 @@
   },
   "groups": {
     "_C": "GroupDescriptions",
-    "value": []
+    "value": [
+      {
+        "_C": "GroupDescription",
+        "groupId": "01",
+        "students": {
+          "_C": "StudentIdList",
+          "value": [
+            "1234500",
+            "1234501",
+            "1234502"
+          ]
+        }
+      }
+    ]
   },
   "siblingSemesters": {
     "_C": "SemesterIds",
@@ -38,64 +73,6 @@
       "_R": ""
     },
     "value": {
-      "/ateliers/atelier2": {
-        "path": {
-          "names": [
-            "ateliers",
-            "atelier2"
-          ],
-          "_C": "TaskPath"
-        },
-        "nextTasks": {
-          "_C": "StoredTaskIds",
-          "value": []
-        },
-        "_C": "Task",
-        "subTasks": {
-          "_C": "StoredTaskIds",
-          "value": []
-        },
-        "description": {
-          "_C": "StoredString",
-          "value": ""
-        },
-        "exitTasks": {
-          "_C": "StoredAtomicTasks",
-          "value": [
-            {
-              "_C": "DefaultAtomicTask",
-              "id": "DefaultAtomicTask"
-            }
-          ]
-        },
-        "endTime": {
-          "_C": "StoredAquiletourDate",
-          "value": {
-            "semesterWeek": 1,
-            "_C": "CourseDateScheduleItem",
-            "scheduleItemId": "2",
-            "weekOf": {
-              "_R": "/tasks/value//ateliers/atelier1/endTime/value/weekOf"
-            },
-            "startOrEnd": "end"
-          }
-        },
-        "entryTasks": {
-          "_C": "StoredAtomicTasks",
-          "value": []
-        },
-        "previousTasks": {
-          "_C": "StoredTaskIds",
-          "value": []
-        },
-        "title": {
-          "_C": "StoredString",
-          "value": "Atelier 2"
-        },
-        "graph": {
-          "_R": ""
-        }
-      },
       "/ateliers/atelier1": {
         "path": {
           "names": [
@@ -133,10 +110,9 @@
             "_C": "CourseDateScheduleItem",
             "scheduleItemId": "1",
             "weekOf": {
-              "_C": "NtroDate",
-              "epochSeconds": 1623038400
+              "_R": "/scheduledDates/value/01/value//ateliers/atelier1/calendarDate"
             },
-            "startOrEnd": "start"
+            "startOrEnd": "end"
           }
         },
         "entryTasks": {
@@ -170,8 +146,7 @@
         "subTasks": {
           "_C": "StoredTaskIds",
           "value": [
-            "/ateliers/atelier1",
-            "/ateliers/atelier2"
+            "/ateliers/atelier1"
           ]
         },
         "description": {

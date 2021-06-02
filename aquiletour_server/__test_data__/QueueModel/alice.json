@@ -11,7 +11,7 @@
     "_C": "ObservableAppointmentList",
     "value": []
   },
-  "maxId": 0,
+  "maxId": 1,
   "mainSettings": {
     "showAppointmentTimes": {
       "_C": "StoredBoolean",
@@ -32,12 +32,36 @@
     "_C": "ObservableTime",
     "value": {
       "_C": "NtroDate",
-      "epochSeconds": -1
+      "epochSeconds": 1622643757
     }
   },
   "settingsByCourseKey": {
     "_C": "SettingsByCourseKey",
-    "value": {}
+    "value": {
+      "/null/H2021/null": {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "showAppointmentTimes": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "_C": "QueueSettingsCourse",
+        "settingsByGroupId": {
+          "_C": "SettingsByGroupId",
+          "value": {}
+        },
+        "messageToStudents": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        }
+      }
+    }
   },
   "appointmentDurationSeconds": {
     "_C": "StoredInteger",

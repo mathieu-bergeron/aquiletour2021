@@ -22,7 +22,35 @@
         },
         "currentTasks": {
           "_C": "CurrentTasks",
-          "value": []
+          "value": [
+            {
+              "taskPath": {
+                "names": [
+                  "ateliers",
+                  "atelier1"
+                ],
+                "_C": "TaskPath"
+              },
+              "_C": "CurrentTaskStudent",
+              "endTime": {
+                "_C": "StoredAquiletourDate",
+                "value": {
+                  "semesterWeek": 1,
+                  "_C": "CourseDateScheduleItem",
+                  "scheduleItemId": "1",
+                  "weekOf": {
+                    "_C": "NtroDate",
+                    "epochSeconds": -1
+                  },
+                  "startOrEnd": "end"
+                }
+              },
+              "taskTitle": {
+                "_C": "StoredString",
+                "value": "Atelier 1"
+              }
+            }
+          ]
         }
       }
     ]
