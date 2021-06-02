@@ -1,5 +1,6 @@
 package ca.aquiletour.server.backend.course_list;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
@@ -29,7 +30,11 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		CourseListManager.validateCourseListItem(item);
 			
-		CourseListManager.addCourseForUser(modelStore, CourseListModelTeacher.class, item, teacher);
+		CourseListManager.addCourseToCategory(modelStore, 
+				                              CourseListModelTeacher.class, 
+				                              Constants.CATEGORY_ID_CURRENT,
+				                              item, 
+				                              teacher);
 		
 		CourseManager.createCourseForUser(modelStore, 
 				                          path,

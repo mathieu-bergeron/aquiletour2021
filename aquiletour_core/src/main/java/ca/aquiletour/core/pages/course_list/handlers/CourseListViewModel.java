@@ -1,12 +1,15 @@
 package ca.aquiletour.core.pages.course_list.handlers;
 
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
+import ca.aquiletour.core.pages.course_list.models.CourseListItems;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
+import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
@@ -14,18 +17,18 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class CourseListViewModel<M extends CourseListModel, V extends CourseListView> extends ModelViewSubViewMessageHandler<M, V, SelectCourseListSubset> {
 	
-	private String currentSemesterId = null;
+	private String currentCategoryId = null;
 
 	@Override
 	protected void handle(M model, V view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
 		
-		if(currentSemesterId == null) {
-			appendToSemesterDropdown("_4","Corbeille", view);
-			appendToSemesterDropdown("_3","Archives", view);
-			appendToSemesterDropdown("_2","Brouillons", view);
-			appendToSemesterDropdown("_1","En cours", view);
-			currentSemesterId = "_1";
+		if(currentCategoryId == null) {
+			appendToSemesterDropdown(Constants.CATEGORY_ID_RECYCLE_BIN,Constants.CATEGORY_TEXT_RECYCLE_BIN, view);
+			appendToSemesterDropdown(Constants.CATEGORY_ID_ARCHIVE,Constants.CATEGORY_TEXT_ARCHIVE, view);
+			appendToSemesterDropdown(Constants.CATEGORY_ID_DRAFTS,Constants.CATEGORY_TEXT_DRAFTS, view);
+			appendToSemesterDropdown(Constants.CATEGORY_ID_CURRENT,Constants.CATEGORY_TEXT_CURRENT, view);
+
 			/*
 			 * 
 			appendToSemesterDropdown(Constants.DRAFTS_SEMESTER_ID, Constants.DRAFTS_SEMESTER_TEXT, view);
@@ -34,13 +37,14 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 			*/
 		}
 		
-		String semesterId = message.getSemesterId();
-		if(semesterId == null) {
-			semesterId = Constants.ACTIVE_SEMESTERS_ID;
+		String categoryId = message.getSemesterId();
+		if(categoryId == null) {
+			categoryId = AquiletourMain.currentCategoryId();
 		}
 		
-		if(!semesterId.equals(currentSemesterId)) {
-			currentSemesterId = semesterId;
+		if(!categoryId.equals(currentCategoryId)) {
+			currentCategoryId = categoryId;
+			AquiletourMain.setCurrentCategoryId(currentCategoryId);
 			changeCurrentSemester(model, view, subViewLoader);
 		}
 	}
@@ -57,6 +61,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 	private void observeSemesterIdList(M model, V view) {
 		T.call(this);
 		
+		/*
 		model.getAllSemesters().removeObservers();
 		model.getAllSemesters().onItemAdded(new ItemAddedListener<String>() {
 			@Override
@@ -66,6 +71,7 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 				appendToSemesterDropdown(item, item, view);
 			}
 		});
+		*/
 	}
 
 	private void changeCurrentSemester(M model, 
@@ -75,8 +81,8 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		T.call(this);
 		
 		
-		view.selectSemester(currentSemesterId);
-		view.identifyCurrentSemester(currentSemesterId);
+		view.selectSemester(currentCategoryId);
+		view.identifyCurrentSemester(currentCategoryId);
 		
 		observeCourses(model, view, subViewLoader);
 	}
@@ -88,43 +94,32 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		
 		view.clearItems();
 		
-		model.getCourses().removeObservers();
-		model.getCourses().onItemAdded(new ItemAddedListener<CourseListItem>() {
+		model.getCourseListItemsByCategoryId().removeObservers();
+		model.getCourseListItemsByCategoryId().onEntryAdded(new EntryAddedListener<CourseListItems>() {
 			@Override
-			public void onItemAdded(int index, CourseListItem description) {
+			public void onEntryAdded(String categoryId, CourseListItems courseItems) {
 				T.call(this);
-				
-				if(shouldDisplayCourse(model, description)) {
 
-					CourseListItemView subView = (CourseListItemView) subViewLoader.createView();
-					subView.displayCourseListItem(description);
+				if(categoryId.equals(currentCategoryId)) {
+					
+					courseItems.removeObservers();
+					courseItems.onItemAdded(new ItemAddedListener<CourseListItem>() {
+						@Override
+						public void onItemAdded(int index, CourseListItem courseItem) {
+							T.call(this);
 
-					view.appendItem(subView);
+							CourseListItemView subView = (CourseListItemView) subViewLoader.createView();
+							subView.displayCourseListItem(courseItem);
 
-					observeCourseDescription(description, subView);
+							view.appendItem(subView);
+
+							observeCourseListItem(courseItem, subView);
+						}
+					});
 				}
 			}
-
 		});
 	}
 
-	private boolean shouldDisplayCourse(M model, CourseListItem description) {
-		T.call(this);
-		
-		boolean shouldDisplay = false;
-		
-		if(currentSemesterId.equals(Constants.ACTIVE_SEMESTERS_ID)) {
-			
-			shouldDisplay = model.isActiveSemester(description.getSemesterId());
-			
-		}else {
-			
-			shouldDisplay = currentSemesterId.equals(description.getSemesterId());
-
-		}
-
-		return shouldDisplay;
-	}
-
-	protected abstract void observeCourseDescription(CourseListItem courseItem, CourseListItemView itemView);
+	protected abstract void observeCourseListItem(CourseListItem courseItem, CourseListItemView itemView);
 }

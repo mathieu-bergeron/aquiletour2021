@@ -52,9 +52,8 @@ public class SessionManager {
 		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
 
 		SessionData sessionData = new SessionData();
-		SemesterListManager.addActiveSemesterIds(modelStore, sessionData.getActiveSemesterIds());
 		session.setSessionData(sessionData);
-		
+
 		modelStore.save(session);
 		
 		Ntro.sessionService().registerCurrentSession(session);

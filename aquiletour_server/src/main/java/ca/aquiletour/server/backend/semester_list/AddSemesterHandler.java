@@ -75,10 +75,12 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 														   adminControlledSemester,
 														   teacherId);
 					
+					/*
 					CourseListManager.addSemesterForUserId(modelStore, 
 							                               CourseListModelTeacher.class, 
 							                               message.getSemesterId(), 
 							                               teacherId);
+				   */
 				}catch(BackendError e) {
 
 				}
@@ -93,7 +95,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 
 		}else if(message.getUser().actsAsTeacher()){
 
-			CourseListManager.addSemesterForUser(modelStore, CourseListModelTeacher.class, message.getSemesterId(), message.getUser());
+			//CourseListManager.addSemesterForUser(modelStore, CourseListModelTeacher.class, message.getSemesterId(), message.getUser());
 			GroupListManager.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
 		}
 	}

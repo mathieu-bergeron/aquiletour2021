@@ -17,13 +17,14 @@ public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClos
 	@Override
 	public void handleNow(ModelStoreSync modelStore, TeacherClosesQueueMessage message) throws BackendError {
 		T.call(this);
-		
-		User teacher = (User) message.getUser();
-		String courseId = message.getCourseId();
-		
-		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 
-		CourseListManager.closeQueueForUser(modelStore, CourseListModelTeacher.class, /* FIXME*/ null, message.getCourseId(), message.getUser());
+		boolean queueOpen = false;
+
+		CourseListManager.updateQueueOpenForUser(modelStore, 
+				                                 CourseListModelTeacher.class,
+				                                 message.coursePath(),
+				                                 queueOpen,
+				                                 message.getUser());
 	}
 
 	@Override

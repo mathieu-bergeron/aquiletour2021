@@ -40,8 +40,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		CourseListManager.addGroupForUser(modelStore, 
 										  CourseListModelTeacher.class,
-				                          message.getSemesterId(), 
-				                          message.getCourseId(), 
+										  message.coursePath(),
 				                          groupId, 
 				                          message.getUser());
 	}
@@ -113,10 +112,9 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                                  teacher);
 		
 		CourseListItem courseItem = CourseListManager.getCourseItem(modelStore, 
-															    CourseListModelTeacher.class,
-				                                                message.getSemesterId(),
-				                                                message.getCourseId(),
-				                                                teacher.getId());
+															        CourseListModelTeacher.class,
+															        message.coursePath(),
+				                                                    teacher.getId());
 
 		CourseManager.addGroup(modelStore, 
 							   message.coursePath(),
@@ -137,8 +135,14 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 			CourseManager.createStudentCourse(modelStore, message.coursePath(), teacherCourse, groupId, student);
 			
-			CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
-			CourseListManager.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
+			//CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
+
+			CourseListManager.addCourseToCategory(modelStore, 
+					                              CourseListModelStudent.class,
+					                              Constants.CATEGORY_ID_CURRENT, // FIXME: select actual category
+					                              courseItem, 
+					                              student);
+
 			DashboardManager.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
 		}
 		

@@ -81,13 +81,27 @@ public class Constants {
 	public static final String STUDENT_LIST_MODEL_ID = "students";
 	public static final String TEACHER_LIST_MODEL_ID = "teachers";
 	public static final String ADMIN_LIST_MODEL_ID = "admins";
-	
+
+	public static final String CATEGORY_ID_CURRENT = "_c";
+	public static final String CATEGORY_ID_DRAFTS = "_d";
+	public static final String CATEGORY_ID_ARCHIVE = "_a";
+	public static final String CATEGORY_ID_RECYCLE_BIN = "_r";
+
+	public static final String CATEGORY_TEXT_CURRENT = "En cours";
+	public static final String CATEGORY_TEXT_DRAFTS = "Brouillons";
+	public static final String CATEGORY_TEXT_ARCHIVE = "Archives";
+	public static final String CATEGORY_TEXT_RECYCLE_BIN = "Corbeille";
+
 	public static final String[] RESERVED_IDS = {DRAFTS_SEMESTER_ID, 
 		                         				 COURSE_STRUCTURE_ID, 
 		                         				 ALL_GROUPS_ID, 
 		                         				 ACTIVE_SEMESTERS_ID, 
 		                         				 ALL_TEACHERS_ID, 
-		                         				 ALL_USERS_ID};
+		                         				 ALL_USERS_ID,
+		                         				 CATEGORY_ID_CURRENT,
+		                         				 CATEGORY_ID_DRAFTS,
+		                         				 CATEGORY_ID_ARCHIVE,
+		                         				 CATEGORY_ID_RECYCLE_BIN};
 
 	public static final int NUMBER_OF_CURRENT_TASKS_TEACHER = 3;
 }

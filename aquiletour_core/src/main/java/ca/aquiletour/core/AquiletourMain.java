@@ -98,7 +98,8 @@ import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessag
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
+import ca.aquiletour.core.pages.course_list.models.CourseListItems;
+import ca.aquiletour.core.pages.course_list.models.CourseListItemsByCategoryId;
 import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.aquiletour.core.pages.course_list.models.ObservableTaskDescriptions;
@@ -190,12 +191,20 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		return context;
 	}
 	
-	public static List<String> activeSemesterIds() {
+	public static String currentCategoryId() {
 		T.call(AquiletourMain.class);
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		
-		return sessionData.getActiveSemesterIds();
+		return sessionData.getCurrentCategoryId();
+	}
+
+	public static void setCurrentCategoryId(String categoryId) {
+		T.call(AquiletourMain.class);
+		
+		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
+
+		sessionData.setCurrentCategoryId(categoryId);
 	}
 
 	protected abstract void registerViewLoaders();
@@ -309,9 +318,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CourseListItem.class);
 		Ntro.registerSerializableClass(CourseListModelTeacher.class);
 		Ntro.registerSerializableClass(CourseListModelStudent.class);
-		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
 		Ntro.registerSerializableClass(SemesterIds.class);
 		Ntro.registerSerializableClass(ObservableCourseGroupList.class);
+		Ntro.registerSerializableClass(CourseListItemsByCategoryId.class);
+		Ntro.registerSerializableClass(CourseListItems.class);
 
 		Ntro.registerSerializableClass(ObservableGroupIdList.class);
 		Ntro.registerSerializableClass(ObservableGroupList.class);

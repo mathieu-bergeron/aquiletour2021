@@ -23,7 +23,7 @@ public class CourseListViewModelTeacher extends CourseListViewModel<CourseListMo
 	}
 	
 	@Override
-	protected void observeCourseDescription(CourseListItem courseItem, CourseListItemView itemView) {
+	protected void observeCourseListItem(CourseListItem courseItem, CourseListItemView itemView) {
 		T.call(this);
 		
 		CourseListItemViewTeacher itemViewTeacher = (CourseListItemViewTeacher) itemView;

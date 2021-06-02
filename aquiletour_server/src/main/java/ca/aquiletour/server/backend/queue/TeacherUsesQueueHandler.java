@@ -15,11 +15,13 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 	public void handleNow(ModelStoreSync modelStore, TeacherUsesQueueMessage message) throws BackendError {
 		T.call(this);
 		
-		CourseListManager.openQueueForUser(modelStore, 
-				                           CourseListModelTeacher.class,
-				                           message.getSemesterId(),
-				                           message.getCourseId(), 
-				                           message.getUser());
+		boolean queueOpen = true;
+		
+		CourseListManager.updateQueueOpenForUser(modelStore, 
+				                                 CourseListModelTeacher.class,
+				                                 message.coursePath(),
+				                                 queueOpen,
+				                                 message.getUser());
 	}
 
 	@Override

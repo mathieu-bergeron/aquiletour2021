@@ -10,7 +10,7 @@ import ca.ntro.core.system.trace.T;
 public class CourseListViewModelStudent extends CourseListViewModel<CourseListModelStudent, CourseListViewStudent> {
 
 	@Override
-	protected void observeCourseDescription(CourseListItem courseItem, CourseListItemView itemView) {
+	protected void observeCourseListItem(CourseListItem courseItem, CourseListItemView itemView) {
 		T.call(this);
 	}
 
