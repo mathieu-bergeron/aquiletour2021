@@ -815,9 +815,9 @@ public class AquiletourBackendRequestHandler {
 	}
 
 	static <MSG extends AquiletourGitMessage> MSG createAquiletourGitMessage(Class<MSG> messageClass, 
-			                                                             Path path, 
-			                                                             Map<String, String[]> parameters,
-			                                                             SessionData sessionData) {
+			                                                                 Path path, 
+			                                                                 Map<String, String[]> parameters,
+			                                                                 SessionData sessionData) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		MSG message = createAtomicTaskMessage(messageClass,
@@ -855,7 +855,7 @@ public class AquiletourBackendRequestHandler {
 
 		}else {
 			
-			Log.fatalError("Cannot create AtomicTaskMessage: atomicTaskId is not defined");
+			Log.warning("[createAtomicTaskMessage] atomicTaskId not defined");
 		}
 
 		return message;

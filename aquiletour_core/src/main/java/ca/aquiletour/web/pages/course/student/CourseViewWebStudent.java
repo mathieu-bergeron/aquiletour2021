@@ -36,8 +36,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement gitRepoTaskCloned;
 	private HtmlElement gitRepoTaskCloneFailed;
 
+	private HtmlElement gitProgressionContainer;
 	private HtmlElement gitProgressionLink;
-
 
 	private HtmlElement parentTaskLink;
 
@@ -81,6 +81,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		parentTaskLink = this.getRootElement().find("#parent-task-link").get(0);
 
+		gitProgressionContainer = this.getRootElement().find("#git-progression-container").get(0);
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 
 		endtimeContainer = this.getRootElement().find("#endtime-container").get(0);
@@ -115,6 +116,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(gitRepoTaskCloned);
 		MustNot.beNull(gitRepoTaskCloneFailed);
 
+		MustNot.beNull(gitProgressionContainer);
 		MustNot.beNull(gitProgressionLink);
 
 		MustNot.beNull(toCompleteFirstContainer);

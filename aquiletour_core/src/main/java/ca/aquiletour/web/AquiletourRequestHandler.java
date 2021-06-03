@@ -337,22 +337,12 @@ public class AquiletourRequestHandler {
 
 		if (subPath.nameCount() >= 1) {
 			
-			ShowCommitListMessage showGitMessage = null;
-			if (parameters.containsKey("endTime")) {
-				ShowCommitListForTimePeriodMessage message = AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListForTimePeriodMessage.class, 
-						                                                                                                subPath, 
-						                                                                                                parameters, 
-						                                                                                                sessionData);
-				// TODO
-				//message.setStartTime(startTime);
-				//message.setEndTime(endTime);
-				showGitMessage = message;
-			}else {
-				showGitMessage= AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListMessage.class, 
-						                                                                   subPath, 
-						                                                                   parameters, 
-						                                                                   sessionData);
-			}
+			String studentId = null;
+			String groupId = null;
+			String semesterId = null;
+			
+			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
+
 
 			Ntro.messages().send(showGitMessage);
 		}
