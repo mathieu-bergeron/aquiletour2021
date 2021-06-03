@@ -223,8 +223,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		uneditableEndTime().addClass("bg-success");
 		
 		endtimeLabel.text("Terminé le");
-
-		uneditableEndTime().show();
+		
+		displayTaskEndTime(true);
 	}
 
 	@Override
@@ -239,7 +239,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		endtimeLabel.text("En retard depuis");
 
-		uneditableEndTime().show();
+		displayTaskEndTime(true);
 	}
 
 	@Override

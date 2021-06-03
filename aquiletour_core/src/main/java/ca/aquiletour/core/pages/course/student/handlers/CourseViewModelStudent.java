@@ -59,8 +59,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 		}
 		
 		if(status.isDone() && status.getTimestamp().isDefined()) {
-			
-			view.displayTaskEndTime(true);
+
 			view.updateTaskDoneTime(status.getTimestamp());
 		}
 		

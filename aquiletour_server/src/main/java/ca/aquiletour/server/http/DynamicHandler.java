@@ -140,6 +140,8 @@ public class DynamicHandler extends AbstractHandler {
 
 		executeBackend(baseRequest, response, path, parameters);
 
+		setSessionCookie(response);
+
 		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
 		//boolean ifJSweet = false;
 
@@ -165,9 +167,6 @@ public class DynamicHandler extends AbstractHandler {
 
 			response.setContentType("text/html; charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
-
-			setSessionCookie(response);
-
 			writeResponse(window, baseRequest, out);
 		}
 	}
