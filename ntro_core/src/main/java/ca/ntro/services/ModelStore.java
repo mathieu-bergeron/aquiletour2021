@@ -28,9 +28,9 @@ public abstract class ModelStore {
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
 	
-	private Map<NtroModel, DocumentPath> localHeap = new HashMap<>();
-	private Map<DocumentPath, NtroModel> localHeapByPath = new HashMap<>();
-	
+	private Map<NtroModel, DocumentPath> localHeap = Ntro.collections().concurrentMap(new HashMap<>());
+	private Map<DocumentPath, NtroModel> localHeapByPath = Ntro.collections().concurrentMap(new HashMap<>());
+
 	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
 
 	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) {
@@ -151,7 +151,7 @@ public abstract class ModelStore {
 	}
 
 	public void updateStoreConnections(NtroModel model) {
-		DocumentPath modelPath = localHeap.get(model);
+		DocumentPath modelPath = Ntro.collections().getExact(localHeap, model);
 		
 		if(modelPath != null) {
 
@@ -159,7 +159,7 @@ public abstract class ModelStore {
 
 		}else {
 			
-			Log.warning("No model to update: " + model);
+			Log.warning("[updateStoreConnexionts] model not found in localHeap: " + model);
 		}
 	}
 
@@ -226,36 +226,28 @@ public abstract class ModelStore {
 	public void save(NtroModel model) {
 		T.call(this);
 		
-		DocumentPath documentPath = localHeap.get(model);
+		DocumentPath documentPath = Ntro.collections().getExact(localHeap, model);
 		
 		if(documentPath == null) {
 
-			Log.warning("Model was already saved and removed from memory: " + model);
+			Log.error("[save] model not found in localHeap: " + model);
 
 		}else {
-			
-			saveDocument(documentPath, Ntro.jsonService().toString(model));
 
-			// JSWEET: will the work correctly? (removing by reference)
-			localHeap.remove(model);
-			localHeapByPath.remove(documentPath);
+			saveDocument(documentPath, Ntro.jsonService().toString(model));
 		}
 	}
 
 	public void replace(NtroModel existingModel, NtroModel newModel) {
-		DocumentPath documentPath = localHeap.get(existingModel);
+		DocumentPath documentPath = Ntro.collections().getExact(localHeap, existingModel);
 		
 		if(documentPath == null) {
 
-			Log.warning("was already saved and removed from memory: " + existingModel);
+			Log.warning("[replace] model not found in localHeap: " + existingModel);
 
 		}else {
 			
 			saveDocument(documentPath, Ntro.jsonService().toString(newModel));
-
-			// JSWEET: will the work correctly? (removing by reference)
-			localHeap.remove(existingModel);
-			localHeapByPath.remove(documentPath);
 		}
 	}
 	
@@ -265,11 +257,11 @@ public abstract class ModelStore {
 	}
 
 	public void delete(NtroModel model) {
-		DocumentPath documentPath = localHeap.get(model);
+		DocumentPath documentPath = Ntro.collections().getExact(localHeap, model);
 		
 		if(documentPath == null) {
 
-			Log.warning("Model was already saved and removed from memory: " + model);
+			Log.warning("[delete] model not found in localHeap: " + model);
 
 		}else {
 			
@@ -303,11 +295,10 @@ public abstract class ModelStore {
 	public void closeWithoutSaving(NtroModel model) {
 		T.call(this);
 
-		DocumentPath documentPath = localHeap.get(model);
+		DocumentPath documentPath = Ntro.collections().getExact(localHeap, model);
 
 		// JSWEET: will the work correctly? (removing by reference)
-		localHeap.remove(model);
-		localHeapByPath.remove(documentPath);
+		//localHeap.remove(model);
+		//localHeapByPath.remove(documentPath);
 	}
-
 }

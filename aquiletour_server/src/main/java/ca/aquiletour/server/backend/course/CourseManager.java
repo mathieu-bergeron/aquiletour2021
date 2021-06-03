@@ -550,8 +550,6 @@ public class CourseManager {
 		
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getId());
 		
-		System.out.println(coursePathStudent.toFileName());
-		
 		modelStore.createModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseModelStudent>() {
 			@Override
 			public void initialize(CourseModelStudent newModel) {

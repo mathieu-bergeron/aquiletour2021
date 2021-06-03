@@ -79,7 +79,7 @@ public class CollectionsServiceJSweet extends CollectionsService {
 	}
 
 	@Override
-	public <V> V getExactKey(Map<?, V> map, Object key) {
+	public <V> V getExact(Map<?, V> map, Object key) {
 		return map.get(key);
 	}
 

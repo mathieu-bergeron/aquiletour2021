@@ -32,7 +32,7 @@ public abstract class CollectionsService {
 	public abstract boolean setContainsExact(Set<?> set, Object target);
 
 	public abstract boolean containsKeyExact(Map<?, ?> map, Object key);
-	public abstract <V extends Object> V getExactKey(Map<?, V> map, Object key);
+	public abstract <V extends Object> V getExact(Map<?, V> map, Object key);
 
 	public abstract boolean listContainsEquals(List<?> value, Object target);
 	public abstract boolean listEquals(List<?> list1, List<?> list2);

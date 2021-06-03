@@ -63,7 +63,7 @@ public class CollectionsServiceJdk extends CollectionsService {
 	}
 
 	@Override
-	public <V> V getExactKey(Map<?, V> map, Object key) {
+	public <V> V getExact(Map<?, V> map, Object key) {
 		V value = null;
 
 		for(Entry<?, V> entry : map.entrySet()) {
