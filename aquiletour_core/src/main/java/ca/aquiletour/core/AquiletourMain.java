@@ -28,6 +28,7 @@ import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
+import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
@@ -456,6 +457,9 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(TaskStatusByTaskKey.class);
 
 		Ntro.registerSerializableClass(DefaultCompletion.class);
+
+		Ntro.registerSerializableClass(ToggleAdminModeMessage.class);
+		Ntro.registerSerializableClass(ToggleStudentModeMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

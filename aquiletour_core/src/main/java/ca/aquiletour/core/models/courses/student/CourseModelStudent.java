@@ -28,6 +28,14 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	private EndTimeByTaskId endTimes = new EndTimeByTaskId();
 
 	private TaskStatusByTaskKey statuses = new TaskStatusByTaskKey();
+	
+	public TaskStatusByTaskKey getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(TaskStatusByTaskKey statuses) {
+		this.statuses = statuses;
+	}
 
 	@Override
 	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {

@@ -15,8 +15,8 @@ public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardV
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
-
-		dashboardItemContainer = this.getRootElement().find("#dashboard-item-container").get(0);
+		
+		dashboardItemContainer = this.getRootElement().find(".dashboard-item-container").get(0);
 
 		MustNot.beNull(dashboardItemContainer);
 	}

@@ -44,7 +44,6 @@ import ca.ntro.services.Ntro;
 
 public class AquiletourRequestHandler {
 	
-	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
@@ -292,8 +291,7 @@ public class AquiletourRequestHandler {
 
 			}
 			
-			String groupId = Constants.COURSE_STRUCTURE_ID;
-
+			String groupId = null;
 			if(parameters.containsKey(Constants.GROUP_URL_PARAM)) {
 				groupId = parameters.get(Constants.GROUP_URL_PARAM)[0];
 			}

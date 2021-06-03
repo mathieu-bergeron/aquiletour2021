@@ -44,7 +44,8 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 	protected void handle(M model, V view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		
-		if(!message.getGroupId().equals(currentGroupId)) {
+		if(message.getGroupId() != null
+				&& !message.getGroupId().equals(currentGroupId)) {
 			currentGroupId = message.getGroupId();
 		}
 

@@ -190,8 +190,8 @@ public class HtmlElementJSweet extends HtmlElement {
 	public HtmlElements find(String cssQuery) {
 		T.call(this);
 		
-		JQuery foundElements = jQueryElement.find(cssQuery);
-		
+		JQuery foundElements = jQueryElement.find(cssQuery).addBack(cssQuery);
+
 		HtmlElementsJSweet result = null;
 		
 		if(foundElements.length > 0) {

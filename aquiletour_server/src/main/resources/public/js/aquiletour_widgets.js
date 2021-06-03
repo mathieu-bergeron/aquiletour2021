@@ -37,11 +37,15 @@ function initializeCheckboxes(rootElement){
     checkboxes.off();
     checkboxes.on('click', function(){
         const thisCheckbox = $(this);
-        if(thisCheckbox.attr("checked") === undefined){
+
+        if(thisCheckbox.attr("checked") === undefined || thisCheckbox.attr("checked") === false){
             thisCheckbox.val("on");
+            thisCheckbox.attr("checked","true");
         }else{
             thisCheckbox.val("off");
+            thisCheckbox.removeAttr("checked");
         }
+
         const formId = $(this).attr("form");
         const form = rootElement.find("#" + formId);
         form.submit();

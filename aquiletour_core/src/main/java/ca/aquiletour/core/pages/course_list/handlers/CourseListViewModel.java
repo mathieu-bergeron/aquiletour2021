@@ -53,21 +53,28 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 
 				if(categoryId.equals(currentCategoryId)) {
 					
-					courseItems.removeObservers();
-					courseItems.onItemAdded(new ItemAddedListener<CourseListItem>() {
-						@Override
-						public void onItemAdded(int index, CourseListItem courseItem) {
-							T.call(this);
-
-							CourseListItemView subView = (CourseListItemView) subViewLoader.createView();
-							subView.displayCourseListItem(courseItem);
-
-							view.appendItem(subView);
-
-							observeCourseListItem(courseItem, subView);
-						}
-					});
+					observeCourseItem(view, subViewLoader, courseItems);
 				}
+			}
+
+		});
+	}
+
+	private void observeCourseItem(V view, ViewLoader subViewLoader, CourseListItems courseItems) {
+		T.call(this);
+
+		courseItems.removeObservers();
+		courseItems.onItemAdded(new ItemAddedListener<CourseListItem>() {
+			@Override
+			public void onItemAdded(int index, CourseListItem courseItem) {
+				T.call(this);
+
+				CourseListItemView subView = (CourseListItemView) subViewLoader.createView();
+				subView.displayCourseListItem(courseItem);
+
+				view.appendItem(subView);
+
+				observeCourseListItem(courseItem, subView);
 			}
 		});
 	}
