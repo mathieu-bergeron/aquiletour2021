@@ -4,28 +4,18 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
-import ca.aquiletour.core.models.courses.status.BlockedWaitingForParent;
 import ca.aquiletour.core.models.courses.status.StatusBlocked;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
-import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
-import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
 public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, CourseViewStudent> {
-
-	@Override
-	protected void handle(CourseModelStudent model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
-		T.call(this);
-		super.handle(model, view, subViewLoader, message);
-		
-	}
 
 	@Override
 	protected void observeCurrentTask(CourseModelStudent model, String groupId, CourseViewStudent view, ViewLoader subViewLoader) {
@@ -46,7 +36,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 				T.call(this);
 				
 				if(currentTask().getPath().toKey().equals(taskKey)) {
-
+					
 					displayTaskStatus(status, view);
 					view.enableSubTasks(currentTask().areEntryTasksDone(model.getCompletions()));
 				}
@@ -68,6 +58,11 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 			view.displayToCompleteFirst(false);
 		}
 		
+		if(status.isDone() && status.getTimestamp().isDefined()) {
+			
+			view.displayTaskEndTime(true);
+			view.updateTaskDoneTime(status.getTimestamp());
+		}
 		
 	}
 

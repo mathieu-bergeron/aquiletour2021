@@ -148,6 +148,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitRepoTaskCloningRepo.hide();
 		gitRepoTaskCloned.hide();
 		gitRepoTaskCloneFailed.hide();
+		
+		toCompleteFirstContainer.hide();
 	}
 
 	@Override
@@ -203,14 +205,41 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		super.updateTaskEndTime(endTime, editable);
 		
-		// done: Terminé le  ---  bg-sucess
-		// late: En retard depuis --- bg-danger
-		
 		uneditableEndTime().removeClass("bg-danger");
 		uneditableEndTime().removeClass("bg-success");
 		uneditableEndTime().addClass("bg-warning");
 		
 		endtimeLabel.text("À terminer avant");
+	}
+
+	@Override
+	public void updateTaskDoneTime(AquiletourDate doneTime) {
+		T.call(this);
+
+		super.updateTaskEndTime(doneTime, false);
+		
+		uneditableEndTime().removeClass("bg-danger");
+		uneditableEndTime().removeClass("bg-warning");
+		uneditableEndTime().addClass("bg-success");
+		
+		endtimeLabel.text("Terminé le");
+
+		uneditableEndTime().show();
+	}
+
+	@Override
+	public void updateTaskLateTime(AquiletourDate lateTime) {
+		T.call(this);
+		
+		super.updateTaskEndTime(lateTime, false);
+		
+		uneditableEndTime().removeClass("bg-success");
+		uneditableEndTime().removeClass("bg-warning");
+		uneditableEndTime().addClass("bg-danger");
+		
+		endtimeLabel.text("En retard depuis");
+
+		uneditableEndTime().show();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.student.views;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.status.StatusBlocked;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.pages.course.views.CourseView;
 
 public interface CourseViewStudent extends CourseView  {
@@ -25,5 +26,7 @@ public interface CourseViewStudent extends CourseView  {
 	void displayToCompleteFirst(boolean shouldDisplay);
 	void updateToCompleteFirst(StatusBlocked status);
 
+	void updateTaskDoneTime(AquiletourDate doneTime);
+	void updateTaskLateTime(AquiletourDate lateTime);
 
 }

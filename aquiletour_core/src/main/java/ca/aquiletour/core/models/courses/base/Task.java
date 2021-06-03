@@ -26,6 +26,7 @@ import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.dates.ConcreteDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -36,6 +37,7 @@ import ca.ntro.core.models.StoredString;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class Task implements NtroModelValue, TaskNode {
 	
@@ -884,6 +886,10 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		if(status == null) {
 			status = new StatusDone();
+		}
+
+		if(status != null) {
+			status.setTimestamp(new ConcreteDate(Ntro.calendar().now()));
 		}
 		
 		return status;

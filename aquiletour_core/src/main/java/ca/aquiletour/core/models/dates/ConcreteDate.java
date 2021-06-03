@@ -9,6 +9,16 @@ public class ConcreteDate extends AquiletourDate {
 	
 	private NtroDate value = new NtroDate();
 
+	public ConcreteDate() {
+		T.call(this);
+	}
+
+	public ConcreteDate(NtroDate value) {
+		T.call(this);
+		
+		this.value = value;
+	}
+
 	public NtroDate getValue() {
 		return value;
 	}
@@ -40,4 +50,12 @@ public class ConcreteDate extends AquiletourDate {
 
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		T.call(this);
+
+		return getValue().format("EEE d MMM HH:mm");
+	}
+	
 }

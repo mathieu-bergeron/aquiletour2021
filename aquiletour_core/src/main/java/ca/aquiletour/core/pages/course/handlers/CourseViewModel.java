@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
@@ -47,6 +48,11 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 		if(message.getGroupId() != null
 				&& !message.getGroupId().equals(currentGroupId)) {
 			currentGroupId = message.getGroupId();
+
+		}else {
+			
+			currentGroupId = Constants.COURSE_STRUCTURE_ID;
+
 		}
 
 		if(!model.getCoursePath().equals(currentCoursePath)) {
@@ -56,6 +62,8 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 		currentTask = model.findTaskByPath(message.getTaskPath());
 		
 		if(currentTask != null) {
+			
+			view.displayTaskEndTime(false);
 			
 			view.identifyCurrentTask(currentCoursePath(), currentTask);
 			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
@@ -181,8 +189,6 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 	private void observeCurrentTaskEndTime(M model, V view) {
 		T.call(this);
 		
-		view.displayTaskEndTime(false);
-
 		currentTask.getEndTime().removeObservers();
 		currentTask.getEndTime().observe(new ValueObserver<AquiletourDate>() {
 

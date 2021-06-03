@@ -12,6 +12,7 @@ import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
+import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
@@ -172,7 +173,13 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 		T.call(this);
 
 		forEachTask(t -> {
-			taskStatusByTaskKey.putEntry(t.getPath().toKey(), t.status(completions));
+
+			TaskStatus lastStatus = taskStatusByTaskKey.valueOf(t.getPath().toKey());
+			TaskStatus statusUpdate = t.status(getCompletions());
+			
+			if(lastStatus == null || lastStatus.shouldUpdate(statusUpdate)) {
+				taskStatusByTaskKey.putEntry(t.getPath().toKey(), t.status(completions));
+			}
 		});
 	}
 }

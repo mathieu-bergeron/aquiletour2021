@@ -56,6 +56,11 @@ import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForParent;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForPreviousTasks;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForSubTasks;
+import ca.aquiletour.core.models.courses.status.StatusDone;
+import ca.aquiletour.core.models.courses.status.StatusTodo;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.student.TaskStatusByTaskKey;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
@@ -198,6 +203,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		T.call(AquiletourMain.class);
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
+		
+		String currentCategoryId = sessionData.getCurrentCategoryId();
+		
+		if(currentCategoryId == null || currentCategoryId.isEmpty()) {
+			currentCategoryId = Constants.CATEGORY_ID_CURRENT;
+			setCurrentCategoryId(currentCategoryId);
+		}
 		
 		return sessionData.getCurrentCategoryId();
 	}
@@ -460,6 +472,12 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(ToggleAdminModeMessage.class);
 		Ntro.registerSerializableClass(ToggleStudentModeMessage.class);
+
+		Ntro.registerSerializableClass(StatusDone.class);
+		Ntro.registerSerializableClass(BlockedWaitingForParent.class);
+		Ntro.registerSerializableClass(BlockedWaitingForPreviousTasks.class);
+		Ntro.registerSerializableClass(BlockedWaitingForSubTasks.class);
+		Ntro.registerSerializableClass(StatusTodo.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

@@ -1,18 +1,19 @@
 package ca.aquiletour.core.models.courses.status;
 
+import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.dates.ConcreteDate;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
 
 public class TaskStatus implements NtroModelValue {
 	
-	private NtroDate timestamp = new NtroDate();
+	private AquiletourDate timestamp = AquiletourDate.undefined();
 	
-	public NtroDate getTimestamp() {
+	public AquiletourDate getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(NtroDate timestamp) {
+	public void setTimestamp(AquiletourDate timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -32,6 +33,25 @@ public class TaskStatus implements NtroModelValue {
 		T.call(this);
 
 		return false;
+	}
+
+	public boolean shouldUpdate(TaskStatus statusUpdate) {
+		T.call(this);
+		
+		boolean shouldUpdate = false;
+		
+		if(!this.getClass().equals(statusUpdate.getClass())) {
+
+			shouldUpdate = true;
+
+		}else if(!getTimestamp().isDefined()
+				&& statusUpdate.getTimestamp().isDefined()) {
+			
+			shouldUpdate = true;
+
+		}
+
+		return shouldUpdate;
 	}
 
 }
