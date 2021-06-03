@@ -22,8 +22,12 @@ import ca.ntro.core.system.trace.T;
 public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	
 	private StoredString groupId = new StoredString();
+
 	private StudentCompletionsByTaskId completions = new StudentCompletionsByTaskId();
+
 	private EndTimeByTaskId endTimes = new EndTimeByTaskId();
+
+	private TaskStatusByTaskKey statuses = new TaskStatusByTaskKey();
 
 	@Override
 	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {

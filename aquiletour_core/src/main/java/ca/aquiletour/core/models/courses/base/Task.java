@@ -25,9 +25,7 @@ import ca.aquiletour.core.models.courses.status.StatusTodo;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
-import ca.aquiletour.core.models.courses.teacher.StudentCompletionsByStudentId;
 import ca.aquiletour.core.models.dates.AquiletourDate;
-import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
@@ -51,7 +49,7 @@ public class Task implements NtroModelValue, TaskNode {
 
 	private StoredAtomicTasks entryTasks = new StoredAtomicTasks();
 	private StoredAtomicTasks exitTasks = new StoredAtomicTasks();
-	
+
 	private StoredTaskIds previousTasks = new StoredTaskIds();
 	private StoredTaskIds subTasks = new StoredTaskIds();
 	private StoredTaskIds nextTasks = new StoredTaskIds();

@@ -55,6 +55,7 @@ import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.student.TaskStatusByTaskKey;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
@@ -450,6 +451,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SessionsByUserId.class);
 
 		Ntro.registerSerializableClass(ConcreteDate.class);
+
+		Ntro.registerSerializableClass(TaskStatusByTaskKey.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
