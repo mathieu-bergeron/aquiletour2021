@@ -7,6 +7,9 @@ import java.util.List;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.courses.base.CycleDetectedError;
+import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
+import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.teacher.EndTimeByTaskId;
@@ -27,14 +30,14 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 
 	private EndTimeByTaskId endTimes = new EndTimeByTaskId();
 
-	private TaskStatusByTaskKey statuses = new TaskStatusByTaskKey();
-	
-	public TaskStatusByTaskKey getStatuses() {
-		return statuses;
+	private TaskStatusByTaskKey taskStatusByTaskKey = new TaskStatusByTaskKey();
+
+	public TaskStatusByTaskKey getTaskStatusByTaskKey() {
+		return taskStatusByTaskKey;
 	}
 
-	public void setStatuses(TaskStatusByTaskKey statuses) {
-		this.statuses = statuses;
+	public void setTaskStatusByTaskKey(TaskStatusByTaskKey taskStatusByTaskKey) {
+		this.taskStatusByTaskKey = taskStatusByTaskKey;
 	}
 
 	@Override
@@ -164,5 +167,12 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 			atomicCompletions.putEntry(atomicTaskId, new AtomicTaskCompletion());
 		}
 	}
+	
+	public void updateStatuses() {
+		T.call(this);
 
+		forEachTask(t -> {
+			taskStatusByTaskKey.putEntry(t.getPath().toKey(), t.status(completions));
+		});
+	}
 }

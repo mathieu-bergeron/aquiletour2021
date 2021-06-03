@@ -12,6 +12,7 @@ import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ViewLoader;
@@ -31,10 +32,26 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 		T.call(this);
 
 		super.observeCurrentTask(model, groupId, view, subViewLoader);
+
+		observeStatuses(model, view);
+	}
+	
+	private void observeStatuses(CourseModelStudent model, CourseViewStudent view) {
+		T.call(this);
 		
-		displayTaskStatus(currentTask().status(model.getCompletions()), view);
-		
-		view.enableSubTasks(currentTask().areEntryTasksDone(model.getCompletions()));
+		model.getTaskStatusByTaskKey().removeObservers();
+		model.getTaskStatusByTaskKey().onEntryAdded(new EntryAddedListener<TaskStatus>() {
+			@Override
+			public void onEntryAdded(String taskKey, TaskStatus status) {
+				T.call(this);
+				
+				if(currentTask().getPath().toKey().equals(taskKey)) {
+
+					displayTaskStatus(status, view);
+					view.enableSubTasks(currentTask().areEntryTasksDone(model.getCompletions()));
+				}
+			}
+		});
 	}
 
 	private void displayTaskStatus(TaskStatus status, CourseViewStudent view) {

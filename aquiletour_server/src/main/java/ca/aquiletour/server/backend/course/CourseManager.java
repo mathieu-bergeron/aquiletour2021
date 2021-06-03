@@ -18,7 +18,6 @@ import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.dates.AquiletourDate;
-import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.session.SessionData;
@@ -212,6 +211,8 @@ public class CourseManager {
 								T.call(this);
 								
 								addTaskToCourseModel(anchorTaskPath, task, courseStudent, taskType);
+
+								courseStudent.updateStatuses();
 							}
 						});
 
@@ -399,6 +400,8 @@ public class CourseManager {
 						T.call(this);
 					}
 				});
+
+				courseModel.updateStatuses();
 			}
 		} );
 	}
@@ -509,6 +512,7 @@ public class CourseManager {
 				T.call(this);
 				
 				course.updateCompletions(taskPath, atomicTaskId, completion);
+				course.updateStatuses();
 			}
 		});
 	}
