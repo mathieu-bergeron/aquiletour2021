@@ -1,17 +1,19 @@
 import json
 import mysql.connector
 import sqlite3
-import utils
+import utils.normalize_data
 
-def find_exercise_for_course(semester, course, group, maria_conn):
+def find_exercise_for_course(semester, course, teacher, group, maria_conn):
     cur = maria_conn.cursor()
-    semester = utils.normalize_data.normalize_session(semester)
+    semester = utils.normalize_data.normalize_semesterId(semester)
     course = utils.normalize_data.normalize_courseId(course)
-    group = utils.normalize_data.normalize_group(group)
+    teacher = utils.normalize_data.normalize_teacherId(teacher)
+    group = utils.normalize_data.normalize_groupId(group)
+    # GROUP_ID not used in the search
     cur.execute('''SELECT exercise_path,repo_path,file_path,completion_kw
                     FROM exercise 
-                    WHERE session_id=%s AND course_id=%s AND group_id=%s''',
-                    (semester, course, group))
+                    WHERE session_id=%s AND course_id=%s AND teacher_id=%s''',
+                    (semester, course, teacher))
     lines = cur.fetchall()
     cols = utils.normalize_data.transpose(lines)
 #    print('NB EX = ' + str(len(lines)))

@@ -9,8 +9,9 @@ import utils.task_utils
 
 # {
 #       "_C": "DeleteExercise",
-#       "courseId": "mathieu.bergeron/StruDon",
+#       "courseId": "StruDon",
 #       "semesterId": "H2021",
+#       "teacherId": "mathieu.bergeron"
 #       "groupId": "01",
 #       "exercisePath": "/TP1/Exercice 1",
 #       "repoPath": "/TP1",
@@ -18,21 +19,22 @@ import utils.task_utils
 #       "completionKeywords": "Exercice 1"
 #   }
 def process(api_req, maria_conn, lite_conn):
-#    if not 'groupId' in api_req:
-#        api_req['groupId'] = None
+    if not 'groupId' in api_req:
+        api_req['groupId'] = '__NONE__'
     if not 'repoPath' in api_req:
         api_req['repoPath'] = '/'
     if maria_conn and lite_conn:
         try:
-            semester = utils.normalize_data.normalize_session(api_req['semesterId'])
+            semester = utils.normalize_data.normalize_semesterId(api_req['semesterId'])
             course = utils.normalize_data.normalize_courseId(api_req['courseId'])
-            group = utils.normalize_data.normalize_group(api_req['groupId'])
+            teacher = utils.normalize_data.normalize_teacherId(api_req['teacherId'])
+            group = utils.normalize_data.normalize_groupId(api_req['groupId'])
             maria_cur = maria_conn.cursor()
             maria_cur.execute('''DELETE FROM exercise 
-                WHERE session_id = %s AND course_id = %s AND group_id = %s AND exercise_path = %s ''',
-                (semester, course, group, api_req['exercisePath']))
+                WHERE session_id = %s AND course_id = %s AND teacher_id = %s AND exercise_path = %s''',
+                (semester, course, teacher, api_req['exercisePath']))
             maria_conn.commit()
-            body = utils.task_utils.add_task({'_C':'UpdateTask', 'semesterId':semester, 'courseId':course, 'groupId':group}, 9, lite_conn)
+            body = utils.task_utils.add_task({'_C':'UpdateTask', 'semesterId':semester, 'courseId':course, 'teacherId':teacher, 'groupId':group}, 9, lite_conn)
             response = JSONResponse(content = body)
             response.status_code = status.HTTP_200_OK
         except mysql.connector.errors.IntegrityError:

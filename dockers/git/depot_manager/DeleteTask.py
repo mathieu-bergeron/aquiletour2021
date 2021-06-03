@@ -17,15 +17,15 @@ import utils.net_utils
 def process(task_req, maria_conn, lite_conn):
     try:
         depot = task_req['depot']
-        maria_cur = maria_conn.cursor()
+        maria_cur = maria_conn.cursor(dictionary = True)
         maria_cur.execute('SELECT * FROM repository WHERE repo_url=%s',(depot,))
         record = maria_cur.fetchone()
         print(record)
         if record:
-            depotDir = record[0].split('/')
-            depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record[1]
-            depotPath = os.path.join('depot',record[2],record[3],record[4],record[5],depotDir)
-            trashPath = os.path.join('depot','trash',datetime.now().strftime('%y%m%d-%H%M%S'),record[2],record[3],record[4],record[5],depotDir)
+            depotDir = record['repo_url'].split('/')
+            depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record['repo_host']
+            depotPath = os.path.join('depot',record['session_id'],record['course_id'],record['teacher_id'],record['student_id'],depotDir)
+            trashPath = os.path.join('depot','trash',record['session_id'],record['course_id'],record['teacher_id'],record['student_id'],datetime.now().strftime('%y%m%d-%H%M%S'),depotDir)
             print(depotPath)
             if os.path.isdir(depotPath) :
                 shutil.move(depotPath,trashPath)
