@@ -61,9 +61,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 
 	protected void observeTaskCompletions(CourseModelStudent model, CourseViewStudent view) {
 		T.call(this);
-		
-		view.displayDoneTasks(false);
-		
+
 		model.getCompletions().removeObservers();
 		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByAtomicTaskId>() {
 			@Override
@@ -81,8 +79,10 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	@Override
 	protected void displayEntryTask(CourseModelStudent model, CourseViewStudent view, AtomicTask atomicTask) {
 		T.call(this);
+		
+		AtomicTaskCompletion completion = getCompletion(model, atomicTask);
 
-		view.appendEntryTask(model.getGroupId().getValue(), atomicTask);
+		view.appendEntryTask(model.getGroupId().getValue(), atomicTask, completion);
 	}
 
 	private void observeAtomicTaskCompletions(CourseModelStudent model, CompletionByAtomicTaskId completions, CourseViewStudent view, String groupId) {
@@ -97,7 +97,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 
 				AtomicTask atomicTask = model.atomicTask(currentTask().getPath(), atomicTaskId);
 				if(atomicTask != null) {
-					view.addCompletionToEntryTask(groupId, atomicTask, completion);
+					view.updateAtomicTaskCompletion(groupId, atomicTask, completion);
 				}
 			}
 
@@ -107,8 +107,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 				
 				AtomicTask atomicTask = model.atomicTask(currentTask().getPath(), atomicTaskId);
 				if(atomicTask != null) {
-					view.removeEntryTask(atomicTask);
-					view.appendEntryTask(groupId, atomicTask);
+					view.updateAtomicTaskCompletion(groupId, atomicTask, null);
 				}
 			}
 			
@@ -141,11 +140,10 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 		
 	}
 
-	@SuppressWarnings("unused")
 	private AtomicTaskCompletion getCompletion(CourseModelStudent model, AtomicTask atomicTask) {
 		T.call(this);
 		
-		CompletionByAtomicTaskId completions =  model.getCompletions().valueOf(currentTask().id());
+		CompletionByAtomicTaskId completions =  model.getCompletions().valueOf(currentTask().getPath().toKey());
 
 		AtomicTaskCompletion completion = null;
 		if(completions != null) {
@@ -156,10 +154,12 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	}
 
 	@Override
-	protected void displayExitTask(CourseModelStudent model, CourseViewStudent view, AtomicTask task) {
+	protected void displayExitTask(CourseModelStudent model, CourseViewStudent view, AtomicTask atomicTask) {
 		T.call(this);
 
+		AtomicTaskCompletion completion = getCompletion(model, atomicTask);
+
 		String groupId = model.getGroupId().getValue();
-		view.appendExitTask(groupId, task);
+		view.appendExitTask(groupId, atomicTask, completion);
 	}
 }

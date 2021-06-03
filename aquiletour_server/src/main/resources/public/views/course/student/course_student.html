@@ -33,15 +33,14 @@
                     <div class="d-flex justify-content-start align-items-center">
                         <a id="parent-task-link" class="btn btn-info btn-small me-3" style="line-height:0px;" href="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
+                                <path fill-rule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z"/>
                             </svg>
                         </a>
                         <h5 class="mt-1 mb-1 me-3" id="task-title"></h5>
                         <div class="flex-fill"></div>
                         <div class="d-flex align-items-center" id="endtime-container">
-                            <div class="me-3" id="endtime-label">À terminer avant:</div>
+                            <div class="me-3" id="endtime-label"></div>
                             <div class="border p-2 bg-warning text-dark" id="uneditable-endtime">
-                                14 juin 2010 à 23:59
                             </div>
                         </div>
                     </div>
@@ -55,8 +54,12 @@
 
                     <div id="done-container">
                         <h6 class="mt-3 mb-3"><u>Déjà fait</u></h6>
-                        <div class="d-flex justify-content-between" id="done-tasks-container">
-                            <div class="ms-3 border p-2" id="git-progression-container"><a href="#" id="git-progression-link">Commits reçus</a></div>
+                        <div class="d-flex justify-content-around" id="done-tasks-container">
+                            <div class="d-flex justify-content-around" id="done-entry-tasks-container">
+                            </div>
+                            <div class="d-flex justify-content-around" id="done-exit-tasks-container">
+                                <div class="ms-3 border p-2" id="git-progression-container"><a href="#" id="git-progression-link">Commits reçus</a></div>
+                            </div>
                         </div>
                     </div>
 
@@ -65,36 +68,21 @@
                             <h6 class="mt-3 mb-3 me-3"><u>À faire</u>
                             </h6>
                         </div>
-                        <div class="d-flex justify-content-between" id="todo-tasks-container">
-                        </div>
-                        <div class="d-flex justify-content-around">
-                            <div class="border" style="opacity:0.5">
-                                <div class="me-3">Confirmer que j'ai terminé</div>
-                                <div class="form-check form-switch" 
-                                     style="padding-right:0px;margin-right:-1rem;">
-                                    <form class="add-task-id-to-id" action="" method="post" id="task-completed-form">
-                                        <input class="add-task-id-to-value" name="taskCompletedId" value="" style="display:none;"></input>
-                                        <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
-                                               id="task-completed-checkbox"
-                                               name="ifTaskCompleted" 
-                                               type="checkbox" 
-                                               form="task-completed-form">
-                                    </form>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
-                                          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
-                                    </svg>
-                                </div>
+                        <div class="d-flex justify-content-around" id="todo-tasks-container">
+                            <div class="d-flex justify-content-around" id="todo-entry-tasks-container">
+                            </div>
+                            <div class="d-flex justify-content-around" id="todo-exit-tasks-container">
                             </div>
                         </div>
                     </div>
                     <div class='d-flex justify-content-center p-2 bg-warning align-items-center mt-3' id="to-complete-first-container">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
-                                      <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
-                                </svg>
-                                <a class="ms-2 me-2 text-dark" href="#" id="to-complete-first-link" style="text-decoration:none;">Terminer d'abord le TP2</a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
-                                      <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
-                                </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                        </svg>
+                        <a class="ms-2 me-2 text-dark" href="#" id="to-complete-first-link" style="text-decoration:none;">Terminer d'abord le TP2</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -104,7 +92,7 @@
                     <h5 class="mt-0 mb-0" >Sous-étapes</h5>
                     <div class="flex-fill"></div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16" id="subtask-lock">
-                          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
                     </svg>
                 </div>
                 <div class="card-body">
@@ -129,28 +117,56 @@
 
     </div>
 
+</div>
 
-
+<div class="card p-2" 
+     style="display:none !important;"
+     id="atomic-task-container-default">
+    <div class="d-flex justify-content-start align-items-center">
+        <div class="me-3">Confirmer que j'ai terminé</div>
+        <div class="d-flex"></div>
+        <svg xmlns="http://www.w3.org/2000/svg"
+             id="atomic-task-lock-default" 
+             style="display:none !important;"
+             width="16" height="16" 
+                        fill="currentColor" 
+                        class="bi bi-lock" 
+                        viewBox="0 0 16 16">
+            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+        </svg>
+        <div class="form-check form-switch" 
+             id="atomic-task-checkbox-container-default"
+             style="padding-right:0px">
+            <form class="" action="" method="post" id="atomic-task-checkbox-form-default">
+                <input class="add-atomic-task-id-to-value" name="atomicTaskCompletedId" value="" style="display:none;"></input>
+                <input class="form-check-input aquiletour-checkbox" 
+                       id="atomic-task-checkbox-default"
+                       name="atomicTaskCompleted" 
+                       type="checkbox" 
+                       form="atomic-task-checkbox-form-default">
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="card git-repo-task-submit-url">
     <div class="card-header bg-transparent">URL de votre dépôt Git</div>
     <div class="card-body">
-    <form class="p-1" action="" method="post">
-        <input class="add-student-id-to-value" name="studentId" style="display:none;"></input>
-        <input class="add-group-id-to-value" name="groupId" style="display:none;"></input>
-        <input class="add-task-id-to-value" name="taskId" style="display:none;"></input>
-        <input class="add-atomic-task-id-to-value" name="atomicTaskId" style="display:none;"></input>
-        <input class="add-repo-path-to-value" name="repoPath" style="display:none;"></input>
-        <input name="repoUrl" class="form-text" style="min-width:20rem;"></input>
-        <div class="d-flex justify-content-end">
-        <button type="submit" name="StudentRegistersRepo" class="btn btn-secondary btn-sm mt-2" style="line-height:0p;x">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
-                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
-            </svg> Sauvegarder
-        </button>
-        </div>
-    </form>
+        <form class="p-1" action="" method="post">
+            <input class="add-student-id-to-value" name="studentId" style="display:none;"></input>
+            <input class="add-group-id-to-value" name="groupId" style="display:none;"></input>
+            <input class="add-task-id-to-value" name="taskId" style="display:none;"></input>
+            <input class="add-atomic-task-id-to-value" name="atomicTaskId" style="display:none;"></input>
+            <input class="add-repo-path-to-value" name="repoPath" style="display:none;"></input>
+            <input name="repoUrl" class="form-text" style="min-width:20rem;"></input>
+            <div class="d-flex justify-content-end">
+                <button type="submit" name="StudentRegistersRepo" class="btn btn-secondary btn-sm mt-2" style="line-height:0p;x">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                        <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                    </svg> Sauvegarder
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -185,6 +201,7 @@
 
     </form>
 </div>
+
 
 <div class="ms-4 git-repo-task-repo-cloned">
     Clonage réussi pour <div class="repo-url"></div>

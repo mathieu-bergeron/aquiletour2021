@@ -263,13 +263,7 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 	public String id() {
-		return idFromPath(getPath());
-	}
-	
-	public static String idFromPath(Path taskPath) {
-		T.call(Task.class);
-		
-		return taskPath.toString();
+		return getPath().toString();
 	}
 
 	public void forEachSubTaskInOrder(TaskForEach lambda) {
@@ -903,7 +897,7 @@ public class Task implements NtroModelValue, TaskNode {
 		CompletionByAtomicTaskId atomicTaskCompletions = null;
 
 		if(completions != null) {
-			atomicTaskCompletions = completions.valueOf(this.id());
+			atomicTaskCompletions = completions.valueOf(this.getPath().toKey());
 		}
 
 		return atomicTaskCompletions;
@@ -942,15 +936,15 @@ public class Task implements NtroModelValue, TaskNode {
 
 	private boolean areExitTasksDone(CompletionByAtomicTaskId completions) {
 		T.call(this);
-
+		
 		return areAtomicTasksDone(completions, getExitTasks());
 	}
 
 	private boolean areAtomicTasksDone(CompletionByAtomicTaskId completions, StoredAtomicTasks atomicTasks) {
 		T.call(this);
-
-		return atomicTasks.reduceTo(Boolean.class, true, (index, atomicTask, tasksDone) -> {
-			if(!tasksDone) {
+		
+		return atomicTasks.reduceTo(Boolean.class, true, (index, atomicTask, accumulator) -> {
+			if(accumulator == false) {
 				throw new Break();
 			}
 
@@ -961,11 +955,11 @@ public class Task implements NtroModelValue, TaskNode {
 
 			if(completion == null
 					|| !completion.isCompleted()) {
-				
-				tasksDone = false;
+
+				accumulator = false;
 			}
 
-			return tasksDone;
+			return accumulator;
 		});
 	}
 

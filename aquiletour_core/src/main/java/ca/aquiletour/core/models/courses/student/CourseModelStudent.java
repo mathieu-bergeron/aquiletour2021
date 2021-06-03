@@ -134,4 +134,23 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 		return currentTasks;
 	}
 
+	public void updateCompletions(Path taskPath, String atomicTaskId, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		CompletionByAtomicTaskId atomicCompletions = getCompletions().valueOf(taskPath.toKey());
+		if(atomicCompletions == null) {
+			atomicCompletions = new CompletionByAtomicTaskId();
+			getCompletions().putEntry(taskPath.toKey(), atomicCompletions);
+		}
+		
+		if(completion != null) {
+
+			atomicCompletions.putEntry(atomicTaskId, completion);
+
+		}else {
+
+			atomicCompletions.putEntry(atomicTaskId, new AtomicTaskCompletion());
+		}
+	}
+
 }

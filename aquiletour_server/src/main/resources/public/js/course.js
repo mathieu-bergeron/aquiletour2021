@@ -99,9 +99,9 @@ function updatePosition(canvas) {
 
         if (jsonValue === undefined || jsonValue == null || jsonValue == "") {
             mySiblings = [];
-            console.log("no siblings");
+            //console.log("no siblings");
         } else {
-            console.log("jsonValue: " + jsonValue);
+            //console.log("jsonValue: " + jsonValue);
             jsonValue = jsonValue.replace(/\\"/g,'"');
             mySiblings = JSON.parse(jsonValue);
         }

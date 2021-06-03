@@ -4,6 +4,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloneFailed;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
@@ -21,9 +22,12 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
-import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
+
+	private HtmlElement atomicTaskContainerDefault;
+	private HtmlElement atomicTaskLockDefault;
+	private HtmlElement atomicTaskCheckboxContainerDefault;
 
 	private HtmlElement subTaskLock;
 
@@ -44,7 +48,13 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement toCompleteFirstLink;
 
 	private HtmlElement doneContainer;
+	private HtmlElement doneEntryTasksContainer;
+	private HtmlElement doneExitTasksContainer;
+
 	private HtmlElement todoContainer;
+	private HtmlElement todoEntryTasksContainer;
+	private HtmlElement todoExitTasksContainer;
+
 
 	private HtmlElement doneTasksContainer;
 	private HtmlElement todoTasksContainer;
@@ -57,6 +67,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
+
+		atomicTaskContainerDefault = this.getRootElement().find("#atomic-task-container-default").get(0);
+		atomicTaskLockDefault = this.getRootElement().find("#atomic-task-lock-default").get(0);
+		atomicTaskCheckboxContainerDefault = this.getRootElement().find("#atomic-task-checkbox-container-default").get(0);
 
 		subTaskLock = this.getRootElement().find("#subtask-lock").get(0);
 
@@ -76,7 +90,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		toCompleteFirstLink = this.getRootElement().find("#to-complete-first-link").get(0);
 
 		doneContainer = this.getRootElement().find("#done-container").get(0);
+		doneEntryTasksContainer = this.getRootElement().find("#done-entry-tasks-container").get(0);
+		doneExitTasksContainer = this.getRootElement().find("#done-exit-tasks-container").get(0);
+
 		todoContainer = this.getRootElement().find("#todo-container").get(0);
+		todoEntryTasksContainer = this.getRootElement().find("#todo-entry-tasks-container").get(0);
+		todoExitTasksContainer = this.getRootElement().find("#todo-exit-tasks-container").get(0);
 
 		doneTasksContainer = this.getRootElement().find("#done-tasks-container").get(0);
 		todoTasksContainer = this.getRootElement().find("#todo-tasks-container").get(0);
@@ -84,6 +103,10 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
+
+		MustNot.beNull(atomicTaskLockDefault);
+		MustNot.beNull(atomicTaskContainerDefault);
+		MustNot.beNull(atomicTaskCheckboxContainerDefault);
 
 		MustNot.beNull(subTaskLock);
 
@@ -100,17 +123,26 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(endtimeLabel);
 
 		MustNot.beNull(doneContainer);
+		MustNot.beNull(doneEntryTasksContainer);
+		MustNot.beNull(doneExitTasksContainer);
+
 		MustNot.beNull(todoContainer);
+		MustNot.beNull(todoEntryTasksContainer);
+		MustNot.beNull(todoExitTasksContainer);
 
 		MustNot.beNull(doneTasksContainer);
 		MustNot.beNull(todoTasksContainer);
 
+		atomicTaskContainerDefault.hide();
 
-		Ntro.verify(that(addTaskIdToForm.size() > 0).isTrue());
-		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
-		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
+		doneContainer.hide();
+		doneEntryTasksContainer.hide();
+		doneExitTasksContainer.hide();
 
-		
+		todoContainer.hide();
+		todoEntryTasksContainer.hide();
+		todoExitTasksContainer.hide();
+
 		subTaskLock.hide();
 		gitRepoTaskSubmitUrl.hide();
 		gitRepoTaskCloningRepo.hide();
@@ -184,17 +216,21 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	@Override
 	public void clearEntryTasks() {
 		T.call(this);
-
+		
+		doneEntryTasksContainer.deleteChildrenForever();
+		todoEntryTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
 	public void clearExitTasks() {
 		T.call(this);
-
+		
+		doneExitTasksContainer.deleteChildrenForever();
+		todoExitTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
-	public void appendEntryTask(String groupId, AtomicTask task) {
+	public void appendEntryTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		if(task instanceof GitRepoTask) {
@@ -259,30 +295,73 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		formElement.show();
 	}
 
-	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement formElement) {
+	private void identifyAtomicTask(AtomicTask task, HtmlElement container) {
 		T.call(this);
+		
+		HtmlElements addAtomicTaskPathToValue = container.find(".add-atomic-task-id-to-value");
+		addAtomicTaskPathToValue.appendToAttribute("value", task.getId());
+	}
 
-		formElement.addClass(atomicTaskId(repoTask));
+	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement container) {
+		T.call(this);
+		
+		identifyAtomicTask(repoTask, container);
 
-		HtmlElements addStudentIdToValue = formElement.find(".add-student-id-to-value");
-		HtmlElements addGroupIdToValue = formElement.find(".add-group-id-to-value");
-		HtmlElements addRepoPathToValue = formElement.find(".add-repo-path-to-value");
-		HtmlElements addAtomicTaskIdToValue = formElement.find(".add-atomic-task-id-to-value");
+		container.addClass(atomicTaskId(repoTask));
+
+		HtmlElements addStudentIdToValue = container.find(".add-student-id-to-value");
+		HtmlElements addGroupIdToValue = container.find(".add-group-id-to-value");
+		HtmlElements addRepoPathToValue = container.find(".add-repo-path-to-value");
 		
 		addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getId());
 		addGroupIdToValue.appendToAttribute("value", groupId);
 		addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
-		addAtomicTaskIdToValue.appendToAttribute("value", repoTask.getId());
 	}
 
 	@Override
-	public void appendExitTask(String groupId, AtomicTask task) {
+	public void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
+		
+		if(task instanceof DefaultAtomicTask) {
+			
+			appendDefaultExitTask(groupId, task, completion);
+			
+		}
 		
 	}
 
+	private void appendDefaultExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		HtmlElement atomicTaskContainer = atomicTaskContainerDefault.clone();
+		identifyAtomicTask(task, atomicTaskContainer);
+		atomicTaskContainer.show();
+		
+		HtmlElement atomicTaskCheckbox = atomicTaskContainer.find("#atomic-task-checkbox-default").get(0);
+		
+		if(completion == null) {
+
+			todoContainer.show();
+			todoExitTasksContainer.show();
+			todoExitTasksContainer.appendElement(atomicTaskContainer);
+
+			atomicTaskCheckbox.removeAttribute("checked");
+			atomicTaskCheckbox.removeAttribute("disabled");
+
+		}else {
+			
+			doneContainer.show();
+			doneExitTasksContainer.show();
+			doneExitTasksContainer.appendElement(atomicTaskContainer);
+
+			atomicTaskCheckbox.setAttribute("checked", "true");
+			atomicTaskCheckbox.setAttribute("disabled", "true");
+		}
+	}
+
+
 	@Override
-	public void addCompletionToEntryTask(String groupId, AtomicTask atomicTask, AtomicTaskCompletion completion) {
+	public void updateAtomicTaskCompletion(String groupId, AtomicTask atomicTask, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		removeEntryTask(atomicTask);

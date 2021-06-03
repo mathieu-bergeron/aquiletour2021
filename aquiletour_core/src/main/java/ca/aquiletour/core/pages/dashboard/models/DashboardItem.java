@@ -57,10 +57,10 @@ public abstract class DashboardItem<CT extends CurrentTask> implements NtroModel
 		}
 	}
 
-	public boolean matches(CoursePath coursePath) {
+	public boolean hasCoursePath(CoursePath coursePath) {
 		T.call(this);
 		
-		return this.coursePath.equals(coursePath);
+		return getCoursePath().equals(coursePath);
 	}
 	
 }

@@ -493,19 +493,40 @@ public class CourseManager {
 		}
 	}
 
-	public static void taskCompletedByUser(ModelStoreSync modelStore, 
-			                               CoursePath coursePath, 
-			                               Path taskPath, 
-			                               String atomicTaskId,
-			                               User user) throws BackendError {
+	public static void updateStudentTaskCompletions(ModelStoreSync modelStore, 
+			                                        CoursePath coursePath, 
+			                                        Path taskPath, 
+			                                        String atomicTaskId,
+			                                        AtomicTaskCompletion completion,
+			                                        User student) throws BackendError {
 		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getId());
 
+		modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+			@Override
+			public void update(CourseModelStudent course) {
+				T.call(this);
+				
+				course.updateCompletions(taskPath, atomicTaskId, completion);
+			}
+		});
+	}
+
+	public static void updateCourseTaskCompletions(ModelStoreSync modelStore, 
+			                                       CoursePath coursePath, 
+			                                       Path taskPath, 
+			                                       String atomicTaskId,
+			                                       AtomicTaskCompletion completion,
+			                                       User student) throws BackendError {
+		T.call(CourseManager.class);
+		
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
 			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
-				course.taskCompletedByStudent(taskPath, atomicTaskId, user.getId());
+				course.taskCompletedByStudent(taskPath, atomicTaskId, student.getId());
 			}
 		});
 	}

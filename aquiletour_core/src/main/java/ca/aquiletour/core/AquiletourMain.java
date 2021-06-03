@@ -92,7 +92,7 @@ import ca.aquiletour.core.models.user_uuid.UuidByUserId;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
-import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
+import ca.aquiletour.core.pages.course.messages.AtomicTaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
@@ -389,7 +389,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(UpdateUserInfoMessage.class);
 		Ntro.registerSerializableClass(UpdateTaskInfoMessage.class);
-		Ntro.registerSerializableClass(TaskCompletedMessage.class);
+		Ntro.registerSerializableClass(AtomicTaskCompletedMessage.class);
 
 		Ntro.registerSerializableClass(ShowCourseListMessageTeacher.class);
 		Ntro.registerSerializableClass(ShowCourseListMessageStudent.class);

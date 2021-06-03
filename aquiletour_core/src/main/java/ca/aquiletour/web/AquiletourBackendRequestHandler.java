@@ -16,6 +16,7 @@ import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultCompletion;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
@@ -34,7 +35,7 @@ import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
-import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
+import ca.aquiletour.core.pages.course.messages.AtomicTaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
@@ -800,19 +801,16 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("atomicTaskCompletedId")) {
 				
 				String atomicTaskId = parameters.get("atomicTaskCompletedId")[0];
-				String taskId = parameters.get("taskId")[0];
-				Path taskPath = Path.fromFileName(taskId);
 
-				TaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseTaskMessage(TaskCompletedMessage.class,
-																						                 path,
-																							             parameters,
-             																							 sessionData);
-				taskCompletedMessage.setTaskPath(taskPath);
+				AtomicTaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseTaskMessage(AtomicTaskCompletedMessage.class,
+																						                           path,
+																							                       parameters,
+             																							           sessionData);
+
+				taskCompletedMessage.setCompletion(new DefaultCompletion());
 				taskCompletedMessage.setAtomicTaskId(atomicTaskId);
 				
 				Ntro.messages().send(taskCompletedMessage);
-
-				throw new RuntimeException("FIXME");
 			}
 	}
 

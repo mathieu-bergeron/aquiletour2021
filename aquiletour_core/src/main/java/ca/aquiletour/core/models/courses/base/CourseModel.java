@@ -392,12 +392,10 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 			                                  AtomicTaskCompletion newCompletion) {
 		T.call(this);
 
-		String taskId = Task.idFromPath(taskPath);
-		
-		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskPath.toKey());
 		if(taskCompletions == null) {
 			taskCompletions = new CompletionByAtomicTaskId();
-			studentCompletions.putEntry(taskId, taskCompletions);
+			studentCompletions.putEntry(taskPath.toKey(), taskCompletions);
 		}
 
 		taskCompletions.putEntry(atomicTaskId, newCompletion);
@@ -408,9 +406,7 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 			                                  String atomicTaskId) {
 		T.call(this);
 
-		String taskId = Task.idFromPath(taskPath);
-		
-		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskPath.toKey());
 		if(taskCompletions != null) {
 			taskCompletions.removeEntry(atomicTaskId);
 		}
@@ -423,9 +419,7 @@ public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, 
 		
 		AtomicTaskCompletion result = null;
 
-		String taskId = Task.idFromPath(taskPath);
-		
-		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskPath.toKey());
 		if(taskCompletions != null) {
 			result = taskCompletions.valueOf(atomicTaskId);
 		}

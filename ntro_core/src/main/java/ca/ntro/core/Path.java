@@ -9,7 +9,7 @@ import ca.ntro.core.system.trace.T;
 public class Path implements JsonSerializable {
 	
 	public static final String PATH_SEPARATOR = "/";
-	public static final String KEY_SEPARATOR = "¤";
+	public static final String KEY_SEPARATOR = "/";
 	public static final String FILENAME_SEPARATOR = "¤";
 	public static final String HTML_ID_SEPARATOR = "--";
 	

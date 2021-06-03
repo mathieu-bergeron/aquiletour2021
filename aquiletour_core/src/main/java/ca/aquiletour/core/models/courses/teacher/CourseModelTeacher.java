@@ -162,8 +162,6 @@ public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 	public void taskCompletedByStudent(Path taskPath, String atomicTaskId, String studentId) {
 		T.call(this);
 		
-		String taskId = pathToId(taskPath);
-		
 		StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
 		
 		if(studentCompletions == null) {
@@ -175,10 +173,10 @@ public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 		
 		if(groupId != null) {
 
-			CompletionByAtomicTaskId studentTaskCompletions = studentCompletions.valueOf(taskId);
+			CompletionByAtomicTaskId studentTaskCompletions = studentCompletions.valueOf(taskPath.toKey());
 			if(studentTaskCompletions == null) {
 				studentTaskCompletions = new CompletionByAtomicTaskId();
-				studentCompletions.putEntry(taskId, studentTaskCompletions);
+				studentCompletions.putEntry(taskPath.toKey(), studentTaskCompletions);
 			}
 			
 			if(atomicTaskId != null && !atomicTaskId.isEmpty()) {
@@ -274,4 +272,5 @@ public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 
 		return allCurrentTasks;
 	}
+
 }
