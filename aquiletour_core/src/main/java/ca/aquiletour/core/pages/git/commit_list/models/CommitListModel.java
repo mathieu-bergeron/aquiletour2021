@@ -1,11 +1,17 @@
-package ca.aquiletour.core.pages.git.commit_list;
+package ca.aquiletour.core.pages.git.commit_list.models;
 
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.ntro.core.models.NtroModel;
 
 public class CommitListModel implements NtroModel {
 
-	private String semesterId = "", studentId = "", exercisePath = "", fromDate = "", toDate = "", courseId = "", groupId = "";
+	private String semesterId = "";
+	private String studentId = "";
+	private String exercisePath = "";
+	private String fromDate = "";
+	private String toDate = "";
+	private String courseId = "";
+	private String groupId = "";
 	private ObservableCommitList commits = new ObservableCommitList();
 
 	public String getSemesterId() {

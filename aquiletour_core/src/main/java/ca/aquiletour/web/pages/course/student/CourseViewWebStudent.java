@@ -62,6 +62,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElements addTaskIdToForm;
 	private HtmlElements addTaskIdToValue;
 	private HtmlElements addTaskIdToId;
+	
+	private String gitProgressionHref = "";
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -168,11 +170,11 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		addTaskIdToValue.appendToAttribute("value", task.getPath().toFileName());
 		addTaskIdToId.appendToAttribute("id", task.getPath().toFileName());
 		
-		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_COMMIT_LIST_URL_SEGMENT 
+		gitProgressionHref = "/" + Constants.GIT_COMMIT_LIST_URL_SEGMENT 
 				                                + coursePath.toUrlPath()
 				                                + task.id()
 												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
-												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId());
+												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId();
 	}
 
 	@Override
@@ -352,6 +354,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	@Override
 	public void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
+		
+		gitProgressionHref += "&" + Constants.GROUP_URL_PARAM + "=" + groupId;
+		gitProgressionLink.setAttribute("href", gitProgressionHref);
 		
 		if(task instanceof DefaultAtomicTask) {
 			

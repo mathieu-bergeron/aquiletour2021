@@ -12,8 +12,8 @@ import ca.aquiletour.core.pages.course_list.student.views.CourseListItemViewStud
 import ca.aquiletour.core.pages.course_list.student.views.CourseListViewStudent;
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListItemViewTeacher;
 import ca.aquiletour.core.pages.course_list.teacher.views.CourseListViewTeacher;
-import ca.aquiletour.core.pages.git.commit_list.CommitListView;
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitView;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;

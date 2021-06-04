@@ -1,5 +1,7 @@
 package ca.aquiletour.server.http;
 
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.NtroModel;
@@ -64,6 +66,10 @@ public class ModelHandler extends AbstractHandler {
 			} else if(message instanceof NtroSetModelMessage) {
 
 				handleSetModelMessage(baseRequest, response, (NtroSetModelMessage) message);
+
+			} else if(message instanceof GetCommitsForPath) {
+
+				handleGetCommitsForPath(baseRequest, response, (GetCommitsForPath) message);
 				
 			}else {
 
@@ -84,10 +90,48 @@ public class ModelHandler extends AbstractHandler {
     }
 
 	@SuppressWarnings("unchecked")
-	private void handleGetModelMessage(Request baseRequest, HttpServletResponse response,
-			NtroGetModelMessage getModelNtroMessage) throws IOException {
+	private void handleGetCommitsForPath(Request baseRequest, 
+			                             HttpServletResponse response,
+			                             GetCommitsForPath getCommitsForPathMessage) throws IOException {
+		T.call(this);
+		
+		DocumentPath documentPath = getCommitsForPathMessage.documentPath();
+		String authToken = getCommitsForPathMessage.getAuthToken();
 
-		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
+		ModelLoader modelLoader = Ntro.modelStore().getModelLoaderFromRequest(Constants.GIT_API_URL, getCommitsForPathMessage);
+        modelLoader.execute();
+        
+        handleModelResponse(baseRequest, response, documentPath, authToken, modelLoader.getModel());
+	}
+
+	private void handleModelResponse(Request baseRequest, 
+			                         HttpServletResponse response, 
+			                         DocumentPath documentPath, 
+			                         String authToken, 
+			                         NtroModel model) throws IOException {
+
+		T.call(this);
+
+        // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
+        // NOTE:  we do not need to connect that model to the store
+        //        only models in the backend
+        RegisteredSockets.registerModelObserver(authToken, documentPath);
+        // ??
+        // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
+
+        response.getOutputStream().write(Ntro.jsonService().toString(model).getBytes());
+        response.flushBuffer();
+
+        baseRequest.setHandled(true);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void handleGetModelMessage(Request baseRequest, 
+			                           HttpServletResponse response,
+			                           NtroGetModelMessage getModelNtroMessage) throws IOException {
+		T.call(this);
+
+		DocumentPath documentPath = getModelNtroMessage.documentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
 		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
@@ -97,17 +141,7 @@ public class ModelHandler extends AbstractHandler {
         
         NtroModel model = modelLoader.getModel();
         
-        // FIXME: user observation needs to be global (not specific to a single modelStore as there is one per thread!)
-        // NOTE:  we do not need to connect that model to the store
-        //        only models in the backend
-        RegisteredSockets.registerModelObserver(user, documentPath);
-        // ??
-        // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
-
-        response.getOutputStream().write(Ntro.jsonService().toString(modelLoader.getModel()).getBytes());
-        response.flushBuffer();
-
-        baseRequest.setHandled(true);
+        handleModelResponse(baseRequest, response, documentPath, user.getAuthToken(), model);
 	}
 
 	static String readBody(Request baseRequest) throws IOException {

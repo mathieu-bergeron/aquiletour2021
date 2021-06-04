@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.git.commit_list.messages;
 
 import ca.aquiletour.core.messages.git.OnNewCommits;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitView;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;

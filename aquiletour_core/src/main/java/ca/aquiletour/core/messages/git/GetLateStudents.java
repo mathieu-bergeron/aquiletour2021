@@ -12,7 +12,7 @@ import ca.ntro.stores.DocumentPath;
 public class GetLateStudents extends ShowLateStudentsMessage implements NtroModelMessage {
 	
 	@Override
-	public DocumentPath getDocumentPath() {
+	public DocumentPath documentPath() {
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();

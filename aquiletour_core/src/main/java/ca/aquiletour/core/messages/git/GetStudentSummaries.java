@@ -13,7 +13,7 @@ public class GetStudentSummaries extends ShowStudentSummariesMessage implements 
 	
 
 	@Override
-	public DocumentPath getDocumentPath() {
+	public DocumentPath documentPath() {
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();

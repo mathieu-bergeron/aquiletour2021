@@ -8,7 +8,7 @@ import ca.ntro.services.JsonService;
 public class JsonServiceJdk extends JsonService {
 
 	private static final Gson gsonPrettyPrint = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
-	private static final Gson gson = new GsonBuilder().serializeNulls().create();
+	private static final Gson gson = new GsonBuilder().create();
 
 	@Override
 	protected String writeJson(Object javaValue) {

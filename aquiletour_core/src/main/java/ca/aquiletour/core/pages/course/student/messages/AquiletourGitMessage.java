@@ -8,6 +8,7 @@ public class AquiletourGitMessage extends AtomicTaskMessage {
 	private String studentId;
 	private String groupId;
 	private Path repoPath;
+	private Path exercisePath;
 	private String repoUrl;
 
 	public String getRepoUrl() {
@@ -42,4 +43,11 @@ public class AquiletourGitMessage extends AtomicTaskMessage {
 		this.repoPath = repoPath;
 	}
 
+	public Path getExercisePath() {
+		return exercisePath;
+	}
+
+	public void setExercisePath(Path exercisePath) {
+		this.exercisePath = exercisePath;
+	}
 }

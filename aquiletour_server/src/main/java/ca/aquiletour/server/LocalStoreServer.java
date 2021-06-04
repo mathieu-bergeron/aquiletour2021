@@ -8,18 +8,47 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.messages.git.GetCommitsForPath;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
 import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.services.ResourceLoaderTaskJdk;
 import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
+import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 
 public class LocalStoreServer extends LocalStoreFiles {
+
+	@Override
+	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
+		T.call(this);
+		
+		JsonLoader jsonLoader = null;
+		
+		if(documentPath.getCollection().equals(Ntro.introspector().getSimpleNameForClass(CommitListModel.class))) {
+			System.out.println("[LocalStoreServer] special case for : " + documentPath.getCollection());
+			
+			GetCommitsForPath getCommitsForPath = GetCommitsForPath.fromDocumentPath(documentPath);
+			jsonLoader = jsonLoaderFromRequest(Constants.GIT_API_URL, getCommitsForPath);
+
+		}
+		
+		if(jsonLoader == null) {
+			
+			jsonLoader = super.getJsonLoader(targetClass, documentPath);
+
+		}
+
+		return jsonLoader;
+	}
 	
 	@Override
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
@@ -64,14 +93,14 @@ public class LocalStoreServer extends LocalStoreFiles {
 			}else {
 				
 				Log.error("[LocalStoreServer] responseCode != 200 for " + messageString);
+				response = ModelStore.emptyModelString(message.documentPath());
 			}
 			
 		} catch (IOException e) {
 			Log.error("Unable to connect to " + serviceUrl);
+			response = ModelStore.emptyModelString(message.documentPath());
 		}
-		
+
 		return new JsonLoaderMemory(response);
 	}
-
-
 }

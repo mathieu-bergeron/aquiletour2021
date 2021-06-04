@@ -1,9 +1,12 @@
 package ca.aquiletour.core.pages.git.commit_list;
 
 import ca.aquiletour.core.messages.git.OnNewCommits;
+import ca.aquiletour.core.pages.git.commit_list.handlers.CommitListViewModel;
 import ca.aquiletour.core.pages.git.commit_list.messages.OnNewCommitsHandler;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListHandler;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitView;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.ntro.core.models.EmptyModelLoader;
 import ca.ntro.core.mvc.NtroContext;
@@ -15,21 +18,6 @@ public class CommitListController extends NtroController<RootController> {
 	@Override
 	protected void onCreate(NtroContext<?,?> context) {
 		T.call(this);
-		
-		/* Il faut faire mieux comme API
-		 * 
-		 * - pour commencer, uniquement
-		 *     
-		 *                      Controller -->
-		 *     ShowCommitListMessage.class --> ShowCommitListHandler
-		 *     
-		 * - une fois le ShowCommitListMessage rȩcu, on ajoute:
-		 * 
-		 *   ViewLoader()       -->
-		 *   SubViewLoader()    -->    CommitListViewModel
-		 *   ModelLoader()      -->     
-		 *   SubModelLoader()   -->
-		 */
 
 		setViewLoader(CommitListView.class, "fr");
 

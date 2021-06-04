@@ -159,17 +159,23 @@ public class RegisteredSockets {
 	public static void registerModelObserver(NtroUser user, DocumentPath documentPath) {
 		T.call(RegisteredSockets.class);
 
+		registerModelObserver(user.getAuthToken(), documentPath);
+	}
+
+	public static void registerModelObserver(String authToken, DocumentPath documentPath) {
+		T.call(RegisteredSockets.class);
+
 		Set<String> observerTokens = tokensByObservedPath.get(documentPath);
 		if(observerTokens == null) {
 			observerTokens = new ConcurrentHashSet<String>();
 			tokensByObservedPath.put(documentPath, observerTokens);
 		}
-		observerTokens.add(user.getAuthToken());
+		observerTokens.add(authToken);
 		
-		Set<DocumentPath> observedPaths = observedPathsByToken.get(user.getAuthToken());
+		Set<DocumentPath> observedPaths = observedPathsByToken.get(authToken);
 		if(observedPaths == null) {
 			observedPaths = new ConcurrentHashSet<DocumentPath>();
-			observedPathsByToken.put(user.getAuthToken(), observedPaths);
+			observedPathsByToken.put(authToken, observedPaths);
 		}
 		observedPaths.add(documentPath);
 	}

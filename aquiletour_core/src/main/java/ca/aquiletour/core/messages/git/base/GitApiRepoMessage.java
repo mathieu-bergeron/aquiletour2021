@@ -35,8 +35,14 @@ public class GitApiRepoMessage extends NtroMessage {
 
 	private String gitApiRepoPath(AquiletourGitMessage message) {
 		T.call(this);
-
-		return message.getRepoPath().toString();
+		
+		String repoPath = null;
+		
+		if(message.getRepoPath() != null) {
+			repoPath = message.getRepoPath().toString();
+		}
+		
+		return repoPath;
 	}
 
 	public String getTeacherId() {

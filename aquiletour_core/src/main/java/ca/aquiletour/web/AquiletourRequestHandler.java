@@ -337,12 +337,10 @@ public class AquiletourRequestHandler {
 
 		if (subPath.nameCount() >= 1) {
 			
-			String studentId = null;
-			String groupId = null;
-			String semesterId = null;
-			
-			ShowCommitListMessage showGitMessage = Ntro.messages().create(ShowCommitListMessage.class);
-
+			ShowCommitListMessage showGitMessage = AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListMessage.class,
+																			                                  subPath,
+																		                                      parameters,
+																			                                  sessionData);
 
 			Ntro.messages().send(showGitMessage);
 		}

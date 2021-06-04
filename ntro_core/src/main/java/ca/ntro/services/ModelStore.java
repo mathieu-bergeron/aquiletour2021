@@ -104,7 +104,7 @@ public abstract class ModelStore {
 	public ModelLoader getModelLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
 		T.call(this);
 
-		ModelLoader modelLoader = new ModelLoader(this, message.getDocumentPath());
+		ModelLoader modelLoader = new ModelLoader(this, message.documentPath());
 		
 		JsonLoader jsonLoader = jsonLoaderFromRequest(serviceUrl, message);
 		jsonLoader.setTaskId("JsonLoader");

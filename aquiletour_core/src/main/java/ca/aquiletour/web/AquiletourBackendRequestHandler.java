@@ -825,10 +825,30 @@ public class AquiletourBackendRequestHandler {
 											  parameters,
 											  sessionData);
 
-		String studentId = parameters.get("studentId")[0];
-		String groupId = parameters.get("groupId")[0];
-		Path repoPath = Path.fromRawPath(parameters.get("repoPath")[0]);
-		String repoUrl = parameters.get("repoUrl")[0];
+		String studentId = null;
+		String groupId = null;
+		Path repoPath = null;
+		String repoUrl = null;
+		
+		if(parameters.containsKey(Constants.USER_URL_PARAM)) {
+			studentId = parameters.get(Constants.USER_URL_PARAM)[0];
+		}else if(parameters.containsKey("studentId")) {
+			studentId = parameters.get("studentId")[0];
+		}
+		
+		if(parameters.containsKey(Constants.GROUP_URL_PARAM)) {
+			groupId = parameters.get(Constants.GROUP_URL_PARAM)[0];
+		}else if(parameters.containsKey("groupId")) {
+			groupId = parameters.get("groupId")[0];
+		}
+		
+		if(parameters.containsKey("repoPath")) {
+			repoPath = Path.fromRawPath(parameters.get("repoPath")[0]);
+		}
+
+		if(parameters.containsKey("repoUrl")) {
+			repoUrl = parameters.get("repoUrl")[0];
+		}
 
 		message.setStudentId(studentId);
 		message.setGroupId(groupId);
@@ -852,10 +872,6 @@ public class AquiletourBackendRequestHandler {
 		if(parameters.containsKey("atomicTaskId")) {
 
 			message.setAtomicTaskId(parameters.get("atomicTaskId")[0]);
-
-		}else {
-			
-			Log.warning("[createAtomicTaskMessage] atomicTaskId not defined");
 		}
 
 		return message;

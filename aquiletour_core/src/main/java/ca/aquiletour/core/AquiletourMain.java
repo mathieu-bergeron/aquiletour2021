@@ -127,7 +127,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardItemTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsModel;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesModel;
 import ca.aquiletour.core.pages.git.values.Commit;

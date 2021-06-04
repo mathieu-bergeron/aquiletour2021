@@ -1,7 +1,7 @@
 package ca.aquiletour.core.messages.git;
 
 import ca.aquiletour.core.messages.git.base.GitApiExerciseMessage;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
 
 public class OnNewCommits extends GitApiExerciseMessage {
 
