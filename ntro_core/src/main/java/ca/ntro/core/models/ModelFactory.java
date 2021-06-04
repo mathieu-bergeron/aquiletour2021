@@ -52,12 +52,10 @@ public class ModelFactory {
 			                                       HashSet<Object> localHeap) {
 		T.call(ModelFactory.class);
 		
-		/*
 		if(value == null) { 
-			System.out.println("initializeStoreConnections");
-			System.err.println(valuePath.toString());
+			Log.error("initializeStoreConnextions: " + valuePath.toString());
 			return;
-		}*/
+		}
 
 		if(Ntro.collections().setContainsExact(localHeap, value)) return;
 		
@@ -152,7 +150,7 @@ public class ModelFactory {
 
 			Object subValue = map.get(key);
 			
-			ValuePath subPath = valuePath.cloneModelValue();
+			ValuePath subPath = valuePath.cloneValuePath();
 			subPath.addFieldName(key);
 			
 			initializeStoreConnections(subValue, modelStore, subPath, localHeap);
@@ -169,7 +167,7 @@ public class ModelFactory {
 			
 			Object subValue = list.get(i);
 			
-			ValuePath subPath = valuePath.cloneModelValue();
+			ValuePath subPath = valuePath.cloneValuePath();
 			subPath.addFieldName(String.valueOf(i));
 
 			initializeStoreConnections(subValue, modelStore, subPath, localHeap);

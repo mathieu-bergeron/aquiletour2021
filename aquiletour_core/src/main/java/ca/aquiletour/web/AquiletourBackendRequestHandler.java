@@ -20,6 +20,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultComple
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
@@ -489,15 +490,33 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
-	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String courseId) {
+	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String queueId) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("makeAppointment")) {
+			
+			CoursePath coursePath = null;
+			TaskPath taskPath = null;
+			String taskTitle = null;
+			
+			if(parameters.containsKey("coursePath")) {
+				coursePath = CoursePath.fromKey(parameters.get("coursePath")[0]);
+			}
+
+			if(parameters.containsKey("taskPath")) {
+				taskPath = TaskPath.fromKey(parameters.get("taskPath")[0]);
+			}
+
+			if(parameters.containsKey("taskTitle")) {
+				taskTitle = parameters.get("taskTitle")[0];
+			}
 
 			AddAppointmentMessage addAppointmentMessage = Ntro.messages().create(AddAppointmentMessage.class);
-			addAppointmentMessage.setCourseId(courseId);
-			Ntro.backendService().sendMessageToBackend(addAppointmentMessage);
-			
+			addAppointmentMessage.setQueueId(queueId);
+			addAppointmentMessage.setCoursePath(coursePath);
+			addAppointmentMessage.setTaskPath(taskPath);
+			addAppointmentMessage.setTaskTitle(taskTitle);
+			Ntro.messages().send(addAppointmentMessage);
 			
 		} else if(parameters.containsKey("deleteAppointment")){
 			
@@ -506,7 +525,7 @@ public class AquiletourBackendRequestHandler {
 			DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
-			deleteAppointmentMessage.setCourseId(courseId);
+			deleteAppointmentMessage.setCourseId(queueId);
 			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
 
 		} else if(parameters.containsKey("move")) {
@@ -523,7 +542,7 @@ public class AquiletourBackendRequestHandler {
 			}
 
 			MoveAppointmentMessage moveAppointmentMessage = Ntro.messages().create(MoveAppointmentMessage.class);
-			moveAppointmentMessage.setCourseId(courseId);
+			moveAppointmentMessage.setCourseId(queueId);
 			moveAppointmentMessage.setAppointmentId(appointmentId);
 			moveAppointmentMessage.setDestinationId(destinationId);
 			moveAppointmentMessage.setBeforeOrAfter(beforeOrAfter);
@@ -547,7 +566,6 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("modifyCommentForQueueId")) {
 			
-			String queueId = parameters.get("modifyCommentForQueueId")[0];
 			String comment = parameters.get("comment")[0];
 
 			ModifyAppointmentCommentMessage modifyAppointmentComment = Ntro.messages().create(ModifyAppointmentCommentMessage.class);

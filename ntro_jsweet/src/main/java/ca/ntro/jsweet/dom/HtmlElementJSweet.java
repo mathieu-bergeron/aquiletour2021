@@ -192,13 +192,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		
 		JQuery foundElements = jQueryElement.find(cssQuery).addBack(cssQuery);
 
-		HtmlElementsJSweet result = null;
-		
-		if(foundElements.length > 0) {
-			result = new HtmlElementsJSweet(foundElements);
-		}
-		
-		return result;
+		return new HtmlElementsJSweet(foundElements);
 	}
 
 	@Override

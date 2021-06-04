@@ -31,14 +31,16 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 
 	private EndTimeByTaskId endTimes = new EndTimeByTaskId();
 
-	private TaskStatusByTaskKey taskStatusByTaskKey = new TaskStatusByTaskKey();
+	// JSweet: tasks Vs taskStatus  :  deserialization ordering differs in Jdk Vs JSweet!!
+	// JSweet: this means sorting order not the same regarding tasks taskS (probably lower Vs upper)
+	private TaskStatusByTaskKey statusByTaskKey = new TaskStatusByTaskKey();
 
-	public TaskStatusByTaskKey getTaskStatusByTaskKey() {
-		return taskStatusByTaskKey;
+	public TaskStatusByTaskKey getStatusByTaskKey() {
+		return statusByTaskKey;
 	}
 
-	public void setTaskStatusByTaskKey(TaskStatusByTaskKey taskStatusByTaskKey) {
-		this.taskStatusByTaskKey = taskStatusByTaskKey;
+	public void setStatusByTaskKey(TaskStatusByTaskKey statusByTaskKey) {
+		this.statusByTaskKey = statusByTaskKey;
 	}
 
 	@Override
@@ -174,11 +176,11 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 
 		forEachTask(t -> {
 
-			TaskStatus lastStatus = taskStatusByTaskKey.valueOf(t.getPath().toKey());
+			TaskStatus lastStatus = statusByTaskKey.valueOf(t.getPath().toKey());
 			TaskStatus statusUpdate = t.status(getCompletions());
 			
 			if(lastStatus == null || lastStatus.shouldUpdate(statusUpdate)) {
-				taskStatusByTaskKey.putEntry(t.getPath().toKey(), t.status(completions));
+				statusByTaskKey.putEntry(t.getPath().toKey(), t.status(completions));
 			}
 		});
 	}

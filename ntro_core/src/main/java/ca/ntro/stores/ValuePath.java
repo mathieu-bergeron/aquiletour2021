@@ -84,7 +84,7 @@ public class ValuePath implements JsonSerializable {
 		this.fieldPath = fieldPath;
 	}
 
-	public ValuePath cloneModelValue() {
+	public ValuePath cloneValuePath() {
 		
 		ValuePath clone = new ValuePath();
 		clone.setDocumentPath(documentPath);

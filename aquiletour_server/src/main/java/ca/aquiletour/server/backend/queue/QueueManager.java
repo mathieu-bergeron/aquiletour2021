@@ -1,6 +1,7 @@
 package ca.aquiletour.server.backend.queue;
 
 import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
@@ -91,11 +92,14 @@ public class QueueManager {
 
 	public static void addAppointmentForUser(ModelStoreSync modelStore,
 			                                 String queueId,
+			                                 CoursePath coursePath,
+			                                 TaskPath taskPath,
+			                                 String taskTitle,
 			                                 User user) throws BackendError {
 
 		T.call(QueueManager.class);
 
-		Appointment appointment = createAppointment(user);
+		Appointment appointment = createAppointment(user, coursePath, taskPath, taskTitle);
 		
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
@@ -107,7 +111,7 @@ public class QueueManager {
 		});
 	}
 
-	private static Appointment createAppointment(User user) {
+	private static Appointment createAppointment(User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
 		T.call(QueueManager.class);
 
 		Appointment appointment = new Appointment();
@@ -116,6 +120,12 @@ public class QueueManager {
 		appointment.setStudentId(user.getId());
 		appointment.setStudentName(user.getFirstname());
 		appointment.setStudentSurname(user.getLastname());
+		if(coursePath != null) {
+			appointment.updateCourseTitle(coursePath.courseId());
+		}
+		if(taskTitle != null) {
+			appointment.updateTaskTitle(taskTitle);
+		}
 		
 		return appointment;
 	}

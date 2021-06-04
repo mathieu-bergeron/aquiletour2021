@@ -24,7 +24,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 		T.call(this);
 
 		User user = message.getUser();
-		String courseId = message.getCourseId();
+		String queueId = message.getQueueId();
 		
 		if(user instanceof Guest || user instanceof TeacherGuest || user instanceof StudentGuest) {
 			
@@ -38,7 +38,12 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 
 		}else {
 
-			QueueManager.addAppointmentForUser(modelStore, courseId, user);
+			QueueManager.addAppointmentForUser(modelStore, 
+					                           queueId, 
+					                           message.getCoursePath(),
+					                           message.getTaskPath(),
+					                           message.getTaskTitle(),
+					                           user);
 		}
 	}
 
@@ -46,6 +51,6 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	public void handleLater(ModelStoreSync modelStore, AddAppointmentMessage message) {
 		T.call(this);
 
-		QueueManager.addAppointmentUpdates(modelStore, message.getCourseId());
+		QueueManager.addAppointmentUpdates(modelStore, message.getQueueId());
 	}
 }

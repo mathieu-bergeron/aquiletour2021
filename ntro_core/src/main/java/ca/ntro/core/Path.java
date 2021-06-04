@@ -131,7 +131,6 @@ public class Path implements JsonSerializable {
 		return builder.toString();
 	}
 
-	
 	@Override
 	public String toString() {
 		return toRawPath();

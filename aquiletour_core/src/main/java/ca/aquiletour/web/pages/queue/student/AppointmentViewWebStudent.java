@@ -59,7 +59,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		
 		if(appointment.getStudentId().equals(userId)) {
 			chatButton.show();
-			modifyAppointmentButton.show();
+			//modifyAppointmentButton.show();
 			deleteAppointmentForm.show();
 			deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {
 				@Override

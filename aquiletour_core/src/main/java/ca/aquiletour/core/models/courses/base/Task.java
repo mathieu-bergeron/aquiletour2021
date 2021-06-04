@@ -705,7 +705,17 @@ public class Task implements NtroModelValue, TaskNode {
 		return storedTasksIds.reduceTo(accumulatorClass, accumulator, (index, taskId, innerAccumulator) -> {
 			Task task = graph.findTaskByPath(Path.fromRawPath(taskId));
 			
-			return reducer.reduce(index, task, innerAccumulator);
+			if(task != null) {
+
+				innerAccumulator = reducer.reduce(index, task, innerAccumulator);
+
+			}else {
+				
+				Log.warning("[reduceToForStoredTasks] task not found: " + taskId);
+
+			}
+			
+			return innerAccumulator;
 		});
 	}
 	

@@ -30,4 +30,13 @@ public class TaskPath extends Path {
 		return taskPath;
 	}
 
+	public static TaskPath fromKey(String key) {
+		T.call(Path.class);
+
+		TaskPath taskPath = new TaskPath();
+
+		taskPath.copyNamesOf(Path.fromKey(key));
+
+		return taskPath;
+	}
 }

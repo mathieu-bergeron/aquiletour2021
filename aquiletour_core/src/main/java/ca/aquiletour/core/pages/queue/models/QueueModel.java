@@ -3,6 +3,8 @@ package ca.aquiletour.core.pages.queue.models;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
 import ca.ntro.core.models.lambdas.Break;
@@ -110,7 +112,9 @@ public class QueueModel implements NtroModel {
 			setNowAsFirstAppointmentTime();
 		}
 		
-		appointments.removeItemAtIndex(0);
+		if(index != -1) {
+			appointments.removeItemAtIndex(index);
+		}
 
 		recomputeAppointmentTimes();
 	}
@@ -380,5 +384,9 @@ public class QueueModel implements NtroModel {
 
 	public void setSettingsByCourseKey(SettingsByCourseKey settingsByCourseKey) {
 		this.settingsByCourseKey = settingsByCourseKey;
+	}
+
+	public void addAppointment(User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
+		
 	}
 }

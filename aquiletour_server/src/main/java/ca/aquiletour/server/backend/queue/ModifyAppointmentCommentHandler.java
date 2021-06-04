@@ -12,8 +12,6 @@ public class ModifyAppointmentCommentHandler extends BackendMessageHandler<Modif
 	public void handleNow(ModelStoreSync modelStore, ModifyAppointmentCommentMessage message) throws BackendError {
 		T.call(this);
 		
-		T.here();
-		
 		QueueManager.modifyAppointmentComment(modelStore, message.getQueueId(), message.getComment(), message.getUser());
 	}
 

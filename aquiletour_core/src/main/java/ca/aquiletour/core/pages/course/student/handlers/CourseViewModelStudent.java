@@ -29,8 +29,8 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	private void observeStatuses(CourseModelStudent model, CourseViewStudent view) {
 		T.call(this);
 		
-		model.getTaskStatusByTaskKey().removeObservers();
-		model.getTaskStatusByTaskKey().onEntryAdded(new EntryAddedListener<TaskStatus>() {
+		model.getStatusByTaskKey().removeObservers();
+		model.getStatusByTaskKey().onEntryAdded(new EntryAddedListener<TaskStatus>() {
 			@Override
 			public void onEntryAdded(String taskKey, TaskStatus status) {
 				T.call(this);

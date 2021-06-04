@@ -33,7 +33,22 @@ public class DashboardItemViewWebStudent extends DashboardItemViewWeb<CurrentTas
 		HtmlElement makeAppointmentForm = container.createElement("<form method='post'></form>");
 		container.appendElement(makeAppointmentForm);
 		makeAppointmentForm.setAttribute("action", "/" + Constants.QUEUE_URL_SEGMENT + "/" + queueId);
-		
+
+		HtmlElement coursePathInput = container.createElement("<input name='coursePath'></input>");
+		makeAppointmentForm.appendElement(coursePathInput);
+		coursePathInput.hide();
+		coursePathInput.setAttribute("value", coursePath.toKey());
+
+		HtmlElement taskPathInput = container.createElement("<input name='taskPath'></input>");
+		makeAppointmentForm.appendElement(taskPathInput);
+		taskPathInput.hide();
+		taskPathInput.setAttribute("value", currentTask.getTaskPath().toKey());
+
+		HtmlElement taskTitleInput = container.createElement("<input name='taskTitle'></input>");
+		makeAppointmentForm.appendElement(taskTitleInput);
+		taskTitleInput.hide();
+		taskTitleInput.setAttribute("value", currentTask.getTaskTitle().getValue());
+
 		HtmlElement makeAppointmentButton = container.createElement("<input class='btn btn-secondary btn-sm' type='submit'></input>");
 		makeAppointmentForm.appendElement(makeAppointmentButton);
 		makeAppointmentButton.value("Poser une question");

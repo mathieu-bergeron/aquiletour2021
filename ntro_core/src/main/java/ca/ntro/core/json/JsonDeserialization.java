@@ -108,6 +108,10 @@ public class JsonDeserialization {
 
 		Object javaObject = localHeap.get(referenceId);
 		
+		if(javaObject == null) {
+			Log.error("[toJavaValueFromObjectReference] not in localHeap " + referenceId);
+		}
+		
 		return javaObject;
 	}
 
@@ -129,6 +133,9 @@ public class JsonDeserialization {
 
 		List<NtroMethod> setters = ntroClass.userDefinedSetters();
 
+		// JSweet: setTasks Vs setTaskStatus are not compared
+		//         the same way in Jdk Vs JSweet
+		//         (probably lowerCase/upperCase ordering)
 		setters.sort(new Comparator<NtroMethod>() {
 			@Override
 			public int compare(NtroMethod o1, NtroMethod o2) {
