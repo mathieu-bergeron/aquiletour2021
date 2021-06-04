@@ -14,7 +14,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 	private HtmlElement gitRepoForm;
 	private HtmlElement gitProgressionLink;
-	
+
 	private String gitProgressionText;
 
 	@Override
@@ -27,7 +27,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		MustNot.beNull(gitRepoForm);
 		MustNot.beNull(gitProgressionLink);
-		
+
 		gitProgressionText = gitProgressionLink.text();
 	}
 
@@ -35,11 +35,11 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	public void identifyCurrentTask(String courseId, Task task) {
 		T.call(this);
 		super.identifyCurrentTask(courseId, task);
-		
-		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT 
-				                                + "/" + courseId 
+
+		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_PROGRESS_URL_SEGMENT
+				                                + "/" + courseId
 				                                + task.id()
-												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().getUser().getId()
 												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 
 		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + courseId + task.id());
@@ -48,7 +48,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	@Override
 	public void displayGitRepoForm() {
 		T.call(this);
-		
+
 		gitRepoForm.show();
 	}
 

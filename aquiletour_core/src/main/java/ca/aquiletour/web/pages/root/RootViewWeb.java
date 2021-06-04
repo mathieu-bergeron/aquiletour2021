@@ -22,12 +22,17 @@ import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.interactivity.runtime.InteractivityRuntimeJSweet;
 import ca.ntro.web.mvc.NtroViewWeb;
+import def.js.JSON;
+
+import static def.dom.Globals.alert;
+import static def.dom.Globals.console;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
 
@@ -75,9 +80,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 		});
 
-		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT
-				                               + "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
-				                               + "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
+//		dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT
+//				                               + "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+//				                               + "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
 
 //		dashboardLink.addEventListener("click", new HtmlEventListener() {
 //			@Override
@@ -142,16 +147,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	@Override
 	public void displayRandomNumber(NtroContext<?> context) {
-		if (Ntro.interactivityRuntime() instanceof InteractivityRuntimeJSweet) {
-			Ntro.interactivityRuntime().evaluateExpressionAsync("Math.round(Math.random() * 1000).toString(16);").then(value -> {
-				expressionBox.text(value);
-			});
-
-		} else {
-			String value = Ntro.interactivityRuntime().evaluateExpression("Math.round(Math.random() * 1000).toString(16);");
-
-			expressionBox.text(value);
-		}
+		Ntro.interactivityRuntime().evaluateExpression("Math.round(Math.random() * 1000).toString(16);").then(data -> {
+			System.out.println("value: " + data);
+			expressionBox.text(data);
+		}, (error) -> {
+			if (error instanceof Exception) {
+				Log.fatalError("Could not set random number", (Exception) error);
+			}
+		});
 	}
 
 	@Override

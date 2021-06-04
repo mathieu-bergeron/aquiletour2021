@@ -1,9 +1,11 @@
 package ca.ntro.jdk.services;
 
+import ca.ntro.core.NtroPromiseProvider;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.jdk.NtroPromiseJdk;
 import ca.ntro.jdk.regex.RegExJdk;
 import ca.ntro.jdk.web.interactivity.runtime.InteractivityRuntimeJdk;
 import ca.ntro.services.AppCloser;
@@ -46,6 +48,11 @@ public class EarlyInitializationJdk extends EarlyInitialization {
 	@Override
 	protected InteractivityRuntime provideInteractivityRuntime() {
 		return new InteractivityRuntimeJdk();
+	}
+
+	@Override
+	protected NtroPromiseProvider provideNtroPromiseProvider() {
+		return new NtroPromiseJdk.Provider();
 	}
 
 	@Override

@@ -8,11 +8,10 @@ import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class TaskViewWeb extends NtroViewWeb implements TaskView {
-	
+
 	private HtmlElement taskTitleLink;
 	private HtmlElement previousTasksContainer;
 	private HtmlElement subTasksContainer;
@@ -26,8 +25,8 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		previousTasksContainer = getRootElement().find("#previous-tasks-container").get(0);
 		subTasksContainer = getRootElement().find("#subtasks-container").get(0);
 		nextTasksContainer = getRootElement().find("#next-tasks-container").get(0);
-		
-		
+
+
 		MustNot.beNull(taskTitleLink);
 		MustNot.beNull(previousTasksContainer);
 		MustNot.beNull(subTasksContainer);
@@ -37,14 +36,14 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 	@Override
 	public void displayTask(String courseId, Task task) {
 		T.call(this);
-		
+
 		taskTitleLink.html(task.getTitle());
-		taskTitleLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT 
-	                                     	+ "/" + courseId 
+		taskTitleLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT
+	                                     	+ "/" + courseId
 	                                     	+ task.id()
-	                                     	+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().user().getId()
+	                                     	+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.userService().getUser().getId()
 	                                     	+ "&" + Constants.SEMESTER_URL_PARAM + "=" + "H2021");
-		
+
 		task.forEachPreviousTask(pt -> {
 			addTaskLi(courseId, task, pt, previousTasksContainer, "PreviousTask");
 		});
@@ -58,10 +57,10 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		});
 	}
 
-	protected void addTaskLi(String courseId, 
+	protected void addTaskLi(String courseId,
 						     Task currentTask,
-			                 Task task, 
-			                 HtmlElement container, 
+			                 Task task,
+			                 HtmlElement container,
 			                 String taskType) {
 		T.call(this);
 
@@ -75,18 +74,18 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 
 		anchor.text(task.getTitle());
 		anchor.setAttribute("href", "/cours/" + courseId + task.id());
-		
+
 		deleteAnchor.setAttribute("href", "?remove" + taskType + "=" + task.getPath().toFileName() + "&from=" + currentTask.getPath().toFileName());
 	}
 
 	@Override
 	public void clear() {
 		T.call(this);
-		
+
 		previousTasksContainer.deleteChildrenForever();
 		subTasksContainer.deleteChildrenForever();
 		nextTasksContainer.deleteChildrenForever();
-		
+
 	}
 
 }

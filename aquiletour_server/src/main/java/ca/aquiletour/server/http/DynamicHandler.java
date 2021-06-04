@@ -39,7 +39,6 @@ import org.eclipse.jetty.util.UrlEncoded;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.AuthenticateSessionUserMessage;
-import ca.aquiletour.core.models.users.Guest;
 import ca.aquiletour.core.models.users.Teacher;
 import ca.aquiletour.core.models.users.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
@@ -48,18 +47,15 @@ import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
-import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.Session;
 
 public class DynamicHandler extends AbstractHandler {
 
@@ -69,25 +65,25 @@ public class DynamicHandler extends AbstractHandler {
         // Http handler
         ContextHandler dynamicContext = new ContextHandler();
         dynamicContext.setContextPath(urlPrefix);
-        
+
         // XXX: dev-only, disable all caching
         dynamicContext.setInitParameter("cacheControl", "no-store,no-cache,must-revalidate,max-age=0,public");
         dynamicContext.setInitParameter("maxCacheSize", "0");
-        
+
         dynamicContext.setHandler(new DynamicHandler(urlPrefix, privateFilesPrefix, new FileLoaderDev()));
-        
+
         // TODO: dev-only: load resources from ./src/main/ressources NOT ./build/resources/...
         //staticFilesContext.setResourceBase("./src/main/resources");
-        
+
         return dynamicContext;
 	}
-	
+
 	private String resourcesUrlPrefix;
 	private String privateFilesPrefix;
 	private FileLoader fileLoader;
 
-	public DynamicHandler(String resourcesUrlPrefix, 
-			String publicFilesPrefix, 
+	public DynamicHandler(String resourcesUrlPrefix,
+			String publicFilesPrefix,
 			FileLoader fileLoader) {
 
 		T.call(this);
@@ -96,15 +92,15 @@ public class DynamicHandler extends AbstractHandler {
 		this.privateFilesPrefix = publicFilesPrefix;
 		this.fileLoader = fileLoader;
 	}
-	
+
 	@Override
-	public void handle(String target, 
-			           Request baseRequest, 
-			           HttpServletRequest request, 
+	public void handle(String target,
+			           Request baseRequest,
+			           HttpServletRequest request,
 			           HttpServletResponse response)
-			    
+
 			    throws IOException, ServletException {
-		
+
 		T.call(this);
 
 		if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {
@@ -119,11 +115,11 @@ public class DynamicHandler extends AbstractHandler {
 			throws FileNotFoundException, IOException {
 
 		T.call(this);
-		
+
 		System.out.println("");
 		System.out.println("");
 		System.out.println("Request for: " + baseRequest.getRequestURI().toString());
-		
+
 		// This will register a Ntro.userService().currentUser()
 		// (possibly a Guest)
 		sendLoginMessagesAccordingToCookies(baseRequest);
@@ -140,15 +136,15 @@ public class DynamicHandler extends AbstractHandler {
 		boolean ifJsOnly = ifJsOnlySetCookies(baseRequest, response);
 
 		NtroWindowServer window = newWindow(ifJsOnly, path);
-		
+
 		if(!ifJsOnly) {
 			executeFrontendOnServer(baseRequest, response, path, parameters, window);
 		}
-		
+
 		//System.out.println(rootController.getTask().toString());
-		
+
 		// XXX the entire taskGraph is not really async
-		//     writeResponse will execute AFTER 
+		//     writeResponse will execute AFTER
 		//     every non-blocked task in webApp
 		if(!baseRequest.isHandled()) {
 			response.setContentType("text/html; charset=utf-8");
@@ -158,8 +154,8 @@ public class DynamicHandler extends AbstractHandler {
 	}
 
 	private void sendCsvMessage(Request baseRequest) throws IOException {
-		if(Ntro.userService().user() instanceof Teacher) {
-			
+		if(Ntro.userService().getUser() instanceof Teacher) {
+
 			String queueId = baseRequest.getParameter("queueId");
 			Part filePart = null;
 			try {
@@ -168,7 +164,7 @@ public class DynamicHandler extends AbstractHandler {
 
 			if(queueId != null && filePart != null) {
 				String fileContent = readPart(filePart);
-				
+
 				AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
 				addStudentCsvMessage.setCsvString(fileContent);
 				addStudentCsvMessage.setQueueId(queueId);
@@ -199,7 +195,7 @@ public class DynamicHandler extends AbstractHandler {
 
 			String userString = UrlEncoded.decodeString(getCookie(baseRequest, "user"));
 			User sessionUser = Ntro.jsonService().fromString(User.class, userString);
-			
+
 			authenticateSessionUserMessage.setSessionUser(sessionUser);
 
 		}
@@ -207,19 +203,19 @@ public class DynamicHandler extends AbstractHandler {
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
 	}
 
-	private void executeFrontendOnServer(Request baseRequest, 
-			                             HttpServletResponse response, 
+	private void executeFrontendOnServer(Request baseRequest,
+			                             HttpServletResponse response,
 			                             Path path,
 			                             Map<String, String[]> parameters,
 			                             NtroWindowServer window) {
-		
-		
+
+
 		handleRedirections(baseRequest, response, path);
 
 		NtroContext<User> context = new NtroContext<>();
 		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.userService().user());
-		
+		context.registerUser((User) Ntro.userService().getUser());
+
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
 
@@ -240,7 +236,7 @@ public class DynamicHandler extends AbstractHandler {
 		//Ntro.messageService().sendMessage(MessageFactory.createMessage(ShowTeacherDashboardMessage.class));
 
 		//rootController.getTask().destroy();
-		
+
 		// XXX: prepare for next request
 		Ntro.reset();
 	}
@@ -252,9 +248,9 @@ public class DynamicHandler extends AbstractHandler {
 				@Override
 				public void handle(ShowLoginMessage message) {
 					T.call(this);
-					
+
 					String messageToUser = message.getMessageToUser();
-					
+
 					// XXX: on the server, ShowLoginMessage is a redirect to /connexion?message=""
 					String redirectUrl = "/connexion?message=" + UrlEncoded.encodeString(messageToUser);
 					try {
@@ -286,34 +282,34 @@ public class DynamicHandler extends AbstractHandler {
 
 	private void setUserCookie(HttpServletResponse response) {
 		T.call(this);
-		
-		User currentUser = (User) Ntro.userService().user();
+
+		User currentUser = (User) Ntro.userService().getUser();
 		User sessionUser = currentUser.toSessionUser();
 		setCookie(response, "user", Ntro.jsonService().toString(sessionUser));
 	}
-	
+
 	private boolean ifJsOnlySetCookies(Request baseRequest, HttpServletResponse response) {
 		T.call(this);
-		
+
 		boolean ifJsOnly = true;
 
 		if(baseRequest.getParameter("nojs") != null) {
-			
+
 			setCookie(response, "jsOnly" , "false" );
 			ifJsOnly = false;
 
 		} else if(baseRequest.getParameter("js") != null) {
-			
+
 			setCookie(response, "jsOnly" , "true" );
 			ifJsOnly = true;
-			
+
 		}else if(hasCookie(baseRequest, "jsOnly")) {
-			
+
 			String jsOnlyCookie = getCookie(baseRequest, "jsOnly");
 			ifJsOnly = Boolean.valueOf(jsOnlyCookie);
 
 		}
-		
+
 		return ifJsOnly;
 
 	}
@@ -326,49 +322,49 @@ public class DynamicHandler extends AbstractHandler {
 		if(ifJsOnly) {
 
 			newWindow = new NtroWindowServer("/private/index.html");
-			
+
 		}else {
 
 			newWindow = new NtroWindowServer("/private/nojs.html");
 
-		} 
+		}
 
 		newWindow.setCurrentPath(path);
 
 		return newWindow;
 	}
-	
+
 	private boolean hasCookie(Request baseRequest, String name) {
 		T.call(this);
-		
+
 		if(baseRequest.getCookies() == null) return false;
-		
+
 		for(Cookie cookie : baseRequest.getCookies()) {
 			if(cookie.getName().equals(name)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	private String getCookie(Request baseRequest, String name) {
 		T.call(this);
-		
+
 		if(baseRequest.getCookies() == null) return null;
-		
+
 		for(Cookie cookie : baseRequest.getCookies()) {
 			if(cookie.getName().equals(name)) {
 				return UrlEncoded.decodeString(cookie.getValue());
 			}
 		}
-		
+
 		return null;
 	}
 
 	private void eraseCookie(HttpServletResponse response, String name) {
 		T.call(this);
-		
+
 		Cookie cookie = new Cookie(name, "");
 		cookie.setPath("/");
 		cookie.setMaxAge(0);
@@ -378,11 +374,11 @@ public class DynamicHandler extends AbstractHandler {
 
 	private void setCookie(HttpServletResponse response, String name, String value) {
 		T.call(this);
-		
+
 		String trimmedValue = value.replace(" ", "");
 
 		String urlEncodedString = UrlEncoded.encodeString(trimmedValue);
-		
+
 		Cookie cookie = new Cookie(name, urlEncodedString);
 		cookie.setPath("/");
 

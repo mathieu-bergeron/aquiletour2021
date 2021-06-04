@@ -37,7 +37,7 @@ import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
 
 public class ResourceHandler extends AbstractHandler {
-	
+
 	private static int BUFFER_SIZE = 1024;
 
 	public static ContextHandler createResourceHandler(String resourcesUrlPrefix, String publicFilesPrefix) {
@@ -46,25 +46,25 @@ public class ResourceHandler extends AbstractHandler {
         // Http handler
         ContextHandler staticFilesContext = new ContextHandler();
         staticFilesContext.setContextPath(resourcesUrlPrefix);
-        
+
         // XXX: dev-only, disable all caching
         staticFilesContext.setInitParameter("cacheControl", "no-store,no-cache,must-revalidate,max-age=0,public");
         staticFilesContext.setInitParameter("maxCacheSize", "0");
-        
+
         staticFilesContext.setHandler(new ResourceHandler(resourcesUrlPrefix, publicFilesPrefix, new FileLoaderDev()));
-        
+
         // TODO: dev-only: load resources from ./src/main/ressources NOT ./build/resources/...
         // staticFilesContext.setResourceBase("./src/main/resources");
-        
+
         return staticFilesContext;
 	}
-	
+
 	private String resourcesUrlPrefix;
 	private String publicFilesPrefix;
 	private FileLoader fileLoader;
-	
-	public ResourceHandler(String resourcesUrlPrefix, 
-			String publicFilesPrefix, 
+
+	public ResourceHandler(String resourcesUrlPrefix,
+			String publicFilesPrefix,
 			FileLoader fileLoader) {
 
 		T.call(this);
@@ -73,30 +73,30 @@ public class ResourceHandler extends AbstractHandler {
 		this.publicFilesPrefix = publicFilesPrefix;
 		this.fileLoader = fileLoader;
 	}
-	
+
 	@Override
-	public void handle(String target, 
-			           Request baseRequest, 
-			           HttpServletRequest request, 
+	public void handle(String target,
+			           Request baseRequest,
+			           HttpServletRequest request,
 			           HttpServletResponse response)
-			    
+
 			    throws IOException, ServletException {
-		
+
 		T.call(this);
-		
+
 
 		OutputStream out = response.getOutputStream();
 
 		String filePath = baseRequest.getOriginalURI().toString();
-		
+
 		if(filePath.startsWith(resourcesUrlPrefix)) {
-			
+
 			filePath = removeResourcesPrefix(filePath);
 
 			filePath = addPublicFilesPrefix(filePath);
-			
+
 			serveStaticFile(baseRequest, response, out, filePath);
-			
+
 		}else{
 
 			serveError404(baseRequest, response);
@@ -128,17 +128,17 @@ public class ResourceHandler extends AbstractHandler {
 			throws FileNotFoundException, IOException {
 
 		T.call(this);
-		
+
 		setContentType(response, filePath);
 
 		response.setStatus(HttpServletResponse.SC_OK);
-		
+
 		InputStream fileStream = fileLoader.loadFile(filePath);
-		
+
 		copyFileToOutStream(out, fileStream);
-		
+
 		out.close();
-		
+
 		baseRequest.setHandled(true);
 	}
 
@@ -167,7 +167,7 @@ public class ResourceHandler extends AbstractHandler {
 
 	private void copyFileToOutStream(OutputStream out, InputStream fileStream) throws IOException {
 		T.call(this);
-		
+
         byte[] buffer = new byte[BUFFER_SIZE];
 
         int readSize = 0;
@@ -180,7 +180,7 @@ public class ResourceHandler extends AbstractHandler {
             }else {
             	break;
             }
-        } 
+        }
 	}
 
 }

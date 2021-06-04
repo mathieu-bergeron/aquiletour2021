@@ -1,28 +1,27 @@
 package ca.ntro.web.interactivity.runtime;
 
+import ca.ntro.core.NtroPromise;
+import ca.ntro.services.Ntro;
 import def.dom.Worker;
-import def.js.JSON;
-import def.js.Promise;
-
-import java.util.function.Consumer;
+import def.js.Object;
 
 public class InteractivityRuntimeJSweet implements InteractivityRuntime {
 
-    Worker worker = new Worker("/_R/js/script_worker.js");
+    Worker worker = new Worker("/_resources/js/script_worker.js");
 
     @Override
-    public String evaluateExpression(String expression) {
-        throw new IllegalStateException("Only async expression evaluation is supported in JSweet");
-    }
+    public NtroPromise<String> evaluateExpression(String expression) {
+        return Ntro.promise((resolve, reject) -> {
+            worker.addEventListener("message", (event) -> {
+                Object data = event.$get("data");
 
-    @Override
-    public Promise<String> evaluateExpressionAsync(String expression) {
-        return new Promise<>((Consumer<String> resolve, Consumer<Object> reject) -> {
-            worker.addEventListener("message", message -> {
-                resolve.accept(JSON.stringify(message));
+                resolve.accept(data.$get("result"));
             });
 
-            worker.postMessage("test");
+            Object message = new Object();
+            message.$set("command", expression);
+
+            worker.postMessage(message);
         });
     }
 

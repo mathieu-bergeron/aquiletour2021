@@ -19,8 +19,14 @@ package ca.ntro.services;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import ca.ntro.assertions.AssertExpression;
+import ca.ntro.core.NtroPromise;
+import ca.ntro.core.NtroPromiseProvider;
 import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.json.JsonSerializable;
@@ -150,8 +156,19 @@ public class Ntro {
 		return ntroConstants;
 	}
 
-
 	/* </Constants> */
+
+	private static NtroPromiseProvider promiseProvider;
+
+	public static void registerPromiseProvider(NtroPromiseProvider supplier) {
+		__T.call(Ntro.class, "registerPromiseProvider");
+
+		promiseProvider = supplier;
+	}
+
+	public static <T> NtroPromise<T> promise(BiConsumer<Consumer<T>, Consumer<Object>> consumer) {
+		return promiseProvider.provide(consumer);
+	}
 
 	/* <Serializable classes> */
 
@@ -332,7 +349,7 @@ public class Ntro {
 
 	private static Class<? extends ModelStore> modelStoreClass;
 	private static Map<String, ModelStore> modelStores = new HashMap<>();
-	
+
 	// FIXME: we need a single store (so that multiple request update the same model)
 	//        but then we need to lock write access to model
 	private static ModelStore modelStore;
@@ -345,7 +362,7 @@ public class Ntro {
 
 	public static ModelStore modelStore() {
 		__T.call(Ntro.class, "modelStore");
-		
+
 		if(modelStore == null) {
 			modelStore = Ntro.factory().newInstance(modelStoreClass);
 		}

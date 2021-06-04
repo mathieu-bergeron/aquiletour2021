@@ -22,6 +22,9 @@ dependencies {
     // jv28
     implementation group: 'com.eclipsesource.j2v8', name: 'j2v8_linux_x86_64', version: '4.8.0'
 
+    // jva-promise
+    implementation group: 'org.riversun', name: 'java-promise', version: '1.1.0'
+
     // <DEV ONLY>
     implementation group: 'org.dizitart', name: 'nitrite', version: '3.4.1'
     implementation 'guru.nidi:graphviz-java-all-j2v8:0.18.0'

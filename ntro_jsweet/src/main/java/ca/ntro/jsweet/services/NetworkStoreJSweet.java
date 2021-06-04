@@ -23,7 +23,7 @@ import java.util.List;
 public class NetworkStoreJSweet extends ModelStore {
 
 	public NetworkStoreJSweet() {
-		
+
 		Ntro.backendService().handleMessageFromBackend(InvokeValueMethodNtroMessage.class, new MessageHandler<InvokeValueMethodNtroMessage>(){
 			@Override
 			public void handle(InvokeValueMethodNtroMessage message) {
@@ -44,13 +44,13 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	protected JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {
 		T.call(this);
-		
+
 		String serviceUrl = Constants.MODELS_URL_PREFIX + "/";
 		GetModelNtroMessage request = new GetModelNtroMessage();
-		request.setUser(Ntro.userService().user());
+		request.setUser(Ntro.userService().getUser());
 		request.setDocumentPath(documentPath);
 		request.registerTargetClass(targetClass);
-		
+
 		return new JsonLoaderJSweet(serviceUrl, request);
 	}
 
@@ -87,7 +87,7 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
-		
+
 		// XXX: not supported
 	}
 

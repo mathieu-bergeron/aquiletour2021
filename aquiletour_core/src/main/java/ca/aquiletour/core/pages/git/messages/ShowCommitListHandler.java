@@ -13,16 +13,16 @@ import ca.ntro.services.Ntro;
 public class ShowCommitListHandler extends ControllerMessageHandler<CommitListController,
                                                                   CommitListView,
                                                                   ShowCommitListMessage> {
-	
+
 	@Override
 	protected void handle(CommitListController currentController, CommitListView currentView, ShowCommitListMessage message) {
 		T.call(this);
-		
+
 		GetCommitsForPath getCommitListMessage = Ntro.messages().create(GetCommitsForPath.class);
 		getCommitListMessage.loadStudentExerciseInfo(message);
 
-		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
-		currentController.setSubModelLoader(CourseModel.class, Ntro.userService().user().getAuthToken(), message.getCourseId());
+		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage);
+		currentController.setSubModelLoader(CourseModel.class, Ntro.userService().getUser().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
 		rootView.showGit(currentView);

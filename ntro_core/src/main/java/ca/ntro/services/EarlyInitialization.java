@@ -1,5 +1,7 @@
 package ca.ntro.services;
 
+import ca.ntro.core.NtroPromise;
+import ca.ntro.core.NtroPromiseProvider;
 import ca.ntro.core.Path;
 import ca.ntro.core.introspection.Introspector;
 import ca.ntro.core.models.StoredBoolean;
@@ -21,7 +23,7 @@ import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.Session;
 import ca.ntro.web.interactivity.DomProcessor;
-import ca.ntro.web.interactivity.runtime.InteractivityRuntime;
+import ca.ntro.web.interactivity.runtime.InteractivityRuntime;;
 
 public abstract class EarlyInitialization {
 
@@ -38,6 +40,9 @@ public abstract class EarlyInitialization {
 		InteractivityRuntime interactivityRuntime = provideInteractivityRuntime();
 		Ntro.registerInteractivityRuntime(interactivityRuntime);
 
+		NtroPromiseProvider promiseProvider = provideNtroPromiseProvider();
+		Ntro.registerPromiseProvider(promiseProvider);
+
 		Logger logger = provideLogger();
 		T.__registerLogger(logger);
 		Ntro.registerLogger(logger);
@@ -51,6 +56,7 @@ public abstract class EarlyInitialization {
 	protected abstract Introspector provideIntrospector();
 	protected abstract DomProcessor provideDomProcessor();
 	protected abstract InteractivityRuntime provideInteractivityRuntime();
+	protected abstract NtroPromiseProvider provideNtroPromiseProvider();
 	protected abstract Logger provideLogger();
 	protected abstract AppCloser provideAppCloser();
 	protected abstract RegEx provideRegEx();

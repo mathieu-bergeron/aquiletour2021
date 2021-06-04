@@ -3,7 +3,6 @@ package ca.ntro.services;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.MessageHandlerTask;
@@ -12,14 +11,14 @@ import ca.ntro.messages.NtroUserMessage;
 import ca.ntro.threads.NtroThread;
 
 public abstract class MessageService {
-	
+
 	// FIXME: only one handler by message???
 	private Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
-	
+
 	public <M extends NtroMessage> void registerHandler(Class<M> messageClass, MessageHandler<M> handler) {
-		
+
 		handlers.put(messageClass, handler);
-		
+
 		for(NtroThread subThread : Ntro.threadService().subThreads()) {
 			subThread.handleMessageFromThread(messageClass, handler);
 		}
@@ -46,7 +45,7 @@ public abstract class MessageService {
 			handler.handle(message);
 
 		} else if(Ntro.threadService().hasParentThread()) {
-			
+
 			Ntro.threadService().sendMessageToParentThread(message);
 
 		}else {
@@ -57,7 +56,7 @@ public abstract class MessageService {
 
 	void reset() {
 		T.call(this);
-		
+
 		handlers = new HashMap<>();
 	}
 
@@ -65,9 +64,9 @@ public abstract class MessageService {
 		T.call(this);
 
 		MSG message = Ntro.factory().newInstance(messageClass);
-		
+
 		if(message instanceof NtroUserMessage) {
-			((NtroUserMessage) message).setUser(Ntro.userService().user());
+			((NtroUserMessage) message).setUser(Ntro.userService().getUser());
 		}
 
 		return message;
@@ -81,7 +80,7 @@ public abstract class MessageService {
 
 	public  <M extends NtroMessage> MessageHandlerTask createMessageHandlerTask(Class<M> messageClass) {
 		T.call(this);
-		
+
 		MessageHandlerTask handlerTask = new MessageHandlerTask();
 
 		handlerTask.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
