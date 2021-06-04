@@ -68,7 +68,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		for (int i = 0; i < cutByLine.length; i++) {
 			String line = cutByLine[i];
 			if(i > 0){ //first line is not a student, its the class name
-				String[] cutBySeparator = line.split(";");
+				String[] cutBySeparator = line.split(Constants.CSV_SEPARATOR);
 				String lastName = cutBySeparator[0];
 				String firstName = cutBySeparator[1];
 				String registrationId = cutBySeparator[2].substring(2);

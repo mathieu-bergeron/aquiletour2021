@@ -36,9 +36,9 @@ public class AtomicTaskCompletedHandler extends BackendMessageHandler<AtomicTask
 
 		CourseManager.updateCourseLog(modelStore,
 				                      message.coursePath(), 
+				                      message.getUser(),
 				                      message.getTaskPath(), 
 				                      message.getGroupId(),
-				                      message.getUser().getId(),
 				                      message.getAtomicTaskId(),
 				                      message.getCompletion());
 	}

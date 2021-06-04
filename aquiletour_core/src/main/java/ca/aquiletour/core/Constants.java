@@ -5,6 +5,7 @@ public class Constants {
 	public static final int DEFAULT_USER_ID_LENGTH = 3;
 
 	public static final String CSV_FILE_ENCODING = "latin1";
+	public static final String CSV_SEPARATOR = ";";
 	
 	public static final boolean DISABLE_EMAILS = true;
 	
@@ -42,6 +43,10 @@ public class Constants {
 	public static final String GIT_COMMIT_LIST_URL_SEGMENT = "progression_git";
 	public static final String GIT_LATE_STUDENTS_URL_SEGMENT = "retards_git";
 	public static final String GIT_STUDENT_SUMMARIES_URL_SEGMENT = "sommaires_git";
+
+	public static final String LOG_URL_SEGMENT = "historique";
+	public static final String COURSE_LOG_URL_SEGMENT = LOG_URL_SEGMENT + "/" + COURSE_URL_SEGMENT;
+	public static final String QUEUE_LOG_URL_SEGMENT = LOG_URL_SEGMENT + "/" + QUEUE_URL_SEGMENT;
 
 	public static final String USER_URL_PARAM = "u";
 	public static final String SEMESTER_URL_PARAM = "s";

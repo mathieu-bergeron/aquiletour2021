@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.course.teacher;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
@@ -35,6 +36,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement entryTasksContainer;
 	private HtmlElement exitTasksContainer;
 
+	private HtmlElement downloadCourseLogLink;
+
 	private HtmlElements addTaskIdToValue;
 
 	private BootstrapDropdown semesterDropdown;
@@ -65,8 +68,11 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		completionsList = this.getRootElement().find("#completions-list").get(0);
 		completionsContainer = this.getRootElement().find("#completions-container").get(0);
 
+
 		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
 		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
+
+		downloadCourseLogLink = this.getRootElement().find("#download-course-log-link").get(0);
 		
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 
@@ -89,6 +95,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(editableTitle);
 		MustNot.beNull(entryTasksContainer);
 		MustNot.beNull(exitTasksContainer);
+		MustNot.beNull(downloadCourseLogLink);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
@@ -166,6 +173,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		T.call(this);
 		
 		addTaskIdToValue.appendToAttribute("value", task.id());
+		
+		downloadCourseLogLink.setAttribute("href", "/" + Constants.COURSE_LOG_URL_SEGMENT + coursePath.toUrlPath());
 	}
 
 	@Override

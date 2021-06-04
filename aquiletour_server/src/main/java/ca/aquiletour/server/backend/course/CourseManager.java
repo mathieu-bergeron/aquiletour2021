@@ -15,7 +15,7 @@ import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.dates.AquiletourDate;
-import ca.aquiletour.core.models.logs.CourseLog;
+import ca.aquiletour.core.models.logs.LogModelCourse;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.CoursePathStudent;
 import ca.aquiletour.core.models.paths.TaskPath;
@@ -320,9 +320,9 @@ public class CourseManager {
 			}
 		});
 		
-		modelStore.createModel(CourseLog.class, "admin", coursePath, new ModelInitializer<CourseLog>() {
+		modelStore.createModel(LogModelCourse.class, "admin", coursePath, new ModelInitializer<LogModelCourse>() {
 			@Override
-			public void initialize(CourseLog newModel) {
+			public void initialize(LogModelCourse newModel) {
 				T.call(this);
 			}
 		});
@@ -544,21 +544,21 @@ public class CourseManager {
 
 	public static void updateCourseLog(ModelStoreSync modelStore, 
 			                           CoursePath coursePath, 
+			                           User user,
 			                           TaskPath taskPath, 
 			                           String groupId,
-			                           String studentId,
 			                           String atomicTaskId,
 			                           AtomicTaskCompletion completion) throws BackendError {
 		T.call(CourseManager.class);
 		
-		modelStore.updateModel(CourseLog.class, "admin", coursePath, new ModelUpdater<CourseLog>() {
+		modelStore.updateModel(LogModelCourse.class, "admin", coursePath, new ModelUpdater<LogModelCourse>() {
 			@Override
-			public void update(CourseLog courseLog) {
+			public void update(LogModelCourse courseLog) {
 				T.call(this);
 				
 				courseLog.addAtomicTaskCompletion(taskPath, 
+												  user,
 						                          groupId, 
-						                          studentId,
 						                          atomicTaskId, 
 						                          completion);
 			}

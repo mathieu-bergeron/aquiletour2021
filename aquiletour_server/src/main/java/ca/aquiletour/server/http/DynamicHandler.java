@@ -41,6 +41,10 @@ import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
+import ca.aquiletour.core.models.logs.LogModel;
+import ca.aquiletour.core.models.logs.LogModelCourse;
+import ca.aquiletour.core.models.logs.LogModelQueue;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
@@ -51,6 +55,8 @@ import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelReader;
+import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
@@ -110,14 +116,88 @@ public class DynamicHandler extends AbstractHandler {
 		T.call(this);
 
 		if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {
-			  baseRequest.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, new MultipartConfigElement("/"));
-		}
 
+			  baseRequest.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, new MultipartConfigElement("/"));
+
+		}
+		
+		String rawPath = baseRequest.getRequestURI().toString();
+		Path path = Path.fromRawPath(rawPath);
 		OutputStream out = response.getOutputStream();
-		serveView(baseRequest, response, out);
+		
+		if(rawPath.contains(Constants.LOG_URL_SEGMENT)) {
+			
+			serveLog(baseRequest, response, out, path);
+			
+		}else {
+
+			serveView(baseRequest, response, out, path);
+		}
 	}
 
-	private void serveView(Request baseRequest, HttpServletResponse response, OutputStream out)
+	private void serveLog(Request baseRequest, 
+			              HttpServletResponse response, 
+			              OutputStream out,
+			              Path path)
+
+			throws FileNotFoundException, IOException {
+		
+		Path subPath = path.removePrefix(Constants.LOG_URL_SEGMENT);
+		
+		if(subPath.nameCount() >= 4) {
+			
+			CoursePath coursePath = CoursePath.fromPath(subPath.subPath(1));
+			
+			if(subPath.startsWith(Constants.QUEUE_URL_SEGMENT)) {
+				
+				serveLog(baseRequest, response, out, coursePath, LogModelQueue.class);
+				
+			} else if(subPath.startsWith(Constants.COURSE_URL_SEGMENT)) {
+
+				serveLog(baseRequest, response, out, coursePath, LogModelCourse.class);
+			}
+		}
+	}
+
+	private void serveLog(Request baseRequest, 
+			              HttpServletResponse response, 
+			              OutputStream out,
+			              CoursePath coursePath, 
+			              Class<? extends LogModel<?,?>> logModelClass)
+
+			throws FileNotFoundException, IOException {
+		
+		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+		
+		StringBuilder logContent = new StringBuilder();
+		
+		modelStore.readModel(logModelClass, "admin", coursePath, new ModelReader<LogModel<?,?>>() {
+			@Override
+			public void read(LogModel<?, ?> logModel) {
+				T.call(this);
+				
+				logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, logContent);
+			}
+		});
+		
+		response.addHeader("content-disposition", "attachment; filename=\"" + coursePath.toFileName() + ".csv\"");
+		response.setContentType("text/csv; charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
+		out.write(logContent.toString().getBytes());
+		out.flush();
+		out.close();
+		
+		baseRequest.setHandled(true);
+	}
+	
+	
+
+
+	private void serveView(Request baseRequest, 
+			               HttpServletResponse response, 
+			               OutputStream out,
+			               Path path)
+
 			throws FileNotFoundException, IOException {
 
 		T.call(this);
@@ -135,7 +215,6 @@ public class DynamicHandler extends AbstractHandler {
 
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
-		Path path = Path.fromRawPath(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 		executeBackend(baseRequest, response, path, parameters);
@@ -434,6 +513,8 @@ public class DynamicHandler extends AbstractHandler {
 		try {
 
 			out.write(builder.toString().getBytes());
+			out.flush();
+			out.close();
 
 		} catch (IOException e) {
 			e.printStackTrace();

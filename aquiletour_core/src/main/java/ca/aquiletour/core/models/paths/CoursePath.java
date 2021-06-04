@@ -59,4 +59,14 @@ public class CoursePath extends SemesterPath {
 
 		return coursePath;
 	}
+
+	public static CoursePath fromPath(Path path) {
+		T.call(CoursePath.class);
+
+		CoursePath coursePath = new CoursePath();
+
+		coursePath.copyNamesOf(path);
+
+		return coursePath;
+	}
 }

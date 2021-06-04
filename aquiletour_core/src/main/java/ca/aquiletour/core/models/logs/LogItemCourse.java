@@ -4,52 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.paths.TaskPath;
-import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
 
-public class CourseLogItem implements NtroModelValue {
+public class LogItemCourse extends LogItem {
 	
-	private NtroDate timestamp = new NtroDate();
+	private int longuestTaskPath = 0;
+	void registerLonguestTaskPath(int longuestTaskPath) {
+		this.longuestTaskPath = longuestTaskPath;
+	}
+	
 	private String groupId = "";
-	private String studentId = "";
 	private TaskPath taskPath = new TaskPath();
 	private List<String> eventItems = new ArrayList<>();
-
-
-	public CourseLogItem() {
-		T.call(this);
-	}
-
-	public CourseLogItem(NtroDate timestamp, 
-			             TaskPath taskPath, 
-			             String groupId, 
-			             String studentId, 
-			             List<String> eventItems) {
-		T.call(this);
-		
-		setTimestamp(timestamp);
-		setTaskPath(taskPath);
-		setGroupId(groupId);
-		setStudentId(studentId);
-		setEventItems(eventItems);
-	}
-
-	public NtroDate getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(NtroDate timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public String getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
-	}
 
 	public String getGroupId() {
 		return groupId;
@@ -75,18 +41,12 @@ public class CourseLogItem implements NtroModelValue {
 		this.eventItems = eventItems;
 	}
 
-	public void writeCsvLine(int longuestTaskPath, 
-			                 String separator, 
-			                 StringBuilder builder) {
+	@Override
+	protected void writeCsvLineAfterBasicInfo(String separator, StringBuilder builder) {
 		T.call(this);
-		
-		builder.append(timestamp.format("y-m-d H:m:s"));
 
 		builder.append(separator);
 		builder.append(groupId);
-
-		builder.append(separator);
-		builder.append(studentId);
 		
 		for(int i = 0; i < longuestTaskPath; i++) {
 
@@ -104,5 +64,6 @@ public class CourseLogItem implements NtroModelValue {
 			builder.append(eventItem);
 			builder.append("\"");
 		}
+		
 	}
 }
