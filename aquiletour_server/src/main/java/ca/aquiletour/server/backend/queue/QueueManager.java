@@ -1,6 +1,6 @@
 package ca.aquiletour.server.backend.queue;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;

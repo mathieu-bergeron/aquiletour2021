@@ -1,8 +1,8 @@
 package ca.aquiletour.web.pages.course;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;

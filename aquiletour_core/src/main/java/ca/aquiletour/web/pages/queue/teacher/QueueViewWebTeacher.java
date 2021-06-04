@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.queue.teacher;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;

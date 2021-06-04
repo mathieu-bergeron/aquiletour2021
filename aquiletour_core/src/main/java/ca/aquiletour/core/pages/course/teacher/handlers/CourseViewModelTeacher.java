@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
@@ -39,23 +40,89 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 
 		view.selectGroup(currentGroupId());
 		
+		view.displayCourseStructureView(isEditable());
 		view.showUneditableComponents(!isEditable());
-		view.showEditableComponents(isEditable());
+	}
+
+	protected void observeCurrentTask(CourseModelTeacher model, String groupId, CourseViewTeacher view, ViewLoader subViewLoader) {
+		T.call(this);
+		super.observeCurrentTask(model, groupId, view, subViewLoader);
+		
+		T.here();
+		
+		view.clearStudentStatuses();
+
+		observeGroups(model, view);
+	}
+
+	private void observeGroups(CourseModelTeacher model, CourseViewTeacher view) {
+		T.call(this);
+
+		model.getGroups().removeObservers();
+		model.getGroups().onItemAdded(new ItemAddedListener<GroupDescription>() {
+			@Override
+			public void onItemAdded(int index, GroupDescription item) {
+				
+				if(currentGroupId().equals(Constants.ALL_GROUPS_ID)
+						|| currentGroupId().equals(item.getGroupId())) {
+
+					observeStudents(model, view, item);
+				}
+			}
+		});
+	}
+
+	private void observeStudents(CourseModelTeacher model, CourseViewTeacher view, GroupDescription item) {
+		item.getStudents().removeObservers();
+		item.getStudents().onItemAdded(new ItemAddedListener<String>() {
+			@Override
+			public void onItemAdded(int index, String studentId) {
+				T.call(this);
+
+				if(currentTask().status(model.getCompletions().valueOf(studentId)).isTodo()) {
+					displayStudentCompletion(studentId, view);
+				}
+			}
+		});
 	}
 
 	protected void observeTaskCompletions(CourseModelTeacher model, CourseViewTeacher view) {
 		T.call(this);
-
+		
 		model.getCompletions().removeObservers();
 		model.getCompletions().onEntryAdded(new EntryAddedListener<StudentCompletionsByTaskId>() {
 			@Override
 			public void onEntryAdded(String studentId, StudentCompletionsByTaskId studentCompletionsByTaskId) {
 				T.call(this);
-
-				displayStudentCompletion(studentId, view);
+				
+				observeStudentCompletions(view, studentId, studentCompletionsByTaskId);
 			}
 		});
 	}
+
+	private void observeStudentCompletions(CourseViewTeacher view, 
+			                               String studentId, 
+			                               StudentCompletionsByTaskId studentCompletionsByTaskId) {
+		
+		T.call(this);
+		
+		studentCompletionsByTaskId.removeObservers();
+		studentCompletionsByTaskId.onEntryAdded(new EntryAddedListener<CompletionByAtomicTaskId>() {
+			@Override
+			public void onEntryAdded(String taskKey, CompletionByAtomicTaskId completionByAtomicTaskId) {
+				T.call(this);
+				
+				T.values(currentTask().getPath().toKey(), taskKey);
+				
+				if(currentTask().getPath().toKey().equals(taskKey)
+						&& currentTask().status(studentCompletionsByTaskId).isTodo()) {
+					
+					displayStudentCompletion(studentId, view);
+				}
+			}
+		});
+	}
+
 
 	private void initializeDropdowns(CourseModelTeacher model, CourseViewTeacher view) {
 		T.call(this);

@@ -3,11 +3,11 @@ package ca.aquiletour.core.pages.course.handlers;
 import java.util.List;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
@@ -49,7 +49,7 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 				&& !message.getGroupId().equals(currentGroupId)) {
 			currentGroupId = message.getGroupId();
 
-		}else {
+		}else if(currentGroupId == null) {
 			
 			currentGroupId = Constants.COURSE_STRUCTURE_ID;
 

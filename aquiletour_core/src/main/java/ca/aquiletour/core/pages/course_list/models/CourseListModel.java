@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course_list.models;
 
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;

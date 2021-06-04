@@ -93,12 +93,12 @@ public class LocalStoreServer extends LocalStoreFiles {
 			}else {
 				
 				Log.error("[LocalStoreServer] responseCode != 200 for " + messageString);
-				response = ModelStore.emptyModelString(message.documentPath());
+				response = ModelStore.emptyModelString(message.getDocumentPath());
 			}
 			
 		} catch (IOException e) {
 			Log.error("Unable to connect to " + serviceUrl);
-			response = ModelStore.emptyModelString(message.documentPath());
+			response = ModelStore.emptyModelString(message.getDocumentPath());
 		}
 
 		return new JsonLoaderMemory(response);

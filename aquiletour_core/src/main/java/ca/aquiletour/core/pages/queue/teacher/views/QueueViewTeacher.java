@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.queue.teacher.views;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 
 public interface QueueViewTeacher extends QueueView {

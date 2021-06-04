@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;

@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses.base;
+package ca.aquiletour.core.models.paths;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;

@@ -29,6 +29,7 @@ import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.ConcreteDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;

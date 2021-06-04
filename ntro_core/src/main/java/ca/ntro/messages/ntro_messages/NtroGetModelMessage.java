@@ -11,7 +11,7 @@ public class NtroGetModelMessage extends NtroUserMessage<NtroUser> implements Nt
 	private DocumentPath documentPath;
 	private Class<? extends NtroModel> targetClass;
 
-	public DocumentPath documentPath() {
+	public DocumentPath getDocumentPath() {
 		return documentPath;
 	}
 

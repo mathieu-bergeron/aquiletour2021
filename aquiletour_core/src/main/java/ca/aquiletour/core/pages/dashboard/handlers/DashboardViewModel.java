@@ -1,6 +1,6 @@
 package ca.aquiletour.core.pages.dashboard.handlers;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.models.DashboardModel;

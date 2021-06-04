@@ -3,7 +3,6 @@ package ca.aquiletour.core.models.courses.base;
 import java.util.List;
 import java.util.Map;
 
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
@@ -12,6 +11,8 @@ import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;

@@ -9,7 +9,7 @@ public class NtroModelMessageImpl implements NtroModelMessage {
 	private Class<? extends NtroModel> targetClass;
 
 	@Override
-	public DocumentPath documentPath() {
+	public DocumentPath getDocumentPath() {
 		return documentPath;
 	}
 

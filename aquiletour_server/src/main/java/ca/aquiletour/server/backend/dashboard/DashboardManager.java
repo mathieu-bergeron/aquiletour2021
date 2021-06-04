@@ -4,11 +4,11 @@ package ca.aquiletour.server.backend.dashboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.CoursePathStudent;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePathStudent;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;

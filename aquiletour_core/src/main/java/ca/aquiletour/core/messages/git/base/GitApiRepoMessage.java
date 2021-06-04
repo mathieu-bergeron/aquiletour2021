@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.git.base;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;

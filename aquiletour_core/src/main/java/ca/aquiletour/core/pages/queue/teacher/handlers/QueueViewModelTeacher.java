@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.queue.teacher.handlers;
 
 import java.util.Map;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;

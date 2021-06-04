@@ -2,7 +2,7 @@ package ca.aquiletour.server.backend.schedule;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;

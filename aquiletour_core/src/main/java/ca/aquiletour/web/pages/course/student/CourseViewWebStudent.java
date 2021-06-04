@@ -1,7 +1,6 @@
 package ca.aquiletour.web.pages.course.student;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
@@ -13,6 +12,7 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.status.StatusBlocked;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;

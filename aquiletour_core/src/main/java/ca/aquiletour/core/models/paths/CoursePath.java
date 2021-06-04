@@ -1,15 +1,13 @@
-package ca.aquiletour.core.models.courses;
+package ca.aquiletour.core.models.paths;
 
 import ca.aquiletour.core.Constants;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
 
-public class CoursePath extends Path {
+public class CoursePath extends SemesterPath {
 	
 	private static final CoursePath allCourses = new CoursePath(Constants.ALL_TEACHERS_ID, Constants.ACTIVE_SEMESTERS_ID, Constants.ALL_COURSES_ID);
 	
-	private final int TEACHER_INDEX = 0;
-	private final int SEMESTER_INDEX = 1;
 	private final int COURSE_INDEX = 2;
 
 	public CoursePath() {
@@ -18,10 +16,8 @@ public class CoursePath extends Path {
 	}
 
 	public CoursePath(String teacherId, String semesterId, String courseId) {
-		super();
-		
-		addName(teacherId);
-		addName(semesterId);
+		super(teacherId, semesterId);
+
 		addName(courseId);
 	}
 
@@ -29,34 +25,16 @@ public class CoursePath extends Path {
 		T.call(this);
 
 		Path path = new Path();
-		path.addName(getNames().get(TEACHER_INDEX));
-		path.addName(getNames().get(SEMESTER_INDEX));
+		path.addName(teacherId());
+		path.addName(semesterId());
 		path.addName(getNames().get(COURSE_INDEX));
 		return path;
-	}
-
-	public String semesterId() {
-		T.call(this);
-
-		return getNames().get(SEMESTER_INDEX);
 	}
 
 	public String courseId() {
 		T.call(this);
 
 		return getNames().get(COURSE_INDEX);
-	}
-
-	public String teacherId() {
-		T.call(this);
-
-		return getNames().get(TEACHER_INDEX);
-	}
-	
-	public String toId() {
-		T.call(this);
-		
-		return toFileName();
 	}
 
 
@@ -81,5 +59,4 @@ public class CoursePath extends Path {
 
 		return coursePath;
 	}
-
 }

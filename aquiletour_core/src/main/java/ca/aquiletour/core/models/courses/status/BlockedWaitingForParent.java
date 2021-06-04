@@ -1,6 +1,6 @@
 package ca.aquiletour.core.models.courses.status;
 
-import ca.aquiletour.core.models.courses.base.TaskPath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.ntro.core.system.trace.T;
 
 public class BlockedWaitingForParent extends StatusBlocked {

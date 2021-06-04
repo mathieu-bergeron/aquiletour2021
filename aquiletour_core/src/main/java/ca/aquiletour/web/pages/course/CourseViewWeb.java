@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;

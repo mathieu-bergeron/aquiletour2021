@@ -1,4 +1,4 @@
-package ca.aquiletour.core.models.courses;
+package ca.aquiletour.core.models.paths;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
@@ -6,22 +6,14 @@ import ca.ntro.core.system.trace.T;
 public class CoursePathStudent extends CoursePath {
 
 	private final int STUDENT_INDEX = 3;
-	
-	public static CoursePathStudent fromCoursePath(CoursePath coursePath, String studentId) {
-		T.call(CoursePathStudent.class);
-		
-		CoursePathStudent path = new CoursePathStudent(coursePath.teacherId(), coursePath.semesterId(), coursePath.courseId(), studentId);
-		
-		return path;
+
+	public CoursePathStudent(CoursePath coursePath, String studentId) {
 	}
 	
-	public CoursePathStudent(String teacherId, String semesterId, String courseId, String studentId) {
+	private CoursePathStudent(String teacherId, String semesterId, String courseId, String studentId) {
 		super(teacherId, semesterId, courseId);
 		
 		addName(studentId);
-	}
-
-	public CoursePathStudent(CoursePath coursePath, String studentId) {
 	}
 
 	public String studentId() {
@@ -42,5 +34,13 @@ public class CoursePathStudent extends CoursePath {
 		T.call(this);
 
 		return new CoursePath(teacherId(), semesterId(), courseId());
+	}
+
+	public static CoursePathStudent fromCoursePath(CoursePath coursePath, String studentId) {
+		T.call(CoursePathStudent.class);
+		
+		CoursePathStudent path = new CoursePathStudent(coursePath.teacherId(), coursePath.semesterId(), coursePath.courseId(), studentId);
+		
+		return path;
 	}
 }

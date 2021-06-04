@@ -3,7 +3,7 @@ package ca.aquiletour.server.backend.course_list;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;

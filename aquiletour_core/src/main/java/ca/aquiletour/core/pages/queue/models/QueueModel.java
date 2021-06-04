@@ -2,7 +2,7 @@ package ca.aquiletour.core.pages.queue.models;
 
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
 import ca.ntro.core.models.lambdas.Break;

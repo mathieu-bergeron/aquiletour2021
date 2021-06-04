@@ -1,10 +1,10 @@
 package ca.aquiletour.web.pages.course.teacher;
 
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.aquiletour.web.widgets.BootstrapDropdown;
@@ -28,7 +28,9 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement editableEndtime;
 	private HtmlElement editableDescription;
 	private HtmlElement editableTitle;
-	private HtmlElement uneditableCompletions;
+
+	private HtmlElement completionsList;
+	private HtmlElement completionsContainer;
 
 	private HtmlElement entryTasksContainer;
 	private HtmlElement exitTasksContainer;
@@ -58,8 +60,10 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		weekOfElement = this.getRootElement().find("#week-of").get(0);
 		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
 		editableDescription = this.getRootElement().find("#editable-description").get(0);
-		uneditableCompletions = this.getRootElement().find("#uneditable-completions").get(0);
 		editableTitle = this.getRootElement().find("#editable-title").get(0);
+
+		completionsList = this.getRootElement().find("#completions-list").get(0);
+		completionsContainer = this.getRootElement().find("#completions-container").get(0);
 
 		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
 		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
@@ -80,7 +84,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(weekOfElement);
 		MustNot.beNull(editableEndtime);
 		MustNot.beNull(editableDescription);
-		MustNot.beNull(uneditableCompletions);
+		MustNot.beNull(completionsList);
+		MustNot.beNull(completionsContainer);
 		MustNot.beNull(editableTitle);
 		MustNot.beNull(entryTasksContainer);
 		MustNot.beNull(exitTasksContainer);
@@ -90,15 +95,16 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void showEditableComponents(boolean show) {
+	public void displayCourseStructureView(boolean shouldDisplay) {
 		T.call(this);
 		
-		if(show) {
+		if(shouldDisplay) {
 			
 			editableDescription.show();
 			editableEndtime.show();
 			saveButtonContainer.show();
 			editableTitle.show();
+			completionsContainer.hide();
 			
 		} else {
 
@@ -106,6 +112,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 			editableEndtime.hide();
 			saveButtonContainer.hide();
 			editableTitle.hide();
+			completionsContainer.show();
 		}
 	}
 
@@ -239,7 +246,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	public void appendCompletion(String studentId) {
 		T.call(this);
 		
-		String list = uneditableCompletions.text();
+		String list = completionsList.text();
 		
 		if(list == null || list.isEmpty()) {
 			
@@ -251,7 +258,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 			
 		}
 
-		uneditableCompletions.text(list);
+		completionsList.text(list);
 	}
 
 	@Override
@@ -301,6 +308,14 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		exitTasksContainer.deleteChildrenForever();
 		exitTasksContainer.text("");
 		exitTasksContainer.removeClass("border");
+	}
+
+	@Override
+	public void clearStudentStatuses() {
+		T.call(this);
+
+		completionsList.deleteChildrenForever();
+		completionsList.text("");
 	}
 
 }

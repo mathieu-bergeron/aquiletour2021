@@ -1,7 +1,7 @@
 package ca.aquiletour.server.backend.course_list;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;

@@ -1,8 +1,8 @@
 package ca.aquiletour.core.pages.course.teacher.handlers;
 
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;

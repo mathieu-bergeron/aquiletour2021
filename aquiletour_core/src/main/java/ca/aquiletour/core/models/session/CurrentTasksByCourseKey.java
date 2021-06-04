@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;

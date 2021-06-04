@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.dashboard.student;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardCourseViewStudent;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;

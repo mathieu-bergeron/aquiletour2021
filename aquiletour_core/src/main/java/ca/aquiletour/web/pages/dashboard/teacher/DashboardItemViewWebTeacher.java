@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.dashboard.teacher;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
@@ -11,16 +11,6 @@ import ca.ntro.web.dom.HtmlElement;
 
 public class DashboardItemViewWebTeacher extends DashboardItemViewWeb<CurrentTaskTeacher> implements DashboardCourseViewTeacher {
 	
-	private String taskLiHtml = "<li class=\"list-group-item\">\n"
-			+ "<div class=\"d-flex\">\n"
-			+ "<a href=\"#\">Atelier 2</a>\n"
-			+ "<div class=\"flex-fill\"></div>\n"
-			+ "<div>\n"
-			+ "                        (12 étudiant.es)\n"
-			+ "</div>\n"
-			+ "</div>\n"
-			+ "</li>\n";
-
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
@@ -43,7 +33,15 @@ public class DashboardItemViewWebTeacher extends DashboardItemViewWeb<CurrentTas
 		
 		HtmlElement taskHref = container.createElement("<a></a>");
 		container.appendElement(taskHref);
-		taskHref.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + currentTask.getTaskPath().toString());
+		taskHref.setAttribute("href", "/" 
+		                              + Constants.COURSE_URL_SEGMENT 
+		                              + coursePath.toUrlPath() 
+		                              + currentTask.getTaskPath().toString() 
+		                              + "?" 
+		                              + Constants.GROUP_URL_PARAM
+		                              + "=" 
+		                              + Constants.ALL_GROUPS_ID);
+
 		taskHref.text(currentTask.getTaskTitle().getValue());
 		
 		HtmlElement hFill = container.createElement("<div class='d-fill me-3'></div>");

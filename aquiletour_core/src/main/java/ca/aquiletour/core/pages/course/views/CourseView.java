@@ -1,9 +1,9 @@
 package ca.aquiletour.core.pages.course.views;
 
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.TaskBreadcrumbs;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.mvc.NtroView;
 
 public interface CourseView extends NtroView  {

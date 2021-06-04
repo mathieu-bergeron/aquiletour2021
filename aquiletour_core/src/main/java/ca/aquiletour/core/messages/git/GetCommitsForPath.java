@@ -33,7 +33,7 @@ public class GetCommitsForPath extends GitApiExerciseMessage implements NtroMode
 	}
 
 	@Override
-	public DocumentPath documentPath() {
+	public DocumentPath getDocumentPath() {
 		T.call(this);
 		
 		DocumentPath documentPath = new DocumentPath();

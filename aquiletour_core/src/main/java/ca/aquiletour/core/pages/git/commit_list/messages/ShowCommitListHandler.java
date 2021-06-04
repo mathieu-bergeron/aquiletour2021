@@ -23,7 +23,7 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		GetCommitsForPath getCommitListMessage = new GetCommitsForPath(message);
 		getCommitListMessage.setAuthToken(Ntro.currentUser().getAuthToken());
 
-		currentController.setModelLoader(CommitListModel.class, Ntro.currentUser().getAuthToken(), getCommitListMessage.documentPath().toString());
+		currentController.setModelLoader(CommitListModel.class, Ntro.currentUser().getAuthToken(), getCommitListMessage.getDocumentPath().toString());
 		currentController.setSubModelLoader(CourseModelStudent.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();

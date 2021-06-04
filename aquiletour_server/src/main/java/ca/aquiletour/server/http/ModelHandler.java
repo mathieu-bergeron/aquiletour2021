@@ -95,7 +95,7 @@ public class ModelHandler extends AbstractHandler {
 			                             GetCommitsForPath getCommitsForPathMessage) throws IOException {
 		T.call(this);
 		
-		DocumentPath documentPath = getCommitsForPathMessage.documentPath();
+		DocumentPath documentPath = getCommitsForPathMessage.getDocumentPath();
 		String authToken = getCommitsForPathMessage.getAuthToken();
 
 		ModelLoader modelLoader = Ntro.modelStore().getModelLoaderFromRequest(Constants.GIT_API_URL, getCommitsForPathMessage);
@@ -119,6 +119,8 @@ public class ModelHandler extends AbstractHandler {
         // ??
         // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 
+        response.setStatus(HttpStatus.OK_200);
+
         response.getOutputStream().write(Ntro.jsonService().toString(model).getBytes());
         response.flushBuffer();
 
@@ -131,7 +133,7 @@ public class ModelHandler extends AbstractHandler {
 			                           NtroGetModelMessage getModelNtroMessage) throws IOException {
 		T.call(this);
 
-		DocumentPath documentPath = getModelNtroMessage.documentPath();
+		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
 		NtroUser user = getModelNtroMessage.getUser();
 
 		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
