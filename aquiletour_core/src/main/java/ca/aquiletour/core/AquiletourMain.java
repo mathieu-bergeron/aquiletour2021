@@ -74,6 +74,9 @@ import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
+import ca.aquiletour.core.models.logs.CourseLog;
+import ca.aquiletour.core.models.logs.CourseLogItem;
+import ca.aquiletour.core.models.logs.CourseLogItems;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.dates.CalendarWeek;
@@ -478,6 +481,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(BlockedWaitingForPreviousTasks.class);
 		Ntro.registerSerializableClass(BlockedWaitingForSubTasks.class);
 		Ntro.registerSerializableClass(StatusTodo.class);
+
+		Ntro.registerSerializableClass(CourseLog.class);
+		Ntro.registerSerializableClass(CourseLogItem.class);
+		Ntro.registerSerializableClass(CourseLogItems.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

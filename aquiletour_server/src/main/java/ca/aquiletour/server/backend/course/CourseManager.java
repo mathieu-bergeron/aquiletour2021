@@ -15,6 +15,7 @@ import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.logs.CourseLog;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.CoursePathStudent;
 import ca.aquiletour.core.models.paths.TaskPath;
@@ -318,7 +319,13 @@ public class CourseManager {
 				course.updateCourseTitle(courseTitle);
 			}
 		});
-
+		
+		modelStore.createModel(CourseLog.class, "admin", coursePath, new ModelInitializer<CourseLog>() {
+			@Override
+			public void initialize(CourseLog newModel) {
+				T.call(this);
+			}
+		});
 	}
 
 	public static void createCourseForUser(ModelStoreSync modelStore, 
@@ -531,6 +538,29 @@ public class CourseManager {
 				T.call(this);
 				
 				course.taskCompletedByStudent(taskPath, atomicTaskId, student.getId());
+			}
+		});
+	}
+
+	public static void updateCourseLog(ModelStoreSync modelStore, 
+			                           CoursePath coursePath, 
+			                           Path taskPath, 
+			                           String groupId,
+			                           String studentId,
+			                           String atomicTaskId,
+			                           AtomicTaskCompletion completion) throws BackendError {
+		T.call(CourseManager.class);
+		
+		modelStore.updateModel(CourseLog.class, "admin", coursePath, new ModelUpdater<CourseLog>() {
+			@Override
+			public void update(CourseLog courseLog) {
+				T.call(this);
+				
+				courseLog.addAtomicTaskCompletion(taskPath, 
+						                          groupId, 
+						                          studentId,
+						                          atomicTaskId, 
+						                          completion);
 			}
 		});
 	}
