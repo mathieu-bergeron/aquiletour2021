@@ -328,17 +328,20 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		formElement.show();
 	}
 
-	private void identifyAtomicTask(AtomicTask task, HtmlElement container) {
+	private void identifyAtomicTask(String groupId, AtomicTask task, HtmlElement container) {
 		T.call(this);
 		
 		HtmlElements addAtomicTaskPathToValue = container.find(".add-atomic-task-id-to-value");
+		HtmlElements addGroupIdToValue = container.find(".add-group-id-to-value");
+
 		addAtomicTaskPathToValue.appendToAttribute("value", task.getId());
+		addGroupIdToValue.appendToAttribute("value", groupId);
 	}
 
 	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement container) {
 		T.call(this);
 		
-		identifyAtomicTask(repoTask, container);
+		identifyAtomicTask(groupId, repoTask, container);
 
 		container.addClass(atomicTaskId(repoTask));
 
@@ -370,7 +373,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		T.call(this);
 		
 		HtmlElement atomicTaskContainer = atomicTaskContainerDefault.clone();
-		identifyAtomicTask(task, atomicTaskContainer);
+
+		identifyAtomicTask(groupId, task, atomicTaskContainer);
+
 		atomicTaskContainer.show();
 		
 		HtmlElement atomicTaskCheckbox = atomicTaskContainer.find("#atomic-task-checkbox-default").get(0);

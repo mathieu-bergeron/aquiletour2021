@@ -20,4 +20,14 @@ public class TaskPath extends Path {
 		return taskPath;
 	}
 
+	public static TaskPath fromPath(Path path) {
+		T.call(TaskPath.class);
+		
+		TaskPath taskPath = new TaskPath();
+
+		taskPath.copyNamesOf(path);
+
+		return taskPath;
+	}
+
 }

@@ -4,7 +4,8 @@ import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 
 public class AtomicTaskCompletedMessage extends CourseTaskMessage {
-	
+
+	private String groupId;
 	private String atomicTaskId;
 	private AtomicTaskCompletion completion;
 
@@ -24,4 +25,11 @@ public class AtomicTaskCompletedMessage extends CourseTaskMessage {
 		this.completion = completion;
 	}
 
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 }

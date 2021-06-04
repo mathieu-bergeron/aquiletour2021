@@ -1,10 +1,16 @@
 package ca.aquiletour.core.models.logs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
+import ca.ntro.services.Ntro;
 
 public class CourseLog implements NtroModel {
 	
@@ -31,17 +37,30 @@ public class CourseLog implements NtroModel {
 		});
 	}
 
-	public void addAtomicTaskCompletion(Path taskPath, 
+	public void addAtomicTaskCompletion(TaskPath taskPath, 
 			                            String groupId, 
 			                            String studentId, 
 			                            String atomicTaskId, 
 			                            AtomicTaskCompletion completion) {
 		T.call(this);
 		
-		List<String> eventItems = 
+		List<String> eventItems = new ArrayList<>();
 		
-		CourseLogItem item = new CourseLogItem(taskPath, groupId, studentId);
+		eventItems.add(atomicTaskId);
 		
+		if(completion != null) {
+			eventItems.addAll(completion.logItems());
+			
+		}
 		
+		NtroDate timestamp = Ntro.calendar().now();
+		
+		CourseLogItem item = new CourseLogItem(timestamp, 
+				                               taskPath, 
+				                               groupId, 
+				                               studentId, 
+				                               eventItems);
+		
+		getCourseLogItems().addItem(item);
 	}
 }

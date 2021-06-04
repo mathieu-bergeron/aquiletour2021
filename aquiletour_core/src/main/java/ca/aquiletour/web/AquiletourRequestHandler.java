@@ -6,6 +6,7 @@ import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
@@ -258,7 +259,7 @@ public class AquiletourRequestHandler {
 		String teacherId = path.name(0);
 		String semesterId = path.name(1);
 		String courseId = path.name(2);
-		Path taskPath = path.subPath(3);
+		TaskPath taskPath = TaskPath.fromPath(path.subPath(3));
 
 		message.setTeacherId(teacherId);
 		message.setCourseId(courseId);

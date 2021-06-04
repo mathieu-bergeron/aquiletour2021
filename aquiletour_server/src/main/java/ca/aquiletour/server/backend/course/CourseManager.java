@@ -544,7 +544,7 @@ public class CourseManager {
 
 	public static void updateCourseLog(ModelStoreSync modelStore, 
 			                           CoursePath coursePath, 
-			                           Path taskPath, 
+			                           TaskPath taskPath, 
 			                           String groupId,
 			                           String studentId,
 			                           String atomicTaskId,

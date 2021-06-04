@@ -16,6 +16,25 @@ public class CourseLogItem implements NtroModelValue {
 	private TaskPath taskPath = new TaskPath();
 	private List<String> eventItems = new ArrayList<>();
 
+
+	public CourseLogItem() {
+		T.call(this);
+	}
+
+	public CourseLogItem(NtroDate timestamp, 
+			             TaskPath taskPath, 
+			             String groupId, 
+			             String studentId, 
+			             List<String> eventItems) {
+		T.call(this);
+		
+		setTimestamp(timestamp);
+		setTaskPath(taskPath);
+		setGroupId(groupId);
+		setStudentId(studentId);
+		setEventItems(eventItems);
+	}
+
 	public NtroDate getTimestamp() {
 		return timestamp;
 	}

@@ -801,12 +801,13 @@ public class AquiletourBackendRequestHandler {
 		} else if(parameters.containsKey("atomicTaskCompletedId")) {
 				
 				String atomicTaskId = parameters.get("atomicTaskCompletedId")[0];
+				String groupId = parameters.get("groupId")[0];
 
 				AtomicTaskCompletedMessage taskCompletedMessage = AquiletourRequestHandler.createCourseTaskMessage(AtomicTaskCompletedMessage.class,
 																						                           path,
 																							                       parameters,
              																							           sessionData);
-
+				taskCompletedMessage.setGroupId(groupId);
 				taskCompletedMessage.setCompletion(new DefaultCompletion());
 				taskCompletedMessage.setAtomicTaskId(atomicTaskId);
 				
