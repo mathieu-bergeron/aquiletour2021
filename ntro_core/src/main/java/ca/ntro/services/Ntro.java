@@ -587,7 +587,6 @@ public class Ntro {
 
 	public static void reset() {
 		messages().reset();
-		modelStore().reset();
 	}
 
 	/* </reset> */

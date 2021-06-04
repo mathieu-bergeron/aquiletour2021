@@ -12,7 +12,7 @@ public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 	}
 
 	@Override
-	public void registerLogItems(LogItemsQueue logItems) {
+	public void setLogItems(LogItemsQueue logItems) {
 		this.logItems = logItems;
 	}
 

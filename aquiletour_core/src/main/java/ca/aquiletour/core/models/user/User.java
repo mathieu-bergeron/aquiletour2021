@@ -68,6 +68,16 @@ public class User extends NtroUser {
 		this.hasPassword = hasPassword;
 	}
 
+	public User toPublicUser() {
+		T.call(this);
+		
+		User publicUser = Ntro.factory().newInstance(this.getClass());
+		
+		publicUser.copyPublicInfomation(this);
+		
+		return publicUser;
+	}
+
 	public void copyPublicInfomation(User user) {
 		T.call(this);
 
@@ -182,4 +192,6 @@ public class User extends NtroUser {
 
 		return Validator.normalizeId(userId.toLowerCase());
 	}
+
+
 }

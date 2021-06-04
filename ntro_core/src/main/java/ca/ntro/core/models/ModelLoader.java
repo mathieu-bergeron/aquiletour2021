@@ -13,6 +13,11 @@ public class ModelLoader extends NtroTaskAsync {
 	private NtroModel model;
 	private DocumentPath documentPath;
 	private ModelStore modelStore;
+
+	public ModelLoader() {
+		super();
+		T.call(this);
+	}
 	
 	public ModelLoader(ModelStore modelStore, DocumentPath documentPath) {
 		super();
@@ -21,7 +26,7 @@ public class ModelLoader extends NtroTaskAsync {
 		this.modelStore = modelStore;
 		this.documentPath = documentPath;
 	}
-	
+
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);

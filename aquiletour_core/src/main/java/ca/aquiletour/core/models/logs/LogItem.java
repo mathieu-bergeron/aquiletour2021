@@ -6,13 +6,17 @@ import ca.ntro.models.NtroDate;
 
 public abstract class LogItem implements NtroModelValue {
 	
-	private LogModel<?,?> logModel;
-	public void registerLogModel(LogModel<?,?> logModel) {
-		this.logModel = logModel;
-	}
-	
+	private LogModel<?,?> logModel = LogModel.empty();
 	private NtroDate timestamp = new NtroDate();
 	private String userId = "";
+
+	public LogModel<?, ?> getLogModel() {
+		return logModel;
+	}
+
+	public void setLogModel(LogModel<?, ?> logModel) {
+		this.logModel = logModel;
+	}
 
 	public NtroDate getTimestamp() {
 		return timestamp;
@@ -35,6 +39,8 @@ public abstract class LogItem implements NtroModelValue {
 
 		builder.append(getTimestamp().format("yyyy-MM-dd HH:mm:ss"));
 		
+		System.out.println(getUserId()); 
+
 		User user = logModel.userByUd(getUserId());
 
 		builder.append(separator);

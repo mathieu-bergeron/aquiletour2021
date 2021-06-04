@@ -98,7 +98,7 @@ public class ModelHandler extends AbstractHandler {
 		DocumentPath documentPath = getCommitsForPathMessage.getDocumentPath();
 		String authToken = getCommitsForPathMessage.getAuthToken();
 
-		ModelLoader modelLoader = Ntro.modelStore().getModelLoaderFromRequest(Constants.GIT_API_URL, getCommitsForPathMessage);
+		ModelLoader modelLoader = Ntro.modelStore().getLoaderFromRequest(Constants.GIT_API_URL, getCommitsForPathMessage);
         modelLoader.execute();
         
         handleModelResponse(baseRequest, response, documentPath, authToken, modelLoader.getModel());

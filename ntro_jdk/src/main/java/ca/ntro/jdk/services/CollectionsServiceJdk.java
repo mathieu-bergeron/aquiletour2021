@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.services.CollectionsService;
 
 public class CollectionsServiceJdk extends CollectionsService {
@@ -52,10 +53,12 @@ public class CollectionsServiceJdk extends CollectionsService {
 	public boolean containsKeyExact(Map<?, ?> map, Object key) {
 		boolean containsKey = false;
 		
-		for(Object candidateKey : map.keySet()) {
-			if(candidateKey == key) {
-				containsKey = true;
-				break;
+		synchronized (map) {
+			for(Object candidateKey : map.keySet()) {
+				if(candidateKey == key) {
+					containsKey = true;
+					break;
+				}
 			}
 		}
 		
@@ -64,12 +67,16 @@ public class CollectionsServiceJdk extends CollectionsService {
 
 	@Override
 	public <V> V getExact(Map<?, V> map, Object key) {
+		T.call(this);
+
 		V value = null;
 
-		for(Entry<?, V> entry : map.entrySet()) {
-			if(entry.getKey() == key) {
-				value = entry.getValue();
-				break;
+		synchronized(map) {
+			for(Entry<?, V> entry : map.entrySet()) {
+				if(entry.getKey() == key) {
+					value = entry.getValue();
+					break;
+				}
 			}
 		}
 
@@ -90,10 +97,12 @@ public class CollectionsServiceJdk extends CollectionsService {
 	public boolean setContainsExact(Set<?> set, Object target) {
 		boolean setContains = false;
 		
-		for(Object element : set) {
-			if(element == target) {
-				setContains = true;
-				break;
+		synchronized (set) {
+			for(Object element : set) {
+				if(element == target) {
+					setContains = true;
+					break;
+				}
 			}
 		}
 		

@@ -33,7 +33,7 @@ public class LogModelCourse extends LogModel<LogItemCourse, LogItemsCourse> {
 		
 		NtroDate timestamp = Ntro.calendar().now();
 		
-		LogItemCourse item = LogModel.createLogItem(LogItemCourse.class, this, timestamp,user);
+		LogItemCourse item = createLogItem(LogItemCourse.class, timestamp, user);
 
 		item.setTaskPath(taskPath);
 		item.setGroupId(groupId);
@@ -48,7 +48,7 @@ public class LogModelCourse extends LogModel<LogItemCourse, LogItemsCourse> {
 	}
 
 	@Override
-	public void registerLogItems(LogItemsCourse logItems) {
+	public void setLogItems(LogItemsCourse logItems) {
 		this.logItems = logItems;
 	}
 

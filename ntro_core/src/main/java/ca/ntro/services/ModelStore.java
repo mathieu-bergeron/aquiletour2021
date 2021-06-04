@@ -85,34 +85,54 @@ public abstract class ModelStore {
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, String documentId){
 		T.call(this);
-		
+
 		DocumentPath documentPath = documentPath(modelClass, documentId);
+		ModelLoader modelLoader = null;
 
-		ModelLoader modelLoader = new ModelLoader(this, documentPath);
-		
-		JsonLoader jsonLoader = getJsonLoader(modelClass,documentPath);
-		jsonLoader.setTaskId("JsonLoader");
+		if(localHeapByPath.containsKey(documentPath)) {
+			
+			modelLoader = new ModelLoaderMemory(localHeapByPath.get(documentPath));
 
-		modelLoader.setTargetClass(modelClass);
+		}else {
 
-		//modelLoader.addPreviousTask(jsonLoader);
-		modelLoader.addSubTask(jsonLoader);
+			modelLoader = new ModelLoader(this, documentPath);
+			
+			JsonLoader jsonLoader = getJsonLoader(modelClass,documentPath);
+			jsonLoader.setTaskId("JsonLoader");
+
+			modelLoader.setTargetClass(modelClass);
+
+			//modelLoader.addPreviousTask(jsonLoader);
+			modelLoader.addSubTask(jsonLoader);
+			
+		}
 
 		return modelLoader;
 	}
 
-	public ModelLoader getModelLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
+	public ModelLoader getLoaderFromRequest(String serviceUrl, NtroModelMessage message) {
 		T.call(this);
-
-		ModelLoader modelLoader = new ModelLoader(this, message.getDocumentPath());
 		
-		JsonLoader jsonLoader = jsonLoaderFromRequest(serviceUrl, message);
-		jsonLoader.setTaskId("JsonLoader");
+		ModelLoader modelLoader = null;
+		
+		if(localHeapByPath.containsKey(message.getDocumentPath())) {
+			
+			modelLoader = new ModelLoaderMemory(localHeapByPath.get(message.getDocumentPath()));
 
-		modelLoader.setTargetClass(message.targetClass());
+		}else {
 
-		//modelLoader.addPreviousTask(jsonLoader);
-		modelLoader.addSubTask(jsonLoader);
+			modelLoader = new ModelLoader(this, message.getDocumentPath());
+			
+			JsonLoader jsonLoader = jsonLoaderFromRequest(serviceUrl, message);
+			jsonLoader.setTaskId("JsonLoader");
+
+			modelLoader.setTargetClass(message.targetClass());
+
+			//modelLoader.addPreviousTask(jsonLoader);
+			modelLoader.addSubTask(jsonLoader);
+			
+		}
+
 
 		return modelLoader;
 	}
@@ -145,9 +165,16 @@ public abstract class ModelStore {
 
 	public abstract void close();
 
-	public void registerModel(DocumentPath documentPath, NtroModel model) {
+	public synchronized void registerModel(DocumentPath documentPath, NtroModel model) {
+		T.call(this);
+
+		if(localHeapByPath.containsKey(documentPath)){
+			Log.warning("[registerModel] model already registered: " + documentPath.toString());
+		}
+
 		localHeap.put(model, documentPath);
 		localHeapByPath.put(documentPath, model);
+		
 	}
 
 	public void updateStoreConnections(NtroModel model) {
@@ -159,7 +186,7 @@ public abstract class ModelStore {
 
 		}else {
 			
-			Log.warning("[updateStoreConnexionts] model not found in localHeap: " + model);
+			Log.warning("[updateStoreConnexions] model not found in localHeap: " + model);
 		}
 	}
 
@@ -249,11 +276,6 @@ public abstract class ModelStore {
 			
 			saveDocument(documentPath, Ntro.jsonService().toString(newModel));
 		}
-	}
-	
-	void reset() {
-		localHeap = new HashMap<>();
-		localHeapByPath = new HashMap<>();
 	}
 
 	public void delete(NtroModel model) {
