@@ -37,6 +37,7 @@ import ca.ntro.services.ConfigService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.RouterService;
 import ca.ntro.services.SessionService;
+import ca.ntro.services.SystemService;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
@@ -148,6 +149,9 @@ public class InitializationTaskJdk extends InitializationTask {
 		};
 	}
 
-
+	@Override
+	protected SystemService provideSystemService() {
+		return new SystemServiceJdk();
+	}
 
 }

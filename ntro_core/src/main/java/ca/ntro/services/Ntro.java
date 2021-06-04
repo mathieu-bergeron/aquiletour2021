@@ -590,5 +590,27 @@ public class Ntro {
 	}
 
 	/* </reset> */
+	
+	
+	
+	
+	
+	/* <System> */
+
+	private static SystemService systemService;
+
+	static void registerSystemService(SystemService systemService) {
+		__T.call(Ntro.class, "registerSystemService");
+
+		Ntro.systemService = systemService;
+	}
+
+	public static String lineSeparator() {
+		__T.call(Ntro.class, "lineSeparator");
+
+		return Ntro.systemService.lineSeparator();
+	}
+
+	/* </System> */
 
 }
