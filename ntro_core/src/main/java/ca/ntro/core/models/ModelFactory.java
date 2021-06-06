@@ -57,7 +57,7 @@ public class ModelFactory {
 			return;
 		}
 
-		if(Ntro.collections().setContainsExact(localHeap, value)) return;
+		if(Ntro.collections().containsElementExact(localHeap, value)) return;
 		
 		localHeap.add(value);
 		

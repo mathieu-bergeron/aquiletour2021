@@ -3,16 +3,17 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.models.user.User;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
 public class InitializeSessionHandler extends BackendMessageHandler<InitializeSessionMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, InitializeSessionMessage message) {
+	public void handleNow(ModelStoreSync modelStore, InitializeSessionMessage message) throws BackendError {
 
 		User sessionUser = null;
 		User user = null;

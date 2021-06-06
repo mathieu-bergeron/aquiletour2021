@@ -1,13 +1,17 @@
-package ca.ntro.core.models;
+package ca.ntro.services;
 
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
+import ca.ntro.core.models.ModelInitializer;
+import ca.ntro.core.models.ModelReader;
+import ca.ntro.core.models.ModelReducer;
+import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.ModelStore;
-import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
+import ca.ntro.users.NtroSession;
 
 public class ModelStoreSync {
 
@@ -29,39 +33,10 @@ public class ModelStoreSync {
 		return modelStore.ifModelExists(modelClass, authToken, documentId);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String documentId) {
-
-		ModelLoader loader = modelStore.getLoader(modelClass, authToken, documentId);
-		loader.execute();
-		
-		M model = (M) loader.getModel();
-		
-		MustNot.beNull(model);
-
-		return model;
-	}
-
-	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, Path modelPath) {
-		return getModel(modelClass, authToken, modelStore.documentId(modelPath));
-	}
-
-	public void save(NtroModel model) {
-		T.call(this);
-
-		modelStore.save(model);
-	}
-
 	public void saveJsonString(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
 		modelStore.saveDocument(documentPath, jsonString);
-	}
-
-	public void replace(NtroModel existingModel, NtroModel newModel) {
-		T.call(this);
-
-		modelStore.replace(existingModel, newModel);
 	}
 
 	public void delete(NtroModel model) {
@@ -78,7 +53,7 @@ public class ModelStoreSync {
 		modelStore.deleteModel(modelClass, authToken, documentId);
 	}
 
-	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void deleteModel(Class<M> modelClass, 
 												  String authToken,
 			                                      Path modelPath) {
 		T.call(this);
@@ -86,7 +61,7 @@ public class ModelStoreSync {
 		modelStore.deleteModel(modelClass, authToken, modelPath);
 	}
 
-	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void updateModel(Class<M> modelClass, 
 												  String authToken,
 			                                      Path modelPath, 
 			                                      ModelUpdater<M> updater) throws BackendError {
@@ -95,16 +70,16 @@ public class ModelStoreSync {
 		updateModel(modelClass, authToken, modelStore.documentId(modelPath), updater);
 	}
 
-	public <M extends NtroModel> void readModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void readModel(Class<M> modelClass, 
 												String authToken,
 			                                    Path modelPath, 
-			                                    ModelReader<M> reader) {
+			                                    ModelReader<M> reader) throws BackendError {
 		T.call(this);
 
 		readModel(modelClass, authToken, modelStore.documentId(modelPath), reader);
 	}
 
-	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<M> modelClass, 
 												                     String authToken,
 			                                                         Path modelPath, 
 			                                                         Class<ACC> accumulatorClass,
@@ -120,7 +95,7 @@ public class ModelStoreSync {
 				           reducer);
 	}
 
-	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<M> modelClass, 
 												                     String authToken,
 												                     String modelId,
 			                                                         Class<ACC> accumulatorClass,
@@ -128,98 +103,67 @@ public class ModelStoreSync {
 			                                                         ModelReducer<M,ACC> reducer) {
 		T.call(this);
 		
-		ACC result = null;
-
-		if(ifModelExists(modelClass, authToken, modelId)) {
-
-			M model = (M) getModel(modelClass, authToken, modelId);
-
-			synchronized (model) {
-				result = reducer.reduce(model, accumulator);
-			}
-
-		}else {
-			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
-		}
-		
-		return result;
+		return modelStore.reduceModel(modelClass, authToken, modelId, accumulatorClass, accumulator, reducer);
 	}
 	
-	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void updateModel(Class<M> modelClass, 
 												  String authToken,
 			                                      String modelId, 
 			                                      ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
-
-		if(ifModelExists(modelClass, authToken, modelId)) {
-			
-			M model = (M) getModel(modelClass, authToken, modelId);
-			
-			synchronized (model) {
-				updater.update(model);
-				// FIXME: rather queue the save action 
-				//        the ModelStore needs to know NOT to remove
-				//        the model from memory before it is saved
-				save(model);
-
-				// FIXME:
-				//modelStore.modelNeedsSaving(model);
-			}
-			
-
-		}else {
-			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
-		}
+		
+		modelStore.updateModel(modelClass, authToken, modelId, updater);
 	}
 
-	public <M extends NtroModel> void readModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void readModel(Class<M> modelClass, 
 												String authToken,
 			                                    String modelId, 
-			                                    ModelReader<M> reader) {
+			                                    ModelReader<M> reader) throws BackendError {
 		T.call(this);
-
-		if(ifModelExists(modelClass, authToken, modelId)) {
-
-			M model = (M) getModel(modelClass, authToken, modelId);
-			
-			synchronized (model) {
-				reader.read(model);
-			}
-
-		}else {
-			Log.warning("model not found: " + Ntro.introspector().getSimpleNameForClass(modelClass) + "/" + modelId);
-		}
+		
+		modelStore.readModel(modelClass, authToken, modelId, reader);
 	}
 
-	public <M extends NtroModel> void createModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void createModel(Class<M> modelClass, 
 												  String authToken,
 			                                      Path modelPath, 
-			                                      ModelInitializer<M> initializer){
+			                                      ModelInitializer<M> initializer) throws BackendError{
 		T.call(this);
 		
 		createModel(modelClass, authToken, modelStore.documentId(modelPath), initializer);
 	}
 
-	public <M extends NtroModel> void createModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void createModel(Class<M> modelClass, 
 												  String authToken,
 			                                      String modelId, 
-			                                      ModelInitializer<M> initializer){
-		T.call(this);
-
-		M model = (M) getModel(modelClass, authToken, modelId);
-
-		synchronized (model) {
-			initializer.initialize(model);
-		}
-			
-		save(model);
-	}
-
-	public void closeWithoutSaving(NtroModel model) {
+			                                      ModelInitializer<M> initializer) throws BackendError{
 		T.call(this);
 		
-		modelStore.closeWithoutSaving(model);
+		modelStore.createModel(modelClass, authToken, modelId, initializer);
 	}
-	
-	
+
+	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, Path modelPath) {
+		T.call(this);
+		
+		return getModel(modelClass, authToken, modelStore.documentId(modelPath));
+	}
+
+	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String modelId) {
+		T.call(this);
+		
+		M model = null;
+		
+		if(modelStore.ifModelExists(modelClass, authToken, modelId)) {
+			
+			model = modelStore.getModel(modelClass, authToken, modelId);
+		}
+
+		return model;
+	}
+
+	public void save(NtroModel model) {
+		T.call(this);
+		
+		modelStore.save(model);
+	}
 }

@@ -1,23 +1,32 @@
 package ca.ntro.services;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.json.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.ModelFactory;
+import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelLoader;
+import ca.ntro.core.models.ModelReader;
+import ca.ntro.core.models.ModelReducer;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.ShouldNotBeCached;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
@@ -28,6 +37,9 @@ public abstract class ModelStore {
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
 	
+	private Set<DocumentPath> modelsToSave = Ntro.collections().concurrentSet(new HashSet<>());
+	private List<DocumentPath> saveHistory = Ntro.collections().synchronizedList(new ArrayList<>());
+
 	private Map<NtroModel, DocumentPath> localHeap = Ntro.collections().concurrentMap(new HashMap<>());
 	private Map<DocumentPath, NtroModel> localHeapByPath = Ntro.collections().concurrentMap(new HashMap<>());
 
@@ -39,36 +51,6 @@ public abstract class ModelStore {
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 
 		return ifModelExistsImpl(documentPath);
-	}
-
-
-	public <M extends NtroModel> void updateModel(Class<? extends NtroModel> modelClass, 
-												  String authToken,
-			                                      String modelId, 
-			                                      ModelUpdater<M> updater){
-		T.call(this);
-		
-		/* TODO: make modelStore threadSafe on the server
-		 * 
-		 * updateModel:
-		 * 
-		 * 1. synchronized(localHeapByPath) and get a model object (possibly empty)
-		 *      + manage cache (e.g. possible destroy some older models)
-		 * 1. synchronized(model):
-		 *      + load actual data from DB if necessary
-		 *      	+ (we want to synchronize on model here, not localHeapByPath as loading can take time)
-		 *      + run the updater
-		 *      + queue a saveModel event
-		 * 
-		 * That way, the modelStore can be accessed from multiple threads
-		 * 	    + the model object is always the same
-		 * 		+ the model is modified by a single thread at a time
-		 * 
-		 * 
-		 * 
-		 */
-		
-		
 	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, Path modelPath){
@@ -89,11 +71,14 @@ public abstract class ModelStore {
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 		ModelLoader modelLoader = null;
 
-		if(localHeapByPath.containsKey(documentPath)) {
-			
-			modelLoader = new ModelLoaderMemory(localHeapByPath.get(documentPath));
+		synchronized (localHeap) {
+			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+			if(model != null) {
+				modelLoader = new ModelLoaderMemory(model);
+			}
+		}
 
-		}else {
+		if(modelLoader == null) {
 
 			modelLoader = new ModelLoader(this, documentPath);
 			
@@ -104,7 +89,6 @@ public abstract class ModelStore {
 
 			//modelLoader.addPreviousTask(jsonLoader);
 			modelLoader.addSubTask(jsonLoader);
-			
 		}
 
 		return modelLoader;
@@ -115,11 +99,14 @@ public abstract class ModelStore {
 		
 		ModelLoader modelLoader = null;
 		
-		if(localHeapByPath.containsKey(message.getDocumentPath())) {
-			
-			modelLoader = new ModelLoaderMemory(localHeapByPath.get(message.getDocumentPath()));
-
-		}else {
+		synchronized (localHeap) {
+			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, message.getDocumentPath());
+			if(model != null) {
+				modelLoader = new ModelLoaderMemory(model);
+			}
+		}
+		
+		if(modelLoader != null){
 
 			modelLoader = new ModelLoader(this, message.getDocumentPath());
 			
@@ -130,9 +117,7 @@ public abstract class ModelStore {
 
 			//modelLoader.addPreviousTask(jsonLoader);
 			modelLoader.addSubTask(jsonLoader);
-			
 		}
-
 
 		return modelLoader;
 	}
@@ -147,6 +132,133 @@ public abstract class ModelStore {
 	
 	public static String emptyModelString(DocumentPath documentPath) {
 		return "{\""+Constants.JSON_CLASS_KEY+"\":\""+documentPath.getCollection()+"\"}";
+	}
+	
+	@SuppressWarnings("unchecked") 
+	<M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String documentId) {
+		T.call(this);
+
+		ModelLoader loader = getLoader(modelClass, authToken, documentId);
+		loader.execute();
+		
+		M model = (M) loader.getModel();
+		
+		MustNot.beNull(model);
+
+		return model;
+	}
+
+	public <M extends NtroModel> void updateModel(Class<M> modelClass, 
+												  String authToken,
+			                                      String modelId, 
+			                                      ModelUpdater<M> updater) throws BackendError {
+		T.call(this);
+		
+		M model = null;
+		synchronized(localHeap) {
+			if(ifModelExists(modelClass, authToken, modelId)) {
+				model = getModel(modelClass, authToken, modelId);
+			}
+		}
+
+		if(model != null) {
+			synchronized (model) {
+				updater.update(model);
+			}
+
+			save(model);
+
+		}else {
+
+			Log.warning("[updateModel] model not found: " + documentPath(modelClass, modelId));
+		}
+	}
+
+	public <M extends NtroModel> void createModel(Class<M> modelClass, 
+												  String authToken,
+			                                      String modelId, 
+			                                      ModelInitializer<M> initializer) throws BackendError {
+		T.call(this);
+		
+		M model = null;
+		synchronized(localHeap) {
+
+			if(!ifModelExists(modelClass, authToken, modelId)) {
+
+				model = getModel(modelClass, authToken, modelId);
+			}
+		}
+
+		if(model != null) {
+			synchronized (model) {
+				initializer.initialize(model);
+			}
+
+			save(model);
+		}
+
+		if(model == null){
+			Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
+		}
+	}
+
+	public <M extends NtroModel> void readModel(Class<M> modelClass, 
+												String authToken,
+			                                    String modelId, 
+			                                    ModelReader<M> reader) throws BackendError {
+		T.call(this);
+		
+		M model = null;
+		synchronized(localHeap) {
+
+			if(ifModelExists(modelClass, authToken, modelId)) {
+
+				model = getModel(modelClass, authToken, modelId);
+			}
+		}
+
+		if(model != null) {
+
+			synchronized (model) {
+
+				reader.read(model);
+			}
+
+		}else {
+			Log.warning("[readModel] model not found: " + documentPath(modelClass, modelId));
+		}
+	}
+
+	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<M> modelClass, 
+												                     String authToken,
+												                     String modelId,
+			                                                         Class<ACC> accumulatorClass,
+			                                                         ACC accumulator,
+			                                                         ModelReducer<M,ACC> reducer) {
+		T.call(this);
+
+		ACC result = accumulator;
+		M model = null;
+		
+		synchronized (localHeap) {
+
+			if(ifModelExists(modelClass, authToken, modelId)) {
+
+				model = (M) getModel(modelClass, authToken, modelId);
+			}
+		}
+
+		if(model != null) {
+			synchronized (model) {
+				result = reducer.reduce(model, accumulator);
+			}
+		}
+
+		if(model == null) {
+			Log.warning("model not found: " + documentPath(modelClass, modelId));
+		}
+		
+		return result;
 	}
 
 	public abstract void addValueListener(ValuePath valuePath, ValueListener valueListener);
@@ -165,41 +277,48 @@ public abstract class ModelStore {
 
 	public abstract void close();
 
-	public synchronized void registerModel(DocumentPath documentPath, NtroModel model) {
+	public void registerModel(DocumentPath documentPath, NtroModel model) {
 		T.call(this);
 
-		if(localHeapByPath.containsKey(documentPath)){
+		if(Ntro.collections().containsKeyEquals(localHeapByPath, documentPath)){
 			Log.warning("[registerModel] model already registered: " + documentPath.toString());
 		}
 
-		localHeap.put(model, documentPath);
-		localHeapByPath.put(documentPath, model);
-		
-	}
-
-	public void updateStoreConnections(NtroModel model) {
-		DocumentPath modelPath = Ntro.collections().getExact(localHeap, model);
-		
-		if(modelPath != null) {
-
-			ModelFactory.updateStoreConnections(model, this, modelPath);
-
-		}else {
-			
-			Log.warning("[updateStoreConnexions] model not found in localHeap: " + model);
+		synchronized (localHeap) {
+			localHeap.put(model, documentPath);
+			localHeapByPath.put(documentPath, model);
 		}
 	}
 
-	public void updateStoreConnectionsByPath(DocumentPath modelPath) {
-		NtroModel model = localHeapByPath.get(modelPath);
+	public void updateStoreConnections(NtroModel model) {
+		T.call(this);
 
-		if(model != null) {
+		DocumentPath documentPath = null;
+		synchronized (localHeap) {
+			DocumentPath modelPath = Ntro.collections().getByKeyExact(localHeap, model);
+			if(modelPath != null) {
+				ModelFactory.updateStoreConnections(model, this, modelPath);
+			}
+		}
 
-			ModelFactory.updateStoreConnections(model, this, modelPath);
+		if(documentPath == null){
+			Log.warning("[updateStoreConnexions] model not in localHeap: " + model);
+		}
+	}
 
-		}else {
-			
-			Log.warning("No model to update for path: " + modelPath.toString());
+	public void updateStoreConnectionsByPath(DocumentPath documentPath) {
+		T.call(this);
+
+		NtroModel model = null;
+		synchronized (localHeap) {
+			model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+			if(model != null) {
+				ModelFactory.updateStoreConnections(model, this, documentPath);
+			}
+		}
+
+		if(model == null) {
+			Log.warning("No model to update for path: " + documentPath.toString());
 		}
 	}
 
@@ -223,7 +342,11 @@ public abstract class ModelStore {
 
 		DocumentPath documentPath = valuePath.getDocumentPath();
 
-		NtroModel model = localHeapByPath.get(documentPath);
+		NtroModel model = null;
+		synchronized (localHeap) {
+			model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+		}
+
 		MustNot.beNull(model);
 
 		if(model != null) {
@@ -253,37 +376,108 @@ public abstract class ModelStore {
 	public void save(NtroModel model) {
 		T.call(this);
 		
-		DocumentPath documentPath = Ntro.collections().getExact(localHeap, model);
-		
+		DocumentPath documentPath = null;
+		synchronized (localHeap) {
+			documentPath = Ntro.collections().getByKeyExact(localHeap, model);
+			if(documentPath != null) {
+				modelsToSave.add(documentPath);
+				saveLater();
+			}
+		}
+
 		if(documentPath == null) {
-
-			Log.error("[save] model not found in localHeap: " + model);
-
-		}else {
-
-			saveDocument(documentPath, Ntro.jsonService().toString(model));
+			Log.warning("[save] model not in localHeap: " + model);
 		}
 	}
 
-	public void replace(NtroModel existingModel, NtroModel newModel) {
-		DocumentPath documentPath = Ntro.collections().getExact(localHeap, existingModel);
-		
-		if(documentPath == null) {
+	private void saveLater() {
+		T.call(this);
 
-			Log.warning("[replace] model not found in localHeap: " + existingModel);
+		Ntro.threadService().executeLater(new NtroTaskSync() {
+			@Override
+			protected void runTask() {
+				T.call(this);
 
-		}else {
-			
-			saveDocument(documentPath, Ntro.jsonService().toString(newModel));
+				saveModelsToSave();
+			}
+
+			@Override
+			protected void onFailure(Exception e) {
+			}
+		});
+	}
+
+	private void saveModelsToSave() {
+		T.call(this);
+
+		synchronized (modelsToSave) {
+			for(DocumentPath documentPath : modelsToSave) {
+				save(documentPath);
+			}
 		}
 	}
+
+	public void save(DocumentPath documentPath) {
+		T.call(this);
+		
+		NtroModel model = null;
+		synchronized (localHeap) {
+			model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+		}
+		
+		if(model != null) {
+			synchronized (model) {
+				saveDocument(documentPath, Ntro.jsonService().toString(model));
+			}
+		}else {
+			Log.warning("[save] model not in localHeap " + documentPath.toString());
+		}
+
+		synchronized (saveHistory) {
+			if(!Ntro.collections().containsItemEquals(saveHistory, documentPath)) {
+				saveHistory.add(documentPath);
+			}
+		}
+
+		if(model instanceof ShouldNotBeCached) {
+			removeModelFromHeap(documentPath);
+		}
+
+		if(localHeap.size() > maxHeapSize()) {
+			removeOldestModelFromHeap();
+		}
+	}
+
+	private void removeOldestModelFromHeap() {
+		T.call(this);
+
+		DocumentPath documentPath = saveHistory.remove(0);
+
+		if(documentPath != null) {
+			removeModelFromHeap(documentPath);
+		}
+	}
+
+	private void removeModelFromHeap(DocumentPath documentPath) {
+		T.call(this);
+
+		synchronized(localHeap) {
+
+			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+
+			Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
+			Ntro.collections().removeByKeyExact(localHeap, model);
+		}
+	}
+	
+	protected abstract int maxHeapSize();
 
 	public void delete(NtroModel model) {
-		DocumentPath documentPath = Ntro.collections().getExact(localHeap, model);
+		DocumentPath documentPath = Ntro.collections().getByKeyExact(localHeap, model);
 		
 		if(documentPath == null) {
 
-			Log.warning("[delete] model not found in localHeap: " + model);
+			Log.warning("[delete] model not in localHeap: " + model);
 
 		}else {
 			
@@ -314,13 +508,4 @@ public abstract class ModelStore {
 
 	protected abstract void deleteDocument(DocumentPath documentPath);
 
-	public void closeWithoutSaving(NtroModel model) {
-		T.call(this);
-
-		DocumentPath documentPath = Ntro.collections().getExact(localHeap, model);
-
-		// JSWEET: will the work correctly? (removing by reference)
-		//localHeap.remove(model);
-		//localHeapByPath.remove(documentPath);
-	}
 }

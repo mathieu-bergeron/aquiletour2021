@@ -24,14 +24,14 @@ public abstract class NtroClass {
 	public abstract String name();
 
 	public boolean ifImplements(Class<?> interfaceClass) {
-		return Ntro.collections().containsEquals(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
+		return Ntro.collections().containsElementEquals(allInterfaces(), Ntro.introspector().ntroClassFromJavaClass(interfaceClass));
 	}
 
 	public abstract Set<NtroClass> allInterfaces();
 	public abstract Set<NtroClass> allSuperclasses();
 
 	public boolean ifExtends(Class<?> superClass) {
-		return Ntro.collections().containsEquals(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
+		return Ntro.collections().containsElementEquals(allSuperclasses(), Ntro.introspector().ntroClassFromJavaClass(superClass));
 	}
 
 	public boolean ifInstanceOf(Class<?> classOrInterface) {

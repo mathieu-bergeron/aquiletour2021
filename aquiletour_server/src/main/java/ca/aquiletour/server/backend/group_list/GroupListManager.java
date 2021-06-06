@@ -6,9 +6,9 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class GroupListManager {
 
@@ -117,7 +117,7 @@ public class GroupListManager {
 		addCourseForUserId(modelStore, semesterId, courseId, user.getId());
 	}
 
-	public static void createGroupListForModelId(ModelStoreSync modelStore, String modelId) {
+	public static void createGroupListForModelId(ModelStoreSync modelStore, String modelId) throws BackendError {
 		T.call(GroupListManager.class);
 
 		modelStore.createModel(GroupListModel.class, "admin", modelId, new ModelInitializer<GroupListModel>() {
@@ -128,7 +128,7 @@ public class GroupListManager {
 		});
 	}
 
-	public static void createGroupListForUser(ModelStoreSync modelStore, User user) {
+	public static void createGroupListForUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(GroupListManager.class);
 
 		createGroupListForModelId(modelStore, user.getId());

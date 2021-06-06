@@ -48,6 +48,14 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	}
 
 	@Override
+	public void updateCategory(String categoryId, String href, String text) {
+		T.call(this);
+		
+		categoryDropdown.update(categoryId, href, text);
+
+	}
+
+	@Override
 	public void selectCategory(String semesterId) {
 		T.call(this);
 		

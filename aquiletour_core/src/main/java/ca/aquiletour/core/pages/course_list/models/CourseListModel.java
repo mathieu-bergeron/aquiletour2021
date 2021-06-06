@@ -1,6 +1,5 @@
 package ca.aquiletour.core.pages.course_list.models;
 
-
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.lambdas.Break;
@@ -8,7 +7,17 @@ import ca.ntro.core.system.trace.T;
 
 public abstract class CourseListModel implements NtroModel {
 	
+	private SemesterIds activeSemesters = new SemesterIds();
+
 	private CourseListItemsByCategoryId courseListItemsByCategoryId = new CourseListItemsByCategoryId();
+	
+	public SemesterIds getActiveSemesters() {
+		return activeSemesters;
+	}
+
+	public void setActiveSemesters(SemesterIds activeSemesters) {
+		this.activeSemesters = activeSemesters;
+	}
 
 	public CourseListItemsByCategoryId getCourseListItemsByCategoryId() {
 		return courseListItemsByCategoryId;
@@ -110,5 +119,19 @@ public abstract class CourseListModel implements NtroModel {
 		}
 		
 		return isInCategory;
+	}
+
+	public void addActiveSemester(String semesterId) {
+		T.call(this);
+
+		if(!getActiveSemesters().contains(semesterId)) {
+			getActiveSemesters().addItem(semesterId);
+		}
+	}
+
+	public void removeActiveSemester(String semesterId) {
+		T.call(this);
+
+		getActiveSemesters().removeItem(semesterId);
 	}
 }

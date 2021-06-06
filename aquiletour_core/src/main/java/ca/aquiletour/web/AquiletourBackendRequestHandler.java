@@ -52,7 +52,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.DeleteSemesterMessage;
-import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemester;
+import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
@@ -372,7 +372,7 @@ public class AquiletourBackendRequestHandler {
 				currentSemester = true;
 			}
 
-			SetActiveSemester selectCurrentSemester = Ntro.messages().create(SetActiveSemester.class);
+			SetActiveSemesterMessage selectCurrentSemester = Ntro.messages().create(SetActiveSemesterMessage.class);
 			selectCurrentSemester.setSemesterId(semesterId);
 			selectCurrentSemester.setIsActive(currentSemester);
 			Ntro.messages().send(selectCurrentSemester);

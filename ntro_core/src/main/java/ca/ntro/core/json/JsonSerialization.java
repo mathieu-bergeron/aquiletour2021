@@ -34,7 +34,7 @@ public class JsonSerialization {
 			
 		} else if(Ntro.collections().containsKeyExact(localHeap, javaValue)) {
 
-			String referencePath = Ntro.collections().getExact(localHeap, javaValue);
+			String referencePath = Ntro.collections().getByKeyExact(localHeap, javaValue);
 
 			jsonValue = jsonReferenceObject(referencePath);
 

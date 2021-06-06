@@ -14,7 +14,6 @@ public class SessionData extends NtroSessionData {
 	private int failedPasswordAttemps = 0;
 	private String loginCode = "";
 	private String currentCategoryId = Constants.CATEGORY_ID_CURRENT;
-	private List<String> activeSemesterIds = new ArrayList<>();
 	private CurrentTasksByCourseKey currentTasksByCourseKey = new CurrentTasksByCourseKey();
 
 	public String getLoginCode() {
@@ -39,14 +38,6 @@ public class SessionData extends NtroSessionData {
 
 	public void setFailedPasswordAttemps(int failedPasswordAttemps) {
 		this.failedPasswordAttemps = failedPasswordAttemps;
-	}
-
-	public List<String> getActiveSemesterIds() {
-		return activeSemesterIds;
-	}
-
-	public void setActiveSemesterIds(List<String> activeSemesterIds) {
-		this.activeSemesterIds = activeSemesterIds;
 	}
 
 	public void incrementFailedPasswordAttemps() {

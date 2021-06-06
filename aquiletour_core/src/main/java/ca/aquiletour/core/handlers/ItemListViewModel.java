@@ -21,7 +21,7 @@ public abstract class ItemListViewModel<M extends   NtroModel,
 		T.call(this);
 
 		if(currentCategoryId == null) {
-			appendCategoriesToDropdown(view);
+			initializeCategories(model, view);
 		}
 		
 		String categoryId = message.getCategoryId();
@@ -38,7 +38,7 @@ public abstract class ItemListViewModel<M extends   NtroModel,
 	
 	protected abstract void onCategoryChanges(M model, V view, ViewLoader subViewLoader, String currentCategoryId);
 
-	protected abstract void appendCategoriesToDropdown(V view);
+	protected abstract void initializeCategories(M model, V view);
 
 	protected void appendToSemesterDropdown(String semesterId, String text, V view) {
 		T.call(this);
@@ -46,5 +46,13 @@ public abstract class ItemListViewModel<M extends   NtroModel,
 		String href = "?" + Constants.CATEGORY_URL_PARAM + "=" + semesterId;
 		
 		view.appendToCategoryDropdown(semesterId, href, text);
+	}
+
+	protected void updateSemesterDropdown(String semesterId, String text, V view) {
+		T.call(this);
+		
+		String href = "?" + Constants.CATEGORY_URL_PARAM + "=" + semesterId;
+		
+		view.updateCategory(semesterId, href, text);
 	}
 }

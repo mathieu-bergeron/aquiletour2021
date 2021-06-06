@@ -3,7 +3,7 @@ package ca.aquiletour.core.pages.semester_list.messages;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 
-public class SetActiveSemester extends NtroUserMessage<User> {
+public class SetActiveSemesterMessage extends NtroUserMessage<User> {
 	
 	private String semesterId;
 	private boolean isActive;

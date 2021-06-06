@@ -12,9 +12,9 @@ import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentMessage> {
@@ -48,7 +48,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, AddAppointmentMessage message) {
+	public void handleLater(ModelStoreSync modelStore, AddAppointmentMessage message) throws BackendError {
 		T.call(this);
 
 		QueueManager.addAppointmentUpdates(modelStore, message.getQueueId());

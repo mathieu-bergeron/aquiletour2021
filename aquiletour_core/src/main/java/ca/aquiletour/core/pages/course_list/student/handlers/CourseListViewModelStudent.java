@@ -11,11 +11,12 @@ import ca.ntro.core.system.trace.T;
 public class CourseListViewModelStudent extends CourseListViewModel<CourseListModelStudent, CourseListViewStudent> {
 
 	@Override
-	protected void appendCategoriesToDropdown(CourseListViewStudent view) {
+	protected void initializeCategories(CourseListModelStudent model, CourseListViewStudent view) {
 		T.call(this);
 
 		appendToSemesterDropdown(Constants.CATEGORY_ID_ARCHIVE,Constants.CATEGORY_TEXT_ARCHIVE, view);
-		appendToSemesterDropdown(Constants.CATEGORY_ID_CURRENT,Constants.CATEGORY_TEXT_CURRENT, view);
+		
+		super.initializeCategories(model, view);
 	}
 
 	@Override

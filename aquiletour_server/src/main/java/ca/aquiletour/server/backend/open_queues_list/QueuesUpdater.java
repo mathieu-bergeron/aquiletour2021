@@ -4,9 +4,10 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
 import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class QueuesUpdater {
@@ -16,11 +17,19 @@ public class QueuesUpdater {
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
 		if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "allQueues")) {
-			modelStore.createModel(OpenQueueListModel.class, "admin", "allQueues", m -> {});
+			try {
+				modelStore.createModel(OpenQueueListModel.class, "admin", "allQueues", m -> {});
+			} catch (BackendError e) {
+				Log.error("Could not initialize allQueues " + e.getMessage());
+			}
 		}
 
 		if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "openQueues")) {
-			modelStore.createModel(OpenQueueListModel.class, "admin", "openQueues", m -> {});
+			try {
+				modelStore.createModel(OpenQueueListModel.class, "admin", "openQueues", m -> {});
+			} catch (BackendError e) {
+				Log.error("Could not initialize openQueues " + e.getMessage());
+			}
 		}
 	}
 	
@@ -87,22 +96,22 @@ public class QueuesUpdater {
 
 		T.call(QueuesUpdater.class);
 
-		OpenQueueListModel allQueues = modelStore.getModel(OpenQueueListModel.class, "admin", "allQueues");
-		OpenQueue summary = allQueues.findQueueByQueueId(queueId);
-		modelStore.closeWithoutSaving(allQueues);
-		
-		modelStore.updateModel(OpenQueueListModel.class, 
-				               "admin", 
-				               "openQueues", 
-				               new ModelUpdater<OpenQueueListModel>() {
+		OpenQueue summary = modelStore.reduceModel(OpenQueueListModel.class, 
+				                                   "admin", 
+				                                   "allQueues", 
+				                                   OpenQueue.class, 
+				                                   null, (allQueues, accumulator) -> {
 
-			@Override
-			public void update(OpenQueueListModel openQueues) {
-				T.call(this);
-
-				openQueues.addQueueToList(summary);
-			}
+			return allQueues.findQueueByQueueId(queueId);
 		});
+
+		modelStore.updateModel(OpenQueueListModel.class, 
+							   "admin", 
+							   "openQueues", 
+							   openQueues -> {
+
+			openQueues.addQueueToList(summary);
+	   });
 	}
 
 	public static void closeQueue(ModelStoreSync modelStore,

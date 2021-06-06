@@ -1,7 +1,9 @@
 package ca.aquiletour.core.pages.course_list.handlers;
 
 
-import ca.aquiletour.core.AquiletourMain;
+import java.util.HashSet;
+import java.util.Set;
+
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.handlers.ItemListViewModel;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
@@ -23,6 +25,29 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 		T.call(this);
 		
 		super.handle(model, view, subViewLoader, message);
+	}
+
+	@Override
+	protected void initializeCategories(M model, V view) {
+		T.call(this);
+		
+		Set<String> activeSemesterIds = new HashSet<>();
+		
+		model.getActiveSemesters().removeObservers();
+		model.getActiveSemesters().onItemAdded(new ItemAddedListener<String>() {
+			@Override
+			public void onItemAdded(int index, String activeSemesterId) {
+				T.call(this);
+				
+				activeSemesterIds.add(activeSemesterId);
+
+				if(activeSemesterIds.size() == 1) {
+					appendToSemesterDropdown(Constants.CATEGORY_ID_CURRENT, activeSemesterId, view);
+				}else {
+					updateSemesterDropdown(Constants.CATEGORY_ID_CURRENT,Constants.CATEGORY_TEXT_CURRENT, view);
+				}
+			}
+		});
 	}
 
 	@Override

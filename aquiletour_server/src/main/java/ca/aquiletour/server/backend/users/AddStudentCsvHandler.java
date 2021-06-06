@@ -20,8 +20,8 @@ import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMessage> {
 	
@@ -127,13 +127,9 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				              groupId, 
 				              teacher);
 
-		CourseModelTeacher teacherCourse = CourseManager.getCourse(modelStore, 
-													   CourseModelTeacher.class,
-													   message.coursePath());
-
 		for(User student : studentsToAdd) {
 
-			CourseManager.createStudentCourse(modelStore, message.coursePath(), teacherCourse, groupId, student);
+			CourseManager.createStudentCourse(modelStore, message.coursePath(), groupId, student);
 			
 			//CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
 

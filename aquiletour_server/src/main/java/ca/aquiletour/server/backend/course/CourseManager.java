@@ -1,7 +1,9 @@
 package ca.aquiletour.server.backend.course;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
@@ -30,13 +32,13 @@ import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelReader;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.ValueReader;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.services.ModelStoreSync;
 
 public class CourseManager {
 
@@ -194,11 +196,10 @@ public class CourseManager {
 			                               TaskType taskType) throws BackendError {
 		T.call(CourseManager.class);
 		
-		CourseModelTeacher courseTeacher = modelStore.getModel(CourseModelTeacher.class, "admin", coursePath);
+		Optionnal<BackendError> backendError = new Optionnal<>();
 		
-		Optionnal<BackendError> backendError = new Optionnal<BackendError>();
-		
-		if(courseTeacher != null) {
+		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, courseTeacher -> {
+
 			courseTeacher.getGroups().forEachItem((i, group) -> {
 				group.getStudents().forEachItem((j, studentId) -> {
 					
@@ -223,15 +224,13 @@ public class CourseManager {
 					}
 				});
 			});
-		}
+		});
 		
-		if(!backendError.isEmpty()) {
-			try {
+		try {
 
-				throw backendError.get();
+			throw backendError.get();
 
-			} catch (EmptyOptionException e) {}
-		}
+		} catch (EmptyOptionException e) {}
 	}
 
 	private static void addTaskToCourseModel(Path anchorTaskPath, 
@@ -303,7 +302,7 @@ public class CourseManager {
 	public static void createCourseForUserId(ModelStoreSync modelStore, 
 			                                 CoursePath coursePath,
 			                                 String courseTitle,
-			                                 String userId) {
+			                                 String userId) throws BackendError {
 		T.call(CourseManager.class);
 
 		modelStore.createModel(CourseModelTeacher.class, "admin", coursePath, new ModelInitializer<CourseModelTeacher>() {
@@ -331,7 +330,7 @@ public class CourseManager {
 	public static void createCourseForUser(ModelStoreSync modelStore, 
 			                               CoursePath coursePath,
 			                               String courseTitle,
-			                               User user) {
+			                               User user) throws BackendError {
 		T.call(CourseManager.class);
 		
 		createCourseForUserId(modelStore, coursePath, courseTitle, user.getId());
@@ -422,7 +421,7 @@ public class CourseManager {
 			 								     User user) throws BackendError {
 		T.call(CourseManager.class);
 		
-		List<String> studentIds = getStudentIds(modelStore, coursePath);
+		Set<String> studentIds = getStudentIds(modelStore, coursePath);
 		
 		for(String studentId : studentIds) {
 			
@@ -436,12 +435,12 @@ public class CourseManager {
 		}
 	}
 
-	public static List<String> getStudentIds(ModelStoreSync modelStore, 
-			 								 CoursePath coursePath) {
+	public static Set<String> getStudentIds(ModelStoreSync modelStore, 
+			 								CoursePath coursePath) throws BackendError {
 
 		T.call(CourseManager.class);
 		
-		List<String> studentIds = new ArrayList<>();
+		Set<String> studentIds = new HashSet<>();
 		
 		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, new ModelReader<CourseModelTeacher>() {
 			@Override
@@ -483,9 +482,7 @@ public class CourseManager {
 						                               TeacherSchedule teacherSchedule) throws BackendError {
 		T.call(CourseManager.class);
 
-		List<String> studentIds = CourseManager.getStudentIds(modelStore, coursePath);
-		
-		System.out.println(studentIds.size());
+		Set<String> studentIds = CourseManager.getStudentIds(modelStore, coursePath);
 		
 		for(String studentId : studentIds) {
 
@@ -565,29 +562,25 @@ public class CourseManager {
 		});
 	}
 
-	public static CourseModelTeacher getCourse(ModelStoreSync modelStore, Class<CourseModelTeacher> courseModelClass, CoursePath coursePath) {
-		T.call(CourseManager.class);
-		
-		return modelStore.getModel(courseModelClass, "admin", coursePath);
-	}
-
 	public static void createStudentCourse(ModelStoreSync modelStore, 
 										   CoursePath coursePath,
-			                               CourseModelTeacher courseTeacher, 
 			                               String groupId,
-			                               User student) {
+			                               User student) throws BackendError {
 		T.call(CourseManager.class);
 		
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getId());
 		
-		modelStore.createModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseModelStudent>() {
-			@Override
-			public void initialize(CourseModelStudent newModel) {
-				T.call(this);
-				
-				newModel.updateGroupId(groupId);
-				newModel.copyCourse(courseTeacher);
-			}
+		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, courseModelTeacher -> {
+
+			modelStore.createModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseModelStudent>() {
+				@Override
+				public void initialize(CourseModelStudent newModel) {
+					T.call(this);
+					
+					newModel.updateGroupId(groupId);
+					newModel.copyCourse(courseModelTeacher);
+				}
+			});
 		});
 	}
 
@@ -670,7 +663,7 @@ public class CourseManager {
 			                                           String studentId, 
 			                                           Path taskPath, 
 			                                           String atomicTaskId,
-			                                           ValueReader<AtomicTaskCompletion> valueReader) {
+			                                           ValueReader<AtomicTaskCompletion> valueReader) throws BackendError {
 		T.call(CourseManager.class);
 
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
@@ -689,7 +682,7 @@ public class CourseManager {
 	public static <CM extends CourseModel<CT>, CT extends CurrentTask> 
 	        List<CT> getCurrentTasks(ModelStoreSync modelStore, 
 	        		                 Class<CM> courseModelClass, 
-	        		                 CoursePath coursePath) {
+	        		                 CoursePath coursePath) throws BackendError {
 
 		T.call(CourseManager.class);
 		
@@ -712,7 +705,7 @@ public class CourseManager {
 	public static void updateSessionData(ModelStoreSync modelStore, 
 			                             SessionData sessionData, 
 			                             CoursePath coursePath, 
-			                             User user) {
+			                             User user) throws BackendError {
 
 		T.call(CourseManager.class);
 		

@@ -24,19 +24,19 @@ import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelReader;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
 public class SessionManager {
 
-	public static User createGuestSession(ModelStoreSync modelStore) {
+	public static User createGuestSession(ModelStoreSync modelStore) throws BackendError {
 		T.call(SessionManager.class);
 		
 		User user = new Guest();
@@ -45,18 +45,17 @@ public class SessionManager {
 		
 		user.setId(authToken);
 		user.setAuthToken(authToken);
-
-		NtroSession session = modelStore.getModel(NtroSession.class, "admin", authToken);
-
-		session.setUser(user);
-		session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
-
-		SessionData sessionData = new SessionData();
-		session.setSessionData(sessionData);
-
-		modelStore.save(session);
 		
-		Ntro.sessionService().registerCurrentSession(session);
+		modelStore.createModel(NtroSession.class, "admin", authToken, session -> {
+
+			session.setUser(user);
+			session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
+
+			SessionData sessionData = new SessionData();
+			session.setSessionData(sessionData);
+
+			Ntro.sessionService().registerCurrentSession(session);
+		});
 
 		return user;
 	}
@@ -87,14 +86,7 @@ public class SessionManager {
 	public static NtroSession getStoredSession(ModelStoreSync modelStore, String authToken) {
 		T.call(SessionManager.class);
 
-		NtroSession session = null;
-		
-		if(modelStore.ifModelExists(NtroSession.class, "admin", authToken)) {
-
-			session = modelStore.getModel(NtroSession.class, "admin", authToken);
-		}
-
-		return session;
+		return modelStore.getModel(NtroSession.class, "admin", authToken);
 	}
 
 	public static User updateSessionWithActualUser(ModelStoreSync modelStore, NtroSession session, User oldSessionUser) {
@@ -118,7 +110,7 @@ public class SessionManager {
 	}
 
 
-	public static SessionData createSessionData(ModelStoreSync modelStore, User user) {
+	public static SessionData createSessionData(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(SessionManager.class);
 		
 		SessionData sessionData = new SessionData();

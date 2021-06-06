@@ -6,8 +6,8 @@ import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class AddSubTaskHandler extends BackendMessageHandler<AddSubTaskMessage> {
 

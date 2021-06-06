@@ -25,13 +25,13 @@ import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.jdk.random.SecureRandomString;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
@@ -62,7 +62,7 @@ public class UserManager {
 		return uuid;
 	}
 
-	private static String generateAndStoreUuid(ModelStoreSync modelStore, String userId) {
+	private static String generateAndStoreUuid(ModelStoreSync modelStore, String userId) throws BackendError {
 		T.call(UserManager.class);
 		
 		String uuid = generateUuid(modelStore);
@@ -190,7 +190,7 @@ public class UserManager {
 		}
 	}
 
-	private static void initializeStudentModels(ModelStoreSync modelStore, User user) {
+	private static void initializeStudentModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
@@ -311,7 +311,7 @@ public class UserManager {
 		});
 	}
 
-	public static void initialize(ModelStoreSync modelStore) {
+	public static void initialize(ModelStoreSync modelStore) throws BackendError {
 		T.call(UserManager.class);
 
 		if(!modelStore.ifModelExists(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
@@ -533,7 +533,7 @@ public class UserManager {
 
 	public static User createGuestUser(ModelStoreSync modelStore, 
 									   Class<? extends User> guestUserClass,
-									   String userId) {
+									   String userId) throws BackendError {
 		T.call(UserManager.class);
 		
 		User newUser = Ntro.factory().newInstance(guestUserClass);

@@ -53,12 +53,13 @@ import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelReader;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
@@ -66,6 +67,7 @@ import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
@@ -127,7 +129,14 @@ public class DynamicHandler extends AbstractHandler {
 		
 		if(rawPath.contains(Constants.LOG_URL_SEGMENT)) {
 			
-			serveLog(baseRequest, response, out, path);
+			try {
+
+				serveLog(baseRequest, response, out, path);
+
+			} catch (BackendError e) {
+				
+				Log.error("Error serving logs: " + e.getMessage());
+			}
 			
 		}else {
 
@@ -140,7 +149,7 @@ public class DynamicHandler extends AbstractHandler {
 			              OutputStream out,
 			              Path path)
 
-			throws FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException, BackendError {
 		
 		Path subPath = path.removePrefix(Constants.LOG_URL_SEGMENT);
 		
@@ -159,25 +168,21 @@ public class DynamicHandler extends AbstractHandler {
 		}
 	}
 
-	private void serveLog(Request baseRequest, 
+	private <LM extends LogModel> void serveLog(Request baseRequest, 
 			              HttpServletResponse response, 
 			              OutputStream out,
 			              CoursePath coursePath, 
-			              Class<? extends LogModel<?,?>> logModelClass)
+			              Class<LM> logModelClass)
 
-			throws FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException, BackendError {
 		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
 		StringBuilder logContent = new StringBuilder();
 		
-		modelStore.readModel(logModelClass, "admin", coursePath, new ModelReader<LogModel<?,?>>() {
-			@Override
-			public void read(LogModel<?, ?> logModel) {
-				T.call(this);
-				
-				logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, logContent);
-			}
+		modelStore.readModel(logModelClass, "admin", coursePath, logModel -> {
+
+			logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, logContent);
 		});
 		
 		response.addHeader("content-disposition", "attachment; filename=\"" + coursePath.toFileName() + ".csv\"");

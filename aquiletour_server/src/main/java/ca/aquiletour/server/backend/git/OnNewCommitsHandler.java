@@ -4,8 +4,8 @@ package ca.aquiletour.server.backend.git;
 import ca.aquiletour.core.messages.git.OnNewCommits;
 import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class OnNewCommitsHandler extends BackendMessageHandler<OnNewCommits> {
 

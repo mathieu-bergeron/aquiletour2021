@@ -150,6 +150,12 @@ public class LocalStoreFiles extends ModelStore {
 		
 	}
 
-
-
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+		
+		// DEV: low heap size to test modelStore 
+		//return 3;
+		return 1000;
+	}
 }

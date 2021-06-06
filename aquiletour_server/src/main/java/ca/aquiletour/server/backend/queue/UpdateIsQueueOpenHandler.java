@@ -3,8 +3,8 @@ package ca.aquiletour.server.backend.queue;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class UpdateIsQueueOpenHandler extends BackendMessageHandler<UpdateIsQueueOpenMessage> {
 

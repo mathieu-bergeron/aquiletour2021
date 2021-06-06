@@ -121,5 +121,12 @@ public class LocalStoreJSweet extends ModelStore {
 		localStorage.removeItem(fullId);
 	}
 
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+
+		return 1000;
+	}
+
 
 }

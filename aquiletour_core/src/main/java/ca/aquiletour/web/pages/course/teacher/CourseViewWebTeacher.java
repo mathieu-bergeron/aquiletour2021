@@ -327,4 +327,13 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		completionsList.text("");
 	}
 
+	@Override
+	public void updateCategory(String categoryId, String href, String text) {
+		T.call(this);
+		
+		// TODO
+	}
+
+
+
 }

@@ -156,6 +156,14 @@ public class LocalStoreNitrite extends ModelStore {
 		return null;
 	}
 
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+		
+		// DEV: low size
+		return 3;
+	}
+
 	
 
 }

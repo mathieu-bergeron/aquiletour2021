@@ -8,15 +8,15 @@ import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class QueueManager {
 
 	public static void createQueueForUser(ModelStoreSync modelStore,
-								   		  User user) {
+								   		  User user) throws BackendError {
 
 		T.call(QueueManager.class);
 		
@@ -24,7 +24,7 @@ public class QueueManager {
 	}
 
 	public static void createQueue(ModelStoreSync modelStore,
-			                       String queueId) {
+			                       String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
 
@@ -61,13 +61,6 @@ public class QueueManager {
 		T.call(QueueManager.class);
 		
 		QueuesUpdater.openQueue(modelStore, queueId);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-		
-		modelStore.closeWithoutSaving(queue);
-
 	}
 
 	public static void closeQueue(ModelStoreSync modelStore,
@@ -130,21 +123,22 @@ public class QueueManager {
 		return appointment;
 	}
 
-	public static void addAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
+	public static void addAppointmentUpdates(ModelStoreSync modelStore, String queueId) throws BackendError {
 		T.call(QueueManager.class);
 		
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}
 
-	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
+	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) throws BackendError {
 		T.call(QueueManager.class);
 
-		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
+		modelStore.updateModel(QueueModel.class, 
+				               "admin", 
+				               queueId, 
+				               queue -> {
 
-		// FIXME: use increment insted
-		int nbAppointment = queue.getAppointments().size();
-
-		modelStore.closeWithoutSaving(queue);
+			int nbAppointment = queue.getAppointments().size();
+	   });
 	}
 
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
@@ -170,7 +164,7 @@ public class QueueManager {
 		});
 	}
 
-	public static void deleteAppointmentUpdates(ModelStoreSync modelStore, String queueId, Appointment deletedAppointment) {
+	public static void deleteAppointmentUpdates(ModelStoreSync modelStore, String queueId, Appointment deletedAppointment) throws BackendError {
 		T.call(QueueManager.class);
 		
 		String appointmentOwnerId = deletedAppointment.getStudentId();

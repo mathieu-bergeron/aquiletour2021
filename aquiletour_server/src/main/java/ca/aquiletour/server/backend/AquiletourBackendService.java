@@ -41,7 +41,7 @@ import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.DeleteSemesterMessage;
-import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemester;
+import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemesterMessage;
 import ca.aquiletour.server.backend.course.AddNextTaskHandler;
 import ca.aquiletour.server.backend.course.AddPreviousTaskHandler;
 import ca.aquiletour.server.backend.course.AddSubTaskHandler;
@@ -112,7 +112,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(StudentRegistersRepoMessage.class, new StudentRegistersRepoHandler());
 		addBackendMessageHandler(AddSemesterMessage.class, new AddSemesterHandler());
 		addBackendMessageHandler(AddSemesterWeekMessage.class, new AddSemesterWeekHandler());
-		addBackendMessageHandler(SetActiveSemester.class, new SetActiveSemesterHanlder());
+		addBackendMessageHandler(SetActiveSemesterMessage.class, new SetActiveSemesterHanlder());
 		addBackendMessageHandler(AddScheduleItemMessage.class, new AddScheduleItemHandler());
 		addBackendMessageHandler(UpdateTaskInfoMessage.class, new UpdateTaskInfoHandler());
 		addBackendMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());

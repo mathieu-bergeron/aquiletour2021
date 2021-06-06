@@ -5,7 +5,6 @@ import java.util.Map;
 
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
@@ -13,6 +12,7 @@ import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.BackendService;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public abstract class BackendServiceServer extends BackendService {

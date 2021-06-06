@@ -1,6 +1,7 @@
 package ca.aquiletour.core.pages.course_list.teacher.handlers;
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.pages.course_list.handlers.CourseListViewModel;
 import ca.aquiletour.core.pages.course_list.messages.SelectCourseListSubset;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
@@ -23,13 +24,14 @@ public class CourseListViewModelTeacher extends CourseListViewModel<CourseListMo
 	}
 
 	@Override
-	protected void appendCategoriesToDropdown(CourseListViewTeacher view) {
+	protected void initializeCategories(CourseListModelTeacher model, CourseListViewTeacher view) {
 		T.call(this);
-
+		
 		appendToSemesterDropdown(Constants.CATEGORY_ID_RECYCLE_BIN,Constants.CATEGORY_TEXT_RECYCLE_BIN, view);
 		appendToSemesterDropdown(Constants.CATEGORY_ID_ARCHIVE,Constants.CATEGORY_TEXT_ARCHIVE, view);
 		appendToSemesterDropdown(Constants.CATEGORY_ID_DRAFTS,Constants.CATEGORY_TEXT_DRAFTS, view);
-		appendToSemesterDropdown(Constants.CATEGORY_ID_CURRENT,Constants.CATEGORY_TEXT_CURRENT, view);
+		
+		super.initializeCategories(model, view);
 	}
 	
 	@Override

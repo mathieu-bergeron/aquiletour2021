@@ -37,10 +37,12 @@ import ca.aquiletour.server.http.MessageHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
-import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
@@ -64,8 +66,14 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		
 		sendTimePassesMessages();
 
-		UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
-		SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+		try {
+
+			UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+			SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+
+		} catch (BackendError e) {
+			Log.error("Could not initialize: " + e.getMessage());
+		}
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _resources)

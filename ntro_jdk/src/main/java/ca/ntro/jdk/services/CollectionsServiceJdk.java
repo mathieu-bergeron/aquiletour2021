@@ -66,7 +66,7 @@ public class CollectionsServiceJdk extends CollectionsService {
 	}
 
 	@Override
-	public <V> V getExact(Map<?, V> map, Object key) {
+	public <V> V getByKeyExact(Map<?, V> map, Object key) {
 		T.call(this);
 
 		V value = null;
@@ -94,7 +94,7 @@ public class CollectionsServiceJdk extends CollectionsService {
 	}
 
 	@Override
-	public boolean setContainsExact(Set<?> set, Object target) {
+	public boolean containsElementExact(Set<?> set, Object target) {
 		boolean setContains = false;
 		
 		synchronized (set) {
@@ -110,7 +110,7 @@ public class CollectionsServiceJdk extends CollectionsService {
 	}
 
 	@Override
-	public boolean containsEquals(Set<?> set, Object target) {
+	public boolean containsElementEquals(Set<?> set, Object target) {
 		return set.contains(target);
 	}
 
@@ -127,5 +127,71 @@ public class CollectionsServiceJdk extends CollectionsService {
 	@Override
 	public int compareToString(String o1, String o2) {
 		return o1.compareTo(o2);
+	}
+
+	@Override
+	public boolean containsItemEquals(List<?> list, Object target) {
+		T.call(this);
+		
+		return list.contains(target);
+	}
+
+	@Override
+	public boolean containsItemExact(List<?> list, Object target) {
+		T.call(this);
+		
+		boolean ifContains = false;
+		
+		synchronized (list) {
+			for(Object candidate : list) {
+				if(candidate == target) {
+					ifContains = true;
+					break;
+				}
+			}
+		}
+
+		return ifContains;
+	}
+
+	@Override
+	public boolean containsKeyEquals(Map<?, ?> map, Object key) {
+		T.call(this);
+		
+		return map.containsKey(key);
+	}
+
+	@Override
+	public <V> V getByKeyEquals(Map<?, V> map, Object key) {
+		T.call(this);
+		
+		return map.get(key);
+	}
+
+	@Override
+	public <V> void removeByKeyEquals(Map<?, V> map, Object key) {
+		T.call(this);
+		
+		map.remove(key);
+	}
+
+	@Override
+	public <V> void removeByKeyExact(Map<?, V> map, Object key) {
+		T.call(this);
+		
+		Object foundKey = null;
+		
+		synchronized(map) {
+			for(Map.Entry<?, V> entry : map.entrySet()) {
+				if(entry.getKey() == key) {
+					foundKey = key;
+					break;
+				}
+			}
+		}
+		
+		if(foundKey != null) {
+			map.remove(foundKey);
+		}
 	}
 }

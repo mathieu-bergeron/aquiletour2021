@@ -8,8 +8,8 @@ import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class TeacherClosesQueueHandler extends BackendMessageHandler<TeacherClosesQueueMessage> {

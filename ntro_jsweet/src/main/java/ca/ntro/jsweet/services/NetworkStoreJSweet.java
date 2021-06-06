@@ -114,5 +114,13 @@ public class NetworkStoreJSweet extends ModelStore {
 		// XXX: not supported
 	}
 
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+
+		// DEV: low heap size to test ModelStore
+		return 2;
+	}
+
 
 }

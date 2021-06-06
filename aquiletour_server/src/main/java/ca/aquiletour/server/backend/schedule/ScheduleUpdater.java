@@ -12,8 +12,8 @@ import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class ScheduleUpdater {
 

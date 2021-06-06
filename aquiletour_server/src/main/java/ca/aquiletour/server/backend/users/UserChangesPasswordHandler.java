@@ -3,8 +3,8 @@ package ca.aquiletour.server.backend.users;
 import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class UserChangesPasswordHandler extends BackendMessageHandler<UserChangesPasswordMessage> {
 

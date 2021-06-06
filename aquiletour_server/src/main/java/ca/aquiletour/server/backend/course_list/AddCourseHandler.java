@@ -13,8 +13,8 @@ import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 

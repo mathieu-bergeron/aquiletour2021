@@ -3,6 +3,7 @@ package ca.aquiletour.server.backend.dashboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
@@ -21,9 +22,9 @@ import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class DashboardManager {
 
@@ -45,7 +46,7 @@ public class DashboardManager {
 
 	public static <DM extends DashboardModel<?>> void createDashboardForUser(ModelStoreSync modelStore, 
 																	      Class<DM> dashboardModelClass,
-			 														      User user) {
+			 														      User user) throws BackendError {
 		T.call(DashboardManager.class);
 
 		modelStore.createModel(dashboardModelClass, "admin", user.getId(), new ModelInitializer<DM>() {
@@ -143,13 +144,9 @@ public class DashboardManager {
 
 		T.call(DashboardManager.class);
 
-		modelStore.updateModel(dashboardModelClass, "admin", userId, new ModelUpdater<DM>() {
-			@Override
-			public void update(DM dashboardModel) throws BackendError {
-				T.call(this);
+		modelStore.updateModel(dashboardModelClass, "admin", userId, dashboardModel -> {
 
-				dashboardModel.updateCurrentTasks(coursePath, currentTasks);
-			}
+			dashboardModel.updateCurrentTasks(coursePath, currentTasks);
 		});
 	}
 
@@ -163,7 +160,7 @@ public class DashboardManager {
 											coursePath,
 											coursePath.teacherId());
 		
-		List<String> studentIds = CourseManager.getStudentIds(modelStore, coursePath);
+		Set<String> studentIds = CourseManager.getStudentIds(modelStore, coursePath);
 
 		for(String studentId : studentIds) {
 			DashboardManager.updateCurrentTasks(modelStore, 
