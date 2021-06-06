@@ -219,8 +219,6 @@ public class DynamicHandler extends AbstractHandler {
 
 		executeBackend(baseRequest, response, path, parameters);
 
-		setSessionCookie(response);
-
 		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
 		//boolean ifJSweet = false;
 
@@ -238,6 +236,7 @@ public class DynamicHandler extends AbstractHandler {
 			Ntro.messages().sendQueuedMessages();
 		}
 
+		setSessionCookie(response);
 
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 

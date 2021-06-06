@@ -26,8 +26,6 @@ import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.user.Admin;
-import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -68,6 +66,7 @@ import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroSession;
 
 public class AquiletourBackendRequestHandler {
 	
@@ -78,7 +77,7 @@ public class AquiletourBackendRequestHandler {
 
 		if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
 
-			Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserLogsOutMessage.class));
+			Ntro.messages().send(Ntro.messages().create(UserLogsOutMessage.class));
 
 		} else if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
 
@@ -114,12 +113,6 @@ public class AquiletourBackendRequestHandler {
 
 		}
 	}
-	
-
-    
-    
-
-
 
 	public static void sendRootMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
@@ -150,7 +143,7 @@ public class AquiletourBackendRequestHandler {
 			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
 			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
 			userSendsLoginCodeMessage.setDelayedMessages(delayedMessages(parameters));
-			Ntro.backendService().sendMessageToBackend(userSendsLoginCodeMessage);
+			Ntro.messages().send(userSendsLoginCodeMessage);
 
 		} else if(parameters.containsKey("userName")) {
 			
@@ -174,7 +167,7 @@ public class AquiletourBackendRequestHandler {
 			userChangesPassword.setNewPasswordA(newPasswordA);
 			userChangesPassword.setNewPasswordB(newPasswordB);
 			
-			Ntro.backendService().sendMessageToBackend(userChangesPassword);
+			Ntro.messages().send(userChangesPassword);
 
 		} else if(parameters.containsKey("password")) {
 
@@ -184,29 +177,17 @@ public class AquiletourBackendRequestHandler {
 			userSendsPassword.setPassword(password);
 			userSendsPassword.setDelayedMessages(delayedMessages(parameters));
 			
-			Ntro.backendService().sendMessageToBackend(userSendsPassword);
+			Ntro.messages().send(userSendsPassword);
 
 		} else if(parameters.containsKey("toggleStudentMode")) {
 
-			// XXX: must be here in the frontend
-			if(Ntro.currentSession().getUser() instanceof Teacher) {
-				Teacher teacher = (Teacher) Ntro.currentSession().getUser();
-				teacher.toggleStudentMode();
-				
-				ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
-				Ntro.messages().send(toggleStudentModeMessage); // XXX: as above, must be Ntro.messages()
-			}
+			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
+			Ntro.messages().send(toggleStudentModeMessage);
 
 		} else if(parameters.containsKey("toggleAdminMode")) {
 
-			// XXX: must be here in the frontend
-			if(Ntro.currentSession().getUser() instanceof Admin) {
-				Admin admin = (Admin) Ntro.currentSession().getUser();
-				admin.toggleAdminMode();
-				
-				ToggleAdminModeMessage toggleAdminModeMessage = Ntro.messages().create(ToggleAdminModeMessage.class);
-				Ntro.messages().send(toggleAdminModeMessage); // XXX: as above, must be Ntro.messages()
-			}
+			ToggleAdminModeMessage toggleAdminModeMessage = Ntro.messages().create(ToggleAdminModeMessage.class);
+			Ntro.messages().send(toggleAdminModeMessage);
 		}
 	}
 
@@ -237,7 +218,7 @@ public class AquiletourBackendRequestHandler {
 		UserInitiatesLoginMessage userInitiatesLoginMessage = Ntro.messages().create(UserInitiatesLoginMessage.class);
 		userInitiatesLoginMessage.setRegistrationId(userId);
 		userInitiatesLoginMessage.setDelayedMessages(delayedMessages(parameters));
-		Ntro.backendService().sendMessageToBackend(userInitiatesLoginMessage);
+		Ntro.messages().send(userInitiatesLoginMessage);
 	}
 
 
@@ -255,7 +236,7 @@ public class AquiletourBackendRequestHandler {
 			AddCourseMessage addCourseMessage = Ntro.messages().create(AddCourseMessage.class);
 			addCourseMessage.setSemesterId(semesterId);
 			addCourseMessage.setCourseListItem(courseListItem);
-			Ntro.backendService().sendMessageToBackend(addCourseMessage);
+			Ntro.messages().send(addCourseMessage);
 
 		} else if(parameters.containsKey("duplicateCourse")) {
 			
@@ -286,7 +267,7 @@ public class AquiletourBackendRequestHandler {
 			addSubTaskMessage.setCourseId(courseId);
 			addSubTaskMessage.setParentPath(parentPath);
 			addSubTaskMessage.setSubTask(task);
-			Ntro.backendService().sendMessageToBackend(addSubTaskMessage);
+			Ntro.messages().send(addSubTaskMessage);
 
 		} else if(parameters.containsKey("openQueueCourseId")) {
 			
@@ -380,7 +361,7 @@ public class AquiletourBackendRequestHandler {
 			AddScheduleItemMessage addScheduleItemMessage = Ntro.messages().create(AddScheduleItemMessage.class);
 			addScheduleItemMessage.setSemesterId(semesterId);
 			addScheduleItemMessage.setScheduleItem(scheduleItem);
-			Ntro.backendService().sendMessageToBackend(addScheduleItemMessage);
+			Ntro.messages().send(addScheduleItemMessage);
 			
 		} else if(parameters.containsKey("currentSemesterId")) {
 
@@ -438,7 +419,7 @@ public class AquiletourBackendRequestHandler {
 			
 			String courseId = parameters.get(Constants.CLOSE_QUEUE_URL_PARAM)[0];
 			teacherClosesQueueMessage.setCourseId(courseId);
-			Ntro.backendService().sendMessageToBackend(teacherClosesQueueMessage);
+			Ntro.messages().send(teacherClosesQueueMessage);
 
 		} else if(parameters.containsKey(Constants.DELETE_QUEUE_URL_PARAM)) {
 
@@ -446,7 +427,7 @@ public class AquiletourBackendRequestHandler {
 			
 			String courseId = parameters.get(Constants.DELETE_QUEUE_URL_PARAM)[0];
 			deleteCourseMessage.setCourseId(courseId);
-			Ntro.backendService().sendMessageToBackend(deleteCourseMessage);
+			Ntro.messages().send(deleteCourseMessage);
 		}
 	}
 
@@ -526,7 +507,7 @@ public class AquiletourBackendRequestHandler {
 			String appointmentId = parameters.get("deleteAppointment")[0];
 			deleteAppointmentMessage.setAppointmentId(appointmentId);
 			deleteAppointmentMessage.setCourseId(queueId);
-			Ntro.backendService().sendMessageToBackend(deleteAppointmentMessage);
+			Ntro.messages().send(deleteAppointmentMessage);
 
 		} else if(parameters.containsKey("move")) {
 
@@ -806,7 +787,7 @@ public class AquiletourBackendRequestHandler {
 																					      sessionData);
 
 
-			Ntro.backendService().sendMessageToBackend(studentRegistersRepo);
+			Ntro.messages().send(studentRegistersRepo);
 
 		} else if(parameters.containsKey("StudentDeletesRepo")) {
 
@@ -814,7 +795,7 @@ public class AquiletourBackendRequestHandler {
 																					         path,
 																					         parameters,
 																					         sessionData);
-			Ntro.backendService().sendMessageToBackend(studentDeletesRepoMessage);
+			Ntro.messages().send(studentDeletesRepoMessage);
 
 		} else if(parameters.containsKey("atomicTaskCompletedId")) {
 				

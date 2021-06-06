@@ -256,7 +256,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			@Override
 			public void handle(NtroUpdateSessionMessage message) {
 				NtroSession session = message.getSession();
-				Ntro.sessionService().registerCurrentSession(session);
+				Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
 				
 				rootController.changeContext(AquiletourMain.createNtroContext());
 			}
@@ -276,7 +276,30 @@ public abstract class AquiletourMain extends NtroTaskSync {
 					teacher.toggleStudentMode();
 					
 					session.setUser(teacher);
-					Ntro.sessionService().registerCurrentSession(session); // XXX: saves session
+					Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
+
+					rootController.changeContext(AquiletourMain.createNtroContext());
+				}
+			}
+		});
+
+		Ntro.messages().registerHandler(ToggleAdminModeMessage.class, new MessageHandler<ToggleAdminModeMessage>() {
+			@Override
+			public void handle(ToggleAdminModeMessage message) {
+				T.call(this);
+				
+				T.here();
+				
+				NtroSession session = Ntro.currentSession();
+				User user = (User) session.getUser();
+
+				if(user instanceof Admin) {
+
+					Admin admin = (Admin) user;
+					admin.toggleAdminMode();
+					
+					session.setUser(admin);
+					Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
 
 					rootController.changeContext(AquiletourMain.createNtroContext());
 				}
