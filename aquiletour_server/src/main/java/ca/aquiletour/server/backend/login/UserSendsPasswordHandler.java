@@ -26,15 +26,9 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 		User userToRegister = null;
 
-		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
-		
 		if(UserManager.isUserPasswordValid(modelStore, message.getPassword(), message.getUser())) {
 
-			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, session);
-
-			Ntro.currentSession().setUser(userToRegister);
-			session.setUser(userToRegister);
-			modelStore.save(session);
+			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
 
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
@@ -49,21 +43,29 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setDelayedMessages(message.getDelayedMessages());
 
-			SessionData sessionData = (SessionData) session.getSessionData();
-			sessionData.incrementFailedPasswordAttemps();
-
-			if(sessionData.hasReachedMaxPasswordAttemps()) {
-				User user = (User) Ntro.currentSession().getUser();
-				user.setHasPassword(false);
-				showLoginMenuMessage.setMessageToUser("SVP re-valider votre courriel.");
+			SessionManager.updateSession(modelStore, authToken, session -> {
+				SessionData sessionData = null;
+				if(session.getSessionData() instanceof SessionData) {
+					sessionData = (SessionData) session.getSessionData();
+				}
 				
-				String loginCode = UserInitiatesLoginHandler.sendLoginCode(user);
-				sessionData.setLoginCode(loginCode);
-			}else {
-				showLoginMenuMessage.setMessageToUser("Mot de passe erroné.");
-			}
+				if(sessionData != null) {
+					sessionData.incrementFailedPasswordAttemps();
 
-			Ntro.messages().send(showLoginMenuMessage);
+					if(sessionData.hasReachedMaxPasswordAttemps()) {
+						User user = (User) Ntro.currentSession().getUser();
+						user.setHasPassword(false);
+						showLoginMenuMessage.setMessageToUser("SVP re-valider votre courriel.");
+						
+						String loginCode = UserInitiatesLoginHandler.sendLoginCode(user);
+						sessionData.setLoginCode(loginCode);
+					}else {
+						showLoginMenuMessage.setMessageToUser("Mot de passe erroné.");
+					}
+
+					Ntro.messages().send(showLoginMenuMessage);
+				}
+			});
 		}
 	}
 

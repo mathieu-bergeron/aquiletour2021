@@ -154,8 +154,8 @@ public class LocalStoreFiles extends ModelStore {
 	protected int maxHeapSize() {
 		T.call(this);
 		
-		// DEV: low heap size to test modelStore 
-		//return 3;
+		// DEV: no caching will work if models
+		//      are always updated via modelStore.updateModel()
 		return 1000;
 	}
 }

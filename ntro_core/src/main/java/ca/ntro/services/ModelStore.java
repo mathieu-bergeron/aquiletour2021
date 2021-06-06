@@ -18,7 +18,7 @@ import ca.ntro.core.models.ModelFactory;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelLoader;
 import ca.ntro.core.models.ModelReader;
-import ca.ntro.core.models.ModelReducer;
+import ca.ntro.core.models.ModelExtractor;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.ShouldNotBeCached;
@@ -47,10 +47,20 @@ public abstract class ModelStore {
 
 	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) {
 		T.call(this);
+		
+		boolean ifExists = false;
 
 		DocumentPath documentPath = documentPath(modelClass, documentId);
+		
+		ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
+		
+		if(!ifExists) {
+			
+			ifExists = ifModelExistsImpl(documentPath);
 
-		return ifModelExistsImpl(documentPath);
+		}
+
+		return ifExists;
 	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, Path modelPath){
@@ -148,10 +158,10 @@ public abstract class ModelStore {
 		return model;
 	}
 
-	public <M extends NtroModel> void updateModel(Class<M> modelClass, 
-												  String authToken,
-			                                      String modelId, 
-			                                      ModelUpdater<M> updater) throws BackendError {
+	<M extends NtroModel> void updateModel(Class<M> modelClass, 
+										   String authToken,
+			                               String modelId, 
+			                               ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 		
 		M model = null;
@@ -174,10 +184,10 @@ public abstract class ModelStore {
 		}
 	}
 
-	public <M extends NtroModel> void createModel(Class<M> modelClass, 
-												  String authToken,
-			                                      String modelId, 
-			                                      ModelInitializer<M> initializer) throws BackendError {
+	<M extends NtroModel> void createModel(Class<M> modelClass, 
+										   String authToken,
+			                               String modelId, 
+			                               ModelInitializer<M> initializer) throws BackendError {
 		T.call(this);
 		
 		M model = null;
@@ -202,10 +212,10 @@ public abstract class ModelStore {
 		}
 	}
 
-	public <M extends NtroModel> void readModel(Class<M> modelClass, 
-												String authToken,
-			                                    String modelId, 
-			                                    ModelReader<M> reader) throws BackendError {
+	<M extends NtroModel> void readModel(Class<M> modelClass, 
+									     String authToken,
+			                             String modelId, 
+			                             ModelReader<M> reader) throws BackendError {
 		T.call(this);
 		
 		M model = null;
@@ -229,15 +239,14 @@ public abstract class ModelStore {
 		}
 	}
 
-	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<M> modelClass, 
-												                     String authToken,
-												                     String modelId,
-			                                                         Class<ACC> accumulatorClass,
-			                                                         ACC accumulator,
-			                                                         ModelReducer<M,ACC> reducer) {
+	<M extends NtroModel, R extends Object> R extractFromModel(Class<M> modelClass, 
+												               String authToken,
+												               String modelId,
+			                                                   Class<R> accumulatorClass,
+			                                                   ModelExtractor<M,R> reducer) {
 		T.call(this);
 
-		ACC result = accumulator;
+		R result = null;
 		M model = null;
 		
 		synchronized (localHeap) {
@@ -250,7 +259,7 @@ public abstract class ModelStore {
 
 		if(model != null) {
 			synchronized (model) {
-				result = reducer.reduce(model, accumulator);
+				result = reducer.extract(model);
 			}
 		}
 
@@ -412,26 +421,15 @@ public abstract class ModelStore {
 
 		synchronized (modelsToSave) {
 			for(DocumentPath documentPath : modelsToSave) {
-				save(documentPath);
+				saveModelAndManageHeap(documentPath);
 			}
 		}
 	}
 
-	public void save(DocumentPath documentPath) {
+	public void saveModelAndManageHeap(DocumentPath documentPath) {
 		T.call(this);
 		
-		NtroModel model = null;
-		synchronized (localHeap) {
-			model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
-		}
-		
-		if(model != null) {
-			synchronized (model) {
-				saveDocument(documentPath, Ntro.jsonService().toString(model));
-			}
-		}else {
-			Log.warning("[save] model not in localHeap " + documentPath.toString());
-		}
+		NtroModel model = saveModelNow(documentPath);
 
 		synchronized (saveHistory) {
 			if(!Ntro.collections().containsItemEquals(saveHistory, documentPath)) {
@@ -448,13 +446,34 @@ public abstract class ModelStore {
 		}
 	}
 
+	private NtroModel saveModelNow(DocumentPath documentPath) {
+		T.call(this);
+
+		NtroModel model = null;
+		synchronized (localHeap) {
+			model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+		}
+		
+		if(model != null) {
+			synchronized (model) {
+				saveDocument(documentPath, Ntro.jsonService().toString(model));
+			}
+		}else {
+			Log.warning("[save] model not in localHeap " + documentPath.toString());
+		}
+		return model;
+	}
+
 	private void removeOldestModelFromHeap() {
 		T.call(this);
 
 		DocumentPath documentPath = saveHistory.remove(0);
 
 		if(documentPath != null) {
-			removeModelFromHeap(documentPath);
+			synchronized (localHeap) {
+				saveModelNow(documentPath);
+				removeModelFromHeap(documentPath);
+			}
 		}
 	}
 

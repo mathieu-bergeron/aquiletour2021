@@ -193,21 +193,22 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 
-		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
-		
 		Optionnal<BackendError> backendError = new Optionnal<>();
-
-		semesterList.getSemesters().forEachItem((index, semester) -> {
-			try {
-
-				addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
-
-			}catch(BackendError e) {
-				backendError.set(e);
-				throw new Break();
-			}
-		});
 		
+		modelStore.readModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID, semesterList -> {
+
+			semesterList.getSemesters().forEachItem((index, semester) -> {
+				try {
+
+					addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
+
+				}catch(BackendError e) {
+					backendError.set(e);
+					throw new Break();
+				}
+			});
+		});
+
 		if(!backendError.isEmpty()) {
 			try {
 				throw backendError.get();
@@ -334,18 +335,12 @@ public class SemesterListManager {
 																					  String semesterId, 
 																					  String userId) {
 		T.call(SemesterListManager.class);
-
-		SemesterSchedule schedule = null;
 		
-		if(modelStore.ifModelExists(modelClass, "admin", userId)) {
-			
-			SemesterListModel<?> model = modelStore.getModel(modelClass, "admin", userId);
-			
-			schedule = model.semesterSchedule(semesterId);
-		}
+		return modelStore.extractFromModel(modelClass,"admin" , userId, SemesterSchedule.class, model -> {
 
-		return schedule;
+			return model.semesterSchedule(semesterId);
 
+		});
 	}
 
 	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
@@ -361,17 +356,10 @@ public class SemesterListManager {
 			                                         String semesterId, 
 			                                         String userId) {
 		T.call(SemesterListManager.class);
-
-		TeacherSchedule schedule = null;
 		
-		if(modelStore.ifModelExists(SemesterListModelTeacher.class, "admin", userId)) {
-			
-			SemesterListModelTeacher model = modelStore.getModel(SemesterListModelTeacher.class, "admin", userId);
-			
-			schedule = model.teacherSchedule(semesterId);
-		}
-
-		return schedule;
+		return modelStore.extractFromModel(SemesterListModelTeacher.class, "admin", userId, TeacherSchedule.class, model -> {
+			return model.teacherSchedule(semesterId);
+		});
 	}
 
 	public static TeacherSchedule getTeacherSchedule(ModelStoreSync modelStore, 

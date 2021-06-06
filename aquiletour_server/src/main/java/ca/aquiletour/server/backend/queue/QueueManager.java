@@ -47,12 +47,6 @@ public class QueueManager {
 		T.call(QueueManager.class);
 
 		QueuesUpdater.deleteQueue(modelStore, queueId);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-	
-		modelStore.delete(queue);
 	}
 
 	public static void openQueue(ModelStoreSync modelStore,
@@ -70,10 +64,6 @@ public class QueueManager {
 
 		QueuesUpdater.closeQueue(modelStore, queueId);
 
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-		
 		modelStore.updateModel(QueueModel.class, "amdin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
@@ -143,12 +133,10 @@ public class QueueManager {
 
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
 		T.call(QueueManager.class);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
 		
-		Appointment appointment = queue.appointmentById(appointmentId);
-
-		return appointment;
+		return modelStore.extractFromModel(QueueModel.class, "admin", queueId, Appointment.class, queueModel -> {
+			return queueModel.appointmentById(appointmentId);
+		});
 	}
 
 	public static void deleteAppointment(ModelStoreSync modelStore, String queueId, String appointmentId) throws BackendError {

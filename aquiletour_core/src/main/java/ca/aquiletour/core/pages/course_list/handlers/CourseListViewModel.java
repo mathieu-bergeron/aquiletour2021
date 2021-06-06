@@ -20,6 +20,7 @@ import ca.ntro.core.system.trace.T;
 public abstract class CourseListViewModel<M extends CourseListModel, V extends CourseListView> 
                 extends ItemListViewModel<M, V, SelectCourseListSubset> {
 
+
 	@Override
 	protected void handle(M model, V view, ViewLoader subViewLoader, SelectCourseListSubset message) {
 		T.call(this);
@@ -30,9 +31,9 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 	@Override
 	protected void initializeCategories(M model, V view) {
 		T.call(this);
-		
+
 		Set<String> activeSemesterIds = new HashSet<>();
-		
+
 		model.getActiveSemesters().removeObservers();
 		model.getActiveSemesters().onItemAdded(new ItemAddedListener<String>() {
 			@Override
@@ -56,8 +57,19 @@ public abstract class CourseListViewModel<M extends CourseListModel, V extends C
 			                         ViewLoader subViewLoader,
 			                         String currentCategoryId) {
 		T.call(this);
+		
+		String currentSemesterId = null;
+		
+		if(model.getActiveSemesters().size() > 0) {
+			// FIXME: must display more than one active semester!
+			currentSemesterId = model.getActiveSemesters().item(0);
+		}
+		
+		if(currentCategoryId.equals(Constants.CATEGORY_ID_DRAFTS)) {
+			currentSemesterId = Constants.DRAFTS_SEMESTER_ID;
+		}
 
-		view.displayActiveSemesters(currentCategoryId);
+		view.displayCurrentSemester(currentSemesterId);
 		
 		observeCourses(model, view, subViewLoader, currentCategoryId);
 	}

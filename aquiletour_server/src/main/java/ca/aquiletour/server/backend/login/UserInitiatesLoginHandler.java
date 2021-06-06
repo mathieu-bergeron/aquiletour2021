@@ -28,10 +28,9 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) throws BackendError {
 		T.call(this);
 
-		User user = message.getUser();
-		String authToken = user.getAuthToken();
+		User sessionUser = message.getUser();
+		String authToken = sessionUser.getAuthToken();
 		String userId = message.getRegistrationId();
-		User userToRegister = null;
 
 		userId = Validator.deAccent(userId);
 		
@@ -45,31 +44,21 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		userId = User.normalizeUserId(userId);
 
-		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
-		
-		if(session != null) {
+		sessionUser = registerStudentOrTeacherGuest(modelStore, authToken, userId);
 
-			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, userId, session);
-			
-
-		}else {
-			
-			userToRegister = user;
-		}
-
-		Ntro.currentSession().setUser(userToRegister);
+		Ntro.currentSession().setUser(sessionUser);
 		
 		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 		updateSessionMessage.setSession(Ntro.currentSession());
-		RegisteredSockets.sendMessageToUser(userToRegister, updateSessionMessage);
+		RegisteredSockets.sendMessageToUser(sessionUser, updateSessionMessage);
 		
-		if(message.getDelayedMessages().isEmpty() && userToRegister.getHasPassword()) {
+		if(message.getDelayedMessages().isEmpty() && sessionUser.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setMessageToUser("SVP entrer votre mot de passe");
 			Ntro.messages().send(showLoginMenuMessage);
 
-		} else if(message.getDelayedMessages().isEmpty() && !userToRegister.getHasPassword()) {
+		} else if(message.getDelayedMessages().isEmpty() && !sessionUser.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
@@ -85,8 +74,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, 
 			                                   String authToken, 
-			                                   String userId, 
-			                                   NtroSession session) throws BackendError {
+			                                   String userId) throws BackendError {
 		T.call(this);
 		
 		
@@ -111,10 +99,13 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			String loginCode = sendLoginCode(userToRegister);
 			sessionData.setLoginCode(loginCode);
 		}
+		
+		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
 
-		session.setUser(userToRegister.toSessionUser());
-		session.setSessionData(sessionData);
-		modelStore.save(session);
+			session.setUser(userToRegister.toSessionUser());
+			session.setSessionData(sessionData);
+
+		});
 		
 		Ntro.currentSession().setSessionData(sessionData);
 

@@ -26,17 +26,9 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 
 		User userToRegister = null;
 
-		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
-		SessionData sessionData = null;
-
-		if(session != null) {
-			sessionData = (SessionData) session.getSessionData();
-		}
-
-		if(sessionData != null 
-				&& sessionData.getLoginCode().equals(loginCode)) {
+		if(SessionManager.ifLoginCodeValid(modelStore, authToken, loginCode)) {
 			
-			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, session);
+			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
 			
 		}else {
 			

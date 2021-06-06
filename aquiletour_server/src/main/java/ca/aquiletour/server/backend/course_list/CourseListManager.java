@@ -162,12 +162,11 @@ public class CourseListManager {
 
 		T.call(CourseListManager.class);
 
-		return modelStore.reduceModel(courseListModelClass, 
+		return modelStore.extractFromModel(courseListModelClass, 
 				                      "admin", 
 				                      userId, 
 				                      CourseListItem.class, 
-				                      null, 
-				                      (model, accumulator) -> {
+				                      model -> {
 			return model.courseByPath(coursePath);
 		});
 	}

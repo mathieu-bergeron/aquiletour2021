@@ -96,11 +96,11 @@ public class QueuesUpdater {
 
 		T.call(QueuesUpdater.class);
 
-		OpenQueue summary = modelStore.reduceModel(OpenQueueListModel.class, 
+		OpenQueue summary = modelStore.extractFromModel(OpenQueueListModel.class, 
 				                                   "admin", 
 				                                   "allQueues", 
-				                                   OpenQueue.class, 
-				                                   null, (allQueues, accumulator) -> {
+				                                   OpenQueue.class,
+				                                   allQueues -> {
 
 			return allQueues.findQueueByQueueId(queueId);
 		});

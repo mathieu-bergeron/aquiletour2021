@@ -63,7 +63,7 @@ public abstract class ListViewWeb<IV extends ItemView> extends NtroViewWeb imple
 	}
 
 	@Override
-	public void displayActiveSemesters(String semesterId) {
+	public void displayCurrentSemester(String semesterId) {
 		T.call(this);
 	}
 

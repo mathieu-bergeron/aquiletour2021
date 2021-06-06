@@ -95,13 +95,17 @@ public class CourseListViewWebTeacher extends CourseListViewWeb implements Cours
 	}
 
 	@Override
-	public void displayActiveSemesters(String semesterId) {
+	public void displayCurrentSemester(String semesterId) {
 		T.call(this);
-		super.displayActiveSemesters(semesterId);
+		super.displayCurrentSemester(semesterId);
 		
 		addSemesterIdToValue.appendToAttribute("value", semesterId);
+		
+		if(semesterId == null) {
 
-		if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
+			getAddItemButton().hide();
+			
+		} else if(semesterId.equals(Constants.DRAFTS_SEMESTER_ID)) {
 			
 			String text = "Ajouter un cours aux brouillons";
 

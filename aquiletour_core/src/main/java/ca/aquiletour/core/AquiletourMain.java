@@ -280,6 +280,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 					rootController.changeContext(AquiletourMain.createNtroContext());
 				}
+				
+				Ntro.backendService().sendMessageToBackend(message);
 			}
 		});
 
@@ -303,6 +305,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 					rootController.changeContext(AquiletourMain.createNtroContext());
 				}
+
+				Ntro.backendService().sendMessageToBackend(message);
 			}
 		});
 	}

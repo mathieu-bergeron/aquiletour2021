@@ -4,7 +4,7 @@ import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelReader;
-import ca.ntro.core.models.ModelReducer;
+import ca.ntro.core.models.ModelExtractor;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.assertions.MustNot;
@@ -79,31 +79,28 @@ public class ModelStoreSync {
 		readModel(modelClass, authToken, modelStore.documentId(modelPath), reader);
 	}
 
-	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<M> modelClass, 
+	public <M extends NtroModel, R extends Object> R reduceModel(Class<M> modelClass, 
 												                     String authToken,
 			                                                         Path modelPath, 
-			                                                         Class<ACC> accumulatorClass,
-			                                                         ACC accumulator,
-			                                                         ModelReducer<M,ACC> reducer) {
+			                                                         Class<R> extractedValueClass,
+			                                                         ModelExtractor<M,R> extractor) {
 		T.call(this);
 
-		return reduceModel(modelClass, 
-				           authToken, 
-				           modelStore.documentId(modelPath), 
-				           accumulatorClass,
-				           accumulator,
-				           reducer);
+		return extractFromModel(modelClass, 
+				               authToken, 
+				               modelStore.documentId(modelPath), 
+				               extractedValueClass,
+				               extractor);
 	}
 
-	public <M extends NtroModel, ACC extends Object> ACC reduceModel(Class<M> modelClass, 
-												                     String authToken,
-												                     String modelId,
-			                                                         Class<ACC> accumulatorClass,
-			                                                         ACC accumulator,
-			                                                         ModelReducer<M,ACC> reducer) {
+	public <M extends NtroModel, R extends Object> R extractFromModel(Class<M> modelClass, 
+												                      String authToken,
+												                      String modelId,
+			                                                          Class<R> extractedValueClass,
+			                                                          ModelExtractor<M,R> extractor) {
 		T.call(this);
 		
-		return modelStore.reduceModel(modelClass, authToken, modelId, accumulatorClass, accumulator, reducer);
+		return modelStore.extractFromModel(modelClass, authToken, modelId, extractedValueClass, extractor);
 	}
 	
 	public <M extends NtroModel> void updateModel(Class<M> modelClass, 
@@ -140,25 +137,6 @@ public class ModelStoreSync {
 		T.call(this);
 		
 		modelStore.createModel(modelClass, authToken, modelId, initializer);
-	}
-
-	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, Path modelPath) {
-		T.call(this);
-		
-		return getModel(modelClass, authToken, modelStore.documentId(modelPath));
-	}
-
-	public <M extends NtroModel> M getModel(Class<M> modelClass, String authToken, String modelId) {
-		T.call(this);
-		
-		M model = null;
-		
-		if(modelStore.ifModelExists(modelClass, authToken, modelId)) {
-			
-			model = modelStore.getModel(modelClass, authToken, modelId);
-		}
-
-		return model;
 	}
 
 	public void save(NtroModel model) {

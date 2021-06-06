@@ -23,9 +23,7 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		T.call(this);
 		
 		User teacher = message.getUser();
-		
 		CourseListItem item = message.getCourseListItem();
-		
 		CoursePath path = new CoursePath(teacher.getId(), item.getSemesterId(), item.getCourseId());
 		
 		CourseListManager.validateCourseListItem(item);
@@ -36,18 +34,23 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 				                              item, 
 				                              teacher);
 		
-		CourseManager.createCourseForUser(modelStore, 
-				                          path,
-				                          item.getCourseTitle(),
-				                          teacher);
-
-		CourseManager.updateCourseTitle(modelStore, path, item.getCourseTitle());
 
 	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, AddCourseMessage message) throws BackendError {
 		T.call(this);
+
+		User teacher = message.getUser();
+		CourseListItem item = message.getCourseListItem();
+		CoursePath path = new CoursePath(teacher.getId(), item.getSemesterId(), item.getCourseId());
+
+		CourseManager.createCourseForUser(modelStore, 
+				                          path,
+				                          item.getCourseTitle(),
+				                          teacher);
+
+		CourseManager.updateCourseTitle(modelStore, path, item.getCourseTitle());
 		
 		GroupListManager.addCourseForUser(modelStore, message.getSemesterId(), message.getCourseListItem().getCourseId(), message.getUser());
 		

@@ -36,6 +36,12 @@ import ca.ntro.users.NtroSession;
 
 public class SessionManager {
 
+	public static boolean ifSessionExists(ModelStoreSync modelStore, String authToken) {
+		T.call(SessionManager.class);
+		
+		return modelStore.ifModelExists(NtroSession.class, "admin", authToken);
+	}
+
 	public static User createGuestSession(ModelStoreSync modelStore) throws BackendError {
 		T.call(SessionManager.class);
 		
@@ -56,59 +62,29 @@ public class SessionManager {
 
 			Ntro.sessionService().registerCurrentSession(session);
 		});
-
+		
 		return user;
 	}
 
-	public static User updateExistingSession(ModelStoreSync modelStore, NtroSession session) {
+	public static void updateExistingSession(ModelStoreSync modelStore, String authToken) throws BackendError {
 		T.call(SessionManager.class);
-
-		session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
 		
-		User sessionUser = (User) session.getUser();
-		User actualUser = null;
-		
-		if(sessionUser instanceof Guest 
-				|| sessionUser instanceof TeacherGuest 
-				|| sessionUser instanceof StudentGuest) {
+		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
 
-			actualUser = sessionUser;
-
-		}else {
-
-			actualUser = updateSessionWithActualUser(modelStore, session, sessionUser);
-		}
-		
-		return actualUser;
-	}
-
-
-	public static NtroSession getStoredSession(ModelStoreSync modelStore, String authToken) {
-		T.call(SessionManager.class);
-
-		return modelStore.getModel(NtroSession.class, "admin", authToken);
-	}
-
-	public static User updateSessionWithActualUser(ModelStoreSync modelStore, NtroSession session, User oldSessionUser) {
-		T.call(SessionManager.class);
-
-		User actualUser = oldSessionUser;
-
-		if(UserManager.ifStoredUserExists(modelStore, oldSessionUser)) {
-
-			actualUser = UserManager.getStoredUser(modelStore, oldSessionUser);
+			session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
 			
-			User sessionUser = actualUser.toSessionUser();
-			sessionUser.setAuthToken(oldSessionUser.getAuthToken());
-			session.setUser(sessionUser);
-			modelStore.save(session);
-
-			actualUser.setAuthToken(sessionUser.getAuthToken());
-		}
-
-		return actualUser;
+			User sessionUser = (User) session.getUser();
+			
+			if(!(sessionUser instanceof Guest 
+					|| sessionUser instanceof TeacherGuest 
+					|| sessionUser instanceof StudentGuest)) {
+				
+				UserManager.updateUserWithStoredUserInfo(modelStore, sessionUser, sessionUser.getId());
+			}
+			
+			Ntro.sessionService().registerCurrentSession(session);
+		});
 	}
-
 
 	public static SessionData createSessionData(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(SessionManager.class);
@@ -122,31 +98,32 @@ public class SessionManager {
 
 	public static User createAuthenticatedUser(ModelStoreSync modelStore, 
 			                                   String authToken, 
-			                                   String userId, 
-			                                   NtroSession session) throws BackendError {
+			                                   String userId,
+			                                   User sessionUser) throws BackendError {
 		T.call(SessionManager.class);
 
 		User existingUser = null;
-		User sessionUser = (User) session.getUser();
 
 		if(modelStore.ifModelExists(User.class, "admin", userId)) {
 
-			existingUser = modelStore.getModel(User.class, "admin", userId);
+			existingUser = modelStore.extractFromModel(User.class, "admin", userId, User.class, storedUser -> {
+				return storedUser;
+			});
 
 		}else {
 
 			User newUser = null;
 			Set<String> adminRegistrationIds = UserManager.getAdminRegistrationIds(modelStore);
 			
-			if(session.getUser() instanceof TeacherGuest && !adminRegistrationIds.contains(sessionUser.getId())) {
+			if(sessionUser instanceof TeacherGuest && !adminRegistrationIds.contains(sessionUser.getId())) {
 
 				newUser = new Teacher();
 
-			} else if(session.getUser() instanceof TeacherGuest && adminRegistrationIds.contains(sessionUser.getId())) {
+			} else if(sessionUser instanceof TeacherGuest && adminRegistrationIds.contains(sessionUser.getId())) {
 
 				newUser = new Admin();
 
-			} else if(session.getUser() instanceof StudentGuest) {
+			} else if(sessionUser instanceof StudentGuest) {
 
 				newUser = new Student();
 			}
@@ -164,10 +141,10 @@ public class SessionManager {
 		
 		newSessionUser.setAuthToken(authToken);
 		existingUser.setAuthToken(authToken);
-		
-		session.setUser(newSessionUser);
-		modelStore.save(session);
-		
+
+		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
+			session.setUser(newSessionUser);
+		});
 
 		return existingUser;
 	}
@@ -243,26 +220,30 @@ public class SessionManager {
 				&& !authToken.isEmpty()
 				&& modelStore.ifModelExists(NtroSession.class, "admin", authToken)) {
 			
-			NtroSession session = modelStore.getModel(NtroSession.class, "admin", authToken);
-			
-			User storedUser = (User) session.getUser();
-			
-			if(storedUser != null 
-					&& user != null
-					&& storedUser.getClass().equals(user.getClass())) {
+			isAuthenticated = modelStore.extractFromModel(NtroSession.class, "admin", authToken, Boolean.class, session -> {
 
-				String storedUserId = storedUser.getId();
+				boolean result = false;
+				User storedUser = (User) session.getUser();
+				
+				if(storedUser != null 
+						&& user != null
+						&& storedUser.getClass().equals(user.getClass())) {
 
-				if(storedUserId != null
-						&& storedUserId.equals(user.getId())
-						&& !user.isGuest()
-						&& !storedUser.isGuest()) {
-					
-					isAuthenticated = true;
+					String storedUserId = storedUser.getId();
+
+					if(storedUserId != null
+							&& storedUserId.equals(user.getId())
+							&& !user.isGuest()
+							&& !storedUser.isGuest()) {
+						
+						result = true;
+					}
 				}
-			}
+
+				return result;
+			});
 		}
-		
+
 		return isAuthenticated;
 	}
 	
@@ -310,4 +291,29 @@ public class SessionManager {
 			});
 		});
 	}
+
+	public static boolean ifLoginCodeValid(ModelStoreSync modelStore, String authToken, String loginCode) {
+		T.call(SessionManager.class);
+
+		return modelStore.extractFromModel(NtroSession.class, "admin", authToken, Boolean.class, session -> {
+			
+			boolean ifLoginCodeValid = false;
+			
+			if(session.getSessionData() instanceof SessionData) {
+				
+				SessionData sessionData = (SessionData) session.getSessionData();
+
+				ifLoginCodeValid = loginCode.equals(sessionData.getLoginCode());
+			}
+			
+			return ifLoginCodeValid;
+		});
+	}
+
+	public static void updateSession(ModelStoreSync modelStore, String authToken, ModelUpdater<NtroSession> updater) throws BackendError {
+		T.call(SessionManager.class);
+		
+		modelStore.updateModel(NtroSession.class, "admin", authToken, updater);
+	}
+
 }

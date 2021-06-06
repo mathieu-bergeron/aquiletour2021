@@ -26,6 +26,8 @@ import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.user.Admin;
+import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
@@ -181,10 +183,18 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(parameters.containsKey("toggleStudentMode")) {
 
+			if(context.user() instanceof Teacher) {
+				((Teacher) context.user()).toggleStudentMode();
+			}
+
 			ToggleStudentModeMessage toggleStudentModeMessage = Ntro.messages().create(ToggleStudentModeMessage.class);
 			Ntro.messages().send(toggleStudentModeMessage);
 
 		} else if(parameters.containsKey("toggleAdminMode")) {
+
+			if(context.user() instanceof Admin) {
+				((Admin) context.user()).toggleAdminMode();
+			}
 
 			ToggleAdminModeMessage toggleAdminModeMessage = Ntro.messages().create(ToggleAdminModeMessage.class);
 			Ntro.messages().send(toggleAdminModeMessage);

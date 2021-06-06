@@ -120,7 +120,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		}
 		
 		view.selectCourse(currentCourseId);
-		view.displayActiveSemesters(currentSemesterId);
+		view.displayCurrentSemester(currentSemesterId);
 		view.identifyCurrentCourse(currentCourseId);
 		
 		observeGroups(model, view, subViewLoader);

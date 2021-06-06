@@ -7,7 +7,7 @@ public interface ListView<IV extends ItemView> extends NtroView, CategoryDropdow
 	
 	void appendItem(IV itemView);
 
-	void displayActiveSemesters(String semesterId);
+	void displayCurrentSemester(String semesterId);
 
 	void clearItems();
 
