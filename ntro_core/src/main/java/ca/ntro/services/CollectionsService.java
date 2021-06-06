@@ -40,4 +40,6 @@ public abstract class CollectionsService {
 
 	public abstract int indexOfEquals(List<?> list, Object target);
 
+	public abstract int compareToString(String o1, String o2);
+
 }

@@ -123,4 +123,9 @@ public class CollectionsServiceJdk extends CollectionsService {
 	public boolean listContainsEquals(List<?> value, Object target) {
 		return value.contains(target);
 	}
+
+	@Override
+	public int compareToString(String o1, String o2) {
+		return o1.compareTo(o2);
+	}
 }

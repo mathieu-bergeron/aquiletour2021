@@ -152,4 +152,45 @@ public class CollectionsServiceJSweet extends CollectionsService {
 		return indexOfEquals(value, target) != -1;
 	}
 
+	// JSweet: "".compareTo("") transpiles to .localCompare
+	//         but it handles lower/upper case differently 
+	//         than in Java!
+	// JSweet:  "abC".localeCompare("abc");  ------>    > 0
+	// Jdk:     "abC".compareTo("abc");      ------>    < 0
+	@Override
+	public int compareToString(String stringA, String stringB) {
+		// -1: stringA smaller-then stringB
+		// 0: equals
+		// +1: stringA bigger-then stringB
+		
+		int result = 0;
+		
+		for(int i = 0; i < stringA.length()-1; i++) {
+
+			if(i < stringB.length()) {
+				String charA = stringA.substring(i,i+1);
+				String charB = stringB.substring(i,i+1);
+				
+				int charResult = charA.compareTo(charB);
+				
+				if(charResult != 0
+						&& charA.equalsIgnoreCase(charB)){
+					
+					result = -charResult;
+
+				}else if(charResult != 0) {
+					result = charResult;
+					break;
+				}
+				
+			}else {
+				result = +1;
+				break;
+			}
+		}
+		
+		return result;
+	}
+
+
 }

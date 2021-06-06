@@ -133,19 +133,10 @@ public class JsonDeserialization {
 
 		List<NtroMethod> setters = ntroClass.userDefinedSetters();
 		
-		// JSweet: setTasks Vs setTaskStatus are not compared
-		//         the same way in Jdk Vs JSweet
-		//         lowerCase/upperCase
-		//
-		//
-		// JSweet:  "taskS".localeCompare("tasks");  ------>    > 0
-		// Jdk:     "taskS".compareTo("tasks");      ------>    < 0
-		
-		// FIXME: we cannot use the default comparator here
 		setters.sort(new Comparator<NtroMethod>() {
 			@Override
 			public int compare(NtroMethod o1, NtroMethod o2) {
-				return o1.setterFieldName().compareTo(o2.setterFieldName());
+				return Ntro.collections().compareToString(o1.setterFieldName(), o2.setterFieldName());
 			}
 		});
 		
@@ -193,7 +184,7 @@ public class JsonDeserialization {
 		keys.sort(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				return o1.compareTo(o2);
+				return Ntro.collections().compareToString(o1, o2);
 			}
 		});
 		
