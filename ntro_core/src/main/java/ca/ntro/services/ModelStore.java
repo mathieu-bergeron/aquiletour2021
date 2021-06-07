@@ -425,6 +425,7 @@ public abstract class ModelStore {
 			for(DocumentPath documentPath : modelsToSave) {
 				saveModelAndManageHeap(documentPath);
 			}
+			modelsToSave.clear();
 		}
 	}
 
