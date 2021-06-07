@@ -36,6 +36,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private HtmlElement gitRepoTaskCloned;
 	private HtmlElement gitRepoTaskCloneFailed;
 
+	private HtmlElement gitExerciseTaskTodo;
+	private HtmlElement gitExerciseTaskDone;
+
 	private HtmlElement gitProgressionContainer;
 	private HtmlElement gitProgressionLink;
 
@@ -81,6 +84,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitRepoTaskCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
 		gitRepoTaskCloneFailed = this.getRootElement().find(".git-repo-task-clone-failed").get(0);
 
+		gitExerciseTaskTodo = this.getRootElement().find(".git-exercise-task-todo").get(0);
+		gitExerciseTaskDone = this.getRootElement().find(".git-exercise-task-done").get(0);
+
 		parentTaskLink = this.getRootElement().find("#parent-task-link").get(0);
 
 		gitProgressionContainer = this.getRootElement().find(".git-progression-container").get(0);
@@ -121,6 +127,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		MustNot.beNull(gitProgressionContainer);
 		MustNot.beNull(gitProgressionLink);
 
+		MustNot.beNull(gitExerciseTaskTodo);
+		MustNot.beNull(gitExerciseTaskDone);
+
 		MustNot.beNull(toCompleteFirstContainer);
 		MustNot.beNull(toCompleteFirstLink);
 
@@ -154,6 +163,9 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitRepoTaskCloneFailed.hide();
 		
 		gitProgressionContainer.hide();
+		
+		gitExerciseTaskTodo.hide();
+		gitExerciseTaskDone.hide();
 		
 		toCompleteFirstContainer.hide();
 	}
@@ -378,7 +390,44 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			
 			appendDefaultExitTask(groupId, task, completion);
 
+		}else if(task instanceof GitExerciseTask) {
+
+			appendGitExerciseTask(groupId, (GitExerciseTask) task, completion);
+			
 		}
+
+	}
+
+	private void appendGitExerciseTask(String groupId, GitExerciseTask task, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		HtmlElement taskElement = null;
+		
+		if(completion == null) {
+			
+			taskElement = gitExerciseTaskTodo.clone();
+			todoExitTasksContainer.appendElement(taskElement);
+			todoExitTasksContainer.show();
+			todoContainer.show();
+			
+		}else {
+
+			taskElement = gitExerciseTaskDone.clone();
+			doneExitTasksContainer.appendElement(taskElement);
+			doneExitTasksContainer.show();
+			doneContainer.show();
+
+		}
+		
+		displayGitExerciseTask(taskElement, task);
+		
+		taskElement.show();
+	}
+
+	private void displayGitExerciseTask(HtmlElement taskElement, GitExerciseTask task) {
+		T.call(this);
+		
+		ICI
 		
 	}
 

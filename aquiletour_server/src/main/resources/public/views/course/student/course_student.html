@@ -243,3 +243,33 @@
     <div class="card-body">
     </div>
 </div>
+
+<div class="card ms-4 git-exercise-task-todo">
+    <div class="card-header bg-transparent d-flex align-items-center">
+        Confirmer que j'ai terminé
+    </div>
+    <div class="card-body">
+        Faire un commit où le commentaire est exactement <div class="git-exercise-task-completion-keywords"></div>
+    </div>
+</div>
+
+<div class="card ms-4 git-exercise-task-done">
+    <div class="card-header bg-transparent d-flex align-items-center">
+        <div>Terminé</div>
+        <div class="flex-fill" style="min-width:3rem;"></div>
+        <form>
+        <div class="form-check form-switch" 
+             style="padding-right:0px;margin-right:-1rem;">
+            <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
+                   id="task-completed-checkbox"
+                   type="checkbox" 
+                   disabled
+                   checked
+                   form="task-completed-form">
+        </div>
+        </form>
+    </div>
+    <div class="card-body">
+        Commit reçu avec le commentaire <div class="git-exercise-task-completion-keywords"></div>
+    </div>
+</div>
