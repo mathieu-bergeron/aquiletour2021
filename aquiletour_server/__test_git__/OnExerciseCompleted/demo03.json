@@ -1,0 +1,9 @@
+{
+    "_C": "OnExerciseCompleted",
+    "teacherId": "mathieu.bergeron",
+    "courseId": "StruDon",
+    "semesterId": "H2021",
+    "groupId": "01",
+    "studentId": "1234500",
+    "exercisePath": "/tps/tp1"
+}

@@ -120,7 +120,8 @@ public class AquiletourBackendRequestHandler {
 		T.call(AquiletourBackendRequestHandler.class);
 
 		if(parameters.containsKey("loginStep01")
-				&& parameters.containsKey("studentId")) {
+				&& parameters.containsKey("studentId")
+				&& !parameters.get("studentId")[0].isEmpty()) {
 			
 			String userId = parameters.get("studentId")[0].trim();
 			

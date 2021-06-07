@@ -1,0 +1,41 @@
+{
+  "courseListItemsByCategoryId": {
+    "_C": "CourseListItemsByCategoryId",
+    "value": {
+      "_c": {
+        "_C": "CourseListItems",
+        "value": [
+          {
+            "courseTitle": "Structure de données",
+            "semesterId": "H2021",
+            "teacherId": "mathieu.bergeron",
+            "_C": "CourseListItem",
+            "queueOpen": {
+              "_C": "StoredBoolean",
+              "value": false
+            },
+            "groupsSummary": "0 groupes",
+            "groupIds": {
+              "_C": "ObservableGroupIdList",
+              "value": [
+                "01"
+              ]
+            },
+            "courseDescription": "",
+            "courseId": "StruDon",
+            "tasksSummary": "0 étapes",
+            "tasks": {
+              "_C": "ObservableTaskDescriptions",
+              "value": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "_C": "CourseListModelStudent",
+  "activeSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  }
+}

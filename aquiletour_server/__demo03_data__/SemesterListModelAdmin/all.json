@@ -1,0 +1,216 @@
+{
+  "_C": "SemesterListModelAdmin",
+  "activeSemesterIds": {
+    "_C": "ActiveSemesterIds",
+    "value": [
+      "H2021"
+    ]
+  },
+  "semesters": {
+    "_C": "ObservableSemesterList",
+    "value": [
+      {
+        "semesterId": "H2021",
+        "_C": "SemesterModelAdmin",
+        "semesterSchedule": {
+          "weeks": {
+            "_C": "ObservableSemesterWeekList",
+            "value": [
+              {
+                "_C": "CalendarWeek",
+                "days": [
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623643200000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623643200
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623729600000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623729600
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623816000000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623816000
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623902400000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623902400
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623988800000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623988800
+                    }
+                  }
+                ],
+                "mondayDate": {
+                  "epochMiliseconds": 1623643200000,
+                  "_C": "NtroDate",
+                  "epochSeconds": 1623643200
+                }
+              },
+              {
+                "_C": "CalendarWeek",
+                "days": [
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 2,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623643200000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623643200
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 2,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623729600000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623729600
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 2,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623816000000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623816000
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 2,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623902400000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623902400
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 2,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "epochMiliseconds": 1623988800000,
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623988800
+                    }
+                  }
+                ],
+                "mondayDate": {
+                  "epochMiliseconds": 1623643200000,
+                  "_C": "NtroDate",
+                  "epochSeconds": 1623643200
+                }
+              }
+            ]
+          },
+          "_C": "SemesterSchedule"
+        }
+      }
+    ]
+  }
+}

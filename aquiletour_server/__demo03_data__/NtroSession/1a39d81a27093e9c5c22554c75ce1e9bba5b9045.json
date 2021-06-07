@@ -1,0 +1,37 @@
+{
+  "sessionData": {
+    "failedPasswordAttemps": 0,
+    "currentTasksByCourseKey": {
+      "currentTasksByCourseKey": {
+        "mathieu.bergeron/H2021/StruDon": {
+          "_C": "TaskTitleByTaskKey",
+          "taskTitleByTaskKey": {
+            "theorie/piles": "Les piles",
+            "ateliers/atelier1": "Atelier 1",
+            "theorie/listes": "Les listes"
+          }
+        }
+      },
+      "_C": "CurrentTasksByCourseKey"
+    },
+    "_C": "SessionData",
+    "currentCategoryId": "_c",
+    "loginCode": "507300"
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "Bob",
+    "phoneNumber": "",
+    "_C": "Student",
+    "authToken": "1a39d81a27093e9c5c22554c75ce1e9bba5b9045",
+    "hasPassword": false,
+    "id": "1234500",
+    "uuid": "c6a3b1",
+    "email": "1234500@cmontmorency.qc.ca",
+    "passwordHash": "",
+    "programId": "420.AA",
+    "lastname": "Bérancourt"
+  },
+  "timeToLiveMiliseconds": 450000
+}

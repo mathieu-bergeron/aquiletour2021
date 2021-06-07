@@ -437,6 +437,8 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 	private void displayPreviousTasksInOrder(M model, CourseView view) {
 		T.call(this);
 		
+		view.clearPreviousTasks();
+		
 		view.displayPreviousTasks(true);
 		
 		currentTask.forEachPreviousTaskInOrder(pt -> {

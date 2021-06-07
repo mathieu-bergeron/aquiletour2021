@@ -1,0 +1,28 @@
+{
+  "sessionData": {
+    "failedPasswordAttemps": 0,
+    "currentTasksByCourseKey": {
+      "currentTasksByCourseKey": {},
+      "_C": "CurrentTasksByCourseKey"
+    },
+    "_C": "SessionData",
+    "currentCategoryId": "_c",
+    "loginCode": "428902"
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "Mathieu 🤓",
+    "_C": "Admin",
+    "authToken": "8a82eed0805bbcaa5f6d7dec801e1528f051367b",
+    "adminMode": false,
+    "hasPassword": false,
+    "id": "mathieu.bergeron",
+    "uuid": "c5a007",
+    "email": "mathieu.bergeron@cmontmorency.qc.ca",
+    "passwordHash": "",
+    "lastname": "",
+    "studentMode": false
+  },
+  "timeToLiveMiliseconds": 990000
+}
