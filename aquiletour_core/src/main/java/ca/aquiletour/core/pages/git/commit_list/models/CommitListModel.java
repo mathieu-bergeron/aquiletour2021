@@ -1,12 +1,15 @@
 package ca.aquiletour.core.pages.git.commit_list.models;
 
+import ca.aquiletour.core.pages.git.values.Commit;
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.ShouldNotBeCached;
+import ca.ntro.core.system.trace.T;
 
 public class CommitListModel implements NtroModel, ShouldNotBeCached {
-
+	
 	private String semesterId = "";
+	private String teacherId = "";
 	private String studentId = "";
 	private String exercisePath = "";
 	private String fromDate = "";
@@ -14,6 +17,14 @@ public class CommitListModel implements NtroModel, ShouldNotBeCached {
 	private String courseId = "";
 	private String groupId = "";
 	private ObservableCommitList commits = new ObservableCommitList();
+
+	public String getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(String teacherId) {
+		this.teacherId = teacherId;
+	}
 
 	public String getSemesterId() {
 		return semesterId;
@@ -77,6 +88,12 @@ public class CommitListModel implements NtroModel, ShouldNotBeCached {
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public void addCommit(Commit commit) {
+		T.call(this);
+		
+		getCommits().addItem(commit);
 	}
 
 }

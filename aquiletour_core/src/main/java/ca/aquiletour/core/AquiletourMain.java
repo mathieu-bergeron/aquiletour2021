@@ -17,14 +17,15 @@
 
 package ca.aquiletour.core;
 
-import java.util.List;
 
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.DeleteGitRepo;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailed;
+import ca.aquiletour.core.messages.git.OnExerciseCompleted;
 import ca.aquiletour.core.messages.git.OnNewCommits;
+import ca.aquiletour.core.messages.git.OnPull;
 import ca.aquiletour.core.messages.git.OnUnknownRepoURL;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
@@ -523,6 +524,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(OnNewCommits.class);
 		Ntro.registerSerializableClass(OnUnknownRepoURL.class);
+		Ntro.registerSerializableClass(OnExerciseCompleted.class);
+		Ntro.registerSerializableClass(OnPull.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

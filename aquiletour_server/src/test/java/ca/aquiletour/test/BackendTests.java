@@ -13,6 +13,7 @@ import java.util.concurrent.TimeoutException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -38,6 +39,7 @@ import org.jsoup.nodes.Document;
 
 import static ca.aquiletour.test.Constants.*;
 
+@Ignore
 @RunWith(JUnit4.class)
 public class BackendTests {
 	

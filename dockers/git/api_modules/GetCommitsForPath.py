@@ -28,7 +28,7 @@ def process(api_req, maria_conn, lite_conn):
     with open('TMP.json') as TMP:
         response = JSONResponse(json.load(TMP));
         response.status_code = status.HTTP_200_OK
-    return
+    return response
     ###### TMP
     ###### TMP
     ###### TMP

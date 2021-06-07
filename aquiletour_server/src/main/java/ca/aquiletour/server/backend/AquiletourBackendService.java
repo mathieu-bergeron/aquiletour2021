@@ -4,6 +4,7 @@ package ca.aquiletour.server.backend;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.messages.git.OnExerciseCompleted;
 import ca.aquiletour.core.messages.git.OnNewCommits;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
@@ -54,6 +55,7 @@ import ca.aquiletour.server.backend.course.UpdateTaskInfoHandler;
 import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
 import ca.aquiletour.server.backend.git.OnCloneHandler;
+import ca.aquiletour.server.backend.git.OnExerciseCompletedHandler;
 import ca.aquiletour.server.backend.git.OnNewCommitsHandler;
 import ca.aquiletour.server.backend.git.StudentDeletesRepoHandler;
 import ca.aquiletour.server.backend.git.StudentRegistersRepoHandler;
@@ -131,6 +133,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(StudentDeletesRepoMessage.class, new StudentDeletesRepoHandler());
 		addBackendMessageHandler(OnClone.class, new OnCloneHandler());
 		addBackendMessageHandler(UpdateIsQueueOpenMessage.class, new UpdateIsQueueOpenHandler());
+		addBackendMessageHandler(OnExerciseCompleted.class, new OnExerciseCompletedHandler());
 	}
 
 }
