@@ -2,8 +2,9 @@ package ca.aquiletour.core.pages.git.commit_list.models;
 
 import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.ShouldNotBeCached;
 
-public class CommitListModel implements NtroModel {
+public class CommitListModel implements NtroModel, ShouldNotBeCached {
 
 	private String semesterId = "";
 	private String studentId = "";

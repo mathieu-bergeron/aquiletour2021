@@ -27,20 +27,15 @@ public class GitMessages {
 		
 		T.here();
 
-		String directoryName = "exercice";
-		
-		if(taskPath.nameCount() > 0) {
-			directoryName = taskPath.name(taskPath.nameCount()-1);
-		}
-		
 		RegisterExercise registerExerciceMessage = Ntro.messages().create(RegisterExercise.class);
 		registerExerciceMessage.setSemesterId(coursePath.semesterId());
-		registerExerciceMessage.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
+		registerExerciceMessage.setTeacherId(coursePath.teacherId());
+		registerExerciceMessage.setCourseId(coursePath.courseId());
 		registerExerciceMessage.setGroupId(groupId);
 		registerExerciceMessage.setExercisePath(taskPath.toString());
 		registerExerciceMessage.setRepoPath(gitTask.getRepoPath().toString());
 		registerExerciceMessage.setSourceFolderPath(taskPath.toString());
-		registerExerciceMessage.setCompletionKeywords(directoryName);
+		registerExerciceMessage.setCompletionKeywords(gitTask.getCompletionKeywords());
 		
 		sendMessage(registerExerciceMessage);
 	}
