@@ -10,6 +10,8 @@ import java.util.Set;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.lambdas.BreakableAccumulator;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResult;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
@@ -869,7 +871,7 @@ public class Task implements NtroModelValue, TaskNode {
 
 		TaskStatus status = null;
 		
-		if(hasParent() && !parent().areEntryTasksDone(atomicTaskCompletions)) {
+		if(hasParent() && !parent().areEntryTasksDone(completions)) {
 			status = new BlockedWaitingForParent(parent().getPath());
 		}
 		
@@ -967,7 +969,7 @@ public class Task implements NtroModelValue, TaskNode {
 			if(completions != null) {
 				completion = completions.valueOf(atomicTask.getId());
 			}
-
+			
 			if(completion == null
 					|| !completion.isCompleted()) {
 
@@ -983,5 +985,69 @@ public class Task implements NtroModelValue, TaskNode {
 
 		return getExitTasks().size() > 0;
 	}
+	
+	public boolean hasRepoTask() {
+		T.call(this);
+		
+		return findRepoTask() != null;
+	}
 
+	public Path findRepoPath() {
+		T.call(this);
+
+		Path repoPath = null;
+		
+		Task repoTask = findRepoTask();
+		
+		if(repoTask != null) {
+			
+			repoPath = repoTask.getPath();
+			
+		}
+		
+		return repoPath;
+	}
+
+	public boolean isRepoCloned(StudentCompletionsByTaskId completionsByTaskKey) {
+		T.call(this);
+		
+		boolean isRepoCloned = false;
+
+		Task repoTask = findRepoTask();
+		
+		if(repoTask != null 
+				&& completionsByTaskKey != null) {
+			
+			CompletionByAtomicTaskId completionByAtomicTaskId = completionsByTaskKey.valueOf(repoTask.getPath().toKey());
+
+			if(completionByAtomicTaskId != null) {
+				
+				String repoAtomicId = Ntro.introspector().getSimpleNameForClass(GitRepoTask.class);
+				
+				AtomicTaskCompletion repoCompletion = completionByAtomicTaskId.valueOf(repoAtomicId);
+				
+				if(repoCompletion instanceof GitRepoCloned) {
+					isRepoCloned = true;
+				}
+			}
+		}
+
+		return isRepoCloned;
+	}
+
+	private Task findRepoTask() {
+		T.call(this);
+		
+		Task repoTask = null;
+
+		FindResults findResults = findAll(new VisitDirection[] {PREVIOUS, PARENT}, true, t -> {
+			return t.hasAtomicTaskOfType(GitRepoTask.class);
+		});
+			
+		if(findResults.size() > 0) {
+			repoTask = findResults.closest().getTask();
+		}
+
+		return repoTask;
+	}
 }

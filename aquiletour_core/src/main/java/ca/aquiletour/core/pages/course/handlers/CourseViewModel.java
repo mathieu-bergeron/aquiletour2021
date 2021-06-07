@@ -123,7 +123,6 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 	private void displayTaskDescription(V view, String rawDescription) {
 		T.call(this);
 
-		view.displayTaskDescription(!rawDescription.isEmpty());
 
 		String description = rawDescription;
 		
@@ -133,6 +132,7 @@ public abstract class CourseViewModel<M extends CourseModel<?>, V extends Course
 
 		}
 
+		view.displayTaskDescription(!description.isEmpty());
 		view.updateTaskDescription(description, isEditable());
 
 	}

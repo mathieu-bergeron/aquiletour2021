@@ -65,6 +65,7 @@ public class UpdateTaskInfoHandler extends BackendMessageHandler<UpdateTaskInfoM
 										              message.coursePath(),
 										              semesterSchedule,
 										              teacherSchedule);
+		
 
 	}
 

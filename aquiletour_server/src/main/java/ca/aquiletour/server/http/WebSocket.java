@@ -25,6 +25,9 @@ public class WebSocket extends WebSocketAdapter {
     @Override
     public void onWebSocketText(String messageText){
         super.onWebSocketText(messageText);
+        
+        System.out.println(messageText);
+
         NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
 
         if(message instanceof NtroRegisterSocketMessage) {

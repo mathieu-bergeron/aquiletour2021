@@ -837,7 +837,7 @@ public class AquiletourBackendRequestHandler {
 
 		String studentId = null;
 		String groupId = null;
-		Path repoPath = null;
+		TaskPath repoPath = null;
 		String repoUrl = null;
 		
 		if(parameters.containsKey(Constants.USER_URL_PARAM)) {
@@ -853,7 +853,7 @@ public class AquiletourBackendRequestHandler {
 		}
 		
 		if(parameters.containsKey("repoPath")) {
-			repoPath = Path.fromRawPath(parameters.get("repoPath")[0]);
+			repoPath = TaskPath.fromRawPath(parameters.get("repoPath")[0]);
 		}
 
 		if(parameters.containsKey("repoUrl")) {

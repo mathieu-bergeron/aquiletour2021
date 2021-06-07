@@ -83,7 +83,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 
 		parentTaskLink = this.getRootElement().find("#parent-task-link").get(0);
 
-		gitProgressionContainer = this.getRootElement().find("#git-progression-container").get(0);
+		gitProgressionContainer = this.getRootElement().find(".git-progression-container").get(0);
 		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
 
 		endtimeContainer = this.getRootElement().find("#endtime-container").get(0);
@@ -152,6 +152,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		gitRepoTaskCloningRepo.hide();
 		gitRepoTaskCloned.hide();
 		gitRepoTaskCloneFailed.hide();
+		
+		gitProgressionContainer.hide();
 		
 		toCompleteFirstContainer.hide();
 	}
@@ -268,7 +270,15 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		if(task instanceof GitRepoTask) {
 			
-			appendGitRepoEntryTask(groupId, (GitRepoTask) task);
+			todoContainer.show();
+			todoEntryTasksContainer.show();
+			
+			if(completion == null) {
+				appendGitRepoEntryTask(groupId, (GitRepoTask) task, completion);
+			}else {
+				addCompletionToGitRepoEntryTask(groupId, (GitRepoTask) task, completion);
+			}
+			
 
 		}else if(task instanceof GitExerciseTask) {
 			
@@ -291,7 +301,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			repoUrl.text(gitRepoSubmitted.getRepoUrl());
 
-			doneTasksContainer.appendElement(formElement);
+			todoEntryTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloned){
@@ -303,7 +313,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			repoUrl.text(gitRepoCloned.getRepoUrl());
 
-			doneTasksContainer.appendElement(formElement);
+			todoContainer.hide();
+
+			doneContainer.show();
+
+			doneEntryTasksContainer.show();
+			doneEntryTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloneFailed){
@@ -317,14 +332,14 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		return "atomic-task-" + task.getId();
 	}
 
-	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask) {
+	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		HtmlElement formElement = gitRepoTaskSubmitUrl.clone();
 		
 		identifyGitRepo(groupId, repoTask, formElement);
 
-		doneTasksContainer.appendElement(formElement);
+		todoEntryTasksContainer.appendElement(formElement);
 		formElement.show();
 	}
 
@@ -349,7 +364,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		HtmlElements addGroupIdToValue = container.find(".add-group-id-to-value");
 		HtmlElements addRepoPathToValue = container.find(".add-repo-path-to-value");
 		
-		addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getId());
+		addStudentIdToValue.appendToAttribute("value", Ntro.currentUser().getId());
 		addGroupIdToValue.appendToAttribute("value", groupId);
 		addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
 	}
@@ -358,13 +373,11 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	public void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
 		
-		gitProgressionHref += "&" + Constants.GROUP_URL_PARAM + "=" + groupId;
-		gitProgressionLink.setAttribute("href", gitProgressionHref);
 		
 		if(task instanceof DefaultAtomicTask) {
 			
 			appendDefaultExitTask(groupId, task, completion);
-			
+
 		}
 		
 	}
@@ -467,6 +480,23 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		
 		super.enableSubTasks(shouldEnable);
 		subTaskLock.setVisibility(shouldEnable);
+	}
+
+	@Override
+	public void displayGitProgression(String groupId) {
+		T.call(this);
+
+		gitProgressionHref += "&" + Constants.GROUP_URL_PARAM + "=" + groupId;
+		gitProgressionLink.setAttribute("href", gitProgressionHref);
+		
+		gitProgressionContainer.removeFromDocument();
+		
+		doneContainer.show();
+		doneTasksContainer.show();
+		doneExitTasksContainer.show();
+		
+		doneExitTasksContainer.appendElement(gitProgressionContainer);
+		gitProgressionContainer.show();
 	}
 
 

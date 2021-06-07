@@ -1,14 +1,15 @@
 package ca.aquiletour.core.pages.course.student.messages;
 
 import ca.aquiletour.core.messages.course.AtomicTaskMessage;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.ntro.core.Path;
 
 public class AquiletourGitMessage extends AtomicTaskMessage {
 	
 	private String studentId;
 	private String groupId;
-	private Path repoPath;
-	private Path exercisePath;
+	private TaskPath repoPath;
+	private TaskPath exercisePath;
 	private String repoUrl;
 
 	public String getRepoUrl() {
@@ -35,11 +36,11 @@ public class AquiletourGitMessage extends AtomicTaskMessage {
 		this.groupId = groupId;
 	}
 
-	public Path getRepoPath() {
+	public TaskPath getRepoPath() {
 		return repoPath;
 	}
 
-	public void setRepoPath(Path repoPath) {
+	public void setRepoPath(TaskPath repoPath) {
 		this.repoPath = repoPath;
 	}
 
@@ -47,7 +48,7 @@ public class AquiletourGitMessage extends AtomicTaskMessage {
 		return exercisePath;
 	}
 
-	public void setExercisePath(Path exercisePath) {
+	public void setExercisePath(TaskPath exercisePath) {
 		this.exercisePath = exercisePath;
 	}
 }

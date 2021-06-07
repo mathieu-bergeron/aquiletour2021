@@ -487,6 +487,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(SettingsByGroupId.class);
 
 		Ntro.registerSerializableClass(UpdateIsQueueOpenMessage.class);
+
 		Ntro.registerSerializableClass(StudentRegistersRepoMessage.class);
 		Ntro.registerSerializableClass(StudentDeletesRepoMessage.class);
 

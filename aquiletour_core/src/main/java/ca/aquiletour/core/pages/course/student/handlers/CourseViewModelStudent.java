@@ -4,16 +4,22 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.status.StatusBlocked;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, CourseViewStudent> {
 
@@ -24,6 +30,18 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 		super.observeCurrentTask(model, groupId, view, subViewLoader);
 
 		observeStatuses(model, view);
+
+		displayGitProgression(model, groupId, view);
+	}
+
+	private void displayGitProgression(CourseModelStudent model, String groupId, CourseViewStudent view) {
+		T.call(this);
+
+		if(currentTask().isRepoCloned(model.getCompletions())
+				&& !currentTask().hasAtomicTaskOfType(DefaultAtomicTask.class)) {
+
+			view.displayGitProgression(groupId);
+		}
 	}
 	
 	private void observeStatuses(CourseModelStudent model, CourseViewStudent view) {

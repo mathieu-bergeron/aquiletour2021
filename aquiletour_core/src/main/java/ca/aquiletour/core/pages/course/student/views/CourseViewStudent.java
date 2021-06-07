@@ -29,4 +29,6 @@ public interface CourseViewStudent extends CourseView  {
 	void updateTaskDoneTime(AquiletourDate doneTime);
 	void updateTaskLateTime(AquiletourDate lateTime);
 
+	void displayGitProgression(String groupId);
+
 }

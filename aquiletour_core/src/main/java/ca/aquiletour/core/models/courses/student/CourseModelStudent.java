@@ -2,14 +2,12 @@ package ca.aquiletour.core.models.courses.student;
 
 import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
-import ca.aquiletour.core.models.courses.base.CycleDetectedError;
-import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
@@ -47,8 +45,6 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		T.call(this);
 		
-		T.here();
-
 		getTasks().forEachEntry((key, task) -> {
 
 			SemesterDate date = task.resolveDate(getCoursePath().courseId(), 
@@ -173,7 +169,7 @@ public class CourseModelStudent extends CourseModel<CurrentTaskStudent> {
 	
 	public void updateStatuses() {
 		T.call(this);
-
+		
 		forEachTask(t -> {
 
 			TaskStatus lastStatus = statusByTaskKey.valueOf(t.getPath().toKey());

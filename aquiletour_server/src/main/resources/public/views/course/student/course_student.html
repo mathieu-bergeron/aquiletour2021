@@ -54,10 +54,10 @@
 
                     <div id="done-container">
                         <h6 class="mt-3 mb-3"><u>Déjà fait</u></h6>
-                        <div class="d-flex justify-content-around" id="done-tasks-container">
-                            <div class="d-flex justify-content-around" id="done-entry-tasks-container">
+                        <div class="d-flex justify-content-around align-items-baseline" id="done-tasks-container">
+                            <div class="d-flex justify-content-around align-items-baseline" id="done-entry-tasks-container">
                             </div>
-                            <div class="d-flex justify-content-around" id="done-exit-tasks-container">
+                            <div class="d-flex justify-content-around align-items-baseline" id="done-exit-tasks-container">
                             </div>
                         </div>
                     </div>
@@ -67,13 +67,10 @@
                             <h6 class="mt-3 mb-3 me-3"><u>À faire</u>
                             </h6>
                         </div>
-                        <div class="d-flex justify-content-around" id="todo-tasks-container">
-                            <div class="d-flex justify-content-around" id="todo-entry-tasks-container">
+                        <div class="d-flex justify-content-around align-items-baseline" id="todo-tasks-container">
+                            <div class="d-flex justify-content-around align-items-baseline" id="todo-entry-tasks-container">
                             </div>
-                            <div class="d-flex justify-content-around" id="todo-exit-tasks-container">
-                            </div>
-                            <div class="d-flex justify-content-around">
-                                <div class="ms-3 border p-2" id="git-progression-container"><a href="#" id="git-progression-link">Commits reçus</a></div>
+                            <div class="d-flex justify-content-around align-items-baseline" id="todo-exit-tasks-container">
                             </div>
                         </div>
                     </div>
@@ -173,77 +170,76 @@
     </div>
 </div>
 
-<div class="ms-4 git-repo-task-cloning-repo">
-    <div class="me-3 spinner-border spinner-border-sm" role="status">
+<div class="card ms-4 git-repo-task-cloning-repo">
+    <div class="card-header bg-transparent d-flex align-items-center">
+        <div>Clonage en cours</div>
+        <div class="flex-fill" style="min-width:3rem;"></div>
+        <div class="me-3 spinner-border spinner-border-sm" role="status"></div>
     </div>
-    Clonage en cours pour <span class="repo-url"></span>
-    <div class="d-flex justify-content-end me-3 align-items-center">
-        <div class="form-check form-switch" 
-             style="padding-right:0px;margin-right:-1rem;">
-            dépôt cloné
-            <form>
-                <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
-                       id="task-completed-checkbox"
-                       name="ifTaskCompleted" 
-                       type="checkbox" 
-                       disabled
-                       form="task-completed-form">
-            </form>
-        </div>
-    </div>
-    <form action="" method="post">
-        <input class="add-student-id-to-value" name="studentId" style="display:none;"></input>
-        <input class="add-group-id-to-value" name="groupId" style="display:none;"></input>
-        <input class="add-task-id-to-value" name="taskId" style="display:none;"></input>
-        <input class="add-atomic-task-id-to-value" name="atomicTaskId" style="display:none;"></input>
-        <input class="add-repo-path-to-value" name="repoPath" style="display:none;"></input>
-        <input class="add-repo-url-to-value" name="repoUrl" style="display:none;"></input>
-        <button type="submit" name="StudentDeletesRepo" class="btn btn-secondary btn-sm mt-2" style="line-height:1.5rem">
-            Annuler
-        </button>
-
-    </form>
-</div>
-
-
-<div class="ms-4 git-repo-task-repo-cloned">
-    Clonage réussi pour <div class="repo-url"></div>
-    <div class="d-flex justify-content-end me-3 align-items-center">
-        <div class="form-check form-switch" 
-             style="padding-right:0px;margin-right:-1rem;">
-            dépôt cloné
-            <form>
-                <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
-                       id="task-completed-checkbox"
-                       name="ifTaskCompleted" 
-                       type="checkbox" 
-                       disabled
-                       checked
-                       form="task-completed-form">
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="ms-4 git-repo-task-clone-failed">
-    Tentative de clonage de <div class="repo-url"></div>
-    <div class="spinner-border" role="status">
-    </div>
-    <div class="d-flex justify-content-end me-3 align-items-center">
-        <div class="form-check form-switch" 
-             style="padding-right:0px;margin-right:-1rem;">
-            dépôt cloné
-            <form>
-                <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
-                       id="task-completed-checkbox"
-                       name="ifTaskCompleted" 
-                       type="checkbox" 
-                       disabled
-                       form="task-completed-form">
-            </form>
+    <div class="card-body">
+        <span class="repo-url"></span>
+        <div class="d-flex justify-content-end mt-3 align-items-center">
+        <form action="" method="post">
+            <input class="add-student-id-to-value" name="studentId" style="display:none;"></input>
+            <input class="add-group-id-to-value" name="groupId" style="display:none;"></input>
+            <input class="add-task-id-to-value" name="taskId" style="display:none;"></input>
+            <input class="add-atomic-task-id-to-value" name="atomicTaskId" style="display:none;"></input>
+            <input class="add-repo-path-to-value" name="repoPath" style="display:none;"></input>
+            <input class="add-repo-url-to-value" name="repoUrl" style="display:none;"></input>
+            <button type="submit" name="StudentDeletesRepo" class="btn btn-secondary btn-sm mt-2" style="line-height:1.5rem">
+                Annuler
+            </button>
+        </form>
         </div>
     </div>
 </div>
 
 
+<div class="card ms-4 git-repo-task-repo-cloned">
+    <div class="card-header bg-transparent d-flex align-items-center">
+        <div>Dépôt cloné</div>
+        <div class="flex-fill" style="min-width:3rem;"></div>
+        <form>
+        <div class="form-check form-switch" 
+             style="padding-right:0px;margin-right:-1rem;">
+            <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
+                   id="task-completed-checkbox"
+                   type="checkbox" 
+                   disabled
+                   checked
+                   form="task-completed-form">
+        </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <span class="repo-url"></span>
+    </div>
+</div>
 
+<div class="card ms-4 git-repo-task-clone-failed">
+    <div class="card-header bg-transparent d-flex align-items-center">
+        <div>Échec du clonage</div>
+        <div class="flex-fill" style="min-width:3rem;"></div>
+        <form>
+        <div class="form-check form-switch" 
+             style="padding-right:0px;margin-right:-1rem;">
+            <input class="form-check-input aquiletour-checkbox add-task-id-to-form" 
+                   id="task-completed-checkbox"
+                   type="checkbox" 
+                   disabled
+                   form="task-completed-form">
+        </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <span class="repo-url"></span>
+    </div>
+</div>
+
+<div class="card ms-4 git-progression-container">
+    <div class="card-header bg-transparent d-flex align-items-center">
+        <div><a href="#" id="git-progression-link">Commits reçus</a></div>
+    </div>
+    <div class="card-body">
+    </div>
+</div>
