@@ -22,7 +22,6 @@ public class CommitListViewModel extends ModelSubModelViewSubViewHandler<CommitL
 		T.call(this);
 		
 		long deadline = findExerciseDeadline(courseModel, model.getExercisePath());
-		deadline = 981133000000L;
 		if(deadline != -1) {
 			view.displayCommitList(model, deadline);
 		}

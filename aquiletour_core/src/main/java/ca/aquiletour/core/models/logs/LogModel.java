@@ -2,12 +2,13 @@ package ca.aquiletour.core.models.logs;
 
 
 import ca.aquiletour.core.models.user.User;
+import ca.ntro.core.models.DoNotCacheModel;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.Ntro;
 
-public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> implements NtroModel	{
+public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> implements NtroModel, DoNotCacheModel {
 	
 	public abstract LIS getLogItems();
 	public abstract void setLogItems(LIS logItems);

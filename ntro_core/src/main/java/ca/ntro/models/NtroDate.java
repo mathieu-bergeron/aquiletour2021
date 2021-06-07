@@ -39,6 +39,12 @@ public class NtroDate implements NtroModelValue {
 		this.epochSeconds = epochSeconds;
 	}
 
+	public long getEpochMiliseconds() {
+		T.call(this);
+
+		return getEpochSeconds() * 1000;
+	}
+
 	public String format(String dateFormat) {
 		return Ntro.calendar().format(epochSeconds, dateFormat);
 	}
@@ -78,6 +84,7 @@ public class NtroDate implements NtroModelValue {
 
 		Ntro.calendar().setTimeOfDay(this, time);
 	}
+
 
 
 

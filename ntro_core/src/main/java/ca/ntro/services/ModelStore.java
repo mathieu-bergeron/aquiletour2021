@@ -21,7 +21,7 @@ import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelExtractor;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.ShouldNotBeCached;
+import ca.ntro.core.models.DoNotCacheModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
@@ -83,7 +83,9 @@ public abstract class ModelStore {
 
 		synchronized (localHeap) {
 			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
-			if(model != null) {
+			if(model != null 
+					&& !Ntro.introspector().ntroClassFromObject(model).ifImplements(DoNotCacheModel.class)) {
+
 				modelLoader = new ModelLoaderMemory(model);
 			}
 		}
@@ -437,7 +439,7 @@ public abstract class ModelStore {
 			}
 		}
 
-		if(model instanceof ShouldNotBeCached) {
+		if(Ntro.introspector().ntroClassFromObject(model).ifImplements(DoNotCacheModel.class)) {
 			removeModelFromHeap(documentPath);
 		}
 
