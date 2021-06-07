@@ -8,6 +8,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.eclipse.jetty.client.ResponseNotifier;
+
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
@@ -88,7 +90,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 				InputStream in = con.getInputStream();
 				
 				response = ResourceLoaderTaskJdk.readStream(in);
-				System.out.println(response + "bababa");
+				System.out.println("[LocalStoreServer] response: " + response);
 				
 			}else {
 				

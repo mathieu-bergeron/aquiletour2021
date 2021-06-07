@@ -25,6 +25,7 @@ import ca.aquiletour.core.messages.git.DeleteGitRepo;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailed;
 import ca.aquiletour.core.messages.git.OnNewCommits;
+import ca.aquiletour.core.messages.git.OnUnknownRepoURL;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterGitRepo;
@@ -521,6 +522,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(ModifyAppointmentCommentMessage.class);
 
 		Ntro.registerSerializableClass(OnNewCommits.class);
+		Ntro.registerSerializableClass(OnUnknownRepoURL.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
