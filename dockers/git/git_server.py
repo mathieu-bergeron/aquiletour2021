@@ -1,16 +1,12 @@
-# from typing import Optional
 from fastapi import FastAPI, Request, Response, status
 from fastapi.responses import JSONResponse
 from multiprocessing import Process
-import time
 import os
 import importlib
-import sys
 import uvicorn
 import sqlite3
 import mysql.connector
 import json
-import api_modules
 import depot_manager.task_processor
 import utils.task_utils
 
@@ -120,7 +116,6 @@ async def read_hook(request: Request):
     return response
 #    return {"item_id": item_id, "q": q}
 #    response.body = json.dumps({'item_id': 123, 'q': 'bonjour'}).encode('utf-8')
-#    cur.lastrowid
 
 # @app.on_event('shutdown')
 # def cleanup():
@@ -144,7 +139,7 @@ if __name__=="__main__":
 # TEST DATA - Begin
 #        utils.task_utils.add_task({'req1': ''}, 5, conn)
 #        utils.task_utils.add_task({'_C': 'HookTask', 'depot': 'https://gitlab.com/LeducNic/coursmo.git'}, 5, conn)
-#        utils.task_utils.add_task({'_C': 'UpdateTask', 'semesterId': 'H2021', 'courseId': 'nicolas.leduc/420-ZF5', 'groupId': '02'}, 9, conn)
+#        utils.task_utils.add_task({'_C': 'UpdateTask', 'semesterId': 'H2021', 'courseId': '420-ZF5', 'teacherId':'nicolas.leduc', 'groupId': '02'}, 9, conn)
 #        utils.task_utils.add_task({'req4': ''}, 1, conn)
 #        utils.task_utils.add_task({'req5': ''}, 5, conn)
         conn.commit()
@@ -156,29 +151,31 @@ if __name__=="__main__":
         cur2.execute('DELETE FROM exercise')
         conn2.commit()
         cur2.execute('''INSERT INTO repository 
-            VALUES ('https://gitlab.com/LeducNic/coursmo.git','GL','H2021','nicolas.leduc/420-ZF5','02',2055573, '/')''')
+            VALUES ('https://gitlab.com/LeducNic/coursmo.git','GL','H2021','420-ZF5','nicolas.leduc','02',2055573, '/')''')
         cur2.execute('''INSERT INTO repository 
-            VALUES ('https://github.com/LeducNic/TestZF5.git','GH','A2020','nicolas.leduc/420-ZC6','01',2044473, '/')''')
+            VALUES ('https://github.com/LeducNic/TestZF5.git','GH','A2020','420-ZC6','nicolas.leduc','01',2044473, '/')''')
         cur2.execute('''INSERT INTO repository 
-            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','AZ','H2021','mathieu.bergeron/420-ZF5','02',1933325, '/')''')
+            VALUES ('https://dev.azure.com/nleduc/TestZC6/_git/TestZC6','AZ','H2021','420-ZF5','mathieu.bergeron','02',1933325, '/')''')
         cur2.execute('''INSERT INTO repository 
-            VALUES ('https://github.com/LeducNic/TestZF52.git','GH','H2021','mathieu.bergeron/420-ZF5','01',1822273, '/')''')
+            VALUES ('https://github.com/LeducNic/TestZF52.git','GH','H2021','420-ZF5','mathieu.bergeron','01',1822273, '/')''')
 #        cur2.execute('''INSERT INTO repository 
-#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','GL','H2021','alain.pilon/420-C65','02',1788895, '/')''')
+#            VALUES ('https://gitlab.com/LeducNic/coursmo2.git','GL','H2021','420-C65','alain.pilon','02',1788895, '/')''')
         cur2.execute('''INSERT INTO exercise 
-            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/', '/', '/', NULL)''')
+            VALUES ('H2021','420-ZF5','nicolas.leduc','02', '/', '/', '/', NULL)''')
         cur2.execute('''INSERT INTO exercise 
-            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 1/Travail 1', '/', '/420-ZF5/TP01', 'TP1')''')
+            VALUES ('H2021','420-ZF5','nicolas.leduc','02', '/Semaine 1/Travail 1', '/', '/420-ZF5/TP01', 'TP1')''')
         cur2.execute('''INSERT INTO exercise 
-            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 2/Atelier 1', '/', '/420-ZF5/AT01', 'AT01')''')
+            VALUES ('H2021','420-ZF5','nicolas.leduc','02', '/Semaine 2/Atelier 1', '/', '/420-ZF5/AT01', 'AT01')''')
         cur2.execute('''INSERT INTO exercise 
-            VALUES ('H2021','nicolas.leduc/420-ZF5','02', '/Semaine 3/Atelier 4', '/', '/420-ZF5/AT04', 'AT04')''')
+            VALUES ('H2021','420-ZF5','nicolas.leduc','02', '/Semaine 3/Atelier 4', '/', '/420-ZF5/AT04', 'AT04')''')
         cur2.execute('''INSERT INTO exercise 
-            VALUES ('H2021','nicolas.leduc/420-ZF5','03', '/Semaine 3/Atelier 2', '/', '/420-ZF5/AT02', 'Atelier 2')''')
+            VALUES ('H2021','420-ZF5','nicolas.leduc','03', '/Semaine 3/Atelier 2', '/', '/420-ZF5/AT02', 'Atelier 2')''')
         cur2.execute('''INSERT INTO exercise 
-            VALUES ('A2020','nicolas.leduc/420-ZC6','01', '/', '/', '/', NULL)''')
+            VALUES ('A2020','420-ZC6','nicolas.leduc','01', '/', '/', '/', NULL)''')
+        cur2.execute('''INSERT INTO exercise 
+            VALUES ('H2021','420-ZF5','nicolas.leduc','__NONE__', '/Semaine 3/Atelier 4a', '/', '/420-ZC6/AT04A', 'TestAuto')''')
 #        cur2.execute('''INSERT INTO exercise 
-#            VALUES ('H2021','nicolas.leduc/420-ZF5','03', '/Semaine 15/Reprise', '/', '/420-ZF5/TPRE', 'TPRE')''')
+#            VALUES ('H2021','420-ZF5','nicolas.leduc','03', '/Semaine 15/Reprise', '/', '/420-ZF5/TPRE', 'TPRE')''')
         conn2.commit()
         conn2.close()
 # TEST DATA - End
