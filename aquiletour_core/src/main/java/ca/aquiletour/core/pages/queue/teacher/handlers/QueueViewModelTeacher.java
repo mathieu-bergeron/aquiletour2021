@@ -27,6 +27,9 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 		T.call(this);
 		super.handle(model, view, subViewLoader);
 		
+		isQueueOpen = model.isQueueOpen();
+		view.displayIfQueueOpen(isQueueOpen);
+		
 		observeMainSettings(model, model.getMainSettings(), view);
 		observeSettingsByCourseId(model, model.getSettingsByCourseKey(), view);
 	}
@@ -142,7 +145,7 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			public void onValue(Boolean value) {
 				T.call(this);
 				updateIsQueueOpen(model, view);
-				view.displayIfQueueOpen(coursePath, groupId, false);
+				view.displayIfQueueOpen(coursePath, groupId, value);
 			}
 
 			@Override

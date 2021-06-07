@@ -47,7 +47,6 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		addAllCoursesIdToValue = this.getRootElement().find(".add-all-courses-id-to-value");
 		addAllCoursesIdToForm = this.getRootElement().find(".add-all-courses-id-to-form");
 		
-		
 		addAllCoursesIdToId.appendToAttribute("id", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToValue.appendToAttribute("value", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToForm.appendToAttribute("form", Constants.ALL_COURSES_ID);
@@ -79,13 +78,16 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		T.call(this);
 		
 		String id = "is-queue-open-checkbox";
-		if(!coursePath.isAllCourses()) {
+		if(coursePath.isAllCourses()) {
+			id += Constants.ALL_COURSES_ID;
+		}else {
 			id += coursePath.toHtmlId();
 		}
+
 		if(groupId != null) {
 			id += groupId;
 		}
-
+		
 		HtmlElement isQueueOpenCheckbox = getRootElement().find("#"+id).get(0);
 		
 		if(isQueueOpenCheckbox != null) {
@@ -95,6 +97,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	
 	private void updateCheckbox(HtmlElement checkbox, boolean isChecked) {
 		T.call(this);
+		
 		
 		if(isChecked) {
 			
@@ -155,13 +158,15 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private String courseElementId(CoursePath coursePath){
 		T.call(this);
 
-		return "course-" + coursePath.semesterId() + "-" + coursePath.courseId();
+		//return "course-" + coursePath.semesterId() + "-" + coursePath.courseId();
+		return "course";
 	}
 
 	private String groupElementId(CoursePath coursePath, String groupId){
 		T.call(this);
 		
-		return "group-" + coursePath.semesterId() + "-" +  coursePath.courseId() + "-" + groupId;
+		//return "group-" + coursePath.semesterId() + "-" +  coursePath.courseId() + "-" + groupId;
+		return "group";
 	}
 
 	@Override
@@ -179,6 +184,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	
 	private void identifyCourseId(HtmlElement element, CoursePath coursePath) {
 		T.call(this);
+		
+		try {
+			coursePath.semesterId();
+		} catch(Exception e) {return;}
 
 		HtmlElements addSemesterIdToValue = element.find("add-semester-id-to-value");
 		addSemesterIdToValue.appendToAttribute("value", coursePath.semesterId());

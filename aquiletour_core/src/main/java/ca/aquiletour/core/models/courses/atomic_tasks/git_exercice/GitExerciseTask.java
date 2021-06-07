@@ -7,6 +7,7 @@ import ca.ntro.core.system.trace.T;
 public class GitExerciseTask extends AtomicTask {
 	
 	private Path repoPath = new Path();
+	private String completionKeywords = "";
 
 	public GitExerciseTask() {
 		super();
@@ -60,5 +61,11 @@ public class GitExerciseTask extends AtomicTask {
 		return isEqual;
 	}
 
+	public String getCompletionKeywords() {
+		return completionKeywords;
+	}
 
+	public void setCompletionKeywords(String completionKeywords) {
+		this.completionKeywords = completionKeywords;
+	}
 }

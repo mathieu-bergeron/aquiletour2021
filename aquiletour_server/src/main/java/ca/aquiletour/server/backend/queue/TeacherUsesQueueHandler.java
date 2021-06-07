@@ -16,18 +16,20 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 		T.call(this);
 		
 		boolean queueOpen = true;
+		String queueId = message.getUser().getId();
 		
 		CourseListManager.updateQueueOpenForUser(modelStore, 
 				                                 CourseListModelTeacher.class,
 				                                 message.coursePath(),
 				                                 queueOpen,
 				                                 message.getUser());
+
+		QueueManager.openQueueForCourseId(modelStore, queueId, message.getCourseId());
 	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, TeacherUsesQueueMessage message) {
 		T.call(this);
 
-		//QueueUpdater.openQueue(modelStore, message.getCourseId());
 	}
 }

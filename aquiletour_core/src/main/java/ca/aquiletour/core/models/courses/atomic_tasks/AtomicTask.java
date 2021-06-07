@@ -1,6 +1,5 @@
 package ca.aquiletour.core.models.courses.atomic_tasks;
 
-import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
@@ -8,8 +7,6 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
-import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
@@ -35,6 +32,8 @@ public class AtomicTask implements NtroModelValue {
 			}
 
 			GitExerciseTask gitTask = new GitExerciseTask(repoPath);
+			
+			gitTask.setCompletionKeywords(parentTask.getTitle().getValue());
 
 			parentTask.addExitTask(gitTask, atomicTaskListener);
 		}

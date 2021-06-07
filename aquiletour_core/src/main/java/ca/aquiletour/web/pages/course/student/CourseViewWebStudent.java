@@ -427,7 +427,8 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	private void displayGitExerciseTask(HtmlElement taskElement, GitExerciseTask task) {
 		T.call(this);
 		
-		ICI
+		HtmlElement completionKeywords = taskElement.find(".git-exercise-task-completion-keywords").get(0);
+		completionKeywords.text(task.getCompletionKeywords());
 		
 	}
 

@@ -316,10 +316,6 @@ public class AquiletourRequestHandler {
 					&& user.getId().equals(teacherId)
 					&& user.actsAsTeacher()) {
 
-				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-				teacherUsesQueueMessage.setCourseId(teacherId);
-				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
-
 				ShowQueueMessageTeacher showTeacherQueueMessage = Ntro.messages().create(ShowQueueMessageTeacher.class);
 				showTeacherQueueMessage.setQueueId(teacherId);
 				Ntro.messages().send(showTeacherQueueMessage);

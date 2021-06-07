@@ -49,12 +49,20 @@ public class QueueManager {
 		QueuesUpdater.deleteQueue(modelStore, queueId);
 	}
 
-	public static void openQueue(ModelStoreSync modelStore,
-			                     String queueId) throws BackendError {
+
+	public static void openQueueForCourseId(ModelStoreSync modelStore,
+			                     			String queueId,
+			                     			String courseId) throws BackendError {
 
 		T.call(QueueManager.class);
 		
-		QueuesUpdater.openQueue(modelStore, queueId);
+		modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+			T.call(QueueManager.class);
+			
+			queueModel.updateIsQueueOpenForCourseId(courseId, true);
+		});
+		
+		//QueuesUpdater.openQueue(modelStore, queueId);
 	}
 
 	public static void closeQueue(ModelStoreSync modelStore,
