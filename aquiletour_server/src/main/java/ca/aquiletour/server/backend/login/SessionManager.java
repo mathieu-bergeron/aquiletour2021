@@ -32,6 +32,7 @@ import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
+import ca.ntro.users.NtroUser;
 
 public class SessionManager {
 
@@ -66,14 +67,9 @@ public class SessionManager {
 	public static User createGuestSession(ModelStoreSync modelStore) throws BackendError {
 		T.call(SessionManager.class);
 		
+		User user = createGuestUser(null);
 		
-		String authToken = SecureRandomString.generate(Constants.RANDOM_STRING_DEFAULT_LENGTH);
-		
-		User user = new Guest();
-		user.setId(authToken);
-		user.setAuthToken(authToken);
-		
-		createSession(modelStore, authToken, session -> {
+		createSession(modelStore, user.getAuthToken(), session -> {
 			T.call(SessionManager.class);
 
 			session.setUser(user);
@@ -86,6 +82,21 @@ public class SessionManager {
 		return user;
 	}
 
+	public static User createGuestUser(String authToken) throws BackendError {
+		T.call(SessionManager.class);
+
+		User user = new Guest();
+		
+		if(authToken == null) {
+			authToken = SecureRandomString.generate(Constants.RANDOM_STRING_DEFAULT_LENGTH);
+		}
+
+		user.setId(authToken);
+		user.setAuthToken(authToken);
+			
+		return user;
+	}
+
 	public static void updateExistingSession(ModelStoreSync modelStore, String authToken) throws BackendError {
 		T.call(SessionManager.class);
 		
@@ -93,15 +104,32 @@ public class SessionManager {
 
 			session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
 			
-			User sessionUser = (User) session.getUser();
-			
-			if(!(sessionUser instanceof Guest 
-					|| sessionUser instanceof TeacherGuest 
-					|| sessionUser instanceof StudentGuest)) {
+			NtroUser sessionUser = session.getUser();
+
+			if(shouldCreateGuestUser(sessionUser)) {
+
+				session.setUser(createGuestUser(sessionUser.getAuthToken()));
+
+			} else if(shouldUpdateSessionUser(sessionUser)) {
 				
-				UserManager.updateUserWithStoredUserInfo(modelStore, sessionUser, sessionUser.getId());
+				UserManager.updateUserWithStoredUserInfo(modelStore, (User) sessionUser, sessionUser.getId());
 			}
 		});
+	}
+
+	private static boolean shouldCreateGuestUser(NtroUser sessionUser) {
+		T.call(SessionManager.class);
+
+		return !(sessionUser instanceof User);
+	}
+
+	private static boolean shouldUpdateSessionUser(NtroUser sessionUser) {
+		T.call(SessionManager.class);
+
+		return sessionUser instanceof User 
+				&& !(sessionUser instanceof Guest 
+						|| sessionUser instanceof TeacherGuest 
+						|| sessionUser instanceof StudentGuest);
 	}
 
 	public static SessionData createSessionData(ModelStoreSync modelStore, User user) throws BackendError {
@@ -114,57 +142,50 @@ public class SessionManager {
 		return sessionData;
 	}
 
-	public static User createAuthenticatedUser(ModelStoreSync modelStore, 
+	public static void createAuthenticatedUser(ModelStoreSync modelStore, 
 			                                   String authToken, 
 			                                   String userId,
 			                                   User sessionUser) throws BackendError {
 		T.call(SessionManager.class);
 
-		User existingUser = null;
 
-		if(modelStore.ifModelExists(User.class, "admin", userId)) {
 
-			existingUser = modelStore.extractFromModel(User.class, "admin", userId, User.class, storedUser -> {
-				return storedUser;
-			});
+		User authenticatedUser;
+		Set<String> adminRegistrationIds = UserManager.getAdminRegistrationIds(modelStore);
+		
+		if(sessionUser instanceof TeacherGuest && !adminRegistrationIds.contains(sessionUser.getId())) {
+
+			authenticatedUser = new Teacher();
+
+		} else if(sessionUser instanceof TeacherGuest && adminRegistrationIds.contains(sessionUser.getId())) {
+
+			authenticatedUser = new Admin();
+
+		} else if(sessionUser instanceof StudentGuest) {
+
+			authenticatedUser = new Student();
 
 		}else {
 
-			User newUser = null;
-			Set<String> adminRegistrationIds = UserManager.getAdminRegistrationIds(modelStore);
-			
-			if(sessionUser instanceof TeacherGuest && !adminRegistrationIds.contains(sessionUser.getId())) {
+			authenticatedUser = new Student();
+		}
+		
+		authenticatedUser.copyPublicInfomation(sessionUser);
+		authenticatedUser.setFirstname(sessionUser.getId());
+		authenticatedUser.setId(userId);
+		
+		if(!UserManager.ifStoredUserExists(modelStore, authenticatedUser)) {
 
-				newUser = new Teacher();
+			UserManager.createUser(modelStore, authenticatedUser);
 
-			} else if(sessionUser instanceof TeacherGuest && adminRegistrationIds.contains(sessionUser.getId())) {
+		}else {
 
-				newUser = new Admin();
-
-			} else if(sessionUser instanceof StudentGuest) {
-
-				newUser = new Student();
-			}
-			
-			newUser.copyPublicInfomation(sessionUser);
-			newUser.setFirstname(sessionUser.getId());
-			newUser.setId(userId);
-
-			UserManager.createUser(modelStore, newUser);
-			
-			existingUser = newUser;
+			UserManager.updateUserWithStoredUserInfo(modelStore, authenticatedUser, userId);
 		}
 
-		User newSessionUser = existingUser.toSessionUser();
-		
-		newSessionUser.setAuthToken(authToken);
-		existingUser.setAuthToken(authToken);
-
-		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
-			session.setUser(newSessionUser);
+		updateSession(modelStore, authToken, session -> {
+			session.setUser(authenticatedUser.toSessionUser());
 		});
-
-		return existingUser;
 	}
 
 	public static void memorizeSessionByUserId(ModelStoreSync modelStore, 

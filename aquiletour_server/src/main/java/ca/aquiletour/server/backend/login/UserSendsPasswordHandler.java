@@ -13,7 +13,6 @@ import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroSession;
 
 public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPasswordMessage> {
 
@@ -24,15 +23,13 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
 
-		User userToRegister = null;
-
 		if(UserManager.isUserPasswordValid(modelStore, message.getPassword(), message.getUser())) {
 
-			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
+			SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
 
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
-			RegisteredSockets.sendMessageToUser(userToRegister, updateSessionMessage);
+			RegisteredSockets.sendMessageToUser(Ntro.currentUser(), updateSessionMessage);
 
 			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
 				Ntro.messages().send(delayedMessage);
