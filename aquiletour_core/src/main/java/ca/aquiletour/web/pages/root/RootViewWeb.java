@@ -180,7 +180,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		User user = (User) context.user();
 		String userName = user.getFirstname();
-
+		
 		addUserIdToValue.appendToAttribute("value", user.getId());
 
 		adjustLoginMenu(user, userName);
@@ -198,7 +198,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		queueLink.hide();
 		dashboardLink.hide();
 
-		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+		//loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+
 		logoutLinks.forEach(e -> {
 			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
 		});
@@ -250,6 +251,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 
 	private void adjustLoginMenu(User user, String userName) {
+		T.call(this);
+		
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
 		loginMenuEnterPassword.hide();

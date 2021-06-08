@@ -134,9 +134,6 @@ public class RootController extends NtroRootController {
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 		
-		System.out.println("onContextChange: " + context.user());
-		System.out.println(context.user());
-		
 		RootView view = (RootView) getView();
 
 		view.onContextChange(context);

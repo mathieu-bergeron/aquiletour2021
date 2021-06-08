@@ -2,9 +2,11 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.server.backend.users.UserManager;
+import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
@@ -17,6 +19,10 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 		UserManager.resetUserAfterLogout(modelStore, message.getUser());
 
 		Ntro.currentSession().setUser(SessionManager.createGuestSession(modelStore));
+		
+		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+		updateSessionMessage.setSession(Ntro.currentSession());
+		RegisteredSockets.sendMessageToSocket(message.getUser().getAuthToken(), updateSessionMessage);
 	}
 
 	@Override

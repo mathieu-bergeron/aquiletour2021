@@ -28,9 +28,7 @@ public abstract class DashboardController extends NtroController<RootController>
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
-		
-		System.out.println("onContextChange");
-		
+
 		requestModel(context);
 	}
 

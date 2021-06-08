@@ -39,6 +39,8 @@ public class BackendServiceJSweet extends BackendService {
 		webSocket = new WebSocket(connectionString);
 
 		webSocket.onmessage = t -> {
+			
+			System.out.println(t.data.toString());
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
 			

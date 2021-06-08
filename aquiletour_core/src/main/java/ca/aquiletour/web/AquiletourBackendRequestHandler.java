@@ -68,7 +68,6 @@ import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroSession;
 
 public class AquiletourBackendRequestHandler {
 	

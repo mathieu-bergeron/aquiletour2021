@@ -6,6 +6,7 @@ import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
+import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Guest;
