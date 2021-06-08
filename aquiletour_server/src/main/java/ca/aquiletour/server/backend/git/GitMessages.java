@@ -10,6 +10,9 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.log.Log;
@@ -96,6 +99,14 @@ public class GitMessages {
 		deleteExercice.setExercisePath(taskPath.toString());
 		
 		sendMessage(deleteExercice);
+	}
+
+	public static void registerGitRepoForCourse(CourseModelTeacher course, 
+			                                    CoursePath coursePath, 
+			                                    Task task, 
+			                                    GitRepoTask atomicTask) {
+		T.call(GitMessages.class);
+
 	}
 
 }

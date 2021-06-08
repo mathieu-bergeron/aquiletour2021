@@ -8,6 +8,7 @@ import java.util.Set;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.CycleDetectedError;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
@@ -375,7 +376,13 @@ public class CourseManager {
 						T.call(this);
 
 						if(atomicTask instanceof GitExerciseTask) {
+
 							registerGitExercise(course, coursePath, task, (GitExerciseTask) atomicTask);
+
+						}else if(atomicTask instanceof GitRepoTask) {
+
+							GitMessages.registerGitRepoForCourse(course, coursePath, task, (GitRepoTask) atomicTask);
+
 						}
 					}
 				});
