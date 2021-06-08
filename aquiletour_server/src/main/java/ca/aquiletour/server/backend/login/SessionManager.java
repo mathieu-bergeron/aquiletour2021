@@ -156,8 +156,6 @@ public class SessionManager {
 			                                   User sessionUser) throws BackendError {
 		T.call(SessionManager.class);
 
-
-
 		User authenticatedUser;
 		Set<String> adminRegistrationIds = UserManager.getAdminRegistrationIds(modelStore);
 		
@@ -179,6 +177,7 @@ public class SessionManager {
 		}
 		
 		authenticatedUser.copyPublicInfomation(sessionUser);
+		authenticatedUser.setAuthToken(sessionUser.getAuthToken());
 		authenticatedUser.setFirstname(sessionUser.getId());
 		authenticatedUser.setId(userId);
 		
