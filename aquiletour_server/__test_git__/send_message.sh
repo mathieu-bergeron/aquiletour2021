@@ -5,15 +5,15 @@ fi
 
 if [ "$1" = "aquiletour" ]; then
 
-    curl -v --header "Content-Type: application/json" --data "@$2"  http://localhost:8080/_http/messages
+    curl -v --header "Content-Type: application/json; charset=utf8" --data "@$2"  http://localhost:8080/_http/messages
 
 elif [ "$1" = "git_api" ]; then
 
-    curl -v --header "Content-Type: application/json" --data "@$2"  http://localhost:8000/_git_api
+    curl -v --header "Content-Type: application/json; charset=utf8" --data "@$2"  http://localhost:8000/_git_api
 
 elif [ "$1" = "git_hook" ]; then
 
-    curl -v --header "Content-Type: application/json" --data "@$2"  http://localhost:8000/_git_hook
+    curl -v --header "Content-Type: application/json; charset=utf8" --data "@$2"  http://localhost:8000/_git_hook
 
 fi
 
