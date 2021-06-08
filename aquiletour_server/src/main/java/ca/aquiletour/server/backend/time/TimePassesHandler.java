@@ -12,7 +12,14 @@ import ca.ntro.services.Ntro;
 
 public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> {
 	
-	private NtroDate nextNighlyTime = Ntro.calendar().now().adjustTime(Constants.CLEANUP_TASKS_TIME);
+	private NtroDate nextNighlyTime = Ntro.calendar().now();
+
+	public TimePassesHandler() {
+
+		if(Ntro.config().isProd()) {
+			nextNighlyTime.adjustTime(Constants.NIGHTLY_TASKS_TIME);
+		}
+	}
 
 	@Override
 	public void handleNow(ModelStoreSync modelStore, TimePassesMessage message) throws BackendError {
@@ -58,18 +65,16 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 	private void runEveryTime() {
 		T.call(this);
 		
-		Log.info("[]");
+		//Log.info("[runEveryTime]");
 		
 		// TODO: update currentTime in queues etc.
-
-
 	}
 	
 	private void runNightly() {
 		T.call(this);
 
-		
-		// TODO: update timeToLive everywhere and remove any obselete model
+		//Log.info("[runNightly]");
 
+		// TODO: update timeToLive everywhere and remove any obselete model
 	}
 }
