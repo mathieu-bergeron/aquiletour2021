@@ -1,17 +1,17 @@
 package ca.aquiletour.core.messages;
 
-import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.users.NtroUser;
 
 public class InitializeSessionMessage extends NtroMessage {
 	
-	private User sessionUser;
+	private NtroUser sessionUser;
 
-	public User getSessionUser() {
+	public NtroUser getSessionUser() {
 		return sessionUser;
 	}
 
-	public void setSessionUser(User sessionUser) {
+	public void setSessionUser(NtroUser sessionUser) {
 		this.sessionUser = sessionUser;
 	}
 }

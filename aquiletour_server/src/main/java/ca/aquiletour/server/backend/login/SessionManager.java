@@ -16,7 +16,6 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_session.SessionsByUserId;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
-import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.registered_sockets.AuthTokenIterator;
 import ca.aquiletour.server.registered_sockets.RegisteredSockets;
@@ -42,25 +41,46 @@ public class SessionManager {
 		return modelStore.ifModelExists(NtroSession.class, "admin", authToken);
 	}
 
+	public static void createSession(ModelStoreSync modelStore, String authToken, ModelInitializer<NtroSession> initializer) throws BackendError {
+		T.call(SessionManager.class);
+		
+		modelStore.createModel(NtroSession.class, "admin", authToken, session -> {
+			
+			initializer.initialize(session);
+			
+			Ntro.sessionService().registerCurrentSession(session);
+		});
+	}
+
+	public static void updateSession(ModelStoreSync modelStore, String authToken, ModelUpdater<NtroSession> updater) throws BackendError {
+		T.call(SessionManager.class);
+		
+		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
+			
+			updater.update(session);
+			
+			Ntro.sessionService().registerCurrentSession(session);
+		});
+	}
+
 	public static User createGuestSession(ModelStoreSync modelStore) throws BackendError {
 		T.call(SessionManager.class);
 		
-		User user = new Guest();
 		
 		String authToken = SecureRandomString.generate(Constants.RANDOM_STRING_DEFAULT_LENGTH);
 		
+		User user = new Guest();
 		user.setId(authToken);
 		user.setAuthToken(authToken);
 		
-		modelStore.createModel(NtroSession.class, "admin", authToken, session -> {
+		createSession(modelStore, authToken, session -> {
+			T.call(SessionManager.class);
 
 			session.setUser(user);
 			session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
 
 			SessionData sessionData = new SessionData();
 			session.setSessionData(sessionData);
-
-			Ntro.sessionService().registerCurrentSession(session);
 		});
 		
 		return user;
@@ -69,7 +89,7 @@ public class SessionManager {
 	public static void updateExistingSession(ModelStoreSync modelStore, String authToken) throws BackendError {
 		T.call(SessionManager.class);
 		
-		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
+		updateSession(modelStore, authToken, session -> {
 
 			session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
 			
@@ -81,8 +101,6 @@ public class SessionManager {
 				
 				UserManager.updateUserWithStoredUserInfo(modelStore, sessionUser, sessionUser.getId());
 			}
-			
-			Ntro.sessionService().registerCurrentSession(session);
 		});
 	}
 
@@ -308,12 +326,6 @@ public class SessionManager {
 			
 			return ifLoginCodeValid;
 		});
-	}
-
-	public static void updateSession(ModelStoreSync modelStore, String authToken, ModelUpdater<NtroSession> updater) throws BackendError {
-		T.call(SessionManager.class);
-		
-		modelStore.updateModel(NtroSession.class, "admin", authToken, updater);
 	}
 
 }

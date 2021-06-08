@@ -323,8 +323,8 @@ public class DynamicHandler extends AbstractHandler {
 		if(hasCookie(baseRequest, "session")) {
 			String sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
 			NtroSession session = Ntro.jsonService().fromString(NtroSession.class, sessionString);
-
-			authenticateSessionUserMessage.setSessionUser((User) session.getUser());
+			
+			authenticateSessionUserMessage.setSessionUser(session.getUser());
 		}
 
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
@@ -443,11 +443,11 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(ifJSweet) {
 
-			newWindow = new NtroWindowServer("/private/index.html");
+			newWindow = new NtroWindowServer(privateFilesPrefix + "/index.html");
 			
 		}else {
 
-			newWindow = new NtroWindowServer("/private/nojsweet.html");
+			newWindow = new NtroWindowServer(privateFilesPrefix + "/nojsweet.html");
 
 		} 
 
