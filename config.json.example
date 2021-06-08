@@ -8,5 +8,8 @@
     "smtpTls": true,
     "smtpUser": "aiguilleur@example.com",
     "smtpFrom": "aiguilleur@example.com",
-    "smtpPassword": "example"
+    "smtpPassword": "example",
+
+
+    "isProd" : false
 }

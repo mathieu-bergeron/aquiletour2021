@@ -18,26 +18,6 @@ import calendar
 #   }
   
 def process(api_req, maria_conn, lite_conn):
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    with open('TMP.json') as TMP:
-        response = JSONResponse(json.load(TMP));
-        response.status_code = status.HTTP_200_OK
-    return response
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-    ###### TMP
-
 #    if not 'groupId' in api_req:
 #        api_req['groupId'] = None
     if not 'repoPath' in api_req:

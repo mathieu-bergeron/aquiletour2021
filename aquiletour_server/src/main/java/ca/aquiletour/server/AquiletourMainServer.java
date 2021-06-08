@@ -92,7 +92,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 	private void sendTimePassesMessages() {
 		T.call(this);
 
-		long periodSeconds = 5;
+		long periodSeconds = ca.aquiletour.core.Constants.TIME_PASSES_PERIOD_SECONDS;
 
 		timePassesTimer =  new Timer();
 		timePassesTimer.scheduleAtFixedRate(new TimerTask() {

@@ -73,7 +73,15 @@ public class SessionManager {
 			T.call(SessionManager.class);
 
 			session.setUser(user);
-			session.setTimeToLiveMiliseconds(30 * 1000); // TMP: 30 seconds test
+			
+			if(Ntro.config().isProd()) {
+				
+				session.setTimeToLiveMiliseconds(60*60*24*4);  // 4 months
+
+			}else {
+
+				session.setTimeToLiveMiliseconds(30);
+			}
 
 			SessionData sessionData = new SessionData();
 			session.setSessionData(sessionData);

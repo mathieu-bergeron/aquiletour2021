@@ -79,10 +79,12 @@ public class NtroDate implements NtroModelValue {
 		}
 	}
 
-	public void adjustTime(NtroTimeOfDay time) {
+	public NtroDate adjustTime(NtroTimeOfDay time) {
 		T.call(this);
 
 		Ntro.calendar().setTimeOfDay(this, time);
+		
+		return this;
 	}
 
 

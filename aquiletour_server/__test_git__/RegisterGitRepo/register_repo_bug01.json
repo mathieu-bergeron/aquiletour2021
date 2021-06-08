@@ -1,0 +1,10 @@
+{
+    "_C":"RegisterGitRepo",
+    "repoUrl":"https://github.com/mathieu-bergeron/StruDon.git",
+    "semesterId":"H2021",
+    "studentId":"1234500",
+    "teacherId":"mathieu.bergeron",
+    "courseId":"StruDon",
+    "groupId":"01",
+    "repoPath":"/tps"
+}
