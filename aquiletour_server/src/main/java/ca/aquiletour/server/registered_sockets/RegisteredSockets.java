@@ -152,7 +152,10 @@ public class RegisteredSockets {
 		if(socket != null) {
 			if(socket.isOpen()) {
 				try {
+					
+					System.out.println("sendMessage: " + Ntro.jsonService().toString(message));
 					socket.getRemote().sendString(Ntro.jsonService().toString(message));
+
 				} catch (IOException e) {
 					Log.error("Unable to send message to user: " + authToken);
 				}
