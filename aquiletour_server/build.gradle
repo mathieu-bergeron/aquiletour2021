@@ -85,7 +85,7 @@ task testEmail (type:JavaExec) {
 
 task vertx (type:JavaExec) {
     dependsOn 'classes'
-    main = 'ca.aquiletour.server.vertx.VertxServer'
+    main = 'ca.aquiletour.server.vertx.JavaMainVertx'
     classpath = sourceSets.main.runtimeClasspath
     //jvmArgs('-Dfile.encoding=UTF-8','-Xverify:none') // -Xverify:none for profiling in jvisualvm 
     jvmArgs('-Dfile.encoding=UTF-8') 
