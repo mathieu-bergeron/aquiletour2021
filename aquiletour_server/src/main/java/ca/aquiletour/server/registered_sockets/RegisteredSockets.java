@@ -1,16 +1,13 @@
 package ca.aquiletour.server.registered_sockets;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.jetty.websocket.api.Session;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
@@ -25,19 +22,25 @@ import io.vertx.core.impl.ConcurrentHashSet;
 
 public class RegisteredSockets {
 
-	private static Map<DocumentPath, Set<String>> tokensByObservedPath = new ConcurrentHashMap<DocumentPath, Set<String>>();
-	private static Map<String, Set<DocumentPath>> observedPathsByToken = new ConcurrentHashMap<String, Set<DocumentPath>>();
+	private static Map<DocumentPath, Set<String>> tokensByObservedPath = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<String, Set<DocumentPath>> observedPathsByToken = Ntro.collections().concurrentMap(new HashMap<>());
 
-	private static Map<String, Set<String>> tokensByUserId = new ConcurrentHashMap<String, Set<String>>();
-	private static Map<String, String> userIdByToken = new ConcurrentHashMap<String, String>();
+	private static Map<String, Set<String>> tokensByUserId = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<String, String> userIdByToken = Ntro.collections().concurrentMap(new HashMap<>());
 
 	// XXX: Session is a Jetty Session (a socket)
-	private static BiMap<String, Session> socketByToken = HashBiMap.create();
+	// XXX: synchronized(socketByToken) so the maps below are always accessed together
+	private static Map<String, Session> socketByToken = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<Session, String> tokenBySocket = Ntro.collections().concurrentMap(new HashMap<>());
 
 	public static void onUserChanges(String oldAuthToken, String authToken, NtroUser user) {
 		T.call(RegisteredSockets.class);
 		
-		Session socket = socketByToken.get(oldAuthToken);
+		Session socket = null;
+		
+		synchronized (socketByToken) {
+			socket = socketByToken.get(oldAuthToken);
+		}
 		
 		if(socket != null) {
 			deregisterSocket(socket);
@@ -48,15 +51,13 @@ public class RegisteredSockets {
 	public static void registerUserSocket(String authToken, NtroUser user, Session socket) {
 		T.call(RegisteredSockets.class);
 		
-		if(socketByToken.inverse().containsKey(socket)) {
-			deregisterSocket(socket);
-		}
+		deregisterSocketIfExists(socket);
 
-		socketByToken.put(authToken, socket);
+		registerSocket(authToken, socket);
 		
 		Set<String> userTokens = tokensByUserId.get(user.getId());
 		if(userTokens == null) {
-			userTokens = new ConcurrentHashSet<String>();
+			userTokens = Ntro.collections().concurrentSet(new HashSet<>());
 			tokensByUserId.put(user.getId(), userTokens);
 		}
 		userTokens.add(authToken);
@@ -66,15 +67,52 @@ public class RegisteredSockets {
 		System.out.println("registered user socket for " + user.getId() + " " + authToken);
 	}
 
+	private static void registerSocket(String authToken, Session socket) {
+		T.call(RegisteredSockets.class);
+
+		synchronized (socketByToken) {
+			socketByToken.put(authToken, socket);
+			tokenBySocket.put(socket, authToken);
+		}
+	}
+
+	private static void deregisterSocketIfExists(Session socket) {
+		T.call(RegisteredSockets.class);
+
+		boolean ifSocketExists = false;
+		synchronized (socketByToken) {
+			ifSocketExists = tokenBySocket.containsKey(socket);
+		}
+
+		if(ifSocketExists) {
+			deregisterSocket(socket);
+		}
+	}
+
 	public static void deregisterSocket(Session socket) {
 		T.call(RegisteredSockets.class);
 
-		String authToken = socketByToken.inverse().get(socket);
-		String userId = userIdByToken.get(authToken);
+		
+		String authToken = null;
+		Session removed = null;
+		synchronized (socketByToken) {
 
-		Session removed = socketByToken.remove(authToken);
+			authToken = tokenBySocket.get(socket);
+			
+			if(authToken != null) {
+
+				tokenBySocket.remove(socket);
+				removed = socketByToken.get(authToken);
+			}
+		}
+
 		if(removed != null) {
 			System.out.println("deregistered socket for " + authToken);
+		}
+
+		String userId = null;
+		if(authToken != null) {
+			userId = userIdByToken.get(authToken);
 		}
 
 		deregisterUser(authToken, userId);
@@ -158,7 +196,10 @@ public class RegisteredSockets {
 	public static void sendMessageToSocket(String authToken, NtroMessage message) {
 		T.call(RegisteredSockets.class);
 
-		Session socket = socketByToken.get(authToken);
+		Session socket = null;
+		synchronized (socketByToken) {
+			socket = socketByToken.get(authToken);
+		}
 
 		if(socket != null) {
 			if(socket.isOpen()) {
@@ -258,8 +299,13 @@ public class RegisteredSockets {
 
 	private static boolean socketExistsForToken(String authToken) {
 		T.call(RegisteredSockets.class);
-
-		return socketByToken.containsKey(authToken);
+		
+		boolean ifExists = false;
+		
+		synchronized (socketByToken) {
+			ifExists = socketByToken.containsKey(authToken);
+		}
+		
+		return ifExists;
 	}
-
 }
