@@ -14,6 +14,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
 import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
+import ca.ntro.messages.ntro_messages.NtroPleaseReconnectSocketMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
@@ -60,6 +61,7 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(NtroDayOfWeek.class);
 
 		Ntro.registerSerializableClass(NtroRegisterSocketMessage.class);
+		Ntro.registerSerializableClass(NtroPleaseReconnectSocketMessage.class);
 		Ntro.registerSerializableClass(NtroGetModelMessage.class);
 		Ntro.registerSerializableClass(NtroSetModelMessage.class);
 		Ntro.registerSerializableClass(NtroUpdateSessionMessage.class);

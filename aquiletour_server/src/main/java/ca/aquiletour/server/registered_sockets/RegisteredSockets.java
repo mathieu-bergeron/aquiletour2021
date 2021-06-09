@@ -36,6 +36,10 @@ public class RegisteredSockets {
 
 	public static void registerUserSocket(NtroUser user, Session socket) {
 		T.call(RegisteredSockets.class);
+		
+		if(socketByToken.inverse().containsKey(socket)) {
+			deregisterSocket(socket);
+		}
 
 		socketByToken.put(user.getAuthToken(), socket);
 		

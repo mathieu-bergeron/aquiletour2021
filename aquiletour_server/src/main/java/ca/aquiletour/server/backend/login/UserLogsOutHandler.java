@@ -6,6 +6,7 @@ import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.NtroPleaseReconnectSocketMessage;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
@@ -16,13 +17,18 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 	public void handleNow(ModelStoreSync modelStore, UserLogsOutMessage message) throws BackendError {
 		T.call(this);
 		
+		String authToken = message.getUser().getAuthToken();
+		
 		UserManager.resetUserAfterLogout(modelStore, message.getUser());
 
 		Ntro.currentSession().setUser(SessionManager.createGuestSession(modelStore));
 		
 		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 		updateSessionMessage.setSession(Ntro.currentSession());
-		RegisteredSockets.sendMessageToSocket(message.getUser().getAuthToken(), updateSessionMessage);
+		RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);
+
+		NtroPleaseReconnectSocketMessage pleaseReconnectSocketMessage = Ntro.messages().create(NtroPleaseReconnectSocketMessage.class);
+		RegisteredSockets.sendMessageToSocket(authToken, pleaseReconnectSocketMessage);
 	}
 
 	@Override

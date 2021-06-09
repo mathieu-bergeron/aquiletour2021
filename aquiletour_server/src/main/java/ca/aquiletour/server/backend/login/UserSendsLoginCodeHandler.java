@@ -17,18 +17,19 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) throws BackendError {
 		T.call(this);
+		
 
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
 
 		if(SessionManager.ifLoginCodeValid(modelStore, authToken, loginCode)) {
-			
+
 			SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
 			
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
-			RegisteredSockets.sendMessageToUser(Ntro.currentUser(), updateSessionMessage);
+			RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);
 		}
 
 		for(NtroMessage delayedMessage : message.getDelayedMessages()) {

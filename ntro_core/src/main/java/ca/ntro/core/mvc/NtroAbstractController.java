@@ -368,12 +368,14 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	public void changeContext(NtroContext<?,?> newContext) {
 		
 		NtroContext<?,?> oldContext = context();
-
-		onChangeContext(oldContext, context);
+		
+		onChangeContext(oldContext, newContext);
 
 		for(NtroAbstractController subController : subControllers) {
-			subController.onChangeContext(oldContext, context);
+			subController.onChangeContext(oldContext, newContext);
 		}
+
+		setContext(newContext);
 
 		if(this instanceof NtroRootController) {
 			reExecuteAfterContextChange();

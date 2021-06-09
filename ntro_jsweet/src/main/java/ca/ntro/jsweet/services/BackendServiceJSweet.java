@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.NtroPleaseReconnectSocketMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
@@ -21,9 +24,11 @@ public class BackendServiceJSweet extends BackendService {
 	private boolean isOpen = false;
 	private final List<NtroMessage> queuedMessages = new ArrayList<>();
 	
-	private final WebSocket webSocket;
+	private WebSocket webSocket;
 	
 	private final Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
+	
+	private final String connectionString;
 	
 	public BackendServiceJSweet() {
 		super();
@@ -34,7 +39,25 @@ public class BackendServiceJSweet extends BackendService {
 			protocol = "wss";
 		}
 
-		String connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
+		connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
+
+		connectWebSocket();
+	}
+	private void reconnectWebSocket() {
+		T.call(this);
+		
+		webSocket.onclose = t -> {
+			
+			connectWebSocket();
+
+			return null;
+		};
+		
+		webSocket.close();
+	}
+
+	private void connectWebSocket() {
+		T.call(this);
 
 		webSocket = new WebSocket(connectionString);
 
@@ -44,21 +67,28 @@ public class BackendServiceJSweet extends BackendService {
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
 			
-			MessageHandler<?> handler = handlers.get(message.getClass());
-			
-			if(handler != null) {
+			if(message instanceof NtroPleaseReconnectSocketMessage) {
+
+				reconnectWebSocket();
 				
-				handler.handleUntyped(message);
+			}else {
+
+				MessageHandler<?> handler = handlers.get(message.getClass());
+				
+				if(handler != null) {
+					
+					handler.handleUntyped(message);
+				}
 			}
 
 			return null;
 		};
 		
 		webSocket.onopen = t -> {
-
-			// FIXME: there is no guarantee  that MessageFactory.registerUser has been called
-			//        we must use initialization tasks
+			
 			NtroRegisterSocketMessage registerSocketNtroMessage = Ntro.messages().create(NtroRegisterSocketMessage.class);
+			registerSocketNtroMessage.setAuthToken(Ntro.currentUser().getAuthToken());
+			registerSocketNtroMessage.setUser(Ntro.currentUser());
 
 			sendMessageToBackend(registerSocketNtroMessage);
 			

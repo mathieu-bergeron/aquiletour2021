@@ -162,7 +162,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
 
 		onContextChange(context);
-		
+
 		initializeAlerts();
 	}
 
@@ -186,7 +186,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		adjustLoginMenu(user, userName);
 		adjustLinks(user);
 	}
-
 
 	private void adjustLinks(User user) {
 		T.call(this);
@@ -253,6 +252,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private void adjustLoginMenu(User user, String userName) {
 		T.call(this);
 		
+		System.out.println("adjustLoginMenu");
+		System.out.println(user);
+		
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
 		loginMenuEnterPassword.hide();
@@ -267,19 +269,19 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		if(user instanceof Guest) {
 
-			loginButton.html("Connexion");
+			loginButton.text("Connexion");
 			loginMenuEnterId.show();
 
 		} else if(shouldValidatePassword(user)) {
 
 			String linkText = "Valider " + user.getEmail();
-			loginButton.html(linkText);
+			loginButton.text(linkText);
 			loginMenuEnterPassword.show();
 
 		} else if(shouldValidateLoginCode(user)) {
 
 			String linkText = "Valider " + user.getEmail();
-			loginButton.html(linkText);
+			loginButton.text(linkText);
 			loginMenuEnterCode.show();
 
 		}else if(user instanceof Teacher && !(user instanceof Admin)) {

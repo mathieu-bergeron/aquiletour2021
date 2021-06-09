@@ -529,6 +529,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(OnPull.class);
 
 		Ntro.registerSerializableClass(GitExerciseCompletion.class);
+
 	}
 	
 	protected abstract NtroWindow getWindow();

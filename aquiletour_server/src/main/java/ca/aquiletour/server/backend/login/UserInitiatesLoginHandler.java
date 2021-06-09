@@ -61,7 +61,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		} else if(message.getDelayedMessages().isEmpty() && !sessionUser.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
-			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
+			showLoginMenuMessage.setMessageToUser("SVP valider votre identité");
 			Ntro.messages().send(showLoginMenuMessage);
 			
 		}else {
