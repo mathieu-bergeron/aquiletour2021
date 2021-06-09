@@ -34,7 +34,7 @@ public class WebSocket extends WebSocketAdapter {
         if(message instanceof NtroRegisterSocketMessage) {
         	
         	NtroRegisterSocketMessage registerSocketSystemMessage = (NtroRegisterSocketMessage) message;
-        	RegisteredSockets.registerUserSocket(registerSocketSystemMessage.getUser(), getSession());
+        	RegisteredSockets.registerUserSocket(registerSocketSystemMessage.getAuthToken(), registerSocketSystemMessage.getUser(), getSession());
 
         }else{
 

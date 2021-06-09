@@ -76,7 +76,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement toggleAdminModeButton;
 	private HtmlElement toggleAdminModeContainer;
 	
-	private HtmlElements logoutLinks;
 	private HtmlElements addDelayedMessagesToValue;
 	private HtmlElements addUserIdToValue;
 
@@ -116,7 +115,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		toggleAdminModeContainer = getRootElement().find("#toggle-admin-mode-container").get(0);
 		toggleAdminModeButton = getRootElement().find("#toggle-admin-mode-button").get(0);
 
-		logoutLinks = getRootElement().find(".logout-link");
 		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
 		addUserIdToValue = getRootElement().find(".add-user-id-to-value");
 
@@ -154,7 +152,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
-		Ntro.verify(that(logoutLinks.size() > 0).isTrue());
 		Ntro.verify(that(addDelayedMessagesToValue.size() > 0).isTrue());
 		Ntro.verify(that(addUserIdToValue.size() > 0).isTrue());
 
@@ -198,10 +195,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		dashboardLink.hide();
 
 		//loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
-
-		logoutLinks.forEach(e -> {
-			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
-		});
 
 		homeLink.show();
 		

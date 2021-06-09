@@ -212,7 +212,10 @@
                                 <input name="showPasswordMenu" style="display:none;"></input>
                                 <a href="#" class="dropdown-item submit-link" id="show-password-menu-link" form="show-password-menu-form" style="min-width:14rem;">Modifier mon mot de passe</a>
                             </form>
-                            <a href="#" class="dropdown-item logout-link" style="min-width:14rem;">Déconnexion</a>
+                            <form action="" method="post" id="logout-form">
+                                <input name="logout" style="display:none;"></input>
+                            </form>
+                            <a href="#" class="dropdown-item submit-link" form="logout-form" style="min-width:14rem;">Déconnexion</a>
                             <div class="d-flex justify-content-end" id="toggle-student-mode-container">
                                 <form action="" method="post" class="mt-3 me-3">
                                     <input name="toggleStudentMode" style="display:none;"></input>

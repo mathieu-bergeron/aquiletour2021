@@ -34,25 +34,36 @@ public class RegisteredSockets {
 	// XXX: Session is a Jetty Session (a socket)
 	private static BiMap<String, Session> socketByToken = HashBiMap.create();
 
-	public static void registerUserSocket(NtroUser user, Session socket) {
+	public static void onUserChanges(String oldAuthToken, String authToken, NtroUser user) {
+		T.call(RegisteredSockets.class);
+		
+		Session socket = socketByToken.get(oldAuthToken);
+		
+		if(socket != null) {
+			deregisterSocket(socket);
+			registerUserSocket(authToken, user, socket);
+		}
+	}
+
+	public static void registerUserSocket(String authToken, NtroUser user, Session socket) {
 		T.call(RegisteredSockets.class);
 		
 		if(socketByToken.inverse().containsKey(socket)) {
 			deregisterSocket(socket);
 		}
 
-		socketByToken.put(user.getAuthToken(), socket);
+		socketByToken.put(authToken, socket);
 		
 		Set<String> userTokens = tokensByUserId.get(user.getId());
 		if(userTokens == null) {
 			userTokens = new ConcurrentHashSet<String>();
 			tokensByUserId.put(user.getId(), userTokens);
 		}
-		userTokens.add(user.getAuthToken());
+		userTokens.add(authToken);
 		
-		userIdByToken.put(user.getAuthToken(), user.getId());
+		userIdByToken.put(authToken, user.getId());
 		
-		System.out.println("registered user socket for " + user.getId() + " " + user.getAuthToken());
+		System.out.println("registered user socket for " + user.getId() + " " + authToken);
 	}
 
 	public static void deregisterSocket(Session socket) {
@@ -250,4 +261,5 @@ public class RegisteredSockets {
 
 		return socketByToken.containsKey(authToken);
 	}
+
 }

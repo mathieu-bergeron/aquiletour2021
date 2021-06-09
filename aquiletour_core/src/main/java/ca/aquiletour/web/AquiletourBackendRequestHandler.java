@@ -76,11 +76,7 @@ public class AquiletourBackendRequestHandler {
 		
 		sendRootMessages(context, path, parameters);
 
-		if(path.startsWith(Constants.LOGOUT_URL_SEGMENT)) {
-
-			Ntro.messages().send(Ntro.messages().create(UserLogsOutMessage.class));
-
-		} else if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
+		if(path.startsWith(Constants.DASHBOARD_URL_SEGMENT)) {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
@@ -118,7 +114,11 @@ public class AquiletourBackendRequestHandler {
 	public static void sendRootMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) throws UserInputError {
 		T.call(AquiletourBackendRequestHandler.class);
 
-		if(parameters.containsKey("loginStep01")
+		if(parameters.containsKey("logout")) {
+			
+			Ntro.messages().send(Ntro.messages().create(UserLogsOutMessage.class));
+			
+		} else if(parameters.containsKey("loginStep01")
 				&& parameters.containsKey("studentId")
 				&& !parameters.get("studentId")[0].isEmpty()) {
 			
