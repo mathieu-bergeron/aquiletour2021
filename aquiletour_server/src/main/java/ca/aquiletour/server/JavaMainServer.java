@@ -42,7 +42,8 @@ public class JavaMainServer {
 		
 		RouterService routerService = new AquiletourRouterService();
 		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, 
+		NtroWebServer.defaultInitializationTask(new EarlyInitializationServer(),
+												AquiletourBackendService.class, 
 				                                LocalStoreServer.class, 
 				                                MessageServiceWebserver.class, 
 				                                config, 
