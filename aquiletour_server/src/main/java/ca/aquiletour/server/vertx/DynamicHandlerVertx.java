@@ -304,7 +304,7 @@ public class DynamicHandlerVertx {
 			                                    Map<String, String[]> parameters,
 			                                    NtroWindowServer window) {
 		
-		handleRedirections(baseRequest, response, path);
+		//handleRedirections(baseRequest, response, path);
 
 		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
 

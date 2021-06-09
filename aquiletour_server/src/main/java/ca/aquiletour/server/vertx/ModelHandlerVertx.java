@@ -58,12 +58,15 @@ public class ModelHandlerVertx {
 
 				Log.error("[ModelHandler] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
 				response.setStatusCode(Response.SC_BAD_REQUEST);
+				response.end();
+
 			}
 
         }else {
 
             Log.error("[ModelHandler] Invalid HTTP method '" + request.method() + "'!");
             response.setStatusCode(HttpStatus.METHOD_NOT_ALLOWED_405);
+            response.end();
         }
 
         // XXX: prepare for next request

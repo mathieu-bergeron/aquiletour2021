@@ -46,11 +46,13 @@ public class MessageHandlerVertx {
 			handlePayload(body);
 			
 			response.setStatusCode(Response.SC_OK);
+			response.end();
 
         }else {
 
             Log.error("[MessageHandlerVertx] Invalid HTTP method '" + routingContext.request().method() + "'!");
             response.setStatusCode(Response.SC_METHOD_NOT_ALLOWED);
+            response.end();
         }
 	}
 

@@ -182,22 +182,30 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		
 		SockJSHandlerOptions options = new SockJSHandlerOptions();
 		SockJSHandler sockJSHandler = SockJSHandler.create(vertx, options);
-
+		
 		router.mountSubRouter(Constants.MESSAGES_URL_PATH_SOCKET, sockJSHandler.socketHandler(socket -> {
 			socket.handler(messageBuffer -> {
 				MessageHandlerVertx.handleMessage(messageBuffer);
 			});
 		}));
 
-		router.route(HttpMethod.POST, "/*").blockingHandler(BodyHandler.create());
+		router.route(HttpMethod.POST, "/*").handler(BodyHandler.create());
 
 		router.route("/*").blockingHandler(routingContext -> {
 
 			DynamicHandlerVertx.handle(routingContext);
 		});
-
+		
+		router.errorHandler(500, rc -> {
+		  Throwable failure = rc.failure();
+		  if (failure != null) {
+			failure.printStackTrace();
+		  }
+		});
+		
 		HttpServer server = vertx.createHttpServer();
 		server.requestHandler(router);
+		
 		
 		server.listen(8080);
 	}
