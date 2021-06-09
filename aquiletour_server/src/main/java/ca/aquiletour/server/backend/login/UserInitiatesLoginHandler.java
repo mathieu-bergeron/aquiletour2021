@@ -48,6 +48,8 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 
 		Ntro.currentSession().setUser(sessionUser);
 		
+		T.values(authToken);
+		
 		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 		updateSessionMessage.setSession(Ntro.currentSession());
 		RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);

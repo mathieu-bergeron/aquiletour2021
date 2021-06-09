@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import ca.ntro.services.JsonService;
+import ca.ntro.services.Ntro;
 
 public class JsonServiceJdk extends JsonService {
 
@@ -12,10 +13,10 @@ public class JsonServiceJdk extends JsonService {
 
 	@Override
 	protected String writeJson(Object javaValue) {
-		if(ifPrettyPrinting()) {
-			return gsonPrettyPrint.toJson(javaValue);
-		}else {
+		if(Ntro.config().isProd()) {
 			return gson.toJson(javaValue);
+		}else {
+			return gsonPrettyPrint.toJson(javaValue);
 		}
 	}
 

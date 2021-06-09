@@ -87,8 +87,6 @@ public class BackendServiceJSweet extends BackendService {
 		webSocket.onopen = t -> {
 			
 			NtroRegisterSocketMessage registerSocketNtroMessage = Ntro.messages().create(NtroRegisterSocketMessage.class);
-			registerSocketNtroMessage.setAuthToken(Ntro.currentUser().getAuthToken());
-			registerSocketNtroMessage.setUser(Ntro.currentUser());
 
 			sendMessageToBackend(registerSocketNtroMessage);
 			
