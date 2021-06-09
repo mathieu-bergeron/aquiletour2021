@@ -152,6 +152,11 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		}
 
 		Vertx vertx = Vertx.vertx();
+
+		vertx.exceptionHandler(exception -> {
+			exception.printStackTrace();
+		});
+
 		
 		EventBus eventBus = vertx.eventBus();
 		eventBus.registerDefaultCodec(TextMessage.class,new TextMessageCodec());
@@ -187,20 +192,13 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		router.route(HttpMethod.POST, "/*").blockingHandler(BodyHandler.create());
 
 		router.route("/*").blockingHandler(routingContext -> {
+
 			DynamicHandlerVertx.handle(routingContext);
 		});
-
 
 		HttpServer server = vertx.createHttpServer();
 		server.requestHandler(router);
 		
-		server.exceptionHandler(exception -> {
-			exception.printStackTrace();
-		});
-
-		
 		server.listen(8080);
-		
-		
 	}
 }
