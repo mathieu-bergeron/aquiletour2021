@@ -43,6 +43,8 @@ public abstract class EarlyInitialization {
 		Ntro.registerRegEx(provideRegEx());
 
 		Ntro.registerCollectionsService(provideCollectionsService());
+
+		Ntro.registerConfigService(provideConfigService());
 	}
 
 	protected abstract Introspector provideIntrospector();
@@ -50,6 +52,7 @@ public abstract class EarlyInitialization {
 	protected abstract AppCloser provideAppCloser();
 	protected abstract RegEx provideRegEx();
 	protected abstract CollectionsService provideCollectionsService();
+	protected abstract ConfigService provideConfigService();
 
 	protected void registerSerializableClasses() {
 		Ntro.registerSerializableClass(NtroUser.class);

@@ -54,13 +54,6 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 	}
 
 	@Override
-	protected ConfigService provideConfigService() {
-		__T.call(InitializationTaskWebserver.class, "provideConfigService");
-
-		return configService;
-	}
-
-	@Override
 	protected RouterService provideRouterService() {
 		return routerService;
 	}

@@ -124,12 +124,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 	}
 
 	@Override
-	protected ConfigService provideConfigService() {
-		// XXX: not supported in the client
-		return null;
-	}
-
-	@Override
 	protected CalendarService provideCalendarService() {
 		return new CalendarServiceJSweet();
 	}

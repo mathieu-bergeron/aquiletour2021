@@ -45,6 +45,7 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
@@ -150,13 +151,19 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		if(!Ntro.config().isProd()) {
 			System.setProperty("vertxweb.environment", "dev");
 		}
+		
+		VertxOptions vertxOptions = new VertxOptions();
+		if(Ntro.config().isProd()) {
+			vertxOptions.setWorkerPoolSize(10000);
+		}else {
+			vertxOptions.setWorkerPoolSize(100);
+		}
 
-		Vertx vertx = Vertx.vertx();
+		Vertx vertx = Vertx.vertx(vertxOptions);
 
 		vertx.exceptionHandler(exception -> {
 			exception.printStackTrace();
 		});
-
 		
 		EventBus eventBus = vertx.eventBus();
 		eventBus.registerDefaultCodec(TextMessage.class,new TextMessageCodec());
@@ -180,9 +187,9 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			resourceHandler.handle(routingContext);
 		});
 		
-		SockJSHandlerOptions options = new SockJSHandlerOptions();
-		SockJSHandler sockJSHandler = SockJSHandler.create(vertx, options);
-		
+		SockJSHandlerOptions sockJSOptions = new SockJSHandlerOptions();
+		SockJSHandler sockJSHandler = SockJSHandler.create(vertx, sockJSOptions);
+
 		router.mountSubRouter(Constants.MESSAGES_URL_PATH_SOCKET, sockJSHandler.socketHandler(socket -> {
 			socket.handler(messageBuffer -> {
 				MessageHandlerVertx.handleMessage(messageBuffer);
@@ -205,7 +212,6 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		
 		HttpServer server = vertx.createHttpServer();
 		server.requestHandler(router);
-		
 		
 		server.listen(8080);
 	}

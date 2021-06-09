@@ -118,12 +118,6 @@ public class InitializationTaskJdk extends InitializationTask {
 
 
 	@Override
-	protected ConfigService provideConfigService() {
-		return new ConfigService();
-	}
-
-
-	@Override
 	protected CalendarService provideCalendarService() {
 		return new CalendarServiceJdk();
 	}
