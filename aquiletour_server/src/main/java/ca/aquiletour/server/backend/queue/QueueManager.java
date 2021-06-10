@@ -133,6 +133,7 @@ public class QueueManager {
 			                              Appointment appointment) {
 		T.call(QueueManager.class);
 		
+		/*
 		try {
 			modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
 
@@ -143,9 +144,8 @@ public class QueueManager {
 		} catch (BackendError e) {
 
 			Log.warning("[logNewAppointement] error: " + e.getMessage());
-		}
+		}*/
 
-		/*
 		Ntro.threadService().executeLater(new NtroTaskSync() {
 			@Override
 			protected void runTask() {
@@ -165,7 +165,7 @@ public class QueueManager {
 			@Override
 			protected void onFailure(Exception e) {
 			}
-		});*/
+		});
 	}
 
 	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {

@@ -138,10 +138,4 @@ public class ModelStoreSync {
 		
 		modelStore.createModel(modelClass, authToken, modelId, initializer);
 	}
-
-	public void save(NtroModel model) {
-		T.call(this);
-		
-		modelStore.save(model);
-	}
 }
