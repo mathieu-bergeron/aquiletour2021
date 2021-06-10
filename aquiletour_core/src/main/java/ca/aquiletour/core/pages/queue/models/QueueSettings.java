@@ -62,5 +62,21 @@ public class QueueSettings implements NtroModelValue {
 
 		getQueueMessage().set(queueMessage);
 	}
+
+	public static String removeSettingsFromQueueMessage(String queueMessageRaw) {
+		T.call(QueueSettings.class);
+		
+		String queueMessage = queueMessageRaw;
+		
+		if(queueMessage != null
+				&& queueMessage.contains("{sansHeures}")) {
+			
+			queueMessage = queueMessage.replace("{sansHeures}", "");
+		}
+		
+		queueMessage = queueMessage.trim();
+		
+		return queueMessage;
+	}
 	
 }

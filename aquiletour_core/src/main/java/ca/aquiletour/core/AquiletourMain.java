@@ -31,6 +31,7 @@ import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
+import ca.aquiletour.core.messages.queue.UpdateQueueInfoMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
@@ -533,6 +534,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(GitExerciseCompletion.class);
 		Ntro.registerSerializableClass(UserChangesPasswordMessage.class);
 		Ntro.registerSerializableClass(AddSemesterWeekMessage.class);
+
+		Ntro.registerSerializableClass(UpdateQueueInfoMessage.class);
 
 	}
 	
