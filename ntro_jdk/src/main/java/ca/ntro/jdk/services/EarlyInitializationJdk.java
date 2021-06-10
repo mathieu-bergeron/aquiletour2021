@@ -48,6 +48,6 @@ public class EarlyInitializationJdk extends EarlyInitialization {
 
 	@Override
 	protected ConfigService provideConfigService() {
-		throw new RuntimeException("TODO");
+		return new ConfigService();
 	}
 }

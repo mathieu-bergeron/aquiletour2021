@@ -9,6 +9,7 @@ import ca.ntro.services.ConfigService;
 import ca.ntro.services.EarlyInitialization;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 import ca.ntro.services.RouterService;
 import ca.ntro.web.NtroAppWeb;
@@ -25,11 +26,11 @@ public class NtroWebServer {
 																   Class<? extends BackendServiceServer> backendServiceClass, 
 			                                                       Class<? extends ModelStore> modelStoreClass,
 			                                                       Class<? extends MessageService> messageServiceClass,
-			                                                       ConfigService configService,
 			                                                       RouterService routerService) {
 		__T.call(NtroWebServer.class, "defaultInitializationTask");
 
 		earlyInitialization.performInitialization();
+
 		
 		NtroInitializationTask initializationTask = new NtroInitializationTask();
 		initializationTask.setTaskId(Constants.INITIALIZATION_TASK_ID);
@@ -37,7 +38,6 @@ public class NtroWebServer {
 		initializationTask.addSubTask(new InitializationTaskWebserver(backendServiceClass, 
 				                                                      modelStoreClass, 
 				                                                      messageServiceClass, 
-				                                                      configService, 
 				                                                      routerService));
 		return initializationTask;
 	}

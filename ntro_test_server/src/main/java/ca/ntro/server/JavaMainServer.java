@@ -18,6 +18,7 @@
 package ca.ntro.server;
 
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.jdk.services.EarlyInitializationJdk;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebServer;
 import ca.ntro.server.backend.BackendServiceTest;
@@ -27,7 +28,11 @@ public class JavaMainServer {
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		NtroWebServer.defaultInitializationTask(BackendServiceTest.class, LocalStoreFiles.class, MessageServiceWebserver.class, null, null)
+		NtroWebServer.defaultInitializationTask(new EarlyInitializationJdk(),
+												BackendServiceTest.class, 
+				                                LocalStoreFiles.class, 
+				                                MessageServiceWebserver.class, 
+				                                null)
 		             .setOptions(args)
 		             .addNextTask(new NtroServerMain())
 		             .execute();

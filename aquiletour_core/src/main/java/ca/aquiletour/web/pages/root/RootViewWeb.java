@@ -65,6 +65,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuEnterPassword;
 	private HtmlElement loginMenuEnterCode;
 	private HtmlElement loginMenuAddPassword;
+	private HtmlElement loginMenuNameContainer;
 	private HtmlElement currentPasswordContainer;
 	private HtmlElement modifyPasswordButton;
 	private HtmlElement loginMenuUserProfile;
@@ -102,6 +103,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuEnterPassword = getRootElement().find("#login-menu-enter-password").get(0);
 		loginMenuEnterCode = getRootElement().find("#login-menu-enter-code").get(0);
 		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
+		loginMenuNameContainer = getRootElement().find(".login-menu-name-container").get(0);
 		currentPasswordContainer = getRootElement().find("#current-password-container").get(0);
 		modifyPasswordButton = getRootElement().find("#modify-password-button").get(0);
 
@@ -176,11 +178,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		User user = (User) context.user();
-		String userName = user.getFirstname();
 		
 		addUserIdToValue.appendToAttribute("value", user.getId());
 
-		adjustLoginMenu(user, userName);
+		adjustLoginMenu(user);
 		adjustLinks(user);
 	}
 
@@ -242,11 +243,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 
-	private void adjustLoginMenu(User user, String userName) {
+	private void adjustLoginMenu(User user) {
 		T.call(this);
-		
-		System.out.println("adjustLoginMenu");
-		System.out.println(user);
 		
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
@@ -254,6 +252,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuEnterCode.hide();
 		loginMenuAddPassword.hide();
 		loginMenuUserProfile.hide();
+		loginMenuNameContainer.hide();
 		toggleAdminModeContainer.hide();
 		toggleStudentModeContainer.hide();
 
@@ -276,14 +275,19 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			String linkText = "Valider " + user.getEmail();
 			loginButton.text(linkText);
 			loginMenuEnterCode.show();
+			
+			if(shouldEnterName(user)) {
+				loginMenuNameContainer.show();
+			}
+			
 
 		}else if(user instanceof Teacher && !(user instanceof Admin)) {
 
-			adjustLoginMenuForTeacher(user, userName);
+			adjustLoginMenuForTeacher(user);
 
 		}else if(user instanceof Admin && !user.actsAsAdmin()) {
 
-			adjustLoginMenuForTeacher(user, userName);
+			adjustLoginMenuForTeacher(user);
 
 			toggleAdminModeContainer.show();
 			toggleAdminModeButton.removeClass("btn-secondary");
@@ -306,31 +310,53 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			toggleAdminModeButton.addClass("btn-secondary");
 
 		}else if(user instanceof Student) {
-			userName = displayName(user, userName);
-			
-			loginButton.text(userName);
+			loginButton.text(displayName(user));
 			loginMenuUserProfile.show();
 			userNameContainer.hide();
 			toggleStudentModeContainer.hide();
 		}
 	}
-
-
-	private void adjustLoginMenuForTeacher(User user, String userName) {
+	
+	private boolean shouldEnterName(User user) {
 		T.call(this);
 
-		userName = displayName(user, userName);
-		loginMenuUserProfile.show();
-		userNameInput.value(userName);
-		toggleStudentModeContainer.show();
-		loginButton.text(userName);
+		return !user.actsAsTeacher() && !user.getHasName();
 	}
 
-	private String displayName(User user, String userName) {
-		if(user.getLastname() != null && !user.getLastname().isEmpty()) {
-			userName += " " + user.getLastname();
+	private void adjustLoginMenuForTeacher(User user) {
+		T.call(this);
+
+		String displayName = displayName(user);
+		loginMenuUserProfile.show();
+		userNameInput.value(displayName);
+		toggleStudentModeContainer.show();
+		loginButton.text(displayName);
+	}
+
+	private String displayName(User user) {
+		String displayName = "";
+		
+		if(user.getFirstname() != null 
+				&& !user.getFirstname().isEmpty()) {
+			
+			displayName += user.getFirstname();
 		}
-		return userName;
+
+		if(user.getLastname() != null 
+				&& !user.getLastname().isEmpty()) {
+			
+			if(!displayName.isEmpty()) {
+				displayName += " ";
+			}
+
+			displayName += user.getLastname(); 
+		}
+		
+		if(displayName.isEmpty()) {
+			displayName = user.getId();
+		}
+		
+		return displayName;
 	}
 
 

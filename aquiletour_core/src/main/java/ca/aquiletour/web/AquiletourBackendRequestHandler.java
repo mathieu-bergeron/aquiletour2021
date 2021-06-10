@@ -141,9 +141,27 @@ public class AquiletourBackendRequestHandler {
 			Ntro.messages().send(itsNotMeMessage);
 
 		} else if(parameters.containsKey("loginCode")) {
+			
+			String loginCode = null;
+			String firstName = null;
+			String lastName = null;
+
+			if(parameters.containsKey("loginCode")) {
+				loginCode = parameters.get("loginCode")[0];
+			}
+
+			if(parameters.containsKey("firstName")) {
+				firstName = parameters.get("firstName")[0];
+			}
+
+			if(parameters.containsKey("lastName")) {
+				lastName = parameters.get("lastName")[0];
+			}
 
 			UserSendsLoginCodeMessage userSendsLoginCodeMessage = Ntro.messages().create(UserSendsLoginCodeMessage.class);
-			userSendsLoginCodeMessage.setLoginCode(parameters.get("loginCode")[0]);
+			userSendsLoginCodeMessage.setLoginCode(loginCode);
+			userSendsLoginCodeMessage.setFirstName(firstName);
+			userSendsLoginCodeMessage.setLastName(lastName);
 			userSendsLoginCodeMessage.setDelayedMessages(delayedMessages(parameters));
 			Ntro.messages().send(userSendsLoginCodeMessage);
 

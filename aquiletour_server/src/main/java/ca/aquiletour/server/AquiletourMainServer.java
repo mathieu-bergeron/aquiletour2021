@@ -42,6 +42,7 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
@@ -54,6 +55,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 	protected void runTaskAsync() {
 		T.call(this);
 		
+		PasswordDigest.initialize(((AquiletourConfig) Ntro.config()).getPasswordSalt());
 
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");

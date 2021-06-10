@@ -30,6 +30,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.http.DynamicHandler;
@@ -42,6 +43,7 @@ import ca.ntro.core.Constants;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import io.vertx.core.Vertx;
@@ -65,6 +67,8 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
+
+		PasswordDigest.initialize(((AquiletourConfig) Ntro.config()).getPasswordSalt());
 
 		ViewLoaderRegistrationWeb.registerViewLoaders();
 		

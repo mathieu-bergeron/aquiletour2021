@@ -145,13 +145,15 @@
                         <div id="login-menu-enter-code">
                             <form action="" method="post">
                                 <input name="delayedMessages" class="add-delayed-messages-to-value" style="display:none;"></input>
-                                <div class="form-group row mb-3 mx-2">
-                                    <label for="firstName">Prénom</label>
-                                    <input name="firstName"></input>
-                                </div>
-                                <div class="form-group row mb-3 mx-2">
-                                    <label for="lastName">Nom</label>
-                                    <input name="lastName"></input>
+                                <div class="login-menu-name-container">
+                                    <div class="form-group row mb-3 mx-2">
+                                        <label for="firstName">Prénom</label>
+                                        <input name="firstName"></input>
+                                    </div>
+                                    <div class="form-group row mb-3 mx-2">
+                                        <label for="lastName">Nom de famille</label>
+                                        <input name="lastName"></input>
+                                    </div>
                                 </div>
                                 <div class="form-group row mb-3 mx-2">
                                     <label for="loginCode">Code reçu par courriel</label>
@@ -210,7 +212,7 @@
                             </div>
                             <form action="" method="post" id="show-password-menu-form">
                                 <input name="showPasswordMenu" style="display:none;"></input>
-                                <a href="#" class="dropdown-item submit-link" id="show-password-menu-link" form="show-password-menu-form" style="min-width:14rem;">Modifier mon mot de passe</a>
+                                <a href="#" class="dropdown-item submit-link" id="show-password-menu-link" form="show-password-menu-form" style="min-width:14rem;">Ajouter un mot de passe</a>
                             </form>
                             <form action="" method="post" id="logout-form">
                                 <input name="logout" style="display:none;"></input>

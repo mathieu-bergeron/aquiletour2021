@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import ca.aquiletour.server.AquiletourConfig;
+import ca.aquiletour.server.EarlyInitializationServer;
 import ca.aquiletour.server.LocalStoreServer;
 import ca.aquiletour.server.MessageServiceWebserver;
 import ca.aquiletour.server.backend.AquiletourBackendService;
@@ -15,21 +16,12 @@ import ca.ntro.services.RouterService;
 public class JavaMainVertx {
 	
 	public static void main(String[] args) {
-		String userHome = System.getProperty("user.home");
-		
-		Path configFilepath = Paths.get(userHome, ".aiguilleur", "config.json");
-		
-		AquiletourConfig config = AquiletourConfig.loadFromJson(configFilepath);
 
-		PasswordDigest.initialize(config.getPasswordSalt());
-		
-		RouterService routerService = new AquiletourRouterService();
-		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, 
+		NtroWebServer.defaultInitializationTask(new EarlyInitializationServer(),
+												AquiletourBackendService.class, 
 				                                LocalStoreServer.class, 
 				                                MessageServiceWebserver.class, 
-				                                config, 
-				                                routerService)
+				                                new AquiletourRouterService())
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServerVertx())
 		             .execute();

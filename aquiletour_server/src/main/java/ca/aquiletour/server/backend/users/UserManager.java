@@ -558,4 +558,32 @@ public class UserManager {
 			userToUpdate.copyPublicInfomation(storedUser);
 		});
 	}
+
+	public static void updateUserName(ModelStoreSync modelStore, 
+			                          String firstName, 
+			                          String lastName, 
+			                          String userId) throws BackendError {
+		T.call(UserManager.class);
+		
+		modelStore.updateModel(User.class, "admin", userId, user -> {
+			
+			if(!user.getHasName()) {
+				
+				if(firstName != null 
+						&& !firstName.isEmpty()) {
+
+					user.setFirstname(firstName);
+					user.setHasName(true);
+				}
+				
+				if(lastName != null
+						&& !lastName.isEmpty()) {
+
+					user.setLastname(lastName);
+					user.setHasName(true);
+				}
+			}
+		});
+		
+	}
 }

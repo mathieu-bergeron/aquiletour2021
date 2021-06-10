@@ -14,6 +14,7 @@ public class User extends NtroUser {
 
 	private String passwordHash = "";
 	private boolean hasPassword = false;
+	private boolean hasName = false;
 
 	public User() {
 
@@ -68,6 +69,14 @@ public class User extends NtroUser {
 		this.hasPassword = hasPassword;
 	}
 
+	public boolean getHasName() {
+		return hasName;
+	}
+
+	public void setHasName(boolean hasName) {
+		this.hasName = hasName;
+	}
+
 	public User toPublicUser() {
 		T.call(this);
 		
@@ -87,6 +96,7 @@ public class User extends NtroUser {
 		setLastname(user.getLastname());
 		setEmail(user.getEmail());
 		setHasPassword(user.getHasPassword());
+		setHasName(user.getHasName());
 	}
 
 	public User toSessionUser() {
@@ -107,6 +117,7 @@ public class User extends NtroUser {
 		sessionUser.setLastname(getLastname());
 		sessionUser.setEmail(getEmail());
 		sessionUser.setHasPassword(getHasPassword());
+		sessionUser.setHasName(getHasName());
 	}
 
 	public boolean actsAsTeacher() {

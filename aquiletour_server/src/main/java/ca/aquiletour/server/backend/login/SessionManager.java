@@ -356,4 +356,20 @@ public class SessionManager {
 		});
 	}
 
+	public static void updateUser(ModelStoreSync modelStore, 
+			                      String userId) throws BackendError {
+
+		T.call(SessionManager.class);
+		
+		modelStore.readModel(User.class, "admin", userId, user -> {
+			T.call(SessionManager.class);
+
+			SessionManager.updateSession(modelStore, user.getAuthToken(), session -> {
+				T.call(SessionManager.class);
+
+				session.setUser(user.toSessionUser());
+			});
+		});
+	}
+
 }

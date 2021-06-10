@@ -22,18 +22,13 @@ import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.MessageServiceWebserver;
 import ca.aquiletour.server.backend.AquiletourBackendService;
 import ca.ntro.core.models.ModelLoader;
-import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.jdk.services.LocalStoreFiles;
 import ca.ntro.jdk.web.NtroWebServer;
-import ca.ntro.services.BackendService;
-import ca.ntro.services.ModelStore;
-import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.util.HttpCookieStore;
-import org.hamcrest.MatcherAssert;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -47,7 +42,7 @@ public class BackendTests {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreFiles.class, MessageServiceWebserver.class, null, null)
+		NtroWebServer.defaultInitializationTask(null, AquiletourBackendService.class, LocalStoreFiles.class, MessageServiceWebserver.class, null)
 		             .execute();
 	}
 	

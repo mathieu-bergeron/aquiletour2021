@@ -71,7 +71,7 @@ public class LocalStoreFiles extends ModelStore {
 		File collectionDir = collectionDirPath.toFile();
 		
 		if(!collectionDir.exists()) {
-			collectionDir.mkdir();
+			collectionDir.mkdirs();
 		}
 		
 		Path modelFilePath = Paths.get(collectionDir.getAbsolutePath(), documentPath.getDocumentId() + ".json");

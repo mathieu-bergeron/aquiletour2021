@@ -3,6 +3,7 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.registered_sockets.RegisteredSockets;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
@@ -22,10 +23,16 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
+		String firstName = message.getFirstName();
+		String lastName = message.getLastName();
 
 		if(SessionManager.ifLoginCodeValid(modelStore, authToken, loginCode)) {
 
 			SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
+			
+			UserManager.updateUserName(modelStore, firstName, lastName, userId);
+			
+			SessionManager.updateUser(modelStore, userId);
 			
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());

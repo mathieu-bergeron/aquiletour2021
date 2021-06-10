@@ -28,7 +28,7 @@ public class CommitListModelGenerator {
 	
 	@BeforeClass
 	public static void initializeNtro(){
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, LocalStoreFiles.class, MessageServiceWebserver.class, null, null)
+		NtroWebServer.defaultInitializationTask(null, AquiletourBackendService.class, LocalStoreFiles.class, MessageServiceWebserver.class, null)
 		             .execute();
 		
 		random = new Random(Ntro.calendar().now().getEpochSeconds());

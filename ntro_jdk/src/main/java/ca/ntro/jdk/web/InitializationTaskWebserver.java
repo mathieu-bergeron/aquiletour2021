@@ -16,13 +16,11 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 	private final Class<? extends BackendServiceServer> backendServiceClass;
 	private final Class<? extends ModelStore> modelStoreClass;
 	private final Class<? extends MessageService> messageServiceClass;
-	private final ConfigService configService;
 	private final RouterService routerService;
 
 	public InitializationTaskWebserver(Class<? extends BackendServiceServer> backendServiceClass, 
 			                           Class<? extends ModelStore> modelStoreClass, 
 			                           Class<? extends MessageService> messageServiceClass, 
-			                           ConfigService configService,
 			                           RouterService routerService) {
 		super();
 		T.call(this);
@@ -30,7 +28,6 @@ public class InitializationTaskWebserver extends InitializationTaskJdk {
 		this.backendServiceClass = backendServiceClass;
 		this.modelStoreClass = modelStoreClass;
 		this.messageServiceClass = messageServiceClass;
-		this.configService = configService;
 		this.routerService = routerService;
 	}
 
