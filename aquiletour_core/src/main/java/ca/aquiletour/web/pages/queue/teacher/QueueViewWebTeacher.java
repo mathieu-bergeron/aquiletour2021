@@ -18,11 +18,16 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuCourseTemplate;
 	private HtmlElement queueMenuGroupTemplate;
 
+	private HtmlElement timeControlsContainer;
+
 	private HtmlElement queuePermalink;
+
+	private HtmlElement queueMessageAllCourses;
 
 	private HtmlElements addAllCoursesIdToId;
 	private HtmlElements addAllCoursesIdToValue;
 	private HtmlElements addAllCoursesIdToForm;
+	private HtmlElements addActiveSemestersIdToValue;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -33,7 +38,11 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuButton = this.getRootElement().find("#queue-menu-button").get(0);
 		queueMenuCoursesContainer = this.getRootElement().find("#queue-menu-courses-container").get(0);
 
+		timeControlsContainer = this.getRootElement().find(".time-controls-container").get(0);
+
 		queuePermalink = this.getRootElement().find(".queue-permalink").get(0);
+
+		queueMessageAllCourses = this.getRootElement().find(".queue-message-all-courses").get(0);
 
 		queueMenuCourseTemplate = this.getRootElement().find(".queue-menu-course-template").get(0);
 		queueMenuGroupTemplate = this.getRootElement().find(".queue-menu-group-template").get(0);
@@ -44,7 +53,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		MustNot.beNull(queueMenuCourseTemplate);
 		MustNot.beNull(queueMenuGroupTemplate);
 
+		MustNot.beNull(timeControlsContainer);
+
 		MustNot.beNull(queuePermalink);
+		MustNot.beNull(queueMessageAllCourses);
 
 		queueMenuCourseTemplate.hide();
 		queueMenuGroupTemplate.hide(); 
@@ -52,10 +64,15 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		addAllCoursesIdToId = this.getRootElement().find(".add-all-courses-id-to-id");
 		addAllCoursesIdToValue = this.getRootElement().find(".add-all-courses-id-to-value");
 		addAllCoursesIdToForm = this.getRootElement().find(".add-all-courses-id-to-form");
+
+		addActiveSemestersIdToValue = this.getRootElement().find(".add-active-semesters-id-to-value");
 		
 		addAllCoursesIdToId.appendToAttribute("id", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToValue.appendToAttribute("value", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToForm.appendToAttribute("form", Constants.ALL_COURSES_ID);
+		
+		addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
+
 		
 		queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
 	}
@@ -243,5 +260,21 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 				titleElement.text(title);
 			}
 		}
+	}
+
+	@Override
+	public void displayQueueMessage(CoursePath coursePath, String queueMessage) {
+		T.call(this);
+		
+		if(coursePath.isAllCourses()) {
+			queueMessageAllCourses.text(queueMessage);
+		}
+	}
+
+	@Override
+	public void showAppointmentTimes(boolean shouldShow) {
+		T.call(this);
+		
+		timeControlsContainer.setVisibility(shouldShow);
 	}
 }

@@ -212,6 +212,54 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 		T.call(this);
 
 		observeIsQueueOpen(model, CoursePath.allCourses(), null, mainSettings.getIsQueueOpen(), view);
+		observeQueueMessage(mainSettings, view);
+		
+		mainSettings.getShowAppointmentTimes().removeObservers();
+		mainSettings.getShowAppointmentTimes().observe(new ValueObserver<Boolean>() {
+			@Override
+			public void onValue(Boolean value) {
+				T.call(this);
+				
+				view.showAppointmentTimes(value);
+			}
+
+			@Override
+			public void onDeleted(Boolean lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onValueChanged(Boolean oldValue, Boolean value) {
+				T.call(this);
+				
+				view.showAppointmentTimes(value);
+			}
+		});
+		
+	}
+
+	private void observeQueueMessage(QueueSettings mainSettings, QueueViewTeacher view) {
+		mainSettings.getQueueMessage().removeObservers();
+		mainSettings.getQueueMessage().observe(new ValueObserver<String>() {
+			@Override
+			public void onValue(String value) {
+				T.call(this);
+				
+				view.displayQueueMessage(CoursePath.allCourses(), value);
+			}
+
+			@Override
+			public void onDeleted(String lastValue) {
+			}
+
+			@Override
+			public void onValueChanged(String oldValue, String value) {
+				T.call(this);
+
+				view.displayQueueMessage(CoursePath.allCourses(), value);
+			}
+		});
 	}
 
 	private void updateIsQueueOpen(QueueModel model, QueueViewTeacher view) {

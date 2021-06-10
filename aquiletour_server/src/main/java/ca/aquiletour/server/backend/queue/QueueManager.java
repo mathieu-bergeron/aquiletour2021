@@ -275,4 +275,23 @@ public class QueueManager {
 			}
 		});
 	}
+
+	public static void updateQueueInfo(ModelStoreSync modelStore, 
+			                           String semesterId, 
+			                           String courseId, 
+			                           String groupId, 
+			                           String queueMessage,
+			                           String queueId) throws BackendError {
+
+		T.call(QueueManager.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.updateQueueMessage(semesterId, courseId, groupId, queueMessage);
+			}
+		});
+	}
 }

@@ -9,7 +9,7 @@ public class QueueSettings implements NtroModelValue {
 	
 	private StoredBoolean isQueueOpen = new StoredBoolean();
 	private StoredBoolean showAppointmentTimes = new StoredBoolean();
-	private StoredString messageToStudents = new StoredString();
+	private StoredString queueMessage = new StoredString();
 
 	public StoredBoolean getIsQueueOpen() {
 		return isQueueOpen;
@@ -27,12 +27,12 @@ public class QueueSettings implements NtroModelValue {
 		this.showAppointmentTimes = showAppointmentTimes;
 	}
 
-	public StoredString getMessageToStudents() {
-		return messageToStudents;
+	public StoredString getQueueMessage() {
+		return queueMessage;
 	}
 
-	public void setMessageToStudents(StoredString messageToStudents) {
-		this.messageToStudents = messageToStudents;
+	public void setQueueMessage(StoredString queueMessage) {
+		this.queueMessage = queueMessage;
 	}
 
 	public boolean isQueueOpen() {
@@ -46,6 +46,21 @@ public class QueueSettings implements NtroModelValue {
 		
 		getIsQueueOpen().set(isQueueOpen);
 	}
-	
+
+	public void updateQueueMessage(String queueMessage) {
+		T.call(this);
+		
+		if(queueMessage.contains("{sansHeures}")) {
+
+			getShowAppointmentTimes().set(false);
+
+		}else {
+
+			getShowAppointmentTimes().set(true);
+
+		}
+
+		getQueueMessage().set(queueMessage);
+	}
 	
 }

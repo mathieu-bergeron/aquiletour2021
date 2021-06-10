@@ -6,7 +6,7 @@ import ca.ntro.models.NtroDate;
 
 public interface AppointmentView extends NtroView {
 	
-	void displayAppointement(String queueId, String userId, Appointment appointment);
+	void displayAppointement(String queueId, String userId, boolean displayTime, Appointment appointment);
 
 	void displayCourseTitle(String courseTitle);
 	void displayTaskTitle(String taskTitle);

@@ -46,13 +46,15 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	}
 
 	@Override
-	public void displayAppointement(String queueId, String userId, Appointment appointment) {
+	public void displayAppointement(String queueId, String userId, boolean displayTime, Appointment appointment) {
 		T.call(this);
 
 		String userName = appointment.getStudentName();
 		if(appointment.getStudentSurname().length() > 0) {
 			userName += " " + appointment.getStudentSurname();
 		}
+		
+		time.display(displayTime);
 		
 		studentName.text(userName);
 

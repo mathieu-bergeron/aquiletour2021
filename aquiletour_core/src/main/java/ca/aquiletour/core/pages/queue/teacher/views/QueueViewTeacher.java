@@ -15,5 +15,7 @@ public interface QueueViewTeacher extends QueueView {
 	void displayCourseTitle(CoursePath coursePath, String title);
 	void removeFromQueueMenu(CoursePath coursePath);
 	void removeFromQueueMenu(CoursePath coursePath, String groupId);
+	void displayQueueMessage(CoursePath coursePath, String queueMessage);
+	void showAppointmentTimes(boolean shouldShow);
 
 }

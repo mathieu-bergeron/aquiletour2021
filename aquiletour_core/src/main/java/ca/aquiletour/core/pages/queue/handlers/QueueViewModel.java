@@ -38,7 +38,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				
 				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
 				
-				appointmentView.displayAppointement(model.getQueueId(), currentUserId, item);
+				appointmentView.displayAppointement(model.getQueueId(), currentUserId, model.getMainSettings().getShowAppointmentTimes().getValue(), item);
 				
 				observeAppointment(item, appointmentView);
 				

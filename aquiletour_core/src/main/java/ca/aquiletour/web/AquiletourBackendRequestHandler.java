@@ -7,6 +7,7 @@ import java.util.Map;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.AtomicTaskMessage;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
+import ca.aquiletour.core.messages.queue.UpdateQueueInfoMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
@@ -496,7 +497,34 @@ public class AquiletourBackendRequestHandler {
 			
 		}else if(parameters.containsKey("openQueueGroupId")) {
 			
+		}else if(parameters.containsKey("queueMessage")) {
+			
+			UpdateQueueInfoMessage updateQueueInfoMessage = Ntro.messages().create(UpdateQueueInfoMessage.class);
+			
+			updateQueueInfoMessage.setTeacherId(user.getId());
+			updateQueueInfoMessage.setCourseId(paramValue("courseId", parameters));
+			updateQueueInfoMessage.setSemesterId(paramValue("semesterId", parameters));
+			updateQueueInfoMessage.setQueueMessage(paramValue("queueMessage", parameters));
+			
+			Ntro.messages().send(updateQueueInfoMessage);
 		}
+	}
+
+	private static String paramValue(String paramName, Map<String, String[]> parameters) {
+		T.call(AquiletourBackendRequestHandler.class);
+		
+		String paramValue = null;
+		
+		if(parameters.containsKey(paramName)) {
+
+			String[] values = parameters.get(paramName);
+
+			if(values.length > 0) {
+				paramValue = parameters.get(paramName)[0];
+			}
+		}
+		
+		return paramValue;
 	}
 
 	private static void sendAppointmentMessages(Map<String, String[]> parameters, User user, String queueId) {

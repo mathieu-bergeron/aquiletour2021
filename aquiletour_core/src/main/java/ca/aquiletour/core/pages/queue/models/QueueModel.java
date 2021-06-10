@@ -389,4 +389,16 @@ public class QueueModel implements NtroModel {
 	public void addAppointment(User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
 		
 	}
+
+	public void updateQueueMessage(String semesterId, String courseId, String groupId, String queueMessage) {
+		T.call(this);
+		
+		if(semesterId != null
+				&& courseId != null
+				&& semesterId.equals(Constants.ACTIVE_SEMESTERS_ID)
+				&& courseId.equals(Constants.ALL_COURSES_ID)) {
+
+			mainSettings.updateQueueMessage(queueMessage);
+		}
+	}
 }
