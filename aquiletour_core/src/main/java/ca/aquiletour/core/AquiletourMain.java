@@ -83,9 +83,11 @@ import ca.aquiletour.core.models.dates.StoredAquiletourDate;
 import ca.aquiletour.core.models.logs.LogModelCourse;
 import ca.aquiletour.core.models.logs.LogModelQueue;
 import ca.aquiletour.core.models.logs.UserById;
+import ca.aquiletour.core.models.logs.AppointmentRevision;
 import ca.aquiletour.core.models.logs.LogItemById;
 import ca.aquiletour.core.models.logs.LogItemByIdQueue;
 import ca.aquiletour.core.models.logs.LogItemCourse;
+import ca.aquiletour.core.models.logs.LogItemQueue;
 import ca.aquiletour.core.models.logs.LogItemsCourse;
 import ca.aquiletour.core.models.logs.LogItemsQueue;
 import ca.aquiletour.core.models.paths.CoursePath;
@@ -549,6 +551,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(LogItemByIdQueue.class);
 		Ntro.registerSerializableClass(LogItemsQueue.class);
+		Ntro.registerSerializableClass(LogItemQueue.class);
+		Ntro.registerSerializableClass(AppointmentRevision.class);
 
 	}
 	

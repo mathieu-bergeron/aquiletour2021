@@ -121,7 +121,6 @@ public class QueueManager {
 						
 						logNewAppointment(modelStore, queueId, user, timestamp, appointment);
 					}
-
 				});
 			}
 		});
@@ -134,16 +133,31 @@ public class QueueManager {
 			                              Appointment appointment) {
 		T.call(QueueManager.class);
 		
+		try {
+			modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
+
+				queueLog.addAppointement(timestamp, user, appointment);
+
+			});
+
+		} catch (BackendError e) {
+
+			Log.warning("[logNewAppointement] error: " + e.getMessage());
+		}
+
+		/*
 		Ntro.threadService().executeLater(new NtroTaskSync() {
 			@Override
 			protected void runTask() {
 				try {
-					modelStore.updateModel(LogModelQueue.class, "admin", queueId, logQueue -> {
-						
-						logQueue.addAppointement(timestamp, user, appointment);
+					modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
+
+						queueLog.addAppointement(timestamp, user, appointment);
+
 					});
+
 				} catch (BackendError e) {
-					
+
 					Log.warning("[logNewAppointement] error: " + e.getMessage());
 				}
 			}
@@ -151,7 +165,7 @@ public class QueueManager {
 			@Override
 			protected void onFailure(Exception e) {
 			}
-		});
+		});*/
 	}
 
 	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {

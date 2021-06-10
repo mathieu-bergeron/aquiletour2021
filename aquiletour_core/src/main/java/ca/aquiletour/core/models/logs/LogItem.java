@@ -15,7 +15,7 @@ public abstract class LogItem implements NtroModelValue {
 	}
 	
 	private LogModel<?,?> logModel = LogModel.empty();
-	private NtroDate timestamp = new NtroDate();
+	private String timestamp = "";
 	private String userId = "";
 
 	private TaskPath taskPath = new TaskPath();
@@ -54,12 +54,16 @@ public abstract class LogItem implements NtroModelValue {
 		this.logModel = logModel;
 	}
 
-	public NtroDate getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(NtroDate timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public void updateTimestamp(NtroDate timestamp) {
+		setTimestamp(formatTimestamp(timestamp));
 	}
 
 	public String getUserId() {
@@ -87,7 +91,7 @@ public abstract class LogItem implements NtroModelValue {
 			                             StringBuilder builder) {
 		T.call(this);
 
-		builder.append(formatTimestamp(getTimestamp()));
+		builder.append(getTimestamp());
 
 		User user = logModel.userByUd(getUserId());
 

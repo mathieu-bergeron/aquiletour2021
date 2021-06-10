@@ -37,7 +37,16 @@ public abstract class ModelStore {
 	public static final String MODEL_ID_KEY="modelId";
 	public static final String MODEL_DATA_KEY="modelData";
 	
-	private Set<DocumentPath> modelsToSave = Ntro.collections().concurrentSet(new HashSet<>());
+	private class ModelAndPath {
+		public NtroModel model;
+		public DocumentPath path;
+		public ModelAndPath(NtroModel model, DocumentPath path) {
+			this.model = model;
+			this.path = path;
+		}
+	}
+
+	private Set<ModelAndPath> modelsToSave = Ntro.collections().concurrentSet(new HashSet<>());
 	private List<DocumentPath> saveHistory = Ntro.collections().synchronizedList(new ArrayList<>());
 
 	private Map<NtroModel, DocumentPath> localHeap = Ntro.collections().concurrentMap(new HashMap<>());
@@ -166,6 +175,7 @@ public abstract class ModelStore {
 			                               ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 		
+
 		M model = null;
 		synchronized(localHeap) {
 			if(ifModelExists(modelClass, authToken, modelId)) {
@@ -390,14 +400,16 @@ public abstract class ModelStore {
 		DocumentPath documentPath = null;
 		synchronized (localHeap) {
 			documentPath = Ntro.collections().getByKeyExact(localHeap, model);
-			if(documentPath != null) {
-				modelsToSave.add(documentPath);
-				saveLater();
-			}
 		}
 
-		if(documentPath == null) {
+		if(documentPath != null) {
+
+			modelsToSave.add(new ModelAndPath(model, documentPath));
+			saveLater();
+
+		}else {
 			Log.warning("[save] model not in localHeap: " + model);
+			
 		}
 	}
 
@@ -422,17 +434,17 @@ public abstract class ModelStore {
 		T.call(this);
 
 		synchronized (modelsToSave) {
-			for(DocumentPath documentPath : modelsToSave) {
-				saveModelAndManageHeap(documentPath);
+			for(ModelAndPath modelAndPath : modelsToSave) {
+				saveModelAndManageHeap(modelAndPath.model, modelAndPath.path);
 			}
 			modelsToSave.clear();
 		}
 	}
 
-	public void saveModelAndManageHeap(DocumentPath documentPath) {
+	public void saveModelAndManageHeap(NtroModel model, DocumentPath documentPath) {
 		T.call(this);
 		
-		NtroModel model = saveModelNow(documentPath);
+		saveModelNow(model, documentPath);
 
 		synchronized (saveHistory) {
 			if(!Ntro.collections().containsItemEquals(saveHistory, documentPath)) {
@@ -441,7 +453,7 @@ public abstract class ModelStore {
 		}
 
 		if(Ntro.introspector().ntroClassFromObject(model).ifImplements(DoNotCacheModel.class)) {
-			removeModelFromHeap(documentPath);
+			removeModelFromHeap(model, documentPath);
 		}
 
 		if(localHeap.size() > maxHeapSize()) {
@@ -449,22 +461,14 @@ public abstract class ModelStore {
 		}
 	}
 
-	private NtroModel saveModelNow(DocumentPath documentPath) {
+	private void saveModelNow(NtroModel model, DocumentPath documentPath) {
 		T.call(this);
 
-		NtroModel model = null;
-		synchronized (localHeap) {
-			model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
-		}
-		
 		if(model != null) {
 			synchronized (model) {
 				saveDocument(documentPath, Ntro.jsonService().toString(model));
 			}
-		}else {
-			Log.warning("[save] model not in localHeap " + documentPath.toString());
 		}
-		return model;
 	}
 
 	private void removeOldestModelFromHeap() {
@@ -474,19 +478,20 @@ public abstract class ModelStore {
 
 		if(documentPath != null) {
 			synchronized (localHeap) {
-				saveModelNow(documentPath);
-				removeModelFromHeap(documentPath);
+				NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+
+				if(model != null) {
+					saveModelNow(model, documentPath);
+					removeModelFromHeap(model, documentPath);
+				}
 			}
 		}
 	}
 
-	private void removeModelFromHeap(DocumentPath documentPath) {
+	private void removeModelFromHeap(NtroModel model, DocumentPath documentPath) {
 		T.call(this);
 
 		synchronized(localHeap) {
-
-			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
-
 			Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
 			Ntro.collections().removeByKeyExact(localHeap, model);
 		}

@@ -56,7 +56,7 @@ public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> imp
 		
 		logItem.setLogModel(this);
 
-		logItem.setTimestamp(timestamp);
+		logItem.updateTimestamp(timestamp);
 
 		memorizeUser(user);
 		logItem.setUserId(user.getId());
