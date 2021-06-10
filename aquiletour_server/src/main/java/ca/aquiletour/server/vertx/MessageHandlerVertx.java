@@ -66,7 +66,6 @@ public class MessageHandlerVertx {
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
 
 			Ntro.backendService().sendMessageToBackend(message);
-		   // Ntro.messages().send(message);
 
 		}catch(ClassCastException e) {
 			
