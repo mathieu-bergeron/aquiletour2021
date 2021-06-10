@@ -25,9 +25,8 @@ def process(task_req, maria_conn, lite_conn):
     cur.execute('''SELECT re.repo_url, co.commit_id, cf.file_path, re.repo_path, co.summary, 
                         co.exercise_path AS co_ex_path, cf.exercise_path AS cf_ex_path,
                         re.group_id, re.student_id 
-                    FROM repository re, commit co, commit_file cf 
-                    WHERE re.repo_url = co.repo_url AND co.repo_url = cf.repo_url AND co.commit_id = cf.commit_id
-                    AND re.session_id=%s AND re.course_id=%s AND re.teacher_id=%s
+                    FROM repository re JOIN commit co USING (repo_url) JOIN commit_file cf USING (repo_url,commit_id)
+                    WHERE re.session_id=%s AND re.course_id=%s AND re.teacher_id=%s
                     ORDER BY re.repo_url, co.commit_id''',
                     (semester, course, teacher))
     cur_commitId = ''
@@ -62,14 +61,14 @@ def process(task_req, maria_conn, lite_conn):
                 message['studentId'] = row['student_id']
                 if row['co_ex_path']:
                     message['exercisePath'] = row['co_ex_path']
-                    message['exerciseCompleted'] = 'False'
+                    message['exerciseCompleted'] = False
                     utils.net_utils.send_message(message)
                 cur.execute('UPDATE commit \
                     SET exercise_path = %s \
                     WHERE repo_url= %s AND commit_id = %s', (new_co_exPath, row['repo_url'], row['commit_id']))
                 if new_co_exPath:
                     message['exercisePath'] = new_co_exPath
-                    message['exerciseCompleted'] = 'True'
+                    message['exerciseCompleted'] = True
                     utils.net_utils.send_message(message)
         # check each file
         new_cf_exPath = utils.data_matcher.find_exercise_from_path(ex_list,rp_list,fp_list, row['repo_path'], row['file_path'])

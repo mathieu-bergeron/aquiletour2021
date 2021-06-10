@@ -15,9 +15,44 @@ def find_exercise_for_course(semester, course, teacher, group, maria_conn):
                     WHERE session_id=%s AND course_id=%s AND teacher_id=%s''',
                     (semester, course, teacher))
     lines = cur.fetchall()
+    if not lines:
+        lines = [['/','/','/',None]]
+        print('NO EXERCISE, ADDING DUMMY')
+    if ['/','/','/',None] not in lines:
+        lines.append(['/','/','/',None])
+        print('NO DUMMY... ADDING')
     cols = utils.normalize_data.transpose(lines)
 #    print('NB EX = ' + str(len(lines)))
     return cols[0], cols[1], cols[2], cols[3]
+
+def prepare_commit_list(lines):
+    body = {}
+    body['_C'] = 'ObservableCommitList'
+    body['value'] = []
+    cur_commit = ''
+    one_commit = None
+    for one_line in lines:
+        if cur_commit != one_line['commit_id']:
+            cur_commit = one_line['commit_id']
+            if one_commit:
+                body['value'].append(one_commit)
+            one_commit = {}
+            one_commit['_C'] = 'Commit'
+            one_commit['commitId'] = one_line['commit_id']
+            one_commit['exercisePathIfCompleted'] = one_line['co_ex_path']
+            one_commit['commitMessageFirstLine'] = one_line['summary']
+            one_commit['commitMessage'] = one_line['message']
+            one_commit['timeStamp'] = int(one_line['commit_date'].timestamp())
+            one_commit['modifiedFiles'] = []
+        one_file = {}
+        one_file['path'] = one_line['file_path']
+        one_file['estimatedEffort'] = one_line['effort']
+        one_file['exercisePath'] = one_line['cf_ex_path']
+        one_file['message'] = ''
+        one_commit['modifiedFiles'].append(one_file)
+    if one_commit:
+        body['value'].append(one_commit)
+    return body
 
 def add_task(task, priority, lite_conn):
     cur = lite_conn.cursor()
@@ -36,3 +71,4 @@ def add_task(task, priority, lite_conn):
         lite_conn.commit()
     cur.close()
     return body
+

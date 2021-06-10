@@ -82,7 +82,7 @@ def update_commit_db(semester, course, teacher, group, student, repo_path, depot
         one_commit['exercisePathIfCompleted'] = completed_ex
         one_commit['commitMessageFirstLine'] = commit_sum
         one_commit['commitMessage'] = commit_msg
-        one_commit['timeStamp'] = int(commit_date.timestamp())
+        one_commit['timeStamp'] = commit.authored_date
         one_commit['modifiedFiles'] = []
         for file_name,stat in commit.stats.files.items():
             insert = stat['insertions']

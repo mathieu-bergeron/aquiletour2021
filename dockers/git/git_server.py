@@ -169,8 +169,8 @@ if __name__=="__main__":
             VALUES ('H2021','420-ZF5','nicolas.leduc','02', '/Semaine 3/Atelier 4', '/', '/420-ZF5/AT04', 'AT04')''')
         cur2.execute('''INSERT INTO exercise 
             VALUES ('H2021','420-ZF5','nicolas.leduc','03', '/Semaine 3/Atelier 2', '/', '/420-ZF5/AT02', 'Atelier 2')''')
-        cur2.execute('''INSERT INTO exercise 
-            VALUES ('A2020','420-ZC6','nicolas.leduc','01', '/', '/', '/', NULL)''')
+#        cur2.execute('''INSERT INTO exercise 
+#            VALUES ('A2020','420-ZC6','nicolas.leduc','01', '/', '/', '/', NULL)''')
         cur2.execute('''INSERT INTO exercise 
             VALUES ('H2021','420-ZF5','nicolas.leduc','__NONE__', '/Semaine 3/Atelier 4a', '/', '/420-ZC6/AT04A', 'TestAuto')''')
 #        cur2.execute('''INSERT INTO exercise 
