@@ -3,8 +3,6 @@ package ca.aquiletour.core.models.logs;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.core.models.paths.CoursePath;
-import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.StoredTags;
 import ca.ntro.core.models.NtroModelValue;

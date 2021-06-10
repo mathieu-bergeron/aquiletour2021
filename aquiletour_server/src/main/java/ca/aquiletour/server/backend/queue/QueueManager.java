@@ -1,15 +1,20 @@
 package ca.aquiletour.server.backend.queue;
 
+import ca.aquiletour.core.models.logs.LogModelQueue;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.models.AppointmentAddedListener;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.models.NtroDate;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
@@ -21,6 +26,16 @@ public class QueueManager {
 		T.call(QueueManager.class);
 		
 		createQueue(modelStore, user.getId());
+		createQueueLog(modelStore, user.getId());
+	}
+
+	public static void createQueueLog(ModelStoreSync modelStore,
+			                          String queueId) throws BackendError {
+		T.call(QueueManager.class);
+		
+		modelStore.createModel(LogModelQueue.class, "admin", queueId, logModel -> {
+			
+		});
 	}
 
 	public static void createQueue(ModelStoreSync modelStore,
@@ -89,25 +104,62 @@ public class QueueManager {
 			                                 User user) throws BackendError {
 
 		T.call(QueueManager.class);
+		
+		NtroDate timestamp = Ntro.calendar().now();
 
-		Appointment appointment = createAppointment(user, coursePath, taskPath, taskTitle);
+		Appointment appointment = createAppointment(timestamp, user, coursePath, taskPath, taskTitle);
 		
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
 
-				queue.addAppointment(appointment);
+				queue.addAppointment(appointment, new AppointmentAddedListener() {
+					@Override
+					public void onAppointementAdded(Appointment appointment) {
+						T.call(user);
+						
+						logNewAppointment(modelStore, queueId, user, timestamp, appointment);
+					}
+
+				});
 			}
 		});
 	}
 
-	private static Appointment createAppointment(User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
+	private static void logNewAppointment(ModelStoreSync modelStore, 
+			                              String queueId, 
+			                              User user, 
+			                              NtroDate timestamp, 
+			                              Appointment appointment) {
+		T.call(QueueManager.class);
+		
+		Ntro.threadService().executeLater(new NtroTaskSync() {
+			@Override
+			protected void runTask() {
+				try {
+					modelStore.updateModel(LogModelQueue.class, "admin", queueId, logQueue -> {
+						
+						logQueue.addAppointement(timestamp, user, appointment);
+					});
+				} catch (BackendError e) {
+					
+					Log.warning("[logNewAppointement] error: " + e.getMessage());
+				}
+			}
+
+			@Override
+			protected void onFailure(Exception e) {
+			}
+		});
+	}
+
+	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
 		T.call(QueueManager.class);
 
 		Appointment appointment = new Appointment();
 
-		appointment.updateTime(Ntro.calendar().now());
+		appointment.updateTime(timestamp);
 		appointment.setStudentId(user.getId());
 		appointment.setStudentName(user.getFirstname());
 		appointment.setStudentSurname(user.getLastname());

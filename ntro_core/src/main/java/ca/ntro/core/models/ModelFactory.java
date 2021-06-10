@@ -121,7 +121,7 @@ public class ModelFactory {
 			}
 			
 			if(attributeValue == null) {
-				Log.fatalError("Attributes of a model must never be null (" + getter.name() + ")");
+				Log.fatalError("Attributes of a model must never be null. " + valuePath.toString());
 			}
 
 			attributeMap.put(attributeName, attributeValue);

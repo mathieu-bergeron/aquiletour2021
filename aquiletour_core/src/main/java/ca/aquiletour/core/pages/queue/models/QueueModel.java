@@ -55,7 +55,7 @@ public class QueueModel implements NtroModel {
 		return isOpen;
 	}
 
-	public void addAppointment(Appointment appointment) {
+	public void addAppointment(Appointment appointment, AppointmentAddedListener appointmentAddedListener) {
 		T.call(this);
 
 		setMaxId(getMaxId() + 1);
@@ -70,6 +70,8 @@ public class QueueModel implements NtroModel {
 		}
 
 		appointments.addItem(appointment);
+		
+		appointmentAddedListener.onAppointementAdded(appointment);
 	}
 	
 

@@ -81,9 +81,13 @@ import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
 import ca.aquiletour.core.models.logs.LogModelCourse;
+import ca.aquiletour.core.models.logs.LogModelQueue;
 import ca.aquiletour.core.models.logs.UserById;
+import ca.aquiletour.core.models.logs.LogItemById;
+import ca.aquiletour.core.models.logs.LogItemByIdQueue;
 import ca.aquiletour.core.models.logs.LogItemCourse;
 import ca.aquiletour.core.models.logs.LogItemsCourse;
+import ca.aquiletour.core.models.logs.LogItemsQueue;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.dates.CalendarWeek;
@@ -158,11 +162,13 @@ import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.StoredTime;
 import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
 import ca.aquiletour.core.pages.queue.models.StoredTags;
+import ca.aquiletour.core.pages.queue.models.StoredTaskPath;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
 import ca.aquiletour.core.pages.queue.models.SettingsByCourseKey;
 import ca.aquiletour.core.pages.queue.models.SettingsByGroupId;
+import ca.aquiletour.core.pages.queue.models.StoredCoursePath;
 import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
@@ -536,6 +542,13 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(AddSemesterWeekMessage.class);
 
 		Ntro.registerSerializableClass(UpdateQueueInfoMessage.class);
+		Ntro.registerSerializableClass(StoredCoursePath.class);
+		Ntro.registerSerializableClass(StoredTaskPath.class);
+
+		Ntro.registerSerializableClass(LogModelQueue.class);
+
+		Ntro.registerSerializableClass(LogItemByIdQueue.class);
+		Ntro.registerSerializableClass(LogItemsQueue.class);
 
 	}
 	
