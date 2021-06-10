@@ -50,12 +50,16 @@ public abstract class ModelStore {
 
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 		
-		ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
+		ModelLock modelLock = getModelLock(documentPath);
 		
-		if(!ifExists) {
-			
-			ifExists = ifModelExistsImpl(documentPath);
+		synchronized (modelLock) {
 
+			ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
+
+			if(!ifExists) {
+				
+				ifExists = ifModelExistsImpl(documentPath);
+			}
 		}
 
 		return ifExists;
@@ -77,6 +81,7 @@ public abstract class ModelStore {
 		T.call(this);
 
 		DocumentPath documentPath = documentPath(modelClass, documentId);
+
 		ModelLoader modelLoader = null;
 
 		NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
@@ -205,7 +210,9 @@ public abstract class ModelStore {
 		ModelLock modelLock = getModelLock(documentPath(modelClass, modelId));
 
 		synchronized(modelLock) {
+
 			if(!ifModelExists(modelClass, authToken, modelId)) {
+
 				M model = getModel(modelClass, authToken, modelId);
 
 				if(model != null) {
@@ -454,9 +461,12 @@ public abstract class ModelStore {
 
 	private void removeModelFromHeap(NtroModel model, DocumentPath documentPath) {
 		T.call(this);
-
-		synchronized(localHeap) {
+		
+		ModelLock modelLock = getModelLock(documentPath);
+		
+		synchronized (modelLock) {
 			Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
+			Ntro.collections().removeByKeyExact(modelLockByPath, documentPath);
 			Ntro.collections().removeByKeyExact(localHeap, model);
 		}
 	}
