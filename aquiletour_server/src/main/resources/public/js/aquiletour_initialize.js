@@ -18,6 +18,9 @@ function initializeView(viewName, viewRootElement, jSweet){
 
         initializeQueue(viewRootElement, jSweet);
         initializeCheckboxes(viewRootElement);
+        initializeCollapse(viewRootElement);
+        initializeClickBlocker(viewRootElement);
+        initializeDropdownMenus(viewRootElement);
 
     }else if(viewName === "TeacherDashboardViewWeb"){
 

@@ -18,6 +18,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuCourseTemplate;
 	private HtmlElement queueMenuGroupTemplate;
 
+	private HtmlElement queuePermalink;
+
 	private HtmlElements addAllCoursesIdToId;
 	private HtmlElements addAllCoursesIdToValue;
 	private HtmlElements addAllCoursesIdToForm;
@@ -31,6 +33,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuButton = this.getRootElement().find("#queue-menu-button").get(0);
 		queueMenuCoursesContainer = this.getRootElement().find("#queue-menu-courses-container").get(0);
 
+		queuePermalink = this.getRootElement().find(".queue-permalink").get(0);
+
 		queueMenuCourseTemplate = this.getRootElement().find(".queue-menu-course-template").get(0);
 		queueMenuGroupTemplate = this.getRootElement().find(".queue-menu-group-template").get(0);
 
@@ -39,6 +43,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		MustNot.beNull(queueMenuCoursesContainer);
 		MustNot.beNull(queueMenuCourseTemplate);
 		MustNot.beNull(queueMenuGroupTemplate);
+
+		MustNot.beNull(queuePermalink);
 
 		queueMenuCourseTemplate.hide();
 		queueMenuGroupTemplate.hide(); 
@@ -50,6 +56,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		addAllCoursesIdToId.appendToAttribute("id", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToValue.appendToAttribute("value", Constants.ALL_COURSES_ID);
 		addAllCoursesIdToForm.appendToAttribute("form", Constants.ALL_COURSES_ID);
+		
+		queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
 	}
 	
 	@Override

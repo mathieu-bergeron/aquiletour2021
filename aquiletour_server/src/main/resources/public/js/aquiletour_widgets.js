@@ -30,6 +30,29 @@ function initializeDatepickers(rootElement){
 
 }
 
+function initializeDropdownMenus(rootElement){
+    const menus = rootElement.find(".dropdown-menu");
+
+    menus.on('hide.bs.dropdown', function(){
+        const thisMenu = $(this);
+        const toCollapse = thisMenu.find(".collapse");
+
+        toCollapse.each(function(index, item){
+            $(item).collapse("hide");
+        });
+    });
+}
+
+function initializeClickBlocker(rootElement){
+    const elements = rootElement.find(".block-click-events");
+
+    elements.off();
+    elements.on('click', function(){
+        return false;
+    });
+}
+
+
 function initializeCheckboxes(rootElement){
 
     const checkboxes = rootElement.find(".aquiletour-checkbox");
@@ -66,6 +89,23 @@ const caretDown = `
     </svg>
 `;
 
+function initializeCollapse(rootElement){
+
+    const collapseLinks = rootElement.find(".aquiletour-collapse");
+
+    collapseLinks.each(function(index, element){
+        const collapseLink = $(element);
+        const collapseTarget = rootElement.find(collapseLink.attr('data-target'));
+
+        collapseLink.off();
+        collapseLink.on('click', function(){
+            collapseTarget.collapse("toggle");
+            return false;
+        });
+    });
+}
+
+
 function initializeSectionToggles(rootElement){
 
     const toggles = rootElement.find(".section-toggle");
@@ -78,7 +118,6 @@ function initializeSectionToggles(rootElement){
 
         toggle.off();
         toggle.on('click', function(){
-            console.log(collapseTarget.length);
             collapseTarget.collapse("toggle");
             toggleSectionToggle(toggle);
 

@@ -174,6 +174,7 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		
 		Router router = Router.router(vertx);
 
+		router.route(HttpMethod.POST, "/*").handler(BodyHandler.create());
 		
 		router.route(HttpMethod.POST, Constants.MESSAGES_URL_PATH_HTTP + "*").blockingHandler(routingContext -> {
 
@@ -200,7 +201,6 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			});
 		}));
 
-		router.route(HttpMethod.POST, "/*").handler(BodyHandler.create());
 
 		router.route("/*").blockingHandler(routingContext -> {
 

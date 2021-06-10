@@ -13,22 +13,13 @@ import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.users.NtroUser;
-import io.netty.handler.codec.http.HttpMethod;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 
 import org.eclipse.jetty.http.HttpStatus;
-import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.eclipse.jetty.server.handler.ContextHandler;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
 
 public class ModelHandlerVertx {
 
@@ -56,7 +47,7 @@ public class ModelHandlerVertx {
 				
 			}else {
 
-				Log.error("[ModelHandler] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
+				Log.error("[ModelHandlerVertx] Unsupported message '" + Ntro.introspector().ntroClassFromObject(message).simpleName() + "'");
 				response.setStatusCode(Response.SC_BAD_REQUEST);
 				response.end();
 
@@ -64,7 +55,7 @@ public class ModelHandlerVertx {
 
         }else {
 
-            Log.error("[ModelHandler] Invalid HTTP method '" + request.method() + "'!");
+            Log.error("[ModelHandlerVertx] Invalid HTTP method '" + request.method() + "'!");
             response.setStatusCode(HttpStatus.METHOD_NOT_ALLOWED_405);
             response.end();
         }

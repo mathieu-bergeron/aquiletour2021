@@ -25,7 +25,6 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -50,7 +49,7 @@ public class MessageHandlerVertx {
 
         }else {
 
-            Log.error("[MessageHandlerVertx] Invalid HTTP method '" + routingContext.request().method() + "'!");
+            Log.error("[MessageHandlerVertx] Invalid HTTP method " + request.method() + "!");
             response.setStatusCode(Response.SC_METHOD_NOT_ALLOWED);
             response.end();
         }
@@ -59,7 +58,7 @@ public class MessageHandlerVertx {
 	private static void handlePayload(String messageText) {
 		T.call(MessageHandlerVertx.class);
 
-		Log.info("[MessagesHandler] messageText: " + messageText);
+		Log.info("[MessagesHandlerVertx] messageText: " + messageText);
 		
 		try {
 			
@@ -69,7 +68,7 @@ public class MessageHandlerVertx {
 
 		}catch(ClassCastException e) {
 			
-			Log.warning("[MessageHandler] not a NtroMessage: " + messageText);
+			Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
 		}
 	}
 
