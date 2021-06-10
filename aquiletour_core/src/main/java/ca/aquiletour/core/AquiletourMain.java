@@ -155,9 +155,9 @@ import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.models.ObservableTime;
+import ca.aquiletour.core.pages.queue.models.StoredTime;
 import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
-import ca.aquiletour.core.pages.queue.models.ObservableTags;
+import ca.aquiletour.core.pages.queue.models.StoredTags;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
@@ -455,8 +455,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentIdList.class);
 		Ntro.registerSerializableClass(GroupDescriptions.class);
 
-		Ntro.registerSerializableClass(ObservableTime.class);
-		Ntro.registerSerializableClass(ObservableTags.class);
+		Ntro.registerSerializableClass(StoredTime.class);
+		Ntro.registerSerializableClass(StoredTags.class);
 
 		Ntro.registerSerializableClass(ModifyAppointmentDurationsMessage.class);
 		Ntro.registerSerializableClass(ModifyAppointmentTimesMessage.class);

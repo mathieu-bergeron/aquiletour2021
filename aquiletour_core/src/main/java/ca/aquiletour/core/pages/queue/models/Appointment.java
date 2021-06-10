@@ -12,10 +12,15 @@ public class Appointment implements NtroModelValue {
 	private String studentName = "";
 	private String studentSurname = "";
 	
-	private ObservableTime time = new ObservableTime();
+	private StoredTime time = new StoredTime();
+
+	private StoredCoursePath coursePath = new StoredCoursePath();
 	private StoredString courseTitle = new StoredString();
+	
+	private StoredTaskPath taskPath = new StoredTaskPath();
 	private StoredString taskTitle = new StoredString();
-	private ObservableTags tags = new ObservableTags();
+
+	private StoredTags tags = new StoredTags();
 	private StoredString comment = new StoredString();
 
 	//private User user;
@@ -41,6 +46,22 @@ public class Appointment implements NtroModelValue {
 		this.studentSurname = studentSurname;
 	}
 	
+	public StoredCoursePath getCoursePath() {
+		return coursePath;
+	}
+
+	public void setCoursePath(StoredCoursePath coursePath) {
+		this.coursePath = coursePath;
+	}
+
+	public StoredTaskPath getTaskPath() {
+		return taskPath;
+	}
+
+	public void setTaskPath(StoredTaskPath taskPath) {
+		this.taskPath = taskPath;
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if(other == null) return false;
@@ -55,11 +76,11 @@ public class Appointment implements NtroModelValue {
 		return false;
 	}
 
-	public ObservableTime getTime() {
+	public StoredTime getTime() {
 		return time;
 	}
 
-	public void setTime(ObservableTime time) {
+	public void setTime(StoredTime time) {
 		this.time = time;
 	}
 
@@ -79,11 +100,11 @@ public class Appointment implements NtroModelValue {
 		this.taskTitle = taskTitle;
 	}
 
-	public ObservableTags getTags() {
+	public StoredTags getTags() {
 		return tags;
 	}
 
-	public void setTags(ObservableTags tags) {
+	public void setTags(StoredTags tags) {
 		this.tags = tags;
 	}
 

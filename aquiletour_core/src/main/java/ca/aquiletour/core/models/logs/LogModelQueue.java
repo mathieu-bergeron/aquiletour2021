@@ -1,10 +1,14 @@
 package ca.aquiletour.core.models.logs;
 
+import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.models.NtroDate;
 
 public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 	
 	private LogItemsQueue logItems = new LogItemsQueue();
+	private LogItemByIdQueue logItemById = new LogItemByIdQueue();
 
 	@Override
 	public LogItemsQueue getLogItems() {
@@ -16,10 +20,12 @@ public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 		this.logItems = logItems;
 	}
 
-	@Override
-	public void writeCsvFileContent(String separator, StringBuilder builder) {
-		T.call(this);
-		
+	public LogItemByIdQueue getLogItemById() {
+		return logItemById;
+	}
+
+	public void setLogItemById(LogItemByIdQueue logItemById) {
+		this.logItemById = logItemById;
 	}
 
 	@Override
@@ -30,7 +36,43 @@ public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 	@Override
 	protected void writeCsvLine(LogItemQueue logItem, String separator, StringBuilder builder) {
 		T.call(this);
+	}
+	
+	public void addAppointement(NtroDate timestamp, User user, Appointment appointment) {
+		T.call(this);
 		
+		LogItemQueue logItem = createLogItem(LogItemQueue.class, timestamp, user);
 		
+		logItem.updateAppointementInfo(timestamp, user, appointment);
+		
+		getLogItems().addItem(logItem);
+		getLogItemById().putEntry(appointment.getId(), logItem);
+	}
+
+	public void updateAppointment(NtroDate timestamp, 
+								  User user,
+			                      String appointmentId, 
+			                      Appointment appointment) {
+		T.call(this);
+		
+		LogItemQueue logItem = getLogItemById().valueOf(appointmentId);
+
+		if(logItem != null) {
+
+			logItem.updateAppointementInfo(timestamp, user, appointment);
+		}
+	}
+
+	public void closeAppointment(NtroDate timestamp, 
+							     User user,
+			                     String appointmentId) {
+		T.call(this);
+		
+		LogItemQueue logItem = getLogItemById().valueOf(appointmentId);
+
+		if(logItem != null) {
+
+			logItem.closeAppointment(timestamp, user);
+		}
 	}
 }

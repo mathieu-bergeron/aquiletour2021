@@ -18,10 +18,10 @@ public class QueueModel implements NtroModel {
 	private String queueId = "";
 	private int maxId;
 
-	private ObservableTime currentTime = new ObservableTime();
+	private StoredTime currentTime = new StoredTime();
 
 	private StoredInteger appointmentDurationSeconds = new StoredInteger(Constants.APPOINTMENT_DURATION_MINUTES * 60);
-	private ObservableTime firstAppointmentTime = new ObservableTime();
+	private StoredTime firstAppointmentTime = new StoredTime();
 
 	private ObservableAppointmentList appointments = new ObservableAppointmentList();
 
@@ -218,11 +218,11 @@ public class QueueModel implements NtroModel {
 		return index >= 0 && index < getAppointments().size();
 	}
 
-	public ObservableTime getCurrentTime() {
+	public StoredTime getCurrentTime() {
 		return currentTime;
 	}
 
-	public void setCurrentTime(ObservableTime currentTime) {
+	public void setCurrentTime(StoredTime currentTime) {
 		this.currentTime = currentTime;
 	}
 
@@ -286,11 +286,11 @@ public class QueueModel implements NtroModel {
 		this.appointmentDurationSeconds = appointmentDurationSeconds;
 	}
 
-	public ObservableTime getFirstAppointmentTime() {
+	public StoredTime getFirstAppointmentTime() {
 		return firstAppointmentTime;
 	}
 
-	public void setFirstAppointmentTime(ObservableTime firstAppointmentTime) {
+	public void setFirstAppointmentTime(StoredTime firstAppointmentTime) {
 		this.firstAppointmentTime = firstAppointmentTime;
 	}
 

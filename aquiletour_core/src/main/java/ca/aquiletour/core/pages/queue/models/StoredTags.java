@@ -8,12 +8,12 @@ import ca.ntro.core.regex.Pattern;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
-public class ObservableTags extends StoredList<String> {
+public class StoredTags extends StoredList<String> {
 
 	private static Pattern tagPattern = null;
 	
 	private static Pattern tagPattern() {
-		T.call(ObservableTags.class);
+		T.call(StoredTags.class);
 
 		if(tagPattern == null) {
 			tagPattern = Ntro.regEx().compilePattern("#\\p{IsLatin}+\\s?");
@@ -39,7 +39,7 @@ public class ObservableTags extends StoredList<String> {
 	}
 
 	public static String removeTags(String comment) {
-		T.call(ObservableTags.class);
+		T.call(StoredTags.class);
 		
 		Matcher matcher = tagPattern().matcher(comment);
 		

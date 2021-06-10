@@ -1,7 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.models.ObservableTags;
+import ca.aquiletour.core.pages.queue.models.StoredTags;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -81,7 +81,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void displayComment(String comment) {
 		T.call(this);
 		
-		commentElement.text(ObservableTags.removeTags(comment));
+		commentElement.text(StoredTags.removeTags(comment));
 	}
 
 	@Override
