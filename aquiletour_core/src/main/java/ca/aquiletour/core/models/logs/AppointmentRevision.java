@@ -13,35 +13,39 @@ import ca.ntro.models.NtroDate;
 
 public class AppointmentRevision implements NtroModelValue {
 
-	private NtroDate timestamp = new NtroDate();
-	private CoursePath coursePath = new CoursePath();
-	private TaskPath taskPath = new TaskPath();
+	private String timestamp = "";
+	private String coursePath = "";
+	private String taskPath = "";
 	private List<String> tags = new ArrayList<>();
 	private String comment = "";
 	private boolean modifiedByTeacher = true;
 
-	public CoursePath getCoursePath() {
+	public String getCoursePath() {
 		return coursePath;
 	}
 
-	public void setCoursePath(CoursePath coursePath) {
+	public void setCoursePath(String coursePath) {
 		this.coursePath = coursePath;
 	}
 
-	public TaskPath getTaskPath() {
+	public String getTaskPath() {
 		return taskPath;
 	}
 
-	public void setTaskPath(TaskPath taskPath) {
+	public void setTaskPath(String taskPath) {
 		this.taskPath = taskPath;
 	}
 
-	public NtroDate getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(NtroDate timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public void updateTimestamp(NtroDate timestamp) {
+		this.timestamp = LogItem.formatTimestamp(timestamp);
 	}
 
 	public List<String> getTags() {
@@ -73,8 +77,8 @@ public class AppointmentRevision implements NtroModelValue {
 		
 		AppointmentRevision revision = new AppointmentRevision();
 		
-		revision.setTaskPath(appointment.getTaskPath().getValue());
-		revision.setCoursePath(appointment.getCoursePath().getValue());
+		revision.setTaskPath(appointment.getTaskPath().getValue().toRawPath());
+		revision.setCoursePath(appointment.getCoursePath().getValue().toRawPath());
 		revision.setTags(appointment.getTags().getValue());
 		revision.setComment(StoredTags.removeTags(appointment.getComment().getValue()));
 

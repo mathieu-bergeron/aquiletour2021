@@ -7,19 +7,24 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.services.Ntro;
 
 public class LogItemQueue extends LogItem {
 	
-	private NtroDate closeTime = new NtroDate();
+	private String closeTime = "";
 	private boolean closedByTeacher = true;
 	private List<AppointmentRevision> revisions = new ArrayList<>();
 	
-	public NtroDate getCloseTime() {
+	public String getCloseTime() {
 		return closeTime;
 	}
 
-	public void setCloseTime(NtroDate closeTime) {
+	public void setCloseTime(String closeTime) {
 		this.closeTime = closeTime;
+	}
+
+	public void updateCloseTime(NtroDate timestamp) {
+		this.closeTime = formatTimestamp(timestamp);
 	}
 
 	public boolean isClosedByTeacher() {
@@ -42,7 +47,7 @@ public class LogItemQueue extends LogItem {
 								 User user) {
 		T.call(this);
 		
-		setCloseTime(timestamp);
+		updateCloseTime(timestamp);
 		
 		if(user.actsAsTeacher()) {
 			
@@ -61,7 +66,7 @@ public class LogItemQueue extends LogItem {
 
 		AppointmentRevision revision = AppointmentRevision.fromAppointment(appointment);
 
-		revision.setTimestamp(timestamp);
+		revision.updateTimestamp(timestamp);
 		
 		if(user.actsAsTeacher()) {
 			
@@ -83,5 +88,72 @@ public class LogItemQueue extends LogItem {
 		writeCsvLineCoursePath(separator, builder);
 		writeCsvLineGroupId(separator, builder);
 		writeCsvLineTaskPath(separator, builder);
+		
+		builder.append(separator);
+		builder.append(openTime());
+
+		builder.append(separator);
+		writeLastRevisionCsv(separator, builder);
+
+		builder.append(separator);
+		writeAllRevisionsJson(separator, builder);
+	}
+
+	private void writeAllRevisionsJson(String separator, StringBuilder builder) {
+		T.call(this);
+		
+		builder.append(separator);
+		builder.append("'");
+		builder.append(Ntro.jsonService().toString(getRevisions()));
+		builder.append("'");
+	}
+
+	private void writeLastRevisionCsv(String separator, StringBuilder builder) {
+		T.call(this);
+		
+		if(!getRevisions().isEmpty()) {
+			
+			AppointmentRevision lastRevision = getRevisions().get(getRevisions().size() - 1);
+			
+			builder.append(separator);
+			builder.append("'");
+			builder.append(lastRevision.getComment());
+			builder.append("'");
+
+			builder.append(separator);
+			builder.append("'");
+			builder.append(tagList(lastRevision.getTags()));
+			builder.append("'");
+		}
+	}
+	
+	private String tagList(List<String> tags) {
+		T.call(this);
+
+		StringBuilder builder = new StringBuilder();
+		
+		if(tags.size() > 0) {
+			builder.append(tags.get(0));
+		}
+		
+		for(int i = 1; i < tags.size(); i++) {
+			builder.append(",");
+			builder.append(tags.get(i));
+		}
+
+		return builder.toString();
+	}
+
+	private String openTime() {
+		T.call(this);
+
+		String openTime = null;
+		
+		if(!getRevisions().isEmpty()) {
+			AppointmentRevision firstRevision = getRevisions().get(0);
+			openTime = firstRevision.getTimestamp();
+		}
+		
+		return openTime;
 	}
 }

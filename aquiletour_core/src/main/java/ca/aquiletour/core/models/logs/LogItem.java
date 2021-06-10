@@ -69,13 +69,26 @@ public abstract class LogItem implements NtroModelValue {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
+	protected static String formatTimestamp(NtroDate timestamp) {
+		T.call(LogItem.class);
+		
+		String timestampString = "";
+		
+		if(timestamp != null) {
+			
+			timestampString = timestamp.format("yyyy-MM-dd HH:mm:ss");
+		}
+
+		return timestampString;
+	}
 
 	protected void writeCsvLineBasicInfo(String separator, 
 			                             StringBuilder builder) {
 		T.call(this);
 
-		builder.append(getTimestamp().format("yyyy-MM-dd HH:mm:ss"));
-		
+		builder.append(formatTimestamp(getTimestamp()));
+
 		User user = logModel.userByUd(getUserId());
 
 		builder.append(separator);

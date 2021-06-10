@@ -112,7 +112,11 @@ public class QueueManager {
 		appointment.setStudentName(user.getFirstname());
 		appointment.setStudentSurname(user.getLastname());
 		if(coursePath != null) {
+			appointment.updateCoursePath(coursePath);
 			appointment.updateCourseTitle(coursePath.courseId());
+		}
+		if(taskPath != null) {
+			appointment.updateTaskPath(taskPath);
 		}
 		if(taskTitle != null) {
 			appointment.updateTaskTitle(taskTitle);
