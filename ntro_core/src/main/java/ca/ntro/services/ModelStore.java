@@ -31,8 +31,8 @@ import ca.ntro.stores.ValuePath;
 
 public abstract class ModelStore {
 
-	public static final String MODEL_ID_KEY="modelId";
-	public static final String MODEL_DATA_KEY="modelData";
+	public static final String MODEL_ID_KEY="_id";
+	public static final String MODEL_DATA_KEY="_data";
 
 	private List<DocumentPath> saveHistory = Ntro.collections().synchronizedList(new ArrayList<>());
 

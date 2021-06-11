@@ -9,6 +9,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.ReplaceOptions;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -20,6 +21,7 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
@@ -66,24 +68,49 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 		String jsonString = null;
 		
 		if(document != null) {
+			
+			Document model = document.get(ModelStore.MODEL_DATA_KEY, Document.class);
 
-			jsonString = (String) document.get(ModelStore.MODEL_DATA_KEY);
+			jsonString = Ntro.jsonService().toString(model);
+
+			jsonString = reinsertSpecialChars(jsonString);
 
 		}else {
 
 			// XXX: create document if none exists
 			jsonString = ModelStore.emptyModelString(documentPath);
 
-			document = new Document();
-			document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
-			document.put(ModelStore.MODEL_DATA_KEY, jsonString);
-			
+			document = createDocument(documentPath, jsonString);
+
 			models.insertOne(document);
 		}
 		
 		JsonLoader jsonLoader = new JsonLoaderMemory(jsonString);
 		
 		return jsonLoader;
+	}
+	private String reinsertSpecialChars(String jsonString) {
+		jsonString = jsonString.replaceAll("\uFF0E", ".");
+		jsonString = jsonString.replaceAll("\uFF04", "$");
+		return jsonString;
+	}
+
+	private Document createDocument(DocumentPath documentPath, String jsonString) {
+		T.call(this);
+
+		Document document = new Document();
+		
+		jsonString = removeSpecialChars(jsonString);
+		
+		document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
+		document.put(ModelStore.MODEL_DATA_KEY, Document.parse(jsonString));
+
+		return document;
+	}
+	private String removeSpecialChars(String jsonString) {
+		jsonString = jsonString.replaceAll("\\.", "\uFF0E");
+		jsonString = jsonString.replaceAll("\\$", "\uFF04");
+		return jsonString;
 	}
 
 	private MongoCollection<Document> getOrCreateCollection(DocumentPath documentPath) {
@@ -122,12 +149,9 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 
 		MongoCollection<Document> models = db.getCollection(documentPath.getCollection());
 		
-		Document document = new Document();
+		Document document = createDocument(documentPath, jsonString);
 		
-		document.put(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId());
-		document.put(ModelStore.MODEL_DATA_KEY, jsonString);
-		
-		models.updateOne(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document);
+		models.replaceOne(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document, new ReplaceOptions());
 	}
 
 	@Override

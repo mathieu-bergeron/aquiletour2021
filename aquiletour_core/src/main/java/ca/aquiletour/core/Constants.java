@@ -22,7 +22,7 @@ public class Constants {
 	
 	public static String LANG = "fr";
 
-	public static final String MONGO_DB_CONNECTION_STRING = "localhost:????";
+	public static final String MONGO_DB_CONNECTION_STRING = "localhost:27017";
 	public static final String MONGO_DB_DATABASE_NAME = "aquiletour";
 	
 	public static final String EMAIL_HOST = "cmontmorency.qc.ca";
