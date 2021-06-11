@@ -73,6 +73,10 @@ public class RegisteredSocketsSockJS {
 			socketByToken.put(authToken, socket);
 			tokenBySocket.put(socket, authToken);
 		}
+		
+		socket.endHandler(t -> {
+			deregisterSocket(socket);
+		});
 	}
 
 	private static void deregisterSocketIfExists(SockJSSocket socket) {
@@ -101,7 +105,7 @@ public class RegisteredSocketsSockJS {
 			if(authToken != null) {
 
 				tokenBySocket.remove(socket);
-				removed = socketByToken.get(authToken);
+				removed = socketByToken.remove(authToken);
 			}
 		}
 
@@ -195,19 +199,16 @@ public class RegisteredSocketsSockJS {
 	public static void sendMessageToSocket(String authToken, NtroMessage message) {
 		T.call(RegisteredSocketsSockJS.class);
 
-		SockJSSocket socket = null;
+		SockJSSocket socket;
 		synchronized (socketByToken) {
 			socket = socketByToken.get(authToken);
 		}
 
 		if(socket != null) {
-
-			socket.exceptionHandler(e -> {
-				Log.error("[sendMessageToSocket] ");
-			});
-			
 			System.out.println("sendMessage: " + Ntro.jsonService().toString(message));
 			socket.write(Ntro.jsonService().toString(message));
+		}else {
+			Log.warning("sendMessage: socket closed for " + authToken);
 		}
 	}
 

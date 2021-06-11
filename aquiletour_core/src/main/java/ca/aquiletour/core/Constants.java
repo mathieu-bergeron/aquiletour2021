@@ -21,6 +21,9 @@ public class Constants {
 	public static final NtroTimeOfDay NIGHTLY_TASKS_TIME = new NtroTimeOfDay(3,0);  // At 3am, we run cleanup tasks
 	
 	public static String LANG = "fr";
+
+	public static final String MONGO_DB_CONNECTION_STRING = "localhost:????";
+	public static final String MONGO_DB_DATABASE_NAME = "aquiletour";
 	
 	public static final String EMAIL_HOST = "cmontmorency.qc.ca";
 
@@ -114,4 +117,5 @@ public class Constants {
 		                         				 CATEGORY_ID_RECYCLE_BIN};
 
 	public static final int NUMBER_OF_CURRENT_TASKS_TEACHER = 3;
+
 }

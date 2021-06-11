@@ -16,6 +16,8 @@ import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
 import def.sockjs.Globals;
 
+import static jsweet.util.Lang.function;
+
 import static def.dom.Globals.window;
 
 public class BackendServiceJSweetSockJS extends BackendService {
@@ -49,6 +51,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		
 		sockJS.onmessage = t -> {
 			
+			
 			System.out.println(t.data.toString());
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
@@ -64,11 +67,11 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		};
 		
 		sockJS.onopen = t -> {
-			
-			System.out.println("SockJS: open");
+				
+			System.out.println("sockJS: open");
 			
 			registerWebSocket(authToken);
-			
+
 			isOpen = true;
 			for(NtroMessage queuedMessage : queuedMessages) {
 				sendMessageToBackend(queuedMessage);

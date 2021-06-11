@@ -46,6 +46,7 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
+import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
@@ -59,6 +60,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
+import io.vertx.ext.web.handler.sockjs.SockJSSocket;
 
 public class AquiletourMainServerVertx extends NtroTaskAsync {
 	
@@ -171,13 +173,19 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		});
 		
 		SockJSHandlerOptions sockJSOptions = new SockJSHandlerOptions();
-		SockJSHandler sockJSHandler = SockJSHandler.create(vertx, sockJSOptions);
 
+		sockJSOptions.setLocalWriteHandler(true);
+		SockJSHandler sockJSHandler = SockJSHandler.create(vertx, sockJSOptions);
+		
+		
 		router.mountSubRouter(Constants.MESSAGES_URL_PATH_SOCKET, sockJSHandler.socketHandler(socket -> {
+			
 			socket.handler(messageBuffer -> {
+
 				MessageHandlerVertx.handleMessage(socket, messageBuffer);
 			});
 		}));
+
 
 
 		router.route("/*").blockingHandler(routingContext -> {

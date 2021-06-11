@@ -18,6 +18,9 @@
 package ca.aquiletour.server.vertx;
 
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.eclipse.jetty.server.Response;
 
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
@@ -91,7 +94,7 @@ public class MessageHandlerVertx {
 					RegisteredSocketsSockJS.registerUserSocket(ntroRegisterSocketMessage.getAuthToken(), 
 							                                   ntroRegisterSocketMessage.getUser(), 
 							                                   socket);
-					
+
 				}else {
 					
 					Ntro.backendService().sendMessageToBackend(message);
