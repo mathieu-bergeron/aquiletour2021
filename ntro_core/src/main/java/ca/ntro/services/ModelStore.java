@@ -466,7 +466,7 @@ public abstract class ModelStore {
 		
 		synchronized (modelLock) {
 			Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
-			Ntro.collections().removeByKeyExact(modelLockByPath, documentPath);
+			Ntro.collections().removeByKeyEquals(modelLockByPath, documentPath);
 			Ntro.collections().removeByKeyExact(localHeap, model);
 		}
 	}
