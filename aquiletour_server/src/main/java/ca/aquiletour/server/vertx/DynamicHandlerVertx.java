@@ -17,6 +17,9 @@
 
 package ca.aquiletour.server.vertx;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,33 +87,9 @@ public class DynamicHandlerVertx {
 
 		HttpServerRequest request = routingContext.request();
 		HttpServerResponse response = routingContext.response();
-		
+
 		Set<FileUpload> uploads =  routingContext.fileUploads();
 		
-		if(!uploads.isEmpty()) {
-			
-			String semesterId = request.getParam("semesterId");
-			String courseId = request.getParam("courseId");
-
-			if(semesterId != null && courseId != null) {
-				for(FileUpload upload : uploads) {
-					sendCsvMessage(semesterId, courseId, upload);
-				}
-			}
-		}
-		
-		
-		/*
-		request.uploadHandler(upload -> {
-			
-			System.out.println("UPLOAD");
-
-			if(Ntro.currentUser() instanceof Teacher 
-					&& upload.contentType().startsWith("multipart/form-data")) {
-
-				
-			}
-		});*/
 		
 		String rawPath = request.uri();
 		Path path = Path.fromRawPath(rawPath);
@@ -128,7 +107,7 @@ public class DynamicHandlerVertx {
 			
 		}else {
 
-			serveView(request, response, path);
+			serveView(request, response, path, uploads);
 		}
 	}
 
@@ -187,7 +166,8 @@ public class DynamicHandlerVertx {
 
 	private static void serveView(HttpServerRequest request, 
 			                      HttpServerResponse response, 
-			                      Path path) {
+			                      Path path,
+			                      Set<FileUpload> uploads) {
 
 		T.call(DynamicHandlerVertx.class);
 		
@@ -216,7 +196,6 @@ public class DynamicHandlerVertx {
 			String paramName = entry.getKey();
 			System.out.println(paramName + " " + entry.getValue()[0]);
 		}
-		
 
 		sendSessionMessagesAccordingToCookies(request);
 
@@ -230,6 +209,7 @@ public class DynamicHandlerVertx {
 
 		if(!ifJSweet) {
 
+			processCsvUploadsIfAny(request, uploads);
 
 			executeFrontendOnServer(request, response, path, parameters, window);
 
@@ -239,11 +219,8 @@ public class DynamicHandlerVertx {
 			//        of queued messages
 			Ntro.messages().sendQueuedMessages();
 		}
-		
-		
 
 		setSessionCookie(response);
-		
 
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
@@ -254,6 +231,21 @@ public class DynamicHandlerVertx {
 			response.putHeader("content-type", "text/html; charset=utf-8");
 			response.setStatusCode(Response.SC_OK);
 			writeResponse(window, response);
+		}
+	}
+
+	private static void processCsvUploadsIfAny(HttpServerRequest request, Set<FileUpload> uploads) {
+		if(Ntro.currentUser() instanceof Teacher
+				&& !uploads.isEmpty()) {
+
+			String semesterId = request.getParam("semesterId");
+			String courseId = request.getParam("courseId");
+
+			if(semesterId != null && courseId != null) {
+				for(FileUpload upload : uploads) {
+					sendCsvMessage(semesterId, courseId, upload);
+				}
+			}
 		}
 	}
 
@@ -280,27 +272,33 @@ public class DynamicHandlerVertx {
 		
 		String fileName = upload.fileName();
 		
-		String fileNameOnDisk = upload.uploadedFileName();
-		
-		
-		
-		
-		
-		String fileContent = upload.toString();
-		
-		
-		/*
+		File fileOnDisk = new File(upload.uploadedFileName());
 
-		AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
+		String fileContent = null;
+		
+		try {
 
-		addStudentCsvMessage.setTeacherId(Ntro.currentUser().getId());
-		addStudentCsvMessage.setSemesterId(semesterId);
-		addStudentCsvMessage.setCourseId(courseId);
-		addStudentCsvMessage.setCsvString(fileContent);
-		addStudentCsvMessage.setCsvFilename(fileName);
+			fileContent = new String(Files.readAllBytes(fileOnDisk.toPath()), Constants.CSV_FILE_ENCODING);
 
-		Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
-		*/
+		} catch (IOException e) {
+
+			Log.error("Cannot read uploaded CSV file  " + e.getMessage());
+		}
+		
+		fileOnDisk.delete();
+		
+		if(fileContent != null) {
+
+			AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
+
+			addStudentCsvMessage.setTeacherId(Ntro.currentUser().getId());
+			addStudentCsvMessage.setSemesterId(semesterId);
+			addStudentCsvMessage.setCourseId(courseId);
+			addStudentCsvMessage.setCsvString(fileContent);
+			addStudentCsvMessage.setCsvFilename(fileName);
+
+			Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+		}
 	}
 
 	private static void sendSessionMessagesAccordingToCookies(HttpServerRequest baseRequest) {
