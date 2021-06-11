@@ -21,6 +21,9 @@ import ca.ntro.jsweet.services.OnLoadTask;
 import def.dom.WebSocket;
 import jsweet.lang.Interface;
 
+// XXX: this could be anywhere
+//      it is not a Globals (that only works for def)
+//      i.e. defs here are not pushed into the root scope by JSweet
 public class JSweetGlobals {
 
 	// notifyTaskFinished() is called from Javascript, see tutoriel02/webapp/index.html
