@@ -12,15 +12,20 @@ dependencies {
     compile project(':ntro_jsweet')
     compile project(':aquiletour_core')
 
+    compile project(':sockjs')
+
     // Candies (for jsweet build)
     compile group: 'ca.ntro', name:'ntro_core', version: '0.1'
     compile group: 'ca.ntro', name:'ntro_jsweet', version: '0.1'
     compile group: 'ca.aquiletour', name:'aquiletour_core', version: '0.1'
+
+    compile group: 'org.sockjs', name:'sockjs', version: '0.1'
 }
 
 tasks.jsweet{
 
     dependsOn ':ntro_core:jsweet'
+    dependsOn ':sockjs:jsweet'
     dependsOn ':ntro_jsweet:jsweet'
     dependsOn ':aquiletour_core:jsweet'
 
@@ -29,11 +34,12 @@ tasks.jsweet{
     inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_core") 
     inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/ntro/ntro_jsweet") 
     inputs.dir("${System.getProperty('user.home')}/.m2/repository/ca/aquiletour/aquiletour_core") 
+    inputs.dir("${System.getProperty('user.home')}/.m2/repository/org/sockjs/sockjs") 
 
     // FIXME: same as above FIXME
     doLast{
         def serverProject = project(':aquiletour_server')
-        def projectPaths = [':ntro_core',':ntro_jsweet',':aquiletour_core',':aquiletour_jsweet']
+        def projectPaths = [':ntro_core',':ntro_jsweet',':aquiletour_core',':aquiletour_jsweet',':sockjs']
         for (projectPath in projectPaths){
             def aProject = project(projectPath)
             def outDir = new File("${serverProject.projectDir}/src/main/resources/public/js/${aProject.name}")

@@ -11,6 +11,9 @@ dependencies {
     implementation project(':ntro_core')
     implementation group: 'ca.ntro', name: 'ntro_core', version: '0.1'
 
+    implementation project(':sockjs')
+    implementation group: 'org.sockjs', name: 'sockjs', version: '0.1'
+
 	// XXX: must be 'compile' and not 'implementation'
     compile group: 'org.jsweet.candies.ext', name: 'jquery', version: "1.10.0-SNAPSHOT"
 
@@ -19,4 +22,5 @@ dependencies {
 
 tasks.jsweet{
     dependsOn ':ntro_core:jsweet'
+    dependsOn ':sockjs:jsweet'
 }

@@ -1,0 +1,13 @@
+plugins {
+    id 'local-java-plugin'
+    id 'local-jsweet-plugin'
+}
+
+project.group = 'org.sockjs'
+project.version = '0.1'
+
+dependencies {
+}
+
+tasks.jsweet{
+}

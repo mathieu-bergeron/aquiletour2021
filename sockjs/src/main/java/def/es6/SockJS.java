@@ -13,20 +13,25 @@ public class SockJS extends EventTarget {
 	// based on: https://github.com/cincheo/jsweet/blob/develop/core-lib/es6/src/main/java/def/dom/WebSocket.java
 	
 	// TODO: remove fields/methods that are in the WebSocket API but not in the SockJS API
-	
-	
-    public java.lang.String binaryType;
-    public double bufferedAmount;
-    public java.lang.String extensions;
+
+    public SockJS(java.lang.String url){}
+    public SockJS(java.lang.String url, java.lang.String protocols){}
+
     public java.util.function.Function<CloseEvent,java.lang.Object> onclose;
     public java.util.function.Function<Event,java.lang.Object> onerror;
     public java.util.function.Function<MessageEvent,java.lang.Object> onmessage;
     public java.util.function.Function<Event,java.lang.Object> onopen;
+    native public void send(java.lang.Object data);
+	
+	/*
+	
+    public java.lang.String binaryType;
+    public double bufferedAmount;
+    public java.lang.String extensions;
     public java.lang.String protocol;
     public double readyState;
     public java.lang.String url;
     native public void close(double code, java.lang.String reason);
-    native public void send(java.lang.Object data);
     public double CLOSED;
     public double CLOSING;
     public double CONNECTING;
@@ -39,7 +44,6 @@ public class SockJS extends EventTarget {
 
     public static SockJS prototype;
 
-    public SockJS(java.lang.String url){}
     public SockJS(java.lang.String url, java.lang.String protocols){}
     public SockJS(java.lang.String url, java.lang.Object protocols){}
 
@@ -54,5 +58,6 @@ public class SockJS extends EventTarget {
     native public void addEventListener(java.lang.String type, EventListenerObject listener);
 
     protected SockJS(){}
+    */
 
 }
