@@ -356,15 +356,15 @@ public abstract class ModelStore {
 		if(valuePath == null) return;
 
 		if(args.size() == 0) {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+			System.out.println("invokeValueMethod: " + valuePath + " " + methodName);
 		}else if(args.size() == 1){
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+			System.out.println("invokeValueMethod: " + valuePath + " " + methodName + " " + args.get(0));
 		}else if(args.size() == 2){
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName
+			System.out.println("invokeValueMethod: " + valuePath + " " + methodName
 														+ " " + args.get(0) 
 														+ " " + args.get(1));
 		}else {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName
+			System.out.println("invokeValueMethod: " + valuePath + " " + methodName
 														+ " " + args.get(0) 
 														+ " " + args.get(1) 
 														+ " " + args.get(2));
@@ -417,19 +417,24 @@ public abstract class ModelStore {
 
 	public void manageHeap(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
-		
-		synchronized (saveHistory) {
-			if(!Ntro.collections().containsItemEquals(saveHistory, documentPath)) {
-				saveHistory.add(documentPath);
-			}
-		}
 
 		if(Ntro.introspector().ntroClassFromObject(model).ifImplements(DoNotCacheModel.class)) {
-			removeModelFromHeap(model, documentPath);
-		}
 
-		if(localHeap.size() > maxHeapSize()) {
-			removeOldestModelFromHeap();
+			removeModelFromHeap(model, documentPath);
+
+		}else {
+
+			synchronized (saveHistory) {
+				int index = Ntro.collections().indexOfEquals(saveHistory, documentPath);
+				if(index > 0) {
+					saveHistory.remove(index);
+				}
+				saveHistory.add(documentPath);
+			}
+
+			if(localHeap.size() > maxHeapSize()) {
+				removeOldestModelFromHeap();
+			}
 		}
 	}
 

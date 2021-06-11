@@ -63,3 +63,6 @@ aquiletour_server/TMP
 
 # Git module
 dockers/git/depot/
+
+# Vertx file uploads
+file-uploads

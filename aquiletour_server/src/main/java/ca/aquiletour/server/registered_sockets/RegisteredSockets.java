@@ -242,10 +242,25 @@ public class RegisteredSockets {
 	public static void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		T.call(RegisteredSockets.class);
 		
-		if(args.size() > 0) {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+		if(args.size() == 0) {
+
+			Log.info("onValueMethodInvoked: " + valuePath + " " + methodName);
+
+		}else if(args.size() == 1){
+
+			Log.info("onValueMethodInvoked: " + valuePath + " " + methodName + " " + args.get(0));
+
+		}else if(args.size() == 2){
+
+			Log.info("onValueMethodInvoked: " + valuePath + " " + methodName
+														+ " " + args.get(0) 
+														+ " " + args.get(1));
 		}else {
-			System.out.println("onValueMethodInvoked: " + valuePath + " " + methodName);
+
+			Log.info("onValueMethodInvoked: " + valuePath + " " + methodName
+														+ " " + args.get(0) 
+														+ " " + args.get(1) 
+														+ " " + args.get(2));
 		}
 		
 		Set<String> observerTokens = tokensByObservedPath.get(valuePath.getDocumentPath());

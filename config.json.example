@@ -10,6 +10,7 @@
     "smtpFrom": "aiguilleur@example.com",
     "smtpPassword": "example",
 
+    "isProd" : false,
 
-    "isProd" : false
+    "maxHeapSize" : 10000
 }

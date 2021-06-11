@@ -16,6 +16,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.json.JsonLoaderFiles;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
@@ -154,8 +155,7 @@ public class LocalStoreFiles extends ModelStore {
 	protected int maxHeapSize() {
 		T.call(this);
 		
-		// DEV: no caching will work if models
-		//      are always updated via modelStore.updateModel()
-		return 1000;
+		// DEV
+		return 3;
 	}
 }

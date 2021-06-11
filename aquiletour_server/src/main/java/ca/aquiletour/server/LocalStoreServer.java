@@ -105,4 +105,20 @@ public class LocalStoreServer extends LocalStoreFiles {
 
 		return new JsonLoaderMemory(response);
 	}
+
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+		
+		// DEV
+		int heapSize = 3;
+		
+		if(Ntro.config().isProd()) {
+			
+			heapSize = ((AquiletourConfig) Ntro.config()).getMaxHeapSize();
+			
+		}
+		
+		return heapSize;
+	}
 }
