@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.system.log.Log;
@@ -22,7 +23,7 @@ public class ModelFactory {
 	public static NtroModel createModel(Class<? extends NtroModel> modelClass, 
 			                            ModelStore modelStore, 
 			                            DocumentPath documentPath,
-			                            String jsonString) {
+			                            String jsonString) throws BackendError {
 		T.call(ModelFactory.class);
 		
 		NtroModel model = Ntro.jsonService().fromString(modelClass, jsonString);

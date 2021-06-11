@@ -149,7 +149,7 @@ public class CourseListManager {
 	public static <CLM extends CourseListModel> String getCourseTitle(ModelStoreSync modelStore, 
 																      Class<CLM> courseListModelClass, 
 																      CoursePath coursePath,
-																      String userId) { 
+																      String userId) throws BackendError { 
 		T.call(CourseListManager.class);
 		
 		return getCourseItem(modelStore, courseListModelClass, coursePath, userId).getCourseTitle();
@@ -158,7 +158,7 @@ public class CourseListManager {
 	public static <CLM extends CourseListModel> CourseListItem getCourseItem(ModelStoreSync modelStore, 
 																             Class<CLM> courseListModelClass, 
 																             CoursePath coursePath,
-																             String userId) {
+																             String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
 

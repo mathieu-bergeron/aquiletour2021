@@ -36,7 +36,7 @@ import ca.ntro.users.NtroUser;
 
 public class SessionManager {
 
-	public static boolean ifSessionExists(ModelStoreSync modelStore, String authToken) {
+	public static boolean ifSessionExists(ModelStoreSync modelStore, String authToken) throws BackendError {
 		T.call(SessionManager.class);
 		
 		return modelStore.ifModelExists(NtroSession.class, "admin", authToken);
@@ -255,7 +255,7 @@ public class SessionManager {
 		forgetSessionByUserId(modelStore, authToken, user.getId());
 	}
 
-	public static boolean isUserAuthenticated(ModelStoreSync modelStore, User user) {
+	public static boolean isUserAuthenticated(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(SessionManager.class);
 		
 		boolean isAuthenticated = false;
@@ -338,7 +338,7 @@ public class SessionManager {
 		});
 	}
 
-	public static boolean ifLoginCodeValid(ModelStoreSync modelStore, String authToken, String loginCode) {
+	public static boolean ifLoginCodeValid(ModelStoreSync modelStore, String authToken, String loginCode) throws BackendError {
 		T.call(SessionManager.class);
 
 		return modelStore.extractFromModel(NtroSession.class, "admin", authToken, Boolean.class, session -> {

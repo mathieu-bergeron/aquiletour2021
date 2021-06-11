@@ -40,7 +40,7 @@ public class UserManager {
 	
 	private static int NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH = 10;
 
-	private synchronized static String generateUuid(ModelStoreSync modelStore) {
+	private synchronized static String generateUuid(ModelStoreSync modelStore) throws BackendError {
 		T.call(UserManager.class);
 
 		int userIdLength = Constants.DEFAULT_USER_ID_LENGTH;
@@ -108,7 +108,7 @@ public class UserManager {
 		}
 	}
 
-	public static boolean isUserPasswordValid(ModelStoreSync modelStore, String password, User user) {
+	public static boolean isUserPasswordValid(ModelStoreSync modelStore, String password, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		return modelStore.extractFromModel(User.class, "admin", user.getId(), Boolean.class, storedUser -> {
@@ -457,7 +457,7 @@ public class UserManager {
 		return ifExists;
 	}
 
-	public static boolean ifStudentExistsForRegistrationId(ModelStoreSync modelStore, String registrationId) {
+	public static boolean ifStudentExistsForRegistrationId(ModelStoreSync modelStore, String registrationId) throws BackendError {
 		T.call(UserManager.class);
 		
 		boolean ifExists = false;
@@ -469,7 +469,7 @@ public class UserManager {
 		return ifExists;
 	}
 
-	public static boolean ifStudentExistsForId(ModelStoreSync modelStore, String studentId) {
+	public static boolean ifStudentExistsForId(ModelStoreSync modelStore, String studentId) throws BackendError {
 		T.call(UserManager.class);
 		
 		boolean ifExists = false;
@@ -481,7 +481,7 @@ public class UserManager {
 		return ifExists;
 	}
 
-	public static User getUserById(ModelStoreSync modelStore, String userId) {
+	public static User getUserById(ModelStoreSync modelStore, String userId) throws BackendError {
 		T.call(UserManager.class);
 		
 		return modelStore.extractFromModel(User.class, "admin", userId, User.class, storedUser -> {
@@ -491,7 +491,7 @@ public class UserManager {
 		});
 	}
 
-	public static User getUserByUuid(ModelStoreSync modelStore, String uuid) {
+	public static User getUserByUuid(ModelStoreSync modelStore, String uuid) throws BackendError {
 		T.call(UserManager.class);
 		
 		User user = null;
@@ -506,13 +506,13 @@ public class UserManager {
 		return user;
 	}
 
-	public static boolean ifStoredUserExists(ModelStoreSync modelStore, User user) {
+	public static boolean ifStoredUserExists(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		return modelStore.ifModelExists(User.class, "admin", user.getId());
 	}
 
-	public static User getStoredUser(ModelStoreSync modelStore, User user) {
+	public static User getStoredUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		return getUserById(modelStore, user.getId());

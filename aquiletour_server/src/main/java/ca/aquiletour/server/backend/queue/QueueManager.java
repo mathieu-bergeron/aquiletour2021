@@ -132,19 +132,6 @@ public class QueueManager {
 			                              NtroDate timestamp, 
 			                              Appointment appointment) {
 		T.call(QueueManager.class);
-		
-		/*
-		try {
-			modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
-
-				queueLog.addAppointement(timestamp, user, appointment);
-
-			});
-
-		} catch (BackendError e) {
-
-			Log.warning("[logNewAppointement] error: " + e.getMessage());
-		}*/
 
 		Ntro.threadService().executeLater(new NtroTaskSync() {
 			@Override
@@ -209,7 +196,7 @@ public class QueueManager {
 	   });
 	}
 
-	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
+	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) throws BackendError {
 		T.call(QueueManager.class);
 		
 		return modelStore.extractFromModel(QueueModel.class, "admin", queueId, Appointment.class, queueModel -> {

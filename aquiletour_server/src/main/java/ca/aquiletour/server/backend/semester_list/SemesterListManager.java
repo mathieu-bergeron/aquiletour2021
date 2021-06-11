@@ -333,7 +333,7 @@ public class SemesterListManager {
 	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass, 
 																					  String semesterId, 
-																					  String userId) {
+																					  String userId) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		return modelStore.extractFromModel(modelClass,"admin" , userId, SemesterSchedule.class, model -> {
@@ -346,7 +346,7 @@ public class SemesterListManager {
 	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass, 
 																					  String semesterId, 
-																					  User user) {
+																					  User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		return getSemesterSchedule(modelStore, modelClass, semesterId, user.getId());
@@ -354,7 +354,7 @@ public class SemesterListManager {
 
 	public static TeacherSchedule getTeacherSchedule(ModelStoreSync modelStore, 
 			                                         String semesterId, 
-			                                         String userId) {
+			                                         String userId) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		return modelStore.extractFromModel(SemesterListModelTeacher.class, "admin", userId, TeacherSchedule.class, model -> {
@@ -364,7 +364,7 @@ public class SemesterListManager {
 
 	public static TeacherSchedule getTeacherSchedule(ModelStoreSync modelStore, 
 			                                         String semesterId, 
-			                                         User user) {
+			                                         User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		return getTeacherSchedule(modelStore, semesterId, user.getId());

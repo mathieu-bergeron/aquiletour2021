@@ -21,13 +21,13 @@ public class ModelStoreSync {
 		this.modelStore = modelStore;
 	}
 
-	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) {
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) throws BackendError {
 		T.call(this);
 
 		return ifModelExists(modelClass, authToken, modelStore.documentId(modelPath));
 	}
 
-	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) {
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) throws BackendError {
 		T.call(this);
 
 		return modelStore.ifModelExists(modelClass, authToken, documentId);
@@ -83,7 +83,7 @@ public class ModelStoreSync {
 												                     String authToken,
 			                                                         Path modelPath, 
 			                                                         Class<R> extractedValueClass,
-			                                                         ModelExtractor<M,R> extractor) {
+			                                                         ModelExtractor<M,R> extractor) throws BackendError {
 		T.call(this);
 
 		return extractFromModel(modelClass, 
@@ -97,7 +97,7 @@ public class ModelStoreSync {
 												                      String authToken,
 												                      String modelId,
 			                                                          Class<R> extractedValueClass,
-			                                                          ModelExtractor<M,R> extractor) {
+			                                                          ModelExtractor<M,R> extractor) throws BackendError {
 		T.call(this);
 		
 		return modelStore.extractFromModel(modelClass, authToken, modelId, extractedValueClass, extractor);

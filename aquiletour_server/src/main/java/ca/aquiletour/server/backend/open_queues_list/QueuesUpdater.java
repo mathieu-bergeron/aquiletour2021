@@ -16,20 +16,20 @@ public class QueuesUpdater {
 		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
-		if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "allQueues")) {
-			try {
-				modelStore.createModel(OpenQueueListModel.class, "admin", "allQueues", m -> {});
-			} catch (BackendError e) {
-				Log.error("Could not initialize allQueues " + e.getMessage());
+		try {
+			if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "allQueues")) {
+					modelStore.createModel(OpenQueueListModel.class, "admin", "allQueues", m -> {});
 			}
+		} catch (BackendError e) {
+			Log.error("Could not initialize allQueues " + e.getMessage());
 		}
 
-		if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "openQueues")) {
-			try {
-				modelStore.createModel(OpenQueueListModel.class, "admin", "openQueues", m -> {});
-			} catch (BackendError e) {
-				Log.error("Could not initialize openQueues " + e.getMessage());
+		try {
+			if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "openQueues")) {
+					modelStore.createModel(OpenQueueListModel.class, "admin", "openQueues", m -> {});
 			}
+		} catch (BackendError e) {
+			Log.error("Could not initialize openQueues " + e.getMessage());
 		}
 	}
 	

@@ -36,33 +36,32 @@ public abstract class ModelStore {
 
 	private List<DocumentPath> saveHistory = Ntro.collections().synchronizedList(new ArrayList<>());
 
-	private Map<DocumentPath, ModelLock> modelLockByPath = Ntro.collections().concurrentMap(new HashMap<>());
-
 	private Map<NtroModel, DocumentPath> localHeap = Ntro.collections().concurrentMap(new HashMap<>());
 	private Map<DocumentPath, NtroModel> localHeapByPath = Ntro.collections().concurrentMap(new HashMap<>());
 
 	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
 
-	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) {
+	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) throws BackendError {
 		T.call(this);
 		
-		boolean ifExists = false;
-
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 		
-		ModelLock modelLock = getModelLock(documentPath);
-		
-		synchronized (modelLock) {
+		return ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Boolean>() {
+			@Override
+			public Boolean execute() {
 
-			ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
+				boolean ifExists = false;
 
-			if(!ifExists) {
+				ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
+
+				if(!ifExists) {
+					
+					ifExists = ifModelExistsImpl(documentPath);
+				}
 				
-				ifExists = ifModelExistsImpl(documentPath);
+				return ifExists;
 			}
-		}
-
-		return ifExists;
+		});
 	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, Path modelPath){
@@ -163,42 +162,31 @@ public abstract class ModelStore {
 			                               ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 		
-		ModelLock modelLock = getModelLock(documentPath(modelClass, modelId));
+		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<Void>() {
 
-		synchronized(modelLock) {
+			@Override
+			public Void execute() throws BackendError {
+				T.call(this);
 
-			M model = null;
-			if(ifModelExists(modelClass, authToken, modelId)) {
-				model = getModel(modelClass, authToken, modelId);
-			}
-
-			if(model != null) {
-				synchronized (model) {
-					updater.update(model);
-					saveModelNow(model);
+				M model = null;
+				if(ifModelExists(modelClass, authToken, modelId)) {
+					model = getModel(modelClass, authToken, modelId);
 				}
 
-			}else {
+				if(model != null) {
+					synchronized (model) {
+						updater.update(model);
+						saveModelNow(model);
+					}
 
-				Log.warning("[updateModel] model not found: " + documentPath(modelClass, modelId));
-			}
-		}
-	}
+				}else {
 
-	protected ModelLock getModelLock(DocumentPath documentPath) {
-		T.call(this);
-		
-		ModelLock modelLock = null;
-		
-		synchronized (modelLockByPath) {
-			modelLock = Ntro.collections().getByKeyEquals(modelLockByPath, documentPath);
-			if(modelLock == null) {
-				modelLock = ModelLock.newLock();
-				modelLockByPath.put(documentPath, modelLock);
+					Log.warning("[updateModel] model not found: " + documentPath(modelClass, modelId));
+				}
+
+				return null;
 			}
-		}
-		
-		return modelLock;
+		});
 	}
 
 	<M extends NtroModel> void createModel(Class<M> modelClass, 
@@ -207,85 +195,93 @@ public abstract class ModelStore {
 			                               ModelInitializer<M> initializer) throws BackendError {
 		T.call(this);
 		
-		ModelLock modelLock = getModelLock(documentPath(modelClass, modelId));
+		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<Void>() {
+			@Override
+			public Void execute() throws BackendError {
+				T.call(this);
 
-		synchronized(modelLock) {
+				if(!ifModelExists(modelClass, authToken, modelId)) {
 
-			if(!ifModelExists(modelClass, authToken, modelId)) {
+					M model = getModel(modelClass, authToken, modelId);
 
-				M model = getModel(modelClass, authToken, modelId);
-
-				if(model != null) {
-					synchronized (model) {
-						initializer.initialize(model);
-						saveModelNow(model);
+					if(model != null) {
+						synchronized (model) {
+							initializer.initialize(model);
+							saveModelNow(model);
+						}
 					}
+
+				}else {
+					Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
 				}
 
-			}else {
-				Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
+				return null;
 			}
-		}
+		});
 	}
-
 
 	<M extends NtroModel> void readModel(Class<M> modelClass, 
 									     String authToken,
 			                             String modelId, 
 			                             ModelReader<M> reader) throws BackendError {
 		T.call(this);
-
-		ModelLock modelLock = getModelLock(documentPath(modelClass, modelId));
 		
-		synchronized(modelLock) {
+		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<Void>() {
+			@Override
+			public Void execute() throws BackendError {
+				T.call(this);
 
-			if(ifModelExists(modelClass, authToken, modelId)) {
+				if(ifModelExists(modelClass, authToken, modelId)) {
 
-				M model = getModel(modelClass, authToken, modelId);
+					M model = getModel(modelClass, authToken, modelId);
 
-				synchronized (model) {
+					synchronized (model) {
 
-					reader.read(model);
+						reader.read(model);
+					}
+
+				}else {
+
+					Log.warning("[readModel] model not found: " + documentPath(modelClass, modelId));
 				}
 
-			}else {
-
-				Log.warning("[readModel] model not found: " + documentPath(modelClass, modelId));
+				return null;
 			}
-		}
+		});
 	}
 
 	<M extends NtroModel, R extends Object> R extractFromModel(Class<M> modelClass, 
 												               String authToken,
 												               String modelId,
 			                                                   Class<R> accumulatorClass,
-			                                                   ModelExtractor<M,R> reducer) {
+			                                                   ModelExtractor<M,R> extractor) throws BackendError {
 		T.call(this);
 
-		R result = null;
+		return ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<R>() {
 
-		ModelLock modelLock = getModelLock(documentPath(modelClass, modelId));
+			@Override
+			public R execute() throws BackendError {
+				R result = null;
 
-		synchronized (modelLock) {
+				if(ifModelExists(modelClass, authToken, modelId)) {
 
-			if(ifModelExists(modelClass, authToken, modelId)) {
+					M model =  getModel(modelClass, authToken, modelId);
 
-				M model =  getModel(modelClass, authToken, modelId);
+					if(model != null) {
 
-				if(model != null) {
-
-					synchronized (model) {
-						result = reducer.extract(model);
+						synchronized (model) {
+							result = extractor.extract(model);
+						}
 					}
+
+				}else {
+
+					Log.warning("model not found: " + documentPath(modelClass, modelId));
 				}
-
-			}else {
-
-				Log.warning("model not found: " + documentPath(modelClass, modelId));
+				
+				return result;
 			}
-		}
-
-		return result;
+		});
 	}
 
 	public abstract void addValueListener(ValuePath valuePath, ValueListener valueListener);
@@ -304,19 +300,24 @@ public abstract class ModelStore {
 
 	public abstract void close();
 
-	public void registerModel(DocumentPath documentPath, NtroModel model) {
+	public void registerModel(DocumentPath documentPath, NtroModel model) throws BackendError {
 		T.call(this);
 
 		if(Ntro.collections().containsKeyEquals(localHeapByPath, documentPath)){
 			Log.warning("[registerModel] model already registered: " + documentPath.toString());
 		}
 		
-		ModelLock modelLock = getModelLock(documentPath);
+		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+			@Override
+			public Void execute() throws BackendError {
+				T.call(this);
 
-		synchronized (modelLock) {
-			localHeap.put(model, documentPath);
-			localHeapByPath.put(documentPath, model);
-		}
+				localHeap.put(model, documentPath);
+				localHeapByPath.put(documentPath, model);
+
+				return null;
+			}
+		});
 	}
 
 	public void updateStoreConnections(NtroModel model) {
@@ -400,7 +401,7 @@ public abstract class ModelStore {
 
 	public abstract void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args);
 
-	public void saveModelNow(NtroModel model) {
+	public void saveModelNow(NtroModel model) throws BackendError {
 		T.call(this);
 		
 		if(model != null) {
@@ -414,7 +415,7 @@ public abstract class ModelStore {
 		}
 	}
 
-	public void manageHeap(NtroModel model, DocumentPath documentPath) {
+	public void manageHeap(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
 		
 		synchronized (saveHistory) {
@@ -442,7 +443,7 @@ public abstract class ModelStore {
 		}
 	}
 
-	private void removeOldestModelFromHeap() {
+	private void removeOldestModelFromHeap() throws BackendError {
 		T.call(this);
 
 		DocumentPath documentPath = saveHistory.remove(0);
@@ -459,18 +460,24 @@ public abstract class ModelStore {
 		}
 	}
 
-	private void removeModelFromHeap(NtroModel model, DocumentPath documentPath) {
+	private void removeModelFromHeap(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
 		
-		ModelLock modelLock = getModelLock(documentPath);
-		
-		synchronized (modelLock) {
+		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
 
-			Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
-			Ntro.collections().removeByKeyEquals(modelLockByPath, documentPath);
+			@Override
+			public Void execute() throws BackendError {
+				T.call(this);
+				
+				Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
+				Ntro.collections().removeByKeyExact(localHeap, model);
+				
+				ModelLocks.destroyLock(documentPath);
 
-			Ntro.collections().removeByKeyExact(localHeap, model);
-		}
+				return null;
+			}
+			
+		});
 	}
 	
 	protected abstract int maxHeapSize();
