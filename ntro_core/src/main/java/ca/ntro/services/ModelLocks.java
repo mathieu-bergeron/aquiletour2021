@@ -10,7 +10,13 @@ import ca.ntro.stores.DocumentPath;
 
 public class ModelLocks {
 
-	private static Map<DocumentPath, ModelLock> modelLockByPath = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<DocumentPath, ModelLock> modelLockByPath = null;
+	
+	public static void initialize() {
+		if(modelLockByPath == null) {
+			modelLockByPath = Ntro.collections().concurrentMap(new HashMap<>());
+		}
+	}
 
 	private static ModelLock getModelLock(DocumentPath documentPath) {
 		T.call(ModelLocks.class);

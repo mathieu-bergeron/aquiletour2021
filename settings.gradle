@@ -11,7 +11,6 @@ include 'aquiletour_core'
 //include 'aquiletour_javafx'
 include 'aquiletour_jsweet'
 include 'aquiletour_server'
-include 'sockjs'
 
 buildscript {
 	repositories {

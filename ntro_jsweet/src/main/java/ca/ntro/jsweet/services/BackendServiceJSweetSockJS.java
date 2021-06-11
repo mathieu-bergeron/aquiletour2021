@@ -1,19 +1,20 @@
 package ca.ntro.jsweet.services;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
+import ca.ntro.jsweet.JSweetGlobals.SockJS;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
-import def.dom.WebSocket;
-import def.es6.SockJS;
+import def.new_sockjs.Globals;
 
 import static def.dom.Globals.window;
 
@@ -36,7 +37,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 
 		String protocol = window.location.protocol;
 
-		connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
+		connectionString = protocol + "//" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
 
 		connectWebSocket(Ntro.currentUser().getAuthToken());
 	}
@@ -44,8 +45,8 @@ public class BackendServiceJSweetSockJS extends BackendService {
 	private void connectWebSocket(String authToken) {
 		T.call(this);
 
-		sockJS = new SockJS(connectionString, null);
-
+		sockJS = Globals.newSockJS(connectionString);
+		
 		sockJS.onmessage = t -> {
 			
 			System.out.println(t.data.toString());
@@ -63,8 +64,6 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		};
 		
 		sockJS.onopen = t -> {
-			
-			System.out.println("SockJS: open");
 			
 			registerWebSocket(authToken);
 			

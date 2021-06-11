@@ -18,10 +18,20 @@
 package ca.ntro.jsweet;
 
 import ca.ntro.jsweet.services.OnLoadTask;
+import def.dom.WebSocket;
+import jsweet.lang.Interface;
 
-public class Globals {
-	
+public class JSweetGlobals {
+
 	// notifyTaskFinished() is called from Javascript, see tutoriel02/webapp/index.html
-	public static OnLoadTask onLoadTask = new OnLoadTask();
+	public static OnLoadTask onLoadTask = null;
+
+	public static void initialize() {
+		onLoadTask = new OnLoadTask();
+	}
+	
+	@Interface
+	public static  class SockJS extends WebSocket {
+	}
 
 }

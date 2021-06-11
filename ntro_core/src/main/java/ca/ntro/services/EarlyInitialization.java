@@ -31,6 +31,7 @@ public abstract class EarlyInitialization {
 	public void performInitialization() {
 		registerSerializableClasses();
 
+
 		Introspector introspector = provideIntrospector();
 		T.__registerIntrospector(introspector);
 		Ntro.registerIntrospector(introspector);

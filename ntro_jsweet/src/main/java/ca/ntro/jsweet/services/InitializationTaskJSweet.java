@@ -98,7 +98,7 @@ public class InitializationTaskJSweet extends InitializationTask {
 	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(this, "provideBackendService");
 
-		return BackendServiceJSweet.class;
+		return BackendServiceJSweetSockJS.class;
 	}
 
 	@Override

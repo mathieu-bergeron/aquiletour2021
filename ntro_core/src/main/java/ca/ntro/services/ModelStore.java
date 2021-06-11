@@ -40,6 +40,10 @@ public abstract class ModelStore {
 	private Map<DocumentPath, NtroModel> localHeapByPath = Ntro.collections().concurrentMap(new HashMap<>());
 
 	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
+	
+	public ModelStore() {
+		ModelLocks.initialize();
+	}
 
 	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) throws BackendError {
 		T.call(this);
