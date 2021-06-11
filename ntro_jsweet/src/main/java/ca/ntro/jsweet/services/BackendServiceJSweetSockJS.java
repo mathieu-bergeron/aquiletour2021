@@ -14,7 +14,7 @@ import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
-import def.new_sockjs.Globals;
+import def.sockjs.Globals;
 
 import static def.dom.Globals.window;
 
@@ -64,6 +64,8 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		};
 		
 		sockJS.onopen = t -> {
+			
+			System.out.println("SockJS: open");
 			
 			registerWebSocket(authToken);
 			

@@ -1,4 +1,4 @@
-package def.new_sockjs;
+package def.sockjs;
 
 import ca.ntro.jsweet.JSweetGlobals.SockJS;
 
