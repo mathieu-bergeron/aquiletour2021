@@ -3,7 +3,7 @@ package ca.aquiletour.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.MessageServiceJdk;
 import ca.ntro.messages.NtroMessage;
@@ -47,7 +47,7 @@ public class MessageServiceWebserver extends MessageServiceJdk {
 			}else {
 				
 				System.out.println("sending message to WebSocket " + message.getClass().getSimpleName());
-				RegisteredSockets.sendMessageToUser(Ntro.currentUser(), message);
+				RegisteredSocketsSockJS.sendMessageToUser(Ntro.currentUser(), message);
 			}
 		}
 

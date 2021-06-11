@@ -5,8 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketAdapter;
 
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
-import ca.ntro.core.system.trace.T;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsWebSocket;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.Ntro;
@@ -20,7 +19,14 @@ public class WebSocket extends WebSocketAdapter {
     public void onWebSocketConnect(Session sess){
         super.onWebSocketConnect(sess);
         
-        sess.setIdleTimeout(10*60*1000); // 10 minutes
+        if(Ntro.config().isProd()) {
+
+			sess.setIdleTimeout(1000*60*10); // 10 minutes
+
+        }else {
+
+			sess.setIdleTimeout(1000*60*60*4); // 4 hours
+        }
     }
 
     @Override
@@ -34,7 +40,7 @@ public class WebSocket extends WebSocketAdapter {
         if(message instanceof NtroRegisterSocketMessage) {
         	
         	NtroRegisterSocketMessage registerSocketSystemMessage = (NtroRegisterSocketMessage) message;
-        	RegisteredSockets.registerUserSocket(registerSocketSystemMessage.getAuthToken(), registerSocketSystemMessage.getUser(), getSession());
+        	RegisteredSocketsWebSocket.registerUserSocket(registerSocketSystemMessage.getAuthToken(), registerSocketSystemMessage.getUser(), getSession());
 
         }else{
 
@@ -46,7 +52,7 @@ public class WebSocket extends WebSocketAdapter {
     public void onWebSocketClose(int statusCode, String reason){
         super.onWebSocketClose(statusCode, reason);
         
-        RegisteredSockets.deregisterSocket(getSession());
+        RegisteredSocketsWebSocket.deregisterSocket(getSession());
 
         closureLatch.countDown();
     }

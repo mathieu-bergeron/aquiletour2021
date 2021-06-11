@@ -13,7 +13,7 @@ import org.eclipse.jetty.client.ResponseNotifier;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.models.NtroModel;
@@ -56,7 +56,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 	public void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
 		T.call(LocalStoreServer.class);
 
-		RegisteredSockets.onValueMethodInvoked(valuePath, methodName, args);
+		RegisteredSocketsSockJS.onValueMethodInvoked(valuePath, methodName, args);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.registered_sockets.AuthTokenIterator;
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
 import ca.ntro.core.models.ModelInitializer;
@@ -332,7 +332,7 @@ public class SessionManager {
 
 					NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 					updateSessionMessage.setSession(session);
-					RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);
+					RegisteredSocketsSockJS.sendMessageToSocket(authToken, updateSessionMessage);
 				}
 			});
 		});

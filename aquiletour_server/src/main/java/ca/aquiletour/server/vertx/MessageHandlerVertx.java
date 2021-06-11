@@ -20,15 +20,19 @@ package ca.aquiletour.server.vertx;
 
 import org.eclipse.jetty.server.Response;
 
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsWebSocket;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.services.Ntro;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.sockjs.SockJSSocket;
 
 public class MessageHandlerVertx {
 
@@ -40,10 +44,20 @@ public class MessageHandlerVertx {
 		
         if (request.method().equals(HttpMethod.POST)) {
         	
-        	String body = routingContext.getBodyAsString();
+        	String messageText = routingContext.getBodyAsString();
 
-			handlePayload(body);
-			
+			Log.info("[handleRequest] messageText: " + messageText);
+
+			try {
+
+				NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
+				Ntro.backendService().sendMessageToBackend(message);
+
+			}catch(ClassCastException e) {
+
+				Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
+			}
+
 			response.setStatusCode(Response.SC_OK);
 			response.end();
 
@@ -55,24 +69,7 @@ public class MessageHandlerVertx {
         }
 	}
 
-	private static void handlePayload(String messageText) {
-		T.call(MessageHandlerVertx.class);
-
-		Log.info("[MessagesHandlerVertx] messageText: " + messageText);
-		
-		try {
-			
-			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
-
-			Ntro.backendService().sendMessageToBackend(message);
-
-		}catch(ClassCastException e) {
-			
-			Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
-		}
-	}
-
-	public static void handleMessage(Buffer messageBuffer) {
+	public static void handleMessage(SockJSSocket socket, Buffer messageBuffer) {
 		T.call(MessageHandlerVertx.class);
 		
 		String messageText = null;
@@ -81,7 +78,30 @@ public class MessageHandlerVertx {
 		}
 
 		if(messageText != null && !messageText.isEmpty()) {
-			handlePayload(messageText);
+			Log.info("[handleMessage] messageText: " + messageText);
+
+			try {
+
+				NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
+				
+				if(message instanceof NtroRegisterSocketMessage) {
+					
+					NtroRegisterSocketMessage  ntroRegisterSocketMessage = (NtroRegisterSocketMessage) message;
+					
+					RegisteredSocketsSockJS.registerUserSocket(ntroRegisterSocketMessage.getAuthToken(), 
+							                                   ntroRegisterSocketMessage.getUser(), 
+							                                   socket);
+					
+				}else {
+					
+					Ntro.backendService().sendMessageToBackend(message);
+				}
+
+			}catch(ClassCastException e) {
+
+				Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
+			}
+
 		}
 	}
 }

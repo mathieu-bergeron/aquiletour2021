@@ -10,7 +10,7 @@ import ca.aquiletour.core.utils.ValidationError;
 import ca.aquiletour.core.utils.Validator;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.email.SendEmail;
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
@@ -52,7 +52,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 		updateSessionMessage.setSession(Ntro.currentSession());
-		RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);
+		RegisteredSocketsSockJS.sendMessageToSocket(authToken, updateSessionMessage);
 		
 		if(message.getDelayedMessages().isEmpty() && sessionUser.getHasPassword()) {
 

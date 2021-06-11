@@ -19,8 +19,9 @@ import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 import ca.ntro.users.NtroUser;
 import io.vertx.core.impl.ConcurrentHashSet;
+import io.vertx.ext.web.handler.sockjs.SockJSSocket;
 
-public class RegisteredSockets {
+public class RegisteredSocketsSockJS {
 
 	private static Map<DocumentPath, Set<String>> tokensByObservedPath = Ntro.collections().concurrentMap(new HashMap<>());
 	private static Map<String, Set<DocumentPath>> observedPathsByToken = Ntro.collections().concurrentMap(new HashMap<>());
@@ -28,15 +29,13 @@ public class RegisteredSockets {
 	private static Map<String, Set<String>> tokensByUserId = Ntro.collections().concurrentMap(new HashMap<>());
 	private static Map<String, String> userIdByToken = Ntro.collections().concurrentMap(new HashMap<>());
 
-	// XXX: Session is a Jetty Session (a socket)
-	// XXX: synchronized(socketByToken) so the maps below are always accessed together
-	private static Map<String, Session> socketByToken = Ntro.collections().concurrentMap(new HashMap<>());
-	private static Map<Session, String> tokenBySocket = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<String, SockJSSocket> socketByToken = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<SockJSSocket, String> tokenBySocket = Ntro.collections().concurrentMap(new HashMap<>());
 
 	public static void onUserChanges(String oldAuthToken, String authToken, NtroUser user) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 		
-		Session socket = null;
+		SockJSSocket socket = null;
 		
 		synchronized (socketByToken) {
 			socket = socketByToken.get(oldAuthToken);
@@ -48,8 +47,8 @@ public class RegisteredSockets {
 		}
 	}
 
-	public static void registerUserSocket(String authToken, NtroUser user, Session socket) {
-		T.call(RegisteredSockets.class);
+	public static void registerUserSocket(String authToken, NtroUser user, SockJSSocket socket) {
+		T.call(RegisteredSocketsSockJS.class);
 		
 		deregisterSocketIfExists(socket);
 
@@ -67,8 +66,8 @@ public class RegisteredSockets {
 		System.out.println("registered user socket for " + user.getId() + " " + authToken);
 	}
 
-	private static void registerSocket(String authToken, Session socket) {
-		T.call(RegisteredSockets.class);
+	private static void registerSocket(String authToken, SockJSSocket socket) {
+		T.call(RegisteredSocketsSockJS.class);
 
 		synchronized (socketByToken) {
 			socketByToken.put(authToken, socket);
@@ -76,8 +75,8 @@ public class RegisteredSockets {
 		}
 	}
 
-	private static void deregisterSocketIfExists(Session socket) {
-		T.call(RegisteredSockets.class);
+	private static void deregisterSocketIfExists(SockJSSocket socket) {
+		T.call(RegisteredSocketsSockJS.class);
 
 		boolean ifSocketExists = false;
 		synchronized (socketByToken) {
@@ -89,12 +88,12 @@ public class RegisteredSockets {
 		}
 	}
 
-	public static void deregisterSocket(Session socket) {
-		T.call(RegisteredSockets.class);
+	public static void deregisterSocket(SockJSSocket socket) {
+		T.call(RegisteredSocketsSockJS.class);
 
 		
 		String authToken = null;
-		Session removed = null;
+		SockJSSocket removed = null;
 		synchronized (socketByToken) {
 
 			authToken = tokenBySocket.get(socket);
@@ -121,7 +120,7 @@ public class RegisteredSockets {
 	}
 
 	private static void deregisterUser(String authToken, String userId) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
 		Set<String> userTokens = tokensByUserId.get(userId);
 		if(userTokens != null) {
@@ -135,7 +134,7 @@ public class RegisteredSockets {
 	}
 
 	private static void deregisterModelObservers(String authToken) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
 		Set<DocumentPath> observedPaths = observedPathsByToken.get(authToken);
 		if(observedPaths != null) {
@@ -157,13 +156,13 @@ public class RegisteredSockets {
 
 
 	public static void sendMessageToUser(NtroUser user, NtroMessage message) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
 		sendMessageToUserId(user.getId(), message);
 	}
 
 	public static void forEachSocket(String userId, AuthTokenIterator lambda) throws BackendError {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
 		Set<String> userTokens = tokensByUserId.get(userId);
 		if(userTokens != null) {
@@ -177,7 +176,7 @@ public class RegisteredSockets {
 
 
 	public static void sendMessageToUserId(String userId, NtroMessage message) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 		
 		Set<String> userTokens = tokensByUserId.get(userId);
 		if(userTokens != null) {
@@ -194,35 +193,32 @@ public class RegisteredSockets {
 	}
 
 	public static void sendMessageToSocket(String authToken, NtroMessage message) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
-		Session socket = null;
+		SockJSSocket socket = null;
 		synchronized (socketByToken) {
 			socket = socketByToken.get(authToken);
 		}
 
 		if(socket != null) {
-			if(socket.isOpen()) {
-				try {
-					
-					System.out.println("sendMessage: " + Ntro.jsonService().toString(message));
-					socket.getRemote().sendString(Ntro.jsonService().toString(message));
 
-				} catch (IOException e) {
-					Log.error("Unable to send message to user: " + authToken);
-				}
-			}
+			socket.exceptionHandler(e -> {
+				Log.error("[sendMessageToSocket] ");
+			});
+			
+			System.out.println("sendMessage: " + Ntro.jsonService().toString(message));
+			socket.write(Ntro.jsonService().toString(message));
 		}
 	}
 
 	public static void registerModelObserver(NtroUser user, DocumentPath documentPath) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
 		registerModelObserver(user.getAuthToken(), documentPath);
 	}
 
 	public static void registerModelObserver(String authToken, DocumentPath documentPath) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 
 		Set<String> observerTokens = tokensByObservedPath.get(documentPath);
 		if(observerTokens == null) {
@@ -240,7 +236,7 @@ public class RegisteredSockets {
 	}
 	
 	public static void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 		
 		if(args.size() == 0) {
 
@@ -275,14 +271,14 @@ public class RegisteredSockets {
 					message.setMethodName(methodName);
 					message.setArgs(args);
 
-					RegisteredSockets.sendMessageToSocket(authToken, message);
+					RegisteredSocketsSockJS.sendMessageToSocket(authToken, message);
 				}
 			}
 		}
 	}
 
 	public static void removeObserversWithNoSockets() {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 		
 		Set<String> tokensToRemove = new HashSet<>();
 		
@@ -313,7 +309,7 @@ public class RegisteredSockets {
 	}
 
 	private static boolean socketExistsForToken(String authToken) {
-		T.call(RegisteredSockets.class);
+		T.call(RegisteredSocketsSockJS.class);
 		
 		boolean ifExists = false;
 		

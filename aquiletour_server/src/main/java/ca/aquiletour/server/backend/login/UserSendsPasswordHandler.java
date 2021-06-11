@@ -5,7 +5,7 @@ import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.server.backend.users.UserManager;
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.trace.T;
@@ -29,7 +29,7 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
-			RegisteredSockets.sendMessageToUser(Ntro.currentUser(), updateSessionMessage);
+			RegisteredSocketsSockJS.sendMessageToUser(Ntro.currentUser(), updateSessionMessage);
 
 			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
 				Ntro.messages().send(delayedMessage);

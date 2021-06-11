@@ -4,7 +4,7 @@ package ca.aquiletour.server.backend.login;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.backend.users.UserManager;
-import ca.aquiletour.server.registered_sockets.RegisteredSockets;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
@@ -36,7 +36,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
-			RegisteredSockets.sendMessageToSocket(authToken, updateSessionMessage);
+			RegisteredSocketsSockJS.sendMessageToSocket(authToken, updateSessionMessage);
 		}
 
 		for(NtroMessage delayedMessage : message.getDelayedMessages()) {

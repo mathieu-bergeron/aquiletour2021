@@ -175,7 +175,7 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 
 		router.mountSubRouter(Constants.MESSAGES_URL_PATH_SOCKET, sockJSHandler.socketHandler(socket -> {
 			socket.handler(messageBuffer -> {
-				MessageHandlerVertx.handleMessage(messageBuffer);
+				MessageHandlerVertx.handleMessage(socket, messageBuffer);
 			});
 		}));
 
