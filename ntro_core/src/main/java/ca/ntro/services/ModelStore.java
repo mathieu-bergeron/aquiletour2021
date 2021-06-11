@@ -155,6 +155,7 @@ public abstract class ModelStore {
 
 		return model;
 	}
+	
 
 	<M extends NtroModel> void updateModel(Class<M> modelClass, 
 										   String authToken,
@@ -162,31 +163,46 @@ public abstract class ModelStore {
 			                               ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 		
-		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<Void>() {
+		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new UpdateModelTask<M>(modelClass, authToken, modelId, updater));
+	}
 
-			@Override
-			public Void execute() throws BackendError {
-				T.call(this);
+	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
+	private class UpdateModelTask<M extends NtroModel> implements ModelLockTask<Void> {
+		private Class<M> modelClass;
+		private String authToken;
+		private String modelId;
+		private ModelUpdater<M> updater;
 
-				M model = null;
-				if(ifModelExists(modelClass, authToken, modelId)) {
-					model = getModel(modelClass, authToken, modelId);
-				}
+		public UpdateModelTask(Class<M> modelClass, String authToken, String modelId, ModelUpdater<M> updater) {
+			T.call(this);
+			
+			this.modelClass = modelClass;
+			this.authToken = authToken;
+			this.modelId = modelId;
+			this.updater = updater;
+		}
 
-				if(model != null) {
-					synchronized (model) {
-						updater.update(model);
-						saveModelNow(model);
-					}
+		@Override
+		public Void execute() throws BackendError {
 
-				}else {
-
-					Log.warning("[updateModel] model not found: " + documentPath(modelClass, modelId));
-				}
-
-				return null;
+			M model = null;
+			if(ifModelExists(modelClass, authToken, modelId)) {
+				model = getModel(modelClass, authToken, modelId);
 			}
-		});
+
+			if(model != null) {
+				synchronized (model) {
+					updater.update(model);
+					saveModelNow(model);
+				}
+
+			}else {
+
+				Log.warning("[updateModel] model not found: " + documentPath(modelClass, modelId));
+			}
+
+			return null;
+		}
 	}
 
 	<M extends NtroModel> void createModel(Class<M> modelClass, 
@@ -195,59 +211,94 @@ public abstract class ModelStore {
 			                               ModelInitializer<M> initializer) throws BackendError {
 		T.call(this);
 		
-		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<Void>() {
-			@Override
-			public Void execute() throws BackendError {
-				T.call(this);
+		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new CreateModelTask<M>(modelClass, authToken, modelId, initializer));
+	}
 
-				if(!ifModelExists(modelClass, authToken, modelId)) {
+	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
+	private class CreateModelTask<M extends NtroModel> implements ModelLockTask<Void> {
+		private Class<M> modelClass;
+		private String authToken;
+		private String modelId;
+		private ModelInitializer<M> initializer;
 
-					M model = getModel(modelClass, authToken, modelId);
+		public CreateModelTask(Class<M> modelClass, String authToken, String modelId, ModelInitializer<M> initializer) {
+			T.call(this);
+			
+			this.modelClass = modelClass;
+			this.authToken = authToken;
+			this.modelId = modelId;
+			this.initializer = initializer;
+		}
 
-					if(model != null) {
-						synchronized (model) {
-							initializer.initialize(model);
-							saveModelNow(model);
-						}
+		@Override
+		public Void execute() throws BackendError {
+			T.call(this);
+
+			if(!ifModelExists(modelClass, authToken, modelId)) {
+
+				M model = getModel(modelClass, authToken, modelId);
+
+				if(model != null) {
+					synchronized (model) {
+						initializer.initialize(model);
+						saveModelNow(model);
 					}
-
-				}else {
-					Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
 				}
 
-				return null;
+			}else {
+				Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
 			}
-		});
+
+			return null;
+		}
 	}
+
 
 	<M extends NtroModel> void readModel(Class<M> modelClass, 
 									     String authToken,
 			                             String modelId, 
 			                             ModelReader<M> reader) throws BackendError {
 		T.call(this);
-		
-		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<Void>() {
-			@Override
-			public Void execute() throws BackendError {
-				T.call(this);
 
-				if(ifModelExists(modelClass, authToken, modelId)) {
+		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ReadModelTask<M>(modelClass, authToken, modelId, reader));
+	}
 
-					M model = getModel(modelClass, authToken, modelId);
+	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
+	private class ReadModelTask<M extends NtroModel> implements ModelLockTask<Void> {
+		private Class<M> modelClass;
+		private String authToken;
+		private String modelId;
+		private ModelReader<M> reader;
 
-					synchronized (model) {
+		public ReadModelTask(Class<M> modelClass, String authToken, String modelId, ModelReader<M> reader) {
+			T.call(this);
+			
+			this.modelClass = modelClass;
+			this.authToken = authToken;
+			this.modelId = modelId;
+			this.reader = reader;
+		}
 
-						reader.read(model);
-					}
+		@Override
+		public Void execute() throws BackendError {
+			T.call(this);
 
-				}else {
+			if(ifModelExists(modelClass, authToken, modelId)) {
 
-					Log.warning("[readModel] model not found: " + documentPath(modelClass, modelId));
+				M model = getModel(modelClass, authToken, modelId);
+
+				synchronized (model) {
+
+					reader.read(model);
 				}
 
-				return null;
+			}else {
+
+				Log.warning("[readModel] model not found: " + documentPath(modelClass, modelId));
 			}
-		});
+
+			return null;
+		}
 	}
 
 	<M extends NtroModel, R extends Object> R extractFromModel(Class<M> modelClass, 
@@ -257,31 +308,47 @@ public abstract class ModelStore {
 			                                                   ModelExtractor<M,R> extractor) throws BackendError {
 		T.call(this);
 
-		return ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ModelLockTask<R>() {
+		return ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ExtractFromModelTask<M, R>(modelClass, authToken, modelId, extractor));
+	}
 
-			@Override
-			public R execute() throws BackendError {
-				R result = null;
+	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
+	private class ExtractFromModelTask<M extends NtroModel, R extends Object> implements ModelLockTask<R> {
+		private Class<M> modelClass;
+		private String authToken;
+		private String modelId;
+		private ModelExtractor<M,R> extractor;
 
-				if(ifModelExists(modelClass, authToken, modelId)) {
+		public ExtractFromModelTask(Class<M> modelClass, String authToken, String modelId, ModelExtractor<M,R> extractor) {
+			T.call(this);
+			
+			this.modelClass = modelClass;
+			this.authToken = authToken;
+			this.modelId = modelId;
+			this.extractor = extractor;
+		}
 
-					M model =  getModel(modelClass, authToken, modelId);
+		@Override
+		public R execute() throws BackendError {
+			R result = null;
 
-					if(model != null) {
+			if(ifModelExists(modelClass, authToken, modelId)) {
 
-						synchronized (model) {
-							result = extractor.extract(model);
-						}
+				M model =  getModel(modelClass, authToken, modelId);
+
+				if(model != null) {
+
+					synchronized (model) {
+						result = extractor.extract(model);
 					}
-
-				}else {
-
-					Log.warning("model not found: " + documentPath(modelClass, modelId));
 				}
-				
-				return result;
+
+			}else {
+
+				Log.warning("model not found: " + documentPath(modelClass, modelId));
 			}
-		});
+			
+			return result;
+		}
 	}
 
 	public abstract void addValueListener(ValuePath valuePath, ValueListener valueListener);

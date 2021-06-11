@@ -9,7 +9,12 @@ import def.dom.EventTarget;
 import def.dom.MessageEvent;
 
 public class SockJS extends EventTarget {
-
+	
+	// based on: https://github.com/cincheo/jsweet/blob/develop/core-lib/es6/src/main/java/def/dom/WebSocket.java
+	
+	// TODO: remove fields/methods that are in the WebSocket API but not in the SockJS API
+	
+	
     public java.lang.String binaryType;
     public double bufferedAmount;
     public java.lang.String extensions;
