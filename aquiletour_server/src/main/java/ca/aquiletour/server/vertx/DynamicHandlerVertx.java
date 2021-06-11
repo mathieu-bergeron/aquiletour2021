@@ -20,6 +20,7 @@ package ca.aquiletour.server.vertx;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.util.UrlEncoded;
@@ -33,6 +34,7 @@ import ca.aquiletour.core.models.logs.LogModelCourse;
 import ca.aquiletour.core.models.logs.LogModelQueue;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
@@ -63,6 +65,7 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.CookieSameSite;
+import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.RoutingContext;
 
 public class DynamicHandlerVertx {
@@ -78,24 +81,36 @@ public class DynamicHandlerVertx {
 	
 	public static void handle(RoutingContext routingContext) {
 		T.call(DynamicHandlerVertx.class);
-		
+
 		HttpServerRequest request = routingContext.request();
 		HttpServerResponse response = routingContext.response();
 		
-		/*
+		Set<FileUpload> uploads =  routingContext.fileUploads();
 		
-		request.uploadHandler(upload -> {
-			if(Ntro.currentUser() instanceof Teacher 
-					&& upload.contentType().startsWith("multipart/form-data")) {
+		if(!uploads.isEmpty()) {
+			
+			String semesterId = request.getParam("semesterId");
+			String courseId = request.getParam("courseId");
 
-				String semesterId = request.getParam("semesterId");
-				String courseId = request.getParam("courseId");
-				
-				if(semesterId != null && courseId != null) {
+			if(semesterId != null && courseId != null) {
+				for(FileUpload upload : uploads) {
 					sendCsvMessage(semesterId, courseId, upload);
 				}
 			}
-		}); */
+		}
+		
+		
+		/*
+		request.uploadHandler(upload -> {
+			
+			System.out.println("UPLOAD");
+
+			if(Ntro.currentUser() instanceof Teacher 
+					&& upload.contentType().startsWith("multipart/form-data")) {
+
+				
+			}
+		});*/
 		
 		String rawPath = request.uri();
 		Path path = Path.fromRawPath(rawPath);
@@ -261,12 +276,20 @@ public class DynamicHandlerVertx {
 
 	private static void sendCsvMessage(String semesterId, 
 			                    String courseId, 
-			                    HttpServerFileUpload upload) {
+			                    FileUpload upload) {
 		
-		System.out.println("TODO!");
+		String fileName = upload.fileName();
 		
-		String fileName = "";
-		String fileContent = "";
+		String fileNameOnDisk = upload.uploadedFileName();
+		
+		
+		
+		
+		
+		String fileContent = upload.toString();
+		
+		
+		/*
 
 		AddStudentCsvMessage addStudentCsvMessage = Ntro.messages().create(AddStudentCsvMessage.class);
 
@@ -277,6 +300,7 @@ public class DynamicHandlerVertx {
 		addStudentCsvMessage.setCsvFilename(fileName);
 
 		Ntro.backendService().sendMessageToBackend(addStudentCsvMessage);
+		*/
 	}
 
 	private static void sendSessionMessagesAccordingToCookies(HttpServerRequest baseRequest) {

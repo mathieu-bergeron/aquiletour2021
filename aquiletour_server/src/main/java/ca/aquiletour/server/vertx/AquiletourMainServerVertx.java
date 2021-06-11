@@ -127,28 +127,6 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		e.printStackTrace(System.err);
 	}
 
-	private Server createServer(int port) throws ServletException {
-		T.call(this);
-
-		Server server = new Server(port);
-
-		// TODO: add HTTPS, WS and WSS connectors
-        server.addConnector(new ServerConnector(server));
-
-        // NOTE: HandlerList stops after first successful answer
-        HandlerList handlers = new HandlerList();
-
-		handlers.addHandler(ModelHandler.createModelHandler(Constants.MODELS_URL_PREFIX));
-		handlers.addHandler(ResourceHandler.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public"));
-		handlers.addHandler(WebSocketHandler.createWebSocketHandler(Constants.SOCKET_PREFIX));
-		handlers.addHandler(MessageHandler.createMessageHandler(Constants.HTTP_PREFIX));
-		handlers.addHandler(DynamicHandler.createDynamicHandler("/", "/private"));
-
-        server.setHandler(handlers);
-
-		return server;
-	}
-
 	private void startServer() throws Exception, IOException, InterruptedException {
 		T.call(this);
 
@@ -158,9 +136,9 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		
 		VertxOptions vertxOptions = new VertxOptions();
 		if(Ntro.config().isProd()) {
-			vertxOptions.setWorkerPoolSize(10000);
+			vertxOptions.setWorkerPoolSize(1000);
 		}else {
-			vertxOptions.setWorkerPoolSize(100);
+			vertxOptions.setWorkerPoolSize(3);
 		}
 
 		Vertx vertx = Vertx.vertx(vertxOptions);
@@ -175,7 +153,7 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		Router router = Router.router(vertx);
 
 		router.route(HttpMethod.POST, "/*").handler(BodyHandler.create());
-		
+
 		router.route(HttpMethod.POST, Constants.MESSAGES_URL_PATH_HTTP + "*").blockingHandler(routingContext -> {
 
 			MessageHandlerVertx.handleRequest(routingContext);
