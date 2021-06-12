@@ -97,7 +97,7 @@ public class DynamicHandlerVertx {
 		if(rawPath.contains(Constants.LOG_URL_SEGMENT)) {
 			
 			try {
-
+				
 				serveLog(request, response, path);
 
 			} catch (BackendError e) {
@@ -118,50 +118,88 @@ public class DynamicHandlerVertx {
 			throws BackendError {
 		
 		T.call(DynamicHandlerVertx.class);
-		
-		Path subPath = path.removePrefix(Constants.LOG_URL_SEGMENT);
-		
-		if(subPath.nameCount() >= 4) {
-			
-			CoursePath coursePath = CoursePath.fromPath(subPath.subPath(1));
-			
-			if(subPath.startsWith(Constants.QUEUE_URL_SEGMENT)) {
-				
-				serveLog(baseRequest, response, coursePath, LogModelQueue.class);
-				
-			} else if(subPath.startsWith(Constants.COURSE_URL_SEGMENT)) {
 
-				serveLog(baseRequest, response, coursePath, LogModelCourse.class);
+		Path subPath = path.removePrefix(Constants.LOG_URL_SEGMENT);
+
+		if(subPath.startsWith(Constants.QUEUE_URL_SEGMENT)) {
+
+			Path queueIdPath = subPath.subPath(1);
+			
+			if(queueIdPath.nameCount() >= 1) {
+				
+				String queueId = queueIdPath.name(0);
+				
+				serveQueueLog(baseRequest, response, queueId);
+			}
+			
+		} else if(subPath.startsWith(Constants.COURSE_URL_SEGMENT)) {
+			
+			Path coursePathRaw = subPath.subPath(1);
+			
+			if(coursePathRaw.nameCount() >= 3) {
+
+				CoursePath coursePath = CoursePath.fromPath(subPath.subPath(1));
+
+				serveCourseLog(baseRequest, response, coursePath);
 			}
 		}
 	}
 
-	private static <LM extends LogModel> void serveLog(HttpServerRequest baseRequest, 
-			              HttpServerResponse response, 
-			              CoursePath coursePath, 
-			              Class<LM> logModelClass)
-
-			throws BackendError {
+	private static void serveLog(HttpServerRequest baseRequest, 
+			                     HttpServerResponse response, 
+			                     LogWriter writer) throws BackendError {
 
 		T.call(DynamicHandlerVertx.class);
-		
+
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
 		StringBuilder logContent = new StringBuilder();
 		
-		modelStore.readModel(logModelClass, "admin", coursePath, logModel -> {
+		String fileBasename = writer.write(modelStore, logContent);
 
-			logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, logContent);
-		});
-		
-		response.putHeader("content-disposition", "attachment; filename=\"" + coursePath.toFileName() + ".csv\"");
+		response.putHeader("content-disposition", "attachment; filename=\"" + fileBasename + ".csv\"");
 		response.putHeader("content-type", "text/csv; charset=utf-8");
 		response.setStatusCode(Response.SC_OK);
 
 		response.end(logContent.toString(), "UTF-8");
+
 	}
-	
-	
+
+	private static void serveQueueLog(HttpServerRequest baseRequest, 
+			                          HttpServerResponse response, 
+			                          String queueId)
+			throws BackendError {
+
+		T.call(DynamicHandlerVertx.class);
+
+		serveLog(baseRequest, response, (modelStore, writer) -> {
+
+			modelStore.readModel(LogModelQueue.class, "admin", queueId, logModel -> {
+
+				logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, writer);
+				
+			});
+
+			return queueId;
+		});
+	}
+
+	private static void serveCourseLog(HttpServerRequest baseRequest, 
+			                           HttpServerResponse response, 
+			                           CoursePath coursePath) throws BackendError {
+
+		T.call(DynamicHandlerVertx.class);
+
+		serveLog(baseRequest, response, (modelStore, writer) -> {
+
+			modelStore.readModel(LogModelCourse.class, "admin", coursePath, logModel -> {
+
+				logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, writer);
+			});
+			
+			return coursePath.toFileName();
+		});
+	}
 
 
 	private static void serveView(HttpServerRequest request, 

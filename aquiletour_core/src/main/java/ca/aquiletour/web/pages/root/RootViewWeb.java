@@ -57,6 +57,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement semesterListLink;
 	private HtmlElement queueLink;
 
+
 	private HtmlElement loginDropdown;
 	private HtmlElement loginButton;
 	private HtmlElement loginMenuMessage;
@@ -151,6 +152,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(userNameInput);
 		MustNot.beNull(showPasswordMenuLink);
 		MustNot.beNull(courseListLink);
+
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 

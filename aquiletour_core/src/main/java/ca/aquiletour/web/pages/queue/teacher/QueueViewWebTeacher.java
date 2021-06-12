@@ -24,6 +24,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 	private HtmlElement queueMessageAllCourses;
 
+	private HtmlElement downloadCourseLogLink;
+
 	private HtmlElements addAllCoursesIdToId;
 	private HtmlElements addAllCoursesIdToValue;
 	private HtmlElements addAllCoursesIdToForm;
@@ -42,6 +44,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		queuePermalink = this.getRootElement().find(".queue-permalink").get(0);
 
+		downloadCourseLogLink = getRootElement().find("#download-course-log-link").get(0);
+
 		queueMessageAllCourses = this.getRootElement().find(".queue-message-all-courses").get(0);
 
 		queueMenuCourseTemplate = this.getRootElement().find(".queue-menu-course-template").get(0);
@@ -52,6 +56,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		MustNot.beNull(queueMenuCoursesContainer);
 		MustNot.beNull(queueMenuCourseTemplate);
 		MustNot.beNull(queueMenuGroupTemplate);
+
+		MustNot.beNull(downloadCourseLogLink);
 
 		MustNot.beNull(timeControlsContainer);
 
@@ -72,9 +78,17 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		addAllCoursesIdToForm.appendToAttribute("form", Constants.ALL_COURSES_ID);
 		
 		addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
-
 		
+
+		onContextChange(context);
+	}
+
+	@Override
+	public void onContextChange(NtroContext<?,?> context) {
+		T.call(this);
+
 		queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
+		downloadCourseLogLink.setAttribute("href", "/" + Constants.QUEUE_LOG_URL_SEGMENT + "/" + context.user().getId());
 	}
 	
 	@Override

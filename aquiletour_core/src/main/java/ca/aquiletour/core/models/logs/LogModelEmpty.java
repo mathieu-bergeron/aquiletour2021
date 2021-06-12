@@ -14,9 +14,4 @@ public class LogModelEmpty extends LogModel {
 	@Override
 	protected void writeCsvHeader(String separator, StringBuilder builder) {
 	}
-
-	@Override
-	protected void writeCsvLine(LogItem logItem, String separator, StringBuilder builder) {
-	}
-
 }

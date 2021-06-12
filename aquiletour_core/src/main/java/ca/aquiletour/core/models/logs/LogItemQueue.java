@@ -81,22 +81,26 @@ public class LogItemQueue extends LogItem {
 	}
 
 	@Override
-	public void writeCsvLine(String separator, StringBuilder builder) {
+	public void writeCsvLine(String separator, StringBuilder builder, int longuestTaskPath) {
 		T.call(this);
-
+		
+		T.here();
+		
 		writeCsvLineBasicInfo(separator, builder);
 		writeCsvLineCoursePath(separator, builder);
 		writeCsvLineGroupId(separator, builder);
-		writeCsvLineTaskPath(separator, builder);
+		writeCsvLineTaskPath(separator, builder, longuestTaskPath);
 		
 		builder.append(separator);
 		builder.append(openTime());
 
 		builder.append(separator);
 		writeLastRevisionCsv(separator, builder);
-
-		builder.append(separator);
-		writeAllRevisionsJson(separator, builder);
+		
+		if(getRevisions().size() > 1) {
+			builder.append(separator);
+			writeAllRevisionsJson(separator, builder);
+		}
 	}
 
 	private void writeAllRevisionsJson(String separator, StringBuilder builder) {
@@ -114,16 +118,20 @@ public class LogItemQueue extends LogItem {
 		if(!getRevisions().isEmpty()) {
 			
 			AppointmentRevision lastRevision = getRevisions().get(getRevisions().size() - 1);
-			
-			builder.append(separator);
-			builder.append("'");
-			builder.append(lastRevision.getComment());
-			builder.append("'");
 
 			builder.append(separator);
-			builder.append("'");
-			builder.append(tagList(lastRevision.getTags()));
-			builder.append("'");
+			if(!lastRevision.getComment().isEmpty()) {
+				builder.append("'");
+				builder.append(lastRevision.getComment());
+				builder.append("'");
+			}
+
+			builder.append(separator);
+			if(!lastRevision.getTags().isEmpty()) {
+				builder.append("'");
+				builder.append(tagList(lastRevision.getTags()));
+				builder.append("'");
+			}
 		}
 	}
 	

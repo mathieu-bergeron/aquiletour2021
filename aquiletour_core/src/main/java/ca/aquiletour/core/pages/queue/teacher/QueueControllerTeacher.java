@@ -11,9 +11,18 @@ import ca.aquiletour.core.pages.queue.teacher.views.AppointmentViewTeacher;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.trace.T;
 
 public  class QueueControllerTeacher extends QueueController {
+
+	@Override
+	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
+		T.call(this);
+
+		QueueViewTeacher view = (QueueViewTeacher) getView();
+		view.onContextChange(context);
+	}
 
 	@Override
 	protected Class<? extends QueueView> viewClass() {

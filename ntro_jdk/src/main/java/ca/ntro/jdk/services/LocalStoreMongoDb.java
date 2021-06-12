@@ -180,7 +180,11 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 
 	@Override
 	protected void deleteDocument(DocumentPath documentPath) {
-		throw new RuntimeException("TODO");
+		T.call(this);
+
+		MongoCollection<Document> models = db.getCollection(documentPath.getCollection());
+
+		models.deleteOne(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()));
 	}
 
 	@Override

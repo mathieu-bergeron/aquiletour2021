@@ -32,11 +32,6 @@ public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 	protected void writeCsvHeader(String separator, StringBuilder builder) {
 		T.call(this);
 	}
-
-	@Override
-	protected void writeCsvLine(LogItemQueue logItem, String separator, StringBuilder builder) {
-		T.call(this);
-	}
 	
 	public void addAppointement(NtroDate timestamp, User user, Appointment appointment) {
 		T.call(this);

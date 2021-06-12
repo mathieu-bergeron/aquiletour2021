@@ -9,11 +9,6 @@ import ca.ntro.models.NtroDate;
 
 public abstract class LogItem implements NtroModelValue {
 	
-	private int longuestTaskPath = 0;
-	void registerLonguestTaskPath(int longuestTaskPath) {
-		this.longuestTaskPath = longuestTaskPath;
-	}
-	
 	private LogModel<?,?> logModel = LogModel.empty();
 	private String timestamp = "";
 	private String userId = "";
@@ -109,7 +104,7 @@ public abstract class LogItem implements NtroModelValue {
 
 	}
 
-	protected void writeCsvLineTaskPath(String separator, StringBuilder builder) {
+	protected void writeCsvLineTaskPath(String separator, StringBuilder builder, int longuestTaskPath) {
 		T.call(this);
 
 		for(int i = 0; i < longuestTaskPath; i++) {
@@ -124,15 +119,31 @@ public abstract class LogItem implements NtroModelValue {
 
 	protected void writeCsvLineCoursePath(String separator, StringBuilder builder) {
 		T.call(this);
+		
+		CoursePath coursePath = getCoursePath();
+		
+		if(coursePath != null 
+				&& coursePath.nameCount() > 0) {
 
-		builder.append(separator);
-		builder.append(getCoursePath().teacherId());
+			String teacherId = coursePath.teacherId();
+			String semesterId = coursePath.semesterId();
+			String courseId = coursePath.courseId();
+			
+			if(teacherId != null) {
+				builder.append(separator);
+				builder.append(teacherId);
+			}
 
-		builder.append(separator);
-		builder.append(getCoursePath().semesterId());
+			if(semesterId != null) {
+				builder.append(separator);
+				builder.append(semesterId);
+			}
 
-		builder.append(separator);
-		builder.append(getCoursePath().courseId());
+			if(courseId != null) {
+				builder.append(separator);
+				builder.append(courseId);
+			}
+		}
 	}
 
 	protected void writeCsvLineGroupId(String separator, StringBuilder builder) {
@@ -142,6 +153,6 @@ public abstract class LogItem implements NtroModelValue {
 		builder.append(groupId);
 	}
 
-	public abstract void writeCsvLine(String separator, StringBuilder builder);
+	public abstract void writeCsvLine(String separator, StringBuilder builder, int longuestTaskPath);
 
 }

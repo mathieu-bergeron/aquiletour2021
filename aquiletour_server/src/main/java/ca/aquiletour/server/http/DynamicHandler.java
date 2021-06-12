@@ -129,7 +129,7 @@ public class DynamicHandler extends AbstractHandler {
 		if(rawPath.contains(Constants.LOG_URL_SEGMENT)) {
 			
 			try {
-
+				
 				serveLog(baseRequest, response, out, path);
 
 			} catch (BackendError e) {

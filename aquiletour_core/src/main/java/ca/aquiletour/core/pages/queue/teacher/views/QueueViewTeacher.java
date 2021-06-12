@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.queue.teacher.views;
 
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.queue.views.QueueView;
+import ca.ntro.core.mvc.NtroContext;
 
 public interface QueueViewTeacher extends QueueView {
 
@@ -17,5 +18,7 @@ public interface QueueViewTeacher extends QueueView {
 	void removeFromQueueMenu(CoursePath coursePath, String groupId);
 	void displayQueueMessage(CoursePath coursePath, String queueMessage);
 	void showAppointmentTimes(boolean shouldShow);
+
+	void onContextChange(NtroContext<?,?> context);
 
 }

@@ -19,12 +19,12 @@ public class LogItemCourse extends LogItemTask {
 	}
 
 	@Override
-	public void writeCsvLine(String separator, StringBuilder builder) {
+	public void writeCsvLine(String separator, StringBuilder builder, int longuestTaskPath) {
 		T.call(this);
 		
 		writeCsvLineBasicInfo(separator, builder);
 		writeCsvLineGroupId(separator, builder);
-		writeCsvLineTaskPath(separator, builder);
+		writeCsvLineTaskPath(separator, builder, longuestTaskPath);
 
 		for(String eventItem : eventItems) {
 

@@ -37,17 +37,22 @@ public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> imp
 
 	public void writeCsvFileContent(String separator, StringBuilder builder) {
 		T.call(this);
-		
-		writeCsvHeader(separator, builder);
 
+		int longuestTaskPath = getLogItems().longuestTaskPath();
+
+		writeCsvHeader(separator, builder);
+		
 		getLogItems().forEachItem((index, logItem) -> {
-			writeCsvLine(logItem, separator, builder);
+			
+			T.values(logItem.getClass().getSimpleName());
+			
+			logItem.writeCsvLine(separator, builder, longuestTaskPath);
+
 			builder.append(Ntro.lineSeparator());
 		});
 	}
 	
 	protected abstract void writeCsvHeader(String separator, StringBuilder builder);
-	protected abstract void writeCsvLine(LI logItem, String separator, StringBuilder builder);
 
 	public LI createLogItem(Class<LI> logItemClass, NtroDate timestamp, User user) {
 		T.call(this);

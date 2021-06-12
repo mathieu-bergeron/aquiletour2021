@@ -53,14 +53,6 @@ public class LogModelCourse extends LogModel<LogItemCourse, LogItemsCourse> {
 	}
 
 	@Override
-	protected void writeCsvLine(LogItemCourse logItem, String separator, StringBuilder builder) {
-		T.call(this);
-
-		logItem.registerLonguestTaskPath(longuestTaskPath);
-		logItem.writeCsvLine(separator, builder);
-	}
-
-	@Override
 	protected void writeCsvHeader(String separator, StringBuilder builder) {
 		T.call(this);
 
