@@ -33,11 +33,11 @@ public class SessionServiceJSweet extends SessionService {
 		super.registerCurrentSession(session);
 		
 		String sessionString = Ntro.jsonService().toString(session);
+
 		//sessionString = sessionString.replace(" ", "");
+		//sessionString = encodeURI(sessionString);
 		
-		String urlEncodedUserString = encodeURI(sessionString);
-		
-		Cookies.set("session", urlEncodedUserString, null);
+		Cookies.set("session", sessionString, null);
 	}
 
 }

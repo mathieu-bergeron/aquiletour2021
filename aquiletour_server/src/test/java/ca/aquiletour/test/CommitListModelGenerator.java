@@ -44,8 +44,8 @@ public class CommitListModelGenerator {
 		test01.setCourseId("StruDon");
 		test01.setSemesterId("H2021");
 		test01.setExercisePath("/ateliers/atelier1");
-		test01.setFromDate(String.valueOf(Ntro.calendar().fromString("01/01/2021 12:12",dateFormat).getEpochMiliseconds()));
-		test01.setToDate(String.valueOf(Ntro.calendar().fromString("29/06/2021 23:59",dateFormat).getEpochMiliseconds()));
+		test01.setFromDate(String.valueOf(Ntro.calendar().fromString("01/01/2021 12:12",dateFormat).epochMiliseconds()));
+		test01.setToDate(String.valueOf(Ntro.calendar().fromString("29/06/2021 23:59",dateFormat).epochMiliseconds()));
 		test01.setStudentId("1234500");
 		
 		String[] gitMessages = new String[] {
@@ -77,7 +77,7 @@ public class CommitListModelGenerator {
 			
 			String timestamp = String.format("%02d/%02d/2021 %02d:%02d", day, month, hour, minutes);
 			
-			commit.setTimeStamp(String.valueOf(Ntro.calendar().fromString(timestamp, dateFormat).getEpochMiliseconds()));
+			commit.setTimeStamp(String.valueOf(Ntro.calendar().fromString(timestamp, dateFormat).epochMiliseconds()));
 
 			test01.addCommit(commit);
 		}

@@ -308,9 +308,10 @@ public class DynamicHandlerVertx {
 		
 
 		if(hasCookie(baseRequest, "session")) {
-			String sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
+			
+			String sessionString = getCookie(baseRequest, "session");
 
-			sessionString = sessionString.replaceAll("%20", "");
+			sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
 			
 			NtroSession session = Ntro.jsonService().fromString(NtroSession.class, sessionString);
 			
@@ -399,7 +400,8 @@ public class DynamicHandlerVertx {
 		NtroSession session = Ntro.currentSession();
 		User user = (User) session.getUser();
 		session.setUser(user.toSessionUser());
-		setCookie(response, "session", Ntro.jsonService().toString(session));
+
+		setCookie(response, "session", Ntro.jsonService().toString(session, false));
 	}
 
 	private static boolean ifJsOnlySetCookies(HttpServerRequest baseRequest, HttpServerResponse response) {

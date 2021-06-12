@@ -22,11 +22,17 @@ public abstract class JsonService {
 		return writeJson(JsonSerialization.toJsonValue(javaValue));
 	}
 
+	public String toString(Object javaValue, boolean prettyPrinting) {
+		
+		return writeJson(JsonSerialization.toJsonValue(javaValue), prettyPrinting);
+	}
+
 	public <V extends Object> V fromString(Class<V> targetClass, String jsonString) {
 
 		return JsonDeserialization.toJavaValue(targetClass, loadJson(jsonString));
 	}
 
 	protected abstract String writeJson(Object javaValue);
+	protected abstract String writeJson(Object javaValue, boolean prettyPrinting);
 	protected abstract Object loadJson(String jsonString);
 }

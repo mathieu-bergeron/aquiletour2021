@@ -39,7 +39,11 @@ public class NtroDate implements NtroModelValue {
 		this.epochSeconds = epochSeconds;
 	}
 
-	public long getEpochMiliseconds() {
+	public void updateEpochMiliseconds(long epochMiliseconds) {
+		setEpochSeconds(epochMiliseconds / 1000);
+	}
+
+	public long epochMiliseconds() {
 		T.call(this);
 
 		return getEpochSeconds() * 1000;
