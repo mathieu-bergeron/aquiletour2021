@@ -13,6 +13,7 @@ import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubViewHandler<QueueModel, V>  {
@@ -20,6 +21,30 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 	@Override
 	protected void handle(QueueModel model, V view, ViewLoader subViewLoader) {
 		T.call(this);
+		
+		
+		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+		
+		modelStore.observeModel(model, new ValueObserver<QueueModel>() {
+			@Override
+			public void onValue(QueueModel value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onDeleted(QueueModel lastValue) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onValueChanged(QueueModel oldValue, QueueModel value) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		
 		view.clearQueue();
 
