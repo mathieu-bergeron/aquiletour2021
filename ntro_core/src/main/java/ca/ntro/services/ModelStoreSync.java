@@ -7,6 +7,7 @@ import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelExtractor;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -137,5 +138,17 @@ public class ModelStoreSync {
 		T.call(this);
 		
 		modelStore.createModel(modelClass, authToken, modelId, initializer);
+	}
+
+	public void removeObservers(NtroModel model) {
+		T.call(this);
+		
+		modelStore.removeObservers(model);
+	}
+
+	public void observeModel(NtroModel model, ModelObserver observer) {
+		T.call(this);
+		
+		modelStore.observeModel(model, observer);
 	}
 }

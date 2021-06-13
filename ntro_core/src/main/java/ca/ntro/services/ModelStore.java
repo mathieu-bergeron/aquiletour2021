@@ -3,8 +3,10 @@ package ca.ntro.services;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
@@ -39,6 +41,8 @@ public abstract class ModelStore {
 	private Map<NtroModel, DocumentPath> localHeap = Ntro.collections().concurrentMap(new HashMap<>());
 	private Map<DocumentPath, NtroModel> localHeapByPath = Ntro.collections().concurrentMap(new HashMap<>());
 
+	private Map<NtroModel, Set<ModelObserver>> modelObservers = Ntro.collections().concurrentMap(new HashMap<>());
+	
 	protected abstract boolean ifModelExistsImpl(DocumentPath documentPath);
 	
 	public ModelStore() {
@@ -466,6 +470,13 @@ public abstract class ModelStore {
 						Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
 					}
 				}
+				
+				Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
+				if(observers != null) {
+					for(ModelObserver observer : observers) {
+						observer.onModel(model);
+					}
+				}
 			}
 		}
 	}
@@ -591,7 +602,32 @@ public abstract class ModelStore {
 
 		deleteDocument(documentPath(modelClass, documentId(modelPath)));
 	}
-
+	
 	protected abstract void deleteDocument(DocumentPath documentPath);
+	
+	
+	public void removeObservers(NtroModel model) {
+		T.call(this);
+		
+		Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
 
+		if(observers != null) {
+			observers.clear();
+		}
+	}
+
+	public void observeModel(NtroModel model, ModelObserver observer) {
+		T.call(this);
+
+		Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
+		if(observers == null) {
+			observers = Ntro.collections().concurrentSet(new HashSet<>());
+			modelObservers.put(model, observers);
+		}
+		observers.add(observer);
+		
+		if(Ntro.collections().containsKeyExact(localHeap, model)) {
+			observer.onModel(model);
+		}
+	}
 }

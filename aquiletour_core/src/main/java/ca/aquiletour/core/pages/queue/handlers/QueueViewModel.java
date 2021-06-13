@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ItemRemovedListener;
@@ -13,6 +14,7 @@ import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.services.ModelObserver;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
@@ -22,29 +24,27 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 	protected void handle(QueueModel model, V view, ViewLoader subViewLoader) {
 		T.call(this);
 		
-		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
-		modelStore.observeModel(model, new ValueObserver<QueueModel>() {
+		modelStore.removeObservers(model);
+		modelStore.observeModel(model, new ModelObserver() {
 			@Override
-			public void onValue(QueueModel value) {
-				// TODO Auto-generated method stub
+			public void onModel(NtroModel model) {
+				T.call(this);
 				
-			}
+				QueueModel queueModel = (QueueModel) model;
 
-			@Override
-			public void onDeleted(QueueModel lastValue) {
-				// TODO Auto-generated method stub
+				System.out.println("MODEL OBSERVER");
 				
-			}
-
-			@Override
-			public void onValueChanged(QueueModel oldValue, QueueModel value) {
-				// TODO Auto-generated method stub
-				
+				/* TODO: display appointments
+				 *       if the view checks by id if 
+				 *       an appointment already exists
+				 *       we can run the JSweet viewModel
+				 *       on a server-side rendered DOM
+				 *       (eliminating the loading screen)
+				 */
 			}
 		});
-		
 		
 		view.clearQueue();
 
