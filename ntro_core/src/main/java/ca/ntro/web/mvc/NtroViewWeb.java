@@ -10,6 +10,7 @@ public abstract class NtroViewWeb implements NtroView {
 	private HtmlElement rootElement;
 
 	public abstract void initializeViewWeb(NtroContext<?,?> context);
+	public abstract void onViewInstalled(NtroContext<?,?> context);
 
 	@Override
 	public void initializeView(NtroContext<?,?> context) {

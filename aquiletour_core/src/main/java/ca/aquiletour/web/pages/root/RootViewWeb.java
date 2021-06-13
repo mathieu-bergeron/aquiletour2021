@@ -7,6 +7,7 @@ import java.util.List;
 import static ca.ntro.assertions.Factory.that;
 import java.util.Map;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
@@ -386,6 +387,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private void showSubView(NtroView subView) {
 		T.call(this);
 		
+		// TODO: check if subView already installed 
+		//       by server-side rendering
+		//       and if so, call onViewInstalled(context) on
+		//       the subview
+		
 		if(currentSubView != null && currentSubView != subView) {
 			
 			Map<String, Object> properties = new HashMap<>();
@@ -420,7 +426,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		subViewContainer.removeChildrenFromDocument();
 		subViewContainer.appendElement(subViewElement);
-		
+
+		NtroContext<?,?> context = AquiletourMain.createNtroContext();
+		currentSubView.onViewInstalled(context);
+
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("opacity", 1.0);
 		subViewElement.animate(properties, 

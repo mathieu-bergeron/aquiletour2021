@@ -26,24 +26,11 @@ public abstract class NtroWindowWeb extends NtroWindow {
 
 		NtroViewWeb rootViewWeb = (NtroViewWeb) rootView;
 		
-		body.deleteChildrenForever();
-		body.appendElement(rootViewWeb.getRootElement());
-		
-		/*
+		// XXX: the rootView is possibly installed
+		//      by server-side rendering
 		if(body.children("*").size() == 0) {
-
 			body.appendElement(rootViewWeb.getRootElement());
-
-		}else if(body.children("*").size() == 1){
-			
-			// TODO: initialize rootViewWeb with existing
-			//       body child
-			
-		}else {
-			
-			body.removeChildrenFromDocument();
-			body.appendElement(rootViewWeb.getRootElement());
-		}*/
+		}
 	}
 
 	public void setCurrentPath(Path path) {
