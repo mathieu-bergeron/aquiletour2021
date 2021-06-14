@@ -405,7 +405,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 			subViewWeb.setRootElement(subViewRootElement);
 
-			subViewWeb.initializeViewWeb(context);
+			subViewWeb.initializeView(context);
 			
 			Log.info("[showSubView] using existing rootElement");
 			

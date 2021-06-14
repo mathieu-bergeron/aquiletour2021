@@ -30,14 +30,16 @@ public abstract class NtroWindowWeb extends NtroWindow {
 		
 		if(body.children("*").size() == 0) {
 
-			rootViewWeb.initializeViewWeb(context);
+			rootViewWeb.initializeView(context);
 			body.appendElement(rootViewWeb.getRootElement());
 
 		} else if(body.children("*").size() == 1) {
 			
 			HtmlElement rootElement = body.children("*").get(0);
+
 			rootViewWeb.setRootElement(rootElement);
-			rootViewWeb.initializeViewWeb(context);
+
+			rootViewWeb.initializeView(context);
 			
 			Log.info("[installRootView] using existing rootView: " + rootViewWeb);
 

@@ -12,11 +12,15 @@ public abstract class NtroViewWeb implements NtroView {
 
 	private HtmlElement rootElement;
 
-	public abstract void initializeViewWeb(NtroContext<?,?> context);
+	protected abstract void initializeViewWeb(NtroContext<?,?> context);
 
 	@Override
 	public void initializeView(NtroContext<?,?> context) {
+		T.call(this);
+
 		initializeViewWeb(context);
+
+		getRootElement().initializeForms();
 	}
 
 	public void setRootElement(HtmlElement rootElement) {

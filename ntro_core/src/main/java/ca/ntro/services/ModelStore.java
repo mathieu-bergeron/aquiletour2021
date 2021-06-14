@@ -474,7 +474,7 @@ public abstract class ModelStore {
 				Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
 				if(observers != null) {
 					for(ModelObserver observer : observers) {
-						observer.onModel(model);
+						observer.onModelUpdate(model);
 					}
 				}
 			}
@@ -627,7 +627,7 @@ public abstract class ModelStore {
 		observers.add(observer);
 		
 		if(Ntro.collections().containsKeyExact(localHeap, model)) {
-			observer.onModel(model);
+			observer.onModelUpdate(model);
 		}
 	}
 }

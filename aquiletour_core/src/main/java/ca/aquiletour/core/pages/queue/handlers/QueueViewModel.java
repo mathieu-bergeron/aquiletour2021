@@ -9,18 +9,10 @@ import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
-import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.listeners.ClearItemsListener;
-import ca.ntro.core.models.listeners.ItemAddedListener;
-import ca.ntro.core.models.listeners.ItemRemovedListener;
-import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
-import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.ViewLoader;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
 import ca.ntro.services.ModelObserver;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
@@ -36,7 +28,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		modelStore.removeObservers(model);
 		modelStore.observeModel(model, new ModelObserver() {
 			@Override
-			public void onModel(NtroModel updatedModel) {
+			public void onModelUpdate(NtroModel updatedModel) {
 				T.call(this);
 				
 				QueueModel queueModel = (QueueModel) updatedModel;
@@ -67,13 +59,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		
 		if(appointmentView != null) {
 
-			// XXX: NtroViewWeb is a special case
-			//      as it can be initialized against existing elements
-			if(appointmentView instanceof AppointmentViewWeb) {
-				NtroContext<?,?> context = AquiletourMain.createNtroContext();
-				((AppointmentViewWeb) appointmentView).initializeViewWeb(context);
-			}
-
+			appointmentView.initializeView(AquiletourMain.createNtroContext());
 			appointmentView.updateAppointment(appointment);
 			
 		}else {
