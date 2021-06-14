@@ -421,4 +421,10 @@ public class QueueModel implements NtroModel {
 	public void setAppointmentsInOrder(StoredListOfIds appointmentsInOrder) {
 		this.appointmentsInOrder = appointmentsInOrder;
 	}
+
+	public boolean shouldShowAppointmentTimes() {
+		T.call(this);
+		
+		return mainSettings.getShowAppointmentTimes().getValue();
+	}
 }

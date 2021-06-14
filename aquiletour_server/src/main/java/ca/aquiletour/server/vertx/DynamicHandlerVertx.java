@@ -91,7 +91,7 @@ public class DynamicHandlerVertx {
 		Set<FileUpload> uploads =  routingContext.fileUploads();
 		
 		
-		String rawPath = request.uri();
+		String rawPath = request.path();
 		Path path = Path.fromRawPath(rawPath);
 		
 		if(rawPath.contains(Constants.LOG_URL_SEGMENT)) {
@@ -250,7 +250,7 @@ public class DynamicHandlerVertx {
 			processCsvUploadsIfAny(request, uploads);
 
 		}
-		
+
 		executeFrontendOnServer(request, response, path, parameters, window);
 
 		if(ifJSweet) {
@@ -258,7 +258,6 @@ public class DynamicHandlerVertx {
 			// FIXME: the taskGraph itself should have a notion
 			//        of queued messages
 			Ntro.messages().sendQueuedMessages();
-
 		}
 
 		setSessionCookie(response);

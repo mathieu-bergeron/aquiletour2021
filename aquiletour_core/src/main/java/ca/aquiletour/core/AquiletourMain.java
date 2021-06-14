@@ -39,6 +39,7 @@ import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.models.common.StoredListOfIds;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
@@ -161,6 +162,7 @@ import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.models.AppointmentById;
 import ca.aquiletour.core.pages.queue.models.StoredTime;
 import ca.aquiletour.core.pages.queue.models.StoredAppointements;
 import ca.aquiletour.core.pages.queue.models.StoredTags;
@@ -554,6 +556,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(LogItemQueue.class);
 		Ntro.registerSerializableClass(AppointmentRevision.class);
 
+		Ntro.registerSerializableClass(AppointmentById.class);
+		Ntro.registerSerializableClass(StoredListOfIds.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

@@ -33,18 +33,25 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				
 				QueueModel queueModel = (QueueModel) updatedModel;
 				
-				List<String> currentAppointmentIds = new ArrayList<>();
+				List<String> appointmentViewIds = new ArrayList<>();
 				
 				queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
 					
 					int index = queueModel.appointmentIndexById(appointmentId);
 					
-					currentAppointmentIds.add(Appointment.htmlId(appointment));
+					String appointmentViewId = Appointment.subViewId(appointment);
 					
-					displayOrUpdateAppointment(queueModel, view, subViewLoader, index, appointment);
+					appointmentViewIds.add(appointmentViewId);
+					
+					displayOrUpdateAppointment(queueModel, 
+							                   view, 
+							                   subViewLoader, 
+							                   appointmentViewId,
+							                   index, 
+							                   appointment);
 				});
 
-				view.deleteAppointmentsNotInList(currentAppointmentIds);
+				view.deleteSubViewsNotInList(appointmentViewIds);
 			}
 		});
 	}
@@ -52,22 +59,30 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 	private void displayOrUpdateAppointment(QueueModel model, 
 			                                V view, 
 			                                ViewLoader subViewLoader, 
+			                                String appointmentViewId,
 			                                int index, 
 			                                Appointment appointment) {
 
+
 		String currentUserId = Ntro.currentUser().getId();
+		boolean displayTime = model.shouldShowAppointmentTimes();
 		
-		AppointmentView appointmentView = (AppointmentView) view.findSubView(appointmentViewClass(), Appointment.htmlId(appointment));
-		
+		AppointmentView appointmentView = (AppointmentView) view.findSubView(appointmentViewClass(), appointmentViewId);
+
 		if(appointmentView != null) {
 
 			appointmentView.initializeView(AquiletourMain.createNtroContext());
-			appointmentView.updateAppointment(appointment);
+			appointmentView.updateAppointment(displayTime, appointment);
 			
 		}else {
 
 			appointmentView = (AppointmentView) subViewLoader.createView();
-			appointmentView.displayAppointement(model.getQueueId(), currentUserId, model.getMainSettings().getShowAppointmentTimes().getValue(), appointment);
+
+			appointmentView.displayAppointement(model.getQueueId(), 
+					                            currentUserId, 
+					                            appointmentViewId,
+					                            displayTime,
+					                            appointment);
 
 			view.insertAppointment(index, appointmentView);
 		}

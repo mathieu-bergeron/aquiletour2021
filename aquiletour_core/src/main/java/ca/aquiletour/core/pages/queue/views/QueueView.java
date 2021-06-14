@@ -7,5 +7,5 @@ import ca.ntro.core.mvc.NtroView;
 public interface QueueView extends NtroView {
 
 	void insertAppointment(int index, AppointmentView appointmentView);
-	void deleteAppointmentsNotInList(List<String> currentAppointmentIds);
+	void deleteSubViewsNotInList(List<String> currentAppointmentIds);
 }

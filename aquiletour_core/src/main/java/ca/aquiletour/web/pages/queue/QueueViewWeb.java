@@ -42,7 +42,7 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	}
 
 	@Override
-	public void deleteAppointmentsNotInList(List<String> currentAppointmentIds) {
+	public void deleteSubViewsNotInList(List<String> currentAppointmentIds) {
 		T.call(this);
 		
 		HtmlElements appointments = getRootElement().find(".appointment-view");

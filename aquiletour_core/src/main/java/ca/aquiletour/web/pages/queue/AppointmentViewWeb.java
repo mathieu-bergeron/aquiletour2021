@@ -1,5 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
+import java.util.List;
+
 import ca.aquiletour.core.pages.queue.models.Appointment;
 
 import ca.aquiletour.core.pages.queue.models.StoredTags;
@@ -19,7 +21,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	private HtmlElement time;
 	private HtmlElement courseTitleElement;
 	private HtmlElement taskTitleElement;
-	private HtmlElement tags;
+	private HtmlElement tagsElement;
 	private HtmlElement commentElement;
 	
 	
@@ -33,7 +35,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		time = this.getRootElement().find("#time").get(0);
 		courseTitleElement = this.getRootElement().find("#course-title").get(0);
 		taskTitleElement = this.getRootElement().find("#task-title").get(0);
-		tags = this.getRootElement().find("#tags").get(0);
+		tagsElement = this.getRootElement().find("#tags").get(0);
 		commentElement = this.getRootElement().find("#message").get(0);
 
 		MustNot.beNull(studentName);
@@ -42,27 +44,29 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		MustNot.beNull(time);
 		MustNot.beNull(courseTitleElement);
 		MustNot.beNull(taskTitleElement);
-		MustNot.beNull(tags);
+		MustNot.beNull(tagsElement);
 		MustNot.beNull(commentElement);
 		
 		getRootElement().addClass("appointment-view");
 	}
 
 	@Override
-	public void displayAppointement(String queueId, String userId, boolean displayTime, Appointment appointment) {
+	public void displayAppointement(String queueId, 
+									String userId,
+			                        String appointmentViewId,
+			                        boolean displayTime, 
+			                        Appointment appointment) {
 		T.call(this);
 
 		appointmentIdInput.value(appointment.getId());
 
-		getRootElement().setAttribute("id", Appointment.htmlId(appointment));
+		getRootElement().setAttribute("id", appointmentViewId);
 
-		time.display(displayTime);
-		
-		updateAppointment(appointment);
+		updateAppointment(displayTime, appointment);
 	}
 
 	@Override
-	public void updateAppointment(Appointment appointment) {
+	public void updateAppointment(boolean showTime, Appointment appointment) {
 		T.call(this);
 
 		String userName = appointment.getStudentName();
@@ -70,8 +74,39 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 			userName += " " + appointment.getStudentSurname();
 		}
 		
-		studentName.text(userName);
+		if(!studentName.text().equals(userName)) {
+			studentName.text(userName);
+		}
+
+		time.display(showTime);
 		
+		String timeText = appointment.getTime().getValue().format("HH:mm");
+		String courseTitle = appointment.getCourseTitle().getValue();
+		String taskTitle = appointment.getTaskTitle().getValue();
+		String comment = appointment.getComment().getValue();
+		
+		if(!time.text().equals(timeText)) {
+			time.text(timeText);
+		}
+
+		if(!courseTitleElement.text().equals(courseTitle)) {
+			courseTitleElement.text(courseTitle);
+		}
+		
+		if(!taskTitleElement.text().equals(taskTitle)) {
+			taskTitleElement.text(taskTitle);
+		}
+		
+		if(!commentElement.text().equals(comment)) {
+			commentElement.text(comment);
+		}
+		
+		// TODO: improve this by not clearing the tagsElement
+		//       and rather checking if the each tag already exists
+		clearTags();
+		appointment.getTags().forEachItem((index, tag) -> {
+			appendTag(tag);
+		});
 	}
 
 	@Override
@@ -99,8 +134,8 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void appendTag(String tag) {
 		T.call(this);
 		
-		HtmlElement tagDiv = tags.createElement("<div class=\"card p-1\"></div>");
-		tags.appendElement(tagDiv);
+		HtmlElement tagDiv = tagsElement.createElement("<div class=\"card p-1\"></div>");
+		tagsElement.appendElement(tagDiv);
 		
 		tagDiv.text("#" + tag);
 	}
@@ -109,7 +144,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void clearTags() {
 		T.call(this);
 		
-		tags.deleteChildrenForever();
+		tagsElement.deleteChildrenForever();
 	}
 
 	@Override
