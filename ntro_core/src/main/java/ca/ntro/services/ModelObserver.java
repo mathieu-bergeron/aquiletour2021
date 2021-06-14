@@ -4,6 +4,6 @@ import ca.ntro.core.models.NtroModel;
 
 public interface ModelObserver {
 	
-	void onModel(NtroModel model);
+	void onModel(NtroModel updatedModel);
 
 }

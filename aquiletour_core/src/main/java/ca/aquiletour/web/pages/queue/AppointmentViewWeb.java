@@ -44,6 +44,8 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		MustNot.beNull(taskTitleElement);
 		MustNot.beNull(tags);
 		MustNot.beNull(commentElement);
+		
+		getRootElement().addClass("appointment-view");
 	}
 
 	@Override

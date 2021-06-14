@@ -1,13 +1,14 @@
 package ca.aquiletour.web.pages.queue;
 
-import ca.aquiletour.core.AquiletourMain;
-import ca.aquiletour.core.pages.queue.models.Appointment;
+import java.util.List;
+
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
+import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
@@ -24,28 +25,10 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	}
 
 	@Override
-	public void insertOrUpdateAppointment(int index, Appointment appointment, AppointmentView appointmentView) {
+	public void insertAppointment(int index, AppointmentView appointmentView) {
 		T.call(this);
 		
-		AppointmentViewWeb appointmentViewWeb = (AppointmentViewWeb) appointmentView;
-		
-		HtmlElement appointmentElement = getRootElement().find("#" + Appointment.htmlId(appointment)).get(0);
-
-		if(appointmentElement != null) {
-
-			updateAppointment(appointment, appointmentViewWeb, appointmentElement);
-
-
-		} else {
-
-			appointmentElement = ((AppointmentViewWeb) appointmentView).getRootElement();
-
-			insertAppointment(index, appointmentElement);
-		}
-	}
-
-	private void insertAppointment(int index, HtmlElement appointmentElement) {
-		T.call(this);
+		HtmlElement appointmentElement = ((AppointmentViewWeb) appointmentView).getRootElement();
 
 		if(index >= 0 && index < appointmentList.children("*").size()) {
 
@@ -58,35 +41,20 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		}
 	}
 
-	private void updateAppointment(Appointment appointment, 
-			                       AppointmentViewWeb appointmentViewWeb, 
-			                       HtmlElement appointmentElement) {
-		T.call(this);
-
-		NtroContext<?,?> context = AquiletourMain.createNtroContext();
-
-		appointmentViewWeb.setRootElement(appointmentElement);
-		appointmentViewWeb.initializeViewWeb(context);
-		
-		appointmentViewWeb.updateAppointment(appointment);
-	}
-
-
 	@Override
-	public void deleteAppointment(String appointmentId) {
+	public void deleteAppointmentsNotInList(List<String> currentAppointmentIds) {
 		T.call(this);
 		
-		HtmlElement appointment = appointmentList.find("#appointment-" + appointmentId).get(0);
+		HtmlElements appointments = getRootElement().find(".appointment-view");
 		
-		appointment.deleteForever();
+		appointments.forEach(e -> {
+			
+			String appointmentId = e.getAttribute("id");
+			
+			if(!currentAppointmentIds.contains(appointmentId)) {
+
+				e.deleteForever();
+			}
+		});
 	}
-
-	@Override
-	public void clearQueue() {
-		T.call(this);
-
-		appointmentList.empty();
-	}
-
-
 }
