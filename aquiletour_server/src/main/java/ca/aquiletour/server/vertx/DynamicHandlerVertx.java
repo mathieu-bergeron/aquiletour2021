@@ -249,13 +249,17 @@ public class DynamicHandlerVertx {
 
 			processCsvUploadsIfAny(request, uploads);
 
-			executeFrontendOnServer(request, response, path, parameters, window);
 
-		}else {
-			
+		}
+		
+		executeFrontendOnServer(request, response, path, parameters, window);
+
+		if(!ifJSweet) {
+
 			// FIXME: the taskGraph itself should have a notion
 			//        of queued messages
 			Ntro.messages().sendQueuedMessages();
+
 		}
 
 		setSessionCookie(response);

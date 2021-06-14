@@ -3,6 +3,7 @@ package ca.aquiletour.web.pages.git.commit_list;
 import ca.aquiletour.core.pages.git.commit_list.views.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

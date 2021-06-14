@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardCourseViewStudent;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 

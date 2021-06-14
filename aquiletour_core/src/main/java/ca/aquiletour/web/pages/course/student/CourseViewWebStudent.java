@@ -17,6 +17,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -548,6 +549,4 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		doneExitTasksContainer.appendElement(gitProgressionContainer);
 		gitProgressionContainer.show();
 	}
-
-
 }

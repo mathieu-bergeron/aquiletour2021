@@ -1,5 +1,6 @@
 package ca.ntro.javafx;
 
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.NtroWindow;
 import ca.ntro.core.system.trace.T;
@@ -43,7 +44,7 @@ public class NtroWindowFx extends NtroWindow {
 	}
 
 	@Override
-	public void installRootView(NtroView rootView) {
+	public void installRootView(NtroContext<?,?> context, NtroView rootView) {
 		T.call(this);
 		
 		NtroViewFx view = (NtroViewFx) rootView;

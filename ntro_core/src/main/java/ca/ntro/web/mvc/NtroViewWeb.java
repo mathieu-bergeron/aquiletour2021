@@ -10,14 +10,15 @@ public abstract class NtroViewWeb implements NtroView {
 	private HtmlElement rootElement;
 
 	public abstract void initializeViewWeb(NtroContext<?,?> context);
-	public abstract void onViewInstalled(NtroContext<?,?> context);
 
 	@Override
 	public void initializeView(NtroContext<?,?> context) {
-		initializeViewWeb(context);
+		// XXX: initializeViewWeb must be called manually
+		//      to cover for the case where the view rootElement
+		//      already exists
 	}
 
-	protected void setRootElement(HtmlElement rootElement) {
+	public void setRootElement(HtmlElement rootElement) {
 		T.call(this);
 
 		this.rootElement = rootElement;
@@ -27,5 +28,11 @@ public abstract class NtroViewWeb implements NtroView {
 		T.call(this);
 
 		return rootElement;
+	}
+
+	@Override
+	public <V extends NtroView> V findSubView(Class<V> subViewClass, String subViewId) {
+		// XXX: Override if needed
+		return null;
 	}
 }

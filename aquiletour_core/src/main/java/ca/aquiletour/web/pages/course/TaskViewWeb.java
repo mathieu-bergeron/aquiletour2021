@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

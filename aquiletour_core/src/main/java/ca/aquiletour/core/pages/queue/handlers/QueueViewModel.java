@@ -1,17 +1,21 @@
 package ca.aquiletour.core.pages.queue.handlers;
 
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
+import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ClearItemsListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ItemRemovedListener;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.ModelObserver;
@@ -56,20 +60,34 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 
 		model.getAppointments().onItemAdded(new ItemAddedListener<Appointment>() {
 			@Override
-			public void onItemAdded(int index, Appointment item) {
+			public void onItemAdded(int index, Appointment appointment) {
 				T.call(this);
 
 				String currentUserId = Ntro.currentUser().getId();
 				
-				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
+				AppointmentView appointmentView = view.findSubView(AppointmentView.class, Appointment.htmlId(appointment));
 				
-				appointmentView.displayAppointement(model.getQueueId(), currentUserId, model.getMainSettings().getShowAppointmentTimes().getValue(), item);
-				
-				observeAppointment(item, appointmentView);
-				
-				view.insertAppointment(index, appointmentView);
-			}
+				if(appointmentView == null) {
 
+					appointmentView = (AppointmentView) subViewLoader.createView();
+
+				}else {
+					
+					Log.info("[QueueViewModel] using exiting view: " + appointmentView);
+
+				}
+				
+				if(appointmentView instanceof AppointmentViewWeb) {
+					NtroContext<?,?> context = AquiletourMain.createNtroContext();
+					((AppointmentViewWeb) appointmentView).initializeViewWeb(context);
+				}
+				
+				appointmentView.displayAppointement(model.getQueueId(), currentUserId, model.getMainSettings().getShowAppointmentTimes().getValue(), appointment);
+				
+				observeAppointment(appointment, appointmentView);
+				
+				view.insertOrUpdateAppointment(index, appointment, appointmentView);
+			}
 		});
 		
 		model.getAppointments().onItemRemoved(new ItemRemovedListener<Appointment>() {

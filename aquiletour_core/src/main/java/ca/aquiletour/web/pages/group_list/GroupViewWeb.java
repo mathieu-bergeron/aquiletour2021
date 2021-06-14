@@ -5,6 +5,7 @@ import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.pages.group_list.models.GroupItem;
 import ca.aquiletour.core.pages.group_list.views.GroupView;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -86,4 +87,5 @@ public class GroupViewWeb extends NtroViewWeb implements GroupView {
 		
 		studentsSummary.text(summary);
 	}
+
 }

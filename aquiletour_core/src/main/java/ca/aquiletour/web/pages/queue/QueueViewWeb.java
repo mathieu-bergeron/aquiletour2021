@@ -1,5 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
+import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
@@ -22,10 +24,28 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	}
 
 	@Override
-	public void insertAppointment(int index, AppointmentView appointmentView) {
+	public void insertOrUpdateAppointment(int index, Appointment appointment, AppointmentView appointmentView) {
 		T.call(this);
+		
+		AppointmentViewWeb appointmentViewWeb = (AppointmentViewWeb) appointmentView;
+		
+		HtmlElement appointmentElement = getRootElement().find("#" + Appointment.htmlId(appointment)).get(0);
 
-		HtmlElement appointmentElement = ((AppointmentViewWeb) appointmentView).getRootElement();
+		if(appointmentElement != null) {
+
+			updateAppointment(appointment, appointmentViewWeb, appointmentElement);
+
+
+		} else {
+
+			appointmentElement = ((AppointmentViewWeb) appointmentView).getRootElement();
+
+			insertAppointment(index, appointmentElement);
+		}
+	}
+
+	private void insertAppointment(int index, HtmlElement appointmentElement) {
+		T.call(this);
 
 		if(index >= 0 && index < appointmentList.children("*").size()) {
 
@@ -37,6 +57,20 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 			appointmentList.appendElement(appointmentElement);
 		}
 	}
+
+	private void updateAppointment(Appointment appointment, 
+			                       AppointmentViewWeb appointmentViewWeb, 
+			                       HtmlElement appointmentElement) {
+		T.call(this);
+
+		NtroContext<?,?> context = AquiletourMain.createNtroContext();
+
+		appointmentViewWeb.setRootElement(appointmentElement);
+		appointmentViewWeb.initializeViewWeb(context);
+		
+		appointmentViewWeb.updateAppointment(appointment);
+	}
+
 
 	@Override
 	public void deleteAppointment(String appointmentId) {

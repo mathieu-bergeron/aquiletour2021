@@ -8,6 +8,7 @@ import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowQueueMessageTeacher;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;

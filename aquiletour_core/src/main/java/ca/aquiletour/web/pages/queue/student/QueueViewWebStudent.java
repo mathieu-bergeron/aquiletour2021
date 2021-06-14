@@ -3,6 +3,7 @@ package ca.aquiletour.web.pages.queue.student;
 import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

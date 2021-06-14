@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.queue;
 
 import ca.aquiletour.core.pages.queue.models.Appointment;
+
 import ca.aquiletour.core.pages.queue.models.StoredTags;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.mvc.NtroContext;
@@ -49,18 +50,26 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void displayAppointement(String queueId, String userId, boolean displayTime, Appointment appointment) {
 		T.call(this);
 
+		appointmentIdInput.value(appointment.getId());
+
+		getRootElement().setAttribute("id", Appointment.htmlId(appointment));
+
+		time.display(displayTime);
+		
+		updateAppointment(appointment);
+	}
+
+	@Override
+	public void updateAppointment(Appointment appointment) {
+		T.call(this);
+
 		String userName = appointment.getStudentName();
 		if(appointment.getStudentSurname().length() > 0) {
 			userName += " " + appointment.getStudentSurname();
 		}
 		
-		time.display(displayTime);
-		
 		studentName.text(userName);
-
-		appointmentIdInput.value(appointment.getId());
-
-		getRootElement().setAttribute("id", "appointment-" + appointment.getId());
+		
 	}
 
 	@Override
@@ -107,4 +116,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		
 		time.text(appointmentTime.format("HH:mm"));
 	}
+
+
+
 }

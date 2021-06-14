@@ -1,8 +1,10 @@
 package ca.ntro.web;
 
 import ca.ntro.core.Path;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.dom.HtmlElement;
@@ -19,17 +21,29 @@ public abstract class NtroWindowWeb extends NtroWindow {
 	}
 
 	@Override
-	public void installRootView(NtroView rootView) {
+	public void installRootView(NtroContext<?,?> context, NtroView rootView) {
 		T.call(this);
 
 		HtmlElement body = getDocument().select("body").get(0);
 
 		NtroViewWeb rootViewWeb = (NtroViewWeb) rootView;
 		
-		// XXX: the rootView is possibly installed
-		//      by server-side rendering
 		if(body.children("*").size() == 0) {
+
+			rootViewWeb.initializeViewWeb(context);
 			body.appendElement(rootViewWeb.getRootElement());
+
+		} else if(body.children("*").size() == 1) {
+			
+			HtmlElement rootElement = body.children("*").get(0);
+			rootViewWeb.setRootElement(rootElement);
+			rootViewWeb.initializeViewWeb(context);
+			
+			Log.info("[installRootView] using existing rootView: " + rootViewWeb);
+
+		}else {
+			
+			Log.warning("[installRootView] body must have at most 1 child node");
 		}
 	}
 

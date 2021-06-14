@@ -6,6 +6,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.views.DashboardCourseViewTeacher;
 import ca.aquiletour.web.pages.dashboard.DashboardItemViewWeb;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
 
@@ -63,6 +64,4 @@ public class DashboardItemViewWebTeacher extends DashboardItemViewWeb<CurrentTas
 			numberOfStudentsElement.text(numberOfStudents + " étudiant·es");
 		}
 	}
-
-
 }

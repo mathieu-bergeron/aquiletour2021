@@ -10,6 +10,7 @@ import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.aquiletour.web.widgets.BootstrapDropdown;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
@@ -333,7 +334,4 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		
 		// TODO
 	}
-
-
-
 }

@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.queue.models;
 
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
@@ -174,6 +175,16 @@ public class Appointment implements NtroModelValue {
 		T.call(this);
 
 		getTaskPath().set(taskPath);
+	}
+
+	public static String htmlId(Appointment appointment) {
+		T.call(Appointment.class);
+
+		Path path = new Path();
+		path.addName("appointment");
+		path.addName(appointment.getId());
+
+		return path.toHtmlId();
 	}
 }
 

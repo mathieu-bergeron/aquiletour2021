@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.web.pages.bases.ListViewWebTeacher;
 import ca.aquiletour.web.widgets.BootstrapDropdown;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -67,4 +68,5 @@ public class GroupListViewWeb extends ListViewWebTeacher<GroupView> implements G
 		
 		courseDropdown.append(courseId, href, courseId);
 	}
+
 }

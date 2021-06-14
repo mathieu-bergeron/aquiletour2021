@@ -427,9 +427,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		subViewContainer.removeChildrenFromDocument();
 		subViewContainer.appendElement(subViewElement);
 
-		NtroContext<?,?> context = AquiletourMain.createNtroContext();
-		currentSubView.onViewInstalled(context);
-
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("opacity", 1.0);
 		subViewElement.animate(properties, 
