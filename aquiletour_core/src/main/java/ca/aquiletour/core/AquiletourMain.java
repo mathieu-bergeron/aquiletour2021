@@ -189,6 +189,7 @@ import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterWeekList;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
+import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.models.ActiveSemesterIds;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
@@ -558,6 +559,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(AppointmentById.class);
 		Ntro.registerSerializableClass(StoredListOfIds.class);
+
+		Ntro.registerSerializableClass(AddSemesterMessage.class);
 	}
 	
 	protected abstract NtroWindow getWindow();

@@ -6,8 +6,7 @@ import ca.ntro.core.json.JsonSerialization;
 
 public abstract class JsonService {
 	
-	private boolean prettyPrinting = false;
-
+	private boolean prettyPrinting = true;
 	
 	public void setPrettyPrinting(boolean prettyPrinting) {
 		this.prettyPrinting = prettyPrinting;

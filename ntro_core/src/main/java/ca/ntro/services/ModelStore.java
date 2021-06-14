@@ -375,22 +375,30 @@ public abstract class ModelStore {
 
 	public abstract void close();
 
-	public void registerModel(DocumentPath documentPath, NtroModel model) throws BackendError {
+	public NtroModel registerModel(DocumentPath documentPath, NtroModel model) throws BackendError {
 		T.call(this);
 
-		if(Ntro.collections().containsKeyEquals(localHeapByPath, documentPath)){
-			Log.warning("[registerModel] model already registered: " + documentPath.toString());
-		}
-		
-		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+		return ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<NtroModel>() {
 			@Override
-			public Void execute() throws BackendError {
+			public NtroModel execute() throws BackendError {
 				T.call(this);
+				
+				NtroModel registeredModel = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 
-				localHeap.put(model, documentPath);
-				localHeapByPath.put(documentPath, model);
+				if(registeredModel != null) {
 
-				return null;
+					Log.warning("[registerModel] model already registered: " + documentPath.toString());
+
+				}else {
+
+					registeredModel = model;
+
+					localHeap.put(model, documentPath);
+					localHeapByPath.put(documentPath, model);
+
+				}
+
+				return registeredModel;
 			}
 		});
 	}
@@ -613,6 +621,17 @@ public abstract class ModelStore {
 
 		if(observers != null) {
 			observers.clear();
+		}
+	}
+
+	public void removeObserver(NtroModel model, ModelObserver observer) {
+		T.call(this);
+		
+		Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
+		
+		if(observers != null) {
+			boolean removed = observers.remove(observer);
+			System.out.println("[removeObserver] " + removed);
 		}
 	}
 

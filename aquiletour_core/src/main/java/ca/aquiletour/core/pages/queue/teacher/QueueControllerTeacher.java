@@ -21,7 +21,10 @@ public  class QueueControllerTeacher extends QueueController {
 		T.call(this);
 
 		QueueViewTeacher view = (QueueViewTeacher) getView();
-		view.onContextChange(context);
+		
+		if(view != null) {
+			view.onContextChange(context);
+		}
 	}
 
 	@Override

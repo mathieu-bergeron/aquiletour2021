@@ -1,7 +1,6 @@
 package ca.aquiletour.web.pages.queue.student;
 
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
 import ca.ntro.core.mvc.NtroContext;
@@ -10,8 +9,6 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlEvent;
-import ca.ntro.web.dom.HtmlEventListener;
 import static ca.ntro.assertions.Factory.that;
 
 public class AppointmentViewWebStudent extends AppointmentViewWeb implements AppointmentView {
@@ -45,9 +42,10 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 
 		Ntro.verify(that(addQueueIdToValue.size() > 0).isTrue());
 		
-		deleteAppointmentForm.hide();
+		//deleteAppointmentForm.hide();
+		//chatButton.hide();
+
 		modifyAppointmentButton.hide();
-		chatButton.hide();
 	}
 
 	@Override
@@ -65,19 +63,11 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		
 		addQueueIdToValue.appendToAttribute("value", queueId);
 		
-		if(appointment.getStudentId().equals(userId)) {
-			chatButton.show();
+		if(!appointment.getStudentId().equals(userId)) {
+			chatButton.hide();
+			deleteAppointmentForm.hide();
+
 			//modifyAppointmentButton.show();
-			deleteAppointmentForm.show();
-			deleteAppointmentButton.addEventListener("click", new HtmlEventListener() {
-				@Override
-				public void onEvent(HtmlEvent e) {
-					DeleteAppointmentMessage deleteAppointmentMessage = Ntro.messages().create(DeleteAppointmentMessage.class);
-					deleteAppointmentMessage.setCourseId(queueId);
-					deleteAppointmentMessage.setAppointmentId(appointment.getId());
-					Ntro.messages().send(deleteAppointmentMessage);
-				}
-			});
 		}
 	}
 	

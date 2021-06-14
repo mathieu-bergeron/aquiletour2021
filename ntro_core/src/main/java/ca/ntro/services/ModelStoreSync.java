@@ -146,9 +146,17 @@ public class ModelStoreSync {
 		modelStore.removeObservers(model);
 	}
 
-	public void observeModel(NtroModel model, ModelObserver observer) {
+	public void removeObserver(NtroModel model, ModelObserver observer) {
+		T.call(this);
+		
+		modelStore.removeObservers(model);
+	}
+
+	public ModelObserver observeModel(NtroModel model, ModelObserver observer) {
 		T.call(this);
 		
 		modelStore.observeModel(model, observer);
+		
+		return observer;
 	}
 }

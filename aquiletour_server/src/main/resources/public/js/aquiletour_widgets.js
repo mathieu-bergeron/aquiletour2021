@@ -52,7 +52,6 @@ function initializeClickBlocker(rootElement){
     });
 }
 
-
 function initializeCheckboxes(rootElement){
 
     const checkboxes = rootElement.find(".aquiletour-checkbox");

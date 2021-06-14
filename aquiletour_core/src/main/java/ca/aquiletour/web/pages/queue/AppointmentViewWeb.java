@@ -1,7 +1,5 @@
 package ca.aquiletour.web.pages.queue;
 
-import java.util.List;
-
 import ca.aquiletour.core.pages.queue.models.Appointment;
 
 import ca.aquiletour.core.pages.queue.models.StoredTags;

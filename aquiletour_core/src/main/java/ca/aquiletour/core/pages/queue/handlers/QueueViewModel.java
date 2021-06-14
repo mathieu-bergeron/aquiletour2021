@@ -12,12 +12,16 @@ import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.ModelObserver;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubViewHandler<QueueModel, V>  {
+	
+	private ModelObserver currentObserver = null;
+	private QueueModel currentModel = null;
 
 	@Override
 	protected void handle(QueueModel model, V view, ViewLoader subViewLoader) {
@@ -25,8 +29,12 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
-		modelStore.removeObservers(model);
-		modelStore.observeModel(model, new ModelObserver() {
+		if(currentObserver != null && currentModel != null) {
+			modelStore.removeObserver(currentModel, currentObserver);
+			currentModel = model;
+		}
+		
+		currentObserver = modelStore.observeModel(model, new ModelObserver() {
 			@Override
 			public void onModelUpdate(NtroModel updatedModel) {
 				T.call(this);

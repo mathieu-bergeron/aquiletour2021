@@ -28,6 +28,7 @@ public abstract class HtmlElement {
 
 	public abstract String getAttribute(String name);
 	public abstract void setAttribute(String name, String value);
+	public abstract void setAttributeNoSideEffect(String name, String value);
 	public abstract void removeAttribute(String name);
 
 	public void removeChildrenFromDocument() {

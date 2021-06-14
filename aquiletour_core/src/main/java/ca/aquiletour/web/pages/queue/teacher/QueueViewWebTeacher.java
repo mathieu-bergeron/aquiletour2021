@@ -89,7 +89,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		T.call(this);
 
 		queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
-		downloadCourseLogLink.setAttribute("href", "/" + Constants.QUEUE_LOG_URL_SEGMENT + "/" + context.user().getId());
+		downloadCourseLogLink.setAttributeNoSideEffect("href", "/" + Constants.QUEUE_LOG_URL_SEGMENT + "/" + context.user().getId());
 	}
 	
 	@Override

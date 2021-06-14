@@ -28,11 +28,14 @@ public class ModelFactory {
 		
 		NtroModel model = Ntro.jsonService().fromString(modelClass, jsonString);
 		
-		modelStore.registerModel(documentPath, model);
-
-		initializeStoreConnections(model, modelStore, documentPath.toValuePath(), new HashSet<>());
+		NtroModel registeredModel = modelStore.registerModel(documentPath, model);
 		
-		return model;
+		if(registeredModel == model) {
+			
+			initializeStoreConnections(model, modelStore, documentPath.toValuePath(), new HashSet<>());
+		}
+		
+		return registeredModel;
 	}
 	
 	

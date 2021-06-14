@@ -219,10 +219,17 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public void setAttribute(String name, String value) {
+	public void setAttributeNoSideEffect(String name, String value) {
 		T.call(this);
 		
 		jQueryElement.attr(name, value);
+	}
+
+	@Override
+	public void setAttribute(String name, String value) {
+		T.call(this);
+
+		setAttributeNoSideEffect(name, value);
 		
 		if(name.equals("href")) {
 			removeListeners();

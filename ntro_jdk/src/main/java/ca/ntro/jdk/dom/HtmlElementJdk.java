@@ -141,6 +141,13 @@ public class HtmlElementJdk extends HtmlElement {
 	public void setAttribute(String name, String value) {
 		T.call(this);
 
+		setAttributeNoSideEffect(name, value);
+	}
+
+	@Override
+	public void setAttributeNoSideEffect(String name, String value) {
+		T.call(this);
+
 		jsoupElement.attr(name, value);
 	}
 
