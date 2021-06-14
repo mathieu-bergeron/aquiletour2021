@@ -35,13 +35,15 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				
 				List<String> currentAppointmentIds = new ArrayList<>();
 				
-				queueModel.getAppointments().forEachItem((index, appointment) -> {
+				queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
+					
+					int index = queueModel.appointmentIndexById(appointmentId);
 					
 					currentAppointmentIds.add(Appointment.htmlId(appointment));
 					
 					displayOrUpdateAppointment(queueModel, view, subViewLoader, index, appointment);
 				});
-				
+
 				view.deleteAppointmentsNotInList(currentAppointmentIds);
 			}
 		});

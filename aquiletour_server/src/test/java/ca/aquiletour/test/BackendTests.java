@@ -82,7 +82,7 @@ public class BackendTests {
 		
 		QueueModel queue = (QueueModel) modelLoader.getModel();
 
-		return queue.getAppointments().getValue().size();
+		return queue.getAppointmentById().size();
 	}
 
 

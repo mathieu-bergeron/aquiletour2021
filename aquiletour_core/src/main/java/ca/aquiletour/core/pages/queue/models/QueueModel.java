@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.queue.models;
 
 
 import ca.aquiletour.core.Constants;
+import ca.aquiletour.core.models.common.StoredListOfIds;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.user.User;
@@ -22,8 +23,10 @@ public class QueueModel implements NtroModel {
 
 	private StoredInteger appointmentDurationSeconds = new StoredInteger(Constants.APPOINTMENT_DURATION_MINUTES * 60);
 	private StoredTime firstAppointmentTime = new StoredTime();
-
-	private ObservableAppointmentList appointments = new ObservableAppointmentList();
+	
+	// XXX: sub-models should be stored by Id (will play a role in next refactoring towards more sub-controllers)
+	private AppointmentById appointmentById = new AppointmentById();
+	private StoredListOfIds appointmentsInOrder = new StoredListOfIds();
 
 	private QueueSettings mainSettings = new QueueSettings();
 	private SettingsByCourseKey settingsByCourseKey = new SettingsByCourseKey();
@@ -68,9 +71,10 @@ public class QueueModel implements NtroModel {
 		}else {
 			appointment.updateTime(findLatestAppointment().getTime().getValue().deltaSeconds(appointmentDurationSeconds.getValue()));
 		}
-
-		appointments.addItem(appointment);
 		
+		getAppointmentById().putEntry(appointmentId, appointment);
+		getAppointmentsInOrder().addItem(appointmentId);
+
 		appointmentAddedListener.onAppointementAdded(appointment);
 	}
 	
@@ -78,31 +82,41 @@ public class QueueModel implements NtroModel {
 	public int appointmentIndexById(String appointmentId) {
 		T.call(this);
 		
-		int index = -1;
-		
-		for(int i = 0; i < getAppointments().size(); i++) {
-			if(getAppointments().item(i).getId().equals(appointmentId)) {
-				index = i;
-				break;
+		if(appointmentId == null) return -1;
+
+		return getAppointmentsInOrder().reduceTo(Integer.class, -1, (index, candidateId, accumulator) -> {
+			if(accumulator > 0) {
+				throw new Break();
 			}
-		}
-		
-		return index;
+			
+			if(candidateId.equals(appointmentId)) {
+				accumulator = index;
+			}
+			
+			return accumulator;
+		});
 	}
 
 	public int appointmentIndexByStudentId(String studentId) {
 		T.call(this);
 		
-		int index = -1;
-		
-		for(int i = 0; i < getAppointments().size(); i++) {
-			if(getAppointments().item(i).getStudentId().equals(studentId)) {
-				index = i;
-				break;
+		if(studentId == null) return -1;
+
+		return getAppointmentsInOrder().reduceTo(Integer.class, -1, (index, candidateId, accumulator) -> {
+			if(accumulator > 0) {
+				throw new Break();
 			}
-		}
-		
-		return index;
+			
+			Appointment candidate = getAppointmentById().valueOf(candidateId);
+			
+			if(candidate != null 
+					&& studentId.equals(candidate.getStudentId())) {
+				
+				accumulator = index;
+			}
+			
+			return accumulator;
+		});
 	}
 
 	public void deleteAppointment(String appointmentId) {
@@ -115,22 +129,11 @@ public class QueueModel implements NtroModel {
 		}
 		
 		if(index != -1) {
-			appointments.removeItemAtIndex(index);
+			getAppointmentById().removeEntry(appointmentId);
+			getAppointmentsInOrder().removeItemAtIndex(index);
 		}
 
 		recomputeAppointmentTimes();
-	}
-
-	public ObservableAppointmentList getAppointments() {
-		T.call(this);
-
-		return appointments;
-	}
-
-	public void setAppointments(ObservableAppointmentList appointments) {
-		T.call(this);
-
-		this.appointments = appointments;
 	}
 
 	public int getMaxId() {
@@ -145,12 +148,9 @@ public class QueueModel implements NtroModel {
 		T.call(this);
 		
 		int toMoveIndex = appointmentIndexById(toMoveId);
-		
 		if(isValidAppointmentIndex(toMoveIndex)) {
 
-			Appointment toMove =  getAppointments().item(toMoveIndex);
-
-			getAppointments().removeItemAtIndex(toMoveIndex);
+			getAppointmentsInOrder().removeItemAtIndex(toMoveIndex);
 
 			// XXX: getting index AFTER we've removed the appointment
 			int anchorIndex = appointmentIndexById(anchorId);
@@ -159,11 +159,11 @@ public class QueueModel implements NtroModel {
 
 				if(beforeOrAfter.equals("after")) {
 
-					getAppointments().insertItem(anchorIndex+1, toMove);
+					getAppointmentsInOrder().insertItem(anchorIndex+1, toMoveId);
 
 				}else {
 
-					getAppointments().insertItem(anchorIndex, toMove);
+					getAppointmentsInOrder().insertItem(anchorIndex, toMoveId);
 				}
 			}
 		}
@@ -182,42 +182,40 @@ public class QueueModel implements NtroModel {
 	}
 
 	public void clearQueue() {
-		appointments.clearItems();
+		getAppointmentById().clear();
+		getAppointmentsInOrder().clearItems();
 		setMaxId(0);
 	}
 
 	public Appointment appointmentById(String appointmentId) {
 		T.call(this);
 		
-		Appointment result = null;
-		
-		int index = appointmentIndexById(appointmentId);
-		
-		if(isValidAppointmentIndex(index)) {
-			result = getAppointments().item(index);
-		}
-		
-		return result;
+		return getAppointmentById().valueOf(appointmentId);
 	}
 
 	public Appointment appointmentByStudentId(String studentId) {
 		T.call(this);
 		
-		Appointment result = null;
+		if(studentId == null) return null;
 		
-		int index = appointmentIndexByStudentId(studentId);
-		
-		if(isValidAppointmentIndex(index)) {
-			result = getAppointments().item(index);
-		}
-		
-		return result;
+		return getAppointmentById().reduceTo(Appointment.class, null, (appointmentId, appointement, accumulator) -> {
+			if(accumulator != null) {
+				throw new Break();
+			}
+			
+			if(studentId.equals(appointement.getStudentId())) {
+				
+				accumulator = appointement;
+			}
+			
+			return accumulator;
+		});
 	}
 
 	private boolean isValidAppointmentIndex(int index) {
 		T.call(this);
 
-		return index >= 0 && index < getAppointments().size();
+		return index >= 0 && index < getAppointmentsInOrder().size();
 	}
 
 	public StoredTime getCurrentTime() {
@@ -232,8 +230,8 @@ public class QueueModel implements NtroModel {
 		T.call(this);
 		
 		firstAppointmentTime.incrementBySeconds(timeIncrementSeconds);
-
-		getAppointments().forEachItem((index, appointment) -> {
+		
+		getAppointmentById().forEachEntry((appointmentId, appointment) -> {
 			appointment.incrementTimeSeconds(timeIncrementSeconds);
 		});
 	}
@@ -251,12 +249,15 @@ public class QueueModel implements NtroModel {
 
 		NtroDate firstTime = firstAppointmentTime.getValue();
 		
-		getAppointments().reduceTo(NtroDate.class, firstTime, (index, appointment, currentTime) -> {
+		getAppointmentsInOrder().reduceTo(NtroDate.class, firstTime, (index, appointmentId, currentTime) -> {
 			if(index != 0) {
 				currentTime = currentTime.deltaSeconds(appointmentDurationSeconds.getValue());
 			}
-
-			appointment.updateTime(currentTime);
+			
+			Appointment appointment = getAppointmentById().valueOf(appointmentId);
+			if(appointment != null) {
+				appointment.updateTime(currentTime);
+			}
 
 			return currentTime;
 		});
@@ -265,7 +266,7 @@ public class QueueModel implements NtroModel {
 	private boolean queueEmpty() {
 		T.call(this);
 		
-		return getAppointments().size() == 0;
+		return getAppointmentsInOrder().size() == 0;
 	}
 
 	private Appointment findLatestAppointment() {
@@ -273,8 +274,9 @@ public class QueueModel implements NtroModel {
 
 		Appointment result = null;
 
-		if(getAppointments().size() > 0) {
-			result = getAppointments().item(getAppointments().size()-1);
+		if(getAppointmentsInOrder().size() > 0) {
+			String appointmentId = getAppointmentsInOrder().item(getAppointmentsInOrder().size()-1);
+			result = getAppointmentById().valueOf(appointmentId);
 		}
 		
 		return result;
@@ -402,5 +404,21 @@ public class QueueModel implements NtroModel {
 
 			mainSettings.updateQueueMessage(queueMessage);
 		}
+	}
+
+	public AppointmentById getAppointmentById() {
+		return appointmentById;
+	}
+
+	public void setAppointmentById(AppointmentById appointmentById) {
+		this.appointmentById = appointmentById;
+	}
+
+	public StoredListOfIds getAppointmentsInOrder() {
+		return appointmentsInOrder;
+	}
+
+	public void setAppointmentsInOrder(StoredListOfIds appointmentsInOrder) {
+		this.appointmentsInOrder = appointmentsInOrder;
 	}
 }

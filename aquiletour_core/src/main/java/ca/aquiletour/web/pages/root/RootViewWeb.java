@@ -410,9 +410,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			Log.info("[showSubView] using existing rootElement");
 			
 			currentSubView = subViewWeb;
-			
-			
-			
 
 		} else {
 			

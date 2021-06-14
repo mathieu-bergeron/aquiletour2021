@@ -192,7 +192,7 @@ public class QueueManager {
 				               queueId, 
 				               queue -> {
 
-			int nbAppointment = queue.getAppointments().size();
+			int nbAppointment = queue.getAppointmentById().size();
 	   });
 	}
 
