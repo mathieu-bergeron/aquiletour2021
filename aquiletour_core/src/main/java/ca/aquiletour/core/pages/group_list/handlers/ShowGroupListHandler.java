@@ -14,7 +14,7 @@ public class ShowGroupListHandler extends ParentViewMessageHandler<RootView,
 	protected void handle(RootView parentView, GroupListView currentView, ShowGroupListMessage message) {
 		T.call(this);
 		
-		parentView.showGroupList(currentView);
+		parentView.showGroupList(GroupListView.class, currentView);
 	}
 
 

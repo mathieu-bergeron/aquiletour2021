@@ -1,8 +1,11 @@
 package ca.ntro.web.mvc;
 
+import ca.ntro.core.Constants;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
+import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 
 public abstract class NtroViewWeb implements NtroView {
@@ -13,9 +16,7 @@ public abstract class NtroViewWeb implements NtroView {
 
 	@Override
 	public void initializeView(NtroContext<?,?> context) {
-		// XXX: initializeViewWeb must be called manually
-		//      to cover for the case where the view rootElement
-		//      already exists
+		initializeViewWeb(context);
 	}
 
 	public void setRootElement(HtmlElement rootElement) {
@@ -31,8 +32,31 @@ public abstract class NtroViewWeb implements NtroView {
 	}
 
 	@Override
-	public <V extends NtroView> V findSubView(Class<V> subViewClass, String subViewId) {
-		// XXX: Override if needed
-		return null;
+	public NtroView findSubView(Class<? extends NtroView> subViewClass, String subViewId) {
+		T.call(this);
+
+		NtroView subView = null;
+		
+		String lang = Ntro.currentSession().getLang();
+		if(lang == null || lang.isEmpty()) {
+			lang = Constants.LANG;
+		}
+		
+		Class<? extends NtroViewWeb> targetClass = ViewLoaders.getViewTargetClassWeb(subViewClass, lang);
+		
+		if(targetClass != null) {
+
+			HtmlElement subViewElement = getRootElement().find("#" + subViewId).get(0);
+			
+			if(subViewElement != null) {
+				
+				NtroViewWeb subViewWeb = Ntro.factory().newInstance(targetClass);
+				subViewWeb.setRootElement(subViewElement);
+
+				subView = subViewWeb;
+			}
+		}
+
+		return subView;
 	}
 }

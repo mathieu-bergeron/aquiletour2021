@@ -96,10 +96,15 @@ public class HtmlElementJSweet extends HtmlElement {
 		installFormAutosubmit(toAppend);
 	}
 
-	private void installFormAutosubmit(JQuery toAppend) {
+	@Override
+	public void initializeForms() {
+		installFormAutosubmit(jQueryElement);
+	}
+
+	private void installFormAutosubmit(JQuery rootElement) {
 		T.call(this);
 
-		JQuery forms = toAppend.find("form");
+		JQuery forms = rootElement.find("form");
 		forms.each(new BiFunction<Integer, Element, Object>() {
 			@Override
 			public Object apply(Integer t, Element formElement) {
@@ -436,4 +441,5 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		return new HtmlElementJSweet(jQueryElement.clone(false));
 	}
+
 }

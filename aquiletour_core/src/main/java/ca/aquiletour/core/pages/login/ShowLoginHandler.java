@@ -26,6 +26,6 @@ public class ShowLoginHandler extends ParentViewMessageHandler<RootView,
 
 		}
 		
-		parentView.showLogin(currentView);
+		parentView.showLogin(LoginView.class, currentView);
 	}
 }

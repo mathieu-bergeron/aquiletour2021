@@ -33,6 +33,7 @@ import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
@@ -378,20 +379,51 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showDashboard(DashboardView dashboardView) {
+	public void showDashboard(Class<? extends NtroView> subViewClass, DashboardView dashboardView) {
 		T.call(this);
 
-		showSubView(dashboardView);
+		showSubView(subViewClass, dashboardView);
 	}
 
-	private void showSubView(NtroView subView) {
+	private void showSubView(Class<? extends NtroView> subViewClass, NtroView subView) {
 		T.call(this);
 		
-		// TODO: check if subView already installed 
-		//       by server-side rendering
-		//       and if so, call onViewInstalled(context) on
-		//       the subview
+		String subViewId = Ntro.introspector().getSimpleNameForClass(subView.getClass());
 		
+		NtroViewWeb subViewWeb = (NtroViewWeb) subView;
+
+		NtroViewWeb existingSubView = (NtroViewWeb) findSubView(subViewClass, subViewId);
+		
+		// XXX: re-initialize subView on existing rootElement (if it exists in DOM)
+		if(existingSubView != null) {
+			
+			HtmlElement subViewRootElement = existingSubView.getRootElement();
+			
+			subViewRootElement.initializeForms();
+
+			NtroContext<?,?> context = AquiletourMain.createNtroContext();
+
+			subViewWeb.setRootElement(subViewRootElement);
+
+			subViewWeb.initializeViewWeb(context);
+			
+			Log.info("[showSubView] using existing rootElement");
+			
+			currentSubView = subViewWeb;
+			
+			
+			
+
+		} else {
+			
+			subViewWeb.getRootElement().setAttribute("id", subViewId);
+			changeSubView(subView);
+		}
+	}
+
+	private void changeSubView(NtroView subView) {
+		T.call(this);
+
 		if(currentSubView != null && currentSubView != subView) {
 			
 			Map<String, Object> properties = new HashMap<>();
@@ -441,76 +473,76 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	
 
 	@Override
-	public void showQueue(QueueView queueView) {
+	public void showQueue(Class<? extends NtroView> subViewClass, QueueView queueView) {
 		T.call(this);
 
-		showSubView(queueView);
+		showSubView(subViewClass, queueView);
 	}
 
 	@Override
-	public void showLogin(LoginView loginView) {
+	public void showLogin(Class<? extends NtroView> subViewClass, LoginView loginView) {
 		T.call(this);
 
-		showSubView(loginView);
+		showSubView(subViewClass, loginView);
 
 	}
 
 	@Override
-	public void showQueues(OpenQueueListView currentView) {
+	public void showQueues(Class<? extends NtroView> subViewClass, OpenQueueListView currentView) {
 		T.call(this);
 
-		showSubView(currentView);
+		showSubView(subViewClass, currentView);
 	}
 
 	@Override
-	public void showHome(HomeView homeView) {
+	public void showHome(Class<? extends NtroView> subViewClass, HomeView homeView) {
 		T.call(this);
 		
-		showSubView(homeView);
+		showSubView(subViewClass, homeView);
 	}
 
 	@Override
-	public void showCourse(CourseView courseView) {
+	public void showCourse(Class<? extends NtroView> subViewClass, CourseView courseView) {
 		T.call(this);
 
-		showSubView(courseView);
+		showSubView(subViewClass, courseView);
 	}
 
 	@Override
-	public void showGitCommitList(CommitListView gitCommitListView) {
+	public void showGitCommitList(Class<? extends NtroView> subViewClass, CommitListView gitCommitListView) {
 		T.call(this);
 		
-		showSubView(gitCommitListView);
+		showSubView(subViewClass, gitCommitListView);
 	}
 
 	@Override
-	public void showGitLateStudents(LateStudentsView gitLateStudentsView) {
+	public void showGitLateStudents(Class<? extends NtroView> subViewClass, LateStudentsView gitLateStudentsView) {
 		T.call(this);
 		
-		showSubView(gitLateStudentsView);
-		
-	}
-
-	@Override
-	public void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView) {
-		T.call(this);
-		
-		showSubView(gitStudentSummariesView);
+		showSubView(subViewClass, gitLateStudentsView);
 		
 	}
 
 	@Override
-	public void showSemesterList(SemesterListView calendarListView) {
+	public void showGitStudentSummaries(Class<? extends NtroView> subViewClass, StudentSummariesView gitStudentSummariesView) {
 		T.call(this);
-
-		showSubView(calendarListView);
+		
+		showSubView(subViewClass, gitStudentSummariesView);
+		
 	}
 
 	@Override
-	public void showCourseList(CourseListView courseListView) {
+	public void showSemesterList(Class<? extends NtroView> subViewClass, SemesterListView calendarListView) {
 		T.call(this);
 
-		showSubView(courseListView);
+		showSubView(subViewClass, calendarListView);
+	}
+
+	@Override
+	public void showCourseList(Class<? extends NtroView> subViewClass, CourseListView courseListView) {
+		T.call(this);
+
+		showSubView(subViewClass, courseListView);
 	}
 
 	@Override
@@ -530,10 +562,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showGroupList(GroupListView groupListView) {
+	public void showGroupList(Class<? extends NtroView> subViewClass, GroupListView groupListView) {
 		T.call(this);
 
-		showSubView(groupListView);
+		showSubView(subViewClass, groupListView);
 	}
 
 	@Override

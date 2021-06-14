@@ -20,6 +20,7 @@ package ca.ntro.core.mvc;
 public interface NtroView {
 	
 	void initializeView(NtroContext<?,?> context);
-	<V extends NtroView> V findSubView(Class<V> subViewClass, String subViewId);
+
+	NtroView findSubView(Class<? extends NtroView> subViewClass, String subViewId);
 
 }

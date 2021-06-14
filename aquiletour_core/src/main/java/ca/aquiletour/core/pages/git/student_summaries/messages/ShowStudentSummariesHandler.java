@@ -22,7 +22,7 @@ public class ShowStudentSummariesHandler extends ControllerMessageHandler<Studen
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getStudentSummariesMessage); 
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showGitStudentSummaries(currentView);
+		rootView.showGitStudentSummaries(StudentSummariesView.class, currentView);
 	}
 
 }

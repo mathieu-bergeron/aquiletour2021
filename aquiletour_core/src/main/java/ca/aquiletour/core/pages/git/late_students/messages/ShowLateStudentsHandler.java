@@ -23,7 +23,7 @@ public class ShowLateStudentsHandler
 		currentController.setModelUsingWebService(Constants.GIT_API_URL, getLateStudentsMessage);
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showGitLateStudents(currentView);
+		rootView.showGitLateStudents(LateStudentsView.class, currentView);
 		
 		
 	}

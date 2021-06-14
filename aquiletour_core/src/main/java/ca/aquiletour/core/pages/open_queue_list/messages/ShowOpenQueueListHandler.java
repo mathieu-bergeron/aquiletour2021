@@ -11,7 +11,7 @@ public class ShowOpenQueueListHandler extends ParentViewMessageHandler<RootView,
 	protected void handle(RootView parentView, OpenQueueListView currentView, ShowOpenQueueListMessage message) {
 		T.call(this);
 		
-		parentView.showQueues(currentView);
+		parentView.showQueues(OpenQueueListView.class, currentView);
 	}
 	
 

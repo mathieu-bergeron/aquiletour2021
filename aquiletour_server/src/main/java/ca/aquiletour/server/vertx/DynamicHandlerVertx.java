@@ -249,12 +249,11 @@ public class DynamicHandlerVertx {
 
 			processCsvUploadsIfAny(request, uploads);
 
-
 		}
 		
 		executeFrontendOnServer(request, response, path, parameters, window);
 
-		if(!ifJSweet) {
+		if(ifJSweet) {
 
 			// FIXME: the taskGraph itself should have a notion
 			//        of queued messages

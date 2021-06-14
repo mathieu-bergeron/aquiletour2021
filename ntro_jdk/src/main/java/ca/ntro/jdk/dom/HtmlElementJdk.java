@@ -307,4 +307,9 @@ public class HtmlElementJdk extends HtmlElement {
 		
 		return new HtmlElementJdk(jsoupElement.clone());
 	}
+
+	@Override
+	public void initializeForms() {
+		// XXX: not supported server-side
+	}
 }

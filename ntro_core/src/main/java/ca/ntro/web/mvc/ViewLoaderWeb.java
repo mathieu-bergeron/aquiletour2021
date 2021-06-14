@@ -109,7 +109,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		return this;
 	}
 	
-	protected Class<? extends NtroViewWeb> getTargetClass(){
+	public Class<? extends NtroViewWeb> getTargetClass(){
 		T.call(this);
 		
 		return viewClass;

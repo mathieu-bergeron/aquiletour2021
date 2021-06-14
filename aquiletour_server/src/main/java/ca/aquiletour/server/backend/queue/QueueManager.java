@@ -220,7 +220,7 @@ public class QueueManager {
 	public static void deleteAppointmentUpdates(ModelStoreSync modelStore, String queueId, Appointment deletedAppointment) throws BackendError {
 		T.call(QueueManager.class);
 		
-		String appointmentOwnerId = deletedAppointment.getStudentId();
+		//String appointmentOwnerId = deletedAppointment.getStudentId();
 		
 		numberOfAppointmentUpdates(modelStore, queueId);
 	}

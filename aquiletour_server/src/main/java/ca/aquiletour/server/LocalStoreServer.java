@@ -27,8 +27,8 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 
-//public class LocalStoreServer extends LocalStoreFiles {
-public class LocalStoreServer extends LocalStoreMongoDbServer {
+public class LocalStoreServer extends LocalStoreFiles {
+//public class LocalStoreServer extends LocalStoreMongoDbServer {
 
 	@Override
 	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {

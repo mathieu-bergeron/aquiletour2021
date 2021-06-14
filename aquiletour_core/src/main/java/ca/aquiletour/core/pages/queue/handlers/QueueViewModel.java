@@ -50,10 +50,12 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			}
 		});
 		
-		view.clearQueue();
+		//view.clearQueue();
 
 		observeAppointments(model, view, subViewLoader);
 	}
+	
+	protected abstract Class<? extends AppointmentView> appointmentViewClass();
 
 	private void observeAppointments(QueueModel model, V view, ViewLoader subViewLoader) {
 		T.call(this);
@@ -65,18 +67,16 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 
 				String currentUserId = Ntro.currentUser().getId();
 				
-				AppointmentView appointmentView = view.findSubView(AppointmentView.class, Appointment.htmlId(appointment));
+				AppointmentView appointmentView = (AppointmentView) view.findSubView(appointmentViewClass(), Appointment.htmlId(appointment));
 				
 				if(appointmentView == null) {
 
 					appointmentView = (AppointmentView) subViewLoader.createView();
 
-				}else {
-					
-					Log.info("[QueueViewModel] using exiting view: " + appointmentView);
-
 				}
-				
+
+				// XXX: NtroViewWeb is a special case
+				//      as it can be initialized against existing elements
 				if(appointmentView instanceof AppointmentViewWeb) {
 					NtroContext<?,?> context = AquiletourMain.createNtroContext();
 					((AppointmentViewWeb) appointmentView).initializeViewWeb(context);

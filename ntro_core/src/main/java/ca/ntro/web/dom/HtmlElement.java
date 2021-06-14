@@ -150,4 +150,5 @@ public abstract class HtmlElement {
 	public abstract void removeClass(String styleClass);
 
 	public abstract HtmlElement clone();
+	public abstract void initializeForms();
 }

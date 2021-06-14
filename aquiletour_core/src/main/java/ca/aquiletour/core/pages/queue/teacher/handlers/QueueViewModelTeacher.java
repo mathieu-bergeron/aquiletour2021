@@ -10,7 +10,10 @@ import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
 import ca.aquiletour.core.pages.queue.models.SettingsByCourseKey;
 import ca.aquiletour.core.pages.queue.models.SettingsByGroupId;
+import ca.aquiletour.core.pages.queue.student.views.AppointmentViewStudent;
+import ca.aquiletour.core.pages.queue.teacher.views.AppointmentViewTeacher;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.models.listeners.MapObserver;
@@ -271,6 +274,13 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			isQueueOpen = isQueueOpenNow;
 			view.displayIfQueueOpen(isQueueOpen);
 		}
+	}
+
+	@Override
+	protected Class<? extends AppointmentView> appointmentViewClass() {
+		T.call(this);
+
+		return AppointmentViewTeacher.class;
 	}
 
 }

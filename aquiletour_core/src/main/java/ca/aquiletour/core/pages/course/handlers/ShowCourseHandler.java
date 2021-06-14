@@ -39,7 +39,7 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 		Ntro.messages().send(showTaskMessage);
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showCourse(currentView);
+		rootView.showCourse(CourseView.class, currentView);
 	}
 	
 	protected abstract CoursePath coursePathFromMessage(ShowCourseMessage message);

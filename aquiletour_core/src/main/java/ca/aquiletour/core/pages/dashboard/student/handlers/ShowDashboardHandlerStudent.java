@@ -2,6 +2,7 @@ package ca.aquiletour.core.pages.dashboard.student.handlers;
 
 import ca.aquiletour.core.pages.dashboard.student.messages.ShowDashboardMessageStudent;
 import ca.aquiletour.core.pages.dashboard.student.views.DashboardViewStudent;
+import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ParentViewMessageHandler;
 
@@ -14,7 +15,7 @@ public class ShowDashboardHandlerStudent extends ParentViewMessageHandler<RootVi
 			              DashboardViewStudent currentView, 
 			              ShowDashboardMessageStudent message) {
 		
-		parentView.showDashboard(currentView);
+		parentView.showDashboard(DashboardViewStudent.class, currentView);
 	}
 
 

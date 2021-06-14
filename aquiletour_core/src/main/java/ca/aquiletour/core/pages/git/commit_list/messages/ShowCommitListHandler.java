@@ -27,6 +27,6 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 		currentController.setSubModelLoader(CourseModelStudent.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showGitCommitList(currentView);
+		rootView.showGitCommitList(CommitListView.class, currentView);
 	}
 }
