@@ -239,5 +239,29 @@ public class User extends NtroUser {
 		return displayName;
 	}
 
+	public boolean actsAsStudent() {
+		T.call(this);
+
+		return true;
+	}
+
+	public boolean isStudent() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean isTeacher() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean isAdmin() {
+		T.call(this);
+
+		return false;
+	}
+
 
 }

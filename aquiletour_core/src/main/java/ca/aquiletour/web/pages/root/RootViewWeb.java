@@ -9,11 +9,8 @@ import java.util.Map;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
-import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.StudentGuest;
-import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.views.CourseView;
@@ -193,56 +190,37 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		courseListLink.hide();
-		queueListLink.hide();
 		semesterListLink.hide();
 		groupListLink.hide();
-		queueLink.hide();
 		dashboardLink.hide();
 
-		//loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
+		queueLink.hide();
+
+		queueListLink.show();
+		queueListLink.setAttribute("href", "/" + Constants.QUEUE_LIST_URL_SEGMENT);
 
 		homeLink.show();
-		
-		if(!user.actsAsAdmin()) {
-			homeLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
-			dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
-			courseListLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
-			
-			dashboardLink.show();
-			courseListLink.show();
 
+		if(user.getHasPassword()) {
+			showPasswordMenuLink.text("Modifier mon mot de passe");
 		}else {
-			homeLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
+			showPasswordMenuLink.text("Ajouter un mot de passe");
 		}
-
-		if(user.actsAsTeacher()) {
-			semesterListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
-			semesterListLink.show();
-		}
-		
-		if(user.actsAsTeacher() && !user.actsAsAdmin()) {
-
-			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
-
-			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getId());
+	
+		if(user.actsAsStudent()) {
 			
-			toggleStudentModeButton.text("Mode étudiant");
-			
-			if(user.getHasPassword()) {
-				showPasswordMenuLink.text("Modifier mon mot de passe");
-			}else {
-				showPasswordMenuLink.text("Ajouter un mot de passe");
-			}
+			homeLink.setAttribute("href", "/" + Constants.QUEUE_LIST_URL_SEGMENT);
 
-			groupListLink.show();
-			queueLink.show();
-		}
-		
-		if(!user.actsAsTeacher() && !user.actsAsAdmin()) {
 			toggleStudentModeButton.text("Mode enseignant");
+			
+			
+		}else if(user.actsAsTeacher()){
 
-			queueListLink.setAttribute("href", "/" + Constants.QUEUE_LIST_URL_SEGMENT);
-			queueListLink.show();
+			homeLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getId());
+			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getId());
+			queueLink.show();
+
+			toggleStudentModeButton.text("Mode étudiant");
 		}
 	}
 
@@ -285,11 +263,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			}
 			
 
-		}else if(user instanceof Teacher && !(user instanceof Admin)) {
+		}else if(user.actsAsTeacher() && !user.isAdmin()) {
 
 			adjustLoginMenuForTeacher(user);
 
-		}else if(user instanceof Admin && !user.actsAsAdmin()) {
+		}else if(user.actsAsTeacher() && user.isAdmin()) {
 
 			adjustLoginMenuForTeacher(user);
 
@@ -297,7 +275,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			toggleAdminModeButton.removeClass("btn-secondary");
 			toggleAdminModeButton.addClass("btn-danger");
 
-		}else if(user instanceof Admin && user.actsAsAdmin()) {
+		}else if(user.actsAsAdmin()) {
 			
 			loginMenuUserProfile.show();
 
@@ -313,11 +291,15 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			toggleAdminModeButton.removeClass("btn-danger");
 			toggleAdminModeButton.addClass("btn-secondary");
 
-		}else if(user instanceof Student) {
+		}else if(user.isStudent()) {
+
 			loginButton.text(displayName(user));
 			loginMenuUserProfile.show();
 			userNameContainer.hide();
 			toggleStudentModeContainer.hide();
+
+		}else if(user.isGuest()) {
+
 		}
 	}
 	

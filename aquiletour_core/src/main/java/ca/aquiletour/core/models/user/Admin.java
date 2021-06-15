@@ -44,4 +44,11 @@ public class Admin extends Teacher {
 		
 		return getAdminMode();
 	}
+
+	@Override
+	public boolean isAdmin() {
+		T.call(this);
+
+		return true;
+	}
 }

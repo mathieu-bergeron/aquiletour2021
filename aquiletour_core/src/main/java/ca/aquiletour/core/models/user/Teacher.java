@@ -54,4 +54,22 @@ public class Teacher extends User {
 		
 		return false;
 	}
+
+	public boolean isStudent() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean isTeacher() {
+		T.call(this);
+
+		return true;
+	}
+
+	public boolean actsAsStudent() {
+		T.call(this);
+
+		return getStudentMode();
+	}
 }

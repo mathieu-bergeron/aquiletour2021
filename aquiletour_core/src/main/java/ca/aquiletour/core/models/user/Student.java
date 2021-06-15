@@ -82,5 +82,11 @@ public class Student extends User {
 			updateProgramIdIfEmpty(student.getProgramId());
 		}
 	}
+
+	public boolean isStudent() {
+		T.call(this);
+
+		return true;
+	}
 	
 }
