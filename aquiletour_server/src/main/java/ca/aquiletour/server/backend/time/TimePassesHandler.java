@@ -1,7 +1,12 @@
 package ca.aquiletour.server.backend.time;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.server.backend.login.SessionManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
@@ -105,11 +110,22 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 
 		Log.info("[runFrequently]");
 		
-		modelStore.forEachModelId(NtroSession.class, "admin", modelId -> {
+		Set<String> expiredSesions = new HashSet<>();
+		
+		modelStore.forEachModelId(NtroSession.class, "admin", authToken -> {
 			
-			Log.info(modelId);
-			
+			modelStore.readModel(NtroSession.class, "admin", authToken, session -> {
+				
+				if(session.hasExpired()) {
+
+					expiredSesions.add(authToken);
+				}
+			});
 		});
+		
+		for(String authToken : expiredSesions) {
+			SessionManager.deleteSession(modelStore, authToken);
+		}
 		
 		// TODO: update currentTime in queues etc.
 	}

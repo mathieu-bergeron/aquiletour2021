@@ -268,12 +268,28 @@ public class SessionManager {
 		} catch (EmptyOptionException e) {}
 	}
 
-	public static void deleteSession(ModelStoreSync modelStore, String authToken, User user) throws BackendError {
+	public static void deleteSession(ModelStoreSync modelStore, String authToken) throws BackendError {
+		T.call(SessionManager.class);
+		
+		String userId = modelStore.extractFromModel(NtroSession.class, "admin", authToken, String.class, session -> {
+			return session.getUser().getId();
+		});
+		
+		deleteSessionForUserId(modelStore, authToken, userId);
+	}
+
+	public static void deleteSessionForUser(ModelStoreSync modelStore, String authToken, User user) throws BackendError {
+		T.call(SessionManager.class);
+		
+		deleteSessionForUserId(modelStore, authToken, user.getId());
+	}
+
+	public static void deleteSessionForUserId(ModelStoreSync modelStore, String authToken, String userId) throws BackendError {
 		T.call(SessionManager.class);
 
 		modelStore.deleteModel(NtroSession.class, "admin", authToken);
 		
-		forgetSessionByUserId(modelStore, authToken, user.getId());
+		forgetSessionByUserId(modelStore, authToken, userId);
 	}
 
 	public static boolean isUserAuthenticated(ModelStoreSync modelStore, User user) throws BackendError {

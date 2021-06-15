@@ -199,10 +199,9 @@ public abstract class ModelStore {
 			}
 
 			if(model != null) {
-				synchronized (model) {
-					updater.update(model);
-					saveModelNow(model);
-				}
+
+				updater.update(model);
+				saveModelNow(model);
 
 			}else {
 
@@ -247,10 +246,9 @@ public abstract class ModelStore {
 				M model = getModel(modelClass, authToken, modelId);
 
 				if(model != null) {
-					synchronized (model) {
-						initializer.initialize(model);
-						saveModelNow(model);
-					}
+
+					initializer.initialize(model);
+					saveModelNow(model);
 				}
 
 			}else {
@@ -295,10 +293,7 @@ public abstract class ModelStore {
 
 				M model = getModel(modelClass, authToken, modelId);
 
-				synchronized (model) {
-
-					reader.read(model);
-				}
+				reader.read(model);
 
 			}else {
 
@@ -344,10 +339,7 @@ public abstract class ModelStore {
 				M model =  getModel(modelClass, authToken, modelId);
 
 				if(model != null) {
-
-					synchronized (model) {
-						result = extractor.extract(model);
-					}
+					result = extractor.extract(model);
 				}
 
 			}else {
@@ -409,9 +401,7 @@ public abstract class ModelStore {
 		DocumentPath modelPath = Ntro.collections().getByKeyExact(localHeap, model);
 		if(modelPath != null) {
 
-			synchronized (model) {
-				ModelFactory.updateStoreConnections(model, this, modelPath);
-			}
+			ModelFactory.updateStoreConnections(model, this, modelPath);
 
 		}else {
 			Log.warning("[updateStoreConnexions] model not in localHeap: " + model);
@@ -424,11 +414,8 @@ public abstract class ModelStore {
 		NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 
 		if(model != null) {
-			
-			synchronized (model) {
 
-				ModelFactory.updateStoreConnections(model, this, documentPath);
-			}
+			ModelFactory.updateStoreConnections(model, this, documentPath);
 
 		}else {
 			Log.warning("No model to update for path: " + documentPath.toString());
@@ -459,31 +446,29 @@ public abstract class ModelStore {
 
 		if(model != null) {
 
-			synchronized (model) {
 
-				Object value = Ntro.introspector().findByValuePath(model, valuePath);
+			Object value = Ntro.introspector().findByValuePath(model, valuePath);
 
-				if(value != null) {
-					NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
-					NtroMethod methodToCall = valueClass.methodByName(methodName);
+			if(value != null) {
+				NtroClass valueClass = Ntro.introspector().ntroClassFromObject(value);
+				NtroMethod methodToCall = valueClass.methodByName(methodName);
 
-					try {
+				try {
 
-						methodToCall.invoke(value, args);
-						
-						// XXX: if we add a NtroModelValue, we need to connect it to the store
-						ModelFactory.updateStoreConnections(model, this, documentPath);
-						
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
-					}
+					methodToCall.invoke(value, args);
+					
+					// XXX: if we add a NtroModelValue, we need to connect it to the store
+					ModelFactory.updateStoreConnections(model, this, documentPath);
+					
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
 				}
-				
-				Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
-				if(observers != null) {
-					for(ModelObserver observer : observers) {
-						observer.onModelUpdate(model);
-					}
+			}
+			
+			Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
+			if(observers != null) {
+				for(ModelObserver observer : observers) {
+					observer.onModelUpdate(model);
 				}
 			}
 		}
@@ -495,13 +480,13 @@ public abstract class ModelStore {
 		T.call(this);
 		
 		if(model != null) {
-			synchronized (model) {
-				DocumentPath documentPath = Ntro.collections().getByKeyExact(localHeap, model);
-				if(documentPath != null) {
-					saveModelNow(model, documentPath);
-				}
-				manageHeap(model, documentPath);
+			DocumentPath documentPath = Ntro.collections().getByKeyExact(localHeap, model);
+
+			if(documentPath != null) {
+				saveModelNow(model, documentPath);
 			}
+
+			manageHeap(model, documentPath);
 		}
 	}
 
@@ -514,13 +499,11 @@ public abstract class ModelStore {
 
 		}else {
 
-			synchronized (saveHistory) {
-				int index = Ntro.collections().indexOfEquals(saveHistory, documentPath);
-				if(index > 0) {
-					saveHistory.remove(index);
-				}
-				saveHistory.add(documentPath);
+			int index = Ntro.collections().indexOfEquals(saveHistory, documentPath);
+			if(index > 0) {
+				saveHistory.remove(index);
 			}
+			saveHistory.add(documentPath);
 
 			if(localHeap.size() > maxHeapSize()) {
 				removeOldestModelFromHeap();
@@ -532,9 +515,7 @@ public abstract class ModelStore {
 		T.call(this);
 
 		if(model != null) {
-			synchronized (model) {
-				saveDocument(documentPath, Ntro.jsonService().toString(model));
-			}
+			saveDocument(documentPath, Ntro.jsonService().toString(model));
 		}
 	}
 
@@ -544,13 +525,11 @@ public abstract class ModelStore {
 		DocumentPath documentPath = saveHistory.remove(0);
 
 		if(documentPath != null) {
-			synchronized (localHeap) {
-				NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 
-				if(model != null) {
-					saveModelNow(model, documentPath);
-					removeModelFromHeap(model, documentPath);
-				}
+			if(model != null) {
+				saveModelNow(model, documentPath);
+				removeModelFromHeap(model, documentPath);
 			}
 		}
 	}
@@ -577,7 +556,9 @@ public abstract class ModelStore {
 	
 	protected abstract int maxHeapSize();
 
-	public void delete(NtroModel model) {
+	public void delete(NtroModel model) throws BackendError {
+		T.call(this);
+
 		DocumentPath documentPath = Ntro.collections().getByKeyExact(localHeap, model);
 		
 		if(documentPath == null) {
@@ -585,22 +566,41 @@ public abstract class ModelStore {
 			Log.warning("[delete] model not in localHeap: " + model);
 
 		}else {
-			
-			deleteDocument(documentPath);
 
-			// JSWEET: will the work correctly? (removing by reference)
-			localHeap.remove(model);
-			localHeapByPath.remove(documentPath);
+			ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+				@Override
+				public Void execute() {
+				
+					deleteDocument(documentPath);
+
+					// JSWEET: will the work correctly? (removing by reference)
+					localHeap.remove(model);
+					localHeapByPath.remove(documentPath);
+					
+					return null;
+				}
+			});
 		}
-		
 	}
 
 	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,
-			                                      String documentId) {
+			                                      String documentId) throws BackendError {
 		T.call(this);
 		
-		deleteDocument(documentPath(modelClass, documentId));
+		DocumentPath documentPath = documentPath(modelClass, documentId);
+
+		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+			@Override
+			public Void execute() throws BackendError {
+				
+				M model = (M) Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+				
+				delete(model);
+
+				return null;
+			}
+		});
 	}
 
 	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 

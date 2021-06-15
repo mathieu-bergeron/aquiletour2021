@@ -120,10 +120,40 @@ public class QueueManager {
 						T.call(user);
 						
 						logNewAppointment(modelStore, queueId, user, timestamp, appointment);
+						updateNumberOfAppointements(modelStore, queueId, appointment);
 					}
 				});
 			}
 		});
+	}
+
+	private static void updateNumberOfAppointements(ModelStoreSync modelStore, 
+			                                        String queueId, 
+			                                        Appointment appointment) {
+		T.call(QueueManager.class);
+		
+		Ntro.threadService().executeLater(new NtroTaskSync() {
+			@Override
+			protected void runTask() {
+				T.call(this);
+
+				try {
+
+					QueueListManager.updateNumberOfAppointments(modelStore, queueId, Long.valueOf(appointment.getId()));
+
+				} catch (NumberFormatException | BackendError e) {
+
+					Log.warning("[updateNumberOfAppointments] error: " + e.getMessage());
+				}
+			}
+
+			@Override
+			protected void onFailure(Exception e) {
+			}
+		});
+		
+		
+
 	}
 
 	private static void logNewAppointment(ModelStoreSync modelStore, 

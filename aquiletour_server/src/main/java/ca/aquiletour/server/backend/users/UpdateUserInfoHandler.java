@@ -2,6 +2,7 @@ package ca.aquiletour.server.backend.users;
 
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.trace.T;
@@ -28,6 +29,7 @@ public class UpdateUserInfoHandler extends BackendMessageHandler<UpdateUserInfoM
 		T.call(this);
 
 		UserManager.updateScreenName(modelStore, message.getScreenName(), message.getUser());
+		QueueListManager.updateTeacherDisplayName(modelStore, message.getUser().getId(), message.getScreenName());
 	}
 
 }

@@ -17,12 +17,12 @@ import ca.ntro.services.Ntro;
 public class QueueModel implements NtroModel {
 
 	private String queueId = "";
-	private int maxId;
+	private long latestAppointmentId;
 
-	private StoredTime currentTime = new StoredTime();
+	private StoredDate currentTime = new StoredDate();
 
 	private StoredInteger appointmentDurationSeconds = new StoredInteger(Constants.APPOINTMENT_DURATION_MINUTES * 60);
-	private StoredTime firstAppointmentTime = new StoredTime();
+	private StoredDate firstAppointmentTime = new StoredDate();
 	
 	// XXX: sub-models should be stored by Id (will play a role in next refactoring towards more sub-controllers)
 	private AppointmentById appointmentById = new AppointmentById();
@@ -61,8 +61,8 @@ public class QueueModel implements NtroModel {
 	public void addAppointment(Appointment appointment, AppointmentAddedListener appointmentAddedListener) {
 		T.call(this);
 
-		setMaxId(getMaxId() + 1);
-		String appointmentId = Integer.toString(getMaxId());
+		setLatestAppointmentId(getLatestAppointmentId() + 1);
+		String appointmentId = Long.toString(getLatestAppointmentId());
 		appointment.setId(appointmentId);
 		
 		if(queueEmpty()) {
@@ -136,12 +136,12 @@ public class QueueModel implements NtroModel {
 		recomputeAppointmentTimes();
 	}
 
-	public int getMaxId() {
-		return maxId;
+	public long getLatestAppointmentId() {
+		return latestAppointmentId;
 	}
 
-	public void setMaxId(int maxId) {
-		this.maxId = maxId;
+	public void setLatestAppointmentId(long maxId) {
+		this.latestAppointmentId = maxId;
 	}
 
 	public void moveAppointment(String toMoveId, String anchorId, String beforeOrAfter) {
@@ -184,7 +184,7 @@ public class QueueModel implements NtroModel {
 	public void clearQueue() {
 		getAppointmentById().clear();
 		getAppointmentsInOrder().clearItems();
-		setMaxId(0);
+		setLatestAppointmentId(0);
 	}
 
 	public Appointment appointmentById(String appointmentId) {
@@ -218,11 +218,11 @@ public class QueueModel implements NtroModel {
 		return index >= 0 && index < getAppointmentsInOrder().size();
 	}
 
-	public StoredTime getCurrentTime() {
+	public StoredDate getCurrentTime() {
 		return currentTime;
 	}
 
-	public void setCurrentTime(StoredTime currentTime) {
+	public void setCurrentTime(StoredDate currentTime) {
 		this.currentTime = currentTime;
 	}
 
@@ -290,11 +290,11 @@ public class QueueModel implements NtroModel {
 		this.appointmentDurationSeconds = appointmentDurationSeconds;
 	}
 
-	public StoredTime getFirstAppointmentTime() {
+	public StoredDate getFirstAppointmentTime() {
 		return firstAppointmentTime;
 	}
 
-	public void setFirstAppointmentTime(StoredTime firstAppointmentTime) {
+	public void setFirstAppointmentTime(StoredDate firstAppointmentTime) {
 		this.firstAppointmentTime = firstAppointmentTime;
 	}
 

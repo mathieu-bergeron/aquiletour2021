@@ -35,6 +35,6 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 	public void handleLater(ModelStoreSync modelStore, UserLogsOutMessage message) throws BackendError {
 		T.call(this);
 
-		SessionManager.deleteSession(modelStore, message.getAuthToken(), message.getUser());
+		SessionManager.deleteSessionForUser(modelStore, message.getAuthToken(), message.getUser());
 	}
 }

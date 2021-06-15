@@ -55,7 +55,6 @@ public class QueueListViewModel extends ModelViewSubViewHandler<QueueListModel, 
 					return currentSubViewIds.contains(subViewId);
 				});
 			}
-
 		});
 	}
 

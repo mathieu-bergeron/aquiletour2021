@@ -13,6 +13,7 @@ public class NtroUserMessage<U extends NtroUser> extends NtroMessage {
 
 	public void setUser(U user) {
 		this.user = user;
+		setAuthToken(user.getAuthToken());
 	}
 
 	public String getAuthToken() {

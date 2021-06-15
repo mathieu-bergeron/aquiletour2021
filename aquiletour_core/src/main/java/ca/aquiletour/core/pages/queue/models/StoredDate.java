@@ -4,14 +4,14 @@ import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 
-public class StoredTime extends StoredProperty<NtroDate> {
+public class StoredDate extends StoredProperty<NtroDate> {
 	
-	public StoredTime() {
+	public StoredDate() {
 		super(new NtroDate());
 		T.call(this);
 	}
 
-	public StoredTime(NtroDate date) {
+	public StoredDate(NtroDate date) {
 		super(date);
 		T.call(this);
 	}

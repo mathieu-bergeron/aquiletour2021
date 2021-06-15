@@ -4,6 +4,7 @@ import ca.aquiletour.core.pages.queue.models.Appointment;
 
 import ca.aquiletour.core.pages.queue.models.StoredTags;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
+import ca.aquiletour.web.widgets.UpdateAnimator;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -72,9 +73,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 			userName += " " + appointment.getStudentSurname();
 		}
 		
-		if(!studentName.text().equals(userName)) {
-			studentName.text(userName);
-		}
+		UpdateAnimator.updateText(studentName, userName);
 
 		time.display(showTime);
 		
@@ -82,23 +81,12 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		String courseTitle = appointment.getCourseTitle().getValue();
 		String taskTitle = appointment.getTaskTitle().getValue();
 		String comment = appointment.getComment().getValue();
-		
-		if(!time.text().equals(timeText)) {
-			time.text(timeText);
-		}
 
-		if(!courseTitleElement.text().equals(courseTitle)) {
-			courseTitleElement.text(courseTitle);
-		}
-		
-		if(!taskTitleElement.text().equals(taskTitle)) {
-			taskTitleElement.text(taskTitle);
-		}
-		
-		if(!commentElement.text().equals(comment)) {
-			commentElement.text(comment);
-		}
-		
+		UpdateAnimator.updateText(time, timeText);
+		UpdateAnimator.updateText(courseTitleElement, courseTitle);
+		UpdateAnimator.updateText(taskTitleElement, taskTitle);
+		UpdateAnimator.updateText(commentElement, comment);
+
 		// TODO: improve this by not clearing the tagsElement
 		//       and rather checking if the each tag already exists
 		clearTags();

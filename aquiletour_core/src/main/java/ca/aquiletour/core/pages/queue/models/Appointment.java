@@ -15,7 +15,7 @@ public class Appointment implements NtroModelValue {
 	private String studentName = "";
 	private String studentSurname = "";
 	
-	private StoredTime time = new StoredTime();
+	private StoredDate time = new StoredDate();
 
 	private StoredCoursePath coursePath = new StoredCoursePath();
 	private StoredString courseTitle = new StoredString();
@@ -79,11 +79,11 @@ public class Appointment implements NtroModelValue {
 		return false;
 	}
 
-	public StoredTime getTime() {
+	public StoredDate getTime() {
 		return time;
 	}
 
-	public void setTime(StoredTime time) {
+	public void setTime(StoredDate time) {
 		this.time = time;
 	}
 

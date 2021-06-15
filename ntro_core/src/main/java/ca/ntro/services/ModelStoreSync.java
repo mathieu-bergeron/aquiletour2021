@@ -40,7 +40,7 @@ public class ModelStoreSync {
 		modelStore.saveDocument(documentPath, jsonString);
 	}
 
-	public void delete(NtroModel model) {
+	public void delete(NtroModel model) throws BackendError {
 		T.call(this);
 
 		modelStore.delete(model);
@@ -48,7 +48,7 @@ public class ModelStoreSync {
 
 	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
 												  String authToken,
-			                                      String documentId) {
+			                                      String documentId) throws BackendError {
 		T.call(this);
 		
 		modelStore.deleteModel(modelClass, authToken, documentId);
