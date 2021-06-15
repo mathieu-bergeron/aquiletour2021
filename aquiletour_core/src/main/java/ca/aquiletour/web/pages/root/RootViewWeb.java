@@ -28,8 +28,8 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.web.widgets.BootstrapAlert;
 import ca.aquiletour.core.pages.login.LoginView;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
+import ca.aquiletour.core.pages.queue_list.views.QueueListView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
@@ -55,7 +55,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement dashboardLink;
 	private HtmlElement courseListLink;
 	private HtmlElement groupListLink;
-	private HtmlElement openQueueListLink;
+	private HtmlElement queueListLink;
 	private HtmlElement semesterListLink;
 	private HtmlElement queueLink;
 
@@ -93,7 +93,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		subViewContainer = getRootElement().find("#page-container").get(0);
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
-		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
+		queueListLink = getRootElement().find("#queue-list-link").get(0);
 		courseListLink = getRootElement().find("#course-list-link").get(0);
 		semesterListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
@@ -132,7 +132,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(subViewContainer);
 		MustNot.beNull(homeLink);
 		MustNot.beNull(dashboardLink);
-		MustNot.beNull(openQueueListLink);
+		MustNot.beNull(queueListLink);
 		MustNot.beNull(semesterListLink);
 		MustNot.beNull(loginButton);
 		MustNot.beNull(loginDropdown);
@@ -193,7 +193,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		courseListLink.hide();
-		openQueueListLink.hide();
+		queueListLink.hide();
 		semesterListLink.hide();
 		groupListLink.hide();
 		queueLink.hide();
@@ -238,11 +238,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			queueLink.show();
 		}
 		
-		if(!user.actsAsTeacher() && !user.actsAsTeacher()) {
+		if(!user.actsAsTeacher() && !user.actsAsAdmin()) {
 			toggleStudentModeButton.text("Mode enseignant");
 
-			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
-			openQueueListLink.show();
+			queueListLink.setAttribute("href", "/" + Constants.QUEUE_LIST_URL_SEGMENT);
+			queueListLink.show();
 		}
 	}
 
@@ -485,7 +485,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showQueues(Class<? extends NtroView> subViewClass, OpenQueueListView currentView) {
+	public void showQueues(Class<? extends NtroView> subViewClass, QueueListView currentView) {
 		T.call(this);
 
 		showSubView(subViewClass, currentView);

@@ -3,6 +3,7 @@ package ca.ntro.web.mvc;
 import ca.ntro.core.Constants;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
+import ca.ntro.core.mvc.StringFilter;
 import ca.ntro.core.mvc.ViewLoaders;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
@@ -62,5 +63,19 @@ public abstract class NtroViewWeb implements NtroView {
 		}
 
 		return subView;
+	}
+
+	@Override
+	public void displayOrHideSubView(Class<? extends NtroView> subViewClass, StringFilter filter) {
+		T.call(this);
+
+		String subViewStyleClass = Ntro.introspector().getFullNameForClass(subViewClass);
+		
+		getRootElement().find("." + subViewStyleClass).forEach(e -> {
+			
+			String subViewId = e.getAttribute("id");
+			
+			e.display(filter.select(subViewId));
+		});
 	}
 }

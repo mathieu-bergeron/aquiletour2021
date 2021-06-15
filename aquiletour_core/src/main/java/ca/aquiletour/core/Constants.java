@@ -37,7 +37,7 @@ public class Constants {
 	
 	public static final String DASHBOARD_URL_SEGMENT = "tableau_de_bord";
 	public static final String QUEUE_URL_SEGMENT = "file_d_attente";
-	public static final String QUEUES_URL_SEGMENT = "profs_disponibles";
+	public static final String QUEUE_LIST_URL_SEGMENT = "profs_disponibles";
 	public static final String COURSE_URL_SEGMENT = "cours";
 	public static final String COURSE_LIST_URL_SEGMENT = "mescours";
 	public static final String GROUP_LIST_URL_SEGMENT = "mesgroupes";
@@ -89,6 +89,7 @@ public class Constants {
 
 	public static final String CREATE_COURSE_TEXT = "Ajouter un cours";
 
+	public static final String QUEUE_LIST_ID = "openQueues";
 	public static final String ADMIN_CONTROLLED_SEMESTER_LIST_ID = "all";
 
 	public static final String STUDENT_LIST_MODEL_ID = "students";

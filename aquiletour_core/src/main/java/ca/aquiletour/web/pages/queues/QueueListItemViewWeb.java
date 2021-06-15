@@ -3,10 +3,10 @@ package ca.aquiletour.web.pages.queues;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueView;
-import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowQueueMessageTeacher;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItem;
+import ca.aquiletour.core.pages.queue_list.views.QueueListItemView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
@@ -17,7 +17,7 @@ import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
-public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
+public class QueueListItemViewWeb extends NtroViewWeb implements QueueListItemView {
 
 	private HtmlElement queueLink;
 	private HtmlElement numberOfAnswersToDate;
@@ -37,11 +37,11 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 	}
 
 	@Override
-	public void displaySummary(OpenQueue queue) {
+	public void displaySummary(QueueListItem queue) {
 		T.call(this);
 		
-		queueLink.html(queue.getId());
-		queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT  + "/" + queue.getId());
+		queueLink.html(queue.getQueueId());
+		queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT  + "/" + queue.getQueueId());
 		
 		queueLink.addEventListener("click", new HtmlEventListener() {
 			@Override
@@ -52,13 +52,13 @@ public class QueueSummaryViewWeb extends NtroViewWeb implements OpenQueueView {
 						Ntro.currentUser() instanceof TeacherGuest) {
 					
 					ShowQueueMessageTeacher showTeacherQueueMessage = Ntro.messages().create(ShowQueueMessageTeacher.class);
-					showTeacherQueueMessage.setQueueId(queue.getId());
+					showTeacherQueueMessage.setQueueId(queue.getQueueId());
 					Ntro.messages().send(showTeacherQueueMessage);
 
 				}else {
 					
 					ShowQueueMessageStudent showStudentQueueMessage = Ntro.messages().create(ShowQueueMessageStudent.class);
-					showStudentQueueMessage.setQueueId(queue.getId());
+					showStudentQueueMessage.setQueueId(queue.getQueueId());
 					Ntro.messages().send(showStudentQueueMessage);
 				}
 			}

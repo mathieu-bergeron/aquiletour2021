@@ -1,67 +1,42 @@
 package ca.aquiletour.server.backend.open_queues_list;
 
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
-import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItem;
+import ca.aquiletour.core.pages.queue_list.models.QueueListModel;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
+import jsweet.util.StringTypes.del;
 
 public class QueuesUpdater {
 	
 	static {
 		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
-		
-		try {
-			if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "allQueues")) {
-					modelStore.createModel(OpenQueueListModel.class, "admin", "allQueues", m -> {});
-			}
-		} catch (BackendError e) {
-			Log.error("Could not initialize allQueues " + e.getMessage());
-		}
 
 		try {
-			if(!modelStore.ifModelExists(OpenQueueListModel.class, "admin", "openQueues")) {
-					modelStore.createModel(OpenQueueListModel.class, "admin", "openQueues", m -> {});
+			if(!modelStore.ifModelExists(QueueListModel.class, "admin", Constants.QUEUE_LIST_ID)) {
+					modelStore.createModel(QueueListModel.class, "admin", Constants.QUEUE_LIST_ID, m -> {});
 			}
 		} catch (BackendError e) {
-			Log.error("Could not initialize openQueues " + e.getMessage());
+			Log.error("Could not initialize " + Constants.QUEUE_LIST_ID + " " + e.getMessage());
 		}
 	}
-	
 
-	public static void createQueue(ModelStoreSync modelStore,
-			                       String queueId,
-			                       User teacher) throws BackendError {
+	private static QueueListItem createQueueListItem(String queueId, User teacher) {
+		T.call(QueueListModel.class);
 
-		T.call(QueuesUpdater.class);
+		QueueListItem queueListItem = new QueueListItem();
+		queueListItem.setQueueId(queueId);
+		queueListItem.setTeacherName(teacher.getFirstname());
+		queueListItem.setTeacherSurname(teacher.getLastname());
 
-		modelStore.updateModel(OpenQueueListModel.class, 
-							   teacher.getAuthToken(), 
-							   "allQueues", 
-							   new ModelUpdater<OpenQueueListModel>() {
-			@Override
-			public void update(OpenQueueListModel allQueues) {
-				T.call(this);
-
-				allQueues.addQueueToList(newQueueSummary(queueId, teacher));
-			}
-		});
-	}
-
-	private static OpenQueue newQueueSummary(String queueId, User teacher) {
-		T.call(OpenQueueListModel.class);
-
-		OpenQueue queueSummary = new OpenQueue();
-		queueSummary.setId(queueId);
-		queueSummary.setTeacherName(teacher.getFirstname());
-		queueSummary.setTeacherSurname(teacher.getLastname());
-
-		return queueSummary;
+		return queueListItem;
 	}
 
 	public static void deleteQueue(ModelStoreSync modelStore,
@@ -69,57 +44,28 @@ public class QueuesUpdater {
 
 		T.call(QueuesUpdater.class);
 		
-		deleteQueueFrom(modelStore, "allQueues", queueId);
-		deleteQueueFrom(modelStore, "openQueues", queueId);
-	}
-	
-	private static void deleteQueueFrom(ModelStoreSync modelStore,
-			                           String queueStoreId,
-			                           String queueId) throws BackendError {
-		T.call(QueuesUpdater.class);
-
-		modelStore.updateModel(OpenQueueListModel.class, 
-				               "admin", 
-				               queueStoreId,
-				               new ModelUpdater<OpenQueueListModel>() {
-									@Override
-									public void update(OpenQueueListModel queueStore) {
-										T.call(this);
-
-										queueStore.deleteQueue(queueId);
-									}
+		modelStore.updateModel(QueueListModel.class, "admin", Constants.QUEUE_LIST_ID, new ModelUpdater<QueueListModel>() {
+			@Override
+			public void update(QueueListModel queueListModel) {
+				T.call(this);
+				
+				queueListModel.deleteQueueItem(queueId);
+			}
 		});
 	}
 
-	public static void openQueue(ModelStoreSync modelStore,
-			                     String queueId) throws BackendError {
-
-		T.call(QueuesUpdater.class);
-
-		OpenQueue summary = modelStore.extractFromModel(OpenQueueListModel.class, 
-				                                   "admin", 
-				                                   "allQueues", 
-				                                   OpenQueue.class,
-				                                   allQueues -> {
-
-			return allQueues.findQueueByQueueId(queueId);
-		});
-
-		modelStore.updateModel(OpenQueueListModel.class, 
-							   "admin", 
-							   "openQueues", 
-							   openQueues -> {
-
-			openQueues.addQueueToList(summary);
-	   });
-	}
-
-	public static void closeQueue(ModelStoreSync modelStore,
-			                      String queueId) throws BackendError {
+	public static void addQueue(ModelStoreSync modelStore,
+			                    String queueId,
+			                    User teacher) throws BackendError {
 
 		T.call(QueuesUpdater.class);
 		
-		deleteQueueFrom(modelStore, "openQueues", queueId);
-	}
+		modelStore.readModel(QueueModel.class, queueId, "admin", queueModel -> {
 
+			modelStore.updateModel(QueueListModel.class, queueId, "admin", queueListModel -> {
+				
+				queueListModel.addQueueListItem(createQueueListItem(queueId, teacher));
+			});
+		});
+	}
 }

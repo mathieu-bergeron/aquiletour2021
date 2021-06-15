@@ -85,7 +85,7 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		QueuesUpdater.closeQueue(modelStore, queueId);
+		QueuesUpdater.deleteQueue(modelStore, queueId);
 
 		modelStore.updateModel(QueueModel.class, "amdin", queueId, new ModelUpdater<QueueModel>() {
 			@Override

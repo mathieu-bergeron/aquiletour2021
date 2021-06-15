@@ -81,7 +81,7 @@ public class AquiletourBackendRequestHandler {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
-		} else if(path.startsWith(Constants.QUEUES_URL_SEGMENT)) {
+		} else if(path.startsWith(Constants.QUEUE_LIST_URL_SEGMENT)) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 

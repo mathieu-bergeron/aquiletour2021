@@ -38,9 +38,9 @@ import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesController
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListController;
 import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
 import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
+import ca.aquiletour.core.pages.queue_list.QueueListController;
 import ca.aquiletour.core.pages.root.handlers.NtroErrorHandler;
 import ca.aquiletour.core.pages.root.handlers.QuitMessageHandler;
 import ca.aquiletour.core.pages.root.handlers.RootViewHandler;
@@ -78,7 +78,7 @@ public class RootController extends NtroRootController {
 		addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
 		addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
 
-		addSubController(OpenQueueListController.class, Constants.QUEUES_URL_SEGMENT);
+		addSubController(QueueListController.class, Constants.QUEUE_LIST_URL_SEGMENT);
 	
 		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);

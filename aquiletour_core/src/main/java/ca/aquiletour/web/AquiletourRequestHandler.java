@@ -30,9 +30,9 @@ import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
 import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowQueueMessageTeacher;
+import ca.aquiletour.core.pages.queue_list.messages.ShowQueueListMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
 import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListTeacher;
@@ -52,7 +52,7 @@ public class AquiletourRequestHandler {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
-		}else if(path.startsWith(Constants.QUEUES_URL_SEGMENT)) {
+		}else if(path.startsWith(Constants.QUEUE_LIST_URL_SEGMENT)) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
@@ -242,7 +242,7 @@ public class AquiletourRequestHandler {
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowOpenQueueListMessage showQueuesMessage = Ntro.messages().create(ShowOpenQueueListMessage.class);
+		ShowQueueListMessage showQueuesMessage = Ntro.messages().create(ShowQueueListMessage.class);
 		Ntro.messages().send(showQueuesMessage);
 	}
 	

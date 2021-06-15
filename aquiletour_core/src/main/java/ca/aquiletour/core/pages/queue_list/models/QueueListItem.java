@@ -1,13 +1,14 @@
-package ca.aquiletour.core.pages.open_queue_list.values;
+package ca.aquiletour.core.pages.queue_list.models;
 
+import ca.ntro.core.Path;
 import ca.ntro.core.json.JsonSerializable;
+import ca.ntro.core.system.trace.T;
 
-public class OpenQueue implements JsonSerializable {
+public class QueueListItem implements JsonSerializable {
 	
-	private String id;
+	private String queueId;
 	private String teacherName;
 	private String teacherSurname;
-	//private int numberOfAppointments;
 	private int numberOfAnswersToDate;
 	
 	
@@ -29,16 +30,26 @@ public class OpenQueue implements JsonSerializable {
 //	public void setNumberOfAppointments(int numberOfAppointments) {
 //		this.numberOfAppointments = numberOfAppointments;
 //	}
-	public String getId() {
-		return id;
+	public String getQueueId() {
+		return queueId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setQueueId(String id) {
+		this.queueId = id;
 	}
 	public int getNumberOfAnswersToDate() {
 		return numberOfAnswersToDate;
 	}
 	public void setNumberOfAnswersToDate(int numberOfAnswersToDate) {
 		this.numberOfAnswersToDate = numberOfAnswersToDate;
+	}
+
+	public String htmlId() {
+		T.call(this);
+		
+		Path path = new Path();
+		path.addName("queue-list-item");
+		path.addName(getQueueId());
+		
+		return path.toHtmlId();
 	}
 }

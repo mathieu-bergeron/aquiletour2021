@@ -156,9 +156,6 @@ import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.aquiletour.core.pages.group_list.models.ObservableGroupList;
 import ca.aquiletour.core.pages.group_list.models.ObservableStudentList;
 import ca.aquiletour.core.pages.group_list.models.SemesterCourses;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
-import ca.aquiletour.core.pages.open_queue_list.values.ObservableQueueList;
-import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.models.Appointment;
@@ -181,6 +178,8 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItem;
+import ca.aquiletour.core.pages.queue_list.models.QueueListModel;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
@@ -340,9 +339,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StoredAppointements.class);
 		Ntro.registerSerializableClass(Appointment.class);
 
-		Ntro.registerSerializableClass(OpenQueueListModel.class);
-		Ntro.registerSerializableClass(ObservableQueueList.class);
-		Ntro.registerSerializableClass(OpenQueue.class);
+		Ntro.registerSerializableClass(QueueListModel.class);
+		Ntro.registerSerializableClass(QueueListItem.class);
 		Ntro.registerSerializableClass(CommitListModel.class);
 		Ntro.registerSerializableClass(ObservableCommitList.class);
 		Ntro.registerSerializableClass(Commit.class);
@@ -561,6 +559,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StoredListOfIds.class);
 
 		Ntro.registerSerializableClass(AddSemesterMessage.class);
+
+		Ntro.registerSerializableClass(QueueListModel.class);
 	}
 	
 	protected abstract NtroWindow getWindow();
