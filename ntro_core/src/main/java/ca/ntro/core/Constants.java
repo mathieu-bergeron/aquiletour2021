@@ -32,4 +32,5 @@ public class Constants {
 	public static final String MODELS_URL_PREFIX = "/_models";
 	
 	public static final int RANDOM_STRING_DEFAULT_LENGTH = 20;
+
 }

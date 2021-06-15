@@ -29,6 +29,7 @@ import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.models.NtroDate;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
@@ -74,14 +75,7 @@ public class SessionManager {
 
 			session.setUser(user);
 			
-			if(Ntro.config().isProd()) {
-				
-				session.setTimeToLiveMiliseconds(60*60*24*4);  // 4 months
-
-			}else {
-
-				session.setTimeToLiveMiliseconds(30);
-			}
+			updateSessionExpiryDate(session);
 
 			SessionData sessionData = new SessionData();
 			session.setSessionData(sessionData);
@@ -109,8 +103,8 @@ public class SessionManager {
 		T.call(SessionManager.class);
 		
 		updateSession(modelStore, authToken, session -> {
-
-			session.setTimeToLiveMiliseconds(session.getTimeToLiveMiliseconds() + 30 * 1000);  // TMP: 30 seconds extension
+			
+			updateSessionExpiryDate(session);
 			
 			NtroUser sessionUser = session.getUser();
 
@@ -123,6 +117,33 @@ public class SessionManager {
 				UserManager.updateUserWithStoredUserInfo(modelStore, (User) sessionUser, sessionUser.getId());
 			}
 		});
+	}
+
+	public static void updateSessionExpiryDate(ModelStoreSync modelStore, String authToken) throws BackendError {
+		T.call(SessionManager.class);
+
+		updateSession(modelStore, authToken, session -> {
+			
+			updateSessionExpiryDate(session);
+		});
+	}
+
+	private static void updateSessionExpiryDate(NtroSession session) {
+		T.call(SessionManager.class);
+
+		NtroDate nextExpiryDate = Ntro.calendar().now();
+		
+		if(Ntro.config().isProd()) {
+			
+			nextExpiryDate = nextExpiryDate.deltaMinutes(ca.aquiletour.core.Constants.SESSION_MAX_IDLE_TIME_MINUTES);
+			
+		}else {
+
+			nextExpiryDate = nextExpiryDate.deltaMinutes(5);
+
+		}
+
+		session.setExpiryDate(nextExpiryDate);
 	}
 
 	private static boolean shouldCreateGuestUser(NtroUser sessionUser) {

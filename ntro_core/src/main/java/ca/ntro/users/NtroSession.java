@@ -1,6 +1,7 @@
 package ca.ntro.users;
 
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.models.NtroDate;
 
 public class NtroSession implements NtroModel {
 
@@ -12,23 +13,15 @@ public class NtroSession implements NtroModel {
 	
 	private NtroUser user = new NtroUser();
 	private NtroSessionData sessionData = new NtroSessionData();
-
-	private long timeToLiveMiliseconds = 1000 * 60 * 1;         // TMP: 1 minute by default
 	
+	private NtroDate expiryDate = new NtroDate();
+
 	public NtroUser getUser() {
 		return user;
 	}
 
 	public void setUser(NtroUser user) {
 		this.user = user;
-	}
-
-	public long getTimeToLiveMiliseconds() {
-		return timeToLiveMiliseconds;
-	}
-
-	public void setTimeToLiveMiliseconds(long timeToLiveMiliseconds) {
-		this.timeToLiveMiliseconds = timeToLiveMiliseconds;
 	}
 
 	public NtroSessionData getSessionData() {
@@ -47,15 +40,12 @@ public class NtroSession implements NtroModel {
 		this.lang = lang;
 	}
 
-	/*
-	public String getAuthToken() {
-		return authToken;
+	public NtroDate getExpiryDate() {
+		return expiryDate;
 	}
 
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
-	}*/
-	
-	
+	public void setExpiryDate(NtroDate expiryDate) {
+		this.expiryDate = expiryDate;
+	}
 	
 }

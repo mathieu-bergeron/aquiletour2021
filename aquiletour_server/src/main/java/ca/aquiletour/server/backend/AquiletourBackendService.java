@@ -15,6 +15,7 @@ import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserIsActiveMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
@@ -87,6 +88,7 @@ import ca.aquiletour.server.backend.users.ToggleAdminModeHandler;
 import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
+import ca.aquiletour.server.backend.users.UserIsActiveHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
 
 public class AquiletourBackendService extends BackendServiceServer {
@@ -137,6 +139,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(UpdateIsQueueOpenMessage.class, new UpdateIsQueueOpenHandler());
 		addBackendMessageHandler(OnExerciseCompleted.class, new OnExerciseCompletedHandler());
 		addBackendMessageHandler(UpdateQueueInfoMessage.class, new UpdateQueueInfoHandler());
+		addBackendMessageHandler(UserIsActiveMessage.class, new UserIsActiveHandler());
 	}
 
 }

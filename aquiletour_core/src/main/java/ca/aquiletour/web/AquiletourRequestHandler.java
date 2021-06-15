@@ -6,6 +6,7 @@ import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
+import ca.aquiletour.core.messages.user.UserIsActiveMessage;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Guest;
@@ -45,6 +46,9 @@ public class AquiletourRequestHandler {
 	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
+		
+		// XXX: register that user is active for every action
+		Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserIsActiveMessage.class));
 
 		sendRootMessages(context, path, parameters);
 		

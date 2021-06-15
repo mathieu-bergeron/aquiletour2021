@@ -97,7 +97,6 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 
 		// Log.info("[runEveryTime]");
 		
-		
 		// TODO: update currentTime in queues etc.
 	}
 
