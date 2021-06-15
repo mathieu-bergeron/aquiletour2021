@@ -298,8 +298,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			userNameContainer.hide();
 			toggleStudentModeContainer.hide();
 
-		}else if(user.isGuest()) {
-
 		}
 	}
 	
