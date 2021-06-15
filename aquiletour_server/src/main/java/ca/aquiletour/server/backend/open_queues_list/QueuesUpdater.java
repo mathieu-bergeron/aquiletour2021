@@ -33,8 +33,7 @@ public class QueuesUpdater {
 
 		QueueListItem queueListItem = new QueueListItem();
 		queueListItem.setQueueId(queueId);
-		queueListItem.setTeacherName(teacher.getFirstname());
-		queueListItem.setTeacherSurname(teacher.getLastname());
+		queueListItem.setTeacherDisplayName(teacher.displayName());
 
 		return queueListItem;
 	}

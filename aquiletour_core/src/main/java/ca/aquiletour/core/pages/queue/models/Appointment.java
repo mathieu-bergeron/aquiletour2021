@@ -177,12 +177,12 @@ public class Appointment implements NtroModelValue {
 		getTaskPath().set(taskPath);
 	}
 
-	public static String subViewId(Appointment appointment) {
+	public String subViewId() {
 		T.call(Appointment.class);
 
 		Path path = new Path();
 		path.addName("appointment");
-		path.addName(appointment.getId());
+		path.addName(getId());
 
 		return path.toHtmlId();
 	}

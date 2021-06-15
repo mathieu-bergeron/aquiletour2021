@@ -1,5 +1,6 @@
 package ca.aquiletour.core.pages.queue_list.models;
 
+import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.Path;
 import ca.ntro.core.json.JsonSerializable;
 import ca.ntro.core.system.trace.T;
@@ -7,24 +8,17 @@ import ca.ntro.core.system.trace.T;
 public class QueueListItem implements JsonSerializable {
 	
 	private String queueId;
-	private String teacherName;
-	private String teacherSurname;
+	private String teacherDisplayName;
 	private int numberOfAnswersToDate;
-	
-	
-	public String getTeacherName() {
-		return teacherName;
+
+	public String getTeacherDisplayName() {
+		return teacherDisplayName;
 	}
-	public void setTeacherName(String teacherName) {
-		this.teacherName = teacherName;
+
+	public void setTeacherDisplayName(String teacherDisplayName) {
+		this.teacherDisplayName = teacherDisplayName;
 	}
-	public String getTeacherSurname() {
-		return teacherSurname;
-	}
-	public void setTeacherSurname(String teacherSurname) {
-		this.teacherSurname = teacherSurname;
-	}
-//	public int getNumberOfAppointments() {
+	//	public int getNumberOfAppointments() {
 //		return numberOfAppointments;
 //	}
 //	public void setNumberOfAppointments(int numberOfAppointments) {
@@ -43,7 +37,7 @@ public class QueueListItem implements JsonSerializable {
 		this.numberOfAnswersToDate = numberOfAnswersToDate;
 	}
 
-	public String htmlId() {
+	public String subViewId() {
 		T.call(this);
 		
 		Path path = new Path();

@@ -21,7 +21,7 @@ public class QueueListViewWeb extends NtroViewWeb implements QueueListView {
 	}
 
 	@Override
-	public void appendQueue(String queueId, QueueListItemView queueView) {
+	public void appendQueueItem(String queueId, QueueListItemView queueView) {
 		T.call(this);
 		
 		QueueListItemViewWeb queueViewWeb = (QueueListItemViewWeb) queueView;

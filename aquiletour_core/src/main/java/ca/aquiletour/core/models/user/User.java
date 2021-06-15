@@ -205,4 +205,39 @@ public class User extends NtroUser {
 	}
 
 
+	public String displayName() {
+		T.call(User.class);
+		
+		String displayName = formatDisplayName(getFirstname(), getLastname());
+		
+		if(displayName.isEmpty()) {
+			
+			displayName = getId();
+		}
+
+		return displayName;
+	}
+
+
+	public static String formatDisplayName(String firstname, String lastname) {
+		T.call(User.class);
+		
+		String displayName = "";
+		
+		if(firstname != null && !firstname.isEmpty()) {
+			displayName = firstname;
+		}
+		
+		if(lastname != null && !lastname.isEmpty()) {
+			if(!displayName.isEmpty()) {
+				displayName += " ";
+			}
+			
+			displayName += lastname;
+		}
+
+		return displayName;
+	}
+
+
 }

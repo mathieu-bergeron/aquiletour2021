@@ -47,7 +47,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 					
 					int index = queueModel.appointmentIndexById(appointmentId);
 					
-					String appointmentViewId = Appointment.subViewId(appointment);
+					String appointmentViewId = appointment.subViewId();
 					
 					appointmentViewIds.add(appointmentViewId);
 					

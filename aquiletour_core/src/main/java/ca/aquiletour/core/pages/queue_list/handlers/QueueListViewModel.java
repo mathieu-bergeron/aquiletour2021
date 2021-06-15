@@ -4,6 +4,8 @@ package ca.aquiletour.core.pages.queue_list.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.core.AquiletourMain;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItem;
 import ca.aquiletour.core.pages.queue_list.models.QueueListModel;
 import ca.aquiletour.core.pages.queue_list.views.QueueListItemView;
 import ca.aquiletour.core.pages.queue_list.views.QueueListView;
@@ -41,13 +43,39 @@ public class QueueListViewModel extends ModelViewSubViewHandler<QueueListModel, 
 				
 				queueListModel.forEachItemInOrder(queueListItem -> {
 					
-					currentSubViewIds.add(queueListItem.htmlId());
+					String subViewId = queueListItem.subViewId();
+					
+					currentSubViewIds.add(subViewId);
+
+					displayQueueListItem(view, subViewLoader, queueListItem, subViewId);
 				});
 
 				view.displayOrHideSubView(QueueListItemView.class , subViewId -> {
 					return currentSubViewIds.contains(subViewId);
 				});
 			}
+
 		});
+	}
+
+	private void displayQueueListItem(QueueListView view, 
+			                          ViewLoader subViewLoader, 
+			                          QueueListItem queueListItem, 
+			                          String subViewId) {
+		T.call(this);
+
+		QueueListItemView subView = (QueueListItemView) view.findSubView(QueueListItemView.class, subViewId);
+		
+		if(subView != null) {
+
+			subView.initializeView(AquiletourMain.createNtroContext());
+			subView.displayQueueListItem(queueListItem);
+
+		} else {
+			
+			subView = (QueueListItemView) subViewLoader.createView();
+			subView.displayQueueListItem(queueListItem);
+			view.appendQueueItem(subViewId, subView);
+		}
 	}
 }

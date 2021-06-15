@@ -4,7 +4,6 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface QueueListView extends NtroView {
 
-	void appendQueue(String queueId, QueueListItemView queueView);
-
+	void appendQueueItem(String queueId, QueueListItemView queueView);
 
 }
