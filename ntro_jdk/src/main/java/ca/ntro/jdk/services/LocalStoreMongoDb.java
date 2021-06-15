@@ -1,6 +1,7 @@
 package ca.ntro.jdk.services;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.bson.Document;
 
@@ -13,13 +14,17 @@ import com.mongodb.client.model.ReplaceOptions;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.services.ModelIdReader;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -116,30 +121,42 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 	private MongoCollection<Document> getOrCreateCollection(DocumentPath documentPath) {
 		T.call(this);
 
-		boolean ifExists = ifCollectionExists(documentPath);
+		return getOrCreateCollection(documentPath.getCollection());
+	}
 
-		MongoCollection<Document> models = db.getCollection(documentPath.getCollection());
+	private MongoCollection<Document> getOrCreateCollection(String collectionName) {
+		T.call(this);
+
+		boolean ifExists = ifCollectionExists(collectionName);
+
+		MongoCollection<Document> models = db.getCollection(collectionName);
 		
 		if(!ifExists) {
-			Log.info("[getOrCreateCollection] creating " + documentPath.getCollection());
+			Log.info("[getOrCreateCollection] creating " + collectionName);
 			models.createIndex(Indexes.hashed(ModelStore.MODEL_ID_KEY));
 		}
 		return models;
 	}
-	
-	private boolean ifCollectionExists(DocumentPath documentPath) {
+
+	private boolean ifCollectionExists(String collectionName) {
 		T.call(this);
 		
 		boolean ifExists = false;
 		
 		for(String candidateCollection : db.listCollectionNames()) {
-			if(candidateCollection.equals(documentPath.getCollection())) {
+			if(candidateCollection.equals(collectionName)) {
 				ifExists = true;
 				break;
 			}
 		}
 
 		return ifExists;
+	}
+	
+	private boolean ifCollectionExists(DocumentPath documentPath) {
+		T.call(this);
+		
+		return ifCollectionExists(documentPath.getCollection());
 	}
 
 
@@ -199,6 +216,37 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 
 		// DEV
 		return 3;
+	}
+
+	@Override
+	protected void forEachDocumentIdImpl(String collectionName, ModelIdReader reader) throws BackendError {
+
+		MongoCollection<Document> models = getOrCreateCollection(collectionName);
+
+		FindIterable<Document> cursor = models.find();
+		
+		Optionnal<BackendError> backendError = new Optionnal<>();
+
+		cursor.forEach(new Consumer<Document>() {
+			@Override
+			public void accept(Document t) {
+				String modelId = t.getString(ModelStore.MODEL_ID_KEY);
+
+				try {
+
+					reader.onModelId(modelId);
+
+				} catch (BackendError e) {
+					backendError.set(e);
+				}
+			}
+		});
+		
+		try {
+
+			throw backendError.get();
+
+		} catch (EmptyOptionException e) {}
 	}
 
 }

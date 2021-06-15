@@ -649,4 +649,17 @@ public abstract class ModelStore {
 			observer.onModelUpdate(model);
 		}
 	}
+
+	void forEachModelId(Class<? extends NtroModel> modelClass, 
+			            String authToken,
+			            ModelIdReader reader) throws BackendError {
+		T.call(this);
+		
+		forEachDocumentIdImpl(Ntro.introspector().getSimpleNameForClass(modelClass), reader);
+	}
+
+	protected abstract void forEachDocumentIdImpl(String collectionName, ModelIdReader reader) throws BackendError;
+		
+
+
 }

@@ -19,6 +19,7 @@ public class Constants {
 
 	public static final int TIME_PASSES_PERIOD_SECONDS = 5;                               // Every 5 seconds, a TimePassesMessage is send
 	public static final NtroTimeOfDay NIGHTLY_TASKS_TIME = new NtroTimeOfDay(3,0);  // At 3am, we run cleanup tasks
+	public static final int FREQUENT_TASKS_PERDIOD_MINUTES = 5;
 	
 	public static String LANG = "fr";
 

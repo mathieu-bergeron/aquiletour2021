@@ -1,5 +1,6 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.NtroModel;
@@ -10,6 +11,7 @@ import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
 import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
+import ca.ntro.services.ModelIdReader;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
@@ -120,6 +122,11 @@ public class NetworkStoreJSweet extends ModelStore {
 
 		// DEV: low heap size to test ModelStore
 		return 2;
+	}
+
+	@Override
+	protected void forEachDocumentIdImpl(String collectionName, ModelIdReader reader) throws BackendError {
+		// XXX: not supported
 	}
 
 

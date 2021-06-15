@@ -9,13 +9,14 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroSession;
 
 public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> {
 	
 	private NtroDate nextNighlyTime = Ntro.calendar().now();
+	private NtroDate nextFrequentlyTime = Ntro.calendar().now();
 
 	public TimePassesHandler() {
-
 		if(Ntro.config().isProd()) {
 			nextNighlyTime.adjustTime(Constants.NIGHTLY_TASKS_TIME);
 		}
@@ -27,15 +28,44 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 	}
 
 	@Override
-	public void handleLater(ModelStoreSync modelStore, TimePassesMessage message) {
+	public void handleLater(ModelStoreSync modelStore, TimePassesMessage message) throws BackendError {
 		T.call(this);
 
-		runEveryTime();
+		runEveryTime(modelStore);
 
-		runNightlyTasksWhenNeeded(message);
+		runNightlyTasksWhenNeeded(modelStore, message);
+
+		runFrequentTasksWhenNeeded(modelStore, message);
 	}
 
-	private void runNightlyTasksWhenNeeded(TimePassesMessage message) {
+	private void runFrequentTasksWhenNeeded(ModelStoreSync modelStore, TimePassesMessage message) throws BackendError {
+		T.call(this);
+
+		NtroDate currentTime = message.getCurrentTime();
+		
+		if(currentTime != null) {
+
+			if(currentTime.biggerThan(nextFrequentlyTime)) {
+
+				runFrequently(modelStore);
+
+				if(Ntro.config().isProd()) {
+
+					nextFrequentlyTime = nextFrequentlyTime.deltaMinutes(Constants.FREQUENT_TASKS_PERDIOD_MINUTES);
+
+				}else {
+
+					nextFrequentlyTime = nextFrequentlyTime.deltaMinutes(1);
+				}
+			}
+
+		}else {
+			
+			Log.warning("[TimePassesHandler] currentTime is null");
+		}
+	}
+
+	private void runNightlyTasksWhenNeeded(ModelStoreSync modelStore, TimePassesMessage message) throws BackendError {
 		T.call(this);
 
 		NtroDate currentTime = message.getCurrentTime();
@@ -62,18 +92,33 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 		}
 	}
 
-	private void runEveryTime() {
+	private void runEveryTime(ModelStoreSync modelStore) throws BackendError {
 		T.call(this);
+
+		// Log.info("[runEveryTime]");
 		
-		//Log.info("[runEveryTime]");
+		
+		// TODO: update currentTime in queues etc.
+	}
+
+	private void runFrequently(ModelStoreSync modelStore) throws BackendError {
+		T.call(this);
+
+		Log.info("[runFrequently]");
+		
+		modelStore.forEachModelId(NtroSession.class, "admin", modelId -> {
+			
+			Log.info(modelId);
+			
+		});
 		
 		// TODO: update currentTime in queues etc.
 	}
 	
-	private void runNightly() {
+	private void runNightly() throws BackendError {
 		T.call(this);
 
-		//Log.info("[runNightly]");
+		Log.info("[runNightly]");
 
 		// TODO: update timeToLive everywhere and remove any obselete model
 	}

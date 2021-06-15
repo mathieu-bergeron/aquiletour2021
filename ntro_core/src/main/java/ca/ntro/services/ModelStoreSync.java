@@ -140,6 +140,14 @@ public class ModelStoreSync {
 		modelStore.createModel(modelClass, authToken, modelId, initializer);
 	}
 
+	public void forEachModelId(Class<? extends NtroModel> modelClass, 
+			                   String authToken,
+			                   ModelIdReader reader) throws BackendError {
+		T.call(this);
+		
+		modelStore.forEachModelId(modelClass, authToken, reader);
+	}
+
 	public void removeObservers(NtroModel model) {
 		T.call(this);
 		
@@ -159,4 +167,5 @@ public class ModelStoreSync {
 		
 		return observer;
 	}
+
 }
