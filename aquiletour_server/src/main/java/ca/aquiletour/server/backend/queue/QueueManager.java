@@ -7,7 +7,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.AppointmentAddedListener;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
-import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelUpdater;
@@ -61,7 +61,7 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		QueuesUpdater.deleteQueue(modelStore, queueId);
+		QueueListManager.deleteQueue(modelStore, queueId);
 	}
 
 
@@ -85,7 +85,7 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		QueuesUpdater.deleteQueue(modelStore, queueId);
+		QueueListManager.deleteQueue(modelStore, queueId);
 
 		modelStore.updateModel(QueueModel.class, "amdin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
@@ -297,6 +297,16 @@ public class QueueManager {
 				queue.updateIsQueueOpenForCourseId(courseId, isQueueOpen);
 			}
 		});
+		
+		if(isQueueOpen) {
+			
+			QueueListManager.addQueue(modelStore, user.getId(), user);
+			
+		}else {
+
+			QueueListManager.deleteQueue(modelStore, user.getId());
+
+		}
 	}
 
 	public static void addCourseSettings(ModelStoreSync modelStore, 

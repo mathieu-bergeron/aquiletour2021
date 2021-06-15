@@ -34,7 +34,6 @@ import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.users.NtroSession;
 
 public class UserManager {
 	

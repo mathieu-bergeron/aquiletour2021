@@ -31,6 +31,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.server.AquiletourConfig;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.http.DynamicHandler;
@@ -85,9 +86,13 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		sendTimePassesMessages();
 
 		try {
+			
+			
+			ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 
-			UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
-			SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+			UserManager.initialize(modelStore);
+			SemesterListManager.initialize(modelStore);
+			QueueListManager.initialize(modelStore);
 
 		} catch (BackendError e) {
 			Log.error("Could not initialize: " + e.getMessage());

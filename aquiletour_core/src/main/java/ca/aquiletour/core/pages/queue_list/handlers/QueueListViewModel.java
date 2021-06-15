@@ -29,8 +29,9 @@ public class QueueListViewModel extends ModelViewSubViewHandler<QueueListModel, 
 		
 		if(currentModel != null) {
 			modelStore.removeObserver(currentModel, currentObserver);
-			currentModel = model;
 		}
+
+		currentModel = model;
 		
 		currentObserver = modelStore.observeModel(currentModel, new ModelObserver() {
 			@Override

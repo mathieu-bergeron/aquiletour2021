@@ -7,10 +7,8 @@ import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
-import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
-import ca.aquiletour.core.pages.semester_list.admin.models.SemesterModelAdmin;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.models.SemesterModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
@@ -27,6 +25,14 @@ import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class SemesterListManager {
+
+	public static void initialize(ModelStoreSync modelStore) throws BackendError {
+		T.call(SemesterListManager.class);
+		
+		if(!modelStore.ifModelExists(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID)) {
+			createSemesterListForModelId(modelStore, SemesterListModelAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		}
+	}
 
 	public static void addScheduleItemForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
@@ -370,11 +376,6 @@ public class SemesterListManager {
 		return getTeacherSchedule(modelStore, semesterId, user.getId());
 	}
 
-	public static void initialize(ModelStoreSync modelStore) throws BackendError {
-		T.call(SemesterListManager.class);
-		
-		createSemesterListForModelId(modelStore, SemesterListModelAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
-	}
 
 	public static void addActiveSemesterIds(ModelStoreSync modelStore, List<String> activeSemesterIds) throws BackendError {
 		T.call(SemesterListManager.class);

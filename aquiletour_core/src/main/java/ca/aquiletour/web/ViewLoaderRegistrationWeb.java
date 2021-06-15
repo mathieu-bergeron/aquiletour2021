@@ -140,8 +140,8 @@ public class ViewLoaderRegistrationWeb {
 		ViewLoaders.registerViewLoader(QueueListItemView.class,
 				"fr"
 				, Ntro.viewLoaderWeb()
-			     	.setHtmlUrl("/partials/queue_summary/queue_summary.html")
-			     	.setCssUrl("/partials/queue_summary/queue_summary.css")
+			     	.setHtmlUrl("/partials/queue_list_item/queue_list_item.html")
+			     	.setCssUrl("/partials/queue_list_item/queue_list_item.css")
 			     	.setTranslationsUrl("/i18n/fr/string.json")
 			     	.setTargetClass(QueueListItemViewWeb.class));
 

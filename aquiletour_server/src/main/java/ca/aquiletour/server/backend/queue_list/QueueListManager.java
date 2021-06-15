@@ -1,4 +1,4 @@
-package ca.aquiletour.server.backend.open_queues_list;
+package ca.aquiletour.server.backend.queue_list;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.user.User;
@@ -13,12 +13,9 @@ import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import jsweet.util.StringTypes.del;
 
-public class QueuesUpdater {
+public class QueueListManager {
 	
-	static {
-		
-		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
-
+	public static void initialize(ModelStoreSync modelStore) {
 		try {
 			if(!modelStore.ifModelExists(QueueListModel.class, "admin", Constants.QUEUE_LIST_ID)) {
 					modelStore.createModel(QueueListModel.class, "admin", Constants.QUEUE_LIST_ID, m -> {});
@@ -27,6 +24,7 @@ public class QueuesUpdater {
 			Log.error("Could not initialize " + Constants.QUEUE_LIST_ID + " " + e.getMessage());
 		}
 	}
+		
 
 	private static QueueListItem createQueueListItem(String queueId, User teacher) {
 		T.call(QueueListModel.class);
@@ -41,7 +39,7 @@ public class QueuesUpdater {
 	public static void deleteQueue(ModelStoreSync modelStore,
 			                       String queueId) throws BackendError {
 
-		T.call(QueuesUpdater.class);
+		T.call(QueueListManager.class);
 		
 		modelStore.updateModel(QueueListModel.class, "admin", Constants.QUEUE_LIST_ID, new ModelUpdater<QueueListModel>() {
 			@Override
@@ -57,11 +55,11 @@ public class QueuesUpdater {
 			                    String queueId,
 			                    User teacher) throws BackendError {
 
-		T.call(QueuesUpdater.class);
+		T.call(QueueListManager.class);
 		
-		modelStore.readModel(QueueModel.class, queueId, "admin", queueModel -> {
+		modelStore.readModel(QueueModel.class, "admin", queueId, queueModel -> {
 
-			modelStore.updateModel(QueueListModel.class, queueId, "admin", queueListModel -> {
+			modelStore.updateModel(QueueListModel.class, queueId, Constants.QUEUE_LIST_ID, queueListModel -> {
 				
 				queueListModel.addQueueListItem(createQueueListItem(queueId, teacher));
 			});

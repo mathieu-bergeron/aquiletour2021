@@ -179,6 +179,7 @@ import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
 import ca.aquiletour.core.pages.queue_list.models.QueueListItem;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItemById;
 import ca.aquiletour.core.pages.queue_list.models.QueueListModel;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
@@ -259,13 +260,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		registerViewLoaders();
 
-		@SuppressWarnings("unchecked")
-		NtroContext<User, SessionData> context = (NtroContext<User, SessionData>) Ntro.context();
-		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);  
+		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), createNtroContext());  
 
 		rootController.execute();
 		
@@ -561,6 +559,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(AddSemesterMessage.class);
 
 		Ntro.registerSerializableClass(QueueListModel.class);
+		Ntro.registerSerializableClass(QueueListItemById.class);
+
 	}
 	
 	protected abstract NtroWindow getWindow();
