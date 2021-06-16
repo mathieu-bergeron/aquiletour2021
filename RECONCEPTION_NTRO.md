@@ -35,8 +35,8 @@
 
 ### Un ViewModel
 
-* observes(MonModele.class)
-* observes(MaVue.class)
+* observes("models/QueueModel/alice")  
+* observes("views/QueueView")
 
 Chaque fois que le modèle change (ou que la vue change), on redéclenche le ViewModel
 
