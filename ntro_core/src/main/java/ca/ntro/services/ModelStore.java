@@ -533,7 +533,7 @@ public abstract class ModelStore {
 		}
 	}
 
-	private void saveCachedModelNow(NtroModel model, DocumentPath documentPath) {
+	private void saveCachedModelNow(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
 
 		synchronized (saveHistory) {
@@ -545,8 +545,17 @@ public abstract class ModelStore {
 			saveHistory.add(documentPath);
 
 		}
-		
-		saveDocument(documentPath, Ntro.jsonService().toString(model));
+
+		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+			@Override
+			public Void execute() throws BackendError {
+				T.call(this);
+
+				saveDocument(documentPath, Ntro.jsonService().toString(model));
+				
+				return null;
+			}
+		});
 	}
 
 	private void removeOldestModelFromHeap() throws BackendError {
