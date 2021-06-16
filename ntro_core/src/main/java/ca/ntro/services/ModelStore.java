@@ -171,7 +171,11 @@ public abstract class ModelStore {
 			                               ModelUpdater<M> updater) throws BackendError {
 		T.call(this);
 		
-		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new UpdateModelTask<M>(modelClass, authToken, modelId, updater));
+		DocumentPath documentPath = documentPath(modelClass, modelId);
+		
+		ModelLocks.acquireLockAndExecute(documentPath, new UpdateModelTask<M>(modelClass, authToken, modelId, updater));
+
+		manageHeap(documentPath);
 	}
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
@@ -218,7 +222,11 @@ public abstract class ModelStore {
 			                               ModelInitializer<M> initializer) throws BackendError {
 		T.call(this);
 		
-		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new CreateModelTask<M>(modelClass, authToken, modelId, initializer));
+		DocumentPath documentPath = documentPath(modelClass, modelId);
+		
+		ModelLocks.acquireLockAndExecute(documentPath, new CreateModelTask<M>(modelClass, authToken, modelId, initializer));
+		
+		manageHeap(documentPath);
 	}
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
@@ -266,7 +274,11 @@ public abstract class ModelStore {
 			                             ModelReader<M> reader) throws BackendError {
 		T.call(this);
 
-		ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ReadModelTask<M>(modelClass, authToken, modelId, reader));
+		DocumentPath documentPath = documentPath(modelClass, modelId);
+
+		ModelLocks.acquireLockAndExecute(documentPath, new ReadModelTask<M>(modelClass, authToken, modelId, reader));
+
+		manageHeap(documentPath);
 	}
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
@@ -311,7 +323,13 @@ public abstract class ModelStore {
 			                                                   ModelExtractor<M,R> extractor) throws BackendError {
 		T.call(this);
 
-		return ModelLocks.acquireLockAndExecute(documentPath(modelClass, modelId), new ExtractFromModelTask<M, R>(modelClass, authToken, modelId, extractor));
+		DocumentPath documentPath = documentPath(modelClass, modelId);
+
+		R result =  ModelLocks.acquireLockAndExecute(documentPath, new ExtractFromModelTask<M, R>(modelClass, authToken, modelId, extractor));
+		
+		manageHeap(documentPath);
+		
+		return result;
 	}
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
@@ -486,18 +504,39 @@ public abstract class ModelStore {
 				saveModelNow(model, documentPath);
 			}
 
-			manageHeap(model, documentPath);
 		}
 	}
 
-	public void manageHeap(NtroModel model, DocumentPath documentPath) throws BackendError {
+	public void manageHeap(DocumentPath documentPath) throws BackendError {
 		T.call(this);
 
+		if(localHeap.size() > maxHeapSize()) {
+			removeOldestModelFromHeap();
+		}
+	}
+
+	private void saveModelNow(NtroModel model, DocumentPath documentPath) throws BackendError {
+		T.call(this);
+		
+		if(model == null) {
+			Log.warning("[saveModelNow] model is null");
+			return;
+		}
+		
 		if(Ntro.introspector().ntroClassFromObject(model).ifImplements(DoNotCacheModel.class)) {
 
 			removeModelFromHeap(model, documentPath);
 
 		}else {
+			
+			saveCachedModelNow(model, documentPath);
+		}
+	}
+
+	private void saveCachedModelNow(NtroModel model, DocumentPath documentPath) {
+		T.call(this);
+
+		synchronized (saveHistory) {
 
 			int index = Ntro.collections().indexOfEquals(saveHistory, documentPath);
 			if(index > 0) {
@@ -505,18 +544,9 @@ public abstract class ModelStore {
 			}
 			saveHistory.add(documentPath);
 
-			if(localHeap.size() > maxHeapSize()) {
-				removeOldestModelFromHeap();
-			}
 		}
-	}
-
-	private void saveModelNow(NtroModel model, DocumentPath documentPath) {
-		T.call(this);
-
-		if(model != null) {
-			saveDocument(documentPath, Ntro.jsonService().toString(model));
-		}
+		
+		saveDocument(documentPath, Ntro.jsonService().toString(model));
 	}
 
 	private void removeOldestModelFromHeap() throws BackendError {
@@ -525,12 +555,20 @@ public abstract class ModelStore {
 		DocumentPath documentPath = saveHistory.remove(0);
 
 		if(documentPath != null) {
-			NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+			
+			ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+				@Override
+				public Void execute() throws BackendError {
+					NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 
-			if(model != null) {
-				saveModelNow(model, documentPath);
-				removeModelFromHeap(model, documentPath);
-			}
+					if(model != null) {
+						saveCachedModelNow(model, documentPath);
+						removeModelFromHeap(model, documentPath);
+					}
+
+					return null;
+				}
+			});
 		}
 	}
 
