@@ -2,11 +2,13 @@ package ca.aquiletour.server.backend.time;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.server.backend.login.SessionManager;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
@@ -79,7 +81,7 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 
 			if(currentTime.biggerThan(nextNighlyTime)) {
 
-				runNightly();
+				runNightly(modelStore);
 
 				if(Ntro.config().isProd()) {
 
@@ -130,11 +132,23 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 		// TODO: update currentTime in queues etc.
 	}
 	
-	private void runNightly() throws BackendError {
+	private void runNightly(ModelStoreSync modelStore) throws BackendError {
 		T.call(this);
 
 		Log.info("[runNightly]");
 
 		// TODO: update timeToLive everywhere and remove any obselete model
+		
+		
+		Set<String> sessionIds = new HashSet<>();
+		
+		modelStore.forEachModelId(NtroSession.class, "admin", authToken -> {
+			sessionIds.add(authToken);
+		});
+		
+		RegisteredSocketsSockJS.deregisterOrphanSockets(sessionIds);
+		
+		
+		
 	}
 }

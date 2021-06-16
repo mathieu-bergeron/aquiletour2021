@@ -362,4 +362,28 @@ public class RegisteredSocketsSockJS {
 
 		return ifExists;
 	}
+
+	public static void deregisterOrphanSockets(Set<String> activeAuthTokens) {
+		T.call(RegisteredSocketsSockJS.class);
+		
+		synchronized (socketsByToken) {
+
+			for(Map.Entry<String, Set<SockJSSocket>> entry : socketsByToken.entrySet()) {
+				
+				String authToken = entry.getKey();
+				
+				if(!activeAuthTokens.contains(authToken)) {
+					
+					Set<SockJSSocket> sockets = entry.getValue();
+					if(sockets != null) {
+						synchronized (sockets) {
+							for(SockJSSocket socket : sockets) {
+								deregisterSocket(socket);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
