@@ -37,6 +37,7 @@ import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserIsActiveMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.models.common.StoredListOfIds;
@@ -560,6 +561,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(QueueListModel.class);
 		Ntro.registerSerializableClass(QueueListItemById.class);
+
+		Ntro.registerSerializableClass(UserIsActiveMessage.class);
 
 	}
 	

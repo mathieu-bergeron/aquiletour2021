@@ -1,13 +1,10 @@
 package ca.aquiletour.server.registered_sockets;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.eclipse.jetty.websocket.api.Session;
 
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
@@ -29,21 +26,21 @@ public class RegisteredSocketsSockJS {
 	private static Map<String, Set<String>> tokensByUserId = Ntro.collections().concurrentMap(new HashMap<>());
 	private static Map<String, String> userIdByToken = Ntro.collections().concurrentMap(new HashMap<>());
 
-	private static Map<String, SockJSSocket> socketByToken = Ntro.collections().concurrentMap(new HashMap<>());
+	private static Map<String, Set<SockJSSocket>> socketsByToken = Ntro.collections().concurrentMap(new HashMap<>());
 	private static Map<SockJSSocket, String> tokenBySocket = Ntro.collections().concurrentMap(new HashMap<>());
 
 	public static void onUserChanges(String oldAuthToken, String authToken, NtroUser user) {
 		T.call(RegisteredSocketsSockJS.class);
 		
-		SockJSSocket socket = null;
+		Set<SockJSSocket> sockets = socketsByToken.get(oldAuthToken);
 		
-		synchronized (socketByToken) {
-			socket = socketByToken.get(oldAuthToken);
-		}
-		
-		if(socket != null) {
-			deregisterSocket(socket);
-			registerUserSocket(authToken, user, socket);
+		synchronized (sockets) {
+			for(SockJSSocket socket: sockets) {
+
+				deregisterSocket(socket);
+
+				registerUserSocket(authToken, user, socket);
+			}
 		}
 	}
 
@@ -68,11 +65,22 @@ public class RegisteredSocketsSockJS {
 
 	private static void registerSocket(String authToken, SockJSSocket socket) {
 		T.call(RegisteredSocketsSockJS.class);
-
-		synchronized (socketByToken) {
-			socketByToken.put(authToken, socket);
-			tokenBySocket.put(socket, authToken);
+		
+		if(authToken == null) {
+			Log.error("[registerSocket] authToken is null");
+			return;
 		}
+		
+		Set<SockJSSocket> sockets = socketsByToken.get(authToken);
+		if(sockets == null) {
+			sockets = new ConcurrentHashSet<SockJSSocket>();
+			socketsByToken.put(authToken, sockets);
+		}
+
+		sockets.add(socket);
+		tokenBySocket.put(socket, authToken);
+		
+		Log.info("[registerSocket] " + sockets.size() + " socket(s) for authToken " + authToken);
 		
 		socket.endHandler(t -> {
 			deregisterSocket(socket);
@@ -82,12 +90,7 @@ public class RegisteredSocketsSockJS {
 	private static void deregisterSocketIfExists(SockJSSocket socket) {
 		T.call(RegisteredSocketsSockJS.class);
 
-		boolean ifSocketExists = false;
-		synchronized (socketByToken) {
-			ifSocketExists = tokenBySocket.containsKey(socket);
-		}
-
-		if(ifSocketExists) {
+		if(tokenBySocket.containsKey(socket)) {
 			deregisterSocket(socket);
 		}
 	}
@@ -96,37 +99,51 @@ public class RegisteredSocketsSockJS {
 		T.call(RegisteredSocketsSockJS.class);
 
 		
-		String authToken = null;
-		SockJSSocket removed = null;
-		synchronized (socketByToken) {
-
-			authToken = tokenBySocket.get(socket);
+		String authToken = tokenBySocket.get(socket);
+		boolean removed = false;
+		boolean lastAuthTokenSocket = false;
 			
-			if(authToken != null) {
+		if(authToken != null) {
 
-				tokenBySocket.remove(socket);
-				removed = socketByToken.remove(authToken);
+			tokenBySocket.remove(socket);
+			
+			Set<SockJSSocket> sockets = socketsByToken.get(authToken);
+			if(sockets != null) {
+				
+				removed = sockets.remove(socket);
 			}
+			
+			lastAuthTokenSocket = sockets.isEmpty();
 		}
 
-		if(removed != null) {
+		if(removed) {
 			System.out.println("deregistered socket for " + authToken);
 		}
 
-		String userId = null;
-		if(authToken != null) {
-			userId = userIdByToken.get(authToken);
+		if(lastAuthTokenSocket) {
+
+			String userId = null;
+			if(authToken != null) {
+				userId = userIdByToken.get(authToken);
+			}
+			
+			if(userId != null) {
+
+				deregisterUser(authToken, userId);
+				deregisterModelObservers(authToken);
+
+			}else {
+				
+				Log.warning("[deregisterSocket] userId not found for " + authToken);
+			}
 		}
-
-		deregisterUser(authToken, userId);
-
-		deregisterModelObservers(authToken);
 	}
 
 	private static void deregisterUser(String authToken, String userId) {
 		T.call(RegisteredSocketsSockJS.class);
 
 		Set<String> userTokens = tokensByUserId.get(userId);
+
 		if(userTokens != null) {
 			userTokens.remove(authToken);
 			if(userTokens.isEmpty()) {
@@ -139,14 +156,26 @@ public class RegisteredSocketsSockJS {
 
 	private static void deregisterModelObservers(String authToken) {
 		T.call(RegisteredSocketsSockJS.class);
+		
+		if(authToken == null) {
+			Log.error("[deregisterModelObservers] authToken is null");
+			return;
+		}
 
 		Set<DocumentPath> observedPaths = observedPathsByToken.get(authToken);
+
 		if(observedPaths != null) {
+
 			synchronized(observedPaths) {
+
 				for(DocumentPath observedPath : observedPaths) {
+
 					Set<String> observerTokens = tokensByObservedPath.get(observedPath);
+
 					if(observerTokens != null) {
+
 						observerTokens.remove(authToken);
+
 						if(observerTokens.isEmpty()) {
 							tokensByObservedPath.remove(observedPath);
 						}
@@ -159,7 +188,7 @@ public class RegisteredSocketsSockJS {
 	}
 
 
-	public static void sendMessageToUser(NtroUser user, NtroMessage message) {
+	public static void sendMessageToUser(NtroUser user, NtroMessage message) throws BackendError {
 		T.call(RegisteredSocketsSockJS.class);
 
 		sendMessageToUserId(user.getId(), message);
@@ -169,46 +198,50 @@ public class RegisteredSocketsSockJS {
 		T.call(RegisteredSocketsSockJS.class);
 
 		Set<String> userTokens = tokensByUserId.get(userId);
+
 		if(userTokens != null) {
 			synchronized(userTokens) {
 				for(String authToken : userTokens) {
 					lambda.execute(authToken);
 				}
 			}
+
+		}else {
+			
+			Log.warning("[forEachSocket] no socket for userId " + userId);
 		}
 	}
 
 
-	public static void sendMessageToUserId(String userId, NtroMessage message) {
+	public static void sendMessageToUserId(String userId, NtroMessage message) throws BackendError {
 		T.call(RegisteredSocketsSockJS.class);
 		
-		Set<String> userTokens = tokensByUserId.get(userId);
-		if(userTokens != null) {
-			synchronized(userTokens) {
-				for(String authToken : userTokens) {
-					sendMessageToSocket(authToken, message);
-				}
-			}
-			
-		}else {
-			
-			Log.warning("User has not registered a socket: " + userId);
-		}
+		forEachSocket(userId, authToken -> {
+
+			sendMessageToSockets(authToken, message);
+		});
 	}
 
-	public static void sendMessageToSocket(String authToken, NtroMessage message) {
+	public static void sendMessageToSockets(String authToken, NtroMessage message) {
 		T.call(RegisteredSocketsSockJS.class);
-
-		SockJSSocket socket;
-		synchronized (socketByToken) {
-			socket = socketByToken.get(authToken);
+		
+		if(authToken == null) {
+			Log.error("[sendMessageToSockets] authToken is null");
+			return;
 		}
 
-		if(socket != null) {
-			System.out.println("sendMessage: " + Ntro.jsonService().toString(message));
-			socket.write(Ntro.jsonService().toString(message));
+		Set<SockJSSocket> sockets = socketsByToken.get(authToken);
+		if(sockets != null) {
+			synchronized (sockets) {
+				for(SockJSSocket socket : sockets) {
+					System.out.println("sendMessage to " + authToken);
+					System.out.println(Ntro.jsonService().toString(message));
+					socket.write(Ntro.jsonService().toString(message));
+				}
+			}
+
 		}else {
-			Log.warning("sendMessage: socket closed for " + authToken);
+			Log.warning("sendMessage: sockets closed for " + authToken);
 		}
 	}
 
@@ -272,7 +305,7 @@ public class RegisteredSocketsSockJS {
 					message.setMethodName(methodName);
 					message.setArgs(args);
 
-					RegisteredSocketsSockJS.sendMessageToSocket(authToken, message);
+					RegisteredSocketsSockJS.sendMessageToSockets(authToken, message);
 				}
 			}
 		}
@@ -285,7 +318,7 @@ public class RegisteredSocketsSockJS {
 		
 		synchronized(observedPathsByToken) {
 			for(String authToken : observedPathsByToken.keySet()) {
-				if(!socketExistsForToken(authToken)) {
+				if(!ifSocketExists(authToken)) {
 
 					Set<DocumentPath> observedPaths = observedPathsByToken.get(authToken);
 					if(observedPaths != null) {
@@ -309,15 +342,24 @@ public class RegisteredSocketsSockJS {
 		}
 	}
 
-	private static boolean socketExistsForToken(String authToken) {
+	private static boolean ifSocketExists(String authToken) {
 		T.call(RegisteredSocketsSockJS.class);
-		
-		boolean ifExists = false;
-		
-		synchronized (socketByToken) {
-			ifExists = socketByToken.containsKey(authToken);
+
+		if(authToken == null) {
+			Log.error("[ifSocketExists] authToken is null");
+			return false;
 		}
 		
+		boolean ifExists = false;
+
+		Set<SockJSSocket> sockets = socketsByToken.get(authToken);
+		
+		if(sockets != null && !sockets.isEmpty()) {
+
+			ifExists = true;
+
+		}
+
 		return ifExists;
 	}
 }

@@ -630,24 +630,38 @@ public abstract class ModelStore {
 		}
 	}
 
-	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 
+	public <M extends NtroModel> void deleteModel(Class<M> modelClass, 
 												  String authToken,
 			                                      String documentId) throws BackendError {
 		T.call(this);
 		
 		DocumentPath documentPath = documentPath(modelClass, documentId);
 
-		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
-			@Override
-			public Void execute() throws BackendError {
-				
-				M model = (M) Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
-				
-				delete(model);
+		ModelLocks.acquireLockAndExecute(documentPath, new DeleteModelTask<M>(modelClass, documentPath));
+	}
 
-				return null;
-			}
-		});
+	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
+	private class DeleteModelTask<M extends NtroModel> implements ModelLockTask<Void> {
+		
+		private final DocumentPath documentPath;
+
+		public DeleteModelTask(Class<M> modelClass, DocumentPath documentPath) {
+			T.call(this);
+			
+			this.documentPath = documentPath;
+		}
+
+		@Override
+		public Void execute() throws BackendError {
+			T.call(this);
+			
+			@SuppressWarnings("unchecked")
+			M model = (M) Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+			
+			delete(model);
+
+			return null;
+		}
 	}
 
 	public <M extends NtroModel> void deleteModel(Class<? extends NtroModel> modelClass, 

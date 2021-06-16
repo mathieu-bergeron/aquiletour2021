@@ -28,7 +28,7 @@ public class UserLogsOutHandler extends BackendMessageHandler<UserLogsOutMessage
 
 		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 		updateSessionMessage.setSession(Ntro.currentSession());
-		RegisteredSocketsSockJS.sendMessageToSocket(newAuthToken, updateSessionMessage);
+		RegisteredSocketsSockJS.sendMessageToSockets(newAuthToken, updateSessionMessage);
 	}
 
 	@Override

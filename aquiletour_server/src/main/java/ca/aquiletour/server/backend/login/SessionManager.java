@@ -369,7 +369,7 @@ public class SessionManager {
 
 					NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 					updateSessionMessage.setSession(session);
-					RegisteredSocketsSockJS.sendMessageToSocket(authToken, updateSessionMessage);
+					RegisteredSocketsSockJS.sendMessageToSockets(authToken, updateSessionMessage);
 				}
 			});
 		});

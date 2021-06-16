@@ -36,7 +36,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
-			RegisteredSocketsSockJS.sendMessageToSocket(authToken, updateSessionMessage);
+			RegisteredSocketsSockJS.sendMessageToSockets(authToken, updateSessionMessage);
 		}
 
 		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
