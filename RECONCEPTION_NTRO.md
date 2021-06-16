@@ -19,10 +19,12 @@
     * si une tâche n'est pas prête, on garde le message en file
 
 1. Ajout) notion d'objet permanent         (i.e. l'équivalent du ModelStore)
-    * observes(UnObjetPermanent.class)
+    * observes("/chemin/vers/objet")
     * (ré)-exécuter la tâche quand la valeur de l'objet change
     * on pousse un set de Revisions dans le scope pour permetter d'accéder aux modifs apportées à l'objet depuis le dernier appel
-    * NOTE: on implante avec un mélange de messages et d'un ObjetStore qui conserve en mémoire les objets permanents
+    * NOTES:
+        * on implante avec un mélange de messages et d'un ObjetStore qui conserve en mémoire les objets permanents
+        * le chemin est un identifiant unique pour l'objet
 
 ## Exemples
 
