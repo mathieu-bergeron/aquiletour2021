@@ -44,4 +44,4 @@ COPY --from=build /code/aquiletour_server/__test_data__ __data__
 ##
 ## restart server if it crashes
 ##
-CMD while true; do java -cp aqlt_srv.jar ca.aquiletour.server.JavaMainServer; date -I >> .crashes; done 
+CMD while true; do java -cp aqlt_srv.jar ca.aquiletour.server.JavaMainServer; date >> .crashes; done 
