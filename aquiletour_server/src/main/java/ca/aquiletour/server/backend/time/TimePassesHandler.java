@@ -1,8 +1,6 @@
 package ca.aquiletour.server.backend.time;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import ca.aquiletour.core.Constants;
@@ -137,9 +135,8 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 
 		Log.info("[runNightly]");
 
-		// TODO: update timeToLive everywhere and remove any obselete model
-		
-		
+		// TODO: a pass at the data to remove any inconsistencies
+
 		Set<String> sessionIds = new HashSet<>();
 		
 		modelStore.forEachModelId(NtroSession.class, "admin", authToken -> {
@@ -147,8 +144,5 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 		});
 		
 		RegisteredSocketsSockJS.deregisterOrphanSockets(sessionIds);
-		
-		
-		
 	}
 }

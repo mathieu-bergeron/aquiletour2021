@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.JSweetGlobals.SockJS;
@@ -16,7 +17,6 @@ import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
 import def.sockjs.Globals;
 
-import static jsweet.util.Lang.function;
 
 import static def.dom.Globals.window;
 
@@ -25,7 +25,6 @@ public class BackendServiceJSweetSockJS extends BackendService {
 	// FIXME: would be cleaner wait for
 	//        WebSocket to be open using an initialization task
 	private boolean isOpen = false;
-	private final List<NtroMessage> queuedMessages = new ArrayList<>();
 	
 	private SockJS sockJS;
 	
@@ -69,13 +68,10 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		sockJS.onopen = t -> {
 				
 			System.out.println("sockJS: open");
-			
-			registerWebSocket(authToken);
 
 			isOpen = true;
-			for(NtroMessage queuedMessage : queuedMessages) {
-				sendMessageToBackend(queuedMessage);
-			}
+			
+			registerWebSocket(authToken);
 			
 			return null;
 		};
@@ -97,7 +93,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		if(isOpen) {
 			sockJS.send(Ntro.jsonService().toString(message));
 		}else {
-			queuedMessages.add(message);
+			Log.info("[sendMessageToBackend] socket closed");
 		}
 	}
 

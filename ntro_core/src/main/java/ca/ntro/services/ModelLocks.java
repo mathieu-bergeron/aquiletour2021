@@ -54,7 +54,7 @@ public class ModelLocks {
 				
 			}else {
 				
-				Log.warning("[aquireLockAndExecute] invalid lock. Retrying... ");
+				Log.warning("[aquireLockAndExecute] invalid lock for " + documentPath.toString() + " . Retrying... ");
 				result = acquireLockAndExecute(documentPath, task);
 			}
 		}
