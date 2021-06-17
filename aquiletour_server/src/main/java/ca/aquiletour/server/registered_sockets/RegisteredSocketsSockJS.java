@@ -34,12 +34,14 @@ public class RegisteredSocketsSockJS {
 		
 		Set<SockJSSocket> sockets = socketsByToken.get(oldAuthToken);
 		
-		synchronized (sockets) {
-			for(SockJSSocket socket: sockets) {
+		if(sockets != null) {
+			synchronized (sockets) {
+				for(SockJSSocket socket: sockets) {
 
-				deregisterSocket(socket);
+					deregisterSocket(socket);
 
-				registerUserSocket(authToken, user, socket);
+					registerUserSocket(authToken, user, socket);
+				}
 			}
 		}
 	}

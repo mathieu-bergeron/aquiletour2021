@@ -1,6 +1,8 @@
 package ca.ntro.services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ca.ntro.backend.BackendError;
@@ -11,15 +13,15 @@ import ca.ntro.stores.DocumentPath;
 public class ModelLocks {
 
 	private static Map<DocumentPath, ModelLock> modelLockByPath = null;
-	private static Map<String, DocumentPath> currentPathByThreadId = null;
+	private static Map<String, List<DocumentPath>> currentPathsByThreadId = null;
 	
 	public static void initialize() {
 		if(modelLockByPath == null) {
 			modelLockByPath = Ntro.collections().concurrentMap(new HashMap<>());
 		}
 
-		if(currentPathByThreadId == null) {
-			currentPathByThreadId = Ntro.collections().concurrentMap(new HashMap<>());
+		if(currentPathsByThreadId == null) {
+			currentPathsByThreadId = Ntro.collections().concurrentMap(new HashMap<>());
 		}
 	}
 
@@ -33,7 +35,6 @@ public class ModelLocks {
 			if(modelLock == null) {
 				modelLock = ModelLock.newLock();
 				modelLockByPath.put(documentPath, modelLock);
-				currentPathByThreadId.put(Ntro.threadService().currentThread().threadId(), documentPath);
 			}
 		}
 		
@@ -44,23 +45,22 @@ public class ModelLocks {
 		T.call(ModelLocks.class);
 
 		O result = null;
-
-		DocumentPath currentPath = currentPathByThreadId.get(Ntro.threadService().currentThread().threadId());
 		
-		if(currentPath != null && !currentPath.equals(documentPath)) {
-
-			Log.warning("[acquireLockAndExecute] trying to get TWO LOCKS: " + currentPath + " and "  + documentPath);
+		List<DocumentPath> currentPaths = currentPathsByThreadId.get(Ntro.threadService().currentThread().threadId());
+		if(currentPaths == null) {
+			currentPaths = Ntro.collections().synchronizedList(new ArrayList<>());
+			currentPathsByThreadId.put(Ntro.threadService().currentThread().threadId(), currentPaths);
+		}
+		
+		synchronized (currentPaths) {
+			for(DocumentPath currentPath : currentPaths) {
+				if(!currentPath.equals(documentPath)) {
+					Log.warning("\n\n[acquireLockAndExecute] trying to get TWO LOCKS: " + currentPath + " and " + documentPath + "\n\n");
+					break;
+				}
+			}
 		}
 
-		/*
-		Log.info("<locks>");
-		for(String threadId : currentPathByThreadId.keySet()) {
-			Log.info(threadId + " " + currentPathByThreadId.get(threadId) );
-		}
-		Log.info(Ntro.threadService().currentThread().threadId() + " is trying for " + documentPath);
-		Log.info("</locks>");
-		*/
-		
 		ModelLock modelLock = getModelLock(documentPath);
 
 		synchronized (modelLock) {
@@ -74,9 +74,11 @@ public class ModelLocks {
 				
 				//Log.info("[ModelLocks] lock AQUIRED " + documentPath);
 				
-				currentPathByThreadId.put(Ntro.threadService().currentThread().threadId(), documentPath);
+				currentPaths.add(documentPath);
 
 				result = task.execute();
+
+				currentPaths.remove(documentPath);
 				
 			}else {
 				
@@ -84,8 +86,6 @@ public class ModelLocks {
 				result = acquireLockAndExecute(documentPath, task);
 			}
 		}
-
-		currentPathByThreadId.remove(Ntro.threadService().currentThread().threadId());
 
 		//Log.info("[ModelLocks] lock RELEASED " + documentPath);
 		
@@ -111,6 +111,6 @@ public class ModelLocks {
 		T.call(ModelLocks.class);
 		
 		Ntro.collections().removeByKeyEquals(modelLockByPath, documentPath);
-		Ntro.collections().removeByKeyEquals(currentPathByThreadId, Ntro.threadService().currentThread().threadId());
+		Ntro.collections().removeByKeyEquals(currentPathsByThreadId, Ntro.threadService().currentThread().threadId());
 	}
 }

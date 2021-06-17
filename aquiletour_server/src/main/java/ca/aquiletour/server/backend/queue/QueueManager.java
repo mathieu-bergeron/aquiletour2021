@@ -14,6 +14,8 @@ import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.models.NtroDate;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
@@ -96,7 +98,7 @@ public class QueueManager {
 		});
 	}
 
-	public static void addAppointmentForUser(ModelStoreSync modelStore,
+	public static Appointment addAppointmentForUser(ModelStoreSync modelStore,
 			                                 String queueId,
 			                                 CoursePath coursePath,
 			                                 TaskPath taskPath,
@@ -109,6 +111,8 @@ public class QueueManager {
 
 		Appointment appointment = createAppointment(timestamp, user, coursePath, taskPath, taskTitle);
 		
+		Optionnal<Appointment> addedAppointment = new Optionnal<>();
+		
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
@@ -118,44 +122,29 @@ public class QueueManager {
 					@Override
 					public void onAppointementAdded(Appointment appointment) {
 						T.call(user);
-
-						try {
-							
-							logNewAppointment(modelStore, queueId, user, timestamp, appointment);
-							updateNumberOfAppointements(modelStore, queueId, appointment);
-
-						} catch (BackendError e) {
-
-							e.printStackTrace();
-						}
+						
+						addedAppointment.set(appointment);
 					}
 				});
 			}
 		});
-	}
-
-	private static void updateNumberOfAppointements(ModelStoreSync modelStore, 
-			                                        String queueId, 
-			                                        Appointment appointment) throws BackendError {
-		T.call(QueueManager.class);
 		
-
+		Appointment result = null;
+		
 		try {
 
-			QueueListManager.updateNumberOfAppointments(modelStore, queueId, Long.valueOf(appointment.getId()));
+			result = addedAppointment.get();
 
-		} catch (NumberFormatException e) {
-			
-			throw new BackendError(e.getMessage());
+		} catch (EmptyOptionException e) {}
 
-		} 
+		return result;
 	}
 
-	private static void logNewAppointment(ModelStoreSync modelStore, 
-			                              String queueId, 
-			                              User user, 
-			                              NtroDate timestamp, 
-			                              Appointment appointment) throws BackendError {
+	public static void logNewAppointment(ModelStoreSync modelStore, 
+			                             String queueId, 
+			                             User user, 
+			                             NtroDate timestamp, 
+			                             Appointment appointment) throws BackendError {
 		T.call(QueueManager.class);
 		
 		modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
@@ -163,7 +152,6 @@ public class QueueManager {
 			queueLog.addAppointement(timestamp, user, appointment);
 
 		});
-
 	}
 
 	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
@@ -189,24 +177,6 @@ public class QueueManager {
 		return appointment;
 	}
 
-	public static void addAppointmentUpdates(ModelStoreSync modelStore, String queueId) throws BackendError {
-		T.call(QueueManager.class);
-		
-		numberOfAppointmentUpdates(modelStore, queueId);
-	}
-
-	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) throws BackendError {
-		T.call(QueueManager.class);
-
-		modelStore.updateModel(QueueModel.class, 
-				               "admin", 
-				               queueId, 
-				               queue -> {
-
-			int nbAppointment = queue.getAppointmentById().size();
-	   });
-	}
-
 	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) throws BackendError {
 		T.call(QueueManager.class);
 		
@@ -226,14 +196,6 @@ public class QueueManager {
 				queue.deleteAppointment(appointmentId);
 			}
 		});
-	}
-
-	public static void deleteAppointmentUpdates(ModelStoreSync modelStore, String queueId, Appointment deletedAppointment) throws BackendError {
-		T.call(QueueManager.class);
-		
-		//String appointmentOwnerId = deletedAppointment.getStudentId();
-		
-		numberOfAppointmentUpdates(modelStore, queueId);
 	}
 
 	public static void moveAppointment(ModelStoreSync modelStore, 

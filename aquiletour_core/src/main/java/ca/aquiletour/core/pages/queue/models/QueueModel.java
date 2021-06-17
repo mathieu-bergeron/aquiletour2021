@@ -122,18 +122,23 @@ public class QueueModel implements NtroModel {
 	public void deleteAppointment(String appointmentId) {
 		T.call(this);
 		
-		int index = appointmentIndexById(appointmentId);
-		
-		if(index == 0) {
-			setNowAsFirstAppointmentTime();
-		}
-		
-		if(index != -1) {
-			getAppointmentById().removeEntry(appointmentId);
-			getAppointmentsInOrder().removeItemAtIndex(index);
-		}
+		if(getAppointmentById().containsKey(appointmentId)) {
 
-		recomputeAppointmentTimes();
+			getAppointmentById().removeEntry(appointmentId);
+
+			int index = appointmentIndexById(appointmentId);
+
+			if(index == 0) {
+				setNowAsFirstAppointmentTime();
+			}
+
+			if(index != -1) {
+				getAppointmentsInOrder().removeItemAtIndex(index);
+
+			}
+
+			recomputeAppointmentTimes();
+		}
 	}
 
 	public long getLatestAppointmentId() {

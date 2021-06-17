@@ -20,7 +20,7 @@ public class InitializeSessionHandler extends BackendMessageHandler<InitializeSe
 		if(authToken != null && 
 				SessionManager.ifSessionExists(modelStore, authToken)) {
 
-			SessionManager.updateExistingSession(modelStore, authToken);
+			SessionManager.updateExistingSession(modelStore, authToken, message.getSessionUser().getId());
 			
 		}else {
 

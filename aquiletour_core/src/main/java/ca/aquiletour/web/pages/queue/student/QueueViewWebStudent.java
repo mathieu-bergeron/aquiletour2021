@@ -38,4 +38,5 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 		queueMessageElement.text(queueMessage);
 	}
 
+
 }

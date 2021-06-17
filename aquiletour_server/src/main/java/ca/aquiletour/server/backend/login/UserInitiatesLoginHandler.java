@@ -102,14 +102,11 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			sessionData.setLoginCode(loginCode);
 		}
 		
-		modelStore.updateModel(NtroSession.class, "admin", authToken, session -> {
-
+		SessionManager.updateSession(modelStore, authToken, session -> {
 			session.setUser(userToRegister.toSessionUser());
 			session.setSessionData(sessionData);
-
+			
 		});
-		
-		Ntro.currentSession().setSessionData(sessionData);
 
 		return userToRegister;
 	}

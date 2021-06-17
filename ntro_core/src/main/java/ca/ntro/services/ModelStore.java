@@ -616,7 +616,12 @@ public abstract class ModelStore {
 
 	private void removeModelFromHeap(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
-		
+
+		if(model == null) {
+			Log.warning("[removeModelFromHeap] model is null");
+			return;
+		}
+
 		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
 
 			@Override
@@ -664,8 +669,11 @@ public abstract class ModelStore {
 			@SuppressWarnings("unchecked")
 			M model = (M) Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 			
-			removeModelFromHeap(model, documentPath);
-			deleteDocument(documentPath);
+			if(model != null) {
+				removeModelFromHeap(model, documentPath);
+				deleteDocument(documentPath);
+			}
+			
 
 			return null;
 		}

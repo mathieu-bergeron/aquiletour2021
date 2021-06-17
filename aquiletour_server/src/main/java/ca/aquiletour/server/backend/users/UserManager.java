@@ -21,7 +21,6 @@ import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
-import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
@@ -244,9 +243,9 @@ public class UserManager {
 		
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
 			@Override
-			public void update(User existingModel) {
+			public void update(User existingModel) throws BackendError {
 				T.call(this);
-				
+
 				existingModel.setFirstname(screenName);
 				existingModel.setLastname("");
 			}

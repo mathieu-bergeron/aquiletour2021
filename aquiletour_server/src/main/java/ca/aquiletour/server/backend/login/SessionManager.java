@@ -99,8 +99,10 @@ public class SessionManager {
 		return user;
 	}
 
-	public static void updateExistingSession(ModelStoreSync modelStore, String authToken) throws BackendError {
+	public static void updateExistingSession(ModelStoreSync modelStore, String authToken, String userId) throws BackendError {
 		T.call(SessionManager.class);
+		
+		User storedUser = UserManager.getUserById(modelStore, userId);
 		
 		updateSession(modelStore, authToken, session -> {
 			
@@ -113,8 +115,9 @@ public class SessionManager {
 				session.setUser(createGuestUser(sessionUser.getAuthToken()));
 
 			} else if(shouldUpdateSessionUser(sessionUser)) {
-				
-				UserManager.updateUserWithStoredUserInfo(modelStore, (User) sessionUser, sessionUser.getId());
+
+				((User) sessionUser).copyPublicInfomation(storedUser);
+
 			}
 		});
 	}
@@ -398,15 +401,14 @@ public class SessionManager {
 
 		T.call(SessionManager.class);
 		
-		modelStore.readModel(User.class, "admin", userId, user -> {
+		User sessionUser = modelStore.extractFromModel(User.class, "admin", userId, User.class, user -> {
+			return user.toSessionUser();
+		});
+
+		SessionManager.updateSession(modelStore, sessionUser.getAuthToken(), session -> {
 			T.call(SessionManager.class);
 
-			SessionManager.updateSession(modelStore, user.getAuthToken(), session -> {
-				T.call(SessionManager.class);
-
-				session.setUser(user.toSessionUser());
-			});
+			session.setUser(sessionUser);
 		});
 	}
-
 }

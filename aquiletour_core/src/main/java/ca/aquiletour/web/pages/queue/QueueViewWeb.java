@@ -57,4 +57,16 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 			}
 		});
 	}
+
+	@Override
+	public void deleteSubView(String appointmentViewId) {
+		T.call(this);
+		
+		HtmlElement subViewElement = getRootElement().find("#" + appointmentViewId).get(0);
+		
+		if(subViewElement != null) {
+
+			subViewElement.deleteForever();
+		}
+	}
 }
