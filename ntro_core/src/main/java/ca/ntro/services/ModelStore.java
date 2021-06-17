@@ -511,17 +511,11 @@ public abstract class ModelStore {
 	public void manageHeapLater() throws BackendError {
 		T.call(this);
 
-		if(localHeap.size() > maxHeapSize()) {
-			removeOldestModelFromHeap();
-		}
-		
-		/*
 		Ntro.threadService().executeLater(new NtroTaskSync() {
-
 			@Override
 			protected void runTask() {
 				T.call(this);
-				
+
 				try {
 					
 					if(localHeap.size() > maxHeapSize()) {
@@ -537,7 +531,7 @@ public abstract class ModelStore {
 			@Override
 			protected void onFailure(Exception e) {
 			}
-		});*/
+		});
 	}
 
 	private void saveModelNow(NtroModel model, DocumentPath documentPath) throws BackendError {
