@@ -11,10 +11,15 @@ import ca.ntro.stores.DocumentPath;
 public class ModelLocks {
 
 	private static Map<DocumentPath, ModelLock> modelLockByPath = null;
+	private static Map<String, DocumentPath> currentPathByThreadId = null;
 	
 	public static void initialize() {
 		if(modelLockByPath == null) {
 			modelLockByPath = Ntro.collections().concurrentMap(new HashMap<>());
+		}
+
+		if(currentPathByThreadId == null) {
+			currentPathByThreadId = Ntro.collections().concurrentMap(new HashMap<>());
 		}
 	}
 
@@ -28,6 +33,7 @@ public class ModelLocks {
 			if(modelLock == null) {
 				modelLock = ModelLock.newLock();
 				modelLockByPath.put(documentPath, modelLock);
+				currentPathByThreadId.put(Ntro.threadService().currentThread().threadId(), documentPath);
 			}
 		}
 		
@@ -38,6 +44,22 @@ public class ModelLocks {
 		T.call(ModelLocks.class);
 
 		O result = null;
+
+		DocumentPath currentPath = currentPathByThreadId.get(Ntro.threadService().currentThread().threadId());
+		
+		if(currentPath != null && !currentPath.equals(documentPath)) {
+
+			Log.warning("[acquireLockAndExecute] trying to get TWO LOCKS: " + currentPath + " and "  + documentPath);
+		}
+
+		/*
+		Log.info("<locks>");
+		for(String threadId : currentPathByThreadId.keySet()) {
+			Log.info(threadId + " " + currentPathByThreadId.get(threadId) );
+		}
+		Log.info(Ntro.threadService().currentThread().threadId() + " is trying for " + documentPath);
+		Log.info("</locks>");
+		*/
 		
 		ModelLock modelLock = getModelLock(documentPath);
 
@@ -50,6 +72,10 @@ public class ModelLocks {
 			//      synchronized (modelLock){...
 			if(isLockStillValid(documentPath, modelLock)) {
 				
+				//Log.info("[ModelLocks] lock AQUIRED " + documentPath);
+				
+				currentPathByThreadId.put(Ntro.threadService().currentThread().threadId(), documentPath);
+
 				result = task.execute();
 				
 			}else {
@@ -58,6 +84,10 @@ public class ModelLocks {
 				result = acquireLockAndExecute(documentPath, task);
 			}
 		}
+
+		currentPathByThreadId.remove(Ntro.threadService().currentThread().threadId());
+
+		//Log.info("[ModelLocks] lock RELEASED " + documentPath);
 		
 		return result;
 	}
@@ -80,14 +110,7 @@ public class ModelLocks {
 	public static void destroyLock(DocumentPath documentPath) throws BackendError {
 		T.call(ModelLocks.class);
 		
-		acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
-			@Override
-			public Void execute() {
-
-				Ntro.collections().removeByKeyEquals(modelLockByPath, documentPath);
-
-				return null;
-			}
-		});
+		Ntro.collections().removeByKeyEquals(modelLockByPath, documentPath);
+		Ntro.collections().removeByKeyEquals(currentPathByThreadId, Ntro.threadService().currentThread().threadId());
 	}
 }

@@ -48,14 +48,6 @@ public class ModelStoreSync {
 		modelStore.deleteModel(modelClass, authToken, documentId);
 	}
 
-	public <M extends NtroModel> void deleteModel(Class<M> modelClass, 
-												  String authToken,
-			                                      Path modelPath) {
-		T.call(this);
-
-		modelStore.deleteModel(modelClass, authToken, modelPath);
-	}
-
 	public <M extends NtroModel> void updateModel(Class<M> modelClass, 
 												  String authToken,
 			                                      Path modelPath, 

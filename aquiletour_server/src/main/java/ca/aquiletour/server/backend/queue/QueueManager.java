@@ -118,9 +118,16 @@ public class QueueManager {
 					@Override
 					public void onAppointementAdded(Appointment appointment) {
 						T.call(user);
-						
-						logNewAppointment(modelStore, queueId, user, timestamp, appointment);
-						updateNumberOfAppointements(modelStore, queueId, appointment);
+
+						try {
+							
+							logNewAppointment(modelStore, queueId, user, timestamp, appointment);
+							updateNumberOfAppointements(modelStore, queueId, appointment);
+
+						} catch (BackendError e) {
+
+							e.printStackTrace();
+						}
 					}
 				});
 			}
@@ -129,60 +136,34 @@ public class QueueManager {
 
 	private static void updateNumberOfAppointements(ModelStoreSync modelStore, 
 			                                        String queueId, 
-			                                        Appointment appointment) {
+			                                        Appointment appointment) throws BackendError {
 		T.call(QueueManager.class);
 		
-		Ntro.threadService().executeLater(new NtroTaskSync() {
-			@Override
-			protected void runTask() {
-				T.call(this);
 
-				try {
+		try {
 
-					QueueListManager.updateNumberOfAppointments(modelStore, queueId, Long.valueOf(appointment.getId()));
+			QueueListManager.updateNumberOfAppointments(modelStore, queueId, Long.valueOf(appointment.getId()));
 
-				} catch (NumberFormatException | BackendError e) {
+		} catch (NumberFormatException e) {
+			
+			throw new BackendError(e.getMessage());
 
-					Log.warning("[updateNumberOfAppointments] error: " + e.getMessage());
-				}
-			}
-
-			@Override
-			protected void onFailure(Exception e) {
-			}
-		});
-		
-		
-
+		} 
 	}
 
 	private static void logNewAppointment(ModelStoreSync modelStore, 
 			                              String queueId, 
 			                              User user, 
 			                              NtroDate timestamp, 
-			                              Appointment appointment) {
+			                              Appointment appointment) throws BackendError {
 		T.call(QueueManager.class);
+		
+		modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
 
-		Ntro.threadService().executeLater(new NtroTaskSync() {
-			@Override
-			protected void runTask() {
-				try {
-					modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
+			queueLog.addAppointement(timestamp, user, appointment);
 
-						queueLog.addAppointement(timestamp, user, appointment);
-
-					});
-
-				} catch (BackendError e) {
-
-					Log.warning("[logNewAppointement] error: " + e.getMessage());
-				}
-			}
-
-			@Override
-			protected void onFailure(Exception e) {
-			}
 		});
+
 	}
 
 	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
