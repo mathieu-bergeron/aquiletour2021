@@ -152,13 +152,6 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 
 		return ifExists;
 	}
-	
-	private boolean ifCollectionExists(DocumentPath documentPath) {
-		T.call(this);
-		
-		return ifCollectionExists(documentPath.getCollection());
-	}
-
 
 	@Override
 	public void saveDocument(DocumentPath documentPath, String jsonString) {
