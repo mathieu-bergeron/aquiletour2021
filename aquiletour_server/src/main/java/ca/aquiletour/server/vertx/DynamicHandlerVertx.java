@@ -260,7 +260,9 @@ public class DynamicHandlerVertx {
 			Ntro.messages().sendQueuedMessages();
 		}
 
-		setSessionCookie(response);
+		if(!path.startsWith(ca.ntro.core.Constants.SOCKET_PREFIX)) {
+			setSessionCookie(response);
+		}
 
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 

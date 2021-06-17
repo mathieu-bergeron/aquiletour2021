@@ -30,9 +30,8 @@ public class Teacher extends User {
 	public boolean actsAsTeacher() {
 		T.call(this);
 		
-		return !studentMode;
+		return !studentMode && !actsAsAdmin();
 	}
-
 
 	public void toggleStudentMode() {
 		T.call(this);

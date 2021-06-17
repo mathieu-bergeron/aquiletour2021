@@ -42,9 +42,9 @@ public class ModelLocks {
 		ModelLock modelLock = getModelLock(documentPath);
 
 		synchronized (modelLock) {
-
-			// XXX: it is very unlikely, but still possible
-			//      for the lock to be destroyed after
+			// XXX: it is possible for the lock
+			//      to be superseded (or destroyed)
+			//      after
 			//      modelLock = getModelLock(...)
 			//      but before
 			//      synchronized (modelLock){...

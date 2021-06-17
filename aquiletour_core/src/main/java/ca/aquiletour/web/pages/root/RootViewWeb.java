@@ -261,19 +261,17 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			if(shouldEnterName(user)) {
 				loginMenuNameContainer.show();
 			}
-			
 
-		}else if(user.actsAsTeacher() && !user.isAdmin()) {
+		}else if(user.isStudent()) {
+
+			loginButton.text(user.displayName());
+			loginMenuUserProfile.show();
+			userNameContainer.hide();
+			toggleStudentModeContainer.hide();
+
+		}else if(user.isTeacher() && !user.actsAsAdmin()) {
 
 			adjustLoginMenuForTeacher(user);
-
-		}else if(user.actsAsTeacher() && user.isAdmin()) {
-
-			adjustLoginMenuForTeacher(user);
-
-			toggleAdminModeContainer.show();
-			toggleAdminModeButton.removeClass("btn-secondary");
-			toggleAdminModeButton.addClass("btn-danger");
 
 		}else if(user.actsAsAdmin()) {
 			
@@ -291,14 +289,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			toggleAdminModeButton.removeClass("btn-danger");
 			toggleAdminModeButton.addClass("btn-secondary");
 
-		}else if(user.isStudent()) {
-
-			loginButton.text(displayName(user));
-			loginMenuUserProfile.show();
-			userNameContainer.hide();
-			toggleStudentModeContainer.hide();
-
 		}
+
 	}
 	
 	private boolean shouldEnterName(User user) {
@@ -310,38 +302,20 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private void adjustLoginMenuForTeacher(User user) {
 		T.call(this);
 
-		String displayName = displayName(user);
+		String displayName = user.displayName();
 		loginMenuUserProfile.show();
 		userNameInput.value(displayName);
 		toggleStudentModeContainer.show();
 		loginButton.text(displayName);
+		
+		if(user.isAdmin()) {
+
+			toggleAdminModeContainer.show();
+			toggleAdminModeButton.removeClass("btn-secondary");
+			toggleAdminModeButton.addClass("btn-danger");
+		}
 	}
 
-	private String displayName(User user) {
-		String displayName = "";
-		
-		if(user.getFirstname() != null 
-				&& !user.getFirstname().isEmpty()) {
-			
-			displayName += user.getFirstname();
-		}
-
-		if(user.getLastname() != null 
-				&& !user.getLastname().isEmpty()) {
-			
-			if(!displayName.isEmpty()) {
-				displayName += " ";
-			}
-
-			displayName += user.getLastname(); 
-		}
-		
-		if(displayName.isEmpty()) {
-			displayName = user.getId();
-		}
-		
-		return displayName;
-	}
 
 
 	private boolean shouldValidateLoginCode(User user) {

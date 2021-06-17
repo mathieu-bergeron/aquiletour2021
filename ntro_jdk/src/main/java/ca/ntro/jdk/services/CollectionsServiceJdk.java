@@ -180,16 +180,18 @@ public class CollectionsServiceJdk extends CollectionsService {
 		T.call(this);
 		
 		Object foundKey = null;
-		
-		synchronized(map) {
-			for(Map.Entry<?, V> entry : map.entrySet()) {
-				if(entry.getKey() == key) {
-					foundKey = key;
-					break;
+
+		if(map.containsKey(key)) {
+			synchronized(map) {
+				for(Map.Entry<?, V> entry : map.entrySet()) {
+					if(entry.getKey() == key) {
+						foundKey = key;
+						break;
+					}
 				}
 			}
 		}
-		
+
 		if(foundKey != null) {
 			map.remove(foundKey);
 		}

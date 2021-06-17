@@ -184,7 +184,7 @@ public class LocalStoreFiles extends ModelStore {
 	protected int maxHeapSize() {
 		T.call(this);
 		
-		// DEV
+		// DEV: provoke cache misses intentionally  to test ModelStore
 		return 3;
 	}
 

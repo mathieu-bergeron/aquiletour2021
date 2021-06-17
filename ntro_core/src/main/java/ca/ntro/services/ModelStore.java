@@ -51,25 +51,23 @@ public abstract class ModelStore {
 
 	public boolean ifModelExists(Class<? extends NtroModel> modelClass, String authToken, String documentId) throws BackendError {
 		T.call(this);
-		
+
 		DocumentPath documentPath = documentPath(modelClass, documentId);
+
+		boolean ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
 		
-		return ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Boolean>() {
-			@Override
-			public Boolean execute() {
+		if(!ifExists) {
 
-				boolean ifExists = false;
-
-				ifExists = Ntro.collections().containsKeyEquals(localHeapByPath, documentPath);
-
-				if(!ifExists) {
+			 ifExists = ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Boolean>() {
+				@Override
+				public Boolean execute() {
 					
-					ifExists = ifModelExistsImpl(documentPath);
+					return ifModelExistsImpl(documentPath);
 				}
-				
-				return ifExists;
-			}
-		});
+			});
+		}
+		
+		return ifExists;
 	}
 
 	public <M extends NtroModel> ModelLoader getLoader(Class<M> modelClass, String authToken, Path modelPath){
@@ -180,36 +178,33 @@ public abstract class ModelStore {
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
 	private class UpdateModelTask<M extends NtroModel> implements ModelLockTask<Void> {
-		private Class<M> modelClass;
-		private String authToken;
-		private String modelId;
+		
+		private DocumentPath documentPath;
+		private M model;
 		private ModelUpdater<M> updater;
 
-		public UpdateModelTask(Class<M> modelClass, String authToken, String modelId, ModelUpdater<M> updater) {
+		public UpdateModelTask(Class<M> modelClass, String authToken, String modelId, ModelUpdater<M> updater) throws BackendError {
 			T.call(this);
 			
-			this.modelClass = modelClass;
-			this.authToken = authToken;
-			this.modelId = modelId;
+			this.documentPath = documentPath(modelClass, modelId);
 			this.updater = updater;
+
+			if(ifModelExists(modelClass, authToken, modelId)) {
+				model = getModel(modelClass, authToken, modelId);
+			}
 		}
 
 		@Override
 		public Void execute() throws BackendError {
 
-			M model = null;
-			if(ifModelExists(modelClass, authToken, modelId)) {
-				model = getModel(modelClass, authToken, modelId);
-			}
-
 			if(model != null) {
 
 				updater.update(model);
-				saveModelNow(model);
+				saveModelNow(model, documentPath);
 
 			}else {
 
-				Log.warning("[updateModel] model not found: " + documentPath(modelClass, modelId));
+				Log.warning("[updateModel] model not found: " + documentPath);
 			}
 
 			return null;
@@ -231,17 +226,20 @@ public abstract class ModelStore {
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
 	private class CreateModelTask<M extends NtroModel> implements ModelLockTask<Void> {
-		private Class<M> modelClass;
-		private String authToken;
-		private String modelId;
+
+		private DocumentPath documentPath;
+		private M model;
 		private ModelInitializer<M> initializer;
 
-		public CreateModelTask(Class<M> modelClass, String authToken, String modelId, ModelInitializer<M> initializer) {
+		public CreateModelTask(Class<M> modelClass, String authToken, String modelId, ModelInitializer<M> initializer) throws BackendError {
 			T.call(this);
 			
-			this.modelClass = modelClass;
-			this.authToken = authToken;
-			this.modelId = modelId;
+			this.documentPath = documentPath(modelClass, modelId);
+
+			if(!ifModelExists(modelClass, authToken, modelId)) {
+				model = getModel(modelClass, authToken, modelId);
+			}
+			
 			this.initializer = initializer;
 		}
 
@@ -249,18 +247,14 @@ public abstract class ModelStore {
 		public Void execute() throws BackendError {
 			T.call(this);
 
-			if(!ifModelExists(modelClass, authToken, modelId)) {
+			if(model != null) {
 
-				M model = getModel(modelClass, authToken, modelId);
-
-				if(model != null) {
-
-					initializer.initialize(model);
-					saveModelNow(model);
-				}
+				initializer.initialize(model);
+				saveModelNow(model, documentPath);
 
 			}else {
-				Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
+
+				Log.warning("[createModel] model already exists: " + documentPath);
 			}
 
 			return null;
@@ -283,33 +277,34 @@ public abstract class ModelStore {
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
 	private class ReadModelTask<M extends NtroModel> implements ModelLockTask<Void> {
-		private Class<M> modelClass;
-		private String authToken;
-		private String modelId;
+		
+		private DocumentPath documentPath;
+		private M model;
 		private ModelReader<M> reader;
 
-		public ReadModelTask(Class<M> modelClass, String authToken, String modelId, ModelReader<M> reader) {
+		public ReadModelTask(Class<M> modelClass, String authToken, String modelId, ModelReader<M> reader) throws BackendError {
 			T.call(this);
 			
-			this.modelClass = modelClass;
-			this.authToken = authToken;
-			this.modelId = modelId;
+			this.documentPath = documentPath(modelClass, modelId);
+
+			if(ifModelExists(modelClass, authToken, modelId)) {
+				model = getModel(modelClass, authToken, modelId);
+			}
+			
 			this.reader = reader;
 		}
 
 		@Override
 		public Void execute() throws BackendError {
 			T.call(this);
-
-			if(ifModelExists(modelClass, authToken, modelId)) {
-
-				M model = getModel(modelClass, authToken, modelId);
-
+			
+			if(model != null) {
+				
 				reader.read(model);
 
 			}else {
 
-				Log.warning("[readModel] model not found: " + documentPath(modelClass, modelId));
+				Log.warning("[readModel] model not found: " + documentPath);
 			}
 
 			return null;
@@ -334,17 +329,20 @@ public abstract class ModelStore {
 
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
 	private class ExtractFromModelTask<M extends NtroModel, R extends Object> implements ModelLockTask<R> {
-		private Class<M> modelClass;
-		private String authToken;
-		private String modelId;
+
+		private DocumentPath documentPath;
+		private M model;
 		private ModelExtractor<M,R> extractor;
 
-		public ExtractFromModelTask(Class<M> modelClass, String authToken, String modelId, ModelExtractor<M,R> extractor) {
+		public ExtractFromModelTask(Class<M> modelClass, String authToken, String modelId, ModelExtractor<M,R> extractor) throws BackendError {
 			T.call(this);
 			
-			this.modelClass = modelClass;
-			this.authToken = authToken;
-			this.modelId = modelId;
+			this.documentPath = documentPath(modelClass, modelId);
+
+			if(ifModelExists(modelClass, authToken, modelId)) {
+				model =  getModel(modelClass, authToken, modelId);
+			}
+
 			this.extractor = extractor;
 		}
 
@@ -352,17 +350,13 @@ public abstract class ModelStore {
 		public R execute() throws BackendError {
 			R result = null;
 
-			if(ifModelExists(modelClass, authToken, modelId)) {
+			if(model != null) {
 
-				M model =  getModel(modelClass, authToken, modelId);
-
-				if(model != null) {
-					result = extractor.extract(model);
-				}
+				result = extractor.extract(model);
 
 			}else {
 
-				Log.warning("model not found: " + documentPath(modelClass, modelId));
+				Log.warning("model not found: " + documentPath);
 			}
 			
 			return result;
@@ -494,19 +488,6 @@ public abstract class ModelStore {
 
 	public abstract void onValueMethodInvoked(ValuePath valuePath, String methodName, List<Object> args);
 
-	public void saveModelNow(NtroModel model) throws BackendError {
-		T.call(this);
-		
-		if(model != null) {
-			DocumentPath documentPath = Ntro.collections().getByKeyExact(localHeap, model);
-
-			if(documentPath != null) {
-				saveModelNow(model, documentPath);
-			}
-
-		}
-	}
-
 	public void manageHeap(DocumentPath documentPath) throws BackendError {
 		T.call(this);
 
@@ -537,13 +518,11 @@ public abstract class ModelStore {
 		T.call(this);
 
 		synchronized (saveHistory) {
-
 			int index = Ntro.collections().indexOfEquals(saveHistory, documentPath);
 			if(index > 0) {
 				saveHistory.remove(index);
 			}
 			saveHistory.add(documentPath);
-
 		}
 
 		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
@@ -560,74 +539,50 @@ public abstract class ModelStore {
 
 	private void removeOldestModelFromHeap() throws BackendError {
 		T.call(this);
+		
+		DocumentPath documentPath;
 
-		DocumentPath documentPath = saveHistory.remove(0);
+		synchronized (saveHistory) {
+			if(saveHistory.size() > 0) {
+				documentPath = saveHistory.remove(0);
+			}else {
+				documentPath = null;
+			}
+		}
 
-		if(documentPath != null) {
-			
-			ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
-				@Override
-				public Void execute() throws BackendError {
-					NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+		NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 
-					if(model != null) {
-						saveCachedModelNow(model, documentPath);
-						removeModelFromHeap(model, documentPath);
-					}
-
-					return null;
-				}
-			});
+		if(documentPath != null && model != null) {
+			saveCachedModelNow(model, documentPath);
+			removeModelFromHeap(model, documentPath);
 		}
 	}
 
 	private void removeModelFromHeap(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
-		
-		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
 
-			@Override
-			public Void execute() throws BackendError {
-				T.call(this);
-				
-				Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
-				Ntro.collections().removeByKeyExact(localHeap, model);
-				
-				ModelLocks.destroyLock(documentPath);
+		Ntro.collections().removeByKeyEquals(localHeapByPath, documentPath);
+		Ntro.collections().removeByKeyExact(localHeap, model);
 
-				return null;
-			}
-			
-		});
+		ModelLocks.destroyLock(documentPath);
 	}
 	
 	protected abstract int maxHeapSize();
 
-	public void delete(NtroModel model) throws BackendError {
+	private void delete(NtroModel model, DocumentPath documentPath) throws BackendError {
 		T.call(this);
 
-		DocumentPath documentPath = Ntro.collections().getByKeyExact(localHeap, model);
-		
-		if(documentPath == null) {
+		removeModelFromHeap(model, documentPath);
 
-			Log.warning("[delete] model not in localHeap: " + model);
+		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
+			@Override
+			public Void execute() {
+			
+				deleteDocument(documentPath);
 
-		}else {
-
-			ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
-				@Override
-				public Void execute() {
-				
-					deleteDocument(documentPath);
-
-					// JSWEET: will the work correctly? (removing by reference)
-					localHeap.remove(model);
-					localHeapByPath.remove(documentPath);
-					
-					return null;
-				}
-			});
-		}
+				return null;
+			}
+		});
 	}
 
 	public <M extends NtroModel> void deleteModel(Class<M> modelClass, 
@@ -643,22 +598,31 @@ public abstract class ModelStore {
 	// JSWEET: compile error (cannot find 'M') when this is an anonymous class
 	private class DeleteModelTask<M extends NtroModel> implements ModelLockTask<Void> {
 		
-		private final DocumentPath documentPath;
+		private DocumentPath documentPath;
+		private final M model;
 
+		@SuppressWarnings("unchecked")
 		public DeleteModelTask(Class<M> modelClass, DocumentPath documentPath) {
 			T.call(this);
 			
 			this.documentPath = documentPath;
+
+			model = (M) Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
 		}
 
 		@Override
 		public Void execute() throws BackendError {
 			T.call(this);
 			
-			@SuppressWarnings("unchecked")
-			M model = (M) Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
-			
-			delete(model);
+			if(model != null) {
+
+				delete(model, documentPath);
+
+			}else {
+				
+				Log.warning("[DeleteModelTask] model not in heap " + documentPath.toString());
+				
+			}
 
 			return null;
 		}
