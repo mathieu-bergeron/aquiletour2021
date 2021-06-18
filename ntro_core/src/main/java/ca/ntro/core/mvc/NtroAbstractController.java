@@ -154,6 +154,11 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		T.call(this);
 
 		ViewLoader viewLoader = ViewLoaders.getViewLoader(viewClass, lang);
+		
+		// TODO: load view from document if possible
+		//       i.e. search for some element w/ id="{viewClass.getSimpleName()}"
+		//
+		//       create a ViewLoaderMemory with the View
 
 		MustNot.beNull(viewLoader);
 		
@@ -349,6 +354,14 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) {
 		T.call(this);
+
+		// TODO:  load from the DOM if possible
+		//        i.e. search for some element w/ id="{viewClass.getSimpleName()}"
+		//
+		//        create a ViewLoaderMemory with the model extracted from the model
+		//
+		// NOTE:  we also need to send a GetModelRequest to register a model observer
+		//        on the server
 
 		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelPath));
 	}

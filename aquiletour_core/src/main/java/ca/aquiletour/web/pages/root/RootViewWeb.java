@@ -45,6 +45,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private long FADE_OUT_LENGTH = 100;
 	private long FADE_INT_LENGTH = 100;
 	private long LOGIN_MENU_MESSAGE_DURATION = 1000*5;
+
+	private HtmlElement logoImage;
+	private HtmlElement logoLoading;
 	
 	private HtmlElement subViewContainer;
 	private NtroViewWeb currentSubView;
@@ -88,6 +91,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 
+		logoImage = getRootElement().find("#logo-image").get(0);
+		logoLoading = getRootElement().find("#logo-loading").get(0);
+
 		subViewContainer = getRootElement().find("#page-container").get(0);
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
@@ -126,6 +132,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
+
+		MustNot.beNull(logoImage);
+		MustNot.beNull(logoLoading);
 
 		MustNot.beNull(subViewContainer);
 		MustNot.beNull(homeLink);
@@ -191,6 +200,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private void adjustForSocketStatus(NtroContext<?, ?> context) {
 		T.call(this);
+
+		logoImage.display(context.isSocketOpen());
+		logoLoading.display(!context.isSocketOpen());
 
 		HtmlElement body = getRootElement().parents("body").get(0);
 		if(body == null) {

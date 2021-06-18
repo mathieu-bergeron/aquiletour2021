@@ -32,6 +32,7 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.FileLoader;
 import ca.ntro.jdk.FileLoaderDev;
@@ -76,6 +77,8 @@ public class ResourceHandlerVertx {
 		HttpServerResponse response = routingContext.response();
 
 		String filePath = request.uri().toString();
+		
+		Log.info("Resource requested: " + filePath);
 		
 		if(filePath.startsWith(resourcesUrlPrefix)) {
 			

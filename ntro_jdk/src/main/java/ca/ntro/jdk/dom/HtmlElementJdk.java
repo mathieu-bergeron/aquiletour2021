@@ -13,6 +13,7 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
