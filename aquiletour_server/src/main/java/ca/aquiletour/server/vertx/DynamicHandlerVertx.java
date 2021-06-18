@@ -533,7 +533,7 @@ public class DynamicHandlerVertx {
 		cookie.setPath("/");
 		cookie.setSecure(true);
 		cookie.setSameSite(CookieSameSite.STRICT);
-		cookie.setMaxAge(1000*60*60*24*30*4); // 4 months
+		cookie.setMaxAge(60*60*24*30*4); // 4 months
 
 		response.addCookie(cookie);
 	}

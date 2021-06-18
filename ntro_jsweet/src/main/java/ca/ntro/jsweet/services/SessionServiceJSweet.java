@@ -37,7 +37,12 @@ public class SessionServiceJSweet extends SessionService {
 		//sessionString = sessionString.replace(" ", "");
 		//sessionString = encodeURI(sessionString);
 		
-		Cookies.set("session", sessionString, null);
+		def.js.Object options = new def.js.Object();
+		options.$set("sameSite", "strict");
+		options.$set("secure", "true");
+		options.$set("max-age", String.valueOf(60*60*24*30*4)); // 4 months
+		
+		Cookies.set("session", sessionString, options);
 	}
 
 }

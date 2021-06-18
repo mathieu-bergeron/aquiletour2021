@@ -53,7 +53,6 @@ public class EarlyInitializationJSweet extends EarlyInitialization {
 
 	@Override
 	protected ConfigService provideConfigService() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ConfigService();
 	}
 }

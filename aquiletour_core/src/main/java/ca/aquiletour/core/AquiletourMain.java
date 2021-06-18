@@ -591,6 +591,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(UserIsActiveMessage.class);
 
+		Ntro.registerSerializableClass(UpdateSocketStatusMessage.class);
+
 	}
 	
 	protected abstract NtroWindow getWindow();

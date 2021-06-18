@@ -54,7 +54,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		sockJS.onmessage = t -> {
 			
 			
-			System.out.println(t.data.toString());
+			Log.info(t.data.toString());
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
 
@@ -70,7 +70,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		
 		sockJS.onopen = t -> {
 				
-			System.out.println("sockJS: open");
+			Log.info("sockJS: open");
 
 			if(reconnectionInterval != null) {
 				window.clearInterval(reconnectionInterval);
@@ -92,7 +92,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 
 		sockJS.onclose = t -> {
 				
-			System.out.println("sockJS: close");
+			Log.info("sockJS: close");
 
 			isOpen = false;
 

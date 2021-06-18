@@ -1,9 +1,6 @@
-@charset "UTF-8";
-
-.link-disabled  {
+.link-disabled {
   color: black;
-  cursor: not-allowed;
-  opacity: 0.5;
+  cursor: wait;
   text-decoration: none;
 }
 
