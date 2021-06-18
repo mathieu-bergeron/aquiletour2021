@@ -131,7 +131,7 @@ public class ResourceHandlerVertx {
 
 		}else {
 
-			response.putHeader("cache-control", "no-store");
+			response.putHeader("cache-control", "no-store, no-cache, max-age=0");
 		}
 		
 		

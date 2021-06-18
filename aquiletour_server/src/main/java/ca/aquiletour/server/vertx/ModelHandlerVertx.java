@@ -96,6 +96,7 @@ public class ModelHandlerVertx {
         // Ntro.backendService().registerThatUserObservesModel(user, documentPath);
 
         response.setStatusCode(HttpStatus.OK_200);
+        response.putHeader("cache-control", "no-cache, no-store, max-age=0");
 
         response.end(Ntro.jsonService().toString(model));
         
