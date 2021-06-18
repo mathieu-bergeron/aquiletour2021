@@ -123,6 +123,18 @@ public class ResourceHandlerVertx {
 
 		response.setStatusCode(HttpServletResponse.SC_OK);
 		
+		if(Ntro.config().isProd()) {
+			
+			int maxAgeSeconds = 60*60*24*2; // 2 days
+
+			response.putHeader("cache-control", "public, max-age=" + maxAgeSeconds);
+
+		}else {
+
+			response.putHeader("cache-control", "no-store");
+		}
+		
+		
 		InputStream fileStream = fileLoader.loadFile(filePath);
 		
 		if(isBinary(filePath)) {

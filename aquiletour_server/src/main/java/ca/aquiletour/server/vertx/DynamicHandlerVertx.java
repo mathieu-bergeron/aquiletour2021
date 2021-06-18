@@ -272,6 +272,7 @@ public class DynamicHandlerVertx {
 
 			response.putHeader("content-type", "text/html; charset=utf-8");
 			response.setStatusCode(Response.SC_OK);
+			response.putHeader("cache-control", "no-store");
 			
 			if(ifJSweet) {
 				window.setupLoadingScreen();

@@ -249,6 +249,7 @@ public class DynamicHandler extends AbstractHandler {
 
 			response.setContentType("text/html; charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
+
 			writeResponse(window, baseRequest, out);
 		}
 	}
