@@ -6,6 +6,8 @@ import ca.ntro.core.mvc.NtroContext;
 
 public interface QueueViewTeacher extends QueueView {
 
+	void identifyQueue(String queueId);
+
 	void displayIfQueueOpen(boolean isOpen);
 	void displayIfQueueOpen(CoursePath coursePath, boolean isOpen);
 	void displayIfQueueOpen(CoursePath coursePath, String groupId, boolean isOpen);

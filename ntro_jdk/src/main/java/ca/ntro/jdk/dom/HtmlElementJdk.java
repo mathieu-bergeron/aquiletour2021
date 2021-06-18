@@ -316,7 +316,7 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public void initializeForms() {
+	public void initializeJs(String viewName) {
 		// XXX: not supported server-side
 	}
 

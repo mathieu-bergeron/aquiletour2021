@@ -1,6 +1,12 @@
 function initializeQueue(viewRootElement, jSweet){
 
+    console.log("=========== initializeQueue");
+
     const appointmentList = viewRootElement.find("#appointment-list");
+
+    const queueIdElement = viewRootElement.find("#queue-id");
+    console.log(queueIdElement);
+    const queueId = queueIdElement.text();
 
     appointmentList.sortable({
         handle:'.handle',
@@ -10,8 +16,6 @@ function initializeQueue(viewRootElement, jSweet){
                 return fullId.replace("appointment-","");
             }
 
-            const queueIdElement = viewRootElement.find("#queue-id");
-            const queueId = queueIdElement.text();
 
             const appointment = $(ui.item);
             const nextAppointment = $(appointment.next());
@@ -25,6 +29,7 @@ function initializeQueue(viewRootElement, jSweet){
 
                 if(jSweet){
 
+                    console.log(queueId);
                     console.log(appointmentId);
                     console.log(nextAppointmentId);
 

@@ -2,12 +2,14 @@ package ca.aquiletour.core.pages.queue.handlers;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.models.NtroModel;
@@ -16,6 +18,7 @@ import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.ModelObserver;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
@@ -28,56 +31,6 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 	@Override
 	protected void handle(QueueModel model, V view, ViewLoader subViewLoader) {
 		T.call(this);
-		
-		/*
-		model.getAppointmentById().removeObservers();
-		model.getAppointmentById().observe(new MapObserver<Appointment>() {
-			
-			@Override
-			public void onEntryAdded(String appointmentId, Appointment appointment) {
-				T.call(this);
-
-				int index = model.appointmentIndexById(appointmentId);
-				
-				String appointmentViewId = appointment.subViewId();
-
-				displayOrUpdateAppointment(model, 
-										   view, 
-										   subViewLoader, 
-										   appointmentViewId,
-										   index, 
-										   appointment);
-			}
-
-			@Override
-			public void onEntryRemoved(String appointmentId, Appointment appointment) {
-				T.call(this);
-
-				String appointmentViewId = appointment.subViewId();
-				
-				view.deleteSubView(appointmentViewId);
-			}
-			
-			@Override
-			public void onClearEntries() {
-				T.call(this);
-
-				view.deleteSubViewsNotInList(new ArrayList<>());
-			}
-			
-			@Override
-			public void onDeleted(Map<String, Appointment> lastValue) {
-			}
-			
-			@Override
-			public void onValue(Map<String, Appointment> value) {
-			}
-			
-			@Override
-			public void onValueChanged(Map<String, Appointment> oldValue, Map<String, Appointment> value) {
-			}
-		});
-		*/
 		
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
@@ -93,25 +46,42 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				
 				QueueModel queueModel = (QueueModel) updatedModel;
 				
-				List<String> appointmentViewIds = new ArrayList<>();
+				List<String> subViewsToShow = new ArrayList<>();
 				
 				queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
 					
 					int index = queueModel.appointmentIndexById(appointmentId);
 					
 					String appointmentViewId = appointment.subViewId();
-					
-					appointmentViewIds.add(appointmentViewId);
+
+					subViewsToShow.add(appointmentViewId);
 					
 					displayOrUpdateAppointment(queueModel, 
-							                   view, 
-							                   subViewLoader, 
-							                   appointmentViewId,
-							                   index, 
-							                   appointment);
+											   view, 
+											   subViewLoader, 
+											   appointmentViewId,
+											   index, 
+											   appointment);
 				});
 
-				view.deleteSubViewsNotInList(appointmentViewIds);
+				view.deleteSubViewsNotInList(subViewsToShow);
+			}
+		});
+		
+		// XXX: hide appointment as soon as user clicks 
+		//      delete appointment when we get confirmation from server
+		Ntro.messages().registerHandler(DeleteAppointmentMessage.class, new MessageHandler<DeleteAppointmentMessage>() {
+
+			@Override
+			public void handle(DeleteAppointmentMessage message) {
+				T.call(this);
+
+				String appointementId = message.getAppointmentId();
+				String subViewId = Appointment.subViewId(appointementId);
+
+				view.hideSubView(subViewId);
+
+				Ntro.backendService().sendMessageToBackend(message);
 			}
 		});
 	}

@@ -133,8 +133,8 @@ public class UserManager {
 
 		}else{
 
-            createStoredUser(modelStore, user);
 			initializeUserModels(modelStore, user);
+            createStoredUser(modelStore, user);
 		}
 	}
 
@@ -154,8 +154,8 @@ public class UserManager {
 		
 		if(user instanceof Admin) {
 			
-			initializeAdminModels(modelStore, user);
 			initializeTeacherModels(modelStore, user);
+			initializeAdminModels(modelStore, user);
 			initializeStudentModels(modelStore, user);
 			
 			storeTeacherId(modelStore, user);
@@ -204,7 +204,7 @@ public class UserManager {
 
 	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
-
+		
 		QueueManager.createQueueForUser(modelStore, user);
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);

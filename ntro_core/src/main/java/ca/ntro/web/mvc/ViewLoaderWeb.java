@@ -126,15 +126,10 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		HtmlElement rootElement = parseHtml(html);
 
 		view.setRootElement(rootElement);
-		
-		initializeJs(Ntro.introspector().getSimpleNameForClass(viewClass), rootElement);
 
 		return view;
 	}
 
-	protected abstract void initializeJs(String viewName, HtmlElement viewRootHtmlElement);
-
 	protected abstract HtmlElement parseHtml(String html);
-
 
 }

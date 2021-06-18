@@ -5,7 +5,6 @@ import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -13,7 +12,7 @@ import ca.ntro.web.dom.HtmlElements;
 
 public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeacher {
 
-	private HtmlElement queueId;
+	private HtmlElement queueIdElement;
 	private HtmlElement queueMenuButton;
 	private HtmlElement queueMenuCoursesContainer;
 	private HtmlElement queueMenuCourseTemplate;
@@ -37,7 +36,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		super.initializeViewWeb(context);
 		T.call(this);
 
-		queueId = this.getRootElement().find("#queue-id").get(0);
+		queueIdElement = this.getRootElement().find("#queue-id").get(0);
 		queueMenuButton = this.getRootElement().find("#queue-menu-button").get(0);
 		queueMenuCoursesContainer = this.getRootElement().find("#queue-menu-courses-container").get(0);
 
@@ -52,7 +51,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuCourseTemplate = this.getRootElement().find(".queue-menu-course-template").get(0);
 		queueMenuGroupTemplate = this.getRootElement().find(".queue-menu-group-template").get(0);
 
-		MustNot.beNull(queueId);
+		MustNot.beNull(queueIdElement);
 		MustNot.beNull(queueMenuButton);
 		MustNot.beNull(queueMenuCoursesContainer);
 		MustNot.beNull(queueMenuCourseTemplate);
@@ -291,5 +290,12 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		T.call(this);
 		
 		timeControlsContainer.setVisibility(shouldShow);
+	}
+
+	@Override
+	public void identifyQueue(String queueId) {
+		T.call(this);
+
+		queueIdElement.text(queueId);
 	}
 }

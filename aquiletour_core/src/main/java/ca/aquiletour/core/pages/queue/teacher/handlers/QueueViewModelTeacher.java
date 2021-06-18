@@ -32,7 +32,9 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 		
 		isQueueOpen = model.isQueueOpen();
 		view.displayIfQueueOpen(isQueueOpen);
-		
+
+		view.identifyQueue(model.getQueueId());
+
 		observeMainSettings(model, model.getMainSettings(), view);
 		observeSettingsByCourseId(model, model.getSettingsByCourseKey(), view);
 	}

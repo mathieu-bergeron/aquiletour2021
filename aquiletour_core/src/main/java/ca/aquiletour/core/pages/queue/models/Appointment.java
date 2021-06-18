@@ -179,10 +179,16 @@ public class Appointment implements NtroModelValue {
 
 	public String subViewId() {
 		T.call(Appointment.class);
+		
+		return subViewId(getId());
+	}
+
+	public static String subViewId(String appointmentId) {
+		T.call(Appointment.class);
 
 		Path path = new Path();
 		path.addName("appointment");
-		path.addName(getId());
+		path.addName(appointmentId);
 
 		return path.toHtmlId();
 	}

@@ -44,18 +44,27 @@ public class QueueManager {
 			                       String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
+		
+		if(!modelStore.ifModelExists(QueueModel.class, "admin", queueId)) {
 
-		modelStore.createModel(QueueModel.class, 
-							   "admin",
-				               queueId, 
-				               new ModelInitializer<QueueModel>() {
-			@Override
-			public void initialize(QueueModel newQueue) {
-				T.call(this);
+			modelStore.createModel(QueueModel.class, 
+								   "admin",
+								   queueId, 
+								   new ModelInitializer<QueueModel>() {
+				@Override
+				public void initialize(QueueModel newQueue) {
+					T.call(this);
+					
+					newQueue.setQueueId(queueId);
+				}
+			});
+			
+		} else {
 
-				newQueue.setQueueId(queueId);
-			}
-		});
+			modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+				queueModel.setQueueId(queueId);
+			});
+		}
 	}
 
 	public static void deleteQueue(ModelStoreSync modelStore,

@@ -21,7 +21,7 @@ public abstract class NtroViewWeb implements NtroView {
 
 		initializeViewWeb(context);
 
-		getRootElement().initializeForms();
+		getRootElement().initializeJs(Ntro.introspector().getSimpleNameForClass(getClass()));
 	}
 
 	public void setRootElement(HtmlElement rootElement) {

@@ -23,6 +23,7 @@ import def.dom.File;
 import def.dom.FileList;
 import def.dom.FileReader;
 import def.dom.HTMLInputElement;
+import def.es6.Globals;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 import def.js.Function;
@@ -97,7 +98,11 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public void initializeForms() {
+	public void initializeJs(String viewName) {
+		T.call(this);
+
+		Globals._ntro_initialize_view(viewName, this);
+
 		installFormAutosubmit(jQueryElement);
 	}
 

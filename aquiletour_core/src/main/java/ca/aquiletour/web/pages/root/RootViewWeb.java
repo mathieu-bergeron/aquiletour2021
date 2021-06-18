@@ -380,8 +380,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			
 			HtmlElement subViewRootElement = existingSubView.getRootElement();
 			
-			subViewRootElement.initializeForms();
-
 			NtroContext<?,?> context = AquiletourMain.createNtroContext();
 
 			subViewWeb.setRootElement(subViewRootElement);

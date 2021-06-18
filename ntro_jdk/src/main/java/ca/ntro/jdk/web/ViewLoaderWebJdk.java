@@ -32,9 +32,4 @@ public class ViewLoaderWebJdk extends ViewLoaderWeb {
 
 		return new HtmlElementJdk(HtmlElementJdk.parseHtml(html));
 	}
-
-	@Override
-	protected void initializeJs(String viewName, HtmlElement viewRootHtmlElement) {
-		// XXX: not supported
-	}
 }
