@@ -1,5 +1,11 @@
 $primary: purple;
 
+.link-disabled {
+    color: black;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
 
 /*cards*/
 .card{

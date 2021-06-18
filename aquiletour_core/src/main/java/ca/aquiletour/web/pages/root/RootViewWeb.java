@@ -179,12 +179,38 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
+		setCursor(context);
+		
 		User user = (User) context.user();
 		
 		addUserIdToValue.appendToAttribute("value", user.getId());
 
 		adjustLoginMenu(user);
 		adjustLinks(user);
+	}
+
+	private void setCursor(NtroContext<?, ?> context) {
+		T.call(this);
+
+		HtmlElement body = getRootElement().parents("body").get(0);
+		if(body == null) {
+			return;
+		}
+
+		if(context.isSocketOpen()) {
+
+			body.css("cursor", "auto");
+			body.find("a").forEach(e -> {
+				e.removeClass("link-disabled");
+			});
+			
+		}else {
+
+			body.css("cursor", "wait");
+			body.find("a").forEach(e -> {
+				e.addClass("link-disabled");
+			});
+		}
 	}
 
 	private void adjustLinks(User user) {

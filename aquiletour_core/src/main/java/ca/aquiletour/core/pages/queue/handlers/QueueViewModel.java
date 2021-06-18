@@ -22,13 +22,14 @@ import ca.ntro.services.Ntro;
 
 public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubViewHandler<QueueModel, V>  {
 	
-	//private ModelObserver currentObserver = null;
-	//private QueueModel currentModel = null;
+	private ModelObserver currentObserver = null;
+	private QueueModel currentModel = null;
 
 	@Override
 	protected void handle(QueueModel model, V view, ViewLoader subViewLoader) {
 		T.call(this);
 		
+		/*
 		model.getAppointmentById().removeObservers();
 		model.getAppointmentById().observe(new MapObserver<Appointment>() {
 			
@@ -76,8 +77,8 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			public void onValueChanged(Map<String, Appointment> oldValue, Map<String, Appointment> value) {
 			}
 		});
+		*/
 		
-		/*
 		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
 		if(currentObserver != null && currentModel != null) {
@@ -113,7 +114,6 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				view.deleteSubViewsNotInList(appointmentViewIds);
 			}
 		});
-		*/
 	}
 
 	private void displayOrUpdateAppointment(QueueModel model, 

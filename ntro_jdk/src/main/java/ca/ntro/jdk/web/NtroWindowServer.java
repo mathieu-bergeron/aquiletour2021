@@ -12,6 +12,7 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.NtroWindowWeb;
 import ca.ntro.web.dom.HtmlDocument;
+import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.jdk.dom.HtmlDocumentJdk;
 
 public class NtroWindowServer extends NtroWindowWeb implements Cloneable {
@@ -63,5 +64,16 @@ public class NtroWindowServer extends NtroWindowWeb implements Cloneable {
 	@Override
 	public NtroWindowServer clone() {
 		return new NtroWindowServer(document.clone());
+	}
+
+	public void setUpLoadingScreen() {
+		T.call(this);
+		
+		HtmlElement body = document.select("body").get(0);
+		body.css("cursor", "wait");
+		
+		body.find("a").forEach(e -> {
+			e.addClass("link-disabled");
+		});
 	}
 }

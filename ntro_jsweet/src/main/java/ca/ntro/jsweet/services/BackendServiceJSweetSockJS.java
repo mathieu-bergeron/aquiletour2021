@@ -16,7 +16,7 @@ import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
 import def.sockjs.Globals;
 
-
+import static jsweet.util.Lang.function;
 import static def.dom.Globals.window;
 
 public class BackendServiceJSweetSockJS extends BackendService {
@@ -24,6 +24,9 @@ public class BackendServiceJSweetSockJS extends BackendService {
 	// FIXME: would be cleaner wait for
 	//        WebSocket to be open using an initialization task
 	private boolean isOpen = false;
+	
+	private Double reconnectionInterval = null;
+	private int reconnectionCooldownSeconds = 5;
 	
 	private SockJS sockJS;
 	
@@ -68,6 +71,11 @@ public class BackendServiceJSweetSockJS extends BackendService {
 				
 			System.out.println("sockJS: open");
 
+			if(reconnectionInterval != null) {
+				window.clearInterval(reconnectionInterval);
+				reconnectionInterval = null;
+			}
+
 			isOpen = true;
 			
 			registerWebSocket(authToken);
@@ -89,6 +97,13 @@ public class BackendServiceJSweetSockJS extends BackendService {
 			updateSocketStatusMessage.setSocketOpen(isOpen);
 			Ntro.messages().send(updateSocketStatusMessage);
 			
+			reconnectionInterval =  window.setInterval(function(() -> {
+				System.out.println("sockJS: trying to reconnect...");
+
+				connectWebSocket(connectionString);
+
+			}), reconnectionCooldownSeconds * 1000, new Object());
+
 			return null;
 		};
 	}

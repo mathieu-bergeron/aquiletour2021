@@ -260,7 +260,7 @@ public class DynamicHandlerVertx {
 			Ntro.messages().sendQueuedMessages();
 		}
 
-		if(!path.startsWith(ca.ntro.core.Constants.SOCKET_PREFIX)) {
+		if(!path.startsWith(ca.ntro.core.Constants.SOCKET_URL_SEGMENT)) {
 			setSessionCookie(response);
 		}
 
@@ -272,6 +272,11 @@ public class DynamicHandlerVertx {
 
 			response.putHeader("content-type", "text/html; charset=utf-8");
 			response.setStatusCode(Response.SC_OK);
+			
+			if(ifJSweet) {
+				window.setUpLoadingScreen();
+			}
+
 			writeResponse(window, response);
 		}
 	}
@@ -526,6 +531,9 @@ public class DynamicHandlerVertx {
 		
 		Cookie cookie = Cookie.cookie(name, urlEncodedString);
 		cookie.setPath("/");
+		cookie.setSecure(true);
+		cookie.setSameSite(CookieSameSite.STRICT);
+		cookie.setMaxAge(1000*60*60*24*30*4); // 4 months
 
 		response.addCookie(cookie);
 	}

@@ -24,8 +24,10 @@ public class LoginController extends NtroController<RootController> {
 
 		LoginView view = (LoginView) getView();
 		
-		view.hideLoginMessage();
-		view.selectLoginStep(context);
+		if(view != null) {
+			view.hideLoginMessage();
+			view.selectLoginStep(context);
+		}
 	}
 
 
