@@ -319,4 +319,12 @@ public class HtmlElementJdk extends HtmlElement {
 	public void initializeForms() {
 		// XXX: not supported server-side
 	}
+
+	@Override
+	public HtmlElements parents(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJdk(jsoupElement.parents().select(cssQuery));
+	}
+
 }

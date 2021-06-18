@@ -23,6 +23,7 @@ public abstract class HtmlElement {
 
 	public abstract HtmlElements children(String cssQuery);
 	public abstract HtmlElements find(String cssQuery);
+	public abstract HtmlElements parents(String cssQuery);
 
 	public abstract String id();
 

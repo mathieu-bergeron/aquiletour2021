@@ -11,6 +11,7 @@ import ca.ntro.jsweet.JSweetGlobals.SockJS;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
+import ca.ntro.messages.ntro_messages.UpdateSocketStatusMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.Ntro;
 import def.sockjs.Globals;
@@ -70,6 +71,23 @@ public class BackendServiceJSweetSockJS extends BackendService {
 			isOpen = true;
 			
 			registerWebSocket(authToken);
+			
+			UpdateSocketStatusMessage updateSocketStatusMessage = Ntro.messages().create(UpdateSocketStatusMessage.class);
+			updateSocketStatusMessage.setSocketOpen(isOpen);
+			Ntro.messages().send(updateSocketStatusMessage);
+			
+			return null;
+		};
+
+		sockJS.onclose = t -> {
+				
+			System.out.println("sockJS: close");
+
+			isOpen = false;
+
+			UpdateSocketStatusMessage updateSocketStatusMessage = Ntro.messages().create(UpdateSocketStatusMessage.class);
+			updateSocketStatusMessage.setSocketOpen(isOpen);
+			Ntro.messages().send(updateSocketStatusMessage);
 			
 			return null;
 		};

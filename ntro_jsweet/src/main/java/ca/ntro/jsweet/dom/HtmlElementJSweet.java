@@ -449,4 +449,11 @@ public class HtmlElementJSweet extends HtmlElement {
 		return new HtmlElementJSweet(jQueryElement.clone(false));
 	}
 
+	@Override
+	public HtmlElements parents(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJSweet(jQueryElement.parent(cssQuery));
+	}
+
 }

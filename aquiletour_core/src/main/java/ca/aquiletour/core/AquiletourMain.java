@@ -203,23 +203,35 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.messages.ntro_messages.UpdateSocketStatusMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 import ca.ntro.users.NtroSession;
 
 public abstract class AquiletourMain extends NtroTaskSync {
+	
+	private static boolean isSocketOpen = false;
+	
+	public static void setIsSocketOpen(boolean isSocketOpen) {
+		AquiletourMain.isSocketOpen = isSocketOpen;
+	}
 
 	public static NtroContext<User, SessionData> createNtroContext() {
 		T.call(AquiletourMain.class);
 
 		NtroContext<User, SessionData> context = new NtroContext<>();
+
+		context.updateIsSocketOpen(isSocketOpen);
 		context.registerLang(Constants.LANG); // TODO
+
 		context.registerUser((User) Ntro.currentUser());
+
 		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
 			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
 		}else {
 			context.registerSessionData(new SessionData());
 		}
+		
 		return context;
 	}
 	
@@ -271,10 +283,24 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.backendService().handleMessageFromBackend(NtroUpdateSessionMessage.class, new MessageHandler<NtroUpdateSessionMessage>() {
 			@Override
 			public void handle(NtroUpdateSessionMessage message) {
+				T.call(this);
+
 				NtroSession session = message.getSession();
 				Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
 				
 				rootController.changeContext(AquiletourMain.createNtroContext());
+			}
+		});
+
+		Ntro.messages().registerHandler(UpdateSocketStatusMessage.class, new MessageHandler<UpdateSocketStatusMessage>() {
+			@Override
+			public void handle(UpdateSocketStatusMessage message) {
+				T.call(this);
+				
+				AquiletourMain.setIsSocketOpen(message.getIsSocketOpen());
+				NtroContext<?,?> context = AquiletourMain.createNtroContext();
+				
+				rootController.changeContext(context);
 			}
 		});
 		

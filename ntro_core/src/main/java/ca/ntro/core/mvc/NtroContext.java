@@ -5,6 +5,7 @@ import ca.ntro.users.NtroUser;
 
 public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	
+	private boolean isSocketOpen = false;
 	private String lang;
 	private NtroSessionData sessionData;
 
@@ -13,6 +14,15 @@ public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	//private String authToken;
 
 	private NtroUser user;
+	
+	
+	public boolean isSocketOpen() {
+		return isSocketOpen;
+	}
+	
+	public void updateIsSocketOpen(boolean isSocketOpen) {
+		this.isSocketOpen = isSocketOpen;
+	}
 	
 	public String lang() {
 		return lang;

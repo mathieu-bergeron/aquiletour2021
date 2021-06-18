@@ -295,6 +295,7 @@ public class DynamicHandlerVertx {
 			                           Map<String, String[]> parameters) {
 
 		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
+		context.updateIsSocketOpen(true);
 		
 		try {
 
@@ -372,6 +373,7 @@ public class DynamicHandlerVertx {
 		//handleRedirections(baseRequest, response, path);
 
 		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
+		context.updateIsSocketOpen(true);
 
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
