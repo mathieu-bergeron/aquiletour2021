@@ -69,29 +69,39 @@ public class RootController extends NtroRootController {
 		addWindowViewHandler(new RootViewHandler());
 
 		addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
+		
+		/*
 		addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
 		addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
 		addSubController(CourseListControllerTeacher.class, Constants.COURSE_LIST_URL_SEGMENT);
+		*/
 
 		addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
+		
+		/*
 		addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
 		addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
 		addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
+		*/
 
 		addSubController(QueueListController.class, Constants.QUEUE_LIST_URL_SEGMENT);
 	
+		/*
 		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);
+		*/
 
+		/*
 		addSubController(CommitListController.class, Constants.GIT_COMMIT_LIST_URL_SEGMENT);
-		
 		addSubController(LateStudentsController.class, Constants.GIT_LATE_STUDENTS_URL_SEGMENT);
 		addSubController(StudentSummariesController.class, Constants.GIT_STUDENT_SUMMARIES_URL_SEGMENT);
+		*/
 
+		/*
 		addSubController(SemesterListControllerAdmin.class, Constants.SEMESTER_LIST_URL_SEGMENT);
 		addSubController(SemesterListControllerTeacher.class, Constants.SEMESTER_LIST_URL_SEGMENT);
-
 		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
+		*/
 		
 		addViewMessageHandler(NtroErrorMessage.class, new NtroErrorHandler());
 

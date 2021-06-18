@@ -179,7 +179,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
-		setCursor(context);
+		adjustForSocketStatus(context);
 		
 		User user = (User) context.user();
 		
@@ -189,7 +189,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		adjustLinks(user);
 	}
 
-	private void setCursor(NtroContext<?, ?> context) {
+	private void adjustForSocketStatus(NtroContext<?, ?> context) {
 		T.call(this);
 
 		HtmlElement body = getRootElement().parents("body").get(0);
@@ -202,6 +202,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			body.css("cursor", "auto");
 			body.find("a").forEach(e -> {
 				e.removeClass("link-disabled");
+				e.removeClass("disabled");
+				e.css("cursor", "pointer");
+			});
+			body.find("button").forEach(e -> {
+				e.removeClass("disabled");
+				e.css("cursor", "pointer");
+			});
+			body.find("input").forEach(e -> {
+				e.removeClass("disabled");
+				e.css("cursor", "pointer");
 			});
 			
 		}else {
@@ -209,6 +219,16 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			body.css("cursor", "wait");
 			body.find("a").forEach(e -> {
 				e.addClass("link-disabled");
+				e.addClass("disabled");
+				e.css("cursor", "wait");
+			});
+			body.find("button").forEach(e -> {
+				e.addClass("disabled");
+				e.css("cursor", "wait");
+			});
+			body.find("input").forEach(e -> {
+				e.addClass("disabled");
+				e.css("cursor", "wait");
 			});
 		}
 	}

@@ -10,6 +10,7 @@ import ca.ntro.core.system.trace.__T;
 import ca.ntro.jsweet.JSweetGlobals.SockJS;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.messages.ntro_messages.UpdateSocketStatusMessage;
 import ca.ntro.services.BackendService;
@@ -80,6 +81,8 @@ public class BackendServiceJSweetSockJS extends BackendService {
 			
 			registerWebSocket(authToken);
 			
+			// FIXME: there is no garantee that the handler is there
+			//        Socket connection should be a InitializationTask
 			UpdateSocketStatusMessage updateSocketStatusMessage = Ntro.messages().create(UpdateSocketStatusMessage.class);
 			updateSocketStatusMessage.setSocketOpen(isOpen);
 			Ntro.messages().send(updateSocketStatusMessage);
@@ -96,13 +99,25 @@ public class BackendServiceJSweetSockJS extends BackendService {
 			UpdateSocketStatusMessage updateSocketStatusMessage = Ntro.messages().create(UpdateSocketStatusMessage.class);
 			updateSocketStatusMessage.setSocketOpen(isOpen);
 			Ntro.messages().send(updateSocketStatusMessage);
-			
+
+			// XXX: Firefox does not stop Javascript thread right away on reload
+			window.setTimeout(function(() -> {
+
+				NtroErrorMessage ntroErrorMessage = Ntro.messages().create(NtroErrorMessage.class);
+				ntroErrorMessage.setMessage("Connexion perdue. SVP rafraîchir la page pour réessayer.");
+				Ntro.messages().send(ntroErrorMessage);
+				
+			}), 500, new Object());
+
+
+			/*
 			reconnectionInterval =  window.setInterval(function(() -> {
 				System.out.println("sockJS: trying to reconnect...");
 
 				connectWebSocket(connectionString);
 
 			}), reconnectionCooldownSeconds * 1000, new Object());
+			*/
 
 			return null;
 		};

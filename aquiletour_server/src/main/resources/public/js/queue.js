@@ -5,8 +5,8 @@ function initializeQueue(viewRootElement, jSweet){
     const appointmentList = viewRootElement.find("#appointment-list");
 
     const queueIdElement = viewRootElement.find("#queue-id");
-    console.log(queueIdElement);
     const queueId = queueIdElement.text();
+    console.log(queueId);
 
     appointmentList.sortable({
         handle:'.handle',

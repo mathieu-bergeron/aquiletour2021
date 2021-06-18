@@ -104,6 +104,27 @@ public class HtmlElementJSweet extends HtmlElement {
 		Globals._ntro_initialize_view(viewName, this);
 
 		installFormAutosubmit(jQueryElement);
+		installLinksClickEvents(jQueryElement);
+	}
+
+	private void installLinksClickEvents(JQuery rootElement) {
+		T.call(this);
+
+		JQuery anchors = rootElement.find("a");
+		anchors.each(new BiFunction<Integer, Element, Object>() {
+
+			@Override
+			public Object apply(Integer t, Element a) {
+				
+				HtmlElementJSweet anchor = new HtmlElementJSweet($(a));
+				
+				String href = anchor.getAttribute("href");
+
+				installHrefClickEvent(anchor, href);
+
+				return null;
+			}
+		});
 	}
 
 	private void installFormAutosubmit(JQuery rootElement) {
@@ -237,27 +258,33 @@ public class HtmlElementJSweet extends HtmlElement {
 		setAttributeNoSideEffect(name, value);
 		
 		if(name.equals("href")) {
-			removeListeners();
-			addEventListener("click", new HtmlEventListener() {
-				@Override
-				public void onEvent(HtmlEvent e) {
-					T.call(this);
-					
-					e.preventDefault();
-					
-					String fullHref = value;
-					
-					if(value.isEmpty() || value.startsWith("?") || value.startsWith("#")) {
-						
-						fullHref = window.location.pathname + value;
-					}
-
-					history.pushState(null, jQueryElement.text(), fullHref);
-
-					Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
-				}
-			});
+			installHrefClickEvent(this, value);
 		}
+	}
+
+	private void installHrefClickEvent(HtmlElement anchor, String href) {
+		T.call(this);
+
+		anchor.removeListeners();
+		anchor.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent(HtmlEvent e) {
+				T.call(this);
+				
+				e.preventDefault();
+				
+				String fullHref = href;
+				
+				if(href.isEmpty() || href.startsWith("?") || href.startsWith("#")) {
+					
+					fullHref = window.location.pathname + href;
+				}
+
+				history.pushState(null, jQueryElement.text(), fullHref);
+
+				Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
+			}
+		});
 	}
 
 	@Override

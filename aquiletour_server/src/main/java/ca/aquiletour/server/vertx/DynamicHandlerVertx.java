@@ -274,7 +274,7 @@ public class DynamicHandlerVertx {
 			response.setStatusCode(Response.SC_OK);
 			
 			if(ifJSweet) {
-				window.setUpLoadingScreen();
+				window.setupLoadingScreen();
 			}
 
 			writeResponse(window, response);

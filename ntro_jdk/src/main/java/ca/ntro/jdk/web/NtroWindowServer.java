@@ -66,7 +66,7 @@ public class NtroWindowServer extends NtroWindowWeb implements Cloneable {
 		return new NtroWindowServer(document.clone());
 	}
 
-	public void setUpLoadingScreen() {
+	public void setupLoadingScreen() {
 		T.call(this);
 		
 		HtmlElement body = document.select("body").get(0);
@@ -74,6 +74,18 @@ public class NtroWindowServer extends NtroWindowWeb implements Cloneable {
 		
 		body.find("a").forEach(e -> {
 			e.addClass("link-disabled");
+			e.addClass("disabled");
+			e.css("cursor", "wait");
+		});
+
+		body.find("button").forEach(e -> {
+			e.addClass("disabled");
+			e.css("cursor", "wait");
+		});
+
+		body.find("input").forEach(e -> {
+			e.addClass("disabled");
+			e.css("cursor", "wait");
 		});
 	}
 }
