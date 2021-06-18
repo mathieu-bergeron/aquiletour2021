@@ -1,3 +1,11 @@
+function initializeQueueTeacher(viewRootElement, jSweet){
+
+    /*
+    const queueMenuButton = viewRootElement.find("#queue-menu-button");
+    queueMenuButton.dropdown();
+    */
+}
+
 function initializeQueue(viewRootElement, jSweet){
 
     const appointmentList = viewRootElement.find("#appointment-list");
