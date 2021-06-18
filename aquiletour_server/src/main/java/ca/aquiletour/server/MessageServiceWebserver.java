@@ -25,7 +25,7 @@ public class MessageServiceWebserver extends MessageServiceJdk {
 
 		}else {
 
-			System.out.println("saving message " + message.getClass().getSimpleName());
+			Log.info("saving message " + message.getClass().getSimpleName());
 			messageQueue.add(message);
 		}
 	}
@@ -48,7 +48,7 @@ public class MessageServiceWebserver extends MessageServiceJdk {
 
 			}else {
 				
-				System.out.println("sending message to WebSocket " + message.getClass().getSimpleName());
+				Log.info("sending message to WebSocket " + message.getClass().getSimpleName());
 				
 				try {
 

@@ -62,7 +62,7 @@ public class RegisteredSocketsSockJS {
 		
 		userIdByToken.put(authToken, user.getId());
 		
-		System.out.println("registered user socket for " + user.getId() + " " + authToken);
+		Log.info("registered user socket for " + user.getId() + " " + authToken);
 	}
 
 	private static void registerSocket(String authToken, SockJSSocket socket) {
@@ -119,7 +119,7 @@ public class RegisteredSocketsSockJS {
 		}
 
 		if(removed) {
-			System.out.println("deregistered socket for " + authToken);
+			Log.info("deregistered socket for " + authToken);
 		}
 
 		if(lastAuthTokenSocket) {
@@ -236,8 +236,8 @@ public class RegisteredSocketsSockJS {
 		if(sockets != null) {
 			synchronized (sockets) {
 				for(SockJSSocket socket : sockets) {
-					System.out.println("sendMessage to " + authToken);
-					System.out.println(Ntro.jsonService().toString(message));
+					Log.info("sendMessage to " + authToken);
+					Log.info(Ntro.jsonService().toString(message));
 					socket.write(Ntro.jsonService().toString(message));
 				}
 			}

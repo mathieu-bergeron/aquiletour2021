@@ -199,6 +199,7 @@ import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterList;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
@@ -596,7 +597,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 	@Override
 	protected void onFailure(Exception e) {
-		System.err.println("[FATAL] Initialization error");
+		Log.error("[FATAL] Initialization error");
 		e.printStackTrace(System.err);
 	}
 }

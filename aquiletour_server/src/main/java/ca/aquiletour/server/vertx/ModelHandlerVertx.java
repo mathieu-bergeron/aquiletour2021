@@ -107,9 +107,12 @@ public class ModelHandlerVertx {
 			                           NtroGetModelMessage getModelNtroMessage) {
 
 		T.call(ModelHandlerVertx.class);
+		
 
 		DocumentPath documentPath = getModelNtroMessage.getDocumentPath();
 		NtroUser user = getModelNtroMessage.getUser();
+
+		Log.info("Model requested: " + documentPath.toString());
 
 		Class<? extends NtroModel> modelClass = (Class<? extends NtroModel>) Ntro.serializableClass(documentPath.getCollection());
 		

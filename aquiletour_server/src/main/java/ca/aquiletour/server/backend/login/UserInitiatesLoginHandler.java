@@ -13,6 +13,7 @@ import ca.aquiletour.server.email.SendEmail;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.random.SecureRandomString;
@@ -47,8 +48,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		sessionUser = registerStudentOrTeacherGuest(modelStore, authToken, userId);
 
 		Ntro.currentSession().setUser(sessionUser);
-		
-		T.values(authToken);
 		
 		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 		updateSessionMessage.setSession(Ntro.currentSession());
@@ -121,7 +120,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			protected void runTask() {
 				T.call(this);
 
-				T.values(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
+				Log.info("CODE: " + loginCode);
 				SendEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
 			}
 

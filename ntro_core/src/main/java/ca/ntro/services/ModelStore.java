@@ -445,15 +445,15 @@ public abstract class ModelStore {
 		if(valuePath == null) return;
 
 		if(args.size() == 0) {
-			System.out.println("invokeValueMethod: " + valuePath + " " + methodName);
+			Log.info("invokeValueMethod: " + valuePath + " " + methodName);
 		}else if(args.size() == 1){
-			System.out.println("invokeValueMethod: " + valuePath + " " + methodName + " " + args.get(0));
+			Log.info("invokeValueMethod: " + valuePath + " " + methodName + " " + args.get(0));
 		}else if(args.size() == 2){
-			System.out.println("invokeValueMethod: " + valuePath + " " + methodName
+			Log.info("invokeValueMethod: " + valuePath + " " + methodName
 														+ " " + args.get(0) 
 														+ " " + args.get(1));
 		}else {
-			System.out.println("invokeValueMethod: " + valuePath + " " + methodName
+			Log.info("invokeValueMethod: " + valuePath + " " + methodName
 														+ " " + args.get(0) 
 														+ " " + args.get(1) 
 														+ " " + args.get(2));
@@ -698,7 +698,7 @@ public abstract class ModelStore {
 		
 		if(observers != null) {
 			boolean removed = observers.remove(observer);
-			System.out.println("[removeObserver] " + removed);
+			Log.info("[removeObserver] " + removed);
 		}
 	}
 

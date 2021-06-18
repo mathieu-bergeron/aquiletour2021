@@ -111,9 +111,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 			@Override
 			public void onEntryAdded(String taskKey, CompletionByAtomicTaskId completionByAtomicTaskId) {
 				T.call(this);
-				
-				T.values(currentTask().getPath().toKey(), taskKey);
-				
+
 				if(currentTask().getPath().toKey().equals(taskKey)
 						&& currentTask().status(studentCompletionsByTaskId).isTodo()) {
 					

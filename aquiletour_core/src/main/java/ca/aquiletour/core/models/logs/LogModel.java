@@ -44,8 +44,6 @@ public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> imp
 		
 		getLogItems().forEachItem((index, logItem) -> {
 			
-			T.values(logItem.getClass().getSimpleName());
-			
 			logItem.writeCsvLine(separator, builder, longuestTaskPath);
 
 			builder.append(Ntro.lineSeparator());

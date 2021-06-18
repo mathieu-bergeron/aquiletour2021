@@ -271,7 +271,7 @@ public class AquiletourBackendRequestHandler {
 			
 			String duplicateCourseId = parameters.get("duplicateCourseId")[0];
 			
-			System.out.println("TODO: " + duplicateCourseId);
+			Log.warning("TODO: " + duplicateCourseId);
 
 
 		} else if(parameters.containsKey("taskId")) {

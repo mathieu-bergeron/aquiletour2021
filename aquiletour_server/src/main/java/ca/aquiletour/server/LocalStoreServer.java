@@ -37,7 +37,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 		JsonLoader jsonLoader = null;
 		
 		if(documentPath.getCollection().equals(Ntro.introspector().getSimpleNameForClass(CommitListModel.class))) {
-			System.out.println("[LocalStoreServer] special case for : " + documentPath.getCollection());
+			Log.info("[LocalStoreServer] special case for : " + documentPath.getCollection());
 			
 			GetCommitsForPath getCommitsForPath = GetCommitsForPath.fromDocumentPath(documentPath);
 			jsonLoader = jsonLoaderFromRequest(Constants.GIT_API_URL, getCommitsForPath);
@@ -65,7 +65,7 @@ public class LocalStoreServer extends LocalStoreFiles {
 		T.call(this);
 		
 		String messageString = Ntro.jsonService().toString(message);
-		System.out.println(messageString);
+		Log.info(messageString);
 		byte[] messageBytes = messageString.getBytes(StandardCharsets.UTF_8);
 		int messageLength = messageBytes.length;
 		

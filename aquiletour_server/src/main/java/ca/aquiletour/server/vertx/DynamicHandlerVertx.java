@@ -209,9 +209,9 @@ public class DynamicHandlerVertx {
 
 		T.call(DynamicHandlerVertx.class);
 		
-		System.out.println("");
-		System.out.println("");
-		System.out.println("Request for: " + path.toRawPath());
+		Log.info("");
+		Log.info("");
+		Log.info("Request for: " + path.toRawPath());
 		
 		Map<String, String[]> parameters = new HashMap<>();
 		MultiMap names = request.params();
@@ -232,7 +232,7 @@ public class DynamicHandlerVertx {
 		
 		for(Map.Entry<String, String[]> entry : parameters.entrySet()) {
 			String paramName = entry.getKey();
-			System.out.println(paramName + " " + entry.getValue()[0]);
+			Log.info(paramName + " " + entry.getValue()[0]);
 		}
 
 		sendSessionMessagesAccordingToCookies(request);
