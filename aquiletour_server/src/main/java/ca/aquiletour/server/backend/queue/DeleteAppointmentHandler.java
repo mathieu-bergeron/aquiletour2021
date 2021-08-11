@@ -1,6 +1,7 @@
 package ca.aquiletour.server.backend.queue;
 
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
@@ -22,5 +23,6 @@ public class DeleteAppointmentHandler extends BackendMessageHandler<DeleteAppoin
 	public void handleLater(ModelStoreSync modelStore, DeleteAppointmentMessage message) throws BackendError {
 		T.call(this);
 
+		QueueListManager.updateLastActivity(modelStore, message.getCourseId());
 	}
 }

@@ -1,7 +1,8 @@
 # Débogages mineur
 
-1. Dernière activité pour Prof Disponibles
 1. Ajout d'événements dans le log
+1. Fermer automatiquement la file quand la session du prof est échue
+1. Un peu partout: validation des droits d'accès
 1. Un peu partout: ajout de messages d'erreurs (p.ex. si le code n'est pas valide)
 
 # Faire fonctionner JSweet

@@ -1,6 +1,7 @@
 package ca.aquiletour.server.backend.queue;
 
 import ca.aquiletour.core.messages.queue.UpdateQueueInfoMessage;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
@@ -23,7 +24,8 @@ public class UpdateQueueInfoHandler extends BackendMessageHandler<UpdateQueueInf
 	@Override
 	public void handleLater(ModelStoreSync modelStore, UpdateQueueInfoMessage message) throws BackendError {
 		T.call(this);
-		
+
+		QueueListManager.updateLastActivity(modelStore, message.getCourseId());
 	}
 
 }
