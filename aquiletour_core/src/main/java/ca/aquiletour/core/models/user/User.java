@@ -263,5 +263,9 @@ public class User extends NtroUser {
 		return false;
 	}
 
-
+	public boolean hasName() {
+		T.call(this);
+		
+		return getHasName();
+	}
 }
