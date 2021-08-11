@@ -1,7 +1,8 @@
 # Débogages mineur
 
 1. Ajout d'événements dans le log
-1. Fermer automatiquement la file quand la session du prof est échue (profs disponibles)
+1. Fermer automatiquement la file quand la session du prof est échue (profs non-disponible)
+    * fonctionalité: fermer automatiquement à XX heures (??)
 1. Un peu partout: validation des droits d'accès
 1. Un peu partout: ajout de messages d'erreurs (p.ex. si le code n'est pas valide)
 1. Apparence des billets
