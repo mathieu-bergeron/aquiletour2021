@@ -78,8 +78,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement showPasswordMenuLink;
 	private HtmlElement toggleStudentModeButton;
 	private HtmlElement toggleStudentModeContainer;
+
+	/*
 	private HtmlElement toggleAdminModeButton;
 	private HtmlElement toggleAdminModeContainer;
+	*/
 	
 	private HtmlElements addDelayedMessagesToValue;
 	private HtmlElements addUserIdToValue;
@@ -121,8 +124,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		toggleStudentModeContainer = getRootElement().find("#toggle-student-mode-container").get(0);
 		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
 
+		/*
 		toggleAdminModeContainer = getRootElement().find("#toggle-admin-mode-container").get(0);
 		toggleAdminModeButton = getRootElement().find("#toggle-admin-mode-button").get(0);
+		 */
 
 		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
 		addUserIdToValue = getRootElement().find(".add-user-id-to-value");
@@ -153,8 +158,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuUserProfile);
 		MustNot.beNull(toggleStudentModeContainer);
 		MustNot.beNull(toggleStudentModeButton);
+		/*
 		MustNot.beNull(toggleAdminModeContainer);
 		MustNot.beNull(toggleAdminModeButton);
+		*/
 		MustNot.beNull(userNameContainer);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
@@ -294,7 +301,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuAddPassword.hide();
 		loginMenuUserProfile.hide();
 		loginMenuNameContainer.hide();
-		toggleAdminModeContainer.hide();
+		//toggleAdminModeContainer.hide();
 		toggleStudentModeContainer.hide();
 
 		loginButton.removeClass("btn-danger");
@@ -343,10 +350,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginButton.text("Admin");
 			loginButton.removeClass("btn-secondary");
 			loginButton.addClass("btn-danger");
-			toggleAdminModeContainer.show();
+			//toggleAdminModeContainer.show();
+			/*
 			toggleAdminModeButton.text("Quitter le mode admin");
 			toggleAdminModeButton.removeClass("btn-danger");
 			toggleAdminModeButton.addClass("btn-secondary");
+			*/
 
 		}
 
@@ -369,9 +378,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		
 		if(user.isAdmin()) {
 
+			/*
 			toggleAdminModeContainer.show();
 			toggleAdminModeButton.removeClass("btn-secondary");
 			toggleAdminModeButton.addClass("btn-danger");
+			*/
 		}
 	}
 

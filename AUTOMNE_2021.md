@@ -24,3 +24,4 @@
 1. Pour diminuer la quantité de communication
     * Mettre en file les messages qui sortent lors d'un BackendMessageHandler
     * Envoyer tous les messages d'un coup à la fin du BackendMessageHandler
+1. Revue de code: encore plus de ménage??
