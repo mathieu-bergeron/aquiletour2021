@@ -532,7 +532,7 @@ public class DynamicHandlerVertx {
 		
 		Cookie cookie = Cookie.cookie(name, urlEncodedString);
 		cookie.setPath("/");
-		cookie.setSecure(true);
+		//cookie.setSecure(true);
 		cookie.setSameSite(CookieSameSite.STRICT);
 		cookie.setMaxAge(60*60*24*30*4); // 4 months
 

@@ -34,6 +34,7 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.dom.HtmlElement;
@@ -196,7 +197,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		adjustForSocketStatus(context);
-		
+
 		User user = (User) context.user();
 		
 		addUserIdToValue.appendToAttribute("value", user.getId());
@@ -306,7 +307,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		loginButton.removeClass("btn-danger");
 		loginButton.addClass("btn-secondary");
-
+		
 		if(user instanceof Guest) {
 
 			loginButton.text("Connexion");
