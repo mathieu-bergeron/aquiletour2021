@@ -588,4 +588,20 @@ public class UserManager {
 			}
 		});
 	}
+
+	public static boolean ifUserHasName(ModelStoreSync modelStore, String userId) throws BackendError {
+		T.call(UserManager.class);
+		
+		boolean userHasName = false;
+		
+		if(modelStore.ifModelExists(User.class, "admin", userId)) {
+
+			userHasName = modelStore.extractFromModel(User.class, "admin", userId, Boolean.class, storedUser -> {
+
+				return storedUser.hasName();
+			});
+		}
+
+		return userHasName;
+	}
 }
