@@ -13,9 +13,12 @@
 1. Débogages mineurs partout
 1. Faire fonctionner JSweet
 1. Déployer
+1. Vérifier HTTPS pour le Socket
 1. Procédures
     * pour utiliser
     * pour administrer (p.ex. renommer un étudiant)
+1. Courriel aux collègues
+1. Amélioration des logs (il manque des événements)
 1. Ajout de:
     * Notifications pour le prof
 1. Revue de code: le code d'authentification

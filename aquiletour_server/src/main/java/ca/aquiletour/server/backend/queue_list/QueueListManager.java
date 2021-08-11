@@ -71,12 +71,24 @@ public class QueueListManager {
 		T.call(QueueListManager.class);
 		
 		long numberOfAppointments = modelStore.extractFromModel(QueueModel.class, "admin", queueId, Long.class, queueModel -> {
+
 			return queueModel.getLatestAppointmentId();
 		});
 		
 		modelStore.updateModel(QueueListModel.class, queueId, Constants.QUEUE_LIST_ID, queueListModel -> {
-			
+
 			queueListModel.addQueueListItem(createQueueListItem(queueId, numberOfAppointments, teacher));
+		});
+	}
+
+	public static void updateLastActivity(ModelStoreSync modelStore,
+			                              String queueId) throws BackendError {
+
+		T.call(QueueListManager.class);
+		
+		modelStore.updateModel(QueueListModel.class, queueId, Constants.QUEUE_LIST_ID, queueListModel -> {
+
+			queueListModel.updateLastActivity(queueId, Ntro.calendar().now());
 		});
 	}
 

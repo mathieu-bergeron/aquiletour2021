@@ -64,6 +64,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 
 			LogManagerQueue.logNewAppointment(modelStore, queueId, user, Ntro.calendar().now(), addedAppointment);
 			QueueListManager.updateNumberOfAppointments(modelStore, queueId, Long.valueOf(addedAppointment.getId()));
+			QueueListManager.updateLastActivity(modelStore, queueId);
 		}
 	}
 }

@@ -83,7 +83,7 @@ public class AquiletourBackendRequestHandler {
 
 		} else if(path.startsWith(Constants.QUEUE_LIST_URL_SEGMENT)) {
 			
-			sendQueuesMessages(path.subPath(1), parameters);
+			sendQueueListMessages(path.subPath(1), parameters);
 
 		}else if(path.startsWith(Constants.QUEUE_URL_SEGMENT)) {
 			
@@ -460,7 +460,7 @@ public class AquiletourBackendRequestHandler {
 		}
 	}
 
-	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
+	private static void sendQueueListMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourBackendRequestHandler.class);
 
 	}

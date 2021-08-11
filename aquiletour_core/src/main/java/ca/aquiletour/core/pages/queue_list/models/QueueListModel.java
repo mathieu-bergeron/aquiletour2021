@@ -86,4 +86,15 @@ public class QueueListModel implements NtroModel {
 			item.updateTeacherDisplayName(teacherDisplayName);
 		}
 	}
+
+	public void updateLastActivity(String queueId, NtroDate lastActivity) {
+		T.call(this);
+
+		QueueListItem item = getQueueListItemById().valueOf(queueId);
+		
+		if(item != null) {
+
+			item.updateLastActivity(lastActivity);
+		}
+	}
 }
