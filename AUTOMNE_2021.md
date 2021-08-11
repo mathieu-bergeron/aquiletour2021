@@ -1,9 +1,8 @@
 # Débogages mineur
 
-1. Retirer Mode Admin
-1. L'étudiant doit entrer un prénom ET un nom (au moins 2 caractères valides)
 1. Dernière activité pour Prof Disponibles
 1. Ajout d'événements dans le log
+1. Un peu partout: ajout de messages d'erreurs (p.ex. si le code n'est pas valide)
 
 # Faire fonctionner JSweet
 

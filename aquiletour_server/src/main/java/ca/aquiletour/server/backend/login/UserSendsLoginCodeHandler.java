@@ -49,11 +49,15 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			updateSessionMessage.setSession(Ntro.currentSession());
 			RegisteredSocketsSockJS.sendMessageToSockets(authToken, updateSessionMessage);
 
+			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+				Ntro.messages().send(delayedMessage);
+			}
+
+		} else {
+
+			throw new BackendError("Code invalide. SVP réessayer.");
 		}
 
-		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
-			Ntro.messages().send(delayedMessage);
-		}
 	}
 
 
