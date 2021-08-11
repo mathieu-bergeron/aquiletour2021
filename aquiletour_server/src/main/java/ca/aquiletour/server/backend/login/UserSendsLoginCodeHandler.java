@@ -26,15 +26,13 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		String firstName = message.getFirstName();
 		String lastName = message.getLastName();
 		
-		T.values(message.getUser());
-		
 		if(message.getUser().isStudent()) {
 			
 				if(!TextProcessing.isValidName(firstName)) {
 					throw new BackendError("SVP entrer votre prénom et nom complet.");
 				}
 
-				else if(!TextProcessing.isValidName(firstName)) {
+				else if(!TextProcessing.isValidName(lastName)) {
 					throw new BackendError("SVP entrer votre prénom et nom complet.");
 				}
 		}
