@@ -2,6 +2,8 @@ package ca.aquiletour.server.backend.login;
 
 
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.utils.TextProcessing;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
@@ -17,13 +19,25 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 	@Override
 	public void handleNow(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) throws BackendError {
 		T.call(this);
-		
 
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
 		String firstName = message.getFirstName();
 		String lastName = message.getLastName();
+		
+		T.values(message.getUser());
+		
+		if(message.getUser().isStudent()) {
+			
+				if(!TextProcessing.isValidName(firstName)) {
+					throw new BackendError("SVP entrer votre prénom et nom complet.");
+				}
+
+				else if(!TextProcessing.isValidName(firstName)) {
+					throw new BackendError("SVP entrer votre prénom et nom complet.");
+				}
+		}
 
 		if(SessionManager.ifLoginCodeValid(modelStore, authToken, loginCode)) {
 
@@ -36,6 +50,7 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
 			updateSessionMessage.setSession(Ntro.currentSession());
 			RegisteredSocketsSockJS.sendMessageToSockets(authToken, updateSessionMessage);
+
 		}
 
 		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
@@ -48,5 +63,4 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 	public void handleLater(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
 		T.call(this);
 	}
-
 }

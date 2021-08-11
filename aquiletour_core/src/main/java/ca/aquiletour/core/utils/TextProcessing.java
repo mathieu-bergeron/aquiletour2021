@@ -82,4 +82,16 @@ public class TextProcessing {
 		return firstLetter + remainder;
 	}
 
+	public static boolean isValidName(String name) {
+		T.call(TextProcessing.class);
+		
+		boolean isValid = true;
+		
+		if(name.length() <= 2) {
+			isValid = false;
+		}
+
+		return isValid;
+	}
+
 }
