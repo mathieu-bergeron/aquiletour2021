@@ -25,7 +25,7 @@ public class JsonServiceJdk extends JsonService {
 		T.call(this);
 
 		String result = null;
-
+		
 		if(prettyPrinting) {
 
 			result = gsonPrettyPrint.toJson(javaValue);

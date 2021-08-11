@@ -78,12 +78,14 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		AquiletourMain.registerSerializableClasses();
 		
 		if(Ntro.config().isProd()) {
-			Ntro.jsonService().setPrettyPrinting(true);
-		}else {
 			Ntro.jsonService().setPrettyPrinting(false);
+		}else {
+			Ntro.jsonService().setPrettyPrinting(true);
 		}
+
 		
 		sendTimePassesMessages();
+
 
 		try {
 			

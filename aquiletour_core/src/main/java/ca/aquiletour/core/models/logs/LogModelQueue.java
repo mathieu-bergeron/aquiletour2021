@@ -4,6 +4,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.services.Ntro;
 
 public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 	
@@ -58,11 +59,26 @@ public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 		}
 	}
 
-	public void closeAppointment(NtroDate timestamp, 
-							     User user,
+	public void closeAppointment(User user,
 			                     String appointmentId) {
 		T.call(this);
 		
+		NtroDate timestamp = Ntro.calendar().now();
+		
+		LogItemQueue logItem = getLogItemById().valueOf(appointmentId);
+
+		if(logItem != null) {
+
+			logItem.closeAppointment(timestamp, user);
+		}
+	}
+
+	public void deleteAppointment(String appointmentId,
+								  User user) {
+		T.call(this);
+
+		NtroDate timestamp = Ntro.calendar().now();
+
 		LogItemQueue logItem = getLogItemById().valueOf(appointmentId);
 
 		if(logItem != null) {

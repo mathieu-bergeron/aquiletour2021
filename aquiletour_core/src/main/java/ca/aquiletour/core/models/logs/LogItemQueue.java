@@ -84,8 +84,6 @@ public class LogItemQueue extends LogItem {
 	public void writeCsvLine(String separator, StringBuilder builder, int longuestTaskPath) {
 		T.call(this);
 		
-		T.here();
-		
 		writeCsvLineBasicInfo(separator, builder);
 		writeCsvLineCoursePath(separator, builder);
 		writeCsvLineGroupId(separator, builder);

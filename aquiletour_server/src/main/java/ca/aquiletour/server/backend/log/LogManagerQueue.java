@@ -34,5 +34,17 @@ public class LogManagerQueue {
 			
 		});
 	}
+
+	public static void logDeleteAppointment(ModelStoreSync modelStore, 
+			                                String queueId, 
+			                                String appointmentId,
+			                                User user) throws BackendError {
+		T.call(QueueManager.class);
+		
+		modelStore.createModel(LogModelQueue.class, "admin", queueId, logModel -> {
+			
+			logModel.deleteAppointment(appointmentId, user);
+		});
+	}
 	
 }
