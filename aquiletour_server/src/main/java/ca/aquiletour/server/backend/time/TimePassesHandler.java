@@ -122,11 +122,11 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 				}
 			});
 		});
-		
+
 		for(String authToken : expiredSesions) {
 			SessionManager.deleteSession(modelStore, authToken);
 		}
-		
+
 		// TODO: update currentTime in queues etc.
 	}
 	
@@ -136,13 +136,26 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 		Log.info("[runNightly]");
 
 		// TODO: a pass at the data to remove any inconsistencies
+		deregisterOrphanSockets(modelStore);
+	}
+
+	private void deregisterOrphanSockets(ModelStoreSync modelStore) throws BackendError {
+		T.call(this);
+
+		Set<String> sessionIds = getActiveSessionIds(modelStore);
+
+		RegisteredSocketsSockJS.deregisterOrphanSockets(sessionIds);
+	}
+
+	private Set<String> getActiveSessionIds(ModelStoreSync modelStore) throws BackendError {
+		T.call(this);
 
 		Set<String> sessionIds = new HashSet<>();
 		
 		modelStore.forEachModelId(NtroSession.class, "admin", authToken -> {
 			sessionIds.add(authToken);
 		});
-		
-		RegisteredSocketsSockJS.deregisterOrphanSockets(sessionIds);
+
+		return sessionIds;
 	}
 }
