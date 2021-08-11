@@ -2,7 +2,6 @@ package ca.aquiletour.server.backend.login;
 
 
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;

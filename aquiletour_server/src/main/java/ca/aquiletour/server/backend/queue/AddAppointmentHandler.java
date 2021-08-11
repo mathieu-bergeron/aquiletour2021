@@ -11,6 +11,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
+import ca.aquiletour.server.backend.log.LogManagerQueue;
 import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
@@ -49,6 +50,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 					                           message.getTaskTitle(),
 					                           user);
 		}
+		
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class AddAppointmentHandler extends BackendMessageHandler<AddAppointmentM
 		
 		if(addedAppointment != null) {
 
-			QueueManager.logNewAppointment(modelStore, queueId, user, Ntro.calendar().now(), addedAppointment);
+			LogManagerQueue.logNewAppointment(modelStore, queueId, user, Ntro.calendar().now(), addedAppointment);
 			QueueListManager.updateNumberOfAppointments(modelStore, queueId, Long.valueOf(addedAppointment.getId()));
 		}
 	}

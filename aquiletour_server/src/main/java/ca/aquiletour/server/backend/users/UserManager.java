@@ -21,6 +21,7 @@ import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
+import ca.aquiletour.server.backend.log.LogManagerQueue;
 import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
@@ -206,7 +207,9 @@ public class UserManager {
 		T.call(UserManager.class);
 		
 		QueueManager.createQueueForUser(modelStore, user);
-
+		LogManagerQueue.createQueueLogForUser(modelStore, user);
+		
+		/*
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
 
 		CourseListManager.createCourseListForUser(modelStore, CourseListModelTeacher.class, user);
@@ -215,6 +218,7 @@ public class UserManager {
 
 		SemesterListManager.createSemesterListForUser(modelStore, SemesterListModelTeacher.class, user);
 		SemesterListManager.addManagedSemestersForTeacher(modelStore, user);
+		*/
 	}
 
 	private static void storeTeacherId(ModelStoreSync modelStore, User user) throws BackendError {

@@ -1,6 +1,5 @@
 package ca.aquiletour.server.backend.queue;
 
-import ca.aquiletour.core.models.logs.LogModelQueue;
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.user.User;
@@ -11,9 +10,7 @@ import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelUpdater;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.models.NtroDate;
@@ -28,17 +25,8 @@ public class QueueManager {
 		T.call(QueueManager.class);
 		
 		createQueue(modelStore, user.getId());
-		createQueueLog(modelStore, user.getId());
 	}
 
-	public static void createQueueLog(ModelStoreSync modelStore,
-			                          String queueId) throws BackendError {
-		T.call(QueueManager.class);
-		
-		modelStore.createModel(LogModelQueue.class, "admin", queueId, logModel -> {
-			
-		});
-	}
 
 	public static void createQueue(ModelStoreSync modelStore,
 			                       String queueId) throws BackendError {
@@ -145,23 +133,10 @@ public class QueueManager {
 			result = addedAppointment.get();
 
 		} catch (EmptyOptionException e) {}
-
+		
 		return result;
 	}
 
-	public static void logNewAppointment(ModelStoreSync modelStore, 
-			                             String queueId, 
-			                             User user, 
-			                             NtroDate timestamp, 
-			                             Appointment appointment) throws BackendError {
-		T.call(QueueManager.class);
-		
-		modelStore.updateModel(LogModelQueue.class, "admin", queueId, queueLog -> {
-
-			queueLog.addAppointement(timestamp, user, appointment);
-
-		});
-	}
 
 	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
 		T.call(QueueManager.class);

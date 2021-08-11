@@ -251,8 +251,11 @@ public abstract class ModelStore {
 			T.call(this);
 
 			if(!ifModelExists(modelClass, authToken, modelId)) {
+				
 
 				M model = getModel(modelClass, authToken, modelId);
+
+				T.values(modelClass, model);
 
 				if(model != null) {
 
@@ -261,6 +264,7 @@ public abstract class ModelStore {
 				}
 
 			}else {
+
 				Log.warning("[createModel] model already exists: " + documentPath(modelClass, modelId));
 			}
 
@@ -544,12 +548,20 @@ public abstract class ModelStore {
 		
 		if(Ntro.introspector().ntroClassFromObject(model).ifImplements(DoNotCacheModel.class)) {
 
-			removeModelFromHeap(model, documentPath);
+			saveUncachedModelNow(model, documentPath);
 
 		}else {
 			
 			saveCachedModelNow(model, documentPath);
 		}
+	}
+
+	private void saveUncachedModelNow(NtroModel model, DocumentPath documentPath) throws BackendError {
+		T.call(this);
+
+		saveModelDocumentNow(model, documentPath);
+
+		removeModelFromHeap(model, documentPath);
 	}
 
 	private void saveCachedModelNow(NtroModel model, DocumentPath documentPath) throws BackendError {
@@ -558,12 +570,19 @@ public abstract class ModelStore {
 		synchronized (saveHistory) {
 
 			int index = Ntro.collections().indexOfEquals(saveHistory, documentPath);
+
 			if(index > 0) {
 				saveHistory.remove(index);
 			}
-			saveHistory.add(documentPath);
 
+			saveHistory.add(documentPath);
 		}
+
+		saveModelDocumentNow(model, documentPath);
+	}
+
+	private void saveModelDocumentNow(NtroModel model, DocumentPath documentPath) throws BackendError {
+		T.call(this);
 
 		ModelLocks.acquireLockAndExecute(documentPath, new ModelLockTask<Void>() {
 			@Override
@@ -571,7 +590,7 @@ public abstract class ModelStore {
 				T.call(this);
 
 				saveDocument(documentPath, Ntro.jsonService().toString(model));
-				
+
 				return null;
 			}
 		});
@@ -579,7 +598,6 @@ public abstract class ModelStore {
 
 	private void removeOldestModelFromHeap() throws BackendError {
 		T.call(this);
-		
 
 		DocumentPath documentPath;
 
