@@ -196,7 +196,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
-		adjustForSocketStatus(context);
+		//adjustForSocketStatus(context);
 
 		User user = (User) context.user();
 		

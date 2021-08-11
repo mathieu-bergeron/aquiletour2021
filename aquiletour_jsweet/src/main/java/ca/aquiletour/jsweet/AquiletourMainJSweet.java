@@ -26,7 +26,7 @@ public class AquiletourMainJSweet extends AquiletourMain {
 	@Override
 	protected void runTask() {
 		T.call(this);
-
+		
 		super.runTask();
 		
 		if(window.location.pathname.isEmpty()

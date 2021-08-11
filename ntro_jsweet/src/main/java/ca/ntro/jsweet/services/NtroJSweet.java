@@ -36,13 +36,12 @@ public class NtroJSweet {
 		
 		InitializationTaskJSweet initJSweet = new InitializationTaskJSweet(routerService);
 
-		// FIXME/TODO
-		//initJSweet.addNextTask(new LoadSourceMapTask("/js/tutoriel02/bundle.js.map"));
-		
 		JSweetGlobals.initialize();
 
 		initializationTask.addSubTask(initJSweet);
 		initializationTask.addSubTask(JSweetGlobals.onLoadTask);
+		
+		// TODO: add the WebSocket initialization as a SubTask
 
 		return initializationTask;
 	}

@@ -17,10 +17,10 @@ function initializeRoot(viewRootElement, jSweet){
     const logoLoading = viewRootElement.find('#logo-loading');
     const logoImage = viewRootElement.find('#logo-image');
 
-    if(!jSweet){
+    //if(!jSweet){
         logoLoading.hide();
         logoImage.show();
-    }
+    //}
 
     //loginButton.dropdown();
 

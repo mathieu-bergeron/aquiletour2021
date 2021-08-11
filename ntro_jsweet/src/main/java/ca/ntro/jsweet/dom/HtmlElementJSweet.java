@@ -90,11 +90,10 @@ public class HtmlElementJSweet extends HtmlElement {
 		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
 		
 		toAppend.show();
-
 		
 		jQueryElement.append(toAppend);
 
-		installFormAutosubmit(toAppend);
+		//installFormAutosubmit(toAppend);
 	}
 
 	@Override
@@ -102,9 +101,11 @@ public class HtmlElementJSweet extends HtmlElement {
 		T.call(this);
 
 		Globals._ntro_initialize_view(viewName, this);
-
+		
+		/*
 		installFormAutosubmit(jQueryElement);
 		installLinksClickEvents(jQueryElement);
+		*/
 	}
 
 	private void installLinksClickEvents(JQuery rootElement) {
@@ -257,9 +258,10 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		setAttributeNoSideEffect(name, value);
 		
+		/*
 		if(name.equals("href")) {
 			installHrefClickEvent(this, value);
-		}
+		}*/
 	}
 
 	private void installHrefClickEvent(HtmlElement anchor, String href) {

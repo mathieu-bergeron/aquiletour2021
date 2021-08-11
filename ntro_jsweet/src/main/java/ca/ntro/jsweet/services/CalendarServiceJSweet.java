@@ -75,7 +75,15 @@ public class CalendarServiceJSweet extends CalendarService {
 			options.second = "numeric";
 		}
 		
-		return date.toLocaleString("fr-CA", options);
+		String result = date.toLocaleString("fr-CA", options);
+		
+		result = result.replace(" h ", ":");
+
+		result = result.replace(" min ", ":");
+
+		result = result.replace(" s", "");
+		
+		return result;
 	}
 
 	@Override

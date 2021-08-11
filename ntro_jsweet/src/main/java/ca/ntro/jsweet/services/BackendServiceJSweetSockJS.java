@@ -83,9 +83,12 @@ public class BackendServiceJSweetSockJS extends BackendService {
 			
 			// FIXME: there is no garantee that the handler is there
 			//        Socket connection should be a InitializationTask
+			
+			/*
 			UpdateSocketStatusMessage updateSocketStatusMessage = Ntro.messages().create(UpdateSocketStatusMessage.class);
 			updateSocketStatusMessage.setSocketOpen(isOpen);
 			Ntro.messages().send(updateSocketStatusMessage);
+			*/
 			
 			return null;
 		};
@@ -95,10 +98,12 @@ public class BackendServiceJSweetSockJS extends BackendService {
 			Log.info("sockJS: close");
 
 			isOpen = false;
-
+			
+			/*
 			UpdateSocketStatusMessage updateSocketStatusMessage = Ntro.messages().create(UpdateSocketStatusMessage.class);
 			updateSocketStatusMessage.setSocketOpen(isOpen);
 			Ntro.messages().send(updateSocketStatusMessage);
+			*/
 
 			// XXX: Firefox does not stop Javascript thread right away on reload
 			window.setTimeout(function(() -> {
