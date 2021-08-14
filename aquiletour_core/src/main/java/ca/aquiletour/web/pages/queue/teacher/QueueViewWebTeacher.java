@@ -21,6 +21,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuGroupTemplate;
 
 	private HtmlElement timeControlsContainer;
+	private HtmlElement decrementAppointmentTimesForm;
 
 	private HtmlElement queuePermalink;
 
@@ -43,6 +44,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuCoursesContainer = this.getRootElement().find("#queue-menu-courses-container").get(0);
 
 		timeControlsContainer = this.getRootElement().find(".time-controls-container").get(0);
+		decrementAppointmentTimesForm = this.getRootElement().find("#decrement-appointment-times-form").get(0);
 
 		queuePermalink = this.getRootElement().find(".queue-permalink").get(0);
 
@@ -62,6 +64,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		MustNot.beNull(downloadCourseLogLink);
 
 		MustNot.beNull(timeControlsContainer);
+		MustNot.beNull(decrementAppointmentTimesForm);
 
 		MustNot.beNull(queuePermalink);
 		MustNot.beNull(queueMessageAllCourses);
@@ -81,6 +84,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		
 		addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
 		
+		decrementAppointmentTimesForm.installFormAutoSubmit();
 
 		onContextChange(context);
 	}

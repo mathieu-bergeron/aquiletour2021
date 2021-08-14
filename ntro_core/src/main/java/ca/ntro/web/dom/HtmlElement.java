@@ -153,4 +153,6 @@ public abstract class HtmlElement {
 
 	public abstract HtmlElement clone();
 	public abstract void initializeJs(String viewName);
+	
+	public abstract void installFormAutoSubmit();
 }

@@ -318,6 +318,7 @@ public class HtmlElementJdk extends HtmlElement {
 
 	@Override
 	public void initializeJs(String viewName) {
+		T.call(this);
 		// XXX: not supported server-side
 	}
 
@@ -326,6 +327,12 @@ public class HtmlElementJdk extends HtmlElement {
 		T.call(this);
 
 		return new HtmlElementsJdk(jsoupElement.parents().select(cssQuery));
+	}
+
+	@Override
+	public void installFormAutoSubmit() {
+		T.call(this);
+		// XXX: not supported on server-side
 	}
 
 }

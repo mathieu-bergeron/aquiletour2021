@@ -128,7 +128,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		});
 	}
 
-	private void installFormAutosubmit(JQuery rootElement) {
+	private void installAllFormAutoSubmits(JQuery rootElement) {
 		T.call(this);
 
 		JQuery forms = rootElement.find("form");
@@ -138,41 +138,50 @@ public class HtmlElementJSweet extends HtmlElement {
 				T.call(this);
 
 				JQuery form = $(formElement);
-				form.off();
-				form.on("submit", new BiFunction<JQueryEventObject, Object, Object>() {
-					@Override
-					public Object apply(JQueryEventObject t, Object u) {
-						T.call(this);
 
-						t.preventDefault();
-						
-						String href = form.attr("action");
-						if(href == null || href.isEmpty()) {
-							href = window.location.pathname;
-						}else if(!href.startsWith("/")) {
-							href = window.location.pathname + href;
-						}
-						
-						Map<String, String[]> parameters = new HashMap<>();
-						JQuery formInputs = form.find("[name]");
-						putInputParameters(parameters, formInputs);
+				installFormAutoSubmit(form);
 
-						String formId = form.attr("id");
-						if(formId != null && !formId.isEmpty()) {
-							JQuery otherInputs = $(document).find("[form='"+formId+"']");
-							putInputParameters(parameters, otherInputs);
-							
-						}else {
-							formId = "unknownForm";
-						}
+				return null;
+			}
 
-						history.pushState(null, formId, href);
-						
-						Ntro.router().sendMessagesFor(Ntro.context(), Path.fromRawPath(href), parameters);
+		});
+	}
 
-						return null;
-					}
-				});
+	private void installFormAutoSubmit(JQuery form) {
+		T.call(this);
+
+		form.off();
+		form.on("submit", new BiFunction<JQueryEventObject, Object, Object>() {
+			@Override
+			public Object apply(JQueryEventObject t, Object u) {
+				T.call(this);
+
+				t.preventDefault();
+				
+				String href = form.attr("action");
+				if(href == null || href.isEmpty()) {
+					href = window.location.pathname;
+				}else if(!href.startsWith("/")) {
+					href = window.location.pathname + href;
+				}
+				
+				Map<String, String[]> parameters = new HashMap<>();
+				JQuery formInputs = form.find("[name]");
+				putInputParameters(parameters, formInputs);
+
+				String formId = form.attr("id");
+				if(formId != null && !formId.isEmpty()) {
+					JQuery otherInputs = $(document).find("[form='"+formId+"']");
+					putInputParameters(parameters, otherInputs);
+					
+				}else {
+					formId = "unknownForm";
+				}
+
+				history.pushState(null, formId, href);
+				
+				Ntro.router().sendMessagesFor(Ntro.context(), Path.fromRawPath(href), parameters);
+
 				return null;
 			}
 		});
@@ -490,4 +499,10 @@ public class HtmlElementJSweet extends HtmlElement {
 		return new HtmlElementsJSweet(jQueryElement.parent(cssQuery));
 	}
 
+	@Override
+	public void installFormAutoSubmit() {
+		T.call(this);
+
+		installFormAutoSubmit(jQueryElement);
+	}
 }
