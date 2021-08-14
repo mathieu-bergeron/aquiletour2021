@@ -197,6 +197,7 @@ import ca.aquiletour.core.pages.semester_list.models.ActiveSemesterIds;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.ObservableCourseGroupList;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterList;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
@@ -264,6 +265,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 	}
 
 	protected abstract void registerViewLoaders();
+	
+	protected abstract Path subControllersPath();
 
 	@Override
 	protected void runTask() {
@@ -278,7 +281,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), createNtroContext());  
+		RootController rootController = ControllerFactory.createRootController(RootController.class, subControllersPath(), getWindow(), createNtroContext());  
 
 		rootController.execute();
 		
