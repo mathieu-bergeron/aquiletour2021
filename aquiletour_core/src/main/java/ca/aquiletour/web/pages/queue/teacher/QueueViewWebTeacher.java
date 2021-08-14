@@ -8,7 +8,9 @@ import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 
@@ -84,17 +86,35 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		
 		addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
 		
-		decrementAppointmentTimesForm.installFormAutoSubmit();
-
 		onContextChange(context);
 	}
 
 	@Override
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
+		
+		Log.info("onContextChange");
+		
+		if(Ntro.isJSweet()) {
+
+			installOrRemoveFormAutoSubmits(context);
+		}
 
 		queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
 		downloadCourseLogLink.setAttributeNoSideEffect("href", "/" + Constants.QUEUE_LOG_URL_SEGMENT + "/" + context.user().getId());
+	}
+
+	private void installOrRemoveFormAutoSubmits(NtroContext<?, ?> context) {
+		T.call(this);
+
+		if(context.isSocketOpen()) {
+
+			decrementAppointmentTimesForm.installFormAutoSubmit();
+
+		}else {
+
+			decrementAppointmentTimesForm.removeFormAutoSubmit();
+		}
 	}
 	
 	@Override

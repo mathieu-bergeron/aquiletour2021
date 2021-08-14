@@ -505,4 +505,11 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		installFormAutoSubmit(jQueryElement);
 	}
+
+	@Override
+	public void removeFormAutoSubmit() {
+		T.call(this);
+
+		jQueryElement.off();
+	}
 }

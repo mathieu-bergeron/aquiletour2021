@@ -19,6 +19,8 @@ public  class QueueControllerTeacher extends QueueController {
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
+		
+		super.onChangeContext(previousContext, context);
 
 		QueueViewTeacher view = (QueueViewTeacher) getView();
 		
