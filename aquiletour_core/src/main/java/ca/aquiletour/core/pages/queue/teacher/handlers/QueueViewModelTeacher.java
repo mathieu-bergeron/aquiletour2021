@@ -1,6 +1,5 @@
 package ca.aquiletour.core.pages.queue.teacher.handlers;
 
-
 import java.util.Map;
 
 import ca.aquiletour.core.models.paths.CoursePath;
@@ -30,13 +29,11 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 		T.call(this);
 		super.handle(model, view, subViewLoader);
 		
-		isQueueOpen = model.isQueueOpen();
-		view.displayIfQueueOpen(isQueueOpen);
-
 		view.identifyQueue(model.getQueueId());
 
 		observeMainSettings(model, model.getMainSettings(), view);
-		observeSettingsByCourseId(model, model.getSettingsByCourseKey(), view);
+
+		//observeSettingsByCourseId(model, model.getSettingsByCourseKey(), view);
 	}
 
 	private void observeSettingsByCourseId(QueueModel model, SettingsByCourseKey settingsByCourseKey, QueueViewTeacher view) {

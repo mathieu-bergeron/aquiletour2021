@@ -8,6 +8,7 @@ import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredInteger;
+import ca.ntro.core.models.StoredString;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -23,10 +24,12 @@ public class QueueModel implements NtroModel {
 
 	private StoredInteger appointmentDurationSeconds = new StoredInteger(Constants.APPOINTMENT_DURATION_MINUTES * 60);
 	private StoredDate firstAppointmentTime = new StoredDate();
-	
+
 	// XXX: sub-models should be stored by Id (will play a role in next refactoring towards more sub-controllers)
 	private AppointmentById appointmentById = new AppointmentById();
 	private StoredListOfIds appointmentsInOrder = new StoredListOfIds();
+
+	private StoredString teacherName = new StoredString();
 
 	private QueueSettings mainSettings = new QueueSettings();
 	private SettingsByCourseKey settingsByCourseKey = new SettingsByCourseKey();
@@ -431,5 +434,13 @@ public class QueueModel implements NtroModel {
 		T.call(this);
 		
 		return mainSettings.getShowAppointmentTimes().getValue();
+	}
+
+	public StoredString getTeacherName() {
+		return teacherName;
+	}
+
+	public void setTeacherName(StoredString teacherName) {
+		this.teacherName = teacherName;
 	}
 }

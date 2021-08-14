@@ -80,11 +80,14 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		addActiveSemestersIdToValue = this.getRootElement().find(".add-active-semesters-id-to-value");
 		
-		addAllCoursesIdToId.appendToAttribute("id", Constants.ALL_COURSES_ID);
-		addAllCoursesIdToValue.appendToAttribute("value", Constants.ALL_COURSES_ID);
-		addAllCoursesIdToForm.appendToAttribute("form", Constants.ALL_COURSES_ID);
-		
-		addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
+		if(!Ntro.isJSweet()) {
+
+			addAllCoursesIdToId.appendToAttribute("id", Constants.ALL_COURSES_ID);
+			addAllCoursesIdToValue.appendToAttribute("value", Constants.ALL_COURSES_ID);
+			addAllCoursesIdToForm.appendToAttribute("form", Constants.ALL_COURSES_ID);
+
+			addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
+		}
 		
 		onContextChange(context);
 	}
@@ -120,7 +123,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	@Override
 	public void displayIfQueueOpen(boolean isOpen) {
 		T.call(this);
-
+		
 		if(isOpen) {
 			queueMenuButton.text("La file est ouverte");
 		}else {
@@ -144,6 +147,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		
 		String id = "is-queue-open-checkbox";
 		if(coursePath.isAllCourses()) {
+			displayIfQueueOpen(isOpen);
 			id += Constants.ALL_COURSES_ID;
 		}else {
 			id += coursePath.toHtmlId();
