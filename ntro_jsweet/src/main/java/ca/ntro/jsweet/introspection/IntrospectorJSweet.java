@@ -135,7 +135,7 @@ public class IntrospectorJSweet extends Introspector {
 		if (typeof(clazz).equals("string")) {
 			def.js.String interfaceName = new def.js.String(clazz);
 
-			ret = interfaceName.substring(interfaceName.lastIndexOf(".") + 1, interfaceName.length - 1).toString();
+			ret = interfaceName.substring(interfaceName.lastIndexOf(".") + 1, interfaceName.length).toString();
 
 		} else {
 

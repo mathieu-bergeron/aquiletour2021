@@ -12,6 +12,7 @@ import ca.aquiletour.core.pages.queue_list.views.QueueListView;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.ModelObserver;
 import ca.ntro.services.ModelStoreSync;
@@ -40,19 +41,19 @@ public class QueueListViewModel extends ModelViewSubViewHandler<QueueListModel, 
 				
 				QueueListModel queueListModel = (QueueListModel) updatedModel;
 				
-				List<String> currentSubViewIds = new ArrayList<>();
+				List<String> subViewsToShow = new ArrayList<>();
 				
 				queueListModel.forEachItemInOrder(queueListItem -> {
 					
 					String subViewId = queueListItem.subViewId();
 					
-					currentSubViewIds.add(subViewId);
+					subViewsToShow.add(subViewId);
 
 					displayQueueListItem(view, subViewLoader, queueListItem, subViewId);
 				});
 
 				view.displayOrHideSubView(QueueListItemView.class , subViewId -> {
-					return currentSubViewIds.contains(subViewId);
+					return subViewsToShow.contains(subViewId);
 				});
 			}
 		});
