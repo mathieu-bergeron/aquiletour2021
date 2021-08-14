@@ -42,6 +42,20 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	}
 
 	@Override
+	public void moveAppointment(int index, String subViewId) {
+		T.call(this);
+
+		AppointmentView appointmentView = (AppointmentView) findSubView(appointmentViewClass(), subViewId);
+		
+		if(appointmentView != null) {
+
+			deleteSubView(subViewId);
+
+			insertAppointment(index, appointmentView);
+		}
+	}
+
+	@Override
 	public void deleteSubViewsNotInList(List<String> currentAppointmentIds) {
 		T.call(this);
 		

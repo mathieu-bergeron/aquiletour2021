@@ -197,13 +197,18 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		//adjustForSocketStatus(context);
-
-		User user = (User) context.user();
 		
-		addUserIdToValue.appendToAttribute("value", user.getId());
+		if(Ntro.isJdk()) {
+			
+			Log.info("RootViewWeb::onContextChange");
 
-		adjustLoginMenu(user);
-		adjustLinks(user);
+			User user = (User) context.user();
+			
+			addUserIdToValue.appendToAttribute("value", user.getId());
+
+			adjustLoginMenu(user);
+			adjustLinks(user);
+		}
 	}
 
 	private void adjustForSocketStatus(NtroContext<?, ?> context) {

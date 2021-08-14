@@ -24,12 +24,4 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 			view.displayQueueMessage(queueMessage);
 		}
 	}
-
-	@Override
-	protected Class<? extends AppointmentView> appointmentViewClass() {
-		T.call(this);
-
-		return AppointmentViewStudent.class;
-	}
-
 }

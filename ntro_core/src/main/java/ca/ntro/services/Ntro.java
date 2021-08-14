@@ -611,6 +611,24 @@ public class Ntro {
 		return Ntro.systemService.lineSeparator();
 	}
 
+	public static boolean isJSweet() {
+		__T.call(Ntro.class, "isJSweet");
+
+		return Ntro.systemService.isJSweet();
+	}
+
+	public static boolean isJdk() {
+		__T.call(Ntro.class, "isJdk");
+
+		return Ntro.systemService.isJdk();
+	}
+
 	/* </System> */
+	
+	
+	
+	
+	
+	
 
 }

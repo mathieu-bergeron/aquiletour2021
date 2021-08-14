@@ -28,6 +28,7 @@ public class SessionServiceJSweet extends SessionService {
 		}
 
 		return session;
+
 	}
 
 	@Override

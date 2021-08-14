@@ -277,12 +277,4 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			view.displayIfQueueOpen(isQueueOpen);
 		}
 	}
-
-	@Override
-	protected Class<? extends AppointmentView> appointmentViewClass() {
-		T.call(this);
-
-		return AppointmentViewTeacher.class;
-	}
-
 }

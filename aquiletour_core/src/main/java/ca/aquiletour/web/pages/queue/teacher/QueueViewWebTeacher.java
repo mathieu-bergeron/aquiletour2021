@@ -2,7 +2,9 @@ package ca.aquiletour.web.pages.queue.teacher;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.pages.queue.teacher.views.AppointmentViewTeacher;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
@@ -297,5 +299,12 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		T.call(this);
 
 		queueIdElement.text(queueId);
+	}
+
+	@Override
+	public Class<? extends AppointmentView> appointmentViewClass() {
+		T.call(this);
+
+		return AppointmentViewTeacher.class;
 	}
 }

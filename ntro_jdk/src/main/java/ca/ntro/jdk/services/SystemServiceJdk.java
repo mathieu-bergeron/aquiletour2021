@@ -11,4 +11,18 @@ public class SystemServiceJdk extends SystemService {
 
 		return System.lineSeparator();
 	}
+
+	@Override
+	public boolean isJSweet() {
+		T.call(this);
+
+		return false;
+	}
+
+	@Override
+	public boolean isJdk() {
+		T.call(this);
+
+		return true;
+	}
 }

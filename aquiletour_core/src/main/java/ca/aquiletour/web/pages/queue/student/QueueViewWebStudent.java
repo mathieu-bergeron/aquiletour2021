@@ -2,7 +2,9 @@ package ca.aquiletour.web.pages.queue.student;
 
 import java.util.List;
 
+import ca.aquiletour.core.pages.queue.student.views.AppointmentViewStudent;
 import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
+import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
@@ -37,6 +39,14 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 		queueMessageContainer.show();
 		queueMessageElement.text(queueMessage);
 	}
+
+	@Override
+	public Class<? extends AppointmentView> appointmentViewClass() {
+		T.call(this);
+
+		return AppointmentViewStudent.class;
+	}
+
 
 
 

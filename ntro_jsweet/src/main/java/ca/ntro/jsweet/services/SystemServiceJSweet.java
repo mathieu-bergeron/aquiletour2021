@@ -11,4 +11,18 @@ public class SystemServiceJSweet extends SystemService {
 
 		return "\n";
 	}
+
+	@Override
+	public boolean isJSweet() {
+		T.call(this);
+
+		return true;
+	}
+
+	@Override
+	public boolean isJdk() {
+		T.call(this);
+
+		return false;
+	}
 }

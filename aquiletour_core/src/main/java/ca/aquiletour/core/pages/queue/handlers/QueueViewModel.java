@@ -1,10 +1,7 @@
 package ca.aquiletour.core.pages.queue.handlers;
 
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.pages.queue.models.Appointment;
@@ -13,10 +10,8 @@ import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
-import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.services.ModelObserver;
@@ -45,7 +40,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				T.call(this);
 				
 				QueueModel queueModel = (QueueModel) updatedModel;
-				
+
 				List<String> subViewsToShow = new ArrayList<>();
 				
 				queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
@@ -65,6 +60,12 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 				});
 
 				view.deleteSubViewsNotInList(subViewsToShow);
+				
+				queueModel.getAppointmentsInOrder().forEachItem((index, appointmentId) -> {
+
+					String subViewId = Appointment.subViewId(appointmentId);
+					view.moveAppointment(index, subViewId);
+				});
 			}
 		});
 		
@@ -97,7 +98,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		String currentUserId = Ntro.currentUser().getId();
 		boolean displayTime = model.shouldShowAppointmentTimes();
 		
-		AppointmentView appointmentView = (AppointmentView) view.findSubView(appointmentViewClass(), appointmentViewId);
+		AppointmentView appointmentView = (AppointmentView) view.findSubView(view.appointmentViewClass(), appointmentViewId);
 
 		if(appointmentView != null) {
 
@@ -117,7 +118,5 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			view.insertAppointment(index, appointmentView);
 		}
 	}
-
-	protected abstract Class<? extends AppointmentView> appointmentViewClass();
 
 }
