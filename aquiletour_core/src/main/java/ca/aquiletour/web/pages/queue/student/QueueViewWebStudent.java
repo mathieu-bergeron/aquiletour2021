@@ -1,21 +1,22 @@
 package ca.aquiletour.web.pages.queue.student;
 
-import java.util.List;
 
 import ca.aquiletour.core.pages.queue.student.views.AppointmentViewStudent;
 import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 
 public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStudent {
 	
 	private HtmlElement queueMessageContainer;
 	private HtmlElement queueMessageElement;
+
+	private HtmlElement teacherNameElement;
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
@@ -26,10 +27,16 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 		queueMessageContainer = getRootElement().find("#queue-message-container").get(0);
 		queueMessageElement = getRootElement().find(".queue-message-element").get(0);
 
-		queueMessageContainer.hide();
+		teacherNameElement = getRootElement().find(".teacher-name").get(0);
 
 		MustNot.beNull(queueMessageContainer);
 		MustNot.beNull(queueMessageElement);
+
+		MustNot.beNull(teacherNameElement);
+
+		if(!Ntro.isJSweet()) {
+			queueMessageContainer.hide();
+		}
 	}
 
 	@Override
@@ -47,7 +54,11 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 		return AppointmentViewStudent.class;
 	}
 
+	@Override
+	public void displayTeacherName(String teacherName) {
+		T.call(this);
 
-
+		teacherNameElement.text(teacherName);
+	}
 
 }

@@ -44,13 +44,17 @@ public class QueueManager {
 					T.call(this);
 					
 					newQueue.setQueueId(queueId);
+					newQueue.updateTeacherName(queueId);
 				}
 			});
 			
 		} else {
 
 			modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+				T.call(QueueManager.class);
+
 				queueModel.setQueueId(queueId);
+				queueModel.updateTeacherName(queueId);
 			});
 		}
 	}
@@ -316,6 +320,19 @@ public class QueueManager {
 				
 				queue.updateQueueMessage(semesterId, courseId, groupId, queueMessage);
 			}
+		});
+	}
+
+
+	public static void updateTeacherName(ModelStoreSync modelStore, 
+										 String queueId,
+			                             String teacherName) throws BackendError {
+		T.call(QueueManager.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+			T.call(QueueManager.class);
+			
+			queueModel.updateTeacherName(teacherName);
 		});
 	}
 }

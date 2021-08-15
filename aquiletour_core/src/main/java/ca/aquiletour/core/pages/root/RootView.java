@@ -19,6 +19,8 @@ import ca.ntro.core.mvc.NtroView;
 import ca.ntro.messages.NtroMessage;
 
 public interface RootView extends NtroView {
+
+	void onContextChange(NtroContext<?,?> context);
 	
 	void showDashboard(Class<? extends NtroView> subViewClass, DashboardView dashboardView);
 	void showQueue(Class<? extends NtroView> subViewClass, QueueView queueView);
@@ -35,8 +37,8 @@ public interface RootView extends NtroView {
 
 	void displayErrorMessage(String message);
 	void displayPrimaryMessage(String message);
-	void onContextChange(NtroContext<?,?> context);
 	void displayUserScreenName(String screenName);
 	void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages);
 	void showPasswordMenu();
+
 }

@@ -443,4 +443,10 @@ public class QueueModel implements NtroModel {
 	public void setTeacherName(StoredString teacherName) {
 		this.teacherName = teacherName;
 	}
+
+	public void updateTeacherName(String teacherName) {
+		T.call(this);
+		
+		getTeacherName().set(teacherName);
+	}
 }
