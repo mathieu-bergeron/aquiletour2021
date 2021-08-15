@@ -2,6 +2,22 @@ function initializeWidgets(viewRootElement){
     initializeCheckboxes(viewRootElement);
     initializeSectionToggles(viewRootElement);
     initializeDatepickers(viewRootElement);
+    initializeDataHide(viewRootElement);
+}
+
+function initializeDataHide(rootElement){
+    const dataHides = rootElement.find("[data-hide]");
+
+    dataHides.each(function(index, dataHide){
+        const dataTarget = $($(dataHide).attr('data-target'));
+        if(dataTarget !== undefined){
+            dataTarget.on('click', function(){
+                const targetElement = rootElement.find(dataTarget);
+                const targetElementJSweet = new ca.ntro.jsweet.dom.HtmlElementJSweet($(targetElement));
+                targetElementJSweet.hide();
+            });
+        }
+    });
 }
 
 function initializeDatepickers(rootElement){
