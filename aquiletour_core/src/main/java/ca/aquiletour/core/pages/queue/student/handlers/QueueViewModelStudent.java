@@ -15,20 +15,31 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 		T.call(this);
 		super.handle(model, view, subViewLoader);
 		
-		String queueMessage = QueueSettings.removeSettingsFromQueueMessage(model.getMainSettings().getQueueMessage().getValue());
-		
-		if(queueMessage != null 
-				&& !queueMessage.isEmpty()) {
-			
-			view.displayQueueMessage(queueMessage);
-		}
+		model.getMainSettings().getQueueMessage().removeObservers();
+		model.getMainSettings().getQueueMessage().observe(new ValueObserver<String>() {
+			@Override
+			public void onDeleted(String lastValue) {
+			}
+
+			@Override
+			public void onValue(String value) {
+				T.call(this);
+
+				displayQueueMessage(view, value);
+			}
+
+			@Override
+			public void onValueChanged(String oldValue, String value) {
+				T.call(this);
+
+				displayQueueMessage(view, value);
+			}
+		});
 		
 		model.getTeacherName().removeObservers();
 		model.getTeacherName().observe(new ValueObserver<String>() {
 			@Override
 			public void onDeleted(String lastValue) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
@@ -45,5 +56,20 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 				view.displayTeacherName(value);
 			}
 		});
+	}
+
+	private void displayQueueMessage(QueueViewStudent view, String value) {
+		String queueMessage = QueueSettings.removeSettingsFromQueueMessage(value);
+		
+		if(queueMessage != null
+				&& !queueMessage.isEmpty()) {
+
+			view.displayQueueMessage(queueMessage);
+
+		}else {
+
+			view.hideQueueMessage();
+		}
+
 	}
 }

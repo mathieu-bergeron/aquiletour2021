@@ -58,7 +58,14 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 	public void displayTeacherName(String teacherName) {
 		T.call(this);
 
+		teacherNameElement.show();
 		teacherNameElement.text(teacherName);
 	}
 
+	@Override
+	public void hideQueueMessage() {
+		T.call(this);
+		
+		teacherNameElement.hide();
+	}
 }

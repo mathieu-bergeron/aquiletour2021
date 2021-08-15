@@ -6,4 +6,5 @@ public interface QueueViewStudent extends QueueView {
 
 	void displayQueueMessage(String queueMessage);
 	void displayTeacherName(String value);
+	void hideQueueMessage();
 }
