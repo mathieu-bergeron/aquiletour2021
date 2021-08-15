@@ -20,8 +20,6 @@ public class QueueModel implements NtroModel {
 	private String queueId = "";
 	private long latestAppointmentId;
 
-	private StoredDate currentTime = new StoredDate();
-
 	private StoredInteger appointmentDurationSeconds = new StoredInteger(Constants.APPOINTMENT_DURATION_MINUTES * 60);
 	private StoredDate firstAppointmentTime = new StoredDate();
 
@@ -32,21 +30,27 @@ public class QueueModel implements NtroModel {
 	private StoredString teacherName = new StoredString();
 
 	private QueueSettings mainSettings = new QueueSettings();
-	private SettingsByCourseKey settingsByCourseKey = new SettingsByCourseKey();
+
+	// XXX: not used now -- getter and setter are comnented
+	// private SettingsByCourseKey settingsByCourseKey = new SettingsByCourseKey();
+	// private StoredDate currentTime = new StoredDate();
 
 	public boolean isQueueOpen() {
 		T.call(this);
 
 		boolean isOpen = mainSettings.isQueueOpen();
 		
+		/*
 		if(!isOpen) {
 			
 			isOpen = isQueueOpenForSomeCourse(isOpen);
 		}
+		*/
 		
 		return isOpen;
 	}
 
+	/*
 	private boolean isQueueOpenForSomeCourse(boolean isOpen) {
 		T.call(this);
 
@@ -60,6 +64,7 @@ public class QueueModel implements NtroModel {
 
 		return isOpen;
 	}
+	*/
 
 	public void addAppointment(Appointment appointment, AppointmentAddedListener appointmentAddedListener) {
 		T.call(this);
@@ -226,13 +231,6 @@ public class QueueModel implements NtroModel {
 		return index >= 0 && index < getAppointmentsInOrder().size();
 	}
 
-	public StoredDate getCurrentTime() {
-		return currentTime;
-	}
-
-	public void setCurrentTime(StoredDate currentTime) {
-		this.currentTime = currentTime;
-	}
 
 	public void incrementAppointmentTimesSeconds(int timeIncrementSeconds) {
 		T.call(this);
@@ -326,17 +324,19 @@ public class QueueModel implements NtroModel {
 		if(courseId.equals(Constants.ALL_COURSES_ID)) {
 
 			mainSettings.updateIsQueueOpen(isQueueOpen);
-
-		}else {
+		}
+		/*
+		else {
 			
-			QueueSettingsCourse courseSettings = settingsByCourseKey.valueOf(courseId);
+			QueueSettingsCourse courseSettings = getSettingsByCourseKey().valueOf(courseId);
 			if(courseSettings == null) {
 				courseSettings = new QueueSettingsCourse();
-				settingsByCourseKey.putEntry(courseId, courseSettings);
+				getSettingsByCourseKey().putEntry(courseId, courseSettings);
 			}
 			
 			courseSettings.updateIsQueueOpen(isQueueOpen);
 		}
+		*/
 	}
 
 	public QueueSettings getMainSettings() {
@@ -347,10 +347,8 @@ public class QueueModel implements NtroModel {
 		this.mainSettings = mainSettings;
 	}
 
-	public SettingsByCourseKey getSettingsByCourseKey() {
-		return settingsByCourseKey;
-	}
 
+	/*
 	public void addCourseSettings(CoursePath coursePath) {
 		T.call(this);
 		
@@ -358,7 +356,9 @@ public class QueueModel implements NtroModel {
 			getSettingsByCourseKey().putEntry(coursePath.toString(), new QueueSettingsCourse());
 		}
 	}
+	*/
 
+	/*
 	public void updateCourseTitle(CoursePath coursePath, String courseTitle) {
 		T.call(this);
 		
@@ -371,7 +371,9 @@ public class QueueModel implements NtroModel {
 			Log.warning("Cannot find coursePath " + coursePath);
 		}
 	}
+	*/
 
+	/*
 	public void addGroupSettings(String courseId, String groupId) {
 		T.call(this);
 
@@ -383,8 +385,8 @@ public class QueueModel implements NtroModel {
 		}else {
 			Log.warning("[addGroupSettings] Cannot find courseId " + courseId);
 		}
-		
 	}
+	*/
 
 	public String getQueueId() {
 		return queueId;
@@ -394,9 +396,6 @@ public class QueueModel implements NtroModel {
 		this.queueId = queueId;
 	}
 
-	public void setSettingsByCourseKey(SettingsByCourseKey settingsByCourseKey) {
-		this.settingsByCourseKey = settingsByCourseKey;
-	}
 
 	public void addAppointment(User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
 		
@@ -449,4 +448,31 @@ public class QueueModel implements NtroModel {
 		
 		getTeacherName().set(teacherName);
 	}
+	
+	
+
+	/* XXX: not used for now
+	 * 
+	public StoredDate getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(StoredDate currentTime) {
+		this.currentTime = currentTime;
+	}
+	*/
+	
+	
+
+	/* XXX: not used for now
+	 * 
+	public SettingsByCourseKey getSettingsByCourseKey() {
+		return settingsByCourseKey;
+	}
+
+	public void setSettingsByCourseKey(SettingsByCourseKey settingsByCourseKey) {
+		this.settingsByCourseKey = settingsByCourseKey;
+	}
+	*/
+
 }

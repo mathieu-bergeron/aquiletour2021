@@ -24,7 +24,7 @@ public class TeacherUsesQueueHandler extends BackendMessageHandler<TeacherUsesQu
 				                                 queueOpen,
 				                                 message.getUser());
 
-		QueueManager.openQueueForCourseId(modelStore, queueId, message.getCourseId());
+		//QueueManager.openQueueForCourseId(modelStore, queueId, message.getCourseId());
 	}
 
 	@Override

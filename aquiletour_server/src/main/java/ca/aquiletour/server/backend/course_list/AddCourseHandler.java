@@ -56,10 +56,12 @@ public class AddCourseHandler extends BackendMessageHandler<AddCourseMessage> {
 		
 		DashboardManager.addDashboardItemForUser(modelStore, DashboardModelTeacher.class, message.getCourseListItem(), message.getUser());
 
+		/*
 		QueueManager.addCourseSettings(modelStore, 
 									   message.coursePath(),
 				                       message.getCourseListItem().getCourseTitle(), 
 				                       message.getUser());
+	    */
 		
 		
 		

@@ -122,10 +122,12 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 							   studentsToAdd,
 							   teacher);
 		
+		/*
 		QueueManager.addGroup(modelStore, 
 						      message.getCourseId(),
 				              groupId, 
 				              teacher);
+	    */
 
 		for(User student : studentsToAdd) {
 

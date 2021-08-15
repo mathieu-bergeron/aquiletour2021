@@ -68,6 +68,7 @@ public class QueueManager {
 	}
 
 
+	/*
 	public static void openQueueForCourseId(ModelStoreSync modelStore,
 			                     			String queueId,
 			                     			String courseId) throws BackendError {
@@ -82,6 +83,7 @@ public class QueueManager {
 		
 		//QueuesUpdater.openQueue(modelStore, queueId);
 	}
+	*/
 
 	public static void closeQueue(ModelStoreSync modelStore,
 			                      String queueId) throws BackendError {
@@ -270,6 +272,7 @@ public class QueueManager {
 		}
 	}
 
+	/*
 	public static void addCourseSettings(ModelStoreSync modelStore, 
 										 CoursePath coursePath,
 			                             String courseTitle, 
@@ -285,8 +288,9 @@ public class QueueManager {
 				queue.updateCourseTitle(coursePath, courseTitle);
 			}
 		});
-	}
-
+	}*/
+	
+	/*
 	public static void addGroup(ModelStoreSync modelStore, 
 			                    String courseId, 
 			                    String groupId, 
@@ -303,6 +307,7 @@ public class QueueManager {
 			}
 		});
 	}
+	*/
 
 	public static void updateQueueInfo(ModelStoreSync modelStore, 
 			                           String semesterId, 
