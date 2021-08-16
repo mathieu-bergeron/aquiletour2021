@@ -7,6 +7,8 @@ import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
 import ca.ntro.core.models.listeners.ValueObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 
@@ -56,6 +58,18 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 				view.displayTeacherName(value);
 			}
 		});
+	}
+
+	protected void observeQueueModel(QueueViewStudent view, ViewLoader subViewLoader, QueueModel queueModel) {
+		T.call(this);
+		
+		super.observeQueueModel(view, subViewLoader, queueModel);
+		
+		NtroUser currentUser = Ntro.currentUser();
+
+		if(currentUser != null) {
+			view.displayMakeAppointmentButton(! queueModel.ifUserAlreadyHasAppointment(currentUser.getId()));
+		}
 	}
 
 	private void displayQueueMessage(QueueViewStudent view, String value) {

@@ -38,34 +38,8 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			@Override
 			public void onModelUpdate(NtroModel updatedModel) {
 				T.call(this);
-				
-				QueueModel queueModel = (QueueModel) updatedModel;
 
-				List<String> subViewsToShow = new ArrayList<>();
-				
-				queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
-					
-					int index = queueModel.appointmentIndexById(appointmentId);
-					
-					String appointmentViewId = appointment.subViewId();
-
-					subViewsToShow.add(appointmentViewId);
-					
-					displayOrUpdateAppointment(queueModel, 
-											   view, 
-											   subViewLoader, 
-											   appointmentViewId,
-											   index, 
-											   appointment);
-				});
-
-				view.deleteSubViewsNotInList(subViewsToShow);
-				
-				queueModel.getAppointmentsInOrder().forEachItem((index, appointmentId) -> {
-
-					String subViewId = Appointment.subViewId(appointmentId);
-					view.moveAppointment(index, subViewId);
-				});
+				observeQueueModel(view, subViewLoader, updatedModel);
 			}
 		});
 		
@@ -84,6 +58,38 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 
 				Ntro.backendService().sendMessageToBackend(message);
 			}
+		});
+	}
+
+	protected void observeQueueModel(V view, ViewLoader subViewLoader, NtroModel updatedModel) {
+		T.call(this);
+
+		QueueModel queueModel = (QueueModel) updatedModel;
+
+		List<String> subViewsToShow = new ArrayList<>();
+		
+		queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
+			
+			int index = queueModel.appointmentIndexById(appointmentId);
+			
+			String appointmentViewId = appointment.subViewId();
+
+			subViewsToShow.add(appointmentViewId);
+			
+			displayOrUpdateAppointment(queueModel, 
+									   view, 
+									   subViewLoader, 
+									   appointmentViewId,
+									   index, 
+									   appointment);
+		});
+
+		view.deleteSubViewsNotInList(subViewsToShow);
+		
+		queueModel.getAppointmentsInOrder().forEachItem((index, appointmentId) -> {
+
+			String subViewId = Appointment.subViewId(appointmentId);
+			view.moveAppointment(index, subViewId);
 		});
 	}
 
