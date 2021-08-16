@@ -49,6 +49,8 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	public void insertAppointment(int index, AppointmentView appointmentView) {
 		T.call(this);
 		
+		System.out.println("insertAppointment");
+		
 		HtmlElement appointmentElement = ((AppointmentViewWeb) appointmentView).getRootElement();
 
 		if(index >= 0 && index < appointmentList.children("*").size()) {

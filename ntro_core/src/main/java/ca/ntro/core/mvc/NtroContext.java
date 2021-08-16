@@ -1,11 +1,12 @@
 package ca.ntro.core.mvc;
 
+import ca.ntro.core.system.log.Log;
 import ca.ntro.users.NtroSessionData;
 import ca.ntro.users.NtroUser;
 
 public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	
-	private boolean isSocketOpen = false;
+	private boolean isSocketOpenAttr = false;
 	private String lang;
 	private NtroSessionData sessionData;
 
@@ -15,13 +16,12 @@ public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 
 	private NtroUser user;
 	
-	
 	public boolean isSocketOpen() {
-		return isSocketOpen;
+		return isSocketOpenAttr;
 	}
 	
 	public void updateIsSocketOpen(boolean isSocketOpen) {
-		this.isSocketOpen = isSocketOpen;
+		this.isSocketOpenAttr = isSocketOpen;
 	}
 	
 	public String lang() {

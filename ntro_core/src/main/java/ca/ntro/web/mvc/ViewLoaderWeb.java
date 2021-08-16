@@ -118,15 +118,15 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	@Override
 	protected NtroView createViewImpl() {
 		T.call(this);
-
+		
 		MustNot.beNull(html);
 
 		NtroViewWeb view = Ntro.factory().newInstance(viewClass);
 
 		HtmlElement rootElement = parseHtml(html);
-
+		
 		view.setRootElement(rootElement);
-
+		
 		return view;
 	}
 

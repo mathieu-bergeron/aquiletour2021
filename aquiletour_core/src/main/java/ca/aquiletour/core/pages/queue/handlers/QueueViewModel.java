@@ -38,8 +38,10 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			@Override
 			public void onModelUpdate(NtroModel updatedModel) {
 				T.call(this);
+				
+				QueueModel queueModel = (QueueModel) updatedModel;
 
-				observeQueueModel(view, subViewLoader, updatedModel);
+				observeQueueModel(view, subViewLoader, queueModel);
 			}
 		});
 		
@@ -61,11 +63,9 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		});
 	}
 
-	protected void observeQueueModel(V view, ViewLoader subViewLoader, NtroModel updatedModel) {
+	protected void observeQueueModel(V view, ViewLoader subViewLoader, QueueModel queueModel) {
 		T.call(this);
-
-		QueueModel queueModel = (QueueModel) updatedModel;
-
+		
 		List<String> subViewsToShow = new ArrayList<>();
 		
 		queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
@@ -86,11 +86,12 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 
 		view.deleteSubViewsNotInList(subViewsToShow);
 		
+		/*
 		queueModel.getAppointmentsInOrder().forEachItem((index, appointmentId) -> {
 
 			String subViewId = Appointment.subViewId(appointmentId);
 			view.moveAppointment(index, subViewId);
-		});
+		});*/
 	}
 
 	private void displayOrUpdateAppointment(QueueModel model, 
@@ -99,13 +100,13 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			                                String appointmentViewId,
 			                                int index, 
 			                                Appointment appointment) {
-
-
+		T.call(this);
+		
 		String currentUserId = Ntro.currentUser().getId();
 		boolean displayTime = model.shouldShowAppointmentTimes();
 		
 		AppointmentView appointmentView = (AppointmentView) view.findSubView(view.appointmentViewClass(), appointmentViewId);
-
+		
 		if(appointmentView != null) {
 
 			appointmentView.initializeView(AquiletourMain.createNtroContext());
@@ -124,5 +125,4 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			view.insertAppointment(index, appointmentView);
 		}
 	}
-
 }

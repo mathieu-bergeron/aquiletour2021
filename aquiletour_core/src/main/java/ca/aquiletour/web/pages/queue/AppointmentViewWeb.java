@@ -63,12 +63,10 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void onContextChange(NtroContext<?, ?> context) {
 		T.call(this);
 		
-		if(Ntro.isJSweet()) {
+		if(Ntro.isJSweet() && context != null) {
 
 			if(context.isSocketOpen()) {
 
-				Log.info("AppointmentView::onContextChange::" + context.isSocketOpen());
-				
 				deleteAppointmentForm.installFormAutoSubmit();
 				
 			}else {
