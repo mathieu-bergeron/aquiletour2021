@@ -179,13 +179,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
 
-		onContextChange(context);
-
-		if(!Ntro.isJSweet()) {
+		if(Ntro.isJdk()) {
 			initializeAlerts();
 		}
-	}
 
+		onContextChange(context);
+	}
 
 	private void initializeAlerts() {
 		T.call(this);
