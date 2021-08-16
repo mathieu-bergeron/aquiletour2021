@@ -22,11 +22,6 @@ public  class QueueControllerTeacher extends QueueController {
 		
 		super.onChangeContext(previousContext, context);
 
-		QueueViewTeacher view = (QueueViewTeacher) getView();
-		
-		if(view != null) {
-			view.onContextChange(context);
-		}
 	}
 
 	@Override

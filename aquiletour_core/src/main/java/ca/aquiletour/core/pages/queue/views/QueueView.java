@@ -13,4 +13,6 @@ public interface QueueView extends NtroView {
 	void deleteSubView(String subViewId);
 	void hideSubView(String subViewId);
 	Class<? extends AppointmentView> appointmentViewClass();
+
+	void onContextChange(NtroContext<?,?> context);
 }

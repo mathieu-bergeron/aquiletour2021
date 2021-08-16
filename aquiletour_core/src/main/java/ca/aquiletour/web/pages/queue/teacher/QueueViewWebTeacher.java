@@ -8,7 +8,6 @@ import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.QueueViewWeb;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
@@ -23,7 +22,11 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuGroupTemplate;
 
 	private HtmlElement timeControlsContainer;
+
 	private HtmlElement decrementAppointmentTimesForm;
+	private HtmlElement incrementAppointmentTimesForm;
+	private HtmlElement decreaseAppointmentDurationForm;
+	private HtmlElement increaseAppointmentDurationForm;
 
 	private HtmlElement queuePermalink;
 
@@ -38,7 +41,6 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
-		super.initializeViewWeb(context);
 		T.call(this);
 
 		queueIdElement = this.getRootElement().find("#queue-id").get(0);
@@ -46,7 +48,12 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuCoursesContainer = this.getRootElement().find("#queue-menu-courses-container").get(0);
 
 		timeControlsContainer = this.getRootElement().find(".time-controls-container").get(0);
+
 		decrementAppointmentTimesForm = this.getRootElement().find("#decrement-appointment-times-form").get(0);
+		incrementAppointmentTimesForm = this.getRootElement().find("#increment-appointment-times-form").get(0);
+
+		decreaseAppointmentDurationForm = this.getRootElement().find("#decrease-appointment-duration-form").get(0);
+		increaseAppointmentDurationForm = this.getRootElement().find("#increase-appointment-duration-form").get(0);
 
 		queuePermalink = this.getRootElement().find(".queue-permalink").get(0);
 
@@ -88,23 +95,25 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 			addActiveSemestersIdToValue.appendToAttribute("value", Constants.ACTIVE_SEMESTERS_ID);
 		}
-		
-		onContextChange(context);
+
+		super.initializeViewWeb(context);
 	}
 
 	@Override
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
-		
-		Log.info("onContextChange");
+
+		super.onContextChange(context);
 		
 		if(Ntro.isJSweet()) {
 
 			installOrRemoveFormAutoSubmits(context);
-		}
 
-		queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
-		downloadCourseLogLink.setAttributeNoSideEffect("href", "/" + Constants.QUEUE_LOG_URL_SEGMENT + "/" + context.user().getId());
+		}else {
+
+			queuePermalink.text("https://aiguilleur.ca/" + Constants.QUEUE_URL_SEGMENT + "/" + context.user().getId());
+			downloadCourseLogLink.setAttributeNoSideEffect("href", "/" + Constants.QUEUE_LOG_URL_SEGMENT + "/" + context.user().getId());
+		}
 	}
 
 	private void installOrRemoveFormAutoSubmits(NtroContext<?, ?> context) {
@@ -113,10 +122,18 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		if(context.isSocketOpen()) {
 
 			decrementAppointmentTimesForm.installFormAutoSubmit();
+			incrementAppointmentTimesForm.installFormAutoSubmit();
+
+			decreaseAppointmentDurationForm.installFormAutoSubmit();
+			increaseAppointmentDurationForm.installFormAutoSubmit();
 
 		}else {
 
 			decrementAppointmentTimesForm.removeFormAutoSubmit();
+			incrementAppointmentTimesForm.removeFormAutoSubmit();
+
+			decreaseAppointmentDurationForm.removeFormAutoSubmit();
+			increaseAppointmentDurationForm.removeFormAutoSubmit();
 		}
 	}
 	

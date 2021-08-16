@@ -7,8 +7,10 @@ import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.widgets.UpdateAnimator;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
 
@@ -22,6 +24,8 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	private HtmlElement taskTitleElement;
 	private HtmlElement tagsElement;
 	private HtmlElement commentElement;
+
+	private HtmlElement deleteAppointmentForm;
 	
 	
 	@Override
@@ -37,6 +41,8 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		tagsElement = this.getRootElement().find("#tags").get(0);
 		commentElement = this.getRootElement().find("#message").get(0);
 
+		deleteAppointmentForm = this.getRootElement().find(".delete-appointment-form").get(0);
+
 		MustNot.beNull(studentName);
 		MustNot.beNull(appointmentIdInput);
 
@@ -45,8 +51,31 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		MustNot.beNull(taskTitleElement);
 		MustNot.beNull(tagsElement);
 		MustNot.beNull(commentElement);
+
+		MustNot.beNull(deleteAppointmentForm);
 		
 		getRootElement().addClass("appointment-view");
+		
+		onContextChange(context);
+	}
+
+	@Override
+	public void onContextChange(NtroContext<?, ?> context) {
+		T.call(this);
+		
+		if(Ntro.isJSweet()) {
+
+			if(context.isSocketOpen()) {
+
+				Log.info("AppointmentView::onContextChange::" + context.isSocketOpen());
+				
+				deleteAppointmentForm.installFormAutoSubmit();
+				
+			}else {
+				
+				deleteAppointmentForm.removeFormAutoSubmit();
+			}
+		}
 	}
 
 	@Override
@@ -139,6 +168,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		
 		time.text(appointmentTime.format("HH:mm"));
 	}
+
 
 
 

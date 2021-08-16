@@ -6,7 +6,9 @@ import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.mvc.NtroViewWeb;
@@ -22,6 +24,25 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		appointmentList = this.getRootElement().find("#appointment-list").get(0);
 
 		MustNot.beNull(appointmentList);
+		
+		onContextChange(context);
+	}
+
+	@Override
+	public void onContextChange(NtroContext<?,?> context) {
+		T.call(this);
+
+		/*
+		if(Ntro.isJSweet()) {
+			
+			Log.info("onContextChange: appointment-view.forEach");
+
+			getRootElement().find(".appointment-view").forEach(e -> {
+				AppointmentViewWeb appointementView = Ntro.factory().newInstance(AppointmentViewWeb.class);
+				appointementView.setRootElement(e);
+				appointementView.initializeViewWeb(context);
+			});
+		}*/
 	}
 
 	@Override
@@ -45,14 +66,38 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 	public void moveAppointment(int index, String subViewId) {
 		T.call(this);
 
-		AppointmentView appointmentView = (AppointmentView) findSubView(appointmentViewClass(), subViewId);
+		AppointmentViewWeb appointmentView = (AppointmentViewWeb) findSubView(appointmentViewClass(), subViewId);
 		
 		if(appointmentView != null) {
-
+			
 			deleteSubView(subViewId);
-
 			insertAppointment(index, appointmentView);
 		}
+		
+		/*
+
+		HtmlElement appointmentElement = appointmentView.getRootElement();
+		
+		if(appointmentElement != null) {
+
+			if(index >= 0 && index < appointmentList.children("*").size()) {
+
+				HtmlElement anchorElement = appointmentList.children("*").get(index);
+				
+				if(anchorElement != null 
+						&& !anchorElement.equals(appointmentElement)) {
+
+					appointmentElement.removeFromDocument();
+					appointmentElement.insertBefore(anchorElement);
+				}
+
+			}else {
+
+				appointmentElement.removeFromDocument();
+				insertAppointment(index, appointmentView);
+			}
+		}
+		*/
 	}
 
 	@Override
