@@ -206,6 +206,22 @@ public class QueueModel implements NtroModel {
 		return getAppointmentById().valueOf(appointmentId);
 	}
 
+	private Appointment appointmentByUserId(String userId) {
+		T.call(this);
+		
+		return getAppointmentById().reduceTo(Appointment.class, null, (appointmentId, appointment, accumulator) -> {
+			if(accumulator != null) {
+				throw new Break();
+			}
+			
+			if(appointment.getStudentId().equals(userId)) {
+				accumulator = appointment;
+			}
+
+			return accumulator;
+		});
+	}
+
 	public Appointment appointmentByStudentId(String studentId) {
 		T.call(this);
 		
@@ -448,6 +464,15 @@ public class QueueModel implements NtroModel {
 		
 		getTeacherName().set(teacherName);
 	}
+
+	public boolean ifUserAlreadyHasAppointment(String userId) {
+		T.call(this);
+		
+		Appointment appointment = appointmentByUserId(userId);
+
+		return appointment != null;
+	}
+
 	
 	
 

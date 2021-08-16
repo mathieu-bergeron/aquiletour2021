@@ -110,6 +110,15 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 		
+		boolean userAlreadyHasAppointment = modelStore.extractFromModel(QueueModel.class, "admin", queueId, Boolean.class, queueModel -> {
+			
+			return queueModel.ifUserAlreadyHasAppointment(user.getId());
+		});
+		
+		if(userAlreadyHasAppointment) {
+			throw new BackendError("Vous avez déjà un rendez-vous.");
+		}
+		
 		NtroDate timestamp = Ntro.calendar().now();
 
 		Appointment appointment = createAppointment(timestamp, user, coursePath, taskPath, taskTitle);

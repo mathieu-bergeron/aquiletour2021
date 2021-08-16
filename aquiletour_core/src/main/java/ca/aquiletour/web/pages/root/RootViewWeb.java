@@ -181,7 +181,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		onContextChange(context);
 
-		initializeAlerts();
+		if(!Ntro.isJSweet()) {
+			initializeAlerts();
+		}
 	}
 
 
