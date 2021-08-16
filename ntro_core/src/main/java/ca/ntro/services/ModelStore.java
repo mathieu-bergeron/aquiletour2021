@@ -251,11 +251,8 @@ public abstract class ModelStore {
 			T.call(this);
 
 			if(!ifModelExists(modelClass, authToken, modelId)) {
-				
 
 				M model = getModel(modelClass, authToken, modelId);
-
-				T.values(modelClass, model);
 
 				if(model != null) {
 
