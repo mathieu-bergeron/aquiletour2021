@@ -67,37 +67,50 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		T.call(this);
 
 		AppointmentViewWeb appointmentView = (AppointmentViewWeb) findSubView(appointmentViewClass(), subViewId);
-		
+
 		if(appointmentView != null) {
 			
-			deleteSubView(subViewId);
-			insertAppointment(index, appointmentView);
-		}
-		
-		/*
+			int currentIndex = currentAppointmentIndex(appointmentView);
+			
+			if(currentIndex != index) {
 
-		HtmlElement appointmentElement = appointmentView.getRootElement();
-		
-		if(appointmentElement != null) {
-
-			if(index >= 0 && index < appointmentList.children("*").size()) {
-
-				HtmlElement anchorElement = appointmentList.children("*").get(index);
-				
-				if(anchorElement != null 
-						&& !anchorElement.equals(appointmentElement)) {
-
-					appointmentElement.removeFromDocument();
-					appointmentElement.insertBefore(anchorElement);
-				}
-
-			}else {
-
-				appointmentElement.removeFromDocument();
+				removeSubViewFromDocument(subViewId);
 				insertAppointment(index, appointmentView);
 			}
 		}
-		*/
+	}
+
+	private int currentAppointmentIndex(AppointmentViewWeb appointmentView) {
+		T.call(this);
+		
+		int currentIndex = -1;
+		
+		HtmlElement appointmentElement = appointmentView.getRootElement();
+		
+		if(appointmentElement != null) {
+			
+			String appointmentId = appointmentElement.getAttribute("id");
+			
+			if(appointmentId != null
+					&& !appointmentId.isEmpty()) {
+
+				for(int i = 0; i < appointmentList.children("*").size(); i++) {
+					
+					HtmlElement candidateElement = appointmentList.children("*").get(i);
+					
+					String candidateId = candidateElement.getAttribute("id");
+					
+					if(appointmentId.equals(candidateId)) {
+						
+						currentIndex = i;
+						break;
+					}
+				}
+			}
+
+		}
+
+		return currentIndex;
 	}
 
 	@Override
@@ -126,6 +139,18 @@ public abstract class QueueViewWeb extends NtroViewWeb implements QueueView {
 		if(subViewElement != null) {
 
 			subViewElement.deleteForever();
+		}
+	}
+
+	@Override
+	public void removeSubViewFromDocument(String subViewId) {
+		T.call(this);
+		
+		HtmlElement subViewElement = getRootElement().find("#" + subViewId).get(0);
+		
+		if(subViewElement != null) {
+
+			subViewElement.removeFromDocument();
 		}
 	}
 

@@ -34,9 +34,13 @@ function initializeQueue(viewRootElement, jSweet){
 
                 if(jSweet){
 
+                    console.log("currentIndex: " + appointmentList.index(appointment))
+
+                    /*
                     console.log(queueId);
                     console.log(appointmentId);
                     console.log(nextAppointmentId);
+                    */
 
                     let moveAppointmentMessage = (ca.ntro.services.Ntro.messages().create(ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage));
                     moveAppointmentMessage.setCourseId(queueId);
