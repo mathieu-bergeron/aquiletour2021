@@ -2,6 +2,7 @@ function initializeWidgets(viewRootElement){
     initializeCheckboxes(viewRootElement);
     initializeSectionToggles(viewRootElement);
     initializeDatepickers(viewRootElement);
+    initializeDataHide(viewRootElement);
 }
 
 function initializeDataHide(rootElement){
@@ -73,6 +74,7 @@ function initializeCheckboxes(rootElement){
 
     checkboxes.off();
     checkboxes.on('click', function(){
+
         const thisCheckbox = $(this);
 
         if(thisCheckbox.attr("checked") === undefined || thisCheckbox.attr("checked") === false){
@@ -85,6 +87,13 @@ function initializeCheckboxes(rootElement){
 
         const formId = $(this).attr("form");
         const form = rootElement.find("#" + formId);
+
+		/*
+        const dataTarget = $(this).attr("data-target");
+        const dataElement = $(rootElement.find(dataTarget));
+        dataElement.dropdown();
+        */
+
         form.submit();
     });
 }

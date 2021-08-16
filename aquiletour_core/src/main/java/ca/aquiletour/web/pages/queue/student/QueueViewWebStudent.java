@@ -1,6 +1,7 @@
 package ca.aquiletour.web.pages.queue.student;
 
 
+import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.pages.queue.student.views.AppointmentViewStudent;
 import ca.aquiletour.core.pages.queue.student.views.QueueViewStudent;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
@@ -53,7 +54,7 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 
 		super.onContextChange(context);
 		
-		if(Ntro.isJSweet() && context != null) {
+		if(Ntro.isJSweet() && context != null && !(context.user() instanceof Guest)) {
 
 			if(context.isSocketOpen()) {
 				

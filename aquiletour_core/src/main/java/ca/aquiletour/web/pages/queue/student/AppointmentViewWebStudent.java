@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.queue.student;
 
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
@@ -38,7 +39,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		commentTextarea = this.getRootElement().find(".comment-textarea").get(0);
 
 		modifyCommentForm = getRootElement().find("#modify-comment-form").get(0);
-		modifyCommentModal = getRootElement().find("#modify-comment-modal").get(0);
+		modifyCommentModal = getRootElement().find(".modify-comment-modal").get(0);
 
 		MustNot.beNull(deleteAppointmentButton);
 		MustNot.beNull(deleteAppointmentForm);
@@ -64,27 +65,21 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		T.call(this);
 
 		super.onContextChange(context);
-		
-		/*
-		if(Ntro.isJSweet() && context != null) {
+
+		if(Ntro.isJSweet() 
+				&& context != null 
+				&& context.user() instanceof User
+				&& !((User) context.user()).isGuest()) {
 
 			if(context.isSocketOpen()) {
 				
-				modifyCommentForm.installFormAutoSubmit(new SubmitListener() {
-					@Override
-					public void onFormSubmitted() {
-						T.call(this);
-
-						modifyCommentModal.modal("hide");
-					}
-				});
+				modifyCommentForm.installFormAutoSubmit();
 				
 			}else {
 				
 				modifyCommentForm.removeFormAutoSubmit();
 			}
 		}
-		*/
 	}
 
 	@Override

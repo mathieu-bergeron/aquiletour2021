@@ -2,6 +2,8 @@ package ca.aquiletour.web.pages.queue.teacher;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.user.Guest;
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.teacher.views.AppointmentViewTeacher;
 import ca.aquiletour.core.pages.queue.teacher.views.QueueViewTeacher;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
@@ -21,6 +23,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuCourseTemplate;
 	private HtmlElement queueMenuGroupTemplate;
 
+	private HtmlElement openQueueForm;
+
 	private HtmlElement timeControlsContainer;
 
 	private HtmlElement decrementAppointmentTimesForm;
@@ -31,6 +35,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queuePermalink;
 
 	private HtmlElement queueMessageAllCourses;
+
+	private HtmlElement queueMessageForm;
 
 	private HtmlElement downloadCourseLogLink;
 
@@ -64,6 +70,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuCourseTemplate = this.getRootElement().find(".queue-menu-course-template").get(0);
 		queueMenuGroupTemplate = this.getRootElement().find(".queue-menu-group-template").get(0);
 
+		openQueueForm = this.getRootElement().find(".open-queue-form").get(0);
+
+		queueMessageForm = this.getRootElement().find("#queue-message-form").get(0);
+
 		MustNot.beNull(queueIdElement);
 		MustNot.beNull(queueMenuButton);
 		MustNot.beNull(queueMenuCoursesContainer);
@@ -77,6 +87,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		MustNot.beNull(queuePermalink);
 		MustNot.beNull(queueMessageAllCourses);
+
+		MustNot.beNull(openQueueForm);
+
+		MustNot.beNull(queueMessageForm);
 
 		queueMenuCourseTemplate.hide();
 		queueMenuGroupTemplate.hide(); 
@@ -105,7 +119,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		super.onContextChange(context);
 		
-		if(Ntro.isJSweet()) {
+		if(Ntro.isJSweet() 
+				&& context != null 
+				&& context.user() instanceof User
+				&& !((User) context.user()).isGuest()) {
 
 			installOrRemoveFormAutoSubmits(context);
 
@@ -126,6 +143,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 			decreaseAppointmentDurationForm.installFormAutoSubmit();
 			increaseAppointmentDurationForm.installFormAutoSubmit();
+			
+			//openQueueForm.installFormAutoSubmit();
+
+			queueMessageForm.installFormAutoSubmit();
 
 		}else {
 
@@ -134,6 +155,10 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 			decreaseAppointmentDurationForm.removeFormAutoSubmit();
 			increaseAppointmentDurationForm.removeFormAutoSubmit();
+
+			//openQueueForm.removeFormAutoSubmit();
+
+			queueMessageForm.removeFormAutoSubmit();
 		}
 	}
 	
@@ -184,13 +209,14 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private void updateCheckbox(HtmlElement checkbox, boolean isChecked) {
 		T.call(this);
 		
-		
 		if(isChecked) {
 			
 			checkbox.setAttribute("checked", "true");
+			checkbox.value("on");
 
 		}else {
 			
+			checkbox.value("off");
 			checkbox.removeAttribute("checked");
 		}
 	}
