@@ -86,12 +86,11 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 
 		view.deleteSubViewsNotInList(subViewsToShow);
 		
-		/*
 		queueModel.getAppointmentsInOrder().forEachItem((index, appointmentId) -> {
 
 			String subViewId = Appointment.subViewId(appointmentId);
 			view.moveAppointment(index, subViewId);
-		});*/
+		});
 	}
 
 	private void displayOrUpdateAppointment(QueueModel model, 
