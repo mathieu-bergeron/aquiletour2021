@@ -20,6 +20,7 @@ package def.es6;
 import ca.ntro.jsweet.dom.HtmlElementJSweet;
 import ca.ntro.jsweet.services.OnLoadTask;
 import def.dom.Blob;
+import def.jquery.JQuery;
 import def.js.Object;
 import def.js.Promise;
 import jsweet.lang.Interface;
@@ -53,5 +54,7 @@ public class Globals {
 	}
 
 	public native static void _ntro_initialize_view(String viewName, HtmlElementJSweet viewRootHtmlElement);
+
+	public native static void _ntro_call_modal(JQuery jQueryElement, String arg);
 
 }

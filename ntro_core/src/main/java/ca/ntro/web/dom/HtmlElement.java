@@ -155,5 +155,8 @@ public abstract class HtmlElement {
 	public abstract void initializeJs(String viewName);
 	
 	public abstract void installFormAutoSubmit();
+	public abstract void installFormAutoSubmit(SubmitListener listener);
 	public abstract void removeFormAutoSubmit();
+
+	public abstract void modal(String arg);
 }

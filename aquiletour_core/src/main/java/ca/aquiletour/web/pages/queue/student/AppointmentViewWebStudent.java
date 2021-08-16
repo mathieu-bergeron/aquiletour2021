@@ -9,6 +9,8 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.SubmitListener;
+
 import static ca.ntro.assertions.Factory.that;
 
 public class AppointmentViewWebStudent extends AppointmentViewWeb implements AppointmentView {
@@ -20,23 +22,30 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	private HtmlElement commentTextarea;
 	
 	private HtmlElements addQueueIdToValue;
+
+	private HtmlElement modifyCommentForm;
+	private HtmlElement modifyCommentModal;
 	
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
-		super.initializeViewWeb(context);
 
 		deleteAppointmentButton = this.getRootElement().find("#delete-appointment-button").get(0);
 		deleteAppointmentForm = this.getRootElement().find("#delete-appointment-form").get(0);
 		modifyAppointmentButton = this.getRootElement().find("#modify-appointment-button").get(0);
 		chatButton = this.getRootElement().find("#chat-button").get(0);
-		commentTextarea = this.getRootElement().find("#comment-textarea").get(0);
+		commentTextarea = this.getRootElement().find(".comment-textarea").get(0);
+
+		modifyCommentForm = getRootElement().find("#modify-comment-form").get(0);
+		modifyCommentModal = getRootElement().find("#modify-comment-modal").get(0);
 
 		MustNot.beNull(deleteAppointmentButton);
 		MustNot.beNull(deleteAppointmentForm);
 		MustNot.beNull(modifyAppointmentButton);
 		MustNot.beNull(commentTextarea);
+		MustNot.beNull(modifyCommentForm);
+		MustNot.beNull(modifyCommentModal);
 
 		addQueueIdToValue = this.getRootElement().find(".add-queue-id-to-value");
 
@@ -46,6 +55,36 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		//chatButton.hide();
 
 		modifyAppointmentButton.hide();
+
+		super.initializeViewWeb(context);
+	}
+
+	@Override
+	public void onContextChange(NtroContext<?,?> context) {
+		T.call(this);
+
+		super.onContextChange(context);
+		
+		/*
+		if(Ntro.isJSweet() && context != null) {
+
+			if(context.isSocketOpen()) {
+				
+				modifyCommentForm.installFormAutoSubmit(new SubmitListener() {
+					@Override
+					public void onFormSubmitted() {
+						T.call(this);
+
+						modifyCommentModal.modal("hide");
+					}
+				});
+				
+			}else {
+				
+				modifyCommentForm.removeFormAutoSubmit();
+			}
+		}
+		*/
 	}
 
 	@Override
@@ -64,10 +103,17 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		addQueueIdToValue.appendToAttribute("value", queueId);
 		
 		if(!appointment.getStudentId().equals(userId)) {
+
 			chatButton.hide();
 			deleteAppointmentForm.hide();
 
-			//modifyAppointmentButton.show();
+		}else {
+			
+			T.values(appointment.getComment().getValue());
+
+			commentTextarea.text(appointment.getComment().getValue());
+			
+			T.values(commentTextarea.text());
 		}
 	}
 	

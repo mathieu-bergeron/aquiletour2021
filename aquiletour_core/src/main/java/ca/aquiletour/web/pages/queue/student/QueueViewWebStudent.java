@@ -20,11 +20,10 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 
 	private HtmlElement makeAppointmentForm;
 
+
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
-		
-		super.initializeViewWeb(context);
 
 		queueMessageContainer = getRootElement().find("#queue-message-container").get(0);
 		queueMessageElement = getRootElement().find(".queue-message-element").get(0);
@@ -33,6 +32,7 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 
 		makeAppointmentForm = getRootElement().find("#make-appointment-form").get(0);
 
+
 		MustNot.beNull(queueMessageContainer);
 		MustNot.beNull(queueMessageElement);
 
@@ -40,10 +40,33 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 
 		MustNot.beNull(makeAppointmentForm);
 
-		if(!Ntro.isJSweet()) {
+		if(Ntro.isJdk()) {
 			queueMessageContainer.hide();
 		}
+
+		super.initializeViewWeb(context);
 	}
+
+	@Override
+	public void onContextChange(NtroContext<?,?> context) {
+		T.call(this);
+
+		super.onContextChange(context);
+		
+		if(Ntro.isJSweet() && context != null) {
+
+			if(context.isSocketOpen()) {
+				
+				makeAppointmentForm.installFormAutoSubmit();
+				
+			}else {
+				
+				makeAppointmentForm.removeFormAutoSubmit();
+			}
+		}
+	}
+		
+		
 
 	@Override
 	public void displayMakeAppointmentButton(boolean shouldDisplay) {

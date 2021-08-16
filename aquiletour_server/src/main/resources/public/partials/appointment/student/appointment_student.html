@@ -69,17 +69,16 @@
                         aria-label="Close"></button>
             </div>
 
-                <form action="" method="post">
+                <form action="" method="post" id="modify-comment-form">
                     <div class="modal-body">
                         <input name="modifyCommentForQueueId" class="add-queue-id-to-value" style="display:none;"></input>
-                        <textarea name="comment" id="comment-textarea"></textarea>
+                        <textarea name="comment" class="comment-textarea"></textarea>
                     </div>       
                     <div class="modal-footer border-0">         
-                        <button class="btn btn-primary">Ajouter</button>  
+                        <input type="submit" class="btn btn-primary" id="modify-comment-button" data-dismiss-modal="hide" data-target="#modify-comment-modal" value="Modifier"></input>  
                         <button class="btn btn-secondary" id="close-modal-button" type="button" data-dismiss="modal">Annuler</button>          
                     </div>  
                 </form>
         </div>
     </div>
 </div>
-

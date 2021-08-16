@@ -181,6 +181,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		if(Ntro.isJdk()) {
 			initializeAlerts();
+			addUserIdToValue.setAttribute("value", context.user().getId());
 		}
 
 		onContextChange(context);
@@ -197,7 +198,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
-		//adjustForSocketStatus(context);
+		adjustForSocketStatus(context);
 		
 		if(Ntro.isJdk()) {
 			
@@ -205,7 +206,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 			User user = (User) context.user();
 			
-			addUserIdToValue.appendToAttribute("value", user.getId());
 
 			adjustLoginMenu(user);
 			adjustLinks(user);
@@ -214,9 +214,15 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private void adjustForSocketStatus(NtroContext<?, ?> context) {
 		T.call(this);
+		
+		if(context != null) {
 
-		logoImage.display(context.isSocketOpen());
-		logoLoading.display(!context.isSocketOpen());
+			logoImage.display(context.isSocketOpen());
+			logoLoading.display(!context.isSocketOpen());
+		}
+
+		
+		/*
 
 		HtmlElement body = getRootElement().parents("body").get(0);
 		if(body == null) {
@@ -257,6 +263,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 				e.css("cursor", "wait");
 			});
 		}
+		
+		*/
 	}
 
 	private void adjustLinks(User user) {

@@ -16,6 +16,7 @@ import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
+import ca.ntro.web.dom.SubmitListener;
 import def.dom.Element;
 import def.dom.Event;
 import def.dom.EventListener;
@@ -139,7 +140,7 @@ public class HtmlElementJSweet extends HtmlElement {
 
 				JQuery form = $(formElement);
 
-				installFormAutoSubmit(form);
+				installFormAutoSubmit(form, null);
 
 				return null;
 			}
@@ -147,7 +148,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		});
 	}
 
-	private void installFormAutoSubmit(JQuery form) {
+	private void installFormAutoSubmit(JQuery form, SubmitListener listener) {
 		T.call(this);
 
 		form.off();
@@ -181,6 +182,10 @@ public class HtmlElementJSweet extends HtmlElement {
 				history.pushState(null, formId, href);
 				
 				Ntro.router().sendMessagesFor(Ntro.context(), Path.fromRawPath(href), parameters);
+				
+				if(listener != null) {
+					listener.onFormSubmitted();
+				}
 
 				return null;
 			}
@@ -503,7 +508,14 @@ public class HtmlElementJSweet extends HtmlElement {
 	public void installFormAutoSubmit() {
 		T.call(this);
 
-		installFormAutoSubmit(jQueryElement);
+		installFormAutoSubmit(jQueryElement, null);
+	}
+
+	@Override
+	public void installFormAutoSubmit(SubmitListener listener) {
+		T.call(this);
+
+		installFormAutoSubmit(jQueryElement, listener);
 	}
 
 	@Override
@@ -512,4 +524,12 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		jQueryElement.off();
 	}
+
+	@Override
+	public void modal(String arg) {
+		T.call(this);
+
+		Globals._ntro_call_modal(jQueryElement, arg);
+	}
+
 }

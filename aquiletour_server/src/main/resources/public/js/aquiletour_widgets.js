@@ -2,7 +2,6 @@ function initializeWidgets(viewRootElement){
     initializeCheckboxes(viewRootElement);
     initializeSectionToggles(viewRootElement);
     initializeDatepickers(viewRootElement);
-    initializeDataHide(viewRootElement);
 }
 
 function initializeDataHide(rootElement){
