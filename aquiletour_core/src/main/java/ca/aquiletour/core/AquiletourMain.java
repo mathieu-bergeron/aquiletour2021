@@ -337,8 +337,6 @@ public abstract class AquiletourMain extends NtroTaskSync {
 			public void handle(ToggleAdminModeMessage message) {
 				T.call(this);
 				
-				T.here();
-				
 				NtroSession session = Ntro.currentSession();
 				User user = (User) session.getUser();
 

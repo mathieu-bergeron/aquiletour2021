@@ -96,8 +96,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		
-		T.here();
-		
 		logoImage = getRootElement().find("#logo-image").get(0);
 		logoLoading = getRootElement().find("#logo-loading").get(0);
 
@@ -620,8 +618,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages) {
 		T.call(this);
-		
-		T.here();
 		
 		loginDropdown.addClass("show");
 
