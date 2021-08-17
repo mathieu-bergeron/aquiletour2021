@@ -1,8 +1,6 @@
 package ca.aquiletour.core.pages.git.student_summaries;
 
-import ca.aquiletour.core.pages.git.values.ObservableCommitList;
 import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
-import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.ntro.core.models.NtroModel;
 
 public class StudentSummariesModel implements NtroModel {

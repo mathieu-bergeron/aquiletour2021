@@ -22,12 +22,9 @@ import ca.aquiletour.core.messages.ShowDashboardMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.models.user.Student;
-import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.Teacher;
-import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.pages.course.student.CourseControllerStudent;
 import ca.aquiletour.core.pages.course.teacher.CourseControllerTeacher;
-import ca.aquiletour.core.pages.course_list.CourseListController;
 import ca.aquiletour.core.pages.course_list.student.CourseListControllerStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListControllerTeacher;
 import ca.aquiletour.core.pages.dashboard.student.DashboardControllerStudent;
@@ -40,11 +37,10 @@ import ca.aquiletour.core.pages.git.late_students.LateStudentsController;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesController;
 import ca.aquiletour.core.pages.home.HomeController;
 import ca.aquiletour.core.pages.login.LoginController;
-import ca.aquiletour.core.pages.login.ShowLoginHandler;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListController;
 import ca.aquiletour.core.pages.queue.student.QueueControllerStudent;
 import ca.aquiletour.core.pages.queue.teacher.QueueControllerTeacher;
+import ca.aquiletour.core.pages.queue_list.QueueListController;
 import ca.aquiletour.core.pages.root.handlers.NtroErrorHandler;
 import ca.aquiletour.core.pages.root.handlers.QuitMessageHandler;
 import ca.aquiletour.core.pages.root.handlers.RootViewHandler;
@@ -53,7 +49,6 @@ import ca.aquiletour.core.pages.root.handlers.ShowPasswordMenuHandler;
 import ca.aquiletour.core.pages.root.handlers.UpdateUserInfoHandler;
 import ca.aquiletour.core.pages.root.messages.QuitMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
-import ca.aquiletour.core.pages.semester_list.SemesterListController;
 import ca.aquiletour.core.pages.semester_list.admin.SemesterListControllerAdmin;
 import ca.aquiletour.core.pages.semester_list.teacher.SemesterListControllerTeacher;
 import ca.ntro.core.mvc.NtroContext;
@@ -74,29 +69,39 @@ public class RootController extends NtroRootController {
 		addWindowViewHandler(new RootViewHandler());
 
 		addSubController(QueueControllerTeacher.class, Constants.QUEUE_URL_SEGMENT);
+		
+		/*
 		addSubController(DashboardControllerTeacher.class, Constants.DASHBOARD_URL_SEGMENT);
 		addSubController(CourseControllerTeacher.class, Constants.COURSE_URL_SEGMENT);
 		addSubController(CourseListControllerTeacher.class, Constants.COURSE_LIST_URL_SEGMENT);
+		*/
 
 		addSubController(QueueControllerStudent.class, Constants.QUEUE_URL_SEGMENT);
+		
+		/*
 		addSubController(DashboardControllerStudent.class, Constants.DASHBOARD_URL_SEGMENT);
 		addSubController(CourseControllerStudent.class, Constants.COURSE_URL_SEGMENT);
 		addSubController(CourseListControllerStudent.class, Constants.COURSE_LIST_URL_SEGMENT);
+		*/
 
-		addSubController(OpenQueueListController.class, Constants.QUEUES_URL_SEGMENT);
+		addSubController(QueueListController.class, Constants.QUEUE_LIST_URL_SEGMENT);
 	
+		/*
 		addSubController(LoginController.class, Constants.LOGIN_URL_SEGMENT);
 		addSubController(HomeController.class, Constants.HOME_URL_SEGMENT);
+		*/
 
+		/*
 		addSubController(CommitListController.class, Constants.GIT_COMMIT_LIST_URL_SEGMENT);
-		
 		addSubController(LateStudentsController.class, Constants.GIT_LATE_STUDENTS_URL_SEGMENT);
 		addSubController(StudentSummariesController.class, Constants.GIT_STUDENT_SUMMARIES_URL_SEGMENT);
+		*/
 
+		/*
 		addSubController(SemesterListControllerAdmin.class, Constants.SEMESTER_LIST_URL_SEGMENT);
 		addSubController(SemesterListControllerTeacher.class, Constants.SEMESTER_LIST_URL_SEGMENT);
-
 		addSubController(GroupListController.class, Constants.GROUP_LIST_URL_SEGMENT);
+		*/
 		
 		addViewMessageHandler(NtroErrorMessage.class, new NtroErrorHandler());
 
@@ -139,12 +144,11 @@ public class RootController extends NtroRootController {
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
 		
-		System.out.println("onContextChange: " + context.user());
-		System.out.println(context.user());
-		
 		RootView view = (RootView) getView();
-
-		view.onContextChange(context);
+		
+		if(view != null) {
+			view.onContextChange(context);
+		}
 	}
 
 
@@ -152,5 +156,6 @@ public class RootController extends NtroRootController {
 	protected void onFailure(Exception e) {
 		T.call(this);
 	}
+
 
 }

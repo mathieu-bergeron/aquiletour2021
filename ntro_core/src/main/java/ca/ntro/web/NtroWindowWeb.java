@@ -1,9 +1,12 @@
 package ca.ntro.web;
 
 import ca.ntro.core.Path;
+import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.mvc.NtroViewWeb;
@@ -19,31 +22,39 @@ public abstract class NtroWindowWeb extends NtroWindow {
 	}
 
 	@Override
-	public void installRootView(NtroView rootView) {
+	public void installRootView(NtroContext<?,?> context, NtroView rootView) {
 		T.call(this);
 
 		HtmlElement body = getDocument().select("body").get(0);
 
 		NtroViewWeb rootViewWeb = (NtroViewWeb) rootView;
 		
-		body.deleteChildrenForever();
-		body.appendElement(rootViewWeb.getRootElement());
-		
-		/*
 		if(body.children("*").size() == 0) {
 
+			// XXX: already initialized in ViewLoader
+			// rootViewWeb.initializeView(context);
+			
+			rootViewWeb.getRootElement().setAttribute("id", Ntro.introspector().getSimpleNameForClass(rootView.getClass()));
+			
 			body.appendElement(rootViewWeb.getRootElement());
 
-		}else if(body.children("*").size() == 1){
+			Log.info("[installRootView] adding rootView: " + rootViewWeb.getRootElement().getAttribute("id"));
+
+		} else if(body.children("*").size() == 1) {
 			
-			// TODO: initialize rootViewWeb with existing
-			//       body child
+			HtmlElement rootElement = body.children("*").get(0);
+
+			rootViewWeb.setRootElement(rootElement);
+
+			// XXX: must re-initialize as we are now using elements already in DOM
+			rootViewWeb.initializeView(context);
 			
+			Log.info("[installRootView] using existing rootView: " + rootViewWeb);
+
 		}else {
 			
-			body.removeChildrenFromDocument();
-			body.appendElement(rootViewWeb.getRootElement());
-		}*/
+			Log.warning("[installRootView] body must have at most 1 child node");
+		}
 	}
 
 	public void setCurrentPath(Path path) {

@@ -5,18 +5,13 @@ import java.util.List;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
-import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
-import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
-import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
@@ -25,8 +20,8 @@ import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMessage> {
 	
@@ -45,22 +40,9 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		CourseListManager.addGroupForUser(modelStore, 
 										  CourseListModelTeacher.class,
-				                          message.getSemesterId(), 
-				                          message.getCourseId(), 
+										  message.coursePath(),
 				                          groupId, 
 				                          message.getUser());
-
-
-		/*
-		int numberOfStudentAdded = QueueUpdater.addStudentsToQueue(modelStore, queueId, studentsToAdd);
-			
-		DashboardUpdater.incrementNumberOfStudents(modelStore, queueId, teacher.getId(), numberOfStudentAdded);
-
-		// FIXME: we need a real id
-		CourseDashboard queueSummary = DashboardUpdater.createQueueSummary(queueId, queueId);
-
-		DashboardUpdater.addQueueForUser(modelStore, queueSummary, teacher);
-		*/
 	}
 
 	private String groupNameFromCsvFileName(String csvFilename) {
@@ -86,7 +68,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		for (int i = 0; i < cutByLine.length; i++) {
 			String line = cutByLine[i];
 			if(i > 0){ //first line is not a student, its the class name
-				String[] cutBySeparator = line.split(";");
+				String[] cutBySeparator = line.split(Constants.CSV_SEPARATOR);
 				String lastName = cutBySeparator[0];
 				String firstName = cutBySeparator[1];
 				String registrationId = cutBySeparator[2].substring(2);
@@ -114,8 +96,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		User teacher = message.getUser();
 
-		CoursePath coursePath = new CoursePath(teacher.getRegistrationId(), message.getSemesterId(), message.getCourseId());
-
 		UserManager.createUsers(modelStore, studentsToAdd);
 
 		GroupListManager.addGroupForUser(modelStore, 
@@ -132,41 +112,38 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				                                  teacher);
 		
 		CourseListItem courseItem = CourseListManager.getCourseItem(modelStore, 
-															    CourseListModelTeacher.class,
-				                                                message.getSemesterId(),
-				                                                message.getCourseId(),
-				                                                teacher.getId());
+															        CourseListModelTeacher.class,
+															        message.coursePath(),
+				                                                    teacher.getId());
 
 		CourseManager.addGroup(modelStore, 
-							   coursePath,
+							   message.coursePath(),
 							   groupId,
 							   studentsToAdd,
 							   teacher);
 		
+		/*
 		QueueManager.addGroup(modelStore, 
 						      message.getCourseId(),
 				              groupId, 
 				              teacher);
+	    */
 
-		CourseModelTeacher teacherCourse = CourseManager.getCourse(modelStore, 
-													   CourseModelTeacher.class,
-													   coursePath);
-		
 		for(User student : studentsToAdd) {
 
-			CourseManager.createStudentCourse(modelStore, coursePath, teacherCourse, groupId, student);
+			CourseManager.createStudentCourse(modelStore, message.coursePath(), groupId, student);
 			
-			CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
-			CourseListManager.addCourseForUser(modelStore, CourseListModelStudent.class, courseItem, student);
+			//CourseListManager.addSemesterForUser(modelStore, CourseListModelStudent.class, courseItem.getSemesterId(), student);
+
+			CourseListManager.addCourseToCategory(modelStore, 
+					                              CourseListModelStudent.class,
+					                              Constants.CATEGORY_ID_CURRENT, // FIXME: select actual category
+					                              courseItem, 
+					                              student);
+
 			DashboardManager.addDashboardItemForUser(modelStore, DashboardModelStudent.class, courseItem, student);
-			
-			List<CurrentTaskStudent> currentTasksStudent = teacherCourse.currentTasksForStudent(student.getId());
-			
-			DashboardManager.updateCurrentTasksForUser(modelStore, DashboardModelStudent.class, CurrentTaskStudent.class, coursePath, currentTasksStudent, student);
 		}
 		
-		List<CurrentTaskTeacher> currentTasksTeacher = teacherCourse.currentTasksTeacher();
-
-		DashboardManager.updateCurrentTasksForUserId(modelStore, DashboardModelTeacher.class, CurrentTaskTeacher.class, coursePath, currentTasksTeacher, message.getTeacherId());
+		DashboardManager.updateCurrentTasks(modelStore, message.coursePath());
 	}
 }

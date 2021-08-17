@@ -7,6 +7,7 @@ import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.regex.RegExJdk;
 import ca.ntro.services.AppCloser;
 import ca.ntro.services.CollectionsService;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.EarlyInitialization;
 import ca.ntro.services.Logger;
 
@@ -43,5 +44,10 @@ public class EarlyInitializationJdk extends EarlyInitialization {
 	@Override
 	protected CollectionsService provideCollectionsService() {
 		return new CollectionsServiceJdk();
+	}
+
+	@Override
+	protected ConfigService provideConfigService() {
+		return new ConfigService();
 	}
 }

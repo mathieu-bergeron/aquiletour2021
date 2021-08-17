@@ -13,12 +13,15 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
+import ca.ntro.web.dom.LinkListener;
+import ca.ntro.web.dom.SubmitListener;
 
 public class HtmlElementJdk extends HtmlElement {
 
@@ -139,6 +142,13 @@ public class HtmlElementJdk extends HtmlElement {
 
 	@Override
 	public void setAttribute(String name, String value) {
+		T.call(this);
+
+		setAttributeNoSideEffect(name, value);
+	}
+
+	@Override
+	public void setAttributeNoSideEffect(String name, String value) {
 		T.call(this);
 
 		jsoupElement.attr(name, value);
@@ -307,4 +317,60 @@ public class HtmlElementJdk extends HtmlElement {
 		
 		return new HtmlElementJdk(jsoupElement.clone());
 	}
+
+	@Override
+	public void initializeJs(String viewName) {
+		T.call(this);
+		// XXX: not supported server-side
+	}
+
+	@Override
+	public HtmlElements parents(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJdk(jsoupElement.parents().select(cssQuery));
+	}
+
+	@Override
+	public void installFormSubmitHandler() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void removeFormSubitHandler() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void installFormSubmitHandler(SubmitListener listener) {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void click() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void installLinkHandler() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void installLinkHandler(LinkListener listener) {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void removeLinkHandler() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
 }

@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.dashboard.models;
 
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.TaskPath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;

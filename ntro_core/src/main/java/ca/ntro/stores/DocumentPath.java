@@ -1,7 +1,6 @@
 package ca.ntro.stores;
 
 import ca.ntro.core.json.JsonSerializable;
-import ca.ntro.core.system.assertions.MustNot;
 
 public class DocumentPath implements JsonSerializable {
 	
@@ -51,18 +50,7 @@ public class DocumentPath implements JsonSerializable {
 	
 	@Override
 	public int hashCode() {
-		//MustNot.beNull(collection);
-		//MustNot.beNull(documentId);
-		
-		int code = 0;
-		if(collection != null) {
-			code += collection.hashCode();
-		}
-		if(documentId != null) {
-			code += documentId.hashCode();
-		}
-
-		return code;
+		return ("" + collection + documentId).hashCode();
 	}
 	
 	@Override

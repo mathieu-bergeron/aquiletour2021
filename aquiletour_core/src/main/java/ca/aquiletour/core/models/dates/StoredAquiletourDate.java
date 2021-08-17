@@ -6,7 +6,7 @@ import ca.ntro.core.system.trace.T;
 public class StoredAquiletourDate extends StoredProperty<AquiletourDate> {
 	
 	public StoredAquiletourDate() {
-		super(new AquiletourDate());
+		super(AquiletourDate.undefined());
 		T.call(this);
 	}
 

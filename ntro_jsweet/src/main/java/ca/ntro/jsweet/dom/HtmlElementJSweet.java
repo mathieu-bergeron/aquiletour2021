@@ -13,8 +13,11 @@ import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.AnimationListener;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
+import ca.ntro.web.dom.LinkListener;
+import ca.ntro.web.dom.SubmitListener;
 import def.dom.Element;
 import def.dom.Event;
 import def.dom.EventListener;
@@ -22,6 +25,7 @@ import def.dom.File;
 import def.dom.FileList;
 import def.dom.FileReader;
 import def.dom.HTMLInputElement;
+import def.es6.Globals;
 import def.jquery.JQuery;
 import def.jquery.JQueryEventObject;
 import def.js.Function;
@@ -60,10 +64,7 @@ public class HtmlElementJSweet extends HtmlElement {
 			public Object apply(JQueryEventObject t, Object u) {
 				T.call(this);
 
-				// FIXME: only for <a>?
-				t.preventDefault();
-
-				listener.onEvent();
+				listener.onEvent(new HtmlEventJSweet(t));
 
 				return null;
 			}
@@ -91,58 +92,112 @@ public class HtmlElementJSweet extends HtmlElement {
 		JQuery toAppend = ((HtmlElementJSweet) element).jQueryElement;
 		
 		toAppend.show();
-
 		
 		jQueryElement.append(toAppend);
 
-		installFormAutosubmit(toAppend);
+		//installFormAutosubmit(toAppend);
 	}
 
-	private void installFormAutosubmit(JQuery toAppend) {
+	@Override
+	public void initializeJs(String viewName) {
 		T.call(this);
 
-		JQuery forms = toAppend.find("form");
+		Globals._ntro_initialize_view(viewName, this);
+		
+		/*
+		installFormAutosubmit(jQueryElement);
+		installLinksClickEvents(jQueryElement);
+		*/
+	}
+
+	private void installAllLinkHandlers(JQuery rootElement) {
+		T.call(this);
+
+		JQuery anchors = rootElement.find("a");
+		anchors.each(new BiFunction<Integer, Element, Object>() {
+
+			@Override
+			public Object apply(Integer t, Element a) {
+				
+				HtmlElementJSweet anchor = new HtmlElementJSweet($(a));
+				
+				installLinkHandler(anchor, null);
+
+				return null;
+			}
+
+		});
+	}
+
+	private void installLinkHandler(HtmlElementJSweet anchor, LinkListener listener) {
+		T.call(this);
+
+		String href = anchor.getAttribute("href");
+		
+		if(href != null) {
+
+			installLinkHandler(anchor, href, listener);
+		}
+	}
+
+	private void installAllFormSubmitHandlers(JQuery rootElement) {
+		T.call(this);
+
+		JQuery forms = rootElement.find("form");
 		forms.each(new BiFunction<Integer, Element, Object>() {
 			@Override
 			public Object apply(Integer t, Element formElement) {
 				T.call(this);
 
 				JQuery form = $(formElement);
-				form.off();
-				form.on("submit", new BiFunction<JQueryEventObject, Object, Object>() {
-					@Override
-					public Object apply(JQueryEventObject t, Object u) {
-						T.call(this);
 
-						t.preventDefault();
-						
-						String href = form.attr("action");
-						if(href == null || href.isEmpty()) {
-							href = window.location.pathname;
-						}else if(!href.startsWith("/")) {
-							href = window.location.pathname + href;
-						}
-						
-						Map<String, String[]> parameters = new HashMap<>();
-						JQuery formInputs = form.find("[name]");
-						putInputParameters(parameters, formInputs);
+				installFormSubmitHandler(form, null);
 
-						String formId = form.attr("id");
-						if(formId != null && !formId.isEmpty()) {
-							JQuery otherInputs = $(document).find("[form='"+formId+"']");
-							putInputParameters(parameters, otherInputs);
-							
-						}else {
-							formId = "unknownForm";
-						}
+				return null;
+			}
 
-						history.pushState(null, formId, href);
-						
-						Ntro.router().sendMessagesFor(Ntro.context(), new Path(href), parameters);
+		});
+	}
 
-						return null;
-					}
-				});
+	private void installFormSubmitHandler(JQuery form, SubmitListener listener) {
+		T.call(this);
+
+		form.off();
+		form.on("submit", new BiFunction<JQueryEventObject, Object, Object>() {
+			@Override
+			public Object apply(JQueryEventObject t, Object u) {
+				T.call(this);
+
+				t.preventDefault();
+				
+				String href = form.attr("action");
+				if(href == null || href.isEmpty()) {
+					href = window.location.pathname;
+				}else if(!href.startsWith("/")) {
+					href = window.location.pathname + href;
+				}
+				
+				Map<String, String[]> parameters = new HashMap<>();
+				JQuery formInputs = form.find("[name]");
+				putInputParameters(parameters, formInputs);
+
+				String formId = form.attr("id");
+				if(formId != null && !formId.isEmpty()) {
+					JQuery otherInputs = $(document).find("[form='"+formId+"']");
+					putInputParameters(parameters, otherInputs);
+					
+				}else {
+					formId = "unknownForm";
+				}
+
+				history.pushState(null, formId, href);
+				
+				Ntro.router().sendMessagesFor(Ntro.context(), Path.fromRawPath(href), parameters);
+				
+				if(listener != null) {
+					listener.onFormSubmitted();
+				}
+
 				return null;
 			}
 		});
@@ -192,15 +247,9 @@ public class HtmlElementJSweet extends HtmlElement {
 	public HtmlElements find(String cssQuery) {
 		T.call(this);
 		
-		JQuery foundElements = jQueryElement.find(cssQuery);
-		
-		HtmlElementsJSweet result = null;
-		
-		if(foundElements.length > 0) {
-			result = new HtmlElementsJSweet(foundElements);
-		}
-		
-		return result;
+		JQuery foundElements = jQueryElement.find(cssQuery).addBack(cssQuery);
+
+		return new HtmlElementsJSweet(foundElements);
 	}
 
 	@Override
@@ -222,31 +271,51 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public void setAttribute(String name, String value) {
+	public void setAttributeNoSideEffect(String name, String value) {
 		T.call(this);
 		
 		jQueryElement.attr(name, value);
+	}
+
+	@Override
+	public void setAttribute(String name, String value) {
+		T.call(this);
+
+		setAttributeNoSideEffect(name, value);
 		
+		/*
 		if(name.equals("href")) {
-			removeListeners();
-			addEventListener("click", new HtmlEventListener() {
-				@Override
-				public void onEvent() {
-					T.call(this);
-					
-					String fullHref = value;
-					
-					if(value.isEmpty() || value.startsWith("?") || value.startsWith("#")) {
-						
-						fullHref = window.location.pathname + value;
-					}
+			installHrefClickEvent(this, value);
+		}*/
+	}
 
-					history.pushState(null, jQueryElement.text(), fullHref);
+	private void installLinkHandler(HtmlElement anchor, String href, LinkListener listener) {
+		T.call(this);
 
-					Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
+		anchor.removeListeners();
+		anchor.addEventListener("click", new HtmlEventListener() {
+			@Override
+			public void onEvent(HtmlEvent e) {
+				T.call(this);
+				
+				e.preventDefault();
+				
+				String fullHref = href;
+				
+				if(href.isEmpty() || href.startsWith("?") || href.startsWith("#")) {
+					
+					fullHref = window.location.pathname + href;
 				}
-			});
-		}
+
+				history.pushState(null, jQueryElement.text(), fullHref);
+
+				Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
+				
+				if(listener != null) {
+					listener.onLinkFollowed();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -442,4 +511,69 @@ public class HtmlElementJSweet extends HtmlElement {
 
 		return new HtmlElementJSweet(jQueryElement.clone(false));
 	}
+
+	@Override
+	public HtmlElements parents(String cssQuery) {
+		T.call(this);
+
+		return new HtmlElementsJSweet(jQueryElement.parent(cssQuery));
+	}
+
+	@Override
+	public void installFormSubmitHandler() {
+		T.call(this);
+
+		installFormSubmitHandler(jQueryElement, null);
+	}
+
+	@Override
+	public void installFormSubmitHandler(SubmitListener listener) {
+		T.call(this);
+
+		installFormSubmitHandler(jQueryElement, listener);
+	}
+
+	@Override
+	public void removeFormSubitHandler() {
+		T.call(this);
+
+		jQueryElement.off();
+	}
+
+	@Override
+	public void click() {
+		T.call(this);
+		
+		jQueryElement.click();
+	}
+
+	@Override
+	public void installLinkHandler() {
+		T.call(this);
+
+		installLinkHandler(this, null);
+	}
+
+	@Override
+	public void installLinkHandler(LinkListener listener) {
+		T.call(this);
+		
+		installLinkHandler(this, listener);
+	}
+
+	@Override
+	public void removeLinkHandler() {
+		T.call(this);
+		
+		jQueryElement.off();
+	}
+
+	/*
+	@Override
+	public void modal(String arg) {
+		T.call(this);
+
+		Globals._ntro_call_modal(jQueryElement, arg);
+	}*/
+
 }

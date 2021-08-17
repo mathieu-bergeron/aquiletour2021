@@ -13,10 +13,10 @@ import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.services.ModelStoreSync;
 
 public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage> {
 
@@ -29,12 +29,14 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 		}
 		
 		if(message.getUser().actsAsAdmin()) {
+
+			boolean adminControlledSemester = true;
 			
 			SemesterListManager.addSemesterToModel(modelStore, 
 					                               SemesterListModelAdmin.class, 
 					                               SemesterModelAdmin.class,
 					                               message.getSemesterId(), 
-					                               true,
+					                               adminControlledSemester,
 					                               Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
 			
 		}else if(message.getUser().actsAsTeacher()){
@@ -72,8 +74,15 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 														   message.getSemesterId(), 
 														   adminControlledSemester,
 														   teacherId);
-				}catch(BackendError e) {
 					
+					/*
+					CourseListManager.addSemesterForUserId(modelStore, 
+							                               CourseListModelTeacher.class, 
+							                               message.getSemesterId(), 
+							                               teacherId);
+				   */
+				}catch(BackendError e) {
+
 				}
 			});
 			
@@ -86,7 +95,7 @@ public class AddSemesterHandler extends BackendMessageHandler<AddSemesterMessage
 
 		}else if(message.getUser().actsAsTeacher()){
 
-			CourseListManager.addSemesterForUser(modelStore, CourseListModelTeacher.class, message.getSemesterId(), message.getUser());
+			//CourseListManager.addSemesterForUser(modelStore, CourseListModelTeacher.class, message.getSemesterId(), message.getUser());
 			GroupListManager.addSemesterForUser(modelStore, message.getSemesterId(), message.getUser());
 		}
 	}

@@ -5,6 +5,7 @@ import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummaryView;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

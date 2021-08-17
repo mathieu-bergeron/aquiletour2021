@@ -1,107 +1,195 @@
 package ca.aquiletour.web.pages.course.student;
 
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloneFailed;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.status.StatusBlocked;
 import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
-import static ca.ntro.assertions.Factory.that;
 
 public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStudent {
+
+	private HtmlElement atomicTaskContainerDefault;
+	private HtmlElement atomicTaskLockDefault;
+	private HtmlElement atomicTaskCheckboxContainerDefault;
+
+	private HtmlElement subTaskLock;
 
 	private HtmlElement gitRepoTaskSubmitUrl;
 	private HtmlElement gitRepoTaskCloningRepo;
 	private HtmlElement gitRepoTaskCloned;
 	private HtmlElement gitRepoTaskCloneFailed;
 
-	private HtmlElement gitProgressionLink;
-	private HtmlElement taskCompletedContainer;
-	private HtmlElement taskCompletedCheckbox;
+	private HtmlElement gitExerciseTaskTodo;
+	private HtmlElement gitExerciseTaskDone;
 
-	private HtmlElement entryTasksContainer;
-	private HtmlElement exitTasksContainer;
+	private HtmlElement gitProgressionContainer;
+	private HtmlElement gitProgressionLink;
+
+	private HtmlElement parentTaskLink;
+
+	private HtmlElement endtimeContainer;
+	private HtmlElement endtimeLabel;
+
+	private HtmlElement toCompleteFirstContainer;
+	private HtmlElement toCompleteFirstLink;
+
+	private HtmlElement doneContainer;
+	private HtmlElement doneEntryTasksContainer;
+	private HtmlElement doneExitTasksContainer;
+
+	private HtmlElement todoContainer;
+	private HtmlElement todoEntryTasksContainer;
+	private HtmlElement todoExitTasksContainer;
+
+
+	private HtmlElement doneTasksContainer;
+	private HtmlElement todoTasksContainer;
 
 	private HtmlElements addTaskIdToForm;
 	private HtmlElements addTaskIdToValue;
 	private HtmlElements addTaskIdToId;
-
-	private String gitProgressionText;
+	
+	private String gitProgressionHref = "";
 
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
 		super.initializeViewWeb(context);
 
+		atomicTaskContainerDefault = this.getRootElement().find("#atomic-task-container-default").get(0);
+		atomicTaskLockDefault = this.getRootElement().find("#atomic-task-lock-default").get(0);
+		atomicTaskCheckboxContainerDefault = this.getRootElement().find("#atomic-task-checkbox-container-default").get(0);
+
+		subTaskLock = this.getRootElement().find("#subtask-lock").get(0);
+
 		gitRepoTaskSubmitUrl = this.getRootElement().find(".git-repo-task-submit-url").get(0);
 		gitRepoTaskCloningRepo = this.getRootElement().find(".git-repo-task-cloning-repo").get(0);
 		gitRepoTaskCloned = this.getRootElement().find(".git-repo-task-repo-cloned").get(0);
 		gitRepoTaskCloneFailed = this.getRootElement().find(".git-repo-task-clone-failed").get(0);
 
-		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
-		taskCompletedContainer = this.getRootElement().find("#task-completed-container").get(0);
-		taskCompletedCheckbox = this.getRootElement().find("#task-completed-checkbox").get(0);
+		gitExerciseTaskTodo = this.getRootElement().find(".git-exercise-task-todo").get(0);
+		gitExerciseTaskDone = this.getRootElement().find(".git-exercise-task-done").get(0);
 
-		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
-		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
+		parentTaskLink = this.getRootElement().find("#parent-task-link").get(0);
+
+		gitProgressionContainer = this.getRootElement().find(".git-progression-container").get(0);
+		gitProgressionLink = this.getRootElement().find("#git-progression-link").get(0);
+
+		endtimeContainer = this.getRootElement().find("#endtime-container").get(0);
+		endtimeLabel = this.getRootElement().find("#endtime-label").get(0);
+
+		toCompleteFirstContainer = this.getRootElement().find("#to-complete-first-container").get(0);
+		toCompleteFirstLink = this.getRootElement().find("#to-complete-first-link").get(0);
+
+		doneContainer = this.getRootElement().find("#done-container").get(0);
+		doneEntryTasksContainer = this.getRootElement().find("#done-entry-tasks-container").get(0);
+		doneExitTasksContainer = this.getRootElement().find("#done-exit-tasks-container").get(0);
+
+		todoContainer = this.getRootElement().find("#todo-container").get(0);
+		todoEntryTasksContainer = this.getRootElement().find("#todo-entry-tasks-container").get(0);
+		todoExitTasksContainer = this.getRootElement().find("#todo-exit-tasks-container").get(0);
+
+		doneTasksContainer = this.getRootElement().find("#done-tasks-container").get(0);
+		todoTasksContainer = this.getRootElement().find("#todo-tasks-container").get(0);
 
 		addTaskIdToForm = this.getRootElement().find(".add-task-id-to-form");
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 		addTaskIdToId = this.getRootElement().find(".add-task-id-to-id");
 
+		MustNot.beNull(atomicTaskLockDefault);
+		MustNot.beNull(atomicTaskContainerDefault);
+		MustNot.beNull(atomicTaskCheckboxContainerDefault);
+
+		MustNot.beNull(subTaskLock);
 
 		MustNot.beNull(gitRepoTaskSubmitUrl);
 		MustNot.beNull(gitRepoTaskCloningRepo);
 		MustNot.beNull(gitRepoTaskCloned);
 		MustNot.beNull(gitRepoTaskCloneFailed);
 
+		MustNot.beNull(gitProgressionContainer);
 		MustNot.beNull(gitProgressionLink);
-		MustNot.beNull(taskCompletedContainer);
-		MustNot.beNull(taskCompletedCheckbox);
-		MustNot.beNull(entryTasksContainer);
-		MustNot.beNull(exitTasksContainer);
 
-		Ntro.verify(that(addTaskIdToForm.size() > 0).isTrue());
-		Ntro.verify(that(addTaskIdToValue.size() > 0).isTrue());
-		Ntro.verify(that(addTaskIdToId.size() > 0).isTrue());
-		
-		gitProgressionText = gitProgressionLink.text();
+		MustNot.beNull(gitExerciseTaskTodo);
+		MustNot.beNull(gitExerciseTaskDone);
 
+		MustNot.beNull(toCompleteFirstContainer);
+		MustNot.beNull(toCompleteFirstLink);
+
+		MustNot.beNull(endtimeLabel);
+
+		MustNot.beNull(doneContainer);
+		MustNot.beNull(doneEntryTasksContainer);
+		MustNot.beNull(doneExitTasksContainer);
+
+		MustNot.beNull(todoContainer);
+		MustNot.beNull(todoEntryTasksContainer);
+		MustNot.beNull(todoExitTasksContainer);
+
+		MustNot.beNull(doneTasksContainer);
+		MustNot.beNull(todoTasksContainer);
+
+		atomicTaskContainerDefault.hide();
+
+		doneContainer.hide();
+		doneEntryTasksContainer.hide();
+		doneExitTasksContainer.hide();
+
+		todoContainer.hide();
+		todoEntryTasksContainer.hide();
+		todoExitTasksContainer.hide();
+
+		subTaskLock.hide();
 		gitRepoTaskSubmitUrl.hide();
 		gitRepoTaskCloningRepo.hide();
 		gitRepoTaskCloned.hide();
 		gitRepoTaskCloneFailed.hide();
+		
+		gitProgressionContainer.hide();
+		
+		gitExerciseTaskTodo.hide();
+		gitExerciseTaskDone.hide();
+		
+		toCompleteFirstContainer.hide();
 	}
 
 	@Override
 	public void identifyCurrentTask(CoursePath coursePath, Task task) {
 		T.call(this);
+		
+		if(!task.isRootTask()){
+			parentTaskLink.setAttribute("href", "/" + Constants.COURSE_URL_SEGMENT + coursePath.toUrlPath() + task.parent().getPath().toString());
+		}else {
+			parentTaskLink.hide();
+		}
 
 		addTaskIdToForm.appendToAttribute("form", task.getPath().toFileName());
 		addTaskIdToValue.appendToAttribute("value", task.getPath().toFileName());
 		addTaskIdToId.appendToAttribute("id", task.getPath().toFileName());
 		
-		gitProgressionLink.setAttribute("href", "/" + Constants.GIT_COMMIT_LIST_URL_SEGMENT 
+		gitProgressionHref = "/" + Constants.GIT_COMMIT_LIST_URL_SEGMENT 
 				                                + coursePath.toUrlPath()
 				                                + task.id()
 												+ "?" + Constants.USER_URL_PARAM + "=" + Ntro.currentUser().getId()
-												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId());
-
-		gitProgressionLink.html(gitProgressionText + "&nbsp;&nbsp;" + coursePath.toUrlPath() + task.id());
+												+ "&" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId();
 	}
 
 	@Override
@@ -119,76 +207,91 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 	}
 
 	@Override
-	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+	public void displayTaskEndTime(boolean shouldDisplay) {
 		T.call(this);
+
+		if(shouldDisplay) {
+			endtimeContainer.show();
 		
-	}
-
-	@Override
-	public void displayCompletionCheckbox(boolean show) {
-		T.call(this);
-		
-		if(show) {
-
-			taskCompletedContainer.show();
-
 		}else {
-
-			taskCompletedContainer.hide();
+			endtimeContainer.hide();
 		}
 	}
 
 	@Override
-	public void checkCompletion(boolean check) {
+	public void updateTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 		
-		if(check) {
-			
-			taskCompletedCheckbox.setAttribute("checked", "true");
-			
-		}else {
-
-			taskCompletedCheckbox.removeAttribute("checked");
-		}
+		super.updateTaskEndTime(endTime, editable);
+		
+		uneditableEndTime().removeClass("bg-danger");
+		uneditableEndTime().removeClass("bg-success");
+		uneditableEndTime().addClass("bg-warning");
+		
+		endtimeLabel.text("À terminer avant");
 	}
 
 	@Override
-	public void enableCompletionCheckbox(boolean enable) {
+	public void updateTaskDoneTime(AquiletourDate doneTime) {
 		T.call(this);
 
-		if(enable) {
-			
-			taskCompletedCheckbox.removeAttribute("checked");
-			
-		}else {
-
-			taskCompletedCheckbox.setAttribute("disabled", "true");
-
-		}
+		super.updateTaskEndTime(doneTime, false);
 		
+		uneditableEndTime().removeClass("bg-danger");
+		uneditableEndTime().removeClass("bg-warning");
+		uneditableEndTime().addClass("bg-success");
+		
+		endtimeLabel.text("Terminé le");
+		
+		displayTaskEndTime(true);
+	}
+
+	@Override
+	public void updateTaskLateTime(AquiletourDate lateTime) {
+		T.call(this);
+		
+		super.updateTaskEndTime(lateTime, false);
+		
+		uneditableEndTime().removeClass("bg-success");
+		uneditableEndTime().removeClass("bg-warning");
+		uneditableEndTime().addClass("bg-danger");
+		
+		endtimeLabel.text("En retard depuis");
+
+		displayTaskEndTime(true);
 	}
 
 	@Override
 	public void clearEntryTasks() {
 		T.call(this);
-
-		entryTasksContainer.deleteChildrenForever();
+		
+		doneEntryTasksContainer.deleteChildrenForever();
+		todoEntryTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
 	public void clearExitTasks() {
 		T.call(this);
-
-		exitTasksContainer.deleteChildrenForever();
+		
+		doneExitTasksContainer.deleteChildrenForever();
+		todoExitTasksContainer.deleteChildrenForever();
 	}
 
 	@Override
-	public void appendEntryTask(String groupId, AtomicTask task) {
+	public void appendEntryTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		if(task instanceof GitRepoTask) {
 			
-			appendGitRepoEntryTask(groupId, (GitRepoTask) task);
+			todoContainer.show();
+			todoEntryTasksContainer.show();
+			
+			if(completion == null) {
+				appendGitRepoEntryTask(groupId, (GitRepoTask) task, completion);
+			}else {
+				addCompletionToGitRepoEntryTask(groupId, (GitRepoTask) task, completion);
+			}
+			
 
 		}else if(task instanceof GitExerciseTask) {
 			
@@ -211,7 +314,7 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			repoUrl.text(gitRepoSubmitted.getRepoUrl());
 
-			entryTasksContainer.appendElement(formElement);
+			todoEntryTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloned){
@@ -223,7 +326,12 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 			HtmlElement repoUrl = formElement.find(".repo-url").get(0);
 			repoUrl.text(gitRepoCloned.getRepoUrl());
 
-			entryTasksContainer.appendElement(formElement);
+			todoContainer.hide();
+
+			doneContainer.show();
+
+			doneEntryTasksContainer.show();
+			doneEntryTasksContainer.appendElement(formElement);
 			formElement.show();
 
 		}else if(completion instanceof GitRepoCloneFailed){
@@ -237,41 +345,128 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		return "atomic-task-" + task.getId();
 	}
 
-	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask) {
+	private void appendGitRepoEntryTask(String groupId, GitRepoTask repoTask, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		HtmlElement formElement = gitRepoTaskSubmitUrl.clone();
 		
 		identifyGitRepo(groupId, repoTask, formElement);
 
-		entryTasksContainer.appendElement(formElement);
+		todoEntryTasksContainer.appendElement(formElement);
 		formElement.show();
 	}
 
-	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement formElement) {
+	private void identifyAtomicTask(String groupId, AtomicTask task, HtmlElement container) {
 		T.call(this);
-
-		formElement.addClass(atomicTaskId(repoTask));
-
-		HtmlElements addStudentIdToValue = formElement.find(".add-student-id-to-value");
-		HtmlElements addGroupIdToValue = formElement.find(".add-group-id-to-value");
-		HtmlElements addRepoPathToValue = formElement.find(".add-repo-path-to-value");
-		HtmlElements addAtomicTaskIdToValue = formElement.find(".add-atomic-task-id-to-value");
 		
-		addStudentIdToValue.appendToAttribute("value", ((User) Ntro.currentUser()).getRegistrationId());
+		HtmlElements addAtomicTaskPathToValue = container.find(".add-atomic-task-id-to-value");
+		HtmlElements addGroupIdToValue = container.find(".add-group-id-to-value");
+
+		addAtomicTaskPathToValue.appendToAttribute("value", task.getId());
+		addGroupIdToValue.appendToAttribute("value", groupId);
+	}
+
+	private void identifyGitRepo(String groupId, GitRepoTask repoTask, HtmlElement container) {
+		T.call(this);
+		
+		identifyAtomicTask(groupId, repoTask, container);
+
+		container.addClass(atomicTaskId(repoTask));
+
+		HtmlElements addStudentIdToValue = container.find(".add-student-id-to-value");
+		HtmlElements addGroupIdToValue = container.find(".add-group-id-to-value");
+		HtmlElements addRepoPathToValue = container.find(".add-repo-path-to-value");
+		
+		addStudentIdToValue.appendToAttribute("value", Ntro.currentUser().getId());
 		addGroupIdToValue.appendToAttribute("value", groupId);
 		addRepoPathToValue.appendToAttribute("value", repoTask.getRepoPath().toString());
-		addAtomicTaskIdToValue.appendToAttribute("value", repoTask.getId());
 	}
 
 	@Override
-	public void appendExitTask(String groupId, AtomicTask task) {
+	public void appendExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
 		T.call(this);
+		
+		
+		if(task instanceof DefaultAtomicTask) {
+			
+			appendDefaultExitTask(groupId, task, completion);
+
+		}else if(task instanceof GitExerciseTask) {
+
+			appendGitExerciseTask(groupId, (GitExerciseTask) task, completion);
+			
+		}
+
+	}
+
+	private void appendGitExerciseTask(String groupId, GitExerciseTask task, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		HtmlElement taskElement = null;
+		
+		if(completion == null) {
+			
+			taskElement = gitExerciseTaskTodo.clone();
+			todoExitTasksContainer.appendElement(taskElement);
+			todoExitTasksContainer.show();
+			todoContainer.show();
+			
+		}else {
+
+			taskElement = gitExerciseTaskDone.clone();
+			doneExitTasksContainer.appendElement(taskElement);
+			doneExitTasksContainer.show();
+			doneContainer.show();
+
+		}
+		
+		displayGitExerciseTask(taskElement, task);
+		
+		taskElement.show();
+	}
+
+	private void displayGitExerciseTask(HtmlElement taskElement, GitExerciseTask task) {
+		T.call(this);
+		
+		HtmlElement completionKeywords = taskElement.find(".git-exercise-task-completion-keywords").get(0);
+		completionKeywords.text(task.getCompletionKeywords());
 		
 	}
 
+	private void appendDefaultExitTask(String groupId, AtomicTask task, AtomicTaskCompletion completion) {
+		T.call(this);
+		
+		HtmlElement atomicTaskContainer = atomicTaskContainerDefault.clone();
+
+		identifyAtomicTask(groupId, task, atomicTaskContainer);
+
+		atomicTaskContainer.show();
+		
+		HtmlElement atomicTaskCheckbox = atomicTaskContainer.find("#atomic-task-checkbox-default").get(0);
+		
+		if(completion == null) {
+
+			todoContainer.show();
+			todoExitTasksContainer.show();
+			todoExitTasksContainer.appendElement(atomicTaskContainer);
+
+			atomicTaskCheckbox.removeAttribute("checked");
+			atomicTaskCheckbox.removeAttribute("disabled");
+
+		}else {
+			
+			doneContainer.show();
+			doneExitTasksContainer.show();
+			doneExitTasksContainer.appendElement(atomicTaskContainer);
+
+			atomicTaskCheckbox.setAttribute("checked", "true");
+			atomicTaskCheckbox.setAttribute("disabled", "true");
+		}
+	}
+
+
 	@Override
-	public void addCompletionToEntryTask(String groupId, AtomicTask atomicTask, AtomicTaskCompletion completion) {
+	public void updateAtomicTaskCompletion(String groupId, AtomicTask atomicTask, AtomicTaskCompletion completion) {
 		T.call(this);
 		
 		removeEntryTask(atomicTask);
@@ -288,5 +483,70 @@ public class CourseViewWebStudent extends CourseViewWeb implements CourseViewStu
 		getRootElement().find("." + atomicTaskId(atomicTask)).forEach(e -> {
 			e.deleteForever();
 		});
+	}
+
+	@Override
+	public void displayDoneTasks(boolean shouldDisplay) {
+		T.call(this);
+
+		doneContainer.display(shouldDisplay);
+	}
+
+	@Override
+	public void displayTodoTasks(boolean shouldDisplay) {
+		T.call(this);
+		
+		todoContainer.display(shouldDisplay);
+	}
+
+	@Override
+	public void displayToCompleteFirst(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+			
+			toCompleteFirstContainer.show();
+			
+		}else {
+
+			toCompleteFirstContainer.hide();
+		}
+	}
+
+	@Override
+	public void updateToCompleteFirst(StatusBlocked status) {
+		T.call(this);
+		
+		toCompleteFirstLink.text(status.text());
+		if(status.href().isEmpty()) {
+			toCompleteFirstLink.removeAttribute("href");
+		}else {
+			toCompleteFirstLink.setAttribute("href", status.href());
+		}
+	}
+
+	@Override
+	public void enableSubTasks(boolean shouldEnable) {
+		T.call(this);
+		
+		super.enableSubTasks(shouldEnable);
+		subTaskLock.setVisibility(shouldEnable);
+	}
+
+	@Override
+	public void displayGitProgression(String groupId) {
+		T.call(this);
+
+		gitProgressionHref += "&" + Constants.GROUP_URL_PARAM + "=" + groupId;
+		gitProgressionLink.setAttribute("href", gitProgressionHref);
+		
+		gitProgressionContainer.removeFromDocument();
+		
+		doneContainer.show();
+		doneTasksContainer.show();
+		doneExitTasksContainer.show();
+		
+		doneExitTasksContainer.appendElement(gitProgressionContainer);
+		gitProgressionContainer.show();
 	}
 }

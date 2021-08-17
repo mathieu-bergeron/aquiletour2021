@@ -33,15 +33,6 @@ public class Student extends User {
 	}
 
 	@Override
-	public User toSessionUser() {
-		Student sessionUser = new Student();
-		
-		copySessionOnlyInfo(sessionUser);
-		
-		return sessionUser;
-	}
-
-	@Override
 	protected void copySessionOnlyInfo(User sessionUser) {
 		super.copySessionOnlyInfo(sessionUser);
 		
@@ -90,6 +81,12 @@ public class Student extends User {
 			updatePhoneNumberIfEmpty(student.getPhoneNumber());
 			updateProgramIdIfEmpty(student.getProgramId());
 		}
+	}
+
+	public boolean isStudent() {
+		T.call(this);
+
+		return true;
 	}
 	
 }

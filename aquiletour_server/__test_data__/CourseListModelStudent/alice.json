@@ -1,0 +1,15 @@
+{
+  "courses": {
+    "_C": "ObservableCourseDescriptionList",
+    "value": []
+  },
+  "allSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  },
+  "_C": "CourseListModelStudent",
+  "activeSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  }
+}

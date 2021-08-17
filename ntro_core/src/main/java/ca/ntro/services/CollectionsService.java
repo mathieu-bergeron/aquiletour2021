@@ -28,16 +28,27 @@ public abstract class CollectionsService {
 	public abstract <K extends Object, V extends Object> Map<K,V> concurrentMap(Map<K,V> elements);
 	public abstract <V extends Object> Set<V> concurrentSet(Set<V> elements);
 
-	public abstract boolean containsEquals(Set<?> set, Object target);
-	public abstract boolean setContainsExact(Set<?> set, Object target);
+	public abstract boolean containsItemEquals(List<?> list, Object target);
+	public abstract boolean containsItemExact(List<?> list, Object target);
+
+	public abstract boolean containsElementEquals(Set<?> set, Object target);
+	public abstract boolean containsElementExact(Set<?> set, Object target);
 
 	public abstract boolean containsKeyExact(Map<?, ?> map, Object key);
-	public abstract <V extends Object> V getExactKey(Map<?, V> map, Object key);
+	public abstract boolean containsKeyEquals(Map<?, ?> map, Object key);
+
+	public abstract <V extends Object> V getByKeyExact(Map<?, V> map, Object key);
+	public abstract <V extends Object> V getByKeyEquals(Map<?, V> map, Object key);
+
+	public abstract <V extends Object> void removeByKeyEquals(Map<?, V> map, Object key);
+	public abstract <V extends Object> void removeByKeyExact(Map<?, V> map, Object key);
 
 	public abstract boolean listContainsEquals(List<?> value, Object target);
 	public abstract boolean listEquals(List<?> list1, List<?> list2);
 	public abstract boolean mapEquals(Map<?,?> map1, Map<?,?> map2);
 
 	public abstract int indexOfEquals(List<?> list, Object target);
+
+	public abstract int compareToString(String o1, String o2);
 
 }

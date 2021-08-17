@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.json.JsonLoaderMemory;
 import ca.ntro.core.models.NtroModel;
@@ -15,11 +16,12 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.json.JsonLoaderFiles;
 import ca.ntro.messages.NtroModelMessage;
+import ca.ntro.services.ModelIdReader;
 import ca.ntro.services.ModelStore;
+import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
-import ca.ntro.users.NtroUser;
 
 public class LocalStoreFiles extends ModelStore {
 	
@@ -64,21 +66,48 @@ public class LocalStoreFiles extends ModelStore {
 		return jsonLoader;
 	}
 
+	@Override
+	protected void forEachDocumentIdImpl(String collectionName, ModelIdReader reader) throws BackendError {
+		
+		File collectionDir = collectionDirectory(collectionName);
+		
+		for(File modelFile : collectionDir.listFiles()) {
+			
+			String modelId = modelFile.getName().replace(".json", "");
+			
+			reader.onModelId(modelId);
+		}
+	}
+
 	private File getModelFile(DocumentPath documentPath) {
 		T.call(this);
 		
-		Path collectionDirPath = Paths.get(rootDir.getAbsolutePath(), documentPath.getCollection());
-
-		File collectionDir = collectionDirPath.toFile();
-		
-		if(!collectionDir.exists()) {
-			collectionDir.mkdir();
-		}
+		File collectionDir = collectionDirectory(documentPath);
 		
 		Path modelFilePath = Paths.get(collectionDir.getAbsolutePath(), documentPath.getDocumentId() + ".json");
 		
 		File modelFile = modelFilePath.toFile();
 		return modelFile;
+	}
+
+	private File collectionDirectory(String collectionName) {
+		T.call(this);
+
+		Path collectionDirPath = Paths.get(rootDir.getAbsolutePath(), collectionName);
+
+		File collectionDir = collectionDirPath.toFile();
+		
+		if(!collectionDir.exists()) {
+			collectionDir.mkdirs();
+		}
+
+		return collectionDir;
+	}
+
+	private File collectionDirectory(DocumentPath documentPath) {
+		T.call(this);
+		
+		return collectionDirectory(documentPath.getCollection());
 	}
 
 	private void writeJsonFile(File file, String jsonString) {
@@ -88,6 +117,7 @@ public class LocalStoreFiles extends ModelStore {
 
 			FileOutputStream out = new FileOutputStream(file);
 			out.write(jsonString.getBytes());
+			out.flush();
 			out.close();
 			
 			//System.out.println("Saved: " + file.getAbsolutePath());
@@ -150,6 +180,13 @@ public class LocalStoreFiles extends ModelStore {
 		
 	}
 
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+		
+		// DEV: provoke cache misses intentionally  to test ModelStore
+		return 3;
+	}
 
 
 }

@@ -9,7 +9,7 @@ import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 
-public class ShowQueueHandler<V extends QueueView, MSG extends ShowQueueMessage> extends ControllerMessageHandler<QueueController, V, MSG> {
+public abstract class ShowQueueHandler<V extends QueueView, MSG extends ShowQueueMessage> extends ControllerMessageHandler<QueueController, V, MSG> {
 
 	private String currentQueueId = null;
 
@@ -28,6 +28,8 @@ public class ShowQueueHandler<V extends QueueView, MSG extends ShowQueueMessage>
 		}
 		
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showQueue(currentView);
+		rootView.showQueue(queueViewClass(), currentView);
 	}
+	
+	protected abstract Class<? extends QueueView> queueViewClass();
 }

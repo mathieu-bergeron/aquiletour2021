@@ -67,3 +67,6 @@ dockers/git/depot/
 #Cert
 dockers/httprouter/aiguilleurca.key
 dockers/httprouter/d706a8e1929c0867.crt
+
+# Vertx file uploads
+file-uploads

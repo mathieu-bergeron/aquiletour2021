@@ -1,0 +1,47 @@
+{
+  "dashboardItems": {
+    "_C": "DashboardItems",
+    "value": [
+      {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "_C": "DashboardItemTeacher",
+        "coursePath": {
+          "names": [
+            "mathieu.bergeron",
+            "H2021",
+            "StruDon"
+          ],
+          "_C": "CoursePath"
+        },
+        "currentTasks": {
+          "_C": "CurrentTasks",
+          "value": [
+            {
+              "taskPath": {
+                "names": [],
+                "_C": "TaskPath"
+              },
+              "_C": "CurrentTaskTeacher",
+              "taskTitle": {
+                "_C": "StoredString",
+                "value": "Structure de données"
+              },
+              "numberOfStudents": {
+                "_C": "StoredInteger",
+                "value": 3
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "_C": "DashboardModelTeacher",
+  "statusMessage": {
+    "_C": "StoredString",
+    "value": ""
+  }
+}

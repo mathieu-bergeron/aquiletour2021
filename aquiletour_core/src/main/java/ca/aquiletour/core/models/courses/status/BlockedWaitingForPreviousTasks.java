@@ -17,4 +17,8 @@ public class BlockedWaitingForPreviousTasks extends BlockedWaitingForTasks {
 		T.call(this);
 	}
 
+	public String text() {
+		return "Il manque une étape préalable";
+	}
+
 }

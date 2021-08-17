@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
@@ -21,9 +23,11 @@ public class BackendServiceJSweet extends BackendService {
 	private boolean isOpen = false;
 	private final List<NtroMessage> queuedMessages = new ArrayList<>();
 	
-	private final WebSocket webSocket;
+	private WebSocket webSocket;
 	
 	private final Map<Class<? extends NtroMessage>, MessageHandler<?>> handlers = new HashMap<>();
+	
+	private final String connectionString;
 	
 	public BackendServiceJSweet() {
 		super();
@@ -34,14 +38,22 @@ public class BackendServiceJSweet extends BackendService {
 			protocol = "wss";
 		}
 
-		String connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
+		connectionString = protocol + "://" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
+
+		connectWebSocket(Ntro.currentUser().getAuthToken());
+	}
+
+	private void connectWebSocket(String authToken) {
+		T.call(this);
 
 		webSocket = new WebSocket(connectionString);
 
 		webSocket.onmessage = t -> {
+			
+			System.out.println(t.data.toString());
 
 			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, t.data.toString());
-			
+
 			MessageHandler<?> handler = handlers.get(message.getClass());
 			
 			if(handler != null) {
@@ -53,12 +65,8 @@ public class BackendServiceJSweet extends BackendService {
 		};
 		
 		webSocket.onopen = t -> {
-
-			// FIXME: there is no guarantee  that MessageFactory.registerUser has been called
-			//        we must use initialization tasks
-			NtroRegisterSocketMessage registerSocketNtroMessage = Ntro.messages().create(NtroRegisterSocketMessage.class);
-
-			sendMessageToBackend(registerSocketNtroMessage);
+			
+			registerWebSocket(authToken);
 			
 			isOpen = true;
 			for(NtroMessage queuedMessage : queuedMessages) {
@@ -67,6 +75,15 @@ public class BackendServiceJSweet extends BackendService {
 			
 			return null;
 		};
+	}
+
+	private void registerWebSocket(String authToken) {
+		T.call(this);
+
+		NtroRegisterSocketMessage registerSocketNtroMessage = Ntro.messages().create(NtroRegisterSocketMessage.class);
+		registerSocketNtroMessage.setAuthToken(authToken);
+
+		sendMessageToBackend(registerSocketNtroMessage);
 	}
 
 	@Override

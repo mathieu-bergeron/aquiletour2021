@@ -1,206 +1,128 @@
 package ca.aquiletour.core.pages.queue.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
+import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
-import ca.ntro.core.models.listeners.ClearItemsListener;
-import ca.ntro.core.models.listeners.ItemAddedListener;
-import ca.ntro.core.models.listeners.ItemRemovedListener;
-import ca.ntro.core.models.listeners.ValueObserver;
+import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.mvc.ModelViewSubViewHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.models.NtroDate;
+import ca.ntro.messages.MessageHandler;
+import ca.ntro.services.ModelObserver;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubViewHandler<QueueModel, V>  {
+	
+	private ModelObserver currentObserver = null;
+	private QueueModel currentModel = null;
 
 	@Override
 	protected void handle(QueueModel model, V view, ViewLoader subViewLoader) {
 		T.call(this);
 		
-		view.clearQueue();
-
-		observeAppointments(model, view, subViewLoader);
-	}
-
-	private void observeAppointments(QueueModel model, V view, ViewLoader subViewLoader) {
-		T.call(this);
-
-		model.getAppointments().onItemAdded(new ItemAddedListener<Appointment>() {
-			@Override
-			public void onItemAdded(int index, Appointment item) {
-				T.call(this);
-
-				String currentUserId = Ntro.currentUser().getId();
-				
-				AppointmentView appointmentView = (AppointmentView) subViewLoader.createView();
-				
-				appointmentView.displayAppointement(model.getCourseId(), currentUserId, item);
-				
-				observeAppointment(item, appointmentView);
-				
-				view.insertAppointment(index, appointmentView);
-			}
-
-		});
+		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
 		
-		model.getAppointments().onItemRemoved(new ItemRemovedListener<Appointment>() {
+		if(currentObserver != null && currentModel != null) {
+			modelStore.removeObserver(currentModel, currentObserver);
+			currentModel = model;
+		}
+		
+		currentObserver = modelStore.observeModel(model, new ModelObserver() {
 			@Override
-			public void onItemRemoved(int index, Appointment item) {
+			public void onModelUpdate(NtroModel updatedModel) {
 				T.call(this);
+				
+				QueueModel queueModel = (QueueModel) updatedModel;
 
-				view.deleteAppointment(item.getId());
+				observeQueueModel(view, subViewLoader, queueModel);
 			}
 		});
 		
-		model.getAppointments().onClearItems(new ClearItemsListener() {
+		// XXX: hide appointment as soon as user clicks 
+		//      delete appointment when we get confirmation from server
+		Ntro.messages().registerHandler(DeleteAppointmentMessage.class, new MessageHandler<DeleteAppointmentMessage>() {
+
 			@Override
-			public void onClearItems() {
+			public void handle(DeleteAppointmentMessage message) {
 				T.call(this);
 
-				view.clearQueue();
+				String appointementId = message.getAppointmentId();
+				String subViewId = Appointment.subViewId(appointementId);
+
+				view.hideSubView(subViewId);
+
+				Ntro.backendService().sendMessageToBackend(message);
 			}
 		});
 	}
 
-	private void observeAppointment(Appointment appointment, AppointmentView appointmentView) {
+	protected void observeQueueModel(V view, ViewLoader subViewLoader, QueueModel queueModel) {
 		T.call(this);
-
-		observeCourseTitle(appointment, appointmentView);
-		observeTaskTitle(appointment, appointmentView);
-		observeMessage(appointment, appointmentView);
-		observeTags(appointment, appointmentView);
-		observeTime(appointment, appointmentView);
-	}
-
-	private void observeTime(Appointment appointment, AppointmentView appointmentView) {
-		T.call(this);
-
-		appointment.getTime().observe(new ValueObserver<NtroDate>() {
-			@Override
-			public void onValue(NtroDate value) {
-				T.call(this);
-				
-				appointmentView.dislayTime(value);
-			}
-
-			@Override
-			public void onDeleted(NtroDate lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValueChanged(NtroDate oldValue, NtroDate value) {
-				T.call(this);
-
-				appointmentView.dislayTime(value);
-			}
-		});
-	}
-
-	private void observeTaskTitle(Appointment appointment, AppointmentView appointmentView) {
-		T.call(this);
-
-		appointment.getTaskTitle().observe(new ValueObserver<String>() {
-			@Override
-			public void onValue(String value) {
-				T.call(this);
-				
-				appointmentView.displayTaskTitle(value);
-			}
-
-			@Override
-			public void onDeleted(String lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValueChanged(String oldValue, String value) {
-				T.call(this);
-
-				appointmentView.displayTaskTitle(value);
-			}
-		});
-	}
-
-	private void observeTags(Appointment appointment, AppointmentView appointmentView) {
-		T.call(this);
-
-		appointment.getTags().onItemAdded(new ItemAddedListener<String>() {
-			@Override
-			public void onItemAdded(int index, String item) {
-				T.call(this);
-				
-				appointmentView.appendTag(item);
-			}
-		});
 		
-		appointment.getTags().onClearItems(new ClearItemsListener() {
-			@Override
-			public void onClearItems() {
-				T.call(this);
-				
-				appointmentView.clearTags();
-			}
+		List<String> subViewsToShow = new ArrayList<>();
+		
+		queueModel.getAppointmentById().forEachEntry((appointmentId, appointment) -> {
+			
+			int index = queueModel.appointmentIndexById(appointmentId);
+			
+			String appointmentViewId = appointment.subViewId();
+
+			subViewsToShow.add(appointmentViewId);
+			
+			displayOrUpdateAppointment(queueModel, 
+									   view, 
+									   subViewLoader, 
+									   appointmentViewId,
+									   index, 
+									   appointment);
+		});
+
+		view.deleteSubViewsNotInList(subViewsToShow);
+		
+		queueModel.getAppointmentsInOrder().forEachItem((index, appointmentId) -> {
+
+			String subViewId = Appointment.subViewId(appointmentId);
+			view.moveAppointment(index, subViewId);
 		});
 	}
 
-	private void observeMessage(Appointment appointment, AppointmentView appointmentView) {
+	private void displayOrUpdateAppointment(QueueModel model, 
+			                                V view, 
+			                                ViewLoader subViewLoader, 
+			                                String appointmentViewId,
+			                                int appointmentIndex, 
+			                                Appointment appointment) {
 		T.call(this);
+		
+		String currentUserId = Ntro.currentUser().getId();
+		boolean displayTime = model.shouldShowAppointmentTimes();
+		
+		AppointmentView appointmentView = (AppointmentView) view.findSubView(view.appointmentViewClass(), appointmentViewId);
+		
+		if(appointmentView != null) {
 
-		appointment.getComment().observe(new ValueObserver<String>() {
-
-			@Override
-			public void onValue(String value) {
-				T.call(this);
-				
-				appointmentView.displayComment(value);
-			}
-
-			@Override
-			public void onDeleted(String lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onValueChanged(String oldValue, String value) {
-				T.call(this);
-				
-				appointmentView.displayComment(value);
-			}
-		});
-	}
-
-	private void observeCourseTitle(Appointment appointment, AppointmentView appointmentView) {
-		T.call(this);
-
-		appointment.getCourseTitle().observe(new ValueObserver<String>() {
+			appointmentView.initializeView(AquiletourMain.createNtroContext());
+			appointmentView.updateAppointment(appointmentIndex, displayTime, appointment);
 			
-			@Override
-			public void onDeleted(String lastValue) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onValue(String value) {
-				T.call(this);
-				
-				appointmentView.displayCourseTitle(value);
-			}
-			
-			@Override
-			public void onValueChanged(String oldValue, String value) {
-				T.call(this);
+		}else {
 
-				appointmentView.displayCourseTitle(value);
-			}
-		});
+			appointmentView = (AppointmentView) subViewLoader.createView();
+
+			appointmentView.displayAppointement(model.getQueueId(), 
+					                            currentUserId, 
+					                            appointmentViewId,
+					                            appointmentIndex,
+					                            displayTime,
+					                            appointment);
+
+			view.insertAppointment(appointmentIndex, appointmentView);
+		}
 	}
 }

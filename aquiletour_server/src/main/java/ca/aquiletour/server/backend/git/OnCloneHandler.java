@@ -9,9 +9,9 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ValueReader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.ModelStoreSync;
 
 public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 
@@ -54,7 +54,7 @@ public class OnCloneHandler extends BackendMessageHandler<OnClone> {
 
 	private void fetchRepoUrlFromPreviousCompletion(ModelStoreSync modelStore, 
 			                                        OnClone message, 
-			                                        GitRepoCloned gitRepoCloned) {
+			                                        GitRepoCloned gitRepoCloned) throws BackendError {
 		T.call(this);
 
 		CourseManager.readAtomicTaskCompletionStudent(modelStore, 

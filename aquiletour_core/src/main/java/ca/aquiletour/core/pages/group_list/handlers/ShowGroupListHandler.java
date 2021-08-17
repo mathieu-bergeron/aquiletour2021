@@ -1,7 +1,5 @@
 package ca.aquiletour.core.pages.group_list.handlers;
 
-import ca.aquiletour.core.pages.course_list.messages.ShowCourseListMessage;
-import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
 import ca.aquiletour.core.pages.root.RootView;
@@ -16,7 +14,7 @@ public class ShowGroupListHandler extends ParentViewMessageHandler<RootView,
 	protected void handle(RootView parentView, GroupListView currentView, ShowGroupListMessage message) {
 		T.call(this);
 		
-		parentView.showGroupList(currentView);
+		parentView.showGroupList(GroupListView.class, currentView);
 	}
 
 

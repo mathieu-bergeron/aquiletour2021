@@ -8,6 +8,7 @@ import ca.ntro.jsweet.introspection.IntrospectorJSweet;
 import ca.ntro.jsweet.regex.RegExJSweet;
 import ca.ntro.services.AppCloser;
 import ca.ntro.services.CollectionsService;
+import ca.ntro.services.ConfigService;
 import ca.ntro.services.EarlyInitialization;
 import ca.ntro.services.Logger;
 
@@ -47,5 +48,11 @@ public class EarlyInitializationJSweet extends EarlyInitialization {
 		__T.call(this, "provideRegEx");
 		
 		return new RegExJSweet();
+	}
+
+
+	@Override
+	protected ConfigService provideConfigService() {
+		return new ConfigService();
 	}
 }

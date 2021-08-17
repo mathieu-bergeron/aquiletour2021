@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class RouterService {
@@ -25,7 +26,7 @@ public abstract class RouterService {
 		
 		Map<String, String[]> parameters = new HashMap<>();
 		
-		Path path = new Path(rawPath);
+		Path path = Path.fromRawPath(rawPath);
 		
 		if(rawParameters.startsWith("?")) {
 			rawParameters = rawParameters.substring(1);
@@ -45,12 +46,14 @@ public abstract class RouterService {
 	public void sendMessagesFor(NtroContext<?, ?> context, Path path, Map<String, String[]> parameters) {
 		T.call(this);
 
-		System.out.println("path: " + path.toString());
-		System.out.println("parameters: ");
-		for(Map.Entry<String, String[]> entry : parameters.entrySet()) {
-			System.out.println(entry.getKey() + ": " + entry.getValue()[0]);
+		Log.info("path: " + path.toString());
+		if(!parameters.isEmpty()) {
+			Log.info("parameters: ");
+			for(Map.Entry<String, String[]> entry : parameters.entrySet()) {
+				Log.info(entry.getKey() + ": " + entry.getValue()[0]);
+			}
 		}
-		
+
 		sendBackendMessagesFor(context, path, parameters);
 		sendFrontendMessagesFor(context, path, parameters);
 	}

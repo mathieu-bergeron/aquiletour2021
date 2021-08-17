@@ -30,15 +30,15 @@ public abstract class SemesterListViewModel<SLM extends SemesterListModel<SM>,
 
 				SV semesterView = (SV) subViewLoader.createView();
 				
-				observeSemester(view, semesterView, item, isCurrentSemester(model, item));
+				observeSemester(view, semesterView, item, isActiveSemester(model, item));
 			}
 		});
 	}
 
-	private boolean isCurrentSemester(SLM model, SM item) {
+	private boolean isActiveSemester(SLM model, SM item) {
 		T.call(this);
 
-		return model.getCurrentSemesterId().getValue().equals(item.getSemesterId());
+		return model.getActiveSemesterIds().contains(item.getSemesterId());
 	}
 
 	protected void observeSemester(SLV view, SV semesterView, SM semester, boolean isCurrentSemester) {

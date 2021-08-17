@@ -4,10 +4,8 @@ import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
-import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
 import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
@@ -17,14 +15,13 @@ import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public class CourseModelTeacher extends CourseModel {
+public class CourseModelTeacher extends CourseModel<CurrentTaskTeacher> {
 
 	private GroupDescriptions groups = new GroupDescriptions();
 
@@ -125,7 +122,7 @@ public class CourseModelTeacher extends CourseModel {
 	}
 
 	@Override
-	protected void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
+	protected void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule) {
 		T.call(this);
 
 		scheduledDates.clear();
@@ -165,8 +162,6 @@ public class CourseModelTeacher extends CourseModel {
 	public void taskCompletedByStudent(Path taskPath, String atomicTaskId, String studentId) {
 		T.call(this);
 		
-		String taskId = pathToId(taskPath);
-		
 		StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
 		
 		if(studentCompletions == null) {
@@ -178,10 +173,10 @@ public class CourseModelTeacher extends CourseModel {
 		
 		if(groupId != null) {
 
-			CompletionByAtomicTaskId studentTaskCompletions = studentCompletions.valueOf(taskId);
+			CompletionByAtomicTaskId studentTaskCompletions = studentCompletions.valueOf(taskPath.toKey());
 			if(studentTaskCompletions == null) {
 				studentTaskCompletions = new CompletionByAtomicTaskId();
-				studentCompletions.putEntry(taskId, studentTaskCompletions);
+				studentCompletions.putEntry(taskPath.toKey(), studentTaskCompletions);
 			}
 			
 			if(atomicTaskId != null && !atomicTaskId.isEmpty()) {
@@ -216,69 +211,6 @@ public class CourseModelTeacher extends CourseModel {
 		});
 	}
 
-	public List<CurrentTaskStudent> currentTasksForStudent(String studentId) {
-		T.call(this);
-		
-		StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
-		
-		FindResults findResults = rootTask().findAll(new VisitDirection[]{SUB, NEXT}, true, (task) -> {
-			return task.status(studentCompletions).isTodo();
-		});
-		
-		findResults.getResults().sort((result1, result2) -> {
-			return Integer.compare(result1.getMinDistance(), result2.getMinDistance());
-		});
-		
-		List<CurrentTaskStudent> currentTasks = new ArrayList<>();
-		findResults.getResults().forEach(r -> {
-			currentTasks.add(new CurrentTaskStudent(r.getTask()));
-		});
-		
-		return currentTasks;
-	}
-
-	private int numberOfStudents() {
-		
-		int numberOfStudents = 0;
-		
-		for(GroupDescription group : getGroups().getValue()) {
-			numberOfStudents += group.getStudents().size();
-		}
-		
-		return numberOfStudents;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<CurrentTaskTeacher> currentTasksTeacher() {
-		T.call(this);
-		
-		return rootTask().reduceTo(List.class, new VisitDirection[]{SUB,NEXT}, true, new ArrayList<CurrentTaskTeacher>(), (distance, task, currentTasks) -> {
-			getGroups().forEachItem((i, group) -> {
-				group.getStudents().forEachItem((j, studentId) -> {
-
-					StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
-					if(task.status(studentCompletions).isTodo()) {
-						
-						CurrentTaskTeacher currentTask = CurrentTaskTeacher.currentTaskByPath(currentTasks, task.getPath());
-						
-						if(currentTask != null) {
-
-							currentTask.incrementNumberOfStudent(1);
-
-						}else {
-							
-							currentTask = new CurrentTaskTeacher(task);
-							currentTasks.add(currentTask);
-						}
-					}
-				});
-			});
-
-			return currentTasks;
-		});
-	}
-	
-
 	public void updateAtomicTaskCompletion(Path taskPath, String studentId, String atomicTaskId, AtomicTaskCompletion completionToAdd) {
 		T.call(this);
 
@@ -304,4 +236,41 @@ public class CourseModelTeacher extends CourseModel {
 									   atomicTaskId);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CurrentTaskTeacher> currentTasks() {
+		T.call(this);
+
+		List<CurrentTaskTeacher> allCurrentTasks = rootTask().reduceTo(List.class, new VisitDirection[]{SUB,NEXT}, true, new ArrayList<CurrentTaskTeacher>(), (distance, task, currentTasks) -> {
+			getGroups().forEachItem((i, group) -> {
+				group.getStudents().forEachItem((j, studentId) -> {
+					StudentCompletionsByTaskId studentCompletions = getCompletions().valueOf(studentId);
+					if(task.status(studentCompletions).isTodo()) {
+						
+						CurrentTaskTeacher currentTask = CurrentTaskTeacher.currentTaskByPath(currentTasks, task.getPath());
+						
+						if(currentTask != null) {
+
+							currentTask.incrementNumberOfStudent(1);
+
+						}else {
+							
+							currentTask = new CurrentTaskTeacher(task);
+							currentTasks.add(currentTask);
+						}
+					}
+				});
+			});
+
+			return currentTasks;
+		});
+		
+		allCurrentTasks.sort((currentTask1, currentTask2) -> {
+			return Integer.compare(currentTask1.getNumberOfStudents().getValue(), currentTask2.getNumberOfStudents().getValue());
+		});
+
+		return allCurrentTasks;
+	}
+
 }

@@ -5,6 +5,7 @@ import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.views.CourseListItemView;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;

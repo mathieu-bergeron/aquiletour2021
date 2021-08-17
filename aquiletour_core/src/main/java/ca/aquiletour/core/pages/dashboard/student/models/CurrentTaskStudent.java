@@ -1,11 +1,10 @@
 package ca.aquiletour.core.pages.dashboard.student.models;
 
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.TaskPath;
+import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
 import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
-import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
 
 public class CurrentTaskStudent extends CurrentTask {
@@ -32,7 +31,7 @@ public class CurrentTaskStudent extends CurrentTask {
 		this.endTime = endTime;
 	}
 
-	public void updateEndTime(CourseDate endTime) {
+	public void updateEndTime(AquiletourDate endTime) {
 		T.call(this);
 
 		getEndTime().set(endTime);

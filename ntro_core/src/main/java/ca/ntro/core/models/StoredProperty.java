@@ -6,7 +6,6 @@ import java.util.List;
 import ca.ntro.core.models.listeners.DeletionListener;
 import ca.ntro.core.models.listeners.ValueListener;
 import ca.ntro.core.models.listeners.ValueObserver;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class StoredProperty<V extends Object> extends StoredValue {
@@ -66,9 +65,6 @@ public abstract class StoredProperty<V extends Object> extends StoredValue {
 			args.add(newValue);
 			modelStore().onValueMethodInvoked(valuePath(),"set",args);
 
-		}else {
-
-			Log.warning("set invoked while model store not connected");
 		}
 		
 		for(ValueObserver<V> observer : observers) {

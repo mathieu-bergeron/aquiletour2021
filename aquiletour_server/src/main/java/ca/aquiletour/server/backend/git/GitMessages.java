@@ -9,8 +9,11 @@ import java.nio.charset.StandardCharsets;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterExercise;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -27,20 +30,15 @@ public class GitMessages {
 		
 		T.here();
 
-		String directoryName = "exercice";
-		
-		if(taskPath.nameCount() > 0) {
-			directoryName = taskPath.name(taskPath.nameCount()-1);
-		}
-		
 		RegisterExercise registerExerciceMessage = Ntro.messages().create(RegisterExercise.class);
 		registerExerciceMessage.setSemesterId(coursePath.semesterId());
-		registerExerciceMessage.setCourseId(coursePath.teacherId() + "/" + coursePath.courseId());
+		registerExerciceMessage.setTeacherId(coursePath.teacherId());
+		registerExerciceMessage.setCourseId(coursePath.courseId());
 		registerExerciceMessage.setGroupId(groupId);
 		registerExerciceMessage.setExercisePath(taskPath.toString());
 		registerExerciceMessage.setRepoPath(gitTask.getRepoPath().toString());
 		registerExerciceMessage.setSourceFolderPath(taskPath.toString());
-		registerExerciceMessage.setCompletionKeywords(directoryName);
+		registerExerciceMessage.setCompletionKeywords(gitTask.getCompletionKeywords());
 		
 		sendMessage(registerExerciceMessage);
 	}
@@ -101,6 +99,14 @@ public class GitMessages {
 		deleteExercice.setExercisePath(taskPath.toString());
 		
 		sendMessage(deleteExercice);
+	}
+
+	public static void registerGitRepoForCourse(CourseModelTeacher course, 
+			                                    CoursePath coursePath, 
+			                                    Task task, 
+			                                    GitRepoTask atomicTask) {
+		T.call(GitMessages.class);
+
 	}
 
 }

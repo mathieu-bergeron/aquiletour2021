@@ -20,7 +20,6 @@ package ca.aquiletour.jsweet;
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.web.AquiletourRouterService;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jsweet.services.BackendServiceJSweet;
 import ca.ntro.jsweet.services.NtroJSweet;
 import ca.ntro.services.RouterService;
 

@@ -2,15 +2,16 @@ package ca.aquiletour.web;
 
 import java.util.Map;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.course.CourseTaskMessage;
 import ca.aquiletour.core.messages.user.ShowPasswordMenu;
+import ca.aquiletour.core.messages.user.UserIsActiveMessage;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
-import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.student.messages.ShowCourseMessageStudent;
@@ -23,7 +24,6 @@ import ca.aquiletour.core.pages.course_list.teacher.messages.SelectCourseListSub
 import ca.aquiletour.core.pages.course_list.teacher.messages.ShowCourseListMessageTeacher;
 import ca.aquiletour.core.pages.dashboard.student.messages.ShowDashboardMessageStudent;
 import ca.aquiletour.core.pages.dashboard.teacher.messages.ShowTeacherDashboardMessage;
-import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListForTimePeriodMessage;
 import ca.aquiletour.core.pages.git.commit_list.messages.ShowCommitListMessage;
 import ca.aquiletour.core.pages.git.late_students.messages.ShowLateStudentsMessage;
 import ca.aquiletour.core.pages.git.student_summaries.messages.ShowStudentSummariesMessage;
@@ -31,13 +31,11 @@ import ca.aquiletour.core.pages.group_list.messages.SelectGroupListSubset;
 import ca.aquiletour.core.pages.group_list.messages.ShowGroupListMessage;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.open_queue_list.messages.ShowOpenQueueListMessage;
 import ca.aquiletour.core.pages.queue.student.messages.ShowQueueMessageStudent;
 import ca.aquiletour.core.pages.queue.teacher.messages.ShowQueueMessageTeacher;
-import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.queue_list.messages.ShowQueueListMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
 import ca.aquiletour.core.pages.semester_list.admin.messages.ShowSemesterListAdmin;
-import ca.aquiletour.core.pages.semester_list.messages.ShowSemesterListMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.messages.ShowSemesterListTeacher;
 import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
@@ -46,9 +44,11 @@ import ca.ntro.services.Ntro;
 
 public class AquiletourRequestHandler {
 	
-	
 	public static void sendMessages(NtroContext<User, SessionData> context, Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
+		
+		// XXX: register that user is active for every action
+		Ntro.backendService().sendMessageToBackend(Ntro.messages().create(UserIsActiveMessage.class));
 
 		sendRootMessages(context, path, parameters);
 		
@@ -56,7 +56,7 @@ public class AquiletourRequestHandler {
 
 			sendDashboardMessages(path.subPath(1), parameters, context.user());
 
-		}else if(path.startsWith(Constants.QUEUES_URL_SEGMENT)) {
+		}else if(path.startsWith(Constants.QUEUE_LIST_URL_SEGMENT)) {
 			
 			sendQueuesMessages(path.subPath(1), parameters);
 
@@ -125,14 +125,12 @@ public class AquiletourRequestHandler {
 		
 		ShowGroupListMessage showGroupListMessage = Ntro.messages().create(ShowGroupListMessage.class);
 		Ntro.messages().send(showGroupListMessage);
-		
-		String currentSemesterId = null;
+
+		String currentSemesterId = Constants.ACTIVE_SEMESTERS_ID;
 		if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
 			currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
-		}else {
-			currentSemesterId = sessionData.getCurrentSemester();
 		}
-		
+
 		String currentCourseId = null;
 		if(parameters.containsKey(Constants.COURSE_URL_PARAM)) {
 			currentCourseId = parameters.get(Constants.COURSE_URL_PARAM)[0];
@@ -169,11 +167,10 @@ public class AquiletourRequestHandler {
 
 			Ntro.messages().send(showCourseListMessage);
 			
-			String currentSemesterId = null;
-			if(parameters.containsKey(Constants.SEMESTER_URL_PARAM)) {
-				currentSemesterId = parameters.get(Constants.SEMESTER_URL_PARAM)[0];
-			}else {
-				currentSemesterId = sessionData.getCurrentSemester();
+			String currentCategoryId = AquiletourMain.currentCategoryId();
+			if(parameters.containsKey(Constants.CATEGORY_URL_PARAM)) {
+				currentCategoryId = parameters.get(Constants.CATEGORY_URL_PARAM)[0];
+				AquiletourMain.setCurrentCategoryId(currentCategoryId);
 			}
 
 			SelectCourseListSubset selectCourseListSubset = null;
@@ -184,7 +181,7 @@ public class AquiletourRequestHandler {
 				selectCourseListSubset = Ntro.messages().create(SelectCourseListSubsetStudent.class);
 			}
 
-			selectCourseListSubset.setSemesterId(currentSemesterId);
+			selectCourseListSubset.setCategoryId(currentCategoryId);
 			Ntro.messages().send(selectCourseListSubset);
 		}
 	}
@@ -249,7 +246,7 @@ public class AquiletourRequestHandler {
 	private static void sendQueuesMessages(Path path, Map<String, String[]> parameters) {
 		T.call(AquiletourRequestHandler.class);
 
-		ShowOpenQueueListMessage showQueuesMessage = Ntro.messages().create(ShowOpenQueueListMessage.class);
+		ShowQueueListMessage showQueuesMessage = Ntro.messages().create(ShowQueueListMessage.class);
 		Ntro.messages().send(showQueuesMessage);
 	}
 	
@@ -264,7 +261,7 @@ public class AquiletourRequestHandler {
 		String teacherId = path.name(0);
 		String semesterId = path.name(1);
 		String courseId = path.name(2);
-		Path taskPath = path.subPath(3);
+		TaskPath taskPath = TaskPath.fromPath(path.subPath(3));
 
 		message.setTeacherId(teacherId);
 		message.setCourseId(courseId);
@@ -286,7 +283,7 @@ public class AquiletourRequestHandler {
 			
 			ShowCourseMessage showCourseMessage = null;
 			
-			if(teacherId.equals(user.getRegistrationId())
+			if(teacherId.equals(user.getId())
 					&& user.actsAsTeacher()) {
 
 				showCourseMessage = createCourseTaskMessage(ShowCourseMessageTeacher.class, path, parameters, sessionData);
@@ -297,8 +294,7 @@ public class AquiletourRequestHandler {
 
 			}
 			
-			String groupId = Constants.COURSE_STRUCTURE_ID;
-
+			String groupId = null;
 			if(parameters.containsKey(Constants.GROUP_URL_PARAM)) {
 				groupId = parameters.get(Constants.GROUP_URL_PARAM)[0];
 			}
@@ -319,12 +315,8 @@ public class AquiletourRequestHandler {
 
 
 			if(user instanceof Teacher 
-					&& user.getRegistrationId().equals(teacherId)
+					&& user.getId().equals(teacherId)
 					&& user.actsAsTeacher()) {
-
-				TeacherUsesQueueMessage teacherUsesQueueMessage = Ntro.messages().create(TeacherUsesQueueMessage.class);
-				teacherUsesQueueMessage.setCourseId(teacherId);
-				Ntro.backendService().sendMessageToBackend(teacherUsesQueueMessage);
 
 				ShowQueueMessageTeacher showTeacherQueueMessage = Ntro.messages().create(ShowQueueMessageTeacher.class);
 				showTeacherQueueMessage.setQueueId(teacherId);
@@ -344,22 +336,10 @@ public class AquiletourRequestHandler {
 
 		if (subPath.nameCount() >= 1) {
 			
-			ShowCommitListMessage showGitMessage = null;
-			if (parameters.containsKey("endTime")) {
-				ShowCommitListForTimePeriodMessage message = AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListForTimePeriodMessage.class, 
-						                                                                                                subPath, 
-						                                                                                                parameters, 
-						                                                                                                sessionData);
-				// TODO
-				//message.setStartTime(startTime);
-				//message.setEndTime(endTime);
-				showGitMessage = message;
-			}else {
-				showGitMessage= AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListMessage.class, 
-						                                                                   subPath, 
-						                                                                   parameters, 
-						                                                                   sessionData);
-			}
+			ShowCommitListMessage showGitMessage = AquiletourBackendRequestHandler.createAquiletourGitMessage(ShowCommitListMessage.class,
+																			                                  subPath,
+																		                                      parameters,
+																			                                  sessionData);
 
 			Ntro.messages().send(showGitMessage);
 		}

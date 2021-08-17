@@ -1,6 +1,8 @@
 package ca.ntro.core.models;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.json.JsonLoader;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.services.ModelStore;
@@ -13,6 +15,11 @@ public class ModelLoader extends NtroTaskAsync {
 	private NtroModel model;
 	private DocumentPath documentPath;
 	private ModelStore modelStore;
+
+	public ModelLoader() {
+		super();
+		T.call(this);
+	}
 	
 	public ModelLoader(ModelStore modelStore, DocumentPath documentPath) {
 		super();
@@ -21,7 +28,7 @@ public class ModelLoader extends NtroTaskAsync {
 		this.modelStore = modelStore;
 		this.documentPath = documentPath;
 	}
-	
+
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
@@ -31,7 +38,15 @@ public class ModelLoader extends NtroTaskAsync {
 		
 		String jsonString = jsonLoader.getJsonString();
 		
-		model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
+		try {
+
+			model = ModelFactory.createModel(modelClass, modelStore, documentPath, jsonString);
+
+		} catch (BackendError e) {
+			
+			Log.error("[ModelLoader] failed to create model: " + e.getMessage());
+
+		}
 		
 		notifyTaskFinished();
 	}

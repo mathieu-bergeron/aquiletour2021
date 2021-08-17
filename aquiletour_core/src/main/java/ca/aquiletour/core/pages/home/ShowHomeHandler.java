@@ -17,6 +17,6 @@ public class ShowHomeHandler extends ParentViewMessageHandler<RootView,
 		// FIXME: parentView needs to be the one installed in
 		//        the parent controller. We cannot do viewLoader.createView()
 
-		parentView.showHome(currentView);
+		parentView.showHome(HomeView.class, currentView);
 	}
 }

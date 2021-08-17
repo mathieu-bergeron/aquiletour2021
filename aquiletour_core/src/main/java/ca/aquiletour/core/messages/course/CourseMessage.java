@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.course;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.user.User;
 import ca.ntro.messages.NtroUserMessage;
 

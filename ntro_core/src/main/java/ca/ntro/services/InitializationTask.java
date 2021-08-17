@@ -17,7 +17,6 @@
 
 package ca.ntro.services;
 
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
@@ -59,17 +58,17 @@ public abstract class InitializationTask extends NtroTaskSync {
 		
 		Ntro.registerValueFormatter(provideValueFormatter());
 		
-		Ntro.registerConfigService(provideConfigService());
-		
 		Ntro.registerCalendarService(provideCalendarService());
 		
 		Ntro.registerRouterService(provideRouterService());
+		
+		Ntro.registerSystemService(provideSystemService());
 	}
+
 
 	protected abstract StackAnalyzer provideStackAnalyzer();
 	protected abstract ResourceLoader provideResourceLoader();
 	protected abstract Class<? extends ViewLoaderWeb> provideViewLoaderWebClass();
-	protected abstract JsonParser provideJsonParser();
 	protected abstract ThreadService provideThreadService();
 	protected abstract Class<? extends MessageService> provideMessageServiceClass();
 	protected abstract Class<? extends BackendService> provideBackendServiceClass();
@@ -78,8 +77,8 @@ public abstract class InitializationTask extends NtroTaskSync {
 	protected abstract Class<? extends SessionService> provideSessionServiceClass();
 	protected abstract ModelStore provideModelStore();
 	protected abstract ValueFormatter provideValueFormatter();
-	protected abstract ConfigService provideConfigService();
 	protected abstract CalendarService provideCalendarService();
 	protected abstract RouterService provideRouterService();
+	protected abstract SystemService provideSystemService();
 
 }

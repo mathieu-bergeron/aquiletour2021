@@ -1,5 +1,9 @@
 package ca.aquiletour.core.models.courses.atomic_tasks;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
 
@@ -48,5 +52,13 @@ public class AtomicTaskCompletion implements NtroModelValue {
 		T.call(this);
 		
 		return true;
+	}
+
+	public List<String> logItems() {
+		T.call(this);
+		
+		List<String> logItems = new ArrayList<>();
+
+		return logItems;
 	}
 }

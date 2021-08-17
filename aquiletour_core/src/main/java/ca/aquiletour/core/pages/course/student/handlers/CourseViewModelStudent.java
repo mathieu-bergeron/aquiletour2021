@@ -4,42 +4,98 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
+import ca.aquiletour.core.models.courses.status.StatusBlocked;
+import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.course.handlers.CourseViewModel;
-import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.student.views.CourseViewStudent;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 
 public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, CourseViewStudent> {
 
 	@Override
-	protected void handle(CourseModelStudent model, CourseViewStudent view, ViewLoader subViewLoader, ShowTaskMessage message) {
+	protected void observeCurrentTask(CourseModelStudent model, String groupId, CourseViewStudent view, ViewLoader subViewLoader) {
 		T.call(this);
-		super.handle(model, view, subViewLoader, message);
+
+		super.observeCurrentTask(model, groupId, view, subViewLoader);
+
+		observeStatuses(model, view);
+
+		displayGitProgression(model, groupId, view);
+	}
+
+	private void displayGitProgression(CourseModelStudent model, String groupId, CourseViewStudent view) {
+		T.call(this);
+
+		if(currentTask().isRepoCloned(model.getCompletions())
+				&& !currentTask().hasAtomicTaskOfType(DefaultAtomicTask.class)) {
+
+			view.displayGitProgression(groupId);
+		}
+	}
+	
+	private void observeStatuses(CourseModelStudent model, CourseViewStudent view) {
+		T.call(this);
+		
+		model.getStatusByTaskKey().removeObservers();
+		model.getStatusByTaskKey().onEntryAdded(new EntryAddedListener<TaskStatus>() {
+			@Override
+			public void onEntryAdded(String taskKey, TaskStatus status) {
+				T.call(this);
+				
+				if(currentTask().getPath().toKey().equals(taskKey)) {
+					
+					displayTaskStatus(status, view);
+					view.enableSubTasks(currentTask().areEntryTasksDone(model.getCompletions()));
+				}
+			}
+		});
+	}
+
+	private void displayTaskStatus(TaskStatus status, CourseViewStudent view) {
+		T.call(this);
+		
+		if(status.isBlocked() 
+				&& currentTask().hasExitTasks()) {
+
+			view.displayToCompleteFirst(true);
+			view.updateToCompleteFirst((StatusBlocked) status);
+			
+		}else {
+			
+			view.displayToCompleteFirst(false);
+		}
+		
+		if(status.isDone() && status.getTimestamp().isDefined()) {
+
+			view.updateTaskDoneTime(status.getTimestamp());
+		}
 		
 	}
 
 	@Override
 	protected void displayStudentCompletion(String studentId, CourseViewStudent view) {
 		T.call(this);
-
-		view.checkCompletion(true);
 	}
 
-	protected void observeCompletions(CourseModelStudent model, CourseViewStudent view) {
+	protected void observeTaskCompletions(CourseModelStudent model, CourseViewStudent view) {
 		T.call(this);
-		
+
 		model.getCompletions().removeObservers();
 		model.getCompletions().onEntryAdded(new EntryAddedListener<CompletionByAtomicTaskId>() {
 			@Override
 			public void onEntryAdded(String taskId, CompletionByAtomicTaskId completions) {
 				T.call(this);
-				
-				T.here();
 				
 				if(taskId.equals(currentTask().id())) {
 					observeAtomicTaskCompletions(model, completions, view, model.getGroupId().getValue());
@@ -52,8 +108,10 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	@Override
 	protected void displayEntryTask(CourseModelStudent model, CourseViewStudent view, AtomicTask atomicTask) {
 		T.call(this);
+		
+		AtomicTaskCompletion completion = getCompletion(model, atomicTask);
 
-		view.appendEntryTask(model.getGroupId().getValue(), atomicTask);
+		view.appendEntryTask(model.getGroupId().getValue(), atomicTask, completion);
 	}
 
 	private void observeAtomicTaskCompletions(CourseModelStudent model, CompletionByAtomicTaskId completions, CourseViewStudent view, String groupId) {
@@ -68,7 +126,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 
 				AtomicTask atomicTask = model.atomicTask(currentTask().getPath(), atomicTaskId);
 				if(atomicTask != null) {
-					view.addCompletionToEntryTask(groupId, atomicTask, completion);
+					view.updateAtomicTaskCompletion(groupId, atomicTask, completion);
 				}
 			}
 
@@ -78,8 +136,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 				
 				AtomicTask atomicTask = model.atomicTask(currentTask().getPath(), atomicTaskId);
 				if(atomicTask != null) {
-					view.removeEntryTask(atomicTask);
-					view.appendEntryTask(groupId, atomicTask);
+					view.updateAtomicTaskCompletion(groupId, atomicTask, null);
 				}
 			}
 			
@@ -115,7 +172,7 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	private AtomicTaskCompletion getCompletion(CourseModelStudent model, AtomicTask atomicTask) {
 		T.call(this);
 		
-		CompletionByAtomicTaskId completions =  model.getCompletions().valueOf(currentTask().id());
+		CompletionByAtomicTaskId completions =  model.getCompletions().valueOf(currentTask().getPath().toKey());
 
 		AtomicTaskCompletion completion = null;
 		if(completions != null) {
@@ -126,10 +183,12 @@ public class CourseViewModelStudent extends CourseViewModel<CourseModelStudent, 
 	}
 
 	@Override
-	protected void displayExitTask(CourseModelStudent model, CourseViewStudent view, AtomicTask task) {
+	protected void displayExitTask(CourseModelStudent model, CourseViewStudent view, AtomicTask atomicTask) {
 		T.call(this);
 
+		AtomicTaskCompletion completion = getCompletion(model, atomicTask);
+
 		String groupId = model.getGroupId().getValue();
-		view.appendExitTask(groupId, task);
+		view.appendExitTask(groupId, atomicTask, completion);
 	}
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.web.mvc.NtroViewWeb;
+import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class ViewLoaders {
 	
@@ -53,9 +55,26 @@ public class ViewLoaders {
 		ViewLoader viewLoader = viewLoaders.get(new ViewLoaderId(viewClass, lang));
 		
 		if(viewLoader == null) {
-			System.out.println("null viewLoader: " + viewClass.getSimpleName());
+			System.out.println("[getViewLoader] null viewLoader: " + viewClass.getSimpleName() + " (lang: " + lang + ")");
 		}
 		
 		return (ViewLoader) viewLoader.clone();
+	}
+
+	public static Class<? extends NtroViewWeb> getViewTargetClassWeb(Class<? extends NtroView> viewClass, String lang) {
+		T.call(ViewLoaders.class);
+		
+		ViewLoader viewLoader = getViewLoader(viewClass, lang);
+		
+		Class<? extends NtroViewWeb> viewTargetClass = null;
+		
+		if(viewLoader != null
+				&& viewLoader instanceof ViewLoaderWeb) {
+			
+			viewTargetClass = ((ViewLoaderWeb) viewLoader).getTargetClass();
+			
+		}
+
+		return viewTargetClass;
 	}
 }

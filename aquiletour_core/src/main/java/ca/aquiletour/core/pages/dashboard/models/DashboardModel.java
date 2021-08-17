@@ -1,25 +1,25 @@
 package ca.aquiletour.core.pages.dashboard.models;
 
-
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.StoredString;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class DashboardModel<CT extends CurrentTask> implements NtroModel {
 
-	private DashboardItems dashboardItems = new DashboardItems();
+	private DashboardItems<CT> dashboardItems = new DashboardItems<>();
 	private StoredString statusMessage = new StoredString();
 
-	public DashboardItems getDashboardItems() {
+	public DashboardItems<CT> getDashboardItems() {
 		return dashboardItems;
 	}
 
-	public void setDashboardItems(DashboardItems dashboardItems) {
+	public void setDashboardItems(DashboardItems<CT> dashboardItems) {
 		this.dashboardItems = dashboardItems;
 	}
 
@@ -35,9 +35,9 @@ public abstract class DashboardModel<CT extends CurrentTask> implements NtroMode
 		T.call(this);
 		
 		DashboardItem<CT> item = createDashboardItem();
-		dashboardItems.addItem(item); // XXX: must add before setting stored values
-		
 		updateDashboardItem(courseListItem, item);
+
+		dashboardItems.addItem(item);
 	}
 
 	private void updateDashboardItem(CourseListItem courseListItem, DashboardItem<CT> item) {
@@ -52,16 +52,18 @@ public abstract class DashboardModel<CT extends CurrentTask> implements NtroMode
 	@SuppressWarnings("unchecked")
 	private DashboardItem<CT> dashboardItemByCoursePath(CoursePath coursePath){
 		
-		DashboardItem<CT> item = null;
-		
-		for(DashboardItem<?> candidate : getDashboardItems().getValue()) {
-			if(candidate.matches(coursePath)) {
-				item = (DashboardItem<CT>) candidate;
-				break;
+		return getDashboardItems().reduceTo(DashboardItem.class, null, (index, candidate, accumulator) -> {
+			if(accumulator != null) {
+				throw new Break();
 			}
-		}
-		
-		return item;
+			
+			if(candidate.hasCoursePath(coursePath)) {
+				accumulator = candidate;
+			}
+			
+			return accumulator;
+			
+		});
 	}
 
 	public void updateCurrentTasks(CoursePath coursePath, List<CT> currentTasks) {

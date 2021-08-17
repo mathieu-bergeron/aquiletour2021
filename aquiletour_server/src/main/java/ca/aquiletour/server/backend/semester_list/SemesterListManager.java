@@ -1,5 +1,7 @@
 package ca.aquiletour.server.backend.semester_list;
 
+import java.util.List;
+
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
@@ -13,15 +15,24 @@ import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTe
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterModelTeacher;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class SemesterListManager {
+
+	public static void initialize(ModelStoreSync modelStore) throws BackendError {
+		T.call(SemesterListManager.class);
+		
+		if(!modelStore.ifModelExists(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID)) {
+			createSemesterListForModelId(modelStore, SemesterListModelAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		}
+	}
 
 	public static void addScheduleItemForUser(ModelStoreSync modelStore, 
 			                                  String semesterId, 
@@ -54,7 +65,7 @@ public class SemesterListManager {
 		});
 	}
 	
-	public static <SL extends SemesterListModel>  void addSemesterWeekForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>>  void addSemesterWeekForUser(ModelStoreSync modelStore, 
 																		      Class<SL> modelClass, 
 																		      String semesterId, 
 																		      CalendarWeek semesterWeek, 
@@ -75,15 +86,11 @@ public class SemesterListManager {
 		modelStore.updateModel(modelClass, 
 							   "admin",
 							   modelId,
-							   new ModelUpdater<SemesterListModel<?>>() {
+							   semesterList -> {
 
-			@Override
-			public void update(SemesterListModel<?> semesterList) {
-				T.call(this);
-				
-				semesterList.addSemesterWeek(semesterId, semesterWeek);
-			}
-		});
+			semesterList.addSemesterWeek(semesterId, semesterWeek);
+								   
+	   });
 	}
 
 	public static <SL extends SemesterListModel<?>>  void deleteSemesterFromModel(ModelStoreSync modelStore, 
@@ -172,7 +179,7 @@ public class SemesterListManager {
 
 	public static <SL extends SemesterListModel<?>> void createSemesterListForUser(ModelStoreSync modelStore, 
 			                                                                  Class<SL> modelClass, 
-			                                                                  User user) {
+			                                                                  User user) throws BackendError {
 
 		T.call(SemesterListManager.class);
 		
@@ -192,21 +199,22 @@ public class SemesterListManager {
 
 		T.call(SemesterListManager.class);
 
-		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
-		
 		Optionnal<BackendError> backendError = new Optionnal<>();
-
-		semesterList.getSemesters().forEachItem((index, semester) -> {
-			try {
-
-				addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
-
-			}catch(BackendError e) {
-				backendError.set(e);
-				throw new Break();
-			}
-		});
 		
+		modelStore.readModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID, semesterList -> {
+
+			semesterList.getSemesters().forEachItem((index, semester) -> {
+				try {
+
+					addSemesterToModel(modelStore, SemesterListModelTeacher.class, SemesterModelTeacher.class, semester, true, modelId);
+
+				}catch(BackendError e) {
+					backendError.set(e);
+					throw new Break();
+				}
+			});
+		});
+
 		if(!backendError.isEmpty()) {
 			try {
 				throw backendError.get();
@@ -216,7 +224,7 @@ public class SemesterListManager {
 
 	public static <SL extends SemesterListModel<?>> void createSemesterListForModelId(ModelStoreSync modelStore, 
 			                                                                     Class<SL> modelClass, 
-			                                                                     String modelId) {
+			                                                                     String modelId) throws BackendError {
 
 		T.call(SemesterListManager.class);
 
@@ -252,11 +260,11 @@ public class SemesterListManager {
 		addSemesterToModel(modelStore, modelClass, semesterModelClass, semesterId, adminControlled, user.getId());
 	}
 
-	public static <SL extends SemesterListModel>  void selectCurrentSemesterForModelId(ModelStoreSync modelStore, 
-																					  Class<SL> modelClass,
-																				      String semesterId, 
-																				      boolean currentSemester, 
-																				      String userId) throws BackendError {
+	public static <SL extends SemesterListModel<?>>  void setActiveSemestersForModelId(ModelStoreSync modelStore, 
+																				   Class<SL> modelClass,
+																				   String semesterId, 
+																				   boolean isActive, 
+																				   String userId) throws BackendError {
 		T.call(SemesterListManager.class);
 
 		if(!modelStore.ifModelExists(modelClass, "admin", userId)) {
@@ -277,25 +285,20 @@ public class SemesterListManager {
 			public void update(SL semesterList) {
 				T.call(this);
 				
-				if(currentSemester) {
-					semesterList.selectCurrentSemester(semesterId);
-				}else {
-					semesterList.selectCurrentSemester(Constants.DRAFTS_SEMESTER_ID);
-				}
-				
+				semesterList.updateActiveSemesterId(semesterId, isActive);
 			}
 		});
 	}
 
 
-	public static <SL extends SemesterListModel> void selectCurrentSemesterForUser(ModelStoreSync modelStore, 
+	public static <SL extends SemesterListModel<?>> void setActiveSemesterForUser(ModelStoreSync modelStore, 
 																					Class<SL> modelClass, 
 																					String semesterId, 
 																					boolean currentSemester, 
 																					User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
-		selectCurrentSemesterForModelId(modelStore, modelClass, semesterId, currentSemester, user.getId());
+		setActiveSemestersForModelId(modelStore, modelClass, semesterId, currentSemester, user.getId());
 	}
 	
 	
@@ -336,26 +339,20 @@ public class SemesterListManager {
 	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass, 
 																					  String semesterId, 
-																					  String userId) {
+																					  String userId) throws BackendError {
 		T.call(SemesterListManager.class);
-
-		SemesterSchedule schedule = null;
 		
-		if(modelStore.ifModelExists(modelClass, "admin", userId)) {
-			
-			SemesterListModel<?> model = modelStore.getModel(modelClass, "admin", userId);
-			
-			schedule = model.semesterSchedule(semesterId);
-		}
+		return modelStore.extractFromModel(modelClass,"admin" , userId, SemesterSchedule.class, model -> {
 
-		return schedule;
+			return model.semesterSchedule(semesterId);
 
+		});
 	}
 
 	public static <SL extends SemesterListModel<?>> SemesterSchedule getSemesterSchedule(ModelStoreSync modelStore, 
 																					  Class<SL> modelClass, 
 																					  String semesterId, 
-																					  User user) {
+																					  User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		return getSemesterSchedule(modelStore, modelClass, semesterId, user.getId());
@@ -363,59 +360,35 @@ public class SemesterListManager {
 
 	public static TeacherSchedule getTeacherSchedule(ModelStoreSync modelStore, 
 			                                         String semesterId, 
-			                                         String userId) {
+			                                         String userId) throws BackendError {
 		T.call(SemesterListManager.class);
-
-		TeacherSchedule schedule = null;
 		
-		if(modelStore.ifModelExists(SemesterListModelTeacher.class, "admin", userId)) {
-			
-			SemesterListModelTeacher model = modelStore.getModel(SemesterListModelTeacher.class, "admin", userId);
-			
-			schedule = model.teacherSchedule(semesterId);
-		}
-
-		return schedule;
+		return modelStore.extractFromModel(SemesterListModelTeacher.class, "admin", userId, TeacherSchedule.class, model -> {
+			return model.teacherSchedule(semesterId);
+		});
 	}
 
 	public static TeacherSchedule getTeacherSchedule(ModelStoreSync modelStore, 
 			                                         String semesterId, 
-			                                         User user) {
+			                                         User user) throws BackendError {
 		T.call(SemesterListManager.class);
 		
 		return getTeacherSchedule(modelStore, semesterId, user.getId());
 	}
 
-	public static void initialize(ModelStoreSync modelStore) {
+
+	public static void addActiveSemesterIds(ModelStoreSync modelStore, List<String> activeSemesterIds) throws BackendError {
 		T.call(SemesterListManager.class);
 		
-		createSemesterListForModelId(modelStore, SemesterListModelAdmin.class, Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
+		modelStore.readModel(SemesterListModel.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID, new ModelReader<SemesterListModel>() {
+			@Override
+			public void read(@SuppressWarnings("rawtypes") SemesterListModel existingModel) {
+				T.call(this);
+
+				existingModel.getActiveSemesterIds().forEachItem((index, semesterId) -> {
+					activeSemesterIds.add(semesterId);
+				});
+			}
+		});
 	}
-
-	public static String getCurrentSemester(ModelStoreSync modelStore) {
-		T.call(SemesterListManager.class);
-		
-		String currentSemesterId = null;
-		SemesterListModel<?> semesterList = modelStore.getModel(SemesterListModelAdmin.class, "admin", Constants.ADMIN_CONTROLLED_SEMESTER_LIST_ID);
-		
-		if(semesterList.getCurrentSemesterId() != null &&
-				!semesterList.getCurrentSemesterId().isEmpty()) {
-			
-			currentSemesterId = semesterList.getCurrentSemesterId().getValue();
-
-		}else if(semesterList.getSemesters() != null
-				&& semesterList.getSemesters().size() > 0) {
-			
-			currentSemesterId = semesterList.getSemesters().item(0).getSemesterId();
-		}
-		
-		if(currentSemesterId == null ||
-				currentSemesterId.isEmpty()) {
-			
-			currentSemesterId = Constants.DRAFTS_SEMESTER_ID;
-		}
-
-		return currentSemesterId;
-	}
-		
 }

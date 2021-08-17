@@ -6,6 +6,7 @@ import ca.ntro.core.models.StoredBoolean;
 import ca.ntro.core.models.StoredDouble;
 import ca.ntro.core.models.StoredInteger;
 import ca.ntro.core.models.StoredList;
+import ca.ntro.core.models.StoredLong;
 import ca.ntro.core.models.StoredMap;
 import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.StoredString;
@@ -16,7 +17,7 @@ import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
 import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.models.NtroDate;
 import ca.ntro.models.NtroDayOfWeek;
 import ca.ntro.models.NtroTimeOfDay;
@@ -31,6 +32,7 @@ public abstract class EarlyInitialization {
 	public void performInitialization() {
 		registerSerializableClasses();
 
+
 		Introspector introspector = provideIntrospector();
 		T.__registerIntrospector(introspector);
 		Ntro.registerIntrospector(introspector);
@@ -43,6 +45,8 @@ public abstract class EarlyInitialization {
 		Ntro.registerRegEx(provideRegEx());
 
 		Ntro.registerCollectionsService(provideCollectionsService());
+
+		Ntro.registerConfigService(provideConfigService());
 	}
 
 	protected abstract Introspector provideIntrospector();
@@ -50,6 +54,7 @@ public abstract class EarlyInitialization {
 	protected abstract AppCloser provideAppCloser();
 	protected abstract RegEx provideRegEx();
 	protected abstract CollectionsService provideCollectionsService();
+	protected abstract ConfigService provideConfigService();
 
 	protected void registerSerializableClasses() {
 		Ntro.registerSerializableClass(NtroUser.class);
@@ -62,7 +67,7 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(NtroRegisterSocketMessage.class);
 		Ntro.registerSerializableClass(NtroGetModelMessage.class);
 		Ntro.registerSerializableClass(NtroSetModelMessage.class);
-		Ntro.registerSerializableClass(NtroSetUserMessage.class);
+		Ntro.registerSerializableClass(NtroUpdateSessionMessage.class);
 		Ntro.registerSerializableClass(NtroInvokeValueMethodMessage.class);
 		Ntro.registerSerializableClass(NtroErrorMessage.class);
 
@@ -74,6 +79,7 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(StoredString.class);
 		Ntro.registerSerializableClass(StoredDouble.class);
 		Ntro.registerSerializableClass(StoredInteger.class);
+		Ntro.registerSerializableClass(StoredLong.class);
 		Ntro.registerSerializableClass(StoredProperty.class);
 		Ntro.registerSerializableClass(StoredList.class);
 		Ntro.registerSerializableClass(StoredMap.class);

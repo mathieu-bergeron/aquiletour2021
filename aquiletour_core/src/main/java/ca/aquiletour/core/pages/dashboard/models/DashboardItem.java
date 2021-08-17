@@ -2,8 +2,7 @@ package ca.aquiletour.core.pages.dashboard.models;
 
 import java.util.List;
 
-import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
@@ -58,10 +57,10 @@ public abstract class DashboardItem<CT extends CurrentTask> implements NtroModel
 		}
 	}
 
-	public boolean matches(CoursePath coursePath) {
+	public boolean hasCoursePath(CoursePath coursePath) {
 		T.call(this);
 		
-		return this.coursePath.equals(coursePath);
+		return getCoursePath().equals(coursePath);
 	}
 	
 }

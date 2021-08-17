@@ -25,17 +25,16 @@ extends NtroTaskAsync {
 		this.messageId = messageId;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 
-		@SuppressWarnings("unchecked")
 		M model = (M) ((ModelLoader) getPreviousTask(ModelLoader.class, MODEL_LOADER_TASK_ID)).getModel();
 
 		MustNot.beNull(model);
 		
-		@SuppressWarnings("unchecked")
-		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
+		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask<NtroMessage>) getPreviousTask(MessageHandlerTask.class, messageId);
 
 		MustNot.beNull(messageHandler);
 

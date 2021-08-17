@@ -18,7 +18,6 @@
 package ca.ntro.jsweet.debug;
 
 import def.js.Function;
-import def.js.Object;
 
 public class Globals {
 	

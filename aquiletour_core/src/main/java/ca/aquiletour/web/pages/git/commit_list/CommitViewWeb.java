@@ -1,15 +1,12 @@
 package ca.aquiletour.web.pages.git.commit_list;
 
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitView;
 import ca.aquiletour.core.pages.git.values.Commit;
-import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class CommitViewWeb extends NtroViewWeb implements CommitView {

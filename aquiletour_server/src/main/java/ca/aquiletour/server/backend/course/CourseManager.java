@@ -1,38 +1,45 @@
 package ca.aquiletour.server.backend.course;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import ca.aquiletour.core.models.courses.CoursePath;
-import ca.aquiletour.core.models.courses.CoursePathStudent;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.CycleDetectedError;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.OnTaskRemoved;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
-import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.logs.LogModelCourse;
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePathStudent;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
+import ca.aquiletour.core.pages.dashboard.student.models.CurrentTaskStudent;
 import ca.aquiletour.server.backend.git.GitMessages;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelReader;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
-import ca.ntro.core.models.StoredProperty;
 import ca.ntro.core.models.ValueReader;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.services.ModelStoreSync;
 
 public class CourseManager {
 
@@ -190,11 +197,10 @@ public class CourseManager {
 			                               TaskType taskType) throws BackendError {
 		T.call(CourseManager.class);
 		
-		CourseModelTeacher courseTeacher = modelStore.getModel(CourseModelTeacher.class, "admin", coursePath);
+		Optionnal<BackendError> backendError = new Optionnal<>();
 		
-		Optionnal<BackendError> backendError = new Optionnal<BackendError>(null);
-		
-		if(courseTeacher != null) {
+		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, courseTeacher -> {
+
 			courseTeacher.getGroups().forEachItem((i, group) -> {
 				group.getStudents().forEachItem((j, studentId) -> {
 					
@@ -208,6 +214,8 @@ public class CourseManager {
 								T.call(this);
 								
 								addTaskToCourseModel(anchorTaskPath, task, courseStudent, taskType);
+
+								courseStudent.updateStatuses();
 							}
 						});
 
@@ -217,20 +225,18 @@ public class CourseManager {
 					}
 				});
 			});
-		}
+		});
 		
-		if(!backendError.isEmpty()) {
-			try {
+		try {
 
-				throw backendError.get();
+			throw backendError.get();
 
-			} catch (EmptyOptionException e) {}
-		}
+		} catch (EmptyOptionException e) {}
 	}
 
 	private static void addTaskToCourseModel(Path anchorTaskPath, 
 											 Task task, 
-											 CourseModel courseModel, 
+											 CourseModel<?> courseModel, 
 											 TaskType taskType) throws BackendError {
 		T.call(CourseManager.class);
 		
@@ -288,7 +294,7 @@ public class CourseManager {
 				T.call(this);
 				
 				course.updateCourseTitle(courseTitle);
-				Task rootTask = course.findTaskByPath(new Path("/"));
+				Task rootTask = course.findTaskByPath(Path.fromRawPath("/"));
 				rootTask.updateTitle(courseTitle);
 			}
 		});
@@ -297,7 +303,7 @@ public class CourseManager {
 	public static void createCourseForUserId(ModelStoreSync modelStore, 
 			                                 CoursePath coursePath,
 			                                 String courseTitle,
-			                                 String userId) {
+			                                 String userId) throws BackendError {
 		T.call(CourseManager.class);
 
 		modelStore.createModel(CourseModelTeacher.class, "admin", coursePath, new ModelInitializer<CourseModelTeacher>() {
@@ -306,20 +312,26 @@ public class CourseManager {
 				T.call(this);
 				
 				Task rootTask = new Task();
-				rootTask.setPath(new TaskPath("/"));
+				rootTask.setPath(TaskPath.fromRawPath("/"));
 
 				course.registerRootTask(rootTask);
 				course.setCoursePath(coursePath);
 				course.updateCourseTitle(courseTitle);
 			}
 		});
-
+		
+		modelStore.createModel(LogModelCourse.class, "admin", coursePath, new ModelInitializer<LogModelCourse>() {
+			@Override
+			public void initialize(LogModelCourse newModel) {
+				T.call(this);
+			}
+		});
 	}
 
 	public static void createCourseForUser(ModelStoreSync modelStore, 
 			                               CoursePath coursePath,
 			                               String courseTitle,
-			                               User user) {
+			                               User user) throws BackendError {
 		T.call(CourseManager.class);
 		
 		createCourseForUserId(modelStore, coursePath, courseTitle, user.getId());
@@ -348,7 +360,7 @@ public class CourseManager {
 		                              Path taskPath, 
 	                                  String taskTitle, 
 			                          String taskDescription, 
-			                          CourseDate endTime, 
+			                          AquiletourDate endTime, 
 			                          User user) throws BackendError {
 		
 		T.call(CourseManager.class);
@@ -364,12 +376,95 @@ public class CourseManager {
 						T.call(this);
 
 						if(atomicTask instanceof GitExerciseTask) {
+
 							registerGitExercise(course, coursePath, task, (GitExerciseTask) atomicTask);
+
+						}else if(atomicTask instanceof GitRepoTask) {
+
+							GitMessages.registerGitRepoForCourse(course, coursePath, task, (GitRepoTask) atomicTask);
+
 						}
 					}
 				});
 			}
 		});
+	}
+
+	public static void updateTaskInfoForStudentId(ModelStoreSync modelStore, 
+			                          			  CoursePath coursePath, 
+			                          			  Path taskPath, 
+			                          			  String taskTitle, 
+			                          			  String taskDescription, 
+			                          			  AquiletourDate endTime, 
+			                          			  String studentId) throws BackendError {
+		
+		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+		
+		modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+			@Override
+			public void update(CourseModelStudent courseModel) throws BackendError {
+				T.call(this);
+				
+				courseModel.updateTaskInfo(taskPath, taskTitle, taskDescription, endTime, new OnAtomicTaskAdded() {
+					@Override
+					public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
+						T.call(this);
+					}
+				});
+
+				courseModel.updateStatuses();
+			}
+		} );
+	}
+
+	public static void updateTaskInfoForStudents(ModelStoreSync modelStore, 
+			 								     CoursePath coursePath, 
+			 								     Path taskPath, 
+			 								     String taskTitle, 
+			 								     String taskDescription, 
+			 								     AquiletourDate endTime, 
+			 								     User user) throws BackendError {
+		T.call(CourseManager.class);
+		
+		Set<String> studentIds = getStudentIds(modelStore, coursePath);
+		
+		for(String studentId : studentIds) {
+			
+			updateTaskInfoForStudentId(modelStore, 
+					                   coursePath, 
+					                   taskPath, 
+					                   taskTitle, 
+					                   taskDescription, 
+					                   endTime, 
+					                   studentId);
+		}
+	}
+
+	public static Set<String> getStudentIds(ModelStoreSync modelStore, 
+			 								CoursePath coursePath) throws BackendError {
+
+		T.call(CourseManager.class);
+		
+		Set<String> studentIds = new HashSet<>();
+		
+		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, new ModelReader<CourseModelTeacher>() {
+			@Override
+			public void read(CourseModelTeacher courseModel) {
+				T.call(this);
+
+				courseModel.getGroups().forEachItem((i, g) -> {
+					g.getStudents().forEachItem((j, studentId) ->{
+						if(!studentIds.contains(studentId)) {
+							studentIds.add(studentId);
+						}
+					});
+				});
+			}
+		});
+
+		return studentIds;
 	}
 
 	public static void updateCourseSchedule(ModelStoreSync modelStore, 
@@ -388,48 +483,111 @@ public class CourseManager {
 		});
 	}
 
-	public static void taskCompletedByUser(ModelStoreSync modelStore, 
-			                               CoursePath coursePath, 
-			                               Path taskPath, 
-			                               String atomicTaskId,
-			                               User user) throws BackendError {
+	public static void updateCourseScheduleForStudents(ModelStoreSync modelStore, 
+                         	                           CoursePath coursePath,
+						                               SemesterSchedule semesterSchedule, 
+						                               TeacherSchedule teacherSchedule) throws BackendError {
 		T.call(CourseManager.class);
 
+		Set<String> studentIds = CourseManager.getStudentIds(modelStore, coursePath);
+		
+		for(String studentId : studentIds) {
+
+			
+			CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
+			
+			modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>(){
+				@Override
+				public void update(CourseModelStudent courseModelStudent) throws BackendError {
+					T.call(this);
+					
+					courseModelStudent.updateSchedule(semesterSchedule, teacherSchedule);
+				}
+			});
+		}
+	}
+
+	public static void updateStudentTaskCompletions(ModelStoreSync modelStore, 
+			                                        CoursePath coursePath, 
+			                                        Path taskPath, 
+			                                        String atomicTaskId,
+			                                        AtomicTaskCompletion completion,
+			                                        User student) throws BackendError {
+		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getId());
+
+		modelStore.updateModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelUpdater<CourseModelStudent>() {
+			@Override
+			public void update(CourseModelStudent course) {
+				T.call(this);
+				
+				course.updateCompletions(taskPath, atomicTaskId, completion);
+				course.updateStatuses();
+			}
+		});
+	}
+
+	public static void updateCourseTaskCompletions(ModelStoreSync modelStore, 
+			                                       CoursePath coursePath, 
+			                                       Path taskPath, 
+			                                       String atomicTaskId,
+			                                       AtomicTaskCompletion completion,
+			                                       User student) throws BackendError {
+		T.call(CourseManager.class);
+		
 		modelStore.updateModel(CourseModelTeacher.class, "admin", coursePath, new ModelUpdater<CourseModelTeacher>() {
 			@Override
 			public void update(CourseModelTeacher course) {
 				T.call(this);
 				
-				course.taskCompletedByStudent(taskPath, atomicTaskId, user.getId());
+				course.taskCompletedByStudent(taskPath, atomicTaskId, student.getId());
 			}
 		});
 	}
 
-	public static CourseModelTeacher getCourse(ModelStoreSync modelStore, Class<CourseModelTeacher> courseModelClass, CoursePath coursePath) {
+	public static void updateCourseLog(ModelStoreSync modelStore, 
+			                           CoursePath coursePath, 
+			                           User user,
+			                           TaskPath taskPath, 
+			                           String groupId,
+			                           String atomicTaskId,
+			                           AtomicTaskCompletion completion) throws BackendError {
 		T.call(CourseManager.class);
 		
-		return modelStore.getModel(courseModelClass, "admin", coursePath);
+		modelStore.updateModel(LogModelCourse.class, "admin", coursePath, new ModelUpdater<LogModelCourse>() {
+			@Override
+			public void update(LogModelCourse courseLog) {
+				T.call(this);
+				
+				courseLog.addAtomicTaskCompletion(taskPath, 
+												  user,
+						                          groupId, 
+						                          atomicTaskId, 
+						                          completion);
+			}
+		});
 	}
 
 	public static void createStudentCourse(ModelStoreSync modelStore, 
 										   CoursePath coursePath,
-			                               CourseModelTeacher courseTeacher, 
 			                               String groupId,
-			                               User student) {
+			                               User student) throws BackendError {
 		T.call(CourseManager.class);
 		
-		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getRegistrationId());
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, student.getId());
 		
-		System.out.println(coursePathStudent.toFileName());
-		
-		modelStore.createModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseModelStudent>() {
-			@Override
-			public void initialize(CourseModelStudent newModel) {
-				T.call(this);
-				
-				newModel.updateGroupId(groupId);
-				newModel.copyCourse(courseTeacher);
-			}
+		modelStore.readModel(CourseModelTeacher.class, "admin", coursePath, courseModelTeacher -> {
+
+			modelStore.createModel(CourseModelStudent.class, "admin", coursePathStudent, new ModelInitializer<CourseModelStudent>() {
+				@Override
+				public void initialize(CourseModelStudent newModel) {
+					T.call(this);
+					
+					newModel.updateGroupId(groupId);
+					newModel.copyCourse(courseModelTeacher);
+				}
+			});
 		});
 	}
 
@@ -512,7 +670,7 @@ public class CourseManager {
 			                                           String studentId, 
 			                                           Path taskPath, 
 			                                           String atomicTaskId,
-			                                           ValueReader<AtomicTaskCompletion> valueReader) {
+			                                           ValueReader<AtomicTaskCompletion> valueReader) throws BackendError {
 		T.call(CourseManager.class);
 
 		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, studentId);
@@ -526,4 +684,43 @@ public class CourseManager {
 			}
 		});
 	}
+
+	@SuppressWarnings("unchecked")
+	public static <CM extends CourseModel<CT>, CT extends CurrentTask> 
+	        List<CT> getCurrentTasks(ModelStoreSync modelStore, 
+	        		                 Class<CM> courseModelClass, 
+	        		                 CoursePath coursePath) throws BackendError {
+
+		T.call(CourseManager.class);
+		
+		List<CT> currentTasks = new ArrayList<>();
+
+		modelStore.readModel(courseModelClass, "admin", coursePath, new ModelReader<CM>() {
+			@Override
+			public void read(CM courseModel) {
+				T.call(this);
+
+				for(Object currentTask : courseModel.currentTasks()) {
+					currentTasks.add((CT) currentTask);
+				}
+			}
+		});
+		
+		return currentTasks;
+	}
+
+	public static void updateSessionData(ModelStoreSync modelStore, 
+			                             SessionData sessionData, 
+			                             CoursePath coursePath, 
+			                             User user) throws BackendError {
+
+		T.call(CourseManager.class);
+		
+		CoursePathStudent coursePathStudent = CoursePathStudent.fromCoursePath(coursePath, user.getId());
+		
+		List<CurrentTaskStudent> currentTasks = getCurrentTasks(modelStore, CourseModelStudent.class, coursePathStudent);
+		
+		sessionData.updateCurrentTasks(coursePath, currentTasks);
+	}
+
 }

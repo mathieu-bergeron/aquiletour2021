@@ -6,57 +6,63 @@ import ca.aquiletour.core.models.user.StudentGuest;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
-import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.core.utils.ValidationError;
+import ca.aquiletour.core.utils.Validator;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.aquiletour.server.email.SendEmail;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.jdk.random.SecureRandomString;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
 public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiatesLoginMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
+	public void handleNow(ModelStoreSync modelStore, UserInitiatesLoginMessage message) throws BackendError {
 		T.call(this);
 
-		User user = message.getUser();
-		String authToken = user.getAuthToken();
-		String registrationId = message.getRegistrationId();
-		User userToRegister = null;
+		User sessionUser = message.getUser();
+		String authToken = sessionUser.getAuthToken();
+		String userId = message.getRegistrationId();
 
-		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
+		userId = Validator.deAccent(userId);
 		
-		if(session != null) {
+		try {
 
-			userToRegister = registerStudentOrTeacherGuest(modelStore, authToken, registrationId, session);
-
-		}else {
+			Validator.mustBeValidId(userId);
 			
-			userToRegister = user;
+		}catch(ValidationError e) {
+			throw new BackendError(e.getMessage() + ". SVP entrer votre DA ou le début de votre courriel (sans le @)");
 		}
+		
+		userId = User.normalizeUserId(userId);
 
-		Ntro.currentSession().setUser(userToRegister);
+		sessionUser = registerStudentOrTeacherGuest(modelStore, authToken, userId);
+
+		Ntro.currentSession().setUser(sessionUser);
 		
-		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
-		setUserNtroMessage.setUser(userToRegister);
-		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+		NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+		updateSessionMessage.setSession(Ntro.currentSession());
+		RegisteredSocketsSockJS.sendMessageToSockets(authToken, updateSessionMessage);
 		
-		if(message.getDelayedMessages().isEmpty() && userToRegister.getHasPassword()) {
+		if(message.getDelayedMessages().isEmpty() && sessionUser.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setMessageToUser("SVP entrer votre mot de passe");
 			Ntro.messages().send(showLoginMenuMessage);
 
-		} else if(message.getDelayedMessages().isEmpty() && !userToRegister.getHasPassword()) {
+		} else if(message.getDelayedMessages().isEmpty() && !sessionUser.getHasPassword()) {
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
-			showLoginMenuMessage.setMessageToUser("SVP entrer le code reçu par courriel");
+			showLoginMenuMessage.setMessageToUser("SVP valider votre identité");
 			Ntro.messages().send(showLoginMenuMessage);
 			
 		}else {
@@ -67,33 +73,39 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		}
 	}
 
-	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, String authToken, String registrationId, NtroSession session) {
+	private User registerStudentOrTeacherGuest(ModelStoreSync modelStore, 
+			                                   String authToken, 
+			                                   String userId) throws BackendError {
 		T.call(this);
-
+		
+		
+		SessionManager.memorizeSessionByUserId(modelStore, authToken, userId);
+		
 		User userToRegister;
 
-		if(isStudentId(registrationId)) {
+		if(isStudentId(userId)) {
 			
-			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, registrationId);
+			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, userId);
 			
 		}else {
 
-			userToRegister = UserManager.createGuestUser(modelStore, TeacherGuest.class, registrationId);
+			userToRegister = UserManager.createGuestUser(modelStore, TeacherGuest.class, userId);
 		}
 
 		userToRegister.setAuthToken(authToken);
 		
-		SessionData sessionData = new SessionData();
+		SessionData sessionData = SessionManager.createSessionData(modelStore, userToRegister);
 
-		if(!userToRegister.getHasPassword()) {
-
+		if(!userToRegister.hasPassword()) {
 			String loginCode = sendLoginCode(userToRegister);
 			sessionData.setLoginCode(loginCode);
 		}
-
-		session.setUser(userToRegister.toSessionUser());
-		session.setSessionData(sessionData);
-		modelStore.save(session);
+		
+		SessionManager.updateSession(modelStore, authToken, session -> {
+			session.setUser(userToRegister.toSessionUser());
+			session.setSessionData(sessionData);
+			
+		});
 
 		return userToRegister;
 	}
@@ -108,7 +120,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 			protected void runTask() {
 				T.call(this);
 
-				T.values(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
+				Log.info("CODE: " + loginCode);
 				SendEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
 			}
 

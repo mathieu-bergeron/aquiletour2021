@@ -1,103 +1,137 @@
 package ca.aquiletour.core.pages.course_list.models;
 
-
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.ntro.core.models.NtroModel;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 
 public abstract class CourseListModel implements NtroModel {
 	
-	private SemesterIds semesters = new SemesterIds();
-	private ObservableCourseDescriptionList courses = new ObservableCourseDescriptionList();
+	private SemesterIds activeSemesters = new SemesterIds();
 
-	public SemesterIds getSemesters() {
-		return semesters;
+	private CourseListItemsByCategoryId courseListItemsByCategoryId = new CourseListItemsByCategoryId();
+	
+	public SemesterIds getActiveSemesters() {
+		return activeSemesters;
 	}
 
-	public void setSemesters(SemesterIds semesters) {
-		this.semesters = semesters;
+	public void setActiveSemesters(SemesterIds activeSemesters) {
+		this.activeSemesters = activeSemesters;
 	}
 
-	public ObservableCourseDescriptionList getCourses() {
-		return courses;
+	public CourseListItemsByCategoryId getCourseListItemsByCategoryId() {
+		return courseListItemsByCategoryId;
 	}
 
-	public void setCourses(ObservableCourseDescriptionList courses) {
-		this.courses = courses;
+	public void setCourseListItemsByCategoryId(CourseListItemsByCategoryId courseListItemsByCategoryId) {
+		this.courseListItemsByCategoryId = courseListItemsByCategoryId;
 	}
 
-
-	public void addCourse(CourseListItem courseDescription) {
+	public void addCourseToCategory(String categoryId, CourseListItem courseListItem) {
 		T.call(this);
 		
-		courses.addItem(courseDescription);
-	}
-
-	public void addSemesterId(String semesterId) {
-		T.call(this);
-
-		if(!semesters.contains(semesterId)) {
-			semesters.addItem(semesterId);
+		CourseListItems items = getCourseListItemsByCategoryId().valueOf(categoryId);
+		if(items == null) {
+			items = new CourseListItems();
+			getCourseListItemsByCategoryId().putEntry(categoryId, items);
+		}
+		
+		if(!items.contains(courseListItem)) {
+			items.addItem(courseListItem);
 		}
 	}
 
-	public void addGroup(String semesterId, String courseId, String groupId) {
+	public void addGroup(CoursePath coursePath, String groupId) {
 		T.call(this);
 		
-		CourseListItem course = courseById(semesterId, courseId);
+		CourseListItem course = courseByPath(coursePath);
 		
 		if(course != null) {
 			course.addGroup(groupId);
 		}
 	}
 
-	public CourseListItem courseById(String semesterId, String courseId) {
+	public CourseListItem courseByPath(CoursePath coursePath) {
 		T.call(this);
 		
-		CourseListItem result = null;
-		
-		for(CourseListItem candidate : getCourses().getValue()) {
-			if(candidate.getSemesterId().equals(semesterId)
-					&& candidate.getCourseId().equals(courseId)) {
-				
-				result = candidate;
-				break;
+		return getCourseListItemsByCategoryId().reduceTo(CourseListItem.class, null, (categoryId, courseItems, accumulator) -> {
+			if(accumulator != null) {
+				throw new Break();
 			}
-		}
+			
+			accumulator = courseItems.reduceTo(CourseListItem.class, null, (index, courseItem, innerAccumulator) -> {
+				if(innerAccumulator != null) {
+					throw new Break();
+				}
+				
+				if(courseItem.coursePath().equals(coursePath)) {
+					innerAccumulator = courseItem;
+				}
 
-		return result;
+				return innerAccumulator;
+			});
+			
+			return accumulator;
+		});
 	}
 
 	public void addTask(CoursePath coursePath, TaskDescription task) {
 		T.call(this);
 		
-		CourseListItem course = courseById(coursePath.semesterId(), coursePath.courseId());
+		CourseListItem course = courseByPath(coursePath);
 		
 		if(course != null) {
-
 			course.addTask(task);
 		}
 	}
 
-	public void openQueue(String semesterId, String courseId) {
+	public void updateQueueOpen(CoursePath coursePath, boolean queueOpen) {
 		T.call(this);
 
-		CourseListItem course = courseById(semesterId, courseId);
+		CourseListItem course = courseByPath(coursePath);
 		
 		if(course != null) {
 
-			course.updateQueueOpen(true);
+			course.updateQueueOpen(queueOpen);
 		}
 	}
 
-	public void closeQueue(String semesterId, String courseId) {
+	public boolean isCourseInCategory(CoursePath coursePath, String currentCategoryId) {
+		T.call(this);
+		
+		boolean isInCategory = false;
+		
+		CourseListItems items = getCourseListItemsByCategoryId().valueOf(currentCategoryId);
+		
+		if(items != null) {
+			
+			isInCategory = items.reduceTo(Boolean.class, false, (index, courseItem, accumulator) -> {
+				if(accumulator) {
+					throw new Break();
+				}
+				
+				if(courseItem.coursePath().equals(coursePath)) {
+					accumulator = true;
+				}
+				
+				return accumulator;
+			});
+		}
+		
+		return isInCategory;
+	}
+
+	public void addActiveSemester(String semesterId) {
 		T.call(this);
 
-		CourseListItem course = courseById(semesterId, courseId);
-		
-		if(course != null) {
-
-			course.updateQueueOpen(false);
+		if(!getActiveSemesters().contains(semesterId)) {
+			getActiveSemesters().addItem(semesterId);
 		}
+	}
+
+	public void removeActiveSemester(String semesterId) {
+		T.call(this);
+
+		getActiveSemesters().removeItem(semesterId);
 	}
 }

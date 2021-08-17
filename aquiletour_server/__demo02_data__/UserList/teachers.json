@@ -1,0 +1,9 @@
+{
+  "_C": "UserList",
+  "userIdMap": {
+    "_C": "UserIdMap",
+    "value": {
+      "mathieu.bergeron": true
+    }
+  }
+}

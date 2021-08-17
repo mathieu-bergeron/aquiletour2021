@@ -9,8 +9,9 @@ import utils.task_utils
 
 #  {
 #      "_C": "DeleteGitRepo",
-#      "courseId": "nicolas.leduc/IntroProg",
+#      "courseId": "IntroProg",
 #      "semesterId": "H2021",
+#      "teacherId": "nicolas.leduc"
 #      "groupId": "01",
 #      "studentId": "bob.berancourt",
 #      "repoPath": "/Semaine 01"

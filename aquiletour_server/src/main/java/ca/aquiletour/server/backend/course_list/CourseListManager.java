@@ -1,18 +1,28 @@
 package ca.aquiletour.server.backend.course_list;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
 import ca.aquiletour.core.pages.course_list.models.CourseListModel;
 import ca.aquiletour.core.pages.course_list.models.TaskDescription;
+import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
+import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
+import ca.aquiletour.server.backend.course.CourseManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelUpdater;
+import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.services.ModelStoreSync;
 
 public class CourseListManager {
 
@@ -26,6 +36,7 @@ public class CourseListManager {
 		}
 	}
 
+	/*
 	public static <CLM extends CourseListModel> void addSemesterForUser(ModelStoreSync modelStore, 
 																	    Class<CLM> courseListModelClass,
 			                                                            String semesterId, 
@@ -34,8 +45,9 @@ public class CourseListManager {
 		T.call(CourseListManager.class);
 		
 		addSemesterForUserId(modelStore,courseListModelClass, semesterId, user.getId());
-	}
+	}*/
 	
+	/*
 	public static <CLM extends CourseListModel> void addSemesterForUserId(ModelStoreSync modelStore, 
 			                                                              Class<CLM> courseListModelClass,
 			                                                              String semesterId, 
@@ -55,12 +67,13 @@ public class CourseListManager {
 				courseListModel.addSemesterId(semesterId);
 			}
 		});
-	}
+	}*/
 
-	public static <CLM extends CourseListModel> void addCourseForUser(ModelStoreSync modelStore, 
-			 														  Class<CLM> courseListModelClass,
-			                                                          CourseListItem courseDescription, 
-			                                                          User teacher) throws BackendError {
+	public static <CLM extends CourseListModel> void addCourseToCategory(ModelStoreSync modelStore, 
+			 														     Class<CLM> courseListModelClass,
+			 														     String categoryId,
+			                                                             CourseListItem courseDescription, 
+			                                                             User teacher) throws BackendError {
 		T.call(CourseListManager.class);
 		
 		modelStore.updateModel(courseListModelClass, "admin", teacher.getId(), new ModelUpdater<CLM>() {
@@ -68,28 +81,26 @@ public class CourseListManager {
 			public void update(CLM existingModel) {
 				T.call(this);
 				
-				existingModel.addCourse(courseDescription);
+				existingModel.addCourseToCategory(categoryId, courseDescription);
 			}
 		});
 	}
 
 	public static <CLM extends CourseListModel> void addGroupForUser(ModelStoreSync modelStore, 
 																     Class<CLM> courseListModelClass, 
-																     String semesterId, 
-																     String courseId, 
+																     CoursePath coursePath,
 																     String groupId, 
 																     User user) throws BackendError {
 
 		T.call(CourseListManager.class);
 		
-		addGroupForUserId(modelStore, courseListModelClass, semesterId, courseId, groupId, user.getId());
+		addGroupForUserId(modelStore, courseListModelClass, coursePath, groupId, user.getId());
 		
 	}
 
 	public static <CLM extends CourseListModel> void addGroupForUserId(ModelStoreSync modelStore, 
 																	   Class<CLM> courseListModelClass, 
-																	   String semesterId, 
-																	   String courseId, 
+																	   CoursePath coursePath,
 																	   String groupId, 
 																	   String userId) throws BackendError {
 
@@ -100,16 +111,16 @@ public class CourseListManager {
 			public void update(CLM existingModel) {
 				T.call(this);
 
-				existingModel.addGroup(semesterId, courseId, groupId);
+				existingModel.addGroup(coursePath, groupId);
 			}
 		});
 	}
 
-	public static <CLM extends CourseListModel> void closeQueueForUserId(ModelStoreSync modelStore, 
-																		 Class<CLM> courseListModelClass, 
-																		 String semesterId, 
-																		 String courseId, 
-																		 String userId) throws BackendError {
+	public static <CLM extends CourseListModel> void updateQueueOpenForUserId(ModelStoreSync modelStore, 
+			 															      Class<CLM> courseListModelClass, 
+			 															      CoursePath coursePath,
+			 															      boolean queueOpen,
+			 															      String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
 
@@ -118,74 +129,46 @@ public class CourseListManager {
 			public void update(CLM existingModel) {
 				T.call(this);
 				
-				existingModel.closeQueue(semesterId, courseId);
+				existingModel.updateQueueOpen(coursePath, queueOpen);
 			}
 		});
 	}
 	
-	public static <CLM extends CourseListModel> void closeQueueForUser(ModelStoreSync modelStore, 
-			 														   Class<CLM> courseListModelClass, 
-			 														   String semesterId, 
-			 														   String courseId, 
-			 														   User user) throws BackendError { 
-		T.call(CourseListManager.class);
-		
-		closeQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
-	}
-	
-
-	public static <CLM extends CourseListModel> void openQueueForUserId(ModelStoreSync modelStore, 
-			 															Class<CLM> courseListModelClass, 
-			 															String semesterId, 
-			 															String courseId, 
-			 															String userId) throws BackendError {
-
-		T.call(CourseListManager.class);
-
-		modelStore.updateModel(courseListModelClass, "admin", userId, new ModelUpdater<CLM>() {
-			@Override
-			public void update(CLM existingModel) {
-				T.call(this);
-				
-				existingModel.openQueue(semesterId, courseId);
-
-			}
-		});
-	}
-	
-	public static <CLM extends CourseListModel> void openQueueForUser(ModelStoreSync modelStore, 
-																      Class<CLM> courseListModelClass, 
-																      String semesterId, 
-																      String courseId, 
-																      User user) throws BackendError {
+	public static <CLM extends CourseListModel> void updateQueueOpenForUser(ModelStoreSync modelStore, 
+																            Class<CLM> courseListModelClass, 
+																            CoursePath coursePath,
+																            boolean queueOpen,
+																            User user) throws BackendError {
 
 		T.call(CourseListManager.class);
 		
-		openQueueForUserId(modelStore, courseListModelClass, semesterId, courseId, user.getId());
+		updateQueueOpenForUserId(modelStore, courseListModelClass, coursePath, queueOpen, user.getId());
 	}
 	
 
 	public static <CLM extends CourseListModel> String getCourseTitle(ModelStoreSync modelStore, 
 																      Class<CLM> courseListModelClass, 
-																      String semesterId, 
-																      String courseId, 
-																      String userId) { 
+																      CoursePath coursePath,
+																      String userId) throws BackendError { 
 		T.call(CourseListManager.class);
 		
-		return getCourseItem(modelStore, courseListModelClass, semesterId, courseId, userId).getCourseTitle();
+		return getCourseItem(modelStore, courseListModelClass, coursePath, userId).getCourseTitle();
 	}
 
 	public static <CLM extends CourseListModel> CourseListItem getCourseItem(ModelStoreSync modelStore, 
-																         Class<CLM> courseListModelClass, 
-																         String semesterId, 
-																         String courseId, 
-																         String userId) {
+																             Class<CLM> courseListModelClass, 
+																             CoursePath coursePath,
+																             String userId) throws BackendError {
 
 		T.call(CourseListManager.class);
-		
-		CourseListModel model = modelStore.getModel(courseListModelClass, "admin", userId);
-		
-		return model.courseById(semesterId, courseId);
+
+		return modelStore.extractFromModel(courseListModelClass, 
+				                      "admin", 
+				                      userId, 
+				                      CourseListItem.class, 
+				                      model -> {
+			return model.courseByPath(coursePath);
+		});
 	}
 	
 	public static <CLM extends CourseListModel> void addTask(ModelStoreSync modelStore, 
@@ -207,29 +190,32 @@ public class CourseListManager {
 	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
-																			   String userId) {
+																			   String userId) throws BackendError {
 		T.call(CourseListManager.class);
 
 		List<CoursePath> courses = new ArrayList<>();
 		
-		if(modelStore.ifModelExists(courseListModelClass, "admin", userId)) {
-			
-			CLM model = modelStore.getModel(courseListModelClass, "admin", userId);
-			
-			for(CourseListItem item :  model.getCourses().getValue()) {
+		modelStore.readModel(courseListModelClass, "admin", userId, new ModelReader<CLM>() {
+			@Override
+			public void read(CLM model) {
+				T.call(this);
 
-				courses.add(item.coursePath());
+				model.getCourseListItemsByCategoryId().forEachEntry((categoryId, courseItems) -> {
+					courseItems.forEachItem((index, courseItem) -> {
+
+						courses.add(courseItem.coursePath());
+					});
+				});
 			}
-		}
+		});
 
 		return courses;
-
 	}
 
 	public static <CLM extends CourseListModel> List<CoursePath> getCourseList(ModelStoreSync modelStore, 
 																			   Class<CLM> courseListModelClass, 
 																			   String semesterId, 
-																			   User user) {
+																			   User user) throws BackendError {
 		T.call(CourseListManager.class);
 		
 		return getCourseList(modelStore, courseListModelClass, semesterId, user.getId());
@@ -237,7 +223,7 @@ public class CourseListManager {
 
 	public static <CLM extends CourseListModel> void createCourseListForModelId(ModelStoreSync modelStore, 
 			                                                               Class<CLM> modelClass, 
-			                                                               String modelId) {
+			                                                               String modelId) throws BackendError {
 
 		T.call(CourseListManager.class);
 
@@ -251,11 +237,121 @@ public class CourseListManager {
 
 	public static <CLM extends CourseListModel> void createCourseListForUser(ModelStoreSync modelStore, 
 			                                                            Class<CLM> modelClass, 
-			                                                            User user) {
+			                                                            User user) throws BackendError {
 
 		T.call(CourseListManager.class);
 		
 		createCourseListForModelId(modelStore, modelClass, user.getId());
+	}
+
+	public static void updateSessionData(ModelStoreSync modelStore, SessionData sessionData, User user) throws BackendError {
+		T.call(CourseListManager.class);
+		
+		modelStore.readModel(CourseListModelStudent.class, "admin", user.getId(), new ModelReader<CourseListModelStudent>() {
+			@Override
+			public void read(CourseListModelStudent courseListModel) throws BackendError {
+				T.call(this);
+				
+				Optionnal<BackendError> backendError = new Optionnal<>();
+
+				courseListModel.getCourseListItemsByCategoryId().forEachEntry((categoryId, courseItems) -> {
+					courseItems.forEachItem((index, courseItem) -> {
+
+						try {
+
+							CourseManager.updateSessionData(modelStore, sessionData, courseItem.coursePath(), user);
+
+						} catch (BackendError e) {
+							backendError.set(e);
+						}
+					});
+				});
+				
+				try {
+
+					throw backendError.get();
+
+				} catch (EmptyOptionException e) {}
+			}
+		});
+	}
+
+	public static <CLM extends CourseListModel>  void setActiveSemestersForModelId(ModelStoreSync modelStore, 
+																				   Class<CLM> modelClass,
+																				   String semesterId, 
+																				   boolean isActive, 
+																				   String userId) throws BackendError {
+		T.call(CourseListModel.class);
+		
+		modelStore.updateModel(modelClass, "admin", userId, new ModelUpdater<CLM>(){
+			@Override
+			public void update(CLM courseListModel) throws BackendError {
+				T.call(this);
+				
+				if(isActive) {
+					
+					courseListModel.addActiveSemester(semesterId);
+					
+				}else {
+
+					courseListModel.removeActiveSemester(semesterId);
+				}
+			}
+		});
+	}
+
+	public static Set<String> getStudentIds(ModelStoreSync modelStore, 
+			 								String teacherId) throws BackendError {
+		
+		Set<String> studentIds = new HashSet<>();
+
+		modelStore.readModel(CourseListModelTeacher.class, "admin", teacherId, new ModelReader<CourseListModelTeacher>() {
+			@Override
+			public void read(CourseListModelTeacher courseListModel) throws BackendError {
+				T.call(this);
+				
+				Optionnal<BackendError> backendError = new Optionnal<>();
+				
+				courseListModel.getCourseListItemsByCategoryId().forEachEntry((categoryId, courseListItems) -> {
+
+					courseListItems.forEachItem((index, courseListItem) -> {
+
+						CoursePath coursePath = courseListItem.coursePath();
+
+						try {
+
+							studentIds.addAll(CourseManager.getStudentIds(modelStore, coursePath));
+
+						} catch (BackendError e) {
+							backendError.set(e);
+							throw new Break();
+						}
+					});
+				});
+				
+				try {
+					throw backendError.get();
+				} catch (EmptyOptionException e) {}
+			}
+		});
+		
+		return studentIds;
+	}
+
+	public static <CLM extends CourseListModel>  void setActiveSemestersForTeacherId(ModelStoreSync modelStore, 
+																				     Class<CLM> modelClass,
+																				     String semesterId, 
+																				     boolean isActive, 
+																				     String teacherId) throws BackendError {
+		T.call(CourseListModel.class);
+
+		setActiveSemestersForModelId(modelStore, modelClass, semesterId, isActive, teacherId);
+
+		Set<String> studentIds = getStudentIds(modelStore, teacherId);
+
+		for(String studentId : studentIds) {
+			setActiveSemestersForModelId(modelStore, modelClass, semesterId, isActive, studentId);
+		}
 	}
 
 }

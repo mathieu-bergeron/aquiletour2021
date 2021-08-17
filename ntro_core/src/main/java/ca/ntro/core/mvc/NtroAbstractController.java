@@ -13,8 +13,6 @@ import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroUser;
-
 import static ca.ntro.core.mvc.Constants.MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.SUB_MODEL_LOADER_TASK_ID;
 import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
@@ -63,7 +61,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		return getTask().execute();
 	}
 	
-	void setContext(NtroContext context) {
+	void setContext(NtroContext<?,?> context) {
 		this.context = context;
 	}
 
@@ -73,7 +71,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		this.path = path;
 	}
 	
-	public NtroContext context() {
+	public NtroContext<?,?> context() {
 		T.call(this);
 		
 		return context;
@@ -113,7 +111,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 
 		handler.setMessageId(messageId);
 
@@ -156,6 +154,11 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		T.call(this);
 
 		ViewLoader viewLoader = ViewLoaders.getViewLoader(viewClass, lang);
+		
+		// TODO: load view from document if possible
+		//       i.e. search for some element w/ id="{viewClass.getSimpleName()}"
+		//
+		//       create a ViewLoaderMemory with the View
 
 		MustNot.beNull(viewLoader);
 		
@@ -283,7 +286,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		ViewLoader subViewLoader = (ViewLoader) getTask().getSubTask(ViewLoader.class, subViewLoaderTaskId);
 		handler.setSubViewLoader(subViewLoader);
 		
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 		handler.setMessageId(messageId);
 
@@ -325,7 +328,7 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	protected void addViewMessageHandler(Class<? extends NtroMessage> messageClass, ViewMessageHandler<?,?> handler) {
 		T.call(this);
 
-		MessageHandlerTask messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
+		MessageHandlerTask<NtroMessage> messageHandlerTask = Ntro.messages().createMessageHandlerTask(messageClass);
 		String messageId = Ntro.introspector().getSimpleNameForClass(messageClass);
 		handler.setMessageId(messageId);
 
@@ -346,11 +349,19 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 	public void setModelUsingWebService(String serviceUrl, NtroModelMessage message) {
 		T.call(this);
 
-		setModelLoader(Ntro.modelStore().getModelLoaderFromRequest(serviceUrl, message));
+		setModelLoader(Ntro.modelStore().getLoaderFromRequest(serviceUrl, message));
 	}
 
 	public void setModelLoader(Class<? extends NtroModel> modelClass, String authToken, Path modelPath) {
 		T.call(this);
+
+		// TODO:  load from the DOM if possible
+		//        i.e. search for some element w/ id="{viewClass.getSimpleName()}"
+		//
+		//        create a ViewLoaderMemory with the model extracted from the model
+		//
+		// NOTE:  we also need to send a GetModelRequest to register a model observer
+		//        on the server
 
 		setModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelPath));
 	}
@@ -367,18 +378,17 @@ public abstract class NtroAbstractController  implements TaskWrapper {
 		setSubModelLoader(Ntro.modelStore().getLoader(modelClass, authToken, modelId));
 	}
 
-	public void changeUser(NtroUser user) {
+	public void changeContext(NtroContext<?,?> newContext) {
 		
-		// FIXME: clone context
-		NtroContext<?,?> oldContext = context;
-
-		context.registerUser(user);
-
-		onChangeContext(oldContext, context);
+		NtroContext<?,?> oldContext = context();
+		
+		onChangeContext(oldContext, newContext);
 
 		for(NtroAbstractController subController : subControllers) {
-			subController.changeUser(user);
+			subController.onChangeContext(oldContext, newContext);
 		}
+
+		setContext(newContext);
 
 		if(this instanceof NtroRootController) {
 			reExecuteAfterContextChange();

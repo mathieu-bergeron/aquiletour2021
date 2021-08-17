@@ -1,16 +1,16 @@
 package ca.aquiletour.core.messages.course;
 
-import ca.ntro.core.Path;
+import ca.aquiletour.core.models.paths.TaskPath;
 
 public class CourseTaskMessage extends CourseMessage {
 
-	private Path taskPath = new Path("/");
+	private TaskPath taskPath = TaskPath.fromRawPath("/");
 
-	public Path getTaskPath() {
+	public TaskPath getTaskPath() {
 		return taskPath;
 	}
 
-	public void setTaskPath(Path taskPath) {
+	public void setTaskPath(TaskPath taskPath) {
 		this.taskPath = taskPath;
 	}
 }

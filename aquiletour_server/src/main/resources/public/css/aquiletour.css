@@ -1,3 +1,9 @@
+.link-disabled {
+  color: black;
+  cursor: wait;
+  text-decoration: none;
+}
+
 /*cards*/
 .card {
   height: fit-content !important;

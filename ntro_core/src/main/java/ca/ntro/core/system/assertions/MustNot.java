@@ -38,7 +38,7 @@ public class MustNot {
 				StackFrame tracedFrame = __Ntro.stackAnalyzer().getTracedFrame(null, stackOffset);
 				tracedFrame.printSourceLocation(builder);
 
-				Log.fatalError("null value [" + builder.toString() + "]  ");
+				Log.error("null value [" + builder.toString() + "]  ");
 			}
 		}
 	}
@@ -47,7 +47,7 @@ public class MustNot {
 		Object value = expr.evaluate();
 		
 		if(!value.equals(true)) {
-			Log.fatalError(expr.toString());
+			Log.error(expr.toString());
 		}
 	}
 

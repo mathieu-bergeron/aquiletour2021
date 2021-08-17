@@ -1,14 +1,16 @@
 package ca.aquiletour.web.pages.course.teacher;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.base.Task;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.teacher.views.CourseViewTeacher;
 import ca.aquiletour.web.pages.course.CourseViewWeb;
 import ca.aquiletour.web.widgets.BootstrapDropdown;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.models.NtroDate;
@@ -28,10 +30,14 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	private HtmlElement editableEndtime;
 	private HtmlElement editableDescription;
 	private HtmlElement editableTitle;
-	private HtmlElement uneditableCompletions;
+
+	private HtmlElement completionsList;
+	private HtmlElement completionsContainer;
 
 	private HtmlElement entryTasksContainer;
 	private HtmlElement exitTasksContainer;
+
+	private HtmlElement downloadCourseLogLink;
 
 	private HtmlElements addTaskIdToValue;
 
@@ -58,11 +64,16 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		weekOfElement = this.getRootElement().find("#week-of").get(0);
 		editableEndtime = this.getRootElement().find("#editable-endtime").get(0);
 		editableDescription = this.getRootElement().find("#editable-description").get(0);
-		uneditableCompletions = this.getRootElement().find("#uneditable-completions").get(0);
 		editableTitle = this.getRootElement().find("#editable-title").get(0);
+
+		completionsList = this.getRootElement().find("#completions-list").get(0);
+		completionsContainer = this.getRootElement().find("#completions-container").get(0);
+
 
 		entryTasksContainer = this.getRootElement().find("#entry-tasks-container").get(0);
 		exitTasksContainer = this.getRootElement().find("#exit-tasks-container").get(0);
+
+		downloadCourseLogLink = this.getRootElement().find("#download-course-log-link").get(0);
 		
 		addTaskIdToValue = this.getRootElement().find(".add-task-id-to-value");
 
@@ -80,25 +91,28 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		MustNot.beNull(weekOfElement);
 		MustNot.beNull(editableEndtime);
 		MustNot.beNull(editableDescription);
-		MustNot.beNull(uneditableCompletions);
+		MustNot.beNull(completionsList);
+		MustNot.beNull(completionsContainer);
 		MustNot.beNull(editableTitle);
 		MustNot.beNull(entryTasksContainer);
 		MustNot.beNull(exitTasksContainer);
+		MustNot.beNull(downloadCourseLogLink);
 
 		semesterDropdown = new BootstrapDropdown(semesterDropdownHead, semesterDropdownTail);
 		groupDropdown = new BootstrapDropdown(groupDropdownHead, groupDropdownTail);
 	}
 
 	@Override
-	public void showEditableComponents(boolean show) {
+	public void displayCourseStructureView(boolean shouldDisplay) {
 		T.call(this);
 		
-		if(show) {
+		if(shouldDisplay) {
 			
 			editableDescription.show();
 			editableEndtime.show();
 			saveButtonContainer.show();
 			editableTitle.show();
+			completionsContainer.hide();
 			
 		} else {
 
@@ -106,25 +120,26 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 			editableEndtime.hide();
 			saveButtonContainer.hide();
 			editableTitle.hide();
+			completionsContainer.show();
 		}
 	}
 
 	@Override
-	public void insertIntoSemesterDropdown(int index, String semesterId, String href, String text) {
+	public void insertIntoCategoryDropdown(int index, String semesterId, String href, String text) {
 		T.call(this);
 		
 		semesterDropdown.insert(index, semesterId, href, text);
 	}
 
 	@Override
-	public void appendToSemesterDropdown(String semesterId, String href, String text) {
+	public void appendToCategoryDropdown(String semesterId, String href, String text) {
 		T.call(this);
 
 		semesterDropdown.append(semesterId, href, text);
 	}
 
 	@Override
-	public void selectSemester(String semesterId) {
+	public void selectCategory(String semesterId) {
 		T.call(this);
 		
 		semesterDropdown.select(semesterId);
@@ -159,6 +174,8 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		T.call(this);
 		
 		addTaskIdToValue.appendToAttribute("value", task.id());
+		
+		downloadCourseLogLink.setAttribute("href", "/" + Constants.COURSE_LOG_URL_SEGMENT + coursePath.toUrlPath());
 	}
 
 	@Override
@@ -170,12 +187,12 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void displayTaskDescription(String description, boolean editable) {
+	public void updateTaskDescription(String description, boolean editable) {
 		T.call(this);
 		
 		if(!editable) {
 			
-			super.displayTaskDescription(description, editable);
+			super.updateTaskDescription(description, editable);
 			
 		}else {
 
@@ -185,12 +202,12 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	}
 
 	@Override
-	public void displayTaskEndTime(AquiletourDate endTime, boolean editable) {
+	public void updateTaskEndTime(AquiletourDate endTime, boolean editable) {
 		T.call(this);
 		
 		if(!editable) {
 
-			super.displayTaskEndTime(endTime, editable);
+			super.updateTaskEndTime(endTime, editable);
 
 		}else if(endTime instanceof CourseDateScheduleItem) {
 			
@@ -239,7 +256,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 	public void appendCompletion(String studentId) {
 		T.call(this);
 		
-		String list = uneditableCompletions.text();
+		String list = completionsList.text();
 		
 		if(list == null || list.isEmpty()) {
 			
@@ -251,7 +268,7 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 			
 		}
 
-		uneditableCompletions.text(list);
+		completionsList.text(list);
 	}
 
 	@Override
@@ -303,4 +320,18 @@ public class CourseViewWebTeacher extends CourseViewWeb implements CourseViewTea
 		exitTasksContainer.removeClass("border");
 	}
 
+	@Override
+	public void clearStudentStatuses() {
+		T.call(this);
+
+		completionsList.deleteChildrenForever();
+		completionsList.text("");
+	}
+
+	@Override
+	public void updateCategory(String categoryId, String href, String text) {
+		T.call(this);
+		
+		// TODO
+	}
 }

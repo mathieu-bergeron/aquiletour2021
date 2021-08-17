@@ -22,15 +22,13 @@ public abstract class DashboardController extends NtroController<RootController>
 	}
 	
 	protected abstract Class<? extends DashboardView> viewClass();
-	protected abstract Class<? extends DashboardModel> modelClass();
+	protected abstract Class<? extends DashboardModel<?>> modelClass();
 	protected abstract void installParentViewMessageHandler();
 	
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
-		
-		System.out.println("onContextChange");
-		
+
 		requestModel(context);
 	}
 

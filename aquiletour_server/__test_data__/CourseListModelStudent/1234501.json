@@ -1,0 +1,42 @@
+{
+  "courses": {
+    "_C": "ObservableCourseDescriptionList",
+    "value": [
+      {
+        "courseTitle": "Structure de données",
+        "semesterId": "H2021",
+        "teacherId": "alice",
+        "_C": "CourseListItem",
+        "queueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "groupsSummary": "0 groupes",
+        "groupIds": {
+          "_C": "ObservableGroupIdList",
+          "value": [
+            "01"
+          ]
+        },
+        "courseDescription": "",
+        "courseId": "StruDon",
+        "tasksSummary": "0 étapes",
+        "tasks": {
+          "_C": "ObservableTaskDescriptions",
+          "value": []
+        }
+      }
+    ]
+  },
+  "allSemesters": {
+    "_C": "SemesterIds",
+    "value": [
+      "H2021"
+    ]
+  },
+  "_C": "CourseListModelStudent",
+  "activeSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  }
+}

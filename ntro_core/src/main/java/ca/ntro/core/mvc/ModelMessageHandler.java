@@ -8,7 +8,7 @@ import ca.ntro.core.tasks.TaskWrapper;
 import ca.ntro.messages.NtroMessage;
 
 public abstract class   ModelMessageHandler<M extends NtroModel, MSG extends NtroMessage>
-                extends Handler 
+                extends Handler<NtroAbstractController>
                 implements TaskWrapper  {
 	
 	private ModelMessageHandlerTask<M,MSG> task;

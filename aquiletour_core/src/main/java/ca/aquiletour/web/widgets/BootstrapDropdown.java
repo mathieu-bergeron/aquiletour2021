@@ -22,19 +22,45 @@ public class BootstrapDropdown {
 		insert(size()-1, groupId, href, text);
 	}
 
+	public void update(String itemId, String href, String text) {
+		T.call(this);
+		
+		HtmlElement item = findDropdownItem(itemId);
+		
+		if(item != null) {
+			item.setAttribute("href", text);
+			item.text(text);
+		}
+	}
+
+	public HtmlElement findDropdownItem(String itemId) {
+		T.call(this);
+		
+		HtmlElement item = null;
+		
+		item = dropdownHead.find("#" + itemId).get(0);
+		
+		if(item == null) {
+			
+			item = dropdownTail.find("#" + itemId).get(0);
+		}
+		
+		return item;
+	}
+
 	public void insert(int index, String id, String href, String text) {
 		T.call(this);
 		
-		HtmlElement link = createLink(id, href, text);
+		HtmlElement item = createDropdownItem(id, href, text);
 
 		if(index >= 0 && index < dropdownTail.children("*").size()){
 			
 			HtmlElement anchorElement = dropdownTail.children("*").get(index);
-			link.insertBefore(anchorElement);
+			item.insertBefore(anchorElement);
 
 		} else {
 			
-			dropdownTail.appendElement(link);
+			dropdownTail.appendElement(item);
 		}
 		
 	}
@@ -45,13 +71,13 @@ public class BootstrapDropdown {
 		HtmlElements links = dropdownTail.find("#" + id);
 		
 		if(links != null) {
-
+			
 			HtmlElement link = links.get(0);
 			
 			if(link != null) {
 
 				clearSelection();
-
+				
 				String linkId = link.getAttribute("id");
 				String linkHref = link.getAttribute("href");
 				String linkText = link.text();
@@ -83,7 +109,7 @@ public class BootstrapDropdown {
 		}
 	}
 	
-	private HtmlElement createLink(String id, String href, String text) {
+	private HtmlElement createDropdownItem(String id, String href, String text) {
 		T.call(this);
 		
 		HtmlElement semesterLink = dropdownHead.createElement("<a></a");

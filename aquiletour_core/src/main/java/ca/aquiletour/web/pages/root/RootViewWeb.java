@@ -7,19 +7,17 @@ import java.util.List;
 import static ca.ntro.assertions.Factory.that;
 import java.util.Map;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
-import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.StudentGuest;
-import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course_list.views.CourseListView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.aquiletour.core.pages.group_list.views.GroupListView;
-import ca.aquiletour.core.pages.git.commit_list.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitListView;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsView;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesView;
 import ca.aquiletour.core.pages.home.HomeView;
@@ -27,20 +25,20 @@ import ca.aquiletour.core.pages.root.RootView;
 import ca.aquiletour.core.pages.semester_list.views.SemesterListView;
 import ca.aquiletour.web.widgets.BootstrapAlert;
 import ca.aquiletour.core.pages.login.LoginView;
-import ca.aquiletour.core.pages.login.ShowLoginMessage;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListView;
 import ca.aquiletour.core.pages.queue.views.QueueView;
+import ca.aquiletour.core.pages.queue_list.views.QueueListView;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 import ca.ntro.web.dom.AnimationListener;
+import ca.ntro.web.dom.HtmlDocument;
 import ca.ntro.web.dom.HtmlElement;
-import ca.ntro.web.dom.HtmlElementLambda;
 import ca.ntro.web.dom.HtmlElements;
-import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.mvc.NtroViewWeb;
 
 public class RootViewWeb extends NtroViewWeb implements RootView {
@@ -48,6 +46,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private long FADE_OUT_LENGTH = 100;
 	private long FADE_INT_LENGTH = 100;
 	private long LOGIN_MENU_MESSAGE_DURATION = 1000*5;
+
+	private HtmlElement logoImage;
+	private HtmlElement logoLoading;
 	
 	private HtmlElement subViewContainer;
 	private NtroViewWeb currentSubView;
@@ -56,9 +57,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement dashboardLink;
 	private HtmlElement courseListLink;
 	private HtmlElement groupListLink;
-	private HtmlElement openQueueListLink;
+	private HtmlElement queueListLink;
 	private HtmlElement semesterListLink;
 	private HtmlElement queueLink;
+
 
 	private HtmlElement loginDropdown;
 	private HtmlElement loginButton;
@@ -68,7 +70,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuEnterPassword;
 	private HtmlElement loginMenuEnterCode;
 	private HtmlElement loginMenuAddPassword;
+	private HtmlElement loginMenuNameContainer;
 	private HtmlElement currentPasswordContainer;
+	private HtmlElement currentPasswordInput;
 	private HtmlElement modifyPasswordButton;
 	private HtmlElement loginMenuUserProfile;
 	private HtmlElement userNameContainer;
@@ -76,10 +80,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement showPasswordMenuLink;
 	private HtmlElement toggleStudentModeButton;
 	private HtmlElement toggleStudentModeContainer;
+
+	/*
 	private HtmlElement toggleAdminModeButton;
 	private HtmlElement toggleAdminModeContainer;
+	*/
 	
-	private HtmlElements logoutLinks;
 	private HtmlElements addDelayedMessagesToValue;
 	private HtmlElements addUserIdToValue;
 
@@ -89,11 +95,14 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
+		
+		logoImage = getRootElement().find("#logo-image").get(0);
+		logoLoading = getRootElement().find("#logo-loading").get(0);
 
 		subViewContainer = getRootElement().find("#page-container").get(0);
 		homeLink = getRootElement().find("#home-link").get(0);
 		dashboardLink = getRootElement().find("#dashboard-link").get(0);
-		openQueueListLink = getRootElement().find("#open-queue-list-link").get(0);
+		queueListLink = getRootElement().find("#queue-list-link").get(0);
 		courseListLink = getRootElement().find("#course-list-link").get(0);
 		semesterListLink = getRootElement().find("#calendar-list-link").get(0);
 		groupListLink = getRootElement().find("#group-list-link").get(0);
@@ -106,7 +115,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuEnterPassword = getRootElement().find("#login-menu-enter-password").get(0);
 		loginMenuEnterCode = getRootElement().find("#login-menu-enter-code").get(0);
 		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
+		loginMenuNameContainer = getRootElement().find(".login-menu-name-container").get(0);
 		currentPasswordContainer = getRootElement().find("#current-password-container").get(0);
+		currentPasswordInput = getRootElement().find("#current-password-input").get(0);
 		modifyPasswordButton = getRootElement().find("#modify-password-button").get(0);
 
 		loginMenuUserProfile = getRootElement().find("#login-menu-user-profile").get(0);
@@ -116,10 +127,11 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		toggleStudentModeContainer = getRootElement().find("#toggle-student-mode-container").get(0);
 		toggleStudentModeButton = getRootElement().find("#toggle-student-mode-button").get(0);
 
+		/*
 		toggleAdminModeContainer = getRootElement().find("#toggle-admin-mode-container").get(0);
 		toggleAdminModeButton = getRootElement().find("#toggle-admin-mode-button").get(0);
+		 */
 
-		logoutLinks = getRootElement().find(".logout-link");
 		addDelayedMessagesToValue = getRootElement().find(".add-delayed-messages-to-value");
 		addUserIdToValue = getRootElement().find(".add-user-id-to-value");
 
@@ -129,10 +141,13 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		HtmlElement alertDangerElement = getRootElement().find("#alert-danger").get(0);
 		HtmlElement alertPrimaryElement = getRootElement().find("#alert-primary").get(0);
 
+		MustNot.beNull(logoImage);
+		MustNot.beNull(logoLoading);
+
 		MustNot.beNull(subViewContainer);
 		MustNot.beNull(homeLink);
 		MustNot.beNull(dashboardLink);
-		MustNot.beNull(openQueueListLink);
+		MustNot.beNull(queueListLink);
 		MustNot.beNull(semesterListLink);
 		MustNot.beNull(loginButton);
 		MustNot.beNull(loginDropdown);
@@ -143,32 +158,41 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuEnterCode);
 		MustNot.beNull(loginMenuAddPassword);
 		MustNot.beNull(currentPasswordContainer);
+		MustNot.beNull(currentPasswordInput);
 		MustNot.beNull(loginMenuUserProfile);
 		MustNot.beNull(toggleStudentModeContainer);
 		MustNot.beNull(toggleStudentModeButton);
+		/*
 		MustNot.beNull(toggleAdminModeContainer);
 		MustNot.beNull(toggleAdminModeButton);
+		*/
 		MustNot.beNull(userNameContainer);
 		MustNot.beNull(groupListLink);
 		MustNot.beNull(queueLink);
 		MustNot.beNull(userNameInput);
 		MustNot.beNull(showPasswordMenuLink);
 		MustNot.beNull(courseListLink);
+
 		MustNot.beNull(alertDangerElement);
 		MustNot.beNull(alertPrimaryElement);
 
-		Ntro.verify(that(logoutLinks.size() > 0).isTrue());
 		Ntro.verify(that(addDelayedMessagesToValue.size() > 0).isTrue());
 		Ntro.verify(that(addUserIdToValue.size() > 0).isTrue());
 
 		alertDanger = new BootstrapAlert(alertDangerElement);
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
 
-		onContextChange(context);
+		if(Ntro.isJdk()) {
+			logoImage.hide();
+			logoLoading.show();
+			initializeAlerts();
+			addUserIdToValue.setAttribute("value", context.user().getId());
+		}
 		
-		initializeAlerts();
-	}
+		currentPasswordInput.value("");
 
+		onContextChange(context);
+	}
 
 	private void initializeAlerts() {
 		T.call(this);
@@ -181,120 +205,162 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
 		
-		User user = (User) context.user();
-		String userName = user.getFirstname();
+		adjustForSocketStatus(context);
+		
+		if(Ntro.isJdk()) {
+			
+			Log.info("RootViewWeb::onContextChange");
 
-		addUserIdToValue.appendToAttribute("value", user.getId());
+			User user = (User) context.user();
 
-		adjustLoginMenu(user, userName);
-		adjustLinks(user);
+			adjustLoginMenu(user);
+			adjustLinks(user);
+		}
 	}
 
+	private void adjustForSocketStatus(NtroContext<?, ?> context) {
+		T.call(this);
+		
+		if(context != null) {
+			
+			logoImage.display(context.isSocketOpen());
+			logoLoading.display(!context.isSocketOpen());
+		}
+
+		
+		/*
+
+		HtmlElement body = getRootElement().parents("body").get(0);
+		if(body == null) {
+			return;
+		}
+
+		if(context.isSocketOpen()) {
+
+			body.css("cursor", "auto");
+			body.find("a").forEach(e -> {
+				e.removeClass("link-disabled");
+				e.removeClass("disabled");
+				e.css("cursor", "pointer");
+			});
+			body.find("button").forEach(e -> {
+				e.removeClass("disabled");
+				e.css("cursor", "pointer");
+			});
+			body.find("input").forEach(e -> {
+				e.removeClass("disabled");
+				e.css("cursor", "pointer");
+			});
+			
+		}else {
+
+			body.css("cursor", "wait");
+			body.find("a").forEach(e -> {
+				e.addClass("link-disabled");
+				e.addClass("disabled");
+				e.css("cursor", "wait");
+			});
+			body.find("button").forEach(e -> {
+				e.addClass("disabled");
+				e.css("cursor", "wait");
+			});
+			body.find("input").forEach(e -> {
+				e.addClass("disabled");
+				e.css("cursor", "wait");
+			});
+		}
+		
+		*/
+	}
 
 	private void adjustLinks(User user) {
 		T.call(this);
 		
 		courseListLink.hide();
-		openQueueListLink.hide();
 		semesterListLink.hide();
 		groupListLink.hide();
-		queueLink.hide();
 		dashboardLink.hide();
 
-		loginButton.setAttribute("href", "/" + Constants.LOGIN_URL_SEGMENT);
-		logoutLinks.forEach(e -> {
-			e.setAttribute("href", "/" + Constants.LOGOUT_URL_SEGMENT);
-		});
+		queueLink.hide();
+
+		queueListLink.show();
+		queueListLink.setAttribute("href", "/" + Constants.QUEUE_LIST_URL_SEGMENT);
 
 		homeLink.show();
-		
-		if(!user.actsAsAdmin()) {
-			homeLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
-			dashboardLink.setAttribute("href", "/" + Constants.DASHBOARD_URL_SEGMENT);
-			courseListLink.setAttribute("href", "/" + Constants.COURSE_LIST_URL_SEGMENT);
-			
-			dashboardLink.show();
-			courseListLink.show();
 
+		if(user.hasPassword()) {
+			showPasswordMenuLink.text("Modifier mon mot de passe");
 		}else {
-			homeLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
+			showPasswordMenuLink.text("Ajouter un mot de passe");
 		}
-
-		if(user.actsAsTeacher()) {
-			semesterListLink.setAttribute("href", "/" + Constants.SEMESTER_LIST_URL_SEGMENT);
-			semesterListLink.show();
-		}
-		
-		if(user.actsAsTeacher() && !user.actsAsAdmin()) {
-
-			groupListLink.setAttribute("href", "/" + Constants.GROUP_LIST_URL_SEGMENT);
-
-			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getRegistrationId());
+	
+		if(user.actsAsStudent()) {
 			
-			toggleStudentModeButton.text("Mode étudiant");
-			
-			if(user.getHasPassword()) {
-				showPasswordMenuLink.text("Modifier mon mot de passe");
-			}else {
-				showPasswordMenuLink.text("Ajouter un mot de passe");
-			}
+			homeLink.setAttribute("href", "/" + Constants.QUEUE_LIST_URL_SEGMENT);
 
-			groupListLink.show();
-			queueLink.show();
-		}
-		
-		if(!user.actsAsTeacher() && !user.actsAsTeacher()) {
 			toggleStudentModeButton.text("Mode enseignant");
+			
+			
+		}else if(user.actsAsTeacher()){
 
-			openQueueListLink.setAttribute("href", "/" + Constants.QUEUES_URL_SEGMENT);
-			openQueueListLink.show();
+			homeLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getId());
+			queueLink.setAttribute("href", "/" + Constants.QUEUE_URL_SEGMENT + "/" + user.getId());
+			queueLink.show();
+
+			toggleStudentModeButton.text("Mode étudiant");
 		}
 	}
 
 
-	private void adjustLoginMenu(User user, String userName) {
+	private void adjustLoginMenu(User user) {
+		T.call(this);
+
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
 		loginMenuEnterPassword.hide();
 		loginMenuEnterCode.hide();
 		loginMenuAddPassword.hide();
 		loginMenuUserProfile.hide();
-		toggleAdminModeContainer.hide();
+		loginMenuNameContainer.hide();
+		//toggleAdminModeContainer.hide();
 		toggleStudentModeContainer.hide();
 
 		loginButton.removeClass("btn-danger");
 		loginButton.addClass("btn-secondary");
-
+		
 		if(user instanceof Guest) {
 
-			loginButton.html("Connexion");
+			loginButton.text("Connexion");
 			loginMenuEnterId.show();
 
 		} else if(shouldValidatePassword(user)) {
 
 			String linkText = "Valider " + user.getEmail();
-			loginButton.html(linkText);
+			loginButton.text(linkText);
 			loginMenuEnterPassword.show();
 
 		} else if(shouldValidateLoginCode(user)) {
 
 			String linkText = "Valider " + user.getEmail();
-			loginButton.html(linkText);
+			loginButton.text(linkText);
 			loginMenuEnterCode.show();
+			
+			if(shouldEnterName(user)) {
+				loginMenuNameContainer.show();
+			}
 
-		}else if(user instanceof Teacher && !(user instanceof Admin)) {
+		}else if(user.isStudent()) {
 
-			adjustLoginMenuForTeacher(user, userName);
+			loginButton.text(user.displayName());
+			loginMenuUserProfile.show();
+			userNameContainer.hide();
+			toggleStudentModeContainer.hide();
 
-		}else if(user instanceof Admin && !user.actsAsAdmin()) {
+		}else if(user.isTeacher() && !user.actsAsAdmin()) {
 
-			adjustLoginMenuForTeacher(user, userName);
+			adjustLoginMenuForTeacher(user);
 
-			toggleAdminModeContainer.show();
-			toggleAdminModeButton.removeClass("btn-secondary");
-			toggleAdminModeButton.addClass("btn-danger");
-
-		}else if(user instanceof Admin && user.actsAsAdmin()) {
+		}else if(user.actsAsAdmin()) {
 			
 			loginMenuUserProfile.show();
 
@@ -305,38 +371,42 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			loginButton.text("Admin");
 			loginButton.removeClass("btn-secondary");
 			loginButton.addClass("btn-danger");
-			toggleAdminModeContainer.show();
+			//toggleAdminModeContainer.show();
+			/*
 			toggleAdminModeButton.text("Quitter le mode admin");
 			toggleAdminModeButton.removeClass("btn-danger");
 			toggleAdminModeButton.addClass("btn-secondary");
+			*/
 
-		}else if(user instanceof Student) {
-			userName = displayName(user, userName);
-			
-			loginButton.text(userName);
-			loginMenuUserProfile.show();
-			userNameContainer.hide();
-			toggleStudentModeContainer.hide();
 		}
+
 	}
-
-
-	private void adjustLoginMenuForTeacher(User user, String userName) {
+	
+	private boolean shouldEnterName(User user) {
 		T.call(this);
 
-		userName = displayName(user, userName);
-		loginMenuUserProfile.show();
-		userNameInput.value(userName);
-		toggleStudentModeContainer.show();
-		loginButton.text(userName);
+		return !user.actsAsTeacher() && !user.getHasName();
 	}
 
-	private String displayName(User user, String userName) {
-		if(user.getLastname() != null && !user.getLastname().isEmpty()) {
-			userName += " " + user.getLastname();
+	private void adjustLoginMenuForTeacher(User user) {
+		T.call(this);
+
+		String displayName = user.displayName();
+		loginMenuUserProfile.show();
+		userNameInput.value(displayName);
+		toggleStudentModeContainer.show();
+		loginButton.text(displayName);
+		
+		if(user.isAdmin()) {
+
+			/*
+			toggleAdminModeContainer.show();
+			toggleAdminModeButton.removeClass("btn-secondary");
+			toggleAdminModeButton.addClass("btn-danger");
+			*/
 		}
-		return userName;
 	}
+
 
 
 	private boolean shouldValidateLoginCode(User user) {
@@ -354,15 +424,46 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showDashboard(DashboardView dashboardView) {
+	public void showDashboard(Class<? extends NtroView> subViewClass, DashboardView dashboardView) {
 		T.call(this);
 
-		showSubView(dashboardView);
+		showSubView(subViewClass, dashboardView);
 	}
 
-	private void showSubView(NtroView subView) {
+	private void showSubView(Class<? extends NtroView> subViewClass, NtroView subView) {
 		T.call(this);
 		
+		String subViewId = Ntro.introspector().getSimpleNameForClass(subView.getClass());
+		
+		NtroViewWeb subViewWeb = (NtroViewWeb) subView;
+
+		NtroViewWeb existingSubView = (NtroViewWeb) findSubView(subViewClass, subViewId);
+		
+		// XXX: re-initialize subView on existing rootElement (if it exists in DOM)
+		if(existingSubView != null) {
+			
+			HtmlElement subViewRootElement = existingSubView.getRootElement();
+			
+			NtroContext<?,?> context = AquiletourMain.createNtroContext();
+
+			subViewWeb.setRootElement(subViewRootElement);
+
+			subViewWeb.initializeView(context);
+			
+			Log.info("[showSubView] using existing rootElement");
+			
+			currentSubView = subViewWeb;
+
+		} else {
+			
+			subViewWeb.getRootElement().setAttribute("id", subViewId);
+			changeSubView(subView);
+		}
+	}
+
+	private void changeSubView(NtroView subView) {
+		T.call(this);
+
 		if(currentSubView != null && currentSubView != subView) {
 			
 			Map<String, Object> properties = new HashMap<>();
@@ -397,7 +498,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		subViewContainer.removeChildrenFromDocument();
 		subViewContainer.appendElement(subViewElement);
-		
+
 		Map<String, Object> properties = new HashMap<>();
 		properties.put("opacity", 1.0);
 		subViewElement.animate(properties, 
@@ -412,76 +513,76 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	
 
 	@Override
-	public void showQueue(QueueView queueView) {
+	public void showQueue(Class<? extends NtroView> subViewClass, QueueView queueView) {
 		T.call(this);
 
-		showSubView(queueView);
+		showSubView(subViewClass, queueView);
 	}
 
 	@Override
-	public void showLogin(LoginView loginView) {
+	public void showLogin(Class<? extends NtroView> subViewClass, LoginView loginView) {
 		T.call(this);
 
-		showSubView(loginView);
+		showSubView(subViewClass, loginView);
 
 	}
 
 	@Override
-	public void showQueues(OpenQueueListView currentView) {
+	public void showQueues(Class<? extends NtroView> subViewClass, QueueListView currentView) {
 		T.call(this);
 
-		showSubView(currentView);
+		showSubView(subViewClass, currentView);
 	}
 
 	@Override
-	public void showHome(HomeView homeView) {
+	public void showHome(Class<? extends NtroView> subViewClass, HomeView homeView) {
 		T.call(this);
 		
-		showSubView(homeView);
+		showSubView(subViewClass, homeView);
 	}
 
 	@Override
-	public void showCourse(CourseView courseView) {
+	public void showCourse(Class<? extends NtroView> subViewClass, CourseView courseView) {
 		T.call(this);
 
-		showSubView(courseView);
+		showSubView(subViewClass, courseView);
 	}
 
 	@Override
-	public void showGitCommitList(CommitListView gitCommitListView) {
+	public void showGitCommitList(Class<? extends NtroView> subViewClass, CommitListView gitCommitListView) {
 		T.call(this);
 		
-		showSubView(gitCommitListView);
+		showSubView(subViewClass, gitCommitListView);
 	}
 
 	@Override
-	public void showGitLateStudents(LateStudentsView gitLateStudentsView) {
+	public void showGitLateStudents(Class<? extends NtroView> subViewClass, LateStudentsView gitLateStudentsView) {
 		T.call(this);
 		
-		showSubView(gitLateStudentsView);
-		
-	}
-
-	@Override
-	public void showGitStudentSummaries(StudentSummariesView gitStudentSummariesView) {
-		T.call(this);
-		
-		showSubView(gitStudentSummariesView);
+		showSubView(subViewClass, gitLateStudentsView);
 		
 	}
 
 	@Override
-	public void showSemesterList(SemesterListView calendarListView) {
+	public void showGitStudentSummaries(Class<? extends NtroView> subViewClass, StudentSummariesView gitStudentSummariesView) {
 		T.call(this);
-
-		showSubView(calendarListView);
+		
+		showSubView(subViewClass, gitStudentSummariesView);
+		
 	}
 
 	@Override
-	public void showCourseList(CourseListView courseListView) {
+	public void showSemesterList(Class<? extends NtroView> subViewClass, SemesterListView calendarListView) {
 		T.call(this);
 
-		showSubView(courseListView);
+		showSubView(subViewClass, calendarListView);
+	}
+
+	@Override
+	public void showCourseList(Class<? extends NtroView> subViewClass, CourseListView courseListView) {
+		T.call(this);
+
+		showSubView(subViewClass, courseListView);
 	}
 
 	@Override
@@ -501,10 +602,10 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	}
 
 	@Override
-	public void showGroupList(GroupListView groupListView) {
+	public void showGroupList(Class<? extends NtroView> subViewClass, GroupListView groupListView) {
 		T.call(this);
 
-		showSubView(groupListView);
+		showSubView(subViewClass, groupListView);
 	}
 
 	@Override
@@ -517,7 +618,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages) {
 		T.call(this);
-
+		
 		loginDropdown.addClass("show");
 
 		String delayedMessagesText = delayedMessagesText(delayedMessages);

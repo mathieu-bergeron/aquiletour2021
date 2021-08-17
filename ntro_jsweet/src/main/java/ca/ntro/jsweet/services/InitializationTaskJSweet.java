@@ -21,7 +21,6 @@ import ca.ntro.core.system.stack.StackAnalyzer;
 
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.jsweet.debug.StackAnalyzerJSweet;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
@@ -34,6 +33,7 @@ import ca.ntro.services.ModelStore;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.RouterService;
 import ca.ntro.services.SessionService;
+import ca.ntro.services.SystemService;
 import ca.ntro.services.ThreadService;
 import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
@@ -78,14 +78,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 		return ViewLoaderWebJSweet.class;
 	}
 
-
-	@Override
-	protected JsonParser provideJsonParser() {
-		__T.call(this, "provideJsonParser");
-		
-		return new JsonParserJSweet();
-	}
-
 	@Override
 	protected ThreadService provideThreadService() {
 		__T.call(this, "provideThreadService");
@@ -106,7 +98,7 @@ public class InitializationTaskJSweet extends InitializationTask {
 	protected Class<? extends BackendService> provideBackendServiceClass() {
 		__T.call(this, "provideBackendService");
 
-		return BackendServiceJSweet.class;
+		return BackendServiceJSweetSockJS.class;
 	}
 
 	@Override
@@ -132,12 +124,6 @@ public class InitializationTaskJSweet extends InitializationTask {
 	}
 
 	@Override
-	protected ConfigService provideConfigService() {
-		// XXX: not supported in the client
-		return null;
-	}
-
-	@Override
 	protected CalendarService provideCalendarService() {
 		return new CalendarServiceJSweet();
 	}
@@ -145,5 +131,10 @@ public class InitializationTaskJSweet extends InitializationTask {
 	@Override
 	protected RouterService provideRouterService() {
 		return routerService;
+	}
+
+	@Override
+	protected SystemService provideSystemService() {
+		return new SystemServiceJSweet();
 	}
 }

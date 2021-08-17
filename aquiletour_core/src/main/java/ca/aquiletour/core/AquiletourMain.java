@@ -17,24 +17,36 @@
 
 package ca.aquiletour.core;
 
+
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.git.DeRegisterExercise;
 import ca.aquiletour.core.messages.git.DeleteGitRepo;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.OnCloneFailed;
+import ca.aquiletour.core.messages.git.OnExerciseCompleted;
+import ca.aquiletour.core.messages.git.OnNewCommits;
+import ca.aquiletour.core.messages.git.OnPull;
+import ca.aquiletour.core.messages.git.OnUnknownRepoURL;
 import ca.aquiletour.core.messages.git.OnClone;
 import ca.aquiletour.core.messages.git.RegisterExercise;
 import ca.aquiletour.core.messages.git.RegisterGitRepo;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
+import ca.aquiletour.core.messages.queue.UpdateQueueInfoMessage;
+import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
+import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserIsActiveMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
+import ca.aquiletour.core.models.common.StoredListOfIds;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseCompletion;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoSubmitted;
@@ -46,13 +58,18 @@ import ca.aquiletour.core.models.courses.base.StoredTaskIds;
 import ca.aquiletour.core.models.courses.base.ObservableTaskMap;
 import ca.aquiletour.core.models.courses.base.StoredAtomicTasks;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.TaskPath;
 import ca.aquiletour.core.models.courses.group.Group;
 import ca.aquiletour.core.models.courses.group.ObservableGroupMap;
 import ca.aquiletour.core.models.courses.group.StudentDescription;
 import ca.aquiletour.core.models.courses.group_description.GroupDescriptions;
 import ca.aquiletour.core.models.courses.group_description.StudentIdList;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForParent;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForPreviousTasks;
+import ca.aquiletour.core.models.courses.status.BlockedWaitingForSubTasks;
+import ca.aquiletour.core.models.courses.status.StatusDone;
+import ca.aquiletour.core.models.courses.status.StatusTodo;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
+import ca.aquiletour.core.models.courses.student.TaskStatusByTaskKey;
 import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
@@ -66,12 +83,27 @@ import ca.aquiletour.core.models.dates.CourseDateScheduleItem;
 import ca.aquiletour.core.models.dates.CourseDateSemesterDay;
 import ca.aquiletour.core.models.dates.SemesterDate;
 import ca.aquiletour.core.models.dates.StoredAquiletourDate;
+import ca.aquiletour.core.models.logs.LogModelCourse;
+import ca.aquiletour.core.models.logs.LogModelQueue;
+import ca.aquiletour.core.models.logs.UserById;
+import ca.aquiletour.core.models.logs.AppointmentRevision;
+import ca.aquiletour.core.models.logs.LogItemById;
+import ca.aquiletour.core.models.logs.LogItemByIdQueue;
+import ca.aquiletour.core.models.logs.LogItemCourse;
+import ca.aquiletour.core.models.logs.LogItemQueue;
+import ca.aquiletour.core.models.logs.LogItemsCourse;
+import ca.aquiletour.core.models.logs.LogItemsQueue;
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.dates.CalendarWeek;
+import ca.aquiletour.core.models.dates.ConcreteDate;
 import ca.aquiletour.core.models.schedule.ScheduleItems;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.models.schedule.ScheduleItem;
+import ca.aquiletour.core.models.session.CurrentTasksByCourseKey;
 import ca.aquiletour.core.models.session.SessionData;
+import ca.aquiletour.core.models.session.TaskTitleByTaskKey;
 import ca.aquiletour.core.models.user.Admin;
 import ca.aquiletour.core.models.user.Guest;
 import ca.aquiletour.core.models.user.Student;
@@ -81,18 +113,20 @@ import ca.aquiletour.core.models.user.TeacherGuest;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserIdMap;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.RegistrationId;
-import ca.aquiletour.core.models.user_registration.UserId;
+import ca.aquiletour.core.models.user_session.SessionsByUserId;
+import ca.aquiletour.core.models.user_uuid.UserIdByUuid;
+import ca.aquiletour.core.models.user_uuid.UuidByUserId;
 import ca.aquiletour.core.pages.course.messages.AddNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddPreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.AddSubTaskMessage;
-import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
+import ca.aquiletour.core.pages.course.messages.AtomicTaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
 import ca.aquiletour.core.pages.course_list.messages.AddCourseMessage;
 import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.models.ObservableCourseDescriptionList;
+import ca.aquiletour.core.pages.course_list.models.CourseListItems;
+import ca.aquiletour.core.pages.course_list.models.CourseListItemsByCategoryId;
 import ca.aquiletour.core.pages.course_list.models.ObservableGroupIdList;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
 import ca.aquiletour.core.pages.course_list.models.ObservableTaskDescriptions;
@@ -112,7 +146,7 @@ import ca.aquiletour.core.pages.dashboard.teacher.messages.DeleteCourseMessage;
 import ca.aquiletour.core.pages.dashboard.teacher.models.CurrentTaskTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardItemTeacher;
 import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
 import ca.aquiletour.core.pages.git.late_students.LateStudentsModel;
 import ca.aquiletour.core.pages.git.student_summaries.StudentSummariesModel;
 import ca.aquiletour.core.pages.git.values.Commit;
@@ -124,27 +158,31 @@ import ca.aquiletour.core.pages.group_list.models.GroupListModel;
 import ca.aquiletour.core.pages.group_list.models.ObservableGroupList;
 import ca.aquiletour.core.pages.group_list.models.ObservableStudentList;
 import ca.aquiletour.core.pages.group_list.models.SemesterCourses;
-import ca.aquiletour.core.pages.open_queue_list.OpenQueueListModel;
-import ca.aquiletour.core.pages.open_queue_list.values.ObservableQueueList;
-import ca.aquiletour.core.pages.open_queue_list.values.OpenQueue;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentDurationsMessage;
 import ca.aquiletour.core.pages.queue.messages.ModifyAppointmentTimesMessage;
 import ca.aquiletour.core.pages.queue.models.Appointment;
-import ca.aquiletour.core.pages.queue.models.ObservableTime;
-import ca.aquiletour.core.pages.queue.models.ObservableAppointmentList;
-import ca.aquiletour.core.pages.queue.models.ObservableTags;
+import ca.aquiletour.core.pages.queue.models.AppointmentById;
+import ca.aquiletour.core.pages.queue.models.StoredDate;
+import ca.aquiletour.core.pages.queue.models.StoredAppointements;
+import ca.aquiletour.core.pages.queue.models.StoredTags;
+import ca.aquiletour.core.pages.queue.models.StoredTaskPath;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
-import ca.aquiletour.core.pages.queue.models.SettingsByCourseId;
+import ca.aquiletour.core.pages.queue.models.SettingsByCourseKey;
 import ca.aquiletour.core.pages.queue.models.SettingsByGroupId;
+import ca.aquiletour.core.pages.queue.models.StoredCoursePath;
 import ca.aquiletour.core.pages.git.values.ObservableStudentSummaryList;
 import ca.aquiletour.core.pages.git.values.StudentSummary;
 import ca.aquiletour.core.pages.queue.student.messages.AddAppointmentMessage;
+import ca.aquiletour.core.pages.queue.student.messages.ModifyAppointmentCommentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.DeleteAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.MoveAppointmentMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherClosesQueueMessage;
 import ca.aquiletour.core.pages.queue.teacher.messages.TeacherUsesQueueMessage;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItem;
+import ca.aquiletour.core.pages.queue_list.models.QueueListItemById;
+import ca.aquiletour.core.pages.queue_list.models.QueueListModel;
 import ca.aquiletour.core.pages.root.RootController;
 import ca.aquiletour.core.pages.semester_list.models.SemesterListModel;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
@@ -153,31 +191,82 @@ import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterWeekList;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmin;
 import ca.aquiletour.core.pages.semester_list.admin.models.SemesterModelAdmin;
 import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
+import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
+import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
+import ca.aquiletour.core.pages.semester_list.models.ActiveSemesterIds;
 import ca.aquiletour.core.pages.semester_list.models.CourseGroup;
 import ca.aquiletour.core.pages.semester_list.models.ObservableCourseGroupList;
 import ca.aquiletour.core.pages.semester_list.models.ObservableSemesterList;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.mvc.NtroWindow;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.messages.ntro_messages.UpdateSocketStatusMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 import ca.ntro.users.NtroSession;
 
 public abstract class AquiletourMain extends NtroTaskSync {
 	
-	public static String currentSemester() {
+	private static boolean isSocketOpen = false;
+	
+	public static void setIsSocketOpen(boolean isSocketOpen) {
+		AquiletourMain.isSocketOpen = isSocketOpen;
+	}
+
+	public static NtroContext<User, SessionData> createNtroContext() {
+		T.call(AquiletourMain.class);
+
+		NtroContext<User, SessionData> context = new NtroContext<>();
+
+		context.updateIsSocketOpen(isSocketOpen);
+		context.registerLang(Constants.LANG); // TODO
+
+		context.registerUser((User) Ntro.currentUser());
+
+		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
+			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
+		}else {
+			context.registerSessionData(new SessionData());
+		}
+		
+		return context;
+	}
+	
+	public static String currentCategoryId() {
 		T.call(AquiletourMain.class);
 		
 		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
 		
-		return sessionData.getCurrentSemester();
+		String currentCategoryId = sessionData.getCurrentCategoryId();
+		
+		if(currentCategoryId == null || currentCategoryId.isEmpty()) {
+			currentCategoryId = Constants.CATEGORY_ID_CURRENT;
+			setCurrentCategoryId(currentCategoryId);
+		}
+		
+		return sessionData.getCurrentCategoryId();
+	}
+
+	public static void setCurrentCategoryId(String categoryId) {
+		T.call(AquiletourMain.class);
+		
+		SessionData sessionData = (SessionData) Ntro.currentSession().getSessionData();
+
+		sessionData.setCurrentCategoryId(categoryId);
+		
+		// XXX: saves session in cookie in JSweet
+		Ntro.sessionService().registerCurrentSession(Ntro.currentSession());
 	}
 
 	protected abstract void registerViewLoaders();
+	
+	protected abstract Path subControllersPath();
 
 	@Override
 	protected void runTask() {
@@ -189,23 +278,34 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		registerViewLoaders();
 
-		@SuppressWarnings("unchecked")
-		NtroContext<User, SessionData> context = (NtroContext<User, SessionData>) Ntro.context();
-		
 		// XXX: "/**" means: execute every subController
 		// XXX: "/*/*/*" means: execute every subController down 3 levels
 		// XXX: "/settings/*" means: execute the settings controller, then subController of settings
-		RootController rootController = ControllerFactory.createRootController(RootController.class, "*", getWindow(), context);  
+		RootController rootController = ControllerFactory.createRootController(RootController.class, subControllersPath(), getWindow(), createNtroContext());  
 
 		rootController.execute();
 		
-		Ntro.backendService().handleMessageFromBackend(NtroSetUserMessage.class, new MessageHandler<NtroSetUserMessage>() {
+		Ntro.backendService().handleMessageFromBackend(NtroUpdateSessionMessage.class, new MessageHandler<NtroUpdateSessionMessage>() {
 			@Override
-			public void handle(NtroSetUserMessage message) {
-				Ntro.currentSession().setUser(message.getUser());
-				Ntro.sessionService().registerCurrentSession(Ntro.currentSession()); // XXX: saves session
+			public void handle(NtroUpdateSessionMessage message) {
+				T.call(this);
 
-				rootController.changeUser(message.getUser());
+				NtroSession session = message.getSession();
+				Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
+				
+				rootController.changeContext(AquiletourMain.createNtroContext());
+			}
+		});
+
+		Ntro.messages().registerHandler(UpdateSocketStatusMessage.class, new MessageHandler<UpdateSocketStatusMessage>() {
+			@Override
+			public void handle(UpdateSocketStatusMessage message) {
+				T.call(this);
+				
+				AquiletourMain.setIsSocketOpen(message.getIsSocketOpen());
+				NtroContext<?,?> context = AquiletourMain.createNtroContext();
+				
+				rootController.changeContext(context);
 			}
 		});
 		
@@ -223,10 +323,35 @@ public abstract class AquiletourMain extends NtroTaskSync {
 					teacher.toggleStudentMode();
 					
 					session.setUser(teacher);
-					Ntro.sessionService().registerCurrentSession(session); // XXX: saves session
+					Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
 
-					rootController.changeUser(teacher);
+					rootController.changeContext(AquiletourMain.createNtroContext());
 				}
+				
+				Ntro.backendService().sendMessageToBackend(message);
+			}
+		});
+
+		Ntro.messages().registerHandler(ToggleAdminModeMessage.class, new MessageHandler<ToggleAdminModeMessage>() {
+			@Override
+			public void handle(ToggleAdminModeMessage message) {
+				T.call(this);
+				
+				NtroSession session = Ntro.currentSession();
+				User user = (User) session.getUser();
+
+				if(user instanceof Admin) {
+
+					Admin admin = (Admin) user;
+					admin.toggleAdminMode();
+					
+					session.setUser(admin);
+					Ntro.sessionService().registerCurrentSession(session); // XXX: saves cookie
+
+					rootController.changeContext(AquiletourMain.createNtroContext());
+				}
+
+				Ntro.backendService().sendMessageToBackend(message);
 			}
 		});
 	}
@@ -239,12 +364,11 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(DashboardItems.class);
 
 		Ntro.registerSerializableClass(QueueModel.class);
-		Ntro.registerSerializableClass(ObservableAppointmentList.class);
+		Ntro.registerSerializableClass(StoredAppointements.class);
 		Ntro.registerSerializableClass(Appointment.class);
 
-		Ntro.registerSerializableClass(OpenQueueListModel.class);
-		Ntro.registerSerializableClass(ObservableQueueList.class);
-		Ntro.registerSerializableClass(OpenQueue.class);
+		Ntro.registerSerializableClass(QueueListModel.class);
+		Ntro.registerSerializableClass(QueueListItem.class);
 		Ntro.registerSerializableClass(CommitListModel.class);
 		Ntro.registerSerializableClass(ObservableCommitList.class);
 		Ntro.registerSerializableClass(Commit.class);
@@ -288,9 +412,10 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(CourseListItem.class);
 		Ntro.registerSerializableClass(CourseListModelTeacher.class);
 		Ntro.registerSerializableClass(CourseListModelStudent.class);
-		Ntro.registerSerializableClass(ObservableCourseDescriptionList.class);
 		Ntro.registerSerializableClass(SemesterIds.class);
 		Ntro.registerSerializableClass(ObservableCourseGroupList.class);
+		Ntro.registerSerializableClass(CourseListItemsByCategoryId.class);
+		Ntro.registerSerializableClass(CourseListItems.class);
 
 		Ntro.registerSerializableClass(ObservableGroupIdList.class);
 		Ntro.registerSerializableClass(ObservableGroupList.class);
@@ -355,7 +480,7 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(UpdateUserInfoMessage.class);
 		Ntro.registerSerializableClass(UpdateTaskInfoMessage.class);
-		Ntro.registerSerializableClass(TaskCompletedMessage.class);
+		Ntro.registerSerializableClass(AtomicTaskCompletedMessage.class);
 
 		Ntro.registerSerializableClass(ShowCourseListMessageTeacher.class);
 		Ntro.registerSerializableClass(ShowCourseListMessageStudent.class);
@@ -367,8 +492,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StudentIdList.class);
 		Ntro.registerSerializableClass(GroupDescriptions.class);
 
-		Ntro.registerSerializableClass(ObservableTime.class);
-		Ntro.registerSerializableClass(ObservableTags.class);
+		Ntro.registerSerializableClass(StoredDate.class);
+		Ntro.registerSerializableClass(StoredTags.class);
 
 		Ntro.registerSerializableClass(ModifyAppointmentDurationsMessage.class);
 		Ntro.registerSerializableClass(ModifyAppointmentTimesMessage.class);
@@ -383,8 +508,8 @@ public abstract class AquiletourMain extends NtroTaskSync {
 		Ntro.registerSerializableClass(StoredAquiletourDate.class);
 
 		Ntro.registerSerializableClass(UserList.class);
-		Ntro.registerSerializableClass(RegistrationId.class);
-		Ntro.registerSerializableClass(UserId.class);
+		Ntro.registerSerializableClass(UuidByUserId.class);
+		Ntro.registerSerializableClass(UserIdByUuid.class);
 		Ntro.registerSerializableClass(UserIdMap.class);
 
 		Ntro.registerSerializableClass(CourseIds.class);
@@ -402,19 +527,83 @@ public abstract class AquiletourMain extends NtroTaskSync {
 
 		Ntro.registerSerializableClass(QueueSettings.class);
 		Ntro.registerSerializableClass(QueueSettingsCourse.class);
-		Ntro.registerSerializableClass(SettingsByCourseId.class);
+		Ntro.registerSerializableClass(SettingsByCourseKey.class);
 		Ntro.registerSerializableClass(SettingsByGroupId.class);
 
 		Ntro.registerSerializableClass(UpdateIsQueueOpenMessage.class);
+
 		Ntro.registerSerializableClass(StudentRegistersRepoMessage.class);
 		Ntro.registerSerializableClass(StudentDeletesRepoMessage.class);
+
+		Ntro.registerSerializableClass(ActiveSemesterIds.class);
+		Ntro.registerSerializableClass(CurrentTasksByCourseKey.class);
+		Ntro.registerSerializableClass(TaskTitleByTaskKey.class);
+
+		Ntro.registerSerializableClass(SessionsByUserId.class);
+
+		Ntro.registerSerializableClass(ConcreteDate.class);
+
+		Ntro.registerSerializableClass(TaskStatusByTaskKey.class);
+
+		Ntro.registerSerializableClass(DefaultCompletion.class);
+
+		Ntro.registerSerializableClass(ToggleAdminModeMessage.class);
+		Ntro.registerSerializableClass(ToggleStudentModeMessage.class);
+
+		Ntro.registerSerializableClass(StatusDone.class);
+		Ntro.registerSerializableClass(BlockedWaitingForParent.class);
+		Ntro.registerSerializableClass(BlockedWaitingForPreviousTasks.class);
+		Ntro.registerSerializableClass(BlockedWaitingForSubTasks.class);
+		Ntro.registerSerializableClass(StatusTodo.class);
+
+		Ntro.registerSerializableClass(LogModelCourse.class);
+		Ntro.registerSerializableClass(LogItemCourse.class);
+		Ntro.registerSerializableClass(LogItemsCourse.class);
+		Ntro.registerSerializableClass(UserById.class);
+
+		Ntro.registerSerializableClass(ModifyAppointmentCommentMessage.class);
+
+		Ntro.registerSerializableClass(OnNewCommits.class);
+		Ntro.registerSerializableClass(OnUnknownRepoURL.class);
+		Ntro.registerSerializableClass(OnExerciseCompleted.class);
+		Ntro.registerSerializableClass(OnPull.class);
+
+		Ntro.registerSerializableClass(GitExerciseCompletion.class);
+		Ntro.registerSerializableClass(UserChangesPasswordMessage.class);
+		Ntro.registerSerializableClass(AddSemesterWeekMessage.class);
+
+		Ntro.registerSerializableClass(UpdateQueueInfoMessage.class);
+		Ntro.registerSerializableClass(StoredCoursePath.class);
+		Ntro.registerSerializableClass(StoredTaskPath.class);
+
+		Ntro.registerSerializableClass(LogModelQueue.class);
+
+		Ntro.registerSerializableClass(LogItemByIdQueue.class);
+		Ntro.registerSerializableClass(LogItemsQueue.class);
+		Ntro.registerSerializableClass(LogItemQueue.class);
+		Ntro.registerSerializableClass(AppointmentRevision.class);
+
+		Ntro.registerSerializableClass(AppointmentById.class);
+		Ntro.registerSerializableClass(StoredListOfIds.class);
+
+		Ntro.registerSerializableClass(AddSemesterMessage.class);
+
+		Ntro.registerSerializableClass(QueueListModel.class);
+		Ntro.registerSerializableClass(QueueListItemById.class);
+
+		Ntro.registerSerializableClass(UserIsActiveMessage.class);
+
+		Ntro.registerSerializableClass(UpdateSocketStatusMessage.class);
+
+		Ntro.registerSerializableClass(UserSendsPasswordMessage.class);
+
 	}
 	
 	protected abstract NtroWindow getWindow();
 
 	@Override
 	protected void onFailure(Exception e) {
-		System.err.println("[FATAL] Initialization error");
+		Log.error("[FATAL] Initialization error");
 		e.printStackTrace(System.err);
 	}
 }

@@ -7,7 +7,7 @@ import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 
 public abstract class      ModelViewHandler<M extends NtroModel, V extends NtroView>
-                extends    Handler 
+                extends    Handler<NtroAbstractController>
                 implements TaskWrapper {
 	
 	private ModelViewHandlerTask<M,V> task = new ModelViewHandlerTask<M,V>(this);

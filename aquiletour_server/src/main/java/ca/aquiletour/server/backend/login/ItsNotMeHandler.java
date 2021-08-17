@@ -2,16 +2,17 @@ package ca.aquiletour.server.backend.login;
 
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class ItsNotMeHandler extends BackendMessageHandler<ItsNotMeMessage> {
 
 	@Override
-	public void handleNow(ModelStoreSync modelStore, ItsNotMeMessage message) {
+	public void handleNow(ModelStoreSync modelStore, ItsNotMeMessage message) throws BackendError {
 		T.call(this);
 		
 		Ntro.currentSession().setUser(SessionManager.createGuestSession(modelStore));

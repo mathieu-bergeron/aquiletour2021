@@ -29,11 +29,11 @@ public class SendEmail {
 	
 
 	public static void sendCode(String loginCode, String userName, String toEmail) {
-		if(Constants.DISABLE_EMAILS) {
+		if(!Ntro.config().isProd()) {
 			Log.warning("[WARNING] emails are disabled");
 			return;
 		}
-		
+
 		AquiletourConfig config = (AquiletourConfig) Ntro.config();
 		if(config.getSmtpHost() == null || config.getSmtpHost().isEmpty()) {
 			Log.warning("[WARNING] emails not configured in config.json");
@@ -71,7 +71,7 @@ public class SendEmail {
 
 		    Transport.send(message);
 
-		    System.out.println("Done");
+		    Log.info("Email sent to " + toEmail);
 
 		} catch (MessagingException e) {
 		    e.printStackTrace();

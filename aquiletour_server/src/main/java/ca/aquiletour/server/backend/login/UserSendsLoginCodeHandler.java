@@ -2,17 +2,17 @@ package ca.aquiletour.server.backend.login;
 
 
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
-import ca.aquiletour.core.models.session.SessionData;
-import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.server.RegisteredSockets;
+import ca.aquiletour.core.models.user.StudentGuest;
+import ca.aquiletour.core.utils.TextProcessing;
+import ca.aquiletour.server.backend.users.UserManager;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroSession;
 
 public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLoginCodeMessage> {
 
@@ -23,35 +23,41 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 		String loginCode = message.getLoginCode().replace(" ", "");
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
-
-		User userToRegister = null;
-
-		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
-		SessionData sessionData = null;
+		String firstName = message.getFirstName();
+		String lastName = message.getLastName();
 		
-		if(session != null) {
-			sessionData = (SessionData) session.getSessionData();
+		if(message.getUser().isStudent() && !UserManager.ifUserHasName(modelStore, userId)) {
+			
+				if(!TextProcessing.isValidName(firstName)) {
+					throw new BackendError("SVP entrer votre prénom et nom complet.");
+				}
+
+				else if(!TextProcessing.isValidName(lastName)) {
+					throw new BackendError("SVP entrer votre prénom et nom complet.");
+				}
 		}
 
-		if(sessionData != null 
-				&& sessionData.getLoginCode().equals(loginCode)) {
+		if(SessionManager.ifLoginCodeValid(modelStore, authToken, loginCode)) {
+
+			SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
 			
-			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, session);
+			UserManager.updateUserName(modelStore, firstName, lastName, userId);
 			
-		}else {
+			SessionManager.updateUser(modelStore, userId);
 			
-			userToRegister = (User) message.getUser();
+			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+			updateSessionMessage.setSession(Ntro.currentSession());
+			RegisteredSocketsSockJS.sendMessageToSockets(authToken, updateSessionMessage);
+
+			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
+				Ntro.messages().send(delayedMessage);
+			}
+
+		} else {
+
+			throw new BackendError("Code invalide. SVP réessayer.");
 		}
 
-		Ntro.currentSession().setUser(userToRegister);
-
-		NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
-		setUserNtroMessage.setUser(userToRegister);
-		RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
-		
-		for(NtroMessage delayedMessage : message.getDelayedMessages()) {
-			Ntro.messages().send(delayedMessage);
-		}
 	}
 
 
@@ -59,5 +65,4 @@ public class UserSendsLoginCodeHandler extends BackendMessageHandler<UserSendsLo
 	public void handleLater(ModelStoreSync modelStore, UserSendsLoginCodeMessage message) {
 		T.call(this);
 	}
-
 }

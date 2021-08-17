@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.services.CollectionsService;
 
 
@@ -60,7 +61,7 @@ public class CollectionsServiceJSweet extends CollectionsService {
 	}
 
 	@Override
-	public boolean containsEquals(Set<?> set, Object target) {
+	public boolean containsElementEquals(Set<?> set, Object target) {
 		boolean ifSetContains = false;
 
 		for(Object candidate : set) {
@@ -79,7 +80,7 @@ public class CollectionsServiceJSweet extends CollectionsService {
 	}
 
 	@Override
-	public <V> V getExactKey(Map<?, V> map, Object key) {
+	public <V> V getByKeyExact(Map<?, V> map, Object key) {
 		return map.get(key);
 	}
 
@@ -130,7 +131,7 @@ public class CollectionsServiceJSweet extends CollectionsService {
 	}
 
 	@Override
-	public boolean setContainsExact(Set<?> set, Object target) {
+	public boolean containsElementExact(Set<?> set, Object target) {
 		return set.contains(target);
 	}
 
@@ -150,6 +151,117 @@ public class CollectionsServiceJSweet extends CollectionsService {
 	@Override
 	public boolean listContainsEquals(List<?> value, Object target) {
 		return indexOfEquals(value, target) != -1;
+	}
+
+	// JSweet: "".compareTo("") transpiles to .localCompare
+	//         but it handles lower/upper case differently 
+	//         than in Java!
+	// JSweet:  "abC".localeCompare("abc");  ------>    > 0
+	// Jdk:     "abC".compareTo("abc");      ------>    < 0
+	@Override
+	public int compareToString(String stringA, String stringB) {
+		// -1: stringA smaller-then stringB
+		// 0: equals
+		// +1: stringA bigger-then stringB
+		
+		int result = 0;
+		
+		for(int i = 0; i < stringA.length()-1; i++) {
+
+			if(i < stringB.length()) {
+				String charA = stringA.substring(i,i+1);
+				String charB = stringB.substring(i,i+1);
+				
+				int charResult = charA.compareTo(charB);
+				
+				if(charResult != 0
+						&& charA.equalsIgnoreCase(charB)){
+					
+					result = -charResult;
+
+				}else if(charResult != 0) {
+					result = charResult;
+					break;
+				}
+				
+			}else {
+				result = +1;
+				break;
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean containsItemEquals(List<?> list, Object target) {
+		T.call(this);
+		
+		boolean ifContains = false;
+		
+		for(Object candidate : list) {
+			if(candidate.equals(target)) {
+				ifContains = true;
+				break;
+			}
+		}
+		
+		return ifContains;
+	}
+
+	@Override
+	public boolean containsItemExact(List<?> list, Object target) {
+		T.call(this);
+
+		return list.contains(target);
+	}
+
+	@Override
+	public boolean containsKeyEquals(Map<?, ?> map, Object key) {
+		T.call(this);
+		
+		return map.containsKey(key);
+	}
+
+	@Override
+	public <V> V getByKeyEquals(Map<?, V> map, Object key) {
+		T.call(this);
+		
+		V value = null;
+		
+		for(Map.Entry<?, V> entry : map.entrySet()) {
+			if(entry.getKey().equals(key)) {
+				value = entry.getValue();
+				break;
+			}
+		}
+
+		return value;
+	}
+
+	@Override
+	public <V> void removeByKeyEquals(Map<?, V> map, Object key) {
+		T.call(this);
+		
+		Object foundKey = null;
+		
+		for(Map.Entry<?, V> entry : map.entrySet()) {
+			if(entry.getKey().equals(key)) {
+				foundKey = key;
+				break;
+			}
+		}
+		
+		if(foundKey != null) {
+			map.remove(foundKey);
+		}
+	}
+
+	@Override
+	public <V> void removeByKeyExact(Map<?, V> map, Object key) {
+		T.call(this);
+
+		map.remove(key);
 	}
 
 }

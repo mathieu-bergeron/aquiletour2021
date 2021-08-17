@@ -18,7 +18,6 @@
 package ca.aquiletour.server;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,10 +37,13 @@ import ca.aquiletour.server.http.MessageHandler;
 import ca.aquiletour.server.http.ResourceHandler;
 import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
-import ca.ntro.core.models.ModelStoreSync;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskAsync;
+import ca.ntro.jdk.digest.PasswordDigest;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 
@@ -53,6 +55,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 	protected void runTaskAsync() {
 		T.call(this);
 		
+		PasswordDigest.initialize(((AquiletourConfig) Ntro.config()).getPasswordSalt());
 
 		// TODO: fetching option (parsed by InitializationTask)
 		String mainDirectory = getPreviousTask(NtroInitializationTask.class, Constants.INITIALIZATION_TASK_ID).getOption("mainDirectory");
@@ -65,8 +68,14 @@ public class AquiletourMainServer extends NtroTaskAsync {
 		
 		sendTimePassesMessages();
 
-		UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
-		SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+		try {
+
+			UserManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+			SemesterListManager.initialize(new ModelStoreSync(Ntro.modelStore()));
+
+		} catch (BackendError e) {
+			Log.error("Could not initialize: " + e.getMessage());
+		}
 
 		// Start server
 		// always do server-side rendering (except for static resources: Urls starting with _resources)
@@ -85,7 +94,7 @@ public class AquiletourMainServer extends NtroTaskAsync {
 	private void sendTimePassesMessages() {
 		T.call(this);
 
-		long periodSeconds = 5;
+		long periodSeconds = ca.aquiletour.core.Constants.TIME_PASSES_PERIOD_SECONDS;
 
 		timePassesTimer =  new Timer();
 		timePassesTimer.scheduleAtFixedRate(new TimerTask() {

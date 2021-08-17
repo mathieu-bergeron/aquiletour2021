@@ -2,7 +2,6 @@ package ca.ntro.javafx;
 
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.jdk.services.CollectionsServiceJdk;
-import ca.ntro.services.CollectionsService;
 import ca.ntro.services.Ntro;
 import ca.ntro.services.NtroInitializationTask;
 

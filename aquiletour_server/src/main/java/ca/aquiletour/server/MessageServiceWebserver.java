@@ -3,6 +3,9 @@ package ca.aquiletour.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
+import ca.ntro.backend.BackendError;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.MessageServiceJdk;
 import ca.ntro.messages.NtroMessage;
@@ -22,7 +25,7 @@ public class MessageServiceWebserver extends MessageServiceJdk {
 
 		}else {
 
-			System.out.println("saving message " + message.getClass().getSimpleName());
+			Log.info("saving message " + message.getClass().getSimpleName());
 			messageQueue.add(message);
 		}
 	}
@@ -45,8 +48,16 @@ public class MessageServiceWebserver extends MessageServiceJdk {
 
 			}else {
 				
-				System.out.println("sending message to WebSocket " + message.getClass().getSimpleName());
-				RegisteredSockets.sendMessageToUser(Ntro.currentUser(), message);
+				Log.info("sending message to WebSocket " + message.getClass().getSimpleName());
+				
+				try {
+
+					RegisteredSocketsSockJS.sendMessageToUser(Ntro.currentUser(), message);
+
+				} catch (BackendError e) {
+					
+					Log.error("[sendQueuedMessages] BackendError " + e);
+				}
 			}
 		}
 

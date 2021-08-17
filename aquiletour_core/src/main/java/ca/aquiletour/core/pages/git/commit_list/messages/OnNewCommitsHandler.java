@@ -1,19 +1,11 @@
 package ca.aquiletour.core.pages.git.commit_list.messages;
 
-import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.messages.git.GetCommitsForPath;
-import ca.aquiletour.core.messages.git.GetCommitsForPathAndTimePeriod;
 import ca.aquiletour.core.messages.git.OnNewCommits;
-import ca.aquiletour.core.pages.git.commit_list.CommitListController;
-import ca.aquiletour.core.pages.git.commit_list.CommitListModel;
-import ca.aquiletour.core.pages.git.commit_list.CommitListView;
-import ca.aquiletour.core.pages.git.commit_list.CommitView;
-import ca.aquiletour.core.pages.root.RootView;
-import ca.ntro.core.mvc.ControllerMessageHandler;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitView;
 import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
-import ca.ntro.services.Ntro;
 
 public class OnNewCommitsHandler extends ModelViewSubViewMessageHandler<CommitListModel, CommitView, OnNewCommits> {
 	

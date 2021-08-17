@@ -8,8 +8,6 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.messages.MessageHandlerTask;
 import ca.ntro.messages.NtroMessage;
 
-import static ca.ntro.core.mvc.Constants.VIEW_LOADER_TASK_ID;
-
 public class ViewMessageHandlerTask<V extends NtroView, 
                                     MSG extends NtroMessage> extends NtroTaskAsync {
 	
@@ -23,17 +21,17 @@ public class ViewMessageHandlerTask<V extends NtroView,
 		this.messageId = messageId;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
 		ViewCreatorTask viewCreator = (ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, Constants.VIEW_CREATOR_TASK_ID);
-		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
+		MessageHandlerTask<NtroMessage> messageHandler = (MessageHandlerTask<NtroMessage>) getPreviousTask(MessageHandlerTask.class, messageId);
 
 		MustNot.beNull(viewCreator);
 		MustNot.beNull(messageHandler);
 
-		@SuppressWarnings("unchecked")
 		V view = (V) viewCreator.getView();
 		
 		MustNot.beNull(view);

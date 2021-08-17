@@ -7,7 +7,7 @@ import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.core.tasks.TaskWrapper;
 
 public abstract class      ModelViewSubViewHandler<M extends NtroModel, V extends NtroView>
-                extends    Handler 
+                extends    Handler<NtroAbstractController>
                 implements TaskWrapper {
 	
 	private ViewLoader subViewLoader;

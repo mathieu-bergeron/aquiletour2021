@@ -17,8 +17,6 @@
 
 package ca.ntro.jsweet.services;
 
-import static def.dom.Globals.alert;
-
 import ca.ntro.services.AppCloser;
 
 public class AppCloserJSweet extends AppCloser {

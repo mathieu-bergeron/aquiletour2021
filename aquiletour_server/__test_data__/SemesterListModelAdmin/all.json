@@ -1,5 +1,11 @@
 {
   "_C": "SemesterListModelAdmin",
+  "activeSemesterIds": {
+    "_C": "ActiveSemesterIds",
+    "value": [
+      "H2021"
+    ]
+  },
   "semesters": {
     "_C": "ObservableSemesterList",
     "value": [
@@ -9,15 +15,101 @@
         "semesterSchedule": {
           "weeks": {
             "_C": "ObservableSemesterWeekList",
-            "value": []
+            "value": [
+              {
+                "_C": "CalendarWeek",
+                "days": [
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 0,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623038400
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 1,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623124800
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 2,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623211200
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 3,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623297600
+                    }
+                  },
+                  {
+                    "scheduleOf": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "semesterWeek": 1,
+                    "_C": "SemesterDate",
+                    "semesterDay": {
+                      "dayOfWeek": 4,
+                      "_C": "NtroDayOfWeek"
+                    },
+                    "calendarDate": {
+                      "_C": "NtroDate",
+                      "epochSeconds": 1623384000
+                    }
+                  }
+                ],
+                "mondayDate": {
+                  "_C": "NtroDate",
+                  "epochSeconds": 1623038400
+                }
+              }
+            ]
           },
           "_C": "SemesterSchedule"
         }
       }
     ]
-  },
-  "currentSemesterId": {
-    "_C": "StoredString",
-    "value": "H2021"
   }
 }

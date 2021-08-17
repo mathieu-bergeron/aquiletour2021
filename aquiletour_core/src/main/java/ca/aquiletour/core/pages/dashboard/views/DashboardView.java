@@ -4,6 +4,6 @@ import ca.ntro.core.mvc.NtroView;
 
 public interface DashboardView extends NtroView  {
 
-	void appendDashboardItem(DashboardItemView itemView);
+	void appendDashboardItem(DashboardItemView<?> itemView);
 
 }

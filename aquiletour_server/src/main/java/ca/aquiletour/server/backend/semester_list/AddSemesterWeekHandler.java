@@ -5,15 +5,14 @@ import ca.aquiletour.core.pages.semester_list.admin.models.SemesterListModelAdmi
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.backend.login.SessionManager;
-import ca.aquiletour.server.backend.schedule.ScheduleUpdater;
 import ca.aquiletour.server.backend.users.UserManager;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.wrappers.options.EmptyOptionException;
 import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.services.ModelStoreSync;
 
 public class AddSemesterWeekHandler extends BackendMessageHandler<AddSemesterWeekMessage> {
 

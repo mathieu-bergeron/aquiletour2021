@@ -1,6 +1,5 @@
 package ca.aquiletour.web.pages.dashboard;
 
-import ca.aquiletour.core.pages.dashboard.models.DashboardItem;
 import ca.aquiletour.core.pages.dashboard.views.DashboardItemView;
 import ca.aquiletour.core.pages.dashboard.views.DashboardView;
 import ca.ntro.core.mvc.NtroContext;
@@ -16,17 +15,17 @@ public abstract class DashboardViewWeb extends NtroViewWeb implements DashboardV
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
-
-		dashboardItemContainer = this.getRootElement().find("#dashboard-item-container").get(0);
+		
+		dashboardItemContainer = this.getRootElement().find(".dashboard-item-container").get(0);
 
 		MustNot.beNull(dashboardItemContainer);
 	}
 
 	@Override
-	public void appendDashboardItem(DashboardItemView itemView) {
+	public void appendDashboardItem(DashboardItemView<?> itemView) {
 		T.call(this);
 		
-		DashboardItemViewWeb subView = (DashboardItemViewWeb) itemView;
+		DashboardItemViewWeb<?> subView = (DashboardItemViewWeb<?>) itemView;
 
 		dashboardItemContainer.appendElement(subView.getRootElement());
 	}

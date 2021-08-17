@@ -1,7 +1,6 @@
 package ca.aquiletour.core.pages.course.teacher;
 
 import ca.aquiletour.core.pages.course.CourseController;
-import ca.aquiletour.core.pages.course.handlers.ShowCourseHandler;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.teacher.handlers.CourseViewModelTeacher;

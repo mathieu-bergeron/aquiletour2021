@@ -109,7 +109,7 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 		return this;
 	}
 	
-	protected Class<? extends NtroViewWeb> getTargetClass(){
+	public Class<? extends NtroViewWeb> getTargetClass(){
 		T.call(this);
 		
 		return viewClass;
@@ -118,23 +118,18 @@ public abstract class ViewLoaderWeb extends ViewLoader {
 	@Override
 	protected NtroView createViewImpl() {
 		T.call(this);
-
+		
 		MustNot.beNull(html);
 
 		NtroViewWeb view = Ntro.factory().newInstance(viewClass);
 
 		HtmlElement rootElement = parseHtml(html);
-
+		
 		view.setRootElement(rootElement);
 		
-		initializeJs(Ntro.introspector().getSimpleNameForClass(viewClass), rootElement);
-
 		return view;
 	}
 
-	protected abstract void initializeJs(String viewName, HtmlElement viewRootHtmlElement);
-
 	protected abstract HtmlElement parseHtml(String html);
-
 
 }

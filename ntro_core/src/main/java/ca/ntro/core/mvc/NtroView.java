@@ -21,4 +21,8 @@ public interface NtroView {
 	
 	void initializeView(NtroContext<?,?> context);
 
+	NtroView findSubView(Class<? extends NtroView> subViewClass, String subViewId);
+
+	void displayOrHideSubView(Class<? extends NtroView> subViewClass, StringFilter filter);
+
 }

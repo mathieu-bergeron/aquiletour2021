@@ -8,19 +8,55 @@ import ca.ntro.core.system.trace.T;
 
 public class Path implements JsonSerializable {
 	
-	private static final String PATH_SEPARATOR = "/";
-	private static final String FILENAME_SEPARATOR = "¤";
+	public static final String PATH_SEPARATOR = "/";
+	public static final String KEY_SEPARATOR = "/";
+	public static final String FILENAME_SEPARATOR = "¤";
+	public static final String HTML_ID_SEPARATOR = "-";
 	
 	private List<String> names = new ArrayList<>();
 
 	public Path() {
 		T.call(this);
 	}
-	
-	public Path(String path) {
-		T.call(this);
+
+	public static Path fromRawPath(String rawPath) {
+		T.call(Path.class);
 		
-		parsePath(path);
+		Path path = new Path();
+		
+		path.parsePath(rawPath, PATH_SEPARATOR);
+
+		return path;
+	}
+
+	public static Path fromKey(String key) {
+		T.call(Path.class);
+		
+		Path path = new Path();
+		
+		path.parsePath(key, KEY_SEPARATOR);
+
+		return path;
+	}
+
+	public static Path fromHtmlId(String htmlId) {
+		T.call(Path.class);
+		
+		Path path = new Path();
+		
+		path.parsePath(htmlId, HTML_ID_SEPARATOR);
+
+		return path;
+	}
+
+	public static Path fromFileName(String filename) {
+		T.call(Path.class);
+		
+		Path path = new Path();
+		
+		path.parsePath(filename, FILENAME_SEPARATOR);
+
+		return path;
 	}
 
 	private Path(List<String> names) {
@@ -29,20 +65,10 @@ public class Path implements JsonSerializable {
 		this.names = names;
 	}
 
-	private void parsePath(String path) {
+	private void parsePath(String path, String separator) {
 		T.call(this);
 		
-		for(String name : path.split(PATH_SEPARATOR)){
-			if(name.length() > 0) {
-				names.add(name);
-			}
-		}
-	}
-
-	public void parseFileName(String path) {
-		T.call(this);
-
-		for(String name : path.split(FILENAME_SEPARATOR)){
+		for(String name : path.split(separator)){
 			if(name.length() > 0) {
 				names.add(name);
 			}
@@ -86,20 +112,46 @@ public class Path implements JsonSerializable {
 				&& beginIndex >= 0;
 	}
 	
-	@Override
-	public String toString() {
+	public String toString(String separator, boolean startsWithSeparator) {
 		StringBuilder builder = new StringBuilder();
 		
-		if(names.size() > 0) {
-			for(String name : names) {
-				builder.append(PATH_SEPARATOR);
-				builder.append(name);
-			}
-		}else {
-			builder.append(PATH_SEPARATOR);
+		if(startsWithSeparator) {
+			builder.append(separator);
 		}
 		
+		if(nameCount() > 0) {
+			builder.append(name(0));
+		}
+		
+		for(int i = 1; i < nameCount(); i++) {
+			builder.append(separator);
+			builder.append(name(i));
+		}
+
 		return builder.toString();
+	}
+
+	@Override
+	public String toString() {
+		return toRawPath();
+	}
+
+	public String toRawPath() {
+		return toString(PATH_SEPARATOR, true);
+	}
+
+	public String toFileName() {
+		return toString(FILENAME_SEPARATOR, false);
+	}
+
+	public String toHtmlId() {
+		String htmlId = toString(HTML_ID_SEPARATOR, false);
+		htmlId = htmlId.replace(".", HTML_ID_SEPARATOR);
+		return htmlId;
+	}
+
+	public String toKey() {
+		return toString(KEY_SEPARATOR, false);
 	}
 
 	public Path removePrefix(String prefix) {
@@ -141,22 +193,6 @@ public class Path implements JsonSerializable {
 		T.call(this);
 		
 		return names.size();
-	}
-
-	public String toFileName() {
-		StringBuilder builder = new StringBuilder();
-		
-		if(names.size() > 0) {
-			builder.append(names.get(0));
-			for(int i = 1; i < names.size(); i++) {
-				builder.append(FILENAME_SEPARATOR);
-				builder.append(names.get(i));
-			}
-		}else {
-			builder.append(FILENAME_SEPARATOR);
-		}
-		
-		return builder.toString();
 	}
 
 	public List<String> getNames() {
@@ -235,6 +271,21 @@ public class Path implements JsonSerializable {
 		}
 
 		return false;
+
+	}
+	public boolean isRootPath() {
+		T.call(this);
+
+		return nameCount() == 0;
 	}
 
+	protected void copyNamesOf(Path path) {
+		T.call(this);
+		
+		getNames().clear();
+
+		for(int i = 0; i < path.nameCount(); i++) {
+			this.addName(path.name(i));
+		}
+	}
 }

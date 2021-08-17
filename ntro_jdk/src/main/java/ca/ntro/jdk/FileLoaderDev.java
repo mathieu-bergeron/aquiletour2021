@@ -24,8 +24,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
-import ca.ntro.core.system.log.Log;
-
 public class FileLoaderDev extends FileLoader {
 
 	// XXX: in dev, load from ./src/main/resources

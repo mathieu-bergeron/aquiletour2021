@@ -1,10 +1,11 @@
 {
     "repoUrl": "asdf",
-    "studentId": "1234502",
+    "studentId": "1234500",
     "semesterId": "H2021",
     "_C": "OnClone",
     "groupId": "01",
-    "repoPath": "/0",
-    "courseId": "alice/strudon"
+    "repoPath": "/",
+    "courseId": "StruDon",
+    "teacherId": "alice"
 }
 

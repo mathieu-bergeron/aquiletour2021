@@ -23,11 +23,13 @@ public abstract class HtmlElement {
 
 	public abstract HtmlElements children(String cssQuery);
 	public abstract HtmlElements find(String cssQuery);
+	public abstract HtmlElements parents(String cssQuery);
 
 	public abstract String id();
 
 	public abstract String getAttribute(String name);
 	public abstract void setAttribute(String name, String value);
+	public abstract void setAttributeNoSideEffect(String name, String value);
 	public abstract void removeAttribute(String name);
 
 	public void removeChildrenFromDocument() {
@@ -66,6 +68,53 @@ public abstract class HtmlElement {
 
 	public abstract void trigger(String event);
 	
+	public void setVisibility(boolean shouldDisplay) {
+		T.call(this);
+
+		String styleString = getStyleString();
+		
+		if(shouldDisplay) {
+
+			styleString = styleString.replace("visibility:hidden !important;", "");
+			styleString = styleString.replace("visibility:hidden;", "");
+			
+		}else if(!styleString.contains("visibility:hidden !important")){
+
+			styleString = styleString.replace("visibility:hidden;", "");
+			styleString += " visibility:hidden !important;";
+		}
+
+		setAttribute("style", styleString);
+	}
+
+	public void setEnabled(boolean shouldEnable) {
+		T.call(this);
+
+		String styleString = getStyleString();
+		
+		if(shouldEnable) {
+
+			styleString = styleString.replace("opacity:0.5 !important;", "");
+			styleString = styleString.replace("opacity:0.5;", "");
+			
+		}else if(!styleString.contains("opacity:0.5 !important")){
+
+			styleString = styleString.replace("opacity:0.5;", "");
+			styleString += " opacity:0.5 !important;";
+		}
+
+		setAttribute("style", styleString);
+	}
+
+	public void display(boolean shouldDisplay) {
+		T.call(this);
+		
+		if(shouldDisplay) {
+			show();
+		}else {
+			hide();
+		}
+	}
 	
 	
 	public void show() {
@@ -103,4 +152,15 @@ public abstract class HtmlElement {
 	public abstract void removeClass(String styleClass);
 
 	public abstract HtmlElement clone();
+	public abstract void initializeJs(String viewName);
+	
+	public abstract void installFormSubmitHandler();
+	public abstract void installFormSubmitHandler(SubmitListener listener);
+	public abstract void removeFormSubitHandler();
+
+	public abstract void installLinkHandler();
+	public abstract void installLinkHandler(LinkListener listener);
+	public abstract void removeLinkHandler();
+
+	public abstract void click();
 }

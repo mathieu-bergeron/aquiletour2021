@@ -1,0 +1,126 @@
+{
+  "fromDate": "1609517520000",
+  "studentId": "1234500",
+  "semesterId": "H2021",
+  "teacherId": "",
+  "_C": "CommitListModel",
+  "groupId": "",
+  "toDate": "1625025540000",
+  "commits": {
+    "_C": "ObservableCommitList",
+    "value": [
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1613052060000",
+        "_C": "Commit",
+        "commitMessage": "Début",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Début",
+        "commitId": "502dd78bf5201dcad52a",
+        "id": "",
+        "estimatedEffort": 55
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1609861440000",
+        "_C": "Commit",
+        "commitMessage": "En cours",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "En cours",
+        "commitId": "345e882dee6beaf722b3",
+        "id": "",
+        "estimatedEffort": 31
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1619108820000",
+        "_C": "Commit",
+        "commitMessage": "Ça avance",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Ça avance",
+        "commitId": "3017ee4827b47175da22",
+        "id": "",
+        "estimatedEffort": 33
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1618575600000",
+        "_C": "Commit",
+        "commitMessage": "Presque fini",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Presque fini",
+        "commitId": "02477c1ed884c18a3331",
+        "id": "",
+        "estimatedEffort": 49
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1618950000000",
+        "_C": "Commit",
+        "commitMessage": "Oups un bogue",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Oups un bogue",
+        "commitId": "cf3f28155afc337990db",
+        "id": "",
+        "estimatedEffort": 7
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1610023020000",
+        "_C": "Commit",
+        "commitMessage": "Bon, presque fini pour vrai",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Bon, presque fini pour vrai",
+        "commitId": "c8c839648458069c4ffa",
+        "id": "",
+        "estimatedEffort": 90
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1622137320000",
+        "_C": "Commit",
+        "commitMessage": "Prêt à remettre",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Prêt à remettre",
+        "commitId": "f76b7aa955253454fc69",
+        "id": "",
+        "estimatedEffort": 9
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1619109300000",
+        "_C": "Commit",
+        "commitMessage": "Autre bogue... grrr",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Autre bogue... grrr",
+        "commitId": "30ce94851f72349289df",
+        "id": "",
+        "estimatedEffort": 91
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1611419760000",
+        "_C": "Commit",
+        "commitMessage": "Bon là fini",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Bon là fini",
+        "commitId": "72b6395a2a2d8e227227",
+        "id": "",
+        "estimatedEffort": 83
+      },
+      {
+        "exercisePathIfCompleted": "",
+        "timeStamp": "1615395060000",
+        "_C": "Commit",
+        "commitMessage": "Atelier 1",
+        "modifiedFiles": [],
+        "commitMessageFirstLine": "Atelier 1",
+        "commitId": "c748d950f0a9cdd049c5",
+        "id": "",
+        "estimatedEffort": 35
+      }
+    ]
+  },
+  "courseId": "StruDon",
+  "exercisePath": "/ateliers/atelier1"
+}

@@ -26,11 +26,11 @@ public abstract class MessageService {
 		Ntro.backendService().handleMessageFromBackend(messageClass, handler);
 	}
 
-	public void registerHandlerTask(Class<? extends NtroMessage> messageClass, MessageHandlerTask messageHandlerTask) {
+	public void registerHandlerTask(Class<? extends NtroMessage> messageClass, MessageHandlerTask<NtroMessage> messageHandlerTask) {
 		T.call(this);
 		
 		// JSWEET: compilation error with <MSG extends NtroMessage>
-		handlers.put(messageClass, new MessageHandler() {
+		handlers.put(messageClass, new MessageHandler<NtroMessage>() {
 			@Override
 			public void handle(NtroMessage message) {
 				messageHandlerTask.setMessage(message);
@@ -45,7 +45,7 @@ public abstract class MessageService {
 		return handlers.containsKey(message.getClass());
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <M extends NtroMessage> void send(M message) {
 		T.call(this);
 		
@@ -76,6 +76,7 @@ public abstract class MessageService {
 		handlers = new HashMap<>();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <MSG extends NtroMessage> MSG create(Class<MSG> messageClass) {
 		T.call(this);
 
@@ -94,10 +95,10 @@ public abstract class MessageService {
 		return null;
 	}
 
-	public  <M extends NtroMessage> MessageHandlerTask createMessageHandlerTask(Class<M> messageClass) {
+	public  <M extends NtroMessage> MessageHandlerTask<NtroMessage> createMessageHandlerTask(Class<M> messageClass) {
 		T.call(this);
 		
-		MessageHandlerTask handlerTask = new MessageHandlerTask();
+		MessageHandlerTask<NtroMessage> handlerTask = new MessageHandlerTask<NtroMessage>();
 
 		handlerTask.setTaskId(Ntro.introspector().getSimpleNameForClass(messageClass));
 

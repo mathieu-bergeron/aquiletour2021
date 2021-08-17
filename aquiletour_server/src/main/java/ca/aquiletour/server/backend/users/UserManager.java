@@ -10,8 +10,8 @@ import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.models.user_list.UserList;
-import ca.aquiletour.core.models.user_registration.RegistrationId;
-import ca.aquiletour.core.models.user_registration.UserId;
+import ca.aquiletour.core.models.user_uuid.UserIdByUuid;
+import ca.aquiletour.core.models.user_uuid.UuidByUserId;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
 import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
@@ -21,29 +21,31 @@ import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.group_list.GroupListManager;
+import ca.aquiletour.server.backend.log.LogManagerQueue;
 import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.jdk.random.SecureRandomString;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 
 public class UserManager {
 	
-	private static int USER_ID_LENGTH = Constants.DEFAULT_USER_ID_LENGTH;
 	private static int NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH = 10;
 
-	private synchronized static String generateUniqueUserId(ModelStoreSync modelStore) {
+	private synchronized static String generateUuid(ModelStoreSync modelStore) throws BackendError {
 		T.call(UserManager.class);
-		
-		String uniqueId;
+
+		int userIdLength = Constants.DEFAULT_USER_ID_LENGTH;
+
+		String uuid;
 		int numberOfCollisions = -1;
 		
 		do {
@@ -51,38 +53,38 @@ public class UserManager {
 			numberOfCollisions++;
 			if(numberOfCollisions >= NUMBER_OF_COLLISIONS_BEFORE_INCREMENTING_USER_ID_LENGTH) {
 				numberOfCollisions = -1;
-				USER_ID_LENGTH++;
+				userIdLength++;
 			}
 
-			uniqueId = SecureRandomString.generate(USER_ID_LENGTH);
+			uuid = SecureRandomString.generate(userIdLength);
 
-		} while(modelStore.ifModelExists(User.class, "admin", uniqueId));
+		} while(modelStore.ifModelExists(UserIdByUuid.class, "admin", uuid));
 
-		return uniqueId;
+		return uuid;
 	}
 
-	private static String generateAndStoreUserId(ModelStoreSync modelStore, String registrationId) {
+	private static String generateAndStoreUuid(ModelStoreSync modelStore, String userId) throws BackendError {
 		T.call(UserManager.class);
 		
-		String userId = generateUniqueUserId(modelStore);
-		
-		modelStore.createModel(RegistrationId.class, "admin", userId, new ModelInitializer<RegistrationId>() {
+		String uuid = generateUuid(modelStore);
+
+		modelStore.createModel(UuidByUserId.class, "admin", userId, new ModelInitializer<UuidByUserId>() {
 			@Override
-			public void initialize(RegistrationId newModel) {
+			public void initialize(UuidByUserId newModel) {
 				T.call(this);
-				newModel.setRegistrationId(registrationId);
+				newModel.setUuid(uuid);
 			}
 		});
 
-		modelStore.createModel(UserId.class, "admin", registrationId, new ModelInitializer<UserId>() {
+		modelStore.createModel(UserIdByUuid.class, "admin", uuid, new ModelInitializer<UserIdByUuid>() {
 			@Override
-			public void initialize(UserId newModel) {
+			public void initialize(UserIdByUuid newModel) {
 				T.call(this);
 				newModel.setUserId(userId);
 			}
 		});
 
-		return userId;
+		return uuid;
 	}
 
 	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) throws BackendError {
@@ -106,26 +108,16 @@ public class UserManager {
 		}
 	}
 
-	public static boolean isUserPasswordValid(ModelStoreSync modelStore, String password, User user) {
+	public static boolean isUserPasswordValid(ModelStoreSync modelStore, String password, User user) throws BackendError {
 		T.call(UserManager.class);
-		
-		boolean isValid = false;
 
-		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
-			
-			User userModel = modelStore.getModel(User.class, "admin", user.getId());
+		return modelStore.extractFromModel(User.class, "admin", user.getId(), Boolean.class, storedUser -> {
 
-			if(!userModel.getHasPassword()
-					|| userModel.getPasswordHash().equals(PasswordDigest.passwordDigest(password))) {
-				isValid = true;
-			}
-
-		}else {
-			
-			Log.warning("Model not found in isUserPasswordValid: " + user.getId());
-		}
-		
-		return isValid;
+			return storedUser.getHasPassword()
+				&& storedUser.getPasswordHash() != null
+				&& !storedUser.getPasswordHash().isEmpty()
+				&& storedUser.getPasswordHash().equals(PasswordDigest.passwordDigest(password));
+		});
 	}
 
 	public static void createUsers(ModelStoreSync modelStore, List<User> usersToAdd) throws BackendError {
@@ -145,8 +137,8 @@ public class UserManager {
 
 		}else{
 
-            createStoredUser(modelStore, user);
 			initializeUserModels(modelStore, user);
+            createStoredUser(modelStore, user);
 		}
 	}
 
@@ -166,8 +158,8 @@ public class UserManager {
 		
 		if(user instanceof Admin) {
 			
-			initializeAdminModels(modelStore, user);
 			initializeTeacherModels(modelStore, user);
+			initializeAdminModels(modelStore, user);
 			initializeStudentModels(modelStore, user);
 			
 			storeTeacherId(modelStore, user);
@@ -189,7 +181,7 @@ public class UserManager {
 		}
 	}
 
-	private static void initializeStudentModels(ModelStoreSync modelStore, User user) {
+	private static void initializeStudentModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelStudent.class, user);
@@ -216,9 +208,11 @@ public class UserManager {
 
 	private static void initializeTeacherModels(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
-
-		QueueManager.createQueue(modelStore, user.getRegistrationId(), user);
-
+		
+		QueueManager.createQueueForUser(modelStore, user);
+		LogManagerQueue.createQueueLogForUser(modelStore, user);
+		
+		/*
 		DashboardManager.createDashboardForUser(modelStore, DashboardModelTeacher.class, user);
 
 		CourseListManager.createCourseListForUser(modelStore, CourseListModelTeacher.class, user);
@@ -227,6 +221,7 @@ public class UserManager {
 
 		SemesterListManager.createSemesterListForUser(modelStore, SemesterListModelTeacher.class, user);
 		SemesterListManager.addManagedSemestersForTeacher(modelStore, user);
+		*/
 	}
 
 	private static void storeTeacherId(ModelStoreSync modelStore, User user) throws BackendError {
@@ -255,9 +250,9 @@ public class UserManager {
 		
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
 			@Override
-			public void update(User existingModel) {
+			public void update(User existingModel) throws BackendError {
 				T.call(this);
-				
+
 				existingModel.setFirstname(screenName);
 				existingModel.setLastname("");
 			}
@@ -310,7 +305,7 @@ public class UserManager {
 		});
 	}
 
-	public static void initialize(ModelStoreSync modelStore) {
+	public static void initialize(ModelStoreSync modelStore) throws BackendError {
 		T.call(UserManager.class);
 
 		if(!modelStore.ifModelExists(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
@@ -346,59 +341,40 @@ public class UserManager {
 		}
 	}
 
-	public static Set<String> getAdminRegistrationIds(ModelStoreSync modelStore) {
+	@SuppressWarnings("unchecked")
+	public static Set<String> getAdminRegistrationIds(ModelStoreSync modelStore) throws BackendError {
 		T.call(UserManager.class);
 		
-		Set<String> adminIds = new HashSet<>();
+		Set<String> userIds = new HashSet<>();
 
-		if(modelStore.ifModelExists(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID)) {
-			adminIds = modelStore.getModel(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID).userIds();
-		}
-
-		return adminIds;
+		modelStore.readModel(UserList.class, "admin", Constants.ADMIN_LIST_MODEL_ID, model -> {
+			userIds.addAll(model.userIds());
+		});
+		
+		return userIds;
 	}
 
 	public static Student createStudentUsingRegistrationId(ModelStoreSync modelStore, 
 									                       String firstName, 
 									                       String lastName, 
-									                       String registrationId, 
+									                       String userId, 
 									                       String programId, 
 									                       String phoneNumber, 
 									                       String email) throws BackendError {
 		T.call(UserManager.class);
 		
-		String studentId = null;
+		String uuid = modelStore.extractFromModel(UuidByUserId.class, "admin", userId, String.class, model -> {
+			return model.getUuid();
+		});
+		
+		if(uuid == null) {
 
-		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
-
-			studentId = modelStore.getModel(UserId.class, "admin", registrationId).getUserId();
-
-		}else {
-			
-			String newId = generateUniqueUserId(modelStore);
-			
-			modelStore.createModel(UserId.class, "admin", registrationId, new ModelInitializer<UserId>() {
-				@Override
-				public void initialize(UserId newModel) {
-					T.call(this);
-					newModel.setUserId(newId);
-				}
-			});
-
-			studentId = newId;
-
-			modelStore.createModel(RegistrationId.class, "admin", studentId, new ModelInitializer<RegistrationId>() {
-				@Override
-				public void initialize(RegistrationId newModel) {
-					T.call(this);
-					newModel.setRegistrationId(registrationId);
-				}
-			});
+			uuid = generateAndStoreUuid(modelStore, userId);
 		}
 
 		return createStudentForUserId(modelStore, 
-									  studentId, 
-									  registrationId,
+									  userId,
+									  uuid, 
 									  firstName, 
 									  lastName, 
 									  programId, 
@@ -407,8 +383,8 @@ public class UserManager {
 	}
 
 	public static Student createStudentForUserId(ModelStoreSync modelStore, 
-												 String studentId,
-												 String registrationId,
+												 String userId,
+												 String uuid,
 												 String firstName, 
 												 String lastName, 
 												 String programId, 
@@ -418,8 +394,8 @@ public class UserManager {
 		
 		Student student = createUser(modelStore, 
 				                     Student.class, 
-				                     studentId, 
-				                     registrationId,
+				                     userId, 
+				                     uuid,
 				                     firstName, 
 				                     lastName, 
 				                     email);
@@ -433,7 +409,7 @@ public class UserManager {
 	public static <U extends User> U createUser(ModelStoreSync modelStore, 
 										        Class<U> modelClass,
 										        String userId,
-										        String registrationId,
+										        String uuid,
 										        String firstName, 
 										        String lastName, 
 										        String email) throws BackendError {
@@ -441,17 +417,22 @@ public class UserManager {
 		
 		U user = null;
 		
-		if(modelStore.ifModelExists(modelClass, "admin", userId)) {
+		if(modelStore.ifModelExists(User.class, "admin", userId)) {
+			
+			modelStore.updateModel(User.class, "admin", userId, storedUser -> {
 
-			user =  modelStore.getModel(modelClass, "admin", userId);
-			user.updateInfoIfEmpty(firstName, lastName, email);
-			modelStore.save(user);
-
+				storedUser.updateInfoIfEmpty(firstName, lastName, email);
+			});
+			
+			user = modelStore.extractFromModel(User.class, "admin", userId, modelClass, storedUser -> {
+				return (U) storedUser;
+			});
+			
 		}else {
 
 			user = Ntro.factory().newInstance(modelClass);
 			user.setId(userId);
-			user.setRegistrationId(registrationId);
+			user.setUuid(uuid);
 			user.updateInfoIfEmpty(firstName, lastName, email);
 			createUser(modelStore, user);
 		}
@@ -459,20 +440,18 @@ public class UserManager {
 		return user;
 	}
 
-	public static void forEachTeacherId(ModelStoreSync modelStore, UserIdLambda lambda) {
+	public static void forEachTeacherId(ModelStoreSync modelStore, UserIdLambda lambda) throws BackendError {
 		T.call(UserManager.class);
-		
-		UserList teacherList = modelStore.getModel(UserList.class, 
-				                                        "admin", 
-				                                        Constants.TEACHER_LIST_MODEL_ID);
 
-		for(String teacherId : teacherList.userIds()) {
-			try {
-				lambda.execute(teacherId);
-			} catch(Break b) {
-				break;
+		modelStore.readModel(UserList.class, "admin", Constants.TEACHER_LIST_MODEL_ID, model -> {
+			for(String teacherId : model.userIds()) {
+				try {
+					lambda.execute(teacherId);
+				} catch (Break e) {
+					break;
+				}
 			}
-		}
+		});
 	}
 
 	public static boolean ifTeacherExists(ModelStoreSync modelStore, String teacherId) {
@@ -484,19 +463,19 @@ public class UserManager {
 		return ifExists;
 	}
 
-	public static boolean ifStudentExistsForRegistrationId(ModelStoreSync modelStore, String registrationId) {
+	public static boolean ifStudentExistsForRegistrationId(ModelStoreSync modelStore, String registrationId) throws BackendError {
 		T.call(UserManager.class);
 		
 		boolean ifExists = false;
 
-		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
+		if(modelStore.ifModelExists(UserIdByUuid.class, "admin", registrationId)) {
 			ifExists = true;
 		}
 		
 		return ifExists;
 	}
 
-	public static boolean ifStudentExistsForId(ModelStoreSync modelStore, String studentId) {
+	public static boolean ifStudentExistsForId(ModelStoreSync modelStore, String studentId) throws BackendError {
 		T.call(UserManager.class);
 		
 		boolean ifExists = false;
@@ -508,32 +487,38 @@ public class UserManager {
 		return ifExists;
 	}
 
-	public static User getUserById(ModelStoreSync modelStore, String userId) {
+	public static User getUserById(ModelStoreSync modelStore, String userId) throws BackendError {
 		T.call(UserManager.class);
 		
-		return modelStore.getModel(User.class, "admin", userId);
+		return modelStore.extractFromModel(User.class, "admin", userId, User.class, storedUser -> {
+
+			return storedUser;
+
+		});
 	}
 
-	public static User getUserByRegistrationId(ModelStoreSync modelStore, String registrationId) {
+	public static User getUserByUuid(ModelStoreSync modelStore, String uuid) throws BackendError {
 		T.call(UserManager.class);
 		
 		User user = null;
+		String userId = modelStore.extractFromModel(UserIdByUuid.class, "admin", uuid, String.class, userIdByUuid -> {
+			return userIdByUuid.getUserId();
+		});
 
-		if(modelStore.ifModelExists(UserId.class, "admin", registrationId)) {
-			String userId = modelStore.getModel(UserId.class, "admin", registrationId).getUserId();
+		if(userId != null) {
 			user = getUserById(modelStore, userId);
 		}
 
 		return user;
 	}
 
-	public static boolean ifStoredUserExists(ModelStoreSync modelStore, User user) {
+	public static boolean ifStoredUserExists(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		return modelStore.ifModelExists(User.class, "admin", user.getId());
 	}
 
-	public static User getStoredUser(ModelStoreSync modelStore, User user) {
+	public static User getStoredUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
 		
 		return getUserById(modelStore, user.getId());
@@ -542,28 +527,92 @@ public class UserManager {
 
 	public static User createGuestUser(ModelStoreSync modelStore, 
 									   Class<? extends User> guestUserClass,
-									   String registrationId) {
+									   String userId) throws BackendError {
 		T.call(UserManager.class);
 		
 		User newUser = Ntro.factory().newInstance(guestUserClass);
-		newUser.setRegistrationId(registrationId);
+		newUser.setId(userId);
 		
-		User existingUser = UserManager.getUserByRegistrationId(modelStore, registrationId);
-		
+		User existingUser = UserManager.getUserById(modelStore, userId);
+
 		if(existingUser != null) {
 
 			newUser.copyPublicInfomation(existingUser);
 			newUser.setId(existingUser.getId());
+			newUser.setUuid(existingUser.getUuid());
 
 		}else {
 
-			String userId = generateAndStoreUserId(modelStore, registrationId);
-			newUser.setFirstname(registrationId);
-			newUser.setEmail(registrationId + "@" + Constants.EMAIL_HOST);
+			String uuid = generateAndStoreUuid(modelStore, userId);
 			newUser.setId(userId);
+			newUser.setUuid(uuid);
+			newUser.setFirstname(userId);
+			newUser.setEmail(userId + "@" + Constants.EMAIL_HOST);
 		}
+		
 
 		return newUser;
 	}
 
+	public static void updateUserWithStoredUserInfo(ModelStoreSync modelStore, 
+												    User userToUpdate,
+			                                        String userId) throws BackendError {
+		T.call(UserManager.class);
+		
+		modelStore.readModel(User.class, "admin", userId, storedUser -> {
+
+			userToUpdate.copyPublicInfomation(storedUser);
+		});
+	}
+
+	public static void updateUser(ModelStoreSync modelStore, 
+								  String userId,
+								  ModelUpdater<User> updater) throws BackendError {
+		T.call(UserManager.class);
+		
+		modelStore.updateModel(User.class, "admin", userId, updater);
+	}
+
+	public static void updateUserName(ModelStoreSync modelStore, 
+			                          String firstName, 
+			                          String lastName, 
+			                          String userId) throws BackendError {
+		T.call(UserManager.class);
+		
+		modelStore.updateModel(User.class, "admin", userId, user -> {
+			
+			if(!user.getHasName()) {
+				
+				if(firstName != null 
+						&& !firstName.isEmpty()) {
+
+					user.setFirstname(firstName);
+					user.setHasName(true);
+				}
+				
+				if(lastName != null
+						&& !lastName.isEmpty()) {
+
+					user.setLastname(lastName);
+					user.setHasName(true);
+				}
+			}
+		});
+	}
+
+	public static boolean ifUserHasName(ModelStoreSync modelStore, String userId) throws BackendError {
+		T.call(UserManager.class);
+		
+		boolean userHasName = false;
+		
+		if(modelStore.ifModelExists(User.class, "admin", userId)) {
+
+			userHasName = modelStore.extractFromModel(User.class, "admin", userId, Boolean.class, storedUser -> {
+
+				return storedUser.hasName();
+			});
+		}
+
+		return userHasName;
+	}
 }

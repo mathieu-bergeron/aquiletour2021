@@ -93,7 +93,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		String href = "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId;
 		String text = semesterId;
 		
-		view.appendToSemesterDropdown(semesterId, href, text);
+		view.appendToCategoryDropdown(semesterId, href, text);
 	}
 
 	private void changeCurrentSelection(GroupListModel model, 
@@ -103,7 +103,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		T.call(this);
 		
 		
-		view.selectSemester(currentSemesterId);
+		view.selectCategory(currentSemesterId);
 		
 		view.clearCourseDropdown();
 		
@@ -120,7 +120,7 @@ public class GroupListViewModel extends ModelViewSubViewMessageHandler<GroupList
 		}
 		
 		view.selectCourse(currentCourseId);
-		view.identifyCurrentSemester(currentSemesterId);
+		view.displayCurrentSemester(currentSemesterId);
 		view.identifyCurrentCourse(currentCourseId);
 		
 		observeGroups(model, view, subViewLoader);

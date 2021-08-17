@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.system.log.Log;
@@ -22,16 +23,19 @@ public class ModelFactory {
 	public static NtroModel createModel(Class<? extends NtroModel> modelClass, 
 			                            ModelStore modelStore, 
 			                            DocumentPath documentPath,
-			                            String jsonString) {
+			                            String jsonString) throws BackendError {
 		T.call(ModelFactory.class);
 		
 		NtroModel model = Ntro.jsonService().fromString(modelClass, jsonString);
 		
-		modelStore.registerModel(documentPath, model);
-
-		initializeStoreConnections(model, modelStore, documentPath.toValuePath(), new HashSet<>());
+		NtroModel registeredModel = modelStore.registerModel(documentPath, model);
 		
-		return model;
+		if(registeredModel == model) {
+			
+			initializeStoreConnections(model, modelStore, documentPath.toValuePath(), new HashSet<>());
+		}
+		
+		return registeredModel;
 	}
 	
 	
@@ -52,14 +56,12 @@ public class ModelFactory {
 			                                       HashSet<Object> localHeap) {
 		T.call(ModelFactory.class);
 		
-		/*
 		if(value == null) { 
-			System.out.println("initializeStoreConnections");
-			System.err.println(valuePath.toString());
+			Log.error("initializeStoreConnextions: " + valuePath.toString());
 			return;
-		}*/
+		}
 
-		if(Ntro.collections().setContainsExact(localHeap, value)) return;
+		if(Ntro.collections().containsElementExact(localHeap, value)) return;
 		
 		localHeap.add(value);
 		
@@ -123,7 +125,7 @@ public class ModelFactory {
 			}
 			
 			if(attributeValue == null) {
-				Log.fatalError("Attributes of a model must never be null (" + getter.name() + ")");
+				Log.fatalError("Attributes of a model must never be null. " + valuePath.toString());
 			}
 
 			attributeMap.put(attributeName, attributeValue);
@@ -144,7 +146,7 @@ public class ModelFactory {
 		keys.sort(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				return o1.compareTo(o2);
+				return Ntro.collections().compareToString(o1, o2);
 			}
 		});
 		
@@ -152,7 +154,7 @@ public class ModelFactory {
 
 			Object subValue = map.get(key);
 			
-			ValuePath subPath = valuePath.cloneModelValue();
+			ValuePath subPath = valuePath.cloneValuePath();
 			subPath.addFieldName(key);
 			
 			initializeStoreConnections(subValue, modelStore, subPath, localHeap);
@@ -169,7 +171,7 @@ public class ModelFactory {
 			
 			Object subValue = list.get(i);
 			
-			ValuePath subPath = valuePath.cloneModelValue();
+			ValuePath subPath = valuePath.cloneValuePath();
 			subPath.addFieldName(String.valueOf(i));
 
 			initializeStoreConnections(subValue, modelStore, subPath, localHeap);

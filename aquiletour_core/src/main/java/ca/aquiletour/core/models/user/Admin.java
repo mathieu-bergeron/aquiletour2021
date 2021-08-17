@@ -7,15 +7,6 @@ public class Admin extends Teacher {
 	private boolean adminMode = false;
 
 	@Override
-	public User toSessionUser() {
-		Admin sessionUser = new Admin();
-		
-		copySessionOnlyInfo(sessionUser);
-		
-		return sessionUser;
-	}
-
-	@Override
 	protected void copySessionOnlyInfo(User sessionUser) {
 		T.call(this);
 		super.copySessionOnlyInfo(sessionUser);
@@ -52,5 +43,12 @@ public class Admin extends Teacher {
 		T.call(this);
 		
 		return getAdminMode();
+	}
+
+	@Override
+	public boolean isAdmin() {
+		T.call(this);
+
+		return true;
 	}
 }

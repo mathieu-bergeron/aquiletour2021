@@ -7,15 +7,6 @@ public class Teacher extends User {
 	private boolean studentMode = false;
 
 	@Override
-	public User toSessionUser() {
-		Teacher sessionUser = new Teacher();
-		
-		copySessionOnlyInfo(sessionUser);
-
-		return sessionUser;
-	}
-
-	@Override
 	protected void copySessionOnlyInfo(User sessionUser) {
 		T.call(this);
 		super.copySessionOnlyInfo(sessionUser);
@@ -39,9 +30,8 @@ public class Teacher extends User {
 	public boolean actsAsTeacher() {
 		T.call(this);
 		
-		return !studentMode;
+		return !studentMode && !actsAsAdmin();
 	}
-
 
 	public void toggleStudentMode() {
 		T.call(this);
@@ -62,5 +52,23 @@ public class Teacher extends User {
 		T.call(this);
 		
 		return false;
+	}
+
+	public boolean isStudent() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean isTeacher() {
+		T.call(this);
+
+		return true;
+	}
+
+	public boolean actsAsStudent() {
+		T.call(this);
+
+		return getStudentMode();
 	}
 }

@@ -2,23 +2,16 @@ package ca.aquiletour.core.pages.course.handlers;
 
 import java.util.List;
 
-import org.apache.log4j.net.SyslogAppender;
-
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
-import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.CourseModel;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
-import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.dates.AquiletourDate;
-import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
 import ca.aquiletour.core.pages.course.views.CourseView;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.models.listeners.ClearItemsListener;
-import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.ItemAddedListener;
 import ca.ntro.core.models.listeners.ListObserver;
 import ca.ntro.core.models.listeners.ValueObserver;
@@ -26,7 +19,7 @@ import ca.ntro.core.mvc.ModelViewSubViewMessageHandler;
 import ca.ntro.core.mvc.ViewLoader;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseViewModel<M extends CourseModel, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
+public abstract class CourseViewModel<M extends CourseModel<?>, V extends CourseView> extends ModelViewSubViewMessageHandler<M, V, ShowTaskMessage>  {
 	
 	private CoursePath currentCoursePath;
 	private Task currentTask;
@@ -52,82 +45,58 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	protected void handle(M model, V view, ViewLoader subViewLoader, ShowTaskMessage message) {
 		T.call(this);
 		
-		if(!message.getGroupId().equals(currentGroupId)) {
+		if(message.getGroupId() != null
+				&& !message.getGroupId().equals(currentGroupId)) {
 			currentGroupId = message.getGroupId();
+
+		}else if(currentGroupId == null) {
+			
+			currentGroupId = Constants.COURSE_STRUCTURE_ID;
+
 		}
 
 		if(!model.getCoursePath().equals(currentCoursePath)) {
 			currentCoursePath = model.getCoursePath();
 		}
 
-		if(currentTask != null) {
-			removeAllObservers();
-		}
-		
 		currentTask = model.findTaskByPath(message.getTaskPath());
 		
 		if(currentTask != null) {
+			
+			view.displayTaskEndTime(false);
 			
 			view.identifyCurrentTask(currentCoursePath(), currentTask);
 			view.displayBreadcrumbs(currentCoursePath(), currentTask.breadcrumbs());
 
 			observeCurrentTask(model, currentGroupId(), view, subViewLoader);
-			observeCompletions(model, view);
+			observeTaskCompletions(model, view);
 		}
 	}
 
-	protected abstract void observeCompletions(M model, V view);
+	protected abstract void observeTaskCompletions(M model, V view);
 
 	protected abstract void displayStudentCompletion(String studentId, V view);
 
-	private void removeAllObservers() {
+	protected void observeCurrentTask(M model, String groupId, V view, ViewLoader subViewLoader) {
 		T.call(this);
-
-		currentTask.getPreviousTasks().removeObservers();
-		currentTask.getSubTasks().removeObservers();
-		currentTask.getNextTasks().removeObservers();
-		currentTask.getDescription().removeObservers();
-		currentTask.getEndTime().removeObservers();
-		currentTask.getEntryTasks().removeObservers();
-		currentTask.getExitTasks().removeObservers();
-		currentTask.getTitle().removeObservers();
-	}
-
-	private void observeCurrentTask(M model, String groupId, V view, ViewLoader subViewLoader) {
-		T.call(this);
-
-		if(currentTask.isRootTask()) {
-
-			view.hidePreviousTasks();
-
-		}else {
-
-			view.showPreviousTasks();
-			observePreviousTasks(model, view, subViewLoader);
-		}
 		
 		observeCurrentTaskTitle(view);
 		observeCurrentTaskDescription(view);
 		observeCurrentTaskEndTime(model, view);
+
+		observePreviousTasks(model, view);
 		observeEntryTasks(model, view);
-		observeExitTasks(model, view);
-
 		observeSubTasks(model, view, subViewLoader);
-		
-		if(currentTask.isRootTask()) {
-			
-			view.hideNextTasks();
-
-		}else {
-
-			view.showNextTasks();
-			observeNextTasks(model, view, subViewLoader);
-		}
+		observeExitTasks(model, view);
+		observeNextTasks(model, view);
 	}
 
 	private void observeCurrentTaskDescription(V view) {
 		T.call(this);
 		
+		view.displayTaskDescription(false);
+
+		currentTask.getDescription().removeObservers();
 		currentTask.getDescription().observe(new ValueObserver<String>() {
 
 			@Override
@@ -151,24 +120,28 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 		});
 	}
 
-	private void displayTaskDescription(V view, String value) {
+	private void displayTaskDescription(V view, String rawDescription) {
 		T.call(this);
 
-		String description = value;
+
+		String description = rawDescription;
 		
 		if(!isEditable()) {
 			
-			description = AtomicTask.removeAtomicTasksFromDescription(value);
+			description = AtomicTask.removeAtomicTasksFromDescription(rawDescription);
 
 		}
 
-		view.displayTaskDescription(description, isEditable());
+		view.displayTaskDescription(!description.isEmpty());
+		view.updateTaskDescription(description, isEditable());
+
 	}
 
 	private void observeEntryTasks(M model, V view) {
 		T.call(this);
 
 		view.clearEntryTasks();
+
 		currentTask.getEntryTasks().removeObservers();
 		currentTask.getEntryTasks().onItemAdded(new ItemAddedListener<AtomicTask>() {
 			@Override
@@ -216,23 +189,24 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	private void observeCurrentTaskEndTime(M model, V view) {
 		T.call(this);
 		
-		currentTask.getEndTime().observe(new ValueObserver<CourseDate>() {
+		currentTask.getEndTime().removeObservers();
+		currentTask.getEndTime().observe(new ValueObserver<AquiletourDate>() {
 
 			@Override
-			public void onValue(CourseDate value) {
+			public void onValue(AquiletourDate value) {
 				T.call(this);
 				
 				displayCurrentTaskEndTime(model, view);
 			}
 
 			@Override
-			public void onDeleted(CourseDate lastValue) {
+			public void onDeleted(AquiletourDate lastValue) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onValueChanged(CourseDate oldValue, CourseDate value) {
+			public void onValueChanged(AquiletourDate oldValue, AquiletourDate value) {
 				T.call(this);
 				
 				displayCurrentTaskEndTime(model, view);
@@ -244,15 +218,21 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	private void displayCurrentTaskEndTime(M model, V view) {
 		T.call(this);
 		
+		
 		AquiletourDate endTime = model.taskEndTimeForGroup(currentGroupId(), currentTask.id());
+		
+		if(endTime != null && endTime.isDefined()) {
 
-		view.displayTaskEndTime(endTime, isEditable());
+			view.displayTaskEndTime(true);
+			view.updateTaskEndTime(endTime, isEditable());
+		}
 	}
 
 
 	private void observeCurrentTaskTitle(V view) {
 		T.call(this);
 
+		currentTask.getTitle().removeObservers();
 		currentTask.getTitle().observe(new ValueObserver<String>() {
 			
 			@Override
@@ -278,10 +258,11 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	}
 
 
-	private void observePreviousTasks(M model, V view, ViewLoader subViewLoader) {
+	private void observePreviousTasks(M model, V view) {
 		T.call(this);
-		
-		view.clearPreviousTasks();
+
+		view.displayPreviousTasks(isEditable());
+
 		currentTask.getPreviousTasks().removeObservers();
 		currentTask.getPreviousTasks().observe(new ListObserver<String>() {
 			
@@ -289,21 +270,21 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			public void onItemRemoved(int index, String item) {
 				T.call(this);
 
-				displayPreviousTasksInOrder(model, view, subViewLoader);
+				displayPreviousTasksInOrder(model, view);
 			}
 			
 			@Override
 			public void onItemUpdated(int index, String item) {
 				T.call(this);
 
-				displayPreviousTasksInOrder(model, view, subViewLoader);
+				displayPreviousTasksInOrder(model, view);
 			}
 			
 			@Override
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
 
-				displayPreviousTasksInOrder(model, view, subViewLoader);
+				displayPreviousTasksInOrder(model, view);
 			}
 			
 			@Override
@@ -322,7 +303,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			public void onClearItems() {
 				T.call(this);
 
-				displayPreviousTasksInOrder(model, view, subViewLoader);
+				displayPreviousTasksInOrder(model, view);
 			}
 		});
 	}
@@ -330,6 +311,8 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 	private void observeSubTasks(M model, V view, ViewLoader subViewLoader) {
 		T.call(this);
 		
+		view.displaySubTasks(isEditable());
+
 		view.clearSubtasks();
 		currentTask.getSubTasks().removeObservers();
 		currentTask.getSubTasks().observe(new ListObserver<String>() {
@@ -337,14 +320,23 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			@Override
 			public void onItemRemoved(int index, String item) {
 				T.call(this);
+				
+				if(currentTask.getSubTasks().size() == 0) {
 
-				displaySubtasksInOrder(model, view, subViewLoader);
+					view.displaySubTasks(isEditable());
+
+				}else {
+					
+					view.displaySubTasks(true);
+					displaySubtasksInOrder(model, view, subViewLoader);
+				}
 			}
 			
 			@Override
 			public void onItemUpdated(int index, String item) {
 				T.call(this);
-
+				
+				view.displaySubTasks(true);
 				displaySubtasksInOrder(model, view, subViewLoader);
 			}
 			
@@ -352,6 +344,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
 
+				view.displaySubTasks(true);
 				displaySubtasksInOrder(model, view, subViewLoader);
 			}
 			
@@ -373,38 +366,48 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			@Override
 			public void onClearItems() {
 				T.call(this);
-
-				displaySubtasksInOrder(model, view, subViewLoader);
+				view.displaySubTasks(isEditable());
 			}
 		});
 	}
 
-	private void observeNextTasks(M model, V view, ViewLoader subViewLoader) {
+	private void observeNextTasks(M model, V view) {
 		T.call(this);
 		
-		view.clearNextTasks();
+		view.displayNextTasks(isEditable());
+
 		currentTask.getNextTasks().removeObservers();
 		currentTask.getNextTasks().observe(new ListObserver<String>() {
 			
 			@Override
 			public void onItemRemoved(int index, String item) {
 				T.call(this);
+				
+				if(currentTask.getNextTasks().size() == 0) {
 
-				displayNextTasksInOrder(model, view, subViewLoader);
+					view.displayNextTasks(isEditable());
+					
+				}else {
+
+					view.displayNextTasks(true);
+					displayNextTasksInOrder(model, view);
+				}
 			}
 			
 			@Override
 			public void onItemUpdated(int index, String item) {
 				T.call(this);
 
-				displayNextTasksInOrder(model, view, subViewLoader);
+				view.displayNextTasks(true);
+				displayNextTasksInOrder(model, view);
 			}
 			
 			@Override
 			public void onItemAdded(int index, String taskId) {
 				T.call(this);
 
-				displayNextTasksInOrder(model, view, subViewLoader);
+				view.displayNextTasks(true);
+				displayNextTasksInOrder(model, view);
 			}
 			
 			@Override
@@ -426,15 +429,17 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 			public void onClearItems() {
 				T.call(this);
 
-				displayNextTasksInOrder(model, view, subViewLoader);
+				view.displayNextTasks(isEditable());
 			}
 		});
 	}
 
-	private void displayPreviousTasksInOrder(M model, CourseView view, ViewLoader subViewLoader) {
+	private void displayPreviousTasksInOrder(M model, CourseView view) {
 		T.call(this);
-
+		
 		view.clearPreviousTasks();
+		
+		view.displayPreviousTasks(true);
 		
 		currentTask.forEachPreviousTaskInOrder(pt -> {
 			view.appendPreviousTask(model.getCoursePath(), pt);
@@ -447,7 +452,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 		view.clearSubtasks();
 		
 		currentTask.forEachSubTaskInOrder(st -> {
-
+			
 			TaskView taskView = (TaskView) subViewLoader.createView();
 			view.appendSubtask(taskView);
 
@@ -455,7 +460,7 @@ public abstract class CourseViewModel<M extends CourseModel, V extends CourseVie
 		});
 	}
 
-	private void displayNextTasksInOrder(M model, CourseView view, ViewLoader subViewLoader) {
+	private void displayNextTasksInOrder(M model, CourseView view) {
 		T.call(this);
 
 		view.clearNextTasks();

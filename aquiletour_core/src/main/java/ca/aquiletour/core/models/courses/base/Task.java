@@ -9,6 +9,9 @@ import java.util.Set;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
+import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoCloned;
+import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.base.lambdas.BreakableAccumulator;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResult;
 import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
@@ -24,8 +27,11 @@ import ca.aquiletour.core.models.courses.status.StatusTodo;
 import ca.aquiletour.core.models.courses.status.TaskStatus;
 import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
-import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.dates.AquiletourDate;
+import ca.aquiletour.core.models.dates.ConcreteDate;
 import ca.aquiletour.core.models.dates.SemesterDate;
+import ca.aquiletour.core.models.dates.StoredAquiletourDate;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.ntro.core.Path;
@@ -44,14 +50,20 @@ public class Task implements NtroModelValue, TaskNode {
 
 	private StoredString title = new StoredString();
 	private StoredString description = new StoredString();
-	private StoredCourseDate endTime = new StoredCourseDate();
+	private StoredAquiletourDate endTime = new StoredAquiletourDate();
 
 	private StoredAtomicTasks entryTasks = new StoredAtomicTasks();
 	private StoredAtomicTasks exitTasks = new StoredAtomicTasks();
-	
+
 	private StoredTaskIds previousTasks = new StoredTaskIds();
 	private StoredTaskIds subTasks = new StoredTaskIds();
 	private StoredTaskIds nextTasks = new StoredTaskIds();
+	
+	public Task() {
+		T.call(this);
+
+		exitTasks.addItem(new DefaultAtomicTask());
+	}
 
 	public void copyTask(Task task) {
 		T.call(this);
@@ -154,6 +166,8 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		if(!subTasks.contains(task.id())) {
 			subTasks.addItem(task.id());
+			
+			refreshAtomicTasks();
 		}
 	}
 	
@@ -252,13 +266,7 @@ public class Task implements NtroModelValue, TaskNode {
 	}
 
 	public String id() {
-		return idFromPath(getPath());
-	}
-	
-	public static String idFromPath(Path taskPath) {
-		T.call(Task.class);
-		
-		return taskPath.toString();
+		return getPath().toString();
 	}
 
 	public void forEachSubTaskInOrder(TaskForEach lambda) {
@@ -395,12 +403,31 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		getDescription().set(description);
 		
+		refreshAtomicTasks(description, atomicTaskListener);
+	}
+
+	private void refreshAtomicTasks(String description, OnAtomicTaskAdded atomicTaskListener) {
+		T.call(this);
+
+		getEntryTasks().clearItems();
+		getExitTasks().clearItems();
+
 		AtomicTask.addAtomicTasksFromDescription(this, description, atomicTaskListener);
 	}
-	
-	public void deleteAtomicTask(String taskId) {
+
+	private void refreshAtomicTasks() {
 		T.call(this);
 		
+		refreshAtomicTasks(getDescription().getValue(), new OnAtomicTaskAdded() {
+			@Override
+			public void onAtomicTaskAdded(Task task, AtomicTask atomicTask) {
+			}
+		});
+	}
+	
+	public void deleteAtomicTask(String atomicTaskId) {
+		T.call(this);
+
 	}
 	
 	public void updateTitle(String title) {
@@ -409,17 +436,17 @@ public class Task implements NtroModelValue, TaskNode {
 		getTitle().set(title);
 	}
 	
-	public void updateEndTime(CourseDate endTime) {
+	public void updateEndTime(AquiletourDate endTime) {
 		T.call(this);
 		
 		getEndTime().set(endTime);
 	}
 
-	public StoredCourseDate getEndTime() {
+	public StoredAquiletourDate getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(StoredCourseDate endTime) {
+	public void setEndTime(StoredAquiletourDate endTime) {
 		this.endTime = endTime;
 	}
 	
@@ -442,7 +469,7 @@ public class Task implements NtroModelValue, TaskNode {
 	public void updateDate(SemesterSchedule semesterSchedule) {
 		T.call(this);
 		
-		CourseDate endTimeDate = endTime.getValue();
+		AquiletourDate endTimeDate = endTime.getValue();
 		
 		boolean updated = endTimeDate.updateDate(semesterSchedule);
 		
@@ -459,7 +486,7 @@ public class Task implements NtroModelValue, TaskNode {
 		
 		SemesterDate date = null;
 
-		CourseDate endTimeDate = endTime.getValue();
+		AquiletourDate endTimeDate = endTime.getValue();
 		
 		date = endTimeDate.resolveDate(courseId, groupId, semesterSchedule, teacherSchedule);
 
@@ -527,12 +554,6 @@ public class Task implements NtroModelValue, TaskNode {
 		}
 		
 		return task;
-	}
-	
-	private String nextAtomicTaskId() {
-		T.call(this);
-		
-		return String.valueOf(getEntryTasks().size() + getExitTasks().size());
 	}
 
 	public void forEachTaskBackwardsTransitive(TaskForEach lambda) {
@@ -684,9 +705,19 @@ public class Task implements NtroModelValue, TaskNode {
 			                                               TaskReducer<ACC> reducer){
 		
 		return storedTasksIds.reduceTo(accumulatorClass, accumulator, (index, taskId, innerAccumulator) -> {
-			Task task = graph.findTaskByPath(new Path(taskId));
+			Task task = graph.findTaskByPath(Path.fromRawPath(taskId));
 			
-			return reducer.reduce(index, task, innerAccumulator);
+			if(task != null) {
+
+				innerAccumulator = reducer.reduce(index, task, innerAccumulator);
+
+			}else {
+				
+				Log.warning("[reduceToForStoredTasks] task not found: " + taskId);
+
+			}
+			
+			return innerAccumulator;
 		});
 	}
 	
@@ -821,18 +852,26 @@ public class Task implements NtroModelValue, TaskNode {
 		return status(completions).isDone();
 	}
 
+	public boolean isTodo(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return status(completions).isTodo();
+	}
+
+	public boolean isBlocked(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return status(completions).isBlocked();
+	}
 	
 	public TaskStatus status(StudentCompletionsByTaskId completions) {
 		T.call(this);
 		
-		CompletionByAtomicTaskId atomicTaskCompletions = null;
-		if(completions != null) {
-			atomicTaskCompletions = completions.valueOf(this.id());
-		}
+		CompletionByAtomicTaskId atomicTaskCompletions = atomicTaskCompletions(completions);
 
 		TaskStatus status = null;
 		
-		if(hasParent() && !parent().areEntryTasksDone(atomicTaskCompletions)) {
+		if(hasParent() && !parent().areEntryTasksDone(completions)) {
 			status = new BlockedWaitingForParent(parent().getPath());
 		}
 		
@@ -861,8 +900,24 @@ public class Task implements NtroModelValue, TaskNode {
 		if(status == null) {
 			status = new StatusDone();
 		}
+
+		if(status != null) {
+			status.setTimestamp(new ConcreteDate(Ntro.calendar().now()));
+		}
 		
 		return status;
+	}
+
+	private CompletionByAtomicTaskId atomicTaskCompletions(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		CompletionByAtomicTaskId atomicTaskCompletions = null;
+
+		if(completions != null) {
+			atomicTaskCompletions = completions.valueOf(this.getPath().toKey());
+		}
+
+		return atomicTaskCompletions;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -884,33 +939,115 @@ public class Task implements NtroModelValue, TaskNode {
 		return areAtomicTasksDone(completions, getEntryTasks());
 	}
 
-	private boolean areExitTasksDone(CompletionByAtomicTaskId completions) {
+	public boolean areEntryTasksDone(StudentCompletionsByTaskId completions) {
 		T.call(this);
 
+		return areEntryTasksDone(atomicTaskCompletions(completions));
+	}
+
+	public boolean areExitTasksDone(StudentCompletionsByTaskId completions) {
+		T.call(this);
+
+		return areExitTasksDone(atomicTaskCompletions(completions));
+	}
+
+	private boolean areExitTasksDone(CompletionByAtomicTaskId completions) {
+		T.call(this);
+		
 		return areAtomicTasksDone(completions, getExitTasks());
 	}
 
 	private boolean areAtomicTasksDone(CompletionByAtomicTaskId completions, StoredAtomicTasks atomicTasks) {
 		T.call(this);
-
-		return atomicTasks.reduceTo(Boolean.class, true, (index, entryTask, parentEntryDone) -> {
-			if(!parentEntryDone) {
+		
+		return atomicTasks.reduceTo(Boolean.class, true, (index, atomicTask, accumulator) -> {
+			if(accumulator == false) {
 				throw new Break();
 			}
-			
+
 			AtomicTaskCompletion completion = null;
 			if(completions != null) {
-				completion = completions.valueOf(entryTask.getId());
-			}
-
-			if(completion == null
-					|| !completion.isCompleted()) {
-				
-				parentEntryDone = false;
+				completion = completions.valueOf(atomicTask.getId());
 			}
 			
-			return parentEntryDone;
+			if(completion == null
+					|| !completion.isCompleted()) {
+
+				accumulator = false;
+			}
+
+			return accumulator;
 		});
 	}
 
+	public boolean hasExitTasks() {
+		T.call(this);
+
+		return getExitTasks().size() > 0;
+	}
+	
+	public boolean hasRepoTask() {
+		T.call(this);
+		
+		return findRepoTask() != null;
+	}
+
+	public Path findRepoPath() {
+		T.call(this);
+
+		Path repoPath = null;
+		
+		Task repoTask = findRepoTask();
+		
+		if(repoTask != null) {
+			
+			repoPath = repoTask.getPath();
+			
+		}
+		
+		return repoPath;
+	}
+
+	public boolean isRepoCloned(StudentCompletionsByTaskId completionsByTaskKey) {
+		T.call(this);
+		
+		boolean isRepoCloned = false;
+
+		Task repoTask = findRepoTask();
+		
+		if(repoTask != null 
+				&& completionsByTaskKey != null) {
+			
+			CompletionByAtomicTaskId completionByAtomicTaskId = completionsByTaskKey.valueOf(repoTask.getPath().toKey());
+
+			if(completionByAtomicTaskId != null) {
+				
+				String repoAtomicId = Ntro.introspector().getSimpleNameForClass(GitRepoTask.class);
+				
+				AtomicTaskCompletion repoCompletion = completionByAtomicTaskId.valueOf(repoAtomicId);
+				
+				if(repoCompletion instanceof GitRepoCloned) {
+					isRepoCloned = true;
+				}
+			}
+		}
+
+		return isRepoCloned;
+	}
+
+	private Task findRepoTask() {
+		T.call(this);
+		
+		Task repoTask = null;
+
+		FindResults findResults = findAll(new VisitDirection[] {PREVIOUS, PARENT}, true, t -> {
+			return t.hasAtomicTaskOfType(GitRepoTask.class);
+		});
+			
+		if(findResults.size() > 0) {
+			repoTask = findResults.closest().getTask();
+		}
+
+		return repoTask;
+	}
 }

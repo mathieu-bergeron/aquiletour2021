@@ -16,7 +16,9 @@ public abstract class ShowSemesterListHandler extends ParentViewMessageHandler<R
 			              ShowSemesterListMessage message) {
 		T.call(this);
 		
-		parentView.showSemesterList(currentView);
+		parentView.showSemesterList(semesterListViewClass(), currentView);
 	}
+	
+	protected abstract Class<? extends SemesterListView> semesterListViewClass();
 
 }

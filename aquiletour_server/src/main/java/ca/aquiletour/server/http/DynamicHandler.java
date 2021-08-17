@@ -37,23 +37,28 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.util.UrlEncoded;
 
+import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
+import ca.aquiletour.core.models.logs.LogModel;
+import ca.aquiletour.core.models.logs.LogModelCourse;
+import ca.aquiletour.core.models.logs.LogModelQueue;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.Teacher;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.home.ShowHomeMessage;
 import ca.aquiletour.core.pages.login.ShowLoginMessage;
 import ca.aquiletour.core.pages.root.RootController;
-import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.web.AquiletourBackendRequestHandler;
 import ca.aquiletour.web.AquiletourRequestHandler;
+import ca.ntro.backend.BackendError;
 import ca.ntro.backend.UserInputError;
 import ca.ntro.core.Path;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.mvc.ControllerFactory;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.GraphTraceConnector;
 import ca.ntro.jdk.FileLoader;
@@ -61,6 +66,7 @@ import ca.ntro.jdk.FileLoaderDev;
 import ca.ntro.jdk.web.NtroWindowServer;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroSession;
 
@@ -111,14 +117,91 @@ public class DynamicHandler extends AbstractHandler {
 		T.call(this);
 
 		if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data")) {
-			  baseRequest.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, new MultipartConfigElement("/"));
-		}
 
+			  baseRequest.setAttribute(Request.MULTIPART_CONFIG_ELEMENT, new MultipartConfigElement("/"));
+
+		}
+		
+		String rawPath = baseRequest.getRequestURI().toString();
+		Path path = Path.fromRawPath(rawPath);
 		OutputStream out = response.getOutputStream();
-		serveView(baseRequest, response, out);
+		
+		if(rawPath.contains(Constants.LOG_URL_SEGMENT)) {
+			
+			try {
+				
+				serveLog(baseRequest, response, out, path);
+
+			} catch (BackendError e) {
+				
+				Log.error("Error serving logs: " + e.getMessage());
+			}
+			
+		}else {
+
+			serveView(baseRequest, response, out, path);
+		}
 	}
 
-	private void serveView(Request baseRequest, HttpServletResponse response, OutputStream out)
+	private void serveLog(Request baseRequest, 
+			              HttpServletResponse response, 
+			              OutputStream out,
+			              Path path)
+
+			throws FileNotFoundException, IOException, BackendError {
+		
+		Path subPath = path.removePrefix(Constants.LOG_URL_SEGMENT);
+		
+		if(subPath.nameCount() >= 4) {
+			
+			CoursePath coursePath = CoursePath.fromPath(subPath.subPath(1));
+			
+			if(subPath.startsWith(Constants.QUEUE_URL_SEGMENT)) {
+				
+				serveLog(baseRequest, response, out, coursePath, LogModelQueue.class);
+				
+			} else if(subPath.startsWith(Constants.COURSE_URL_SEGMENT)) {
+
+				serveLog(baseRequest, response, out, coursePath, LogModelCourse.class);
+			}
+		}
+	}
+
+	private <LM extends LogModel> void serveLog(Request baseRequest, 
+			              HttpServletResponse response, 
+			              OutputStream out,
+			              CoursePath coursePath, 
+			              Class<LM> logModelClass)
+
+			throws FileNotFoundException, IOException, BackendError {
+		
+		ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+		
+		StringBuilder logContent = new StringBuilder();
+		
+		modelStore.readModel(logModelClass, "admin", coursePath, logModel -> {
+
+			logModel.writeCsvFileContent(Constants.CSV_SEPARATOR, logContent);
+		});
+		
+		response.addHeader("content-disposition", "attachment; filename=\"" + coursePath.toFileName() + ".csv\"");
+		response.setContentType("text/csv; charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
+		out.write(logContent.toString().getBytes());
+		out.flush();
+		out.close();
+		
+		baseRequest.setHandled(true);
+	}
+	
+	
+
+
+	private void serveView(Request baseRequest, 
+			               HttpServletResponse response, 
+			               OutputStream out,
+			               Path path)
+
 			throws FileNotFoundException, IOException {
 
 		T.call(this);
@@ -136,14 +219,9 @@ public class DynamicHandler extends AbstractHandler {
 
 		sendSessionMessagesAccordingToCookies(baseRequest);
 
-		setCurrentSemester();
-
-		Path path = new Path(baseRequest.getRequestURI().toString());
 		Map<String, String[]> parameters = baseRequest.getParameterMap();
 
 		executeBackend(baseRequest, response, path, parameters);
-
-		setCurrentSemester();
 
 		boolean ifJSweet = ifJsOnlySetCookies(baseRequest, response);
 		//boolean ifJSweet = false;
@@ -162,12 +240,16 @@ public class DynamicHandler extends AbstractHandler {
 			Ntro.messages().sendQueuedMessages();
 		}
 
+		setSessionCookie(response);
+
 		// XXX on the server, the taskGraph is sync
 		//     writeResponse will execute AFTER 
 		//     every non-blocked task in webApp
 		if(!baseRequest.isHandled()) {
+
 			response.setContentType("text/html; charset=utf-8");
 			response.setStatus(HttpServletResponse.SC_OK);
+
 			writeResponse(window, baseRequest, out);
 		}
 	}
@@ -175,7 +257,7 @@ public class DynamicHandler extends AbstractHandler {
 	private void executeBackend(Request baseRequest, HttpServletResponse response, Path path,
 			Map<String, String[]> parameters) throws IOException {
 
-		NtroContext<User, SessionData> context = createNtroContext();
+		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
 
 		try {
 
@@ -188,7 +270,6 @@ public class DynamicHandler extends AbstractHandler {
 			Ntro.messages().send(displayErrorMessage);
 		}
 
-		setSessionCookie(response);
 
 		sendCsvMessage(baseRequest);
 	}
@@ -242,28 +323,11 @@ public class DynamicHandler extends AbstractHandler {
 		if(hasCookie(baseRequest, "session")) {
 			String sessionString = UrlEncoded.decodeString(getCookie(baseRequest, "session"));
 			NtroSession session = Ntro.jsonService().fromString(NtroSession.class, sessionString);
-
-			authenticateSessionUserMessage.setSessionUser((User) session.getUser());
+			
+			authenticateSessionUserMessage.setSessionUser(session.getUser());
 		}
 
 		Ntro.backendService().sendMessageToBackend(authenticateSessionUserMessage);
-	}
-
-	private void setCurrentSemester() {
-		T.call(this);
-		
-		SessionData sessionData = null;
-		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
-			sessionData = (SessionData) Ntro.currentSession().getSessionData();
-		}else {
-			sessionData = new SessionData();
-		}
-
-		if(sessionData.getCurrentSemester() == null || sessionData.getCurrentSemester().isEmpty()) {
-			sessionData.setCurrentSemester(SemesterListManager.getCurrentSemester(new ModelStoreSync(Ntro.modelStore())));
-		}
-		
-		Ntro.currentSession().setSessionData(sessionData);
 	}
 
 	private void executeFrontendOnServer(Request baseRequest, 
@@ -274,7 +338,7 @@ public class DynamicHandler extends AbstractHandler {
 		
 		handleRedirections(baseRequest, response, path);
 
-		NtroContext<User, SessionData> context = createNtroContext();
+		NtroContext<User, SessionData> context = AquiletourMain.createNtroContext();
 
 		// DEBUG
 		// RootController rootController =  ControllerFactory.createRootController(RootController.class, "*", newWindow, context);
@@ -297,19 +361,6 @@ public class DynamicHandler extends AbstractHandler {
 		Ntro.reset();
 	}
 
-	private NtroContext<User, SessionData> createNtroContext() {
-		T.call(this);
-
-		NtroContext<User, SessionData> context = new NtroContext<>();
-		context.registerLang(Constants.LANG); // TODO
-		context.registerUser((User) Ntro.currentUser());
-		if(Ntro.currentSession().getSessionData() instanceof SessionData) {
-			context.registerSessionData((SessionData) Ntro.currentSession().getSessionData());
-		}else {
-			context.registerSessionData(new SessionData());
-		}
-		return context;
-	}
 
 	private void handleRedirections(Request baseRequest, HttpServletResponse response, Path path) {
 		// FIXME: there must be a better way to redirect to login
@@ -392,11 +443,11 @@ public class DynamicHandler extends AbstractHandler {
 
 		if(ifJSweet) {
 
-			newWindow = new NtroWindowServer("/private/index.html");
+			newWindow = new NtroWindowServer(privateFilesPrefix + "/index.html");
 			
 		}else {
 
-			newWindow = new NtroWindowServer("/private/nojsweet.html");
+			newWindow = new NtroWindowServer(privateFilesPrefix + "/nojsweet.html");
 
 		} 
 
@@ -433,6 +484,7 @@ public class DynamicHandler extends AbstractHandler {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
 	private void eraseCookie(HttpServletResponse response, String name) {
 		T.call(this);
 		
@@ -465,6 +517,8 @@ public class DynamicHandler extends AbstractHandler {
 		try {
 
 			out.write(builder.toString().getBytes());
+			out.flush();
+			out.close();
 
 		} catch (IOException e) {
 			e.printStackTrace();

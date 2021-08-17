@@ -1,5 +1,8 @@
 package ca.aquiletour.core.pages.queue.models;
 
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
+import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.trace.T;
@@ -12,10 +15,15 @@ public class Appointment implements NtroModelValue {
 	private String studentName = "";
 	private String studentSurname = "";
 	
-	private ObservableTime time = new ObservableTime();
+	private StoredDate time = new StoredDate();
+
+	private StoredCoursePath coursePath = new StoredCoursePath();
 	private StoredString courseTitle = new StoredString();
+	
+	private StoredTaskPath taskPath = new StoredTaskPath();
 	private StoredString taskTitle = new StoredString();
-	private ObservableTags tags = new ObservableTags();
+
+	private StoredTags tags = new StoredTags();
 	private StoredString comment = new StoredString();
 
 	//private User user;
@@ -41,6 +49,22 @@ public class Appointment implements NtroModelValue {
 		this.studentSurname = studentSurname;
 	}
 	
+	public StoredCoursePath getCoursePath() {
+		return coursePath;
+	}
+
+	public void setCoursePath(StoredCoursePath coursePath) {
+		this.coursePath = coursePath;
+	}
+
+	public StoredTaskPath getTaskPath() {
+		return taskPath;
+	}
+
+	public void setTaskPath(StoredTaskPath taskPath) {
+		this.taskPath = taskPath;
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if(other == null) return false;
@@ -55,11 +79,11 @@ public class Appointment implements NtroModelValue {
 		return false;
 	}
 
-	public ObservableTime getTime() {
+	public StoredDate getTime() {
 		return time;
 	}
 
-	public void setTime(ObservableTime time) {
+	public void setTime(StoredDate time) {
 		this.time = time;
 	}
 
@@ -79,11 +103,11 @@ public class Appointment implements NtroModelValue {
 		this.taskTitle = taskTitle;
 	}
 
-	public ObservableTags getTags() {
+	public StoredTags getTags() {
 		return tags;
 	}
 
-	public void setTags(ObservableTags tags) {
+	public void setTags(StoredTags tags) {
 		this.tags = tags;
 	}
 
@@ -127,6 +151,46 @@ public class Appointment implements NtroModelValue {
 		tags.addTagsFromComment(comment);
 		
 		getComment().set(comment);
+	}
+
+	public void updateCourseTitle(String courseTitle) {
+		T.call(this);
+		
+		getCourseTitle().set(courseTitle);
+	}
+
+	public void updateTaskTitle(String taskTitle) {
+		T.call(this);
+		
+		getTaskTitle().set(taskTitle);
+	}
+
+	public void updateCoursePath(CoursePath coursePath) {
+		T.call(this);
+
+		getCoursePath().set(coursePath);
+	}
+
+	public void updateTaskPath(TaskPath taskPath) {
+		T.call(this);
+
+		getTaskPath().set(taskPath);
+	}
+
+	public String subViewId() {
+		T.call(Appointment.class);
+		
+		return subViewId(getId());
+	}
+
+	public static String subViewId(String appointmentId) {
+		T.call(Appointment.class);
+
+		Path path = new Path();
+		path.addName("appointment");
+		path.addName(appointmentId);
+
+		return path.toHtmlId();
 	}
 }
 

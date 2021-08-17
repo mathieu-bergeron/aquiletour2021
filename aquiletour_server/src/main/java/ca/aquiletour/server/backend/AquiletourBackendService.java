@@ -1,13 +1,13 @@
 package ca.aquiletour.server.backend;
 
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
 import ca.aquiletour.core.messages.InitializeSessionMessage;
 import ca.aquiletour.core.messages.git.OnClone;
+import ca.aquiletour.core.messages.git.OnExerciseCompleted;
 import ca.aquiletour.core.messages.git.OnNewCommits;
 import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
+import ca.aquiletour.core.messages.queue.UpdateQueueInfoMessage;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
@@ -15,6 +15,7 @@ import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
 import ca.aquiletour.core.messages.user.UserChangesPasswordMessage;
 import ca.aquiletour.core.messages.user.UserInitiatesLoginMessage;
+import ca.aquiletour.core.messages.user.UserIsActiveMessage;
 import ca.aquiletour.core.messages.user.UserLogsOutMessage;
 import ca.aquiletour.core.messages.user.UserSendsLoginCodeMessage;
 import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
@@ -25,7 +26,7 @@ import ca.aquiletour.core.pages.course.messages.DeleteTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveNextTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemovePreviousTaskMessage;
 import ca.aquiletour.core.pages.course.messages.RemoveSubTaskMessage;
-import ca.aquiletour.core.pages.course.messages.TaskCompletedMessage;
+import ca.aquiletour.core.pages.course.messages.AtomicTaskCompletedMessage;
 import ca.aquiletour.core.pages.course.messages.UpdateTaskInfoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentDeletesRepoMessage;
 import ca.aquiletour.core.pages.course.student.messages.StudentRegistersRepoMessage;
@@ -43,7 +44,7 @@ import ca.aquiletour.core.pages.semester_list.messages.AddScheduleItemMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterMessage;
 import ca.aquiletour.core.pages.semester_list.messages.AddSemesterWeekMessage;
 import ca.aquiletour.core.pages.semester_list.messages.DeleteSemesterMessage;
-import ca.aquiletour.core.pages.semester_list.messages.SelectCurrentSemester;
+import ca.aquiletour.core.pages.semester_list.messages.SetActiveSemesterMessage;
 import ca.aquiletour.server.backend.course.AddNextTaskHandler;
 import ca.aquiletour.server.backend.course.AddPreviousTaskHandler;
 import ca.aquiletour.server.backend.course.AddSubTaskHandler;
@@ -51,11 +52,12 @@ import ca.aquiletour.server.backend.course.DeleteTaskHandler;
 import ca.aquiletour.server.backend.course.RemoveNextTaskHandler;
 import ca.aquiletour.server.backend.course.RemovePreviousTaskHandler;
 import ca.aquiletour.server.backend.course.RemoveSubTaskHandler;
-import ca.aquiletour.server.backend.course.TaskCompletedHandler;
+import ca.aquiletour.server.backend.course.AtomicTaskCompletedHandler;
 import ca.aquiletour.server.backend.course.UpdateTaskInfoHandler;
 import ca.aquiletour.server.backend.course_list.AddCourseHandler;
 import ca.aquiletour.server.backend.dashboard.DeleteCourseHandler;
 import ca.aquiletour.server.backend.git.OnCloneHandler;
+import ca.aquiletour.server.backend.git.OnExerciseCompletedHandler;
 import ca.aquiletour.server.backend.git.OnNewCommitsHandler;
 import ca.aquiletour.server.backend.git.StudentDeletesRepoHandler;
 import ca.aquiletour.server.backend.git.StudentRegistersRepoHandler;
@@ -74,17 +76,19 @@ import ca.aquiletour.server.backend.queue.MoveAppointmentHandler;
 import ca.aquiletour.server.backend.queue.TeacherClosesQueueHandler;
 import ca.aquiletour.server.backend.queue.TeacherUsesQueueHandler;
 import ca.aquiletour.server.backend.queue.UpdateIsQueueOpenHandler;
+import ca.aquiletour.server.backend.queue.UpdateQueueInfoHandler;
 import ca.aquiletour.server.backend.semester_list.AddScheduleItemHandler;
 import ca.aquiletour.server.backend.semester_list.AddSemesterHandler;
 import ca.aquiletour.server.backend.semester_list.AddSemesterWeekHandler;
 import ca.aquiletour.server.backend.semester_list.DeleteSemesterHandler;
-import ca.aquiletour.server.backend.semester_list.SelectCurrentSemesterHandler;
+import ca.aquiletour.server.backend.semester_list.SetActiveSemesterHanlder;
 import ca.aquiletour.server.backend.time.TimePassesHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
 import ca.aquiletour.server.backend.users.ToggleAdminModeHandler;
 import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
+import ca.aquiletour.server.backend.users.UserIsActiveHandler;
 import ca.ntro.jdk.services.BackendServiceServer;
 
 public class AquiletourBackendService extends BackendServiceServer {
@@ -114,11 +118,11 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(StudentRegistersRepoMessage.class, new StudentRegistersRepoHandler());
 		addBackendMessageHandler(AddSemesterMessage.class, new AddSemesterHandler());
 		addBackendMessageHandler(AddSemesterWeekMessage.class, new AddSemesterWeekHandler());
-		addBackendMessageHandler(SelectCurrentSemester.class, new SelectCurrentSemesterHandler());
+		addBackendMessageHandler(SetActiveSemesterMessage.class, new SetActiveSemesterHanlder());
 		addBackendMessageHandler(AddScheduleItemMessage.class, new AddScheduleItemHandler());
 		addBackendMessageHandler(UpdateTaskInfoMessage.class, new UpdateTaskInfoHandler());
 		addBackendMessageHandler(UpdateUserInfoMessage.class, new UpdateUserInfoHandler());
-		addBackendMessageHandler(TaskCompletedMessage.class, new TaskCompletedHandler());
+		addBackendMessageHandler(AtomicTaskCompletedMessage.class, new AtomicTaskCompletedHandler());
 		addBackendMessageHandler(TimePassesMessage.class, new TimePassesHandler());
 		addBackendMessageHandler(ToggleStudentModeMessage.class, new ToggleStudentModeHandler());
 		addBackendMessageHandler(ModifyAppointmentDurationsMessage.class, new ModifyAppointmentDurationsHandler());
@@ -133,6 +137,9 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(StudentDeletesRepoMessage.class, new StudentDeletesRepoHandler());
 		addBackendMessageHandler(OnClone.class, new OnCloneHandler());
 		addBackendMessageHandler(UpdateIsQueueOpenMessage.class, new UpdateIsQueueOpenHandler());
+		addBackendMessageHandler(OnExerciseCompleted.class, new OnExerciseCompletedHandler());
+		addBackendMessageHandler(UpdateQueueInfoMessage.class, new UpdateQueueInfoHandler());
+		addBackendMessageHandler(UserIsActiveMessage.class, new UserIsActiveHandler());
 	}
 
 }

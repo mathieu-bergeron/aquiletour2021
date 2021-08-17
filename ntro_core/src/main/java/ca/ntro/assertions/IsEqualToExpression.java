@@ -3,8 +3,6 @@ package ca.ntro.assertions;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.system.log.Log;
-import ca.ntro.services.CollectionsService;
 import ca.ntro.services.Ntro;
 
 public class IsEqualToExpression extends AssertExpression {

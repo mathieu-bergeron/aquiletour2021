@@ -1,47 +1,62 @@
 package ca.aquiletour.server.backend.queue;
 
-import java.util.List;
-
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
+import ca.aquiletour.core.pages.queue.models.AppointmentAddedListener;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
-import ca.aquiletour.server.backend.open_queues_list.QueuesUpdater;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
+import ca.ntro.models.NtroDate;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
 
 public class QueueManager {
 
-	public static void createQueue(ModelStoreSync modelStore,
-								   String queueId,
-			                       User user) {
+	public static void createQueueForUser(ModelStoreSync modelStore,
+								   		  User user) throws BackendError {
 
 		T.call(QueueManager.class);
 		
-		createQueue(modelStore, user.getId(), queueId);
+		createQueue(modelStore, user.getId());
 	}
 
+
 	public static void createQueue(ModelStoreSync modelStore,
-								   String teacherId,
-			                       String queueId) {
+			                       String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
+		
+		if(!modelStore.ifModelExists(QueueModel.class, "admin", queueId)) {
 
-		modelStore.createModel(QueueModel.class, 
-							   "admin",
-				               queueId, 
-				               new ModelInitializer<QueueModel>() {
-			@Override
-			public void initialize(QueueModel newQueue) {
-				T.call(this);
+			modelStore.createModel(QueueModel.class, 
+								   "admin",
+								   queueId, 
+								   new ModelInitializer<QueueModel>() {
+				@Override
+				public void initialize(QueueModel newQueue) {
+					T.call(this);
+					
+					newQueue.setQueueId(queueId);
+					newQueue.updateTeacherName(queueId);
+				}
+			});
+			
+		} else {
 
-				newQueue.setTeacherId(teacherId);
-				newQueue.setCourseId(queueId);
-			}
-		});
+			modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+				T.call(QueueManager.class);
+
+				queueModel.setQueueId(queueId);
+				queueModel.updateTeacherName(queueId);
+			});
+		}
 	}
 
 	public static void deleteQueue(ModelStoreSync modelStore,
@@ -49,41 +64,34 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		QueuesUpdater.deleteQueue(modelStore, queueId);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-	
-		modelStore.delete(queue);
+		QueueListManager.deleteQueue(modelStore, queueId);
 	}
 
-	public static void openQueue(ModelStoreSync modelStore,
-			                     String queueId) throws BackendError {
+
+	/*
+	public static void openQueueForCourseId(ModelStoreSync modelStore,
+			                     			String queueId,
+			                     			String courseId) throws BackendError {
 
 		T.call(QueueManager.class);
 		
-		QueuesUpdater.openQueue(modelStore, queueId);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
+		modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+			T.call(QueueManager.class);
+			
+			queueModel.updateIsQueueOpenForCourseId(courseId, true);
+		});
 		
-		modelStore.closeWithoutSaving(queue);
-
+		//QueuesUpdater.openQueue(modelStore, queueId);
 	}
+	*/
 
 	public static void closeQueue(ModelStoreSync modelStore,
 			                      String queueId) throws BackendError {
 
 		T.call(QueueManager.class);
 
-		QueuesUpdater.closeQueue(modelStore, queueId);
+		QueueListManager.deleteQueue(modelStore, queueId);
 
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-		
 		modelStore.updateModel(QueueModel.class, "amdin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
@@ -93,97 +101,96 @@ public class QueueManager {
 		});
 	}
 
-	public static int addStudentsToQueue(ModelStoreSync modelStore, 
-			                             String queueId, 
-			                             List<User> studentsToAdd) {
-		T.call(QueueManager.class);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, 
-				"admin",
-				queueId);
-
-		int numberOfStudentAdded = 0;
-		
-		for(User student : studentsToAdd) {
-			String studentId = student.getId();
-			
-			if(!queue.getStudentIds().contains(studentId)) {
-
-				queue.getStudentIds().add(studentId);
-				numberOfStudentAdded++;
-			}
-		}
-
-		if(numberOfStudentAdded > 0) {
-			modelStore.save(queue);
-		}
-		
-		modelStore.closeWithoutSaving(queue);
-
-		return numberOfStudentAdded;
-	}
-
-	public static void addAppointmentForUser(ModelStoreSync modelStore,
+	public static Appointment addAppointmentForUser(ModelStoreSync modelStore,
 			                                 String queueId,
+			                                 CoursePath coursePath,
+			                                 TaskPath taskPath,
+			                                 String taskTitle,
 			                                 User user) throws BackendError {
 
 		T.call(QueueManager.class);
+		
+		boolean isQueueOpen = modelStore.extractFromModel(QueueModel.class, "admin", queueId, Boolean.class, queueModel -> {
 
-		Appointment appointment = createAppointment(user);
+			return queueModel.isQueueOpen();
+		});
+				
+		boolean userAlreadyHasAppointment = modelStore.extractFromModel(QueueModel.class, "admin", queueId, Boolean.class, queueModel -> {
+
+			return queueModel.ifUserAlreadyHasAppointment(user.getId());
+		});
+		
+		if(userAlreadyHasAppointment) {
+			throw new BackendError("Vous avez déjà un rendez-vous.");
+		}
+		
+		if(!isQueueOpen) {
+			throw new BackendError("La file d'attente est fermée.");
+		}
+		
+		NtroDate timestamp = Ntro.calendar().now();
+
+		Appointment appointment = createAppointment(timestamp, user, coursePath, taskPath, taskTitle);
+		
+		Optionnal<Appointment> addedAppointment = new Optionnal<>();
 		
 		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
 
-				queue.addAppointment(appointment);
+				queue.addAppointment(appointment, new AppointmentAddedListener() {
+					@Override
+					public void onAppointementAdded(Appointment appointment) {
+						T.call(user);
+						
+						addedAppointment.set(appointment);
+					}
+				});
 			}
 		});
+		
+		Appointment result = null;
+		
+		try {
+
+			result = addedAppointment.get();
+
+		} catch (EmptyOptionException e) {}
+		
+		return result;
 	}
 
-	private static Appointment createAppointment(User user) {
+
+	private static Appointment createAppointment(NtroDate timestamp, User user, CoursePath coursePath, TaskPath taskPath, String taskTitle) {
 		T.call(QueueManager.class);
 
 		Appointment appointment = new Appointment();
 
-		appointment.updateTime(Ntro.calendar().now());
+		appointment.updateTime(timestamp);
 		appointment.setStudentId(user.getId());
 		appointment.setStudentName(user.getFirstname());
 		appointment.setStudentSurname(user.getLastname());
+		if(coursePath != null) {
+			appointment.updateCoursePath(coursePath);
+			appointment.updateCourseTitle(coursePath.courseId());
+		}
+		if(taskPath != null) {
+			appointment.updateTaskPath(taskPath);
+		}
+		if(taskTitle != null) {
+			appointment.updateTaskTitle(taskTitle);
+		}
 		
 		return appointment;
 	}
 
-	public static void addAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
+	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) throws BackendError {
 		T.call(QueueManager.class);
 		
-		numberOfAppointmentUpdates(modelStore, queueId);
-	}
-
-	// FIXME: much better to increment number of appointments
-	//        if two threads add appointements, this size() could be wrong
-	private static void numberOfAppointmentUpdates(ModelStoreSync modelStore, String queueId) {
-		T.call(QueueManager.class);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
-
-		// FIXME: use increment insted
-		int nbAppointment = queue.getAppointments().size();
-
-		String teacherId = queue.getTeacherId();
-		List<String> studentIds = queue.getStudentIds();
-
-		modelStore.closeWithoutSaving(queue);
-	}
-
-	public static Appointment getAppointmentById(ModelStoreSync modelStore, String queueId, String appointmentId) {
-		T.call(QueueManager.class);
-
-		QueueModel queue = modelStore.getModel(QueueModel.class, "admin", queueId);
-		
-		Appointment appointment = queue.appointmentById(appointmentId);
-
-		return appointment;
+		return modelStore.extractFromModel(QueueModel.class, "admin", queueId, Appointment.class, queueModel -> {
+			return queueModel.appointmentById(appointmentId);
+		});
 	}
 
 	public static void deleteAppointment(ModelStoreSync modelStore, String queueId, String appointmentId) throws BackendError {
@@ -197,14 +204,6 @@ public class QueueManager {
 				queue.deleteAppointment(appointmentId);
 			}
 		});
-	}
-
-	public static void deleteAppointmentUpdates(ModelStoreSync modelStore, String queueId, Appointment deletedAppointment) {
-		T.call(QueueManager.class);
-		
-		String appointmentOwnerId = deletedAppointment.getStudentId();
-		
-		numberOfAppointmentUpdates(modelStore, queueId);
 	}
 
 	public static void moveAppointment(ModelStoreSync modelStore, 
@@ -271,7 +270,7 @@ public class QueueManager {
 	public static void updateIsQueueOpen(ModelStoreSync modelStore, String courseId, boolean isQueueOpen, User user) throws BackendError {
 		T.call(QueueManager.class);
 		
-		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
@@ -279,25 +278,37 @@ public class QueueManager {
 				queue.updateIsQueueOpenForCourseId(courseId, isQueueOpen);
 			}
 		});
+		
+		if(isQueueOpen) {
+			
+			QueueListManager.addQueue(modelStore, user.getId(), user);
+			
+		}else {
+
+			QueueListManager.deleteQueue(modelStore, user.getId());
+
+		}
 	}
 
+	/*
 	public static void addCourseSettings(ModelStoreSync modelStore, 
-			                             String courseId, 
+										 CoursePath coursePath,
 			                             String courseTitle, 
 			                             User user) throws BackendError {
 		T.call(QueueManager.class);
 
-		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
 				
-				queue.addCourseSettings(courseId);
-				queue.updateCourseTitle(courseId, courseTitle);
+				queue.addCourseSettings(coursePath);
+				queue.updateCourseTitle(coursePath, courseTitle);
 			}
 		});
-	}
-
+	}*/
+	
+	/*
 	public static void addGroup(ModelStoreSync modelStore, 
 			                    String courseId, 
 			                    String groupId, 
@@ -305,13 +316,46 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 
-		modelStore.updateModel(QueueModel.class, "admin", user.getRegistrationId(), new ModelUpdater<QueueModel>() {
+		modelStore.updateModel(QueueModel.class, "admin", user.getId(), new ModelUpdater<QueueModel>() {
 			@Override
 			public void update(QueueModel queue) {
 				T.call(this);
 				
 				queue.addGroupSettings(courseId, groupId);
 			}
+		});
+	}
+	*/
+
+	public static void updateQueueInfo(ModelStoreSync modelStore, 
+			                           String semesterId, 
+			                           String courseId, 
+			                           String groupId, 
+			                           String queueMessage,
+			                           String queueId) throws BackendError {
+
+		T.call(QueueManager.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", queueId, new ModelUpdater<QueueModel>() {
+			@Override
+			public void update(QueueModel queue) {
+				T.call(this);
+				
+				queue.updateQueueMessage(semesterId, courseId, groupId, queueMessage);
+			}
+		});
+	}
+
+
+	public static void updateTeacherName(ModelStoreSync modelStore, 
+										 String queueId,
+			                             String teacherName) throws BackendError {
+		T.call(QueueManager.class);
+		
+		modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+			T.call(QueueManager.class);
+			
+			queueModel.updateTeacherName(teacherName);
 		});
 	}
 }

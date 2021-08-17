@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ca.ntro.assertions.Factory.thatObject;
-import static ca.ntro.assertions.Factory.thatList;
 import static ca.ntro.assertions.Factory.that;
 
 public class JsonTests {
@@ -174,6 +172,7 @@ public class JsonTests {
 		Ntro.verify(that(deserializedJavaLong).isEqualTo(javaLong));
 	}
 
+	@SuppressWarnings("unused")
 	private void simpleCharRoundtrip() {
 		char javaChar = 'c';
 

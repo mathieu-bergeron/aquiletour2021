@@ -4,13 +4,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.services.Ntro;
-import ca.ntro.core.introspection.MethodSignature;
 
 public class NtroClassJdk extends NtroClass {
 	

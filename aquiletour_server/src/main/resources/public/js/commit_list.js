@@ -62,7 +62,8 @@ function initializeCommitList(viewRootElement, jSweet) {
             datasets: [{
                 backgroundColor: "#EF1010",
                 pointBackgroundColor: pointBackgroundColors,
-                label: "L'historique des commits de : " + commitHistoryName,
+                //label: "L'historique des commits de : " + commitHistoryName,
+                label: null,
                 pointRadius: pointRadiusByEstimatedEffort,
                 pointHoverRadius: pointRadiusByEstimatedEffort,
                 data: [{}],
@@ -70,6 +71,7 @@ function initializeCommitList(viewRootElement, jSweet) {
         },
         options: {
             legend: {
+                display: false,
                 labels: {
                     fontColor: "#000000",
                     fontSize: 30

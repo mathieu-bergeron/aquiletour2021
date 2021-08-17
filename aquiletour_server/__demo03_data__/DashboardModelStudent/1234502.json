@@ -1,0 +1,35 @@
+{
+  "dashboardItems": {
+    "_C": "DashboardItems",
+    "value": [
+      {
+        "courseTitle": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "_C": "DashboardItemStudent",
+        "coursePath": {
+          "names": [
+            "mathieu.bergeron",
+            "H2021",
+            "StruDon"
+          ],
+          "_C": "CoursePath"
+        },
+        "isQueueOpen": {
+          "_C": "StoredBoolean",
+          "value": false
+        },
+        "currentTasks": {
+          "_C": "CurrentTasks",
+          "value": []
+        }
+      }
+    ]
+  },
+  "_C": "DashboardModelStudent",
+  "statusMessage": {
+    "_C": "StoredString",
+    "value": ""
+  }
+}

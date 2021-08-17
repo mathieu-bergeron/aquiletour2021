@@ -2,14 +2,34 @@ package ca.ntro.jdk.services;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTask;
 import ca.ntro.jdk.thread.NtroThreadJdk;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
 import ca.ntro.services.ThreadService;
 import ca.ntro.threads.NtroThread;
 
 public class ThreadServiceJdk extends ThreadService {
+
+	private final ExecutorService executor;
+	
+	public ThreadServiceJdk() {
+		super();
+		
+		if(Ntro.config().isProd()) {
+
+			executor = Executors.newFixedThreadPool(1000);
+
+		}else {
+
+			executor = Executors.newFixedThreadPool(5);
+
+		}
+	}
 
 	@Override
 	public NtroThread currentThread() {
@@ -41,13 +61,13 @@ public class ThreadServiceJdk extends ThreadService {
 
 	@Override
 	public void executeLater(NtroTask task) {
-		// FIXME: on the server
-		//        use a thread from Jetty thread pool
-		new Thread() {
+		T.call(this);
+
+		executor.execute(new Runnable() {
 			@Override
 			public void run() {
 				task.execute();
 			}
-		}.start();
+		});
 	}
 }

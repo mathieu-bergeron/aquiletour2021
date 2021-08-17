@@ -33,24 +33,25 @@ def process(task_req, maria_conn, lite_conn):
 # >>> rep.git.status()
 # rep.commit().diff('HEAD~1')[1].a_blob.data_stream.read() # ou b_blob
 #rep.commit().tree.trees[0].blobs[1].data_stream.read() # parcourir un commit...
-def update_commit_db(semester, course, group, student, repo_path, depot, depotPath, maria_conn):
+def update_commit_db(semester, course, teacher, group, student, repo_path, depot, depotPath, maria_conn):
     repo = git.Repo(depotPath)
-    cur = maria_conn.cursor()
+    cur = maria_conn.cursor(dictionary = True)
     # Trouver dernier commit du depot
     cur.execute('SELECT commit_id FROM commit WHERE repo_url=%s ORDER BY commit_date DESC',(depot,))
     last_commit = cur.fetchone()
     print(last_commit)
     if last_commit:
-        last_commit = last_commit[0] + '..'
+        last_commit = last_commit['commit_id'] + '..'
         cur.fetchall()
 #    last_commit = '4091faf65b9d875d3c23dc7b373e02ae858b21b7' + '..'
-    ex_list, rp_list, fp_list, kw_list = utils.task_utils.find_exercise_for_course(semester,course,group,maria_conn)
+    ex_list, rp_list, fp_list, kw_list = utils.task_utils.find_exercise_for_course(semester,course,teacher,group,maria_conn)
     repo = git.Repo(depotPath)
     ex_comp_list = []
     new_commits = {}
     new_commits['_C'] = 'OnNewCommits'
     new_commits['semesterId'] = semester
     new_commits['courseId'] = course
+    new_commits['teacherId'] = teacher
     new_commits['groupId'] = group
     new_commits['studentId'] = student
     new_commits['latestCommitBeforeThis'] = last_commit
@@ -70,6 +71,7 @@ def update_commit_db(semester, course, group, student, repo_path, depot, depotPa
             ex_comp['_C'] = 'OnExerciseCompleted'
             ex_comp['semesterId'] = semester
             ex_comp['courseId'] = course
+            ex_comp['teacherId'] = teacher
             ex_comp['groupId'] = group
             ex_comp['studentId'] = student
             ex_comp['exercisePath'] = completed_ex
@@ -110,21 +112,22 @@ def update_commit_db(semester, course, group, student, repo_path, depot, depotPa
     # Calculer l'effort (utiliser diff pour recuperer les fichiers)
 
 def hook_task(depot, maria_conn):
-    maria_cur = maria_conn.cursor()
+    maria_cur = maria_conn.cursor(dictionary = True)
     maria_cur.execute('SELECT * FROM repository WHERE repo_url=%s',(depot,))
     record = maria_cur.fetchone()
     print(record)
     if record:
-        depotDir = record[0].split('/')
-        depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record[1]
-        depotPath = os.path.join('depot',record[2],record[3],record[4],record[5],depotDir)
+        depotDir = record['repo_url'].split('/')
+        depotDir = depotDir[len(depotDir)-1].replace('.git','') + '-' + record['repo_host']
+        depotPath = os.path.join('depot',record['session_id'],record['course_id'],record['teacher_id'],record['student_id'],depotDir)
         message = {}
-        message['repoUrl'] = record[0]
-        message['semesterId'] = record[2]
-        message['courseId'] = record[3]
-        message['groupId'] = record[4]
-        message['studentId'] = record[5]
-        message['repoPath'] = record[6]
+        message['repoUrl'] = record['repo_url']
+        message['semesterId'] = record['session_id']
+        message['courseId'] = record['course_id']
+        message['teacherId'] = record['teacher_id']
+        message['groupId'] = record['group_id']
+        message['studentId'] = record['student_id']
+        message['repoPath'] = record['repo_path']
 #        print(depotPath)
         try:
             if not os.path.isdir(depotPath) :
@@ -136,7 +139,7 @@ def hook_task(depot, maria_conn):
                 git.Repo(depotPath).remotes.origin.pull()
                 message['_C'] = 'OnPull'
             utils.net_utils.send_message(message)
-            answer = update_commit_db(record[2],record[3],record[4],record[5],record[6],depot, depotPath, maria_conn)
+            answer = update_commit_db(record['session_id'],record['course_id'],record['teacher_id'],record['group_id'],record['student_id'],record['repo_path'],depot, depotPath, maria_conn)
             if not answer:
                 answer = 'DONE'
         except git.exc.GitCommandError:
@@ -152,6 +155,10 @@ def hook_task(depot, maria_conn):
         #   Not possible ... Error
         # Extract history to depotDB
     else:
+        message = {}
+        message['_C'] = 'OnUnknownRepoURL'
+        message['repoUrl'] = depot
+        utils.net_utils.send_message(message)
         print('DEPOT NOT FOUND: ' + depot)
         answer = 'DEPOT NOT FOUND'
     return (True, json.dumps({'status': answer}))

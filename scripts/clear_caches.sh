@@ -35,10 +35,12 @@ rm -rf .gradle
 echo "rm ~/.m2/repository/ca/ntro"
 echo "rm ~/.m2/repository/ca/aquiletour"
 echo "rm ~/.m2/repository/aquiletour2021"
+echo "rm ~/.m2/repository/ca/sockjs"
 
 rm -rf ~/.m2/repository/ca/ntro
 rm -rf ~/.m2/repository/ca/aquiletour
 rm -rf ~/.m2/repository/aquiletour2021
+rm -rf ~/.m2/repository/ca/sockjs
 
 restore_dir
 

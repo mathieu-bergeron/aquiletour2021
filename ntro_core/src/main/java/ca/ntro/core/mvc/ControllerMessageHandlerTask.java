@@ -23,16 +23,15 @@ class ControllerMessageHandlerTask<C extends NtroAbstractController, CV extends 
 		this.messageId = messageId;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void runTaskAsync() {
 		T.call(this);
 		
-		@SuppressWarnings("unchecked")
 		CV currentView = (CV) ((ViewCreatorTask) getPreviousTask(ViewCreatorTask.class, VIEW_CREATOR_TASK_ID)).getView();
 		MustNot.beNull(currentView);
 
-		@SuppressWarnings("unchecked")
-		MessageHandlerTask messageHandler = (MessageHandlerTask) getPreviousTask(MessageHandlerTask.class, messageId);
+		MessageHandlerTask<?> messageHandler = (MessageHandlerTask<?>) getPreviousTask(MessageHandlerTask.class, messageId);
 
 		handler.handleImpl(currentView, (MSG) messageHandler.getMessage());
 		

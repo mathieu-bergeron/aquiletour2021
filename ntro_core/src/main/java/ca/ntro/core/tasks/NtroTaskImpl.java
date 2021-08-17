@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import ca.ntro.core.system.log.Log;
-import ca.ntro.services.CollectionsService;
 import ca.ntro.services.Ntro;
 
 public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
@@ -280,7 +278,13 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	}
 	
 	private boolean hasPreviousTasks() {
-		return previousTasks.size() > 0;
+		boolean hasPreviousTasks = false;
+		
+		if(previousTasks != null) {
+			hasPreviousTasks = previousTasks.size() > 0;
+		}
+
+		return hasPreviousTasks;
 	}
 
 	@Override
@@ -313,7 +317,12 @@ public abstract class NtroTaskImpl implements NtroTask, TaskGraph, Node {
 	}
 
 	public boolean hasSubTasks() {
-		return subTasks.size() > 0;
+		boolean hasSubTasks = false;
+		if(subTasks != null) {
+			hasSubTasks = subTasks.size() > 0;
+		}
+		
+		return hasSubTasks;
 	}
 
 	@Override

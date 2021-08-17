@@ -7,12 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ca.ntro.core.introspection.Factory;
 import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.services.Ntro;
-import def.js.JSON;
 
 public class JsonDeserialization {
 
@@ -110,6 +108,10 @@ public class JsonDeserialization {
 
 		Object javaObject = localHeap.get(referenceId);
 		
+		if(javaObject == null) {
+			Log.error("[toJavaValueFromObjectReference] not in localHeap " + referenceId);
+		}
+		
 		return javaObject;
 	}
 
@@ -130,11 +132,11 @@ public class JsonDeserialization {
 		localHeap.put(valuePath, javaObject);
 
 		List<NtroMethod> setters = ntroClass.userDefinedSetters();
-
+		
 		setters.sort(new Comparator<NtroMethod>() {
 			@Override
 			public int compare(NtroMethod o1, NtroMethod o2) {
-				return o1.setterFieldName().compareTo(o2.setterFieldName());
+				return Ntro.collections().compareToString(o1.setterFieldName(), o2.setterFieldName());
 			}
 		});
 		
@@ -182,7 +184,7 @@ public class JsonDeserialization {
 		keys.sort(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				return o1.compareTo(o2);
+				return Ntro.collections().compareToString(o1, o2);
 			}
 		});
 		

@@ -1,7 +1,7 @@
 package ca.aquiletour.core.pages.course.handlers;
 
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.CourseModel;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.CourseController;
 import ca.aquiletour.core.pages.course.messages.ShowCourseMessage;
 import ca.aquiletour.core.pages.course.messages.ShowTaskMessage;
@@ -39,11 +39,11 @@ public abstract class ShowCourseHandler extends ControllerMessageHandler<CourseC
 		Ntro.messages().send(showTaskMessage);
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showCourse(currentView);
+		rootView.showCourse(CourseView.class, currentView);
 	}
 	
 	protected abstract CoursePath coursePathFromMessage(ShowCourseMessage message);
 	
 	protected abstract Class<? extends ShowTaskMessage> showTaskMessageClass();
-	protected abstract Class<? extends CourseModel> modelClass();
+	protected abstract Class<? extends CourseModel<?>> modelClass();
 }

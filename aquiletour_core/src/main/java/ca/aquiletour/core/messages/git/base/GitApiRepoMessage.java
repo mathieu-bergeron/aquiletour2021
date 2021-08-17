@@ -1,6 +1,6 @@
 package ca.aquiletour.core.messages.git.base;
 
-import ca.aquiletour.core.models.courses.CoursePath;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.ntro.core.Path;
 import ca.ntro.core.system.trace.T;
@@ -8,6 +8,7 @@ import ca.ntro.messages.NtroMessage;
 
 public class GitApiRepoMessage extends NtroMessage {
 
+	private String teacherId;
 	private String courseId;
 	private String semesterId;
 	private String groupId;
@@ -24,27 +25,32 @@ public class GitApiRepoMessage extends NtroMessage {
 		super();
 		T.call(this);
 
-		setCourseId(gitApiCourseId(message));
+		setTeacherId(message.getTeacherId());
+		setCourseId(message.getCourseId());
 		setSemesterId(message.getSemesterId());
 		setGroupId(message.getGroupId());
 		setStudentId(message.getStudentId());
 		setRepoPath(gitApiRepoPath(message));
 	}
 
-	private String gitApiCourseId(AquiletourGitMessage message) {
-		T.call(this);
-		
-		Path teacherCourse = new Path();
-		teacherCourse.addName(message.getTeacherId());
-		teacherCourse.addName(message.getCourseId());
-
-		return teacherCourse.toString().substring(1);
-	}
-
 	private String gitApiRepoPath(AquiletourGitMessage message) {
 		T.call(this);
+		
+		String repoPath = null;
+		
+		if(message.getRepoPath() != null) {
+			repoPath = message.getRepoPath().toString();
+		}
+		
+		return repoPath;
+	}
 
-		return message.getRepoPath().toString();
+	public String getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(String teacherId) {
+		this.teacherId = teacherId;
 	}
 
 	public String getCourseId() {
@@ -89,27 +95,14 @@ public class GitApiRepoMessage extends NtroMessage {
 
 	public CoursePath coursePath() {
 		T.call(this);
-		
-		Path teacherCourse = new Path(getCourseId());
-		CoursePath coursePath = null;
-		
-		if(teacherCourse.nameCount() >= 2) {
-			
-			coursePath = new CoursePath(teacherCourse.name(0), getSemesterId(), teacherCourse.name(1));
 
-		}else {
-
-			coursePath = new CoursePath();
-			
-		}
-
-		return coursePath;
+		return new CoursePath(getTeacherId(), getSemesterId(), getCourseId());
 	}
 
 	public Path taskPath() {
 		T.call(this);
 		
-		Path taskPath = new Path(getRepoPath());
+		Path taskPath = Path.fromRawPath(getRepoPath());
 
 		return taskPath;
 	}

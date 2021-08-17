@@ -3,6 +3,7 @@ package ca.aquiletour.core.pages.course.teacher.handlers;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
+import ca.aquiletour.core.models.courses.student.CompletionByAtomicTaskId;
 import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.courses.teacher.GroupDescription;
@@ -23,7 +24,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		T.call(this);
 
 		User user = (User) Ntro.currentUser();
-		boolean isOwner = currentCoursePath().teacherId().equals(user.getRegistrationId());
+		boolean isOwner = currentCoursePath().teacherId().equals(user.getId());
 		
 		boolean isStructure = currentGroupId().equals(Constants.COURSE_STRUCTURE_ID);
 		
@@ -39,23 +40,87 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 
 		view.selectGroup(currentGroupId());
 		
+		view.displayCourseStructureView(isEditable());
 		view.showUneditableComponents(!isEditable());
-		view.showEditableComponents(isEditable());
 	}
 
-	protected void observeCompletions(CourseModelTeacher model, CourseViewTeacher view) {
+	protected void observeCurrentTask(CourseModelTeacher model, String groupId, CourseViewTeacher view, ViewLoader subViewLoader) {
+		T.call(this);
+		super.observeCurrentTask(model, groupId, view, subViewLoader);
+		
+		T.here();
+		
+		view.clearStudentStatuses();
+
+		observeGroups(model, view);
+	}
+
+	private void observeGroups(CourseModelTeacher model, CourseViewTeacher view) {
 		T.call(this);
 
+		model.getGroups().removeObservers();
+		model.getGroups().onItemAdded(new ItemAddedListener<GroupDescription>() {
+			@Override
+			public void onItemAdded(int index, GroupDescription item) {
+				
+				if(currentGroupId().equals(Constants.ALL_GROUPS_ID)
+						|| currentGroupId().equals(item.getGroupId())) {
+
+					observeStudents(model, view, item);
+				}
+			}
+		});
+	}
+
+	private void observeStudents(CourseModelTeacher model, CourseViewTeacher view, GroupDescription item) {
+		item.getStudents().removeObservers();
+		item.getStudents().onItemAdded(new ItemAddedListener<String>() {
+			@Override
+			public void onItemAdded(int index, String studentId) {
+				T.call(this);
+
+				if(currentTask().status(model.getCompletions().valueOf(studentId)).isTodo()) {
+					displayStudentCompletion(studentId, view);
+				}
+			}
+		});
+	}
+
+	protected void observeTaskCompletions(CourseModelTeacher model, CourseViewTeacher view) {
+		T.call(this);
+		
 		model.getCompletions().removeObservers();
 		model.getCompletions().onEntryAdded(new EntryAddedListener<StudentCompletionsByTaskId>() {
 			@Override
 			public void onEntryAdded(String studentId, StudentCompletionsByTaskId studentCompletionsByTaskId) {
 				T.call(this);
-
-				displayStudentCompletion(studentId, view);
+				
+				observeStudentCompletions(view, studentId, studentCompletionsByTaskId);
 			}
 		});
 	}
+
+	private void observeStudentCompletions(CourseViewTeacher view, 
+			                               String studentId, 
+			                               StudentCompletionsByTaskId studentCompletionsByTaskId) {
+		
+		T.call(this);
+		
+		studentCompletionsByTaskId.removeObservers();
+		studentCompletionsByTaskId.onEntryAdded(new EntryAddedListener<CompletionByAtomicTaskId>() {
+			@Override
+			public void onEntryAdded(String taskKey, CompletionByAtomicTaskId completionByAtomicTaskId) {
+				T.call(this);
+
+				if(currentTask().getPath().toKey().equals(taskKey)
+						&& currentTask().status(studentCompletionsByTaskId).isTodo()) {
+					
+					displayStudentCompletion(studentId, view);
+				}
+			}
+		});
+	}
+
 
 	private void initializeDropdowns(CourseModelTeacher model, CourseViewTeacher view) {
 		T.call(this);
@@ -97,7 +162,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 			}
 		});
 
-		view.selectSemester(semesterId);
+		view.selectCategory(semesterId);
 	}
 	
 	private void appendToSemesterDropdown(String semesterId, CourseViewTeacher view) {
@@ -106,7 +171,7 @@ public class CourseViewModelTeacher extends CourseViewModel<CourseModelTeacher, 
 		String href = "?" + Constants.SEMESTER_URL_PARAM + "=" + semesterId;
 		String text = semesterId;
 		
-		view.appendToSemesterDropdown(semesterId, href, text);
+		view.appendToCategoryDropdown(semesterId, href, text);
 	}
 
 	private void appendToGroupDropdown(String groupId, CourseViewTeacher view) {

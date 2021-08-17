@@ -1,17 +1,20 @@
 package ca.aquiletour.core.models.user;
 
+import ca.aquiletour.core.utils.Validator;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.services.Ntro;
 import ca.ntro.users.NtroUser;
 
 public class User extends NtroUser {
 	
-	private String registrationId = "";
+	private String uuid = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String email = "";
 
 	private String passwordHash = "";
 	private boolean hasPassword = false;
+	private boolean hasName = false;
 
 	public User() {
 
@@ -21,12 +24,12 @@ public class User extends NtroUser {
 		this.email = email;
 	}
 
-	public String getRegistrationId() {
-		return registrationId;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setRegistrationId(String registrationId) {
-		this.registrationId = registrationId;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getFirstname() {
@@ -66,18 +69,38 @@ public class User extends NtroUser {
 		this.hasPassword = hasPassword;
 	}
 
+	public boolean getHasName() {
+		return hasName;
+	}
+
+	public void setHasName(boolean hasName) {
+		this.hasName = hasName;
+	}
+
+	public User toPublicUser() {
+		T.call(this);
+		
+		User publicUser = Ntro.factory().newInstance(this.getClass());
+		
+		publicUser.copyPublicInfomation(this);
+		
+		return publicUser;
+	}
+
 	public void copyPublicInfomation(User user) {
 		T.call(this);
 
-		setRegistrationId(user.getRegistrationId());
+		setId(user.getId());
+		setUuid(user.getUuid());
 		setFirstname(user.getFirstname());
 		setLastname(user.getLastname());
 		setEmail(user.getEmail());
 		setHasPassword(user.getHasPassword());
+		setHasName(user.getHasName());
 	}
 
 	public User toSessionUser() {
-		User sessionUser = new User();
+		User sessionUser = Ntro.factory().newInstance(this.getClass());
 
 		copySessionOnlyInfo(sessionUser);
 
@@ -88,12 +111,13 @@ public class User extends NtroUser {
 		T.call(this);
 
 		sessionUser.setId(getId());
-		sessionUser.setRegistrationId(getRegistrationId());
+		sessionUser.setUuid(getUuid());
 		sessionUser.setAuthToken(getAuthToken());
 		sessionUser.setFirstname(getFirstname());
 		sessionUser.setLastname(getLastname());
 		sessionUser.setEmail(getEmail());
 		sessionUser.setHasPassword(getHasPassword());
+		sessionUser.setHasName(getHasName());
 	}
 
 	public boolean actsAsTeacher() {
@@ -166,5 +190,82 @@ public class User extends NtroUser {
 		updateFirstNameIfEmpty(user.getFirstname());
 		updateLastNameIfEmpty(user.getLastname());
 		updateEmailIfEmpty(user.getEmail());
+	}
+
+	public boolean hasPassword() {
+		T.call(this);
+		
+		return getHasPassword();
+	}
+
+	public static String normalizeUserId(String userId) {
+		T.call(User.class);
+
+		return Validator.normalizeId(userId.toLowerCase());
+	}
+
+
+	public String displayName() {
+		T.call(User.class);
+		
+		String displayName = formatDisplayName(getFirstname(), getLastname());
+		
+		if(displayName.isEmpty()) {
+			
+			displayName = getId();
+		}
+
+		return displayName;
+	}
+
+
+	public static String formatDisplayName(String firstname, String lastname) {
+		T.call(User.class);
+		
+		String displayName = "";
+		
+		if(firstname != null && !firstname.isEmpty()) {
+			displayName = firstname;
+		}
+		
+		if(lastname != null && !lastname.isEmpty()) {
+			if(!displayName.isEmpty()) {
+				displayName += " ";
+			}
+			
+			displayName += lastname;
+		}
+
+		return displayName;
+	}
+
+	public boolean actsAsStudent() {
+		T.call(this);
+
+		return true;
+	}
+
+	public boolean isStudent() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean isTeacher() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean isAdmin() {
+		T.call(this);
+
+		return false;
+	}
+
+	public boolean hasName() {
+		T.call(this);
+		
+		return getHasName();
 	}
 }

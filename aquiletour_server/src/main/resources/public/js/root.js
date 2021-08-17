@@ -1,6 +1,4 @@
-function initializeRoot(viewRootElement, jSweet){
-
-    //const testToast = viewRootElement.find('#test-toast');
+function initializeRoot(viewRootElement, JSweet){
 
     const navBarA = viewRootElement.find('.navbar-nav>li>a');
 
@@ -16,7 +14,16 @@ function initializeRoot(viewRootElement, jSweet){
 
     const submitLinks = viewRootElement.find('.submit-link');
 
-    //testToast.toast('show');
+    const logoLoading = viewRootElement.find('#logo-loading');
+    const logoImage = viewRootElement.find('#logo-image');
+
+    if(!JSweet){
+    	logoLoading.hide();
+    	logoImage.show();
+    }
+
+
+    //loginButton.dropdown();
 
     navBarA.on('click', function(){
         $('.navbar-collapse').collapse('hide');

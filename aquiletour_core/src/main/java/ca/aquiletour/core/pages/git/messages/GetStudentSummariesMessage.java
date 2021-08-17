@@ -1,7 +1,6 @@
 package ca.aquiletour.core.pages.git.messages;
 
 import ca.aquiletour.core.models.user.User;
-import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.NtroUserMessage;
 
 public class GetStudentSummariesMessage extends NtroUserMessage<User> {

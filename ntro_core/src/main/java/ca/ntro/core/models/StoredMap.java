@@ -1,9 +1,11 @@
 package ca.ntro.core.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.models.lambdas.MapIterator;
@@ -11,7 +13,6 @@ import ca.ntro.core.models.lambdas.MapMapper;
 import ca.ntro.core.models.lambdas.MapReducer;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -54,9 +55,6 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 			args.add(value);
 			modelStore().onValueMethodInvoked(valuePath(),"putEntry",args);
 
-		}else {
-			
-			Log.warning("putEntry invoked while not connected to modelStore");
 		}
 		
 		for(MapObserver<V> mapObserver : mapObservers) {
@@ -88,9 +86,6 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 
 			modelStore().onValueMethodInvoked(valuePath(),"removeEntry",args);
 
-		}else {
-
-			Log.warning("removeEntry invoked while not connected to modelStore");
 		}
 		
 		if(value != null) {

@@ -26,7 +26,6 @@ import ca.ntro.core.introspection.NtroClass;
 import ca.ntro.core.introspection.NtroMethod;
 import ca.ntro.core.introspection.FieldSignature;
 import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.introspection.MethodSignature;
 import ca.ntro.core.system.trace.T;
 import def.js.Array;
 import def.js.Function;
@@ -35,14 +34,6 @@ import static jsweet.util.Lang.object;
 import static jsweet.util.Lang.typeof;
 
 public class IntrospectorJSweet extends Introspector {
-
-	@Override
-	public Object buildValueForSetter(Method setter, Object jsonValue) {
-		T.call(this);
-
-		// XXX: setter does not contain type information in JSweet
-		return buildValue(jsonValue);
-	}
 
 	private Object buildValue(Object jsonValue) {
 		T.call(this);
@@ -144,7 +135,7 @@ public class IntrospectorJSweet extends Introspector {
 		if (typeof(clazz).equals("string")) {
 			def.js.String interfaceName = new def.js.String(clazz);
 
-			ret = interfaceName.substring(interfaceName.lastIndexOf(".") + 1, interfaceName.length - 1).toString();
+			ret = interfaceName.substring(interfaceName.lastIndexOf(".") + 1, interfaceName.length).toString();
 
 		} else {
 

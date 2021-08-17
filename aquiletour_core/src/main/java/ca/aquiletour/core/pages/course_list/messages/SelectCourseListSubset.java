@@ -1,16 +1,7 @@
 package ca.aquiletour.core.pages.course_list.messages;
 
-import ca.ntro.messages.NtroMessage;
+import ca.aquiletour.core.messages.SelectCategoryMessage;
 
-public abstract class SelectCourseListSubset extends NtroMessage {
-	
-	private String semesterId;
+public abstract class SelectCourseListSubset extends SelectCategoryMessage {
 
-	public String getSemesterId() {
-		return semesterId;
-	}
-
-	public void setSemesterId(String semesterId) {
-		this.semesterId = semesterId;
-	}
 }

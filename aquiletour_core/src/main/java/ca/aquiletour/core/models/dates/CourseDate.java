@@ -36,6 +36,15 @@ public abstract class CourseDate extends AquiletourDate {
 		this.weekOf = weekOf;
 	}
 
+
+	@Override
+	public boolean isDefined() {
+		T.call(this);
+
+		return weekOf.isDefined();
+	}
+
+	@Override
 	public boolean updateDate(SemesterSchedule semesterSchedule) {
 		boolean updated = false;
 		
@@ -48,10 +57,4 @@ public abstract class CourseDate extends AquiletourDate {
 
 		return updated;
 	}
-
-	public abstract SemesterDate resolveDate(String courseId,
-											 String groupId, 
-											 SemesterSchedule 
-											 semesterSchedule, 
-											 TeacherSchedule teacherSchedule);
 }

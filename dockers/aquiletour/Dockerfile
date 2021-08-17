@@ -40,4 +40,8 @@ RUN mkdir -p src/main/resources
 COPY --from=build /code/aquiletour_server/src/main/resources src/main/resources
 RUN mkdir -p __data__
 COPY --from=build /code/aquiletour_server/__test_data__ __data__
-CMD java -cp aqlt_srv.jar ca.aquiletour.server.JavaMainServer
+
+##
+## restart server if it crashes
+##
+CMD while true; do java -cp aqlt_srv.jar ca.aquiletour.server.vertx.JavaMainVertx >> aquiletour.log; date >> .crashes; done 

@@ -1,11 +1,11 @@
 package ca.aquiletour.web.pages.course;
 
-import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.Constants;
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.base.Task;
+import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.course.views.TaskView;
 import ca.ntro.core.mvc.NtroContext;
+import ca.ntro.core.mvc.NtroView;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.web.dom.HtmlElement;
@@ -33,10 +33,6 @@ public class TaskViewWeb extends NtroViewWeb implements TaskView {
 		String href = "/" + Constants.COURSE_URL_SEGMENT  +
 	                  coursePath.toUrlPath() + 
 	                  task.id();
-		
-		if(!AquiletourMain.currentSemester().equals(coursePath.semesterId())) {
-			href += "?" + Constants.SEMESTER_URL_PARAM + "=" + coursePath.semesterId();
-		}
 		
 		taskTitleLink.setAttribute("href", href);
 	}

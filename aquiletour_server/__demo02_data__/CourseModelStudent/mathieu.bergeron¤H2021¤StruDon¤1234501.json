@@ -1,0 +1,533 @@
+{
+  "endTimes": {
+    "_C": "EndTimeByTaskId",
+    "value": {}
+  },
+  "statusByTaskKey": {
+    "_C": "TaskStatusByTaskKey",
+    "value": {
+      "": {
+        "_C": "BlockedWaitingForSubTasks",
+        "tasksTodo": [
+          {
+            "path": {
+              "names": [
+                "ateliers"
+              ],
+              "_C": "TaskPath"
+            },
+            "nextTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "_C": "Task",
+            "subTasks": {
+              "_C": "StoredTaskIds",
+              "value": [
+                "/ateliers/atelier1",
+                "/ateliers/atelier2"
+              ]
+            },
+            "description": {
+              "_C": "StoredString",
+              "value": ""
+            },
+            "exitTasks": {
+              "_C": "StoredAtomicTasks",
+              "value": []
+            },
+            "endTime": {
+              "_C": "StoredAquiletourDate",
+              "value": {
+                "_C": "ConcreteDate",
+                "value": {
+                  "epochMiliseconds": -1000,
+                  "_C": "NtroDate",
+                  "epochSeconds": -1
+                }
+              }
+            },
+            "entryTasks": {
+              "_C": "StoredAtomicTasks",
+              "value": []
+            },
+            "previousTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "title": {
+              "_C": "StoredString",
+              "value": "Ateliers"
+            },
+            "graph": {
+              "_R": ""
+            }
+          }
+        ],
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097812000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097812
+          }
+        }
+      },
+      "theorie/piles": {
+        "_C": "StatusTodo",
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097857000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097857
+          }
+        }
+      },
+      "ateliers": {
+        "_C": "BlockedWaitingForSubTasks",
+        "tasksTodo": [
+          {
+            "path": {
+              "names": [
+                "ateliers",
+                "atelier1"
+              ],
+              "_C": "TaskPath"
+            },
+            "nextTasks": {
+              "_C": "StoredTaskIds",
+              "value": [
+                "/ateliers/atelier2"
+              ]
+            },
+            "_C": "Task",
+            "subTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "description": {
+              "_C": "StoredString",
+              "value": ""
+            },
+            "exitTasks": {
+              "_C": "StoredAtomicTasks",
+              "value": [
+                {
+                  "_C": "DefaultAtomicTask",
+                  "id": "DefaultAtomicTask"
+                }
+              ]
+            },
+            "endTime": {
+              "_C": "StoredAquiletourDate",
+              "value": {
+                "_C": "ConcreteDate",
+                "value": {
+                  "epochMiliseconds": -1000,
+                  "_C": "NtroDate",
+                  "epochSeconds": -1
+                }
+              }
+            },
+            "entryTasks": {
+              "_C": "StoredAtomicTasks",
+              "value": []
+            },
+            "previousTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "title": {
+              "_C": "StoredString",
+              "value": "Atelier 1"
+            },
+            "graph": {
+              "_R": ""
+            }
+          }
+        ],
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097829000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097829
+          }
+        }
+      },
+      "ateliers/atelier2": {
+        "_C": "BlockedWaitingForPreviousTasks",
+        "tasksTodo": [
+          {
+            "_R": "/statusByTaskKey/value/ateliers/tasksTodo/0"
+          }
+        ],
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097877000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097877
+          }
+        }
+      },
+      "theorie": {
+        "_C": "BlockedWaitingForSubTasks",
+        "tasksTodo": [
+          {
+            "path": {
+              "names": [
+                "theorie",
+                "listes"
+              ],
+              "_C": "TaskPath"
+            },
+            "nextTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "_C": "Task",
+            "subTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "description": {
+              "_C": "StoredString",
+              "value": ""
+            },
+            "exitTasks": {
+              "_C": "StoredAtomicTasks",
+              "value": [
+                {
+                  "_C": "DefaultAtomicTask",
+                  "id": "DefaultAtomicTask"
+                }
+              ]
+            },
+            "endTime": {
+              "_C": "StoredAquiletourDate",
+              "value": {
+                "_C": "ConcreteDate",
+                "value": {
+                  "epochMiliseconds": -1000,
+                  "_C": "NtroDate",
+                  "epochSeconds": -1
+                }
+              }
+            },
+            "entryTasks": {
+              "_C": "StoredAtomicTasks",
+              "value": []
+            },
+            "previousTasks": {
+              "_C": "StoredTaskIds",
+              "value": []
+            },
+            "title": {
+              "_C": "StoredString",
+              "value": "Les listes"
+            },
+            "graph": {
+              "_R": ""
+            }
+          }
+        ],
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097851000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097851
+          }
+        }
+      },
+      "ateliers/atelier1": {
+        "_C": "StatusTodo",
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097829000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097829
+          }
+        }
+      },
+      "theorie/listes": {
+        "_C": "StatusTodo",
+        "timestamp": {
+          "_C": "ConcreteDate",
+          "value": {
+            "epochMiliseconds": 1623097851000,
+            "_C": "NtroDate",
+            "epochSeconds": 1623097851
+          }
+        }
+      }
+    }
+  },
+  "_C": "CourseModelStudent",
+  "coursePath": {
+    "names": [
+      "mathieu.bergeron",
+      "H2021",
+      "StruDon"
+    ],
+    "_C": "CoursePath"
+  },
+  "groupId": {
+    "_C": "StoredString",
+    "value": "01"
+  },
+  "completions": {
+    "_C": "StudentCompletionsByTaskId",
+    "value": {}
+  },
+  "siblingSemesters": {
+    "_C": "SemesterIds",
+    "value": []
+  },
+  "siblingCourses": {
+    "_C": "CourseIds",
+    "value": []
+  },
+  "tasks": {
+    "_C": "ObservableTaskMap",
+    "course": {
+      "_R": ""
+    },
+    "value": {
+      "/ateliers/atelier2": {
+        "path": {
+          "names": [
+            "ateliers",
+            "atelier2"
+          ],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": [
+            {
+              "_C": "DefaultAtomicTask",
+              "id": "DefaultAtomicTask"
+            }
+          ]
+        },
+        "endTime": {
+          "_C": "StoredAquiletourDate",
+          "value": {
+            "_C": "ConcreteDate",
+            "value": {
+              "epochMiliseconds": -1000,
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            }
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/ateliers/atelier1"
+          ]
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Atelier 2"
+        },
+        "graph": {
+          "_R": ""
+        }
+      },
+      "/theorie": {
+        "path": {
+          "names": [
+            "theorie"
+          ],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/theorie/listes",
+            "/theorie/piles"
+          ]
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "endTime": {
+          "_C": "StoredAquiletourDate",
+          "value": {
+            "_C": "ConcreteDate",
+            "value": {
+              "epochMiliseconds": -1000,
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            }
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Théorie"
+        },
+        "graph": {
+          "_R": ""
+        }
+      },
+      "/ateliers/atelier1": {
+        "_R": "/statusByTaskKey/value/ateliers/tasksTodo/0"
+      },
+      "/theorie/listes": {
+        "_R": "/statusByTaskKey/value/theorie/tasksTodo/0"
+      },
+      "/ateliers": {
+        "_R": "/statusByTaskKey/value//tasksTodo/0"
+      },
+      "/theorie/piles": {
+        "path": {
+          "names": [
+            "theorie",
+            "piles"
+          ],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": [
+            {
+              "_C": "DefaultAtomicTask",
+              "id": "DefaultAtomicTask"
+            }
+          ]
+        },
+        "endTime": {
+          "_C": "StoredAquiletourDate",
+          "value": {
+            "_C": "ConcreteDate",
+            "value": {
+              "epochMiliseconds": -1000,
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            }
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Les piles"
+        },
+        "graph": {
+          "_R": ""
+        }
+      },
+      "/": {
+        "path": {
+          "names": [],
+          "_C": "TaskPath"
+        },
+        "nextTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "_C": "Task",
+        "subTasks": {
+          "_C": "StoredTaskIds",
+          "value": [
+            "/ateliers",
+            "/theorie"
+          ]
+        },
+        "description": {
+          "_C": "StoredString",
+          "value": ""
+        },
+        "exitTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "endTime": {
+          "_C": "StoredAquiletourDate",
+          "value": {
+            "_C": "ConcreteDate",
+            "value": {
+              "epochMiliseconds": -1000,
+              "_C": "NtroDate",
+              "epochSeconds": -1
+            }
+          }
+        },
+        "entryTasks": {
+          "_C": "StoredAtomicTasks",
+          "value": []
+        },
+        "previousTasks": {
+          "_C": "StoredTaskIds",
+          "value": []
+        },
+        "title": {
+          "_C": "StoredString",
+          "value": "Structure de données"
+        },
+        "graph": {
+          "_R": ""
+        }
+      }
+    }
+  }
+}

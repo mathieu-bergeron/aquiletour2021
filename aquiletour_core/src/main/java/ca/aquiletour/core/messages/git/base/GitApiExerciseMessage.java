@@ -1,5 +1,6 @@
 package ca.aquiletour.core.messages.git.base;
 
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.pages.course.student.messages.AquiletourGitMessage;
 import ca.ntro.core.system.trace.T;
 
@@ -33,6 +34,14 @@ public class GitApiExerciseMessage extends GitApiRepoMessage {
 		
 		setCourseId(message.getCourseId());
 		setExercisePath(message.getExercisePath());
+	}
+
+	public TaskPath taskPath() {
+		T.call(this);
+
+		TaskPath taskPath = TaskPath.fromRawPath(getExercisePath());
+		
+		return taskPath;
 	}
 
 	

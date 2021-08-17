@@ -19,7 +19,18 @@ public class HtmlElementsJSweet extends HtmlElements {
 
 	@Override
 	public HtmlElement get(int index) {
-		return new HtmlElementJSweet($(jQueryElements.get(index)));
+
+		HtmlElement item = null;
+		
+		JQuery jQueryItem = $(jQueryElements.$get(index));
+		
+		if(jQueryItem.length > 0) {
+			
+			item = new HtmlElementJSweet(jQueryItem);
+
+		}
+
+		return item;
 	}
 
 	@Override

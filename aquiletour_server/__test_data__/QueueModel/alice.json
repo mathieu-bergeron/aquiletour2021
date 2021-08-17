@@ -6,11 +6,12 @@
       "epochSeconds": -1
     }
   },
+  "queueId": "alice",
   "appointments": {
     "_C": "ObservableAppointmentList",
     "value": []
   },
-  "maxId": 0,
+  "maxId": 1,
   "mainSettings": {
     "showAppointmentTimes": {
       "_C": "StoredBoolean",
@@ -26,15 +27,21 @@
       "value": false
     }
   },
-  "teacherId": "ca7fe107b1bff6faf665",
   "_C": "QueueModel",
-  "settingsByCourseId": {
-    "_C": "SettingsByCourseId",
+  "firstAppointmentTime": {
+    "_C": "ObservableTime",
     "value": {
-      "strudon": {
+      "_C": "NtroDate",
+      "epochSeconds": 1622643757
+    }
+  },
+  "settingsByCourseKey": {
+    "_C": "SettingsByCourseKey",
+    "value": {
+      "/null/H2021/null": {
         "courseTitle": {
           "_C": "StoredString",
-          "value": "Structure de données"
+          "value": ""
         },
         "showAppointmentTimes": {
           "_C": "StoredBoolean",
@@ -56,15 +63,6 @@
       }
     }
   },
-  "firstAppointmentTime": {
-    "_C": "ObservableTime",
-    "value": {
-      "_C": "NtroDate",
-      "epochSeconds": -1
-    }
-  },
-  "studentIds": [],
-  "courseId": "alice",
   "appointmentDurationSeconds": {
     "_C": "StoredInteger",
     "value": 300

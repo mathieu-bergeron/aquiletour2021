@@ -1,6 +1,5 @@
 package ca.aquiletour.core.models.courses.atomic_tasks;
 
-import static ca.aquiletour.core.models.courses.base.lambdas.VisitDirection.*;
 
 import ca.aquiletour.core.models.courses.atomic_tasks.default_task.DefaultAtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.git_exercice.GitExerciseTask;
@@ -8,8 +7,6 @@ import ca.aquiletour.core.models.courses.atomic_tasks.git_repo.GitRepoTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.short_text.ShortTextTask;
 import ca.aquiletour.core.models.courses.base.OnAtomicTaskAdded;
 import ca.aquiletour.core.models.courses.base.Task;
-import ca.aquiletour.core.models.courses.base.lambdas.FindResults;
-import ca.aquiletour.core.models.courses.base.lambdas.VisitDirection;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModelValue;
 import ca.ntro.core.system.trace.T;
@@ -28,18 +25,15 @@ public class AtomicTask implements NtroModelValue {
 
 		if(description.contains("{remiseGit}")) {
 			
-			Path repoPath = new Path();
+			Path repoPath = parentTask.findRepoPath();
 			
-			FindResults findResults = parentTask.findAll(new VisitDirection[] {PREVIOUS, PARENT}, true, t -> {
-				return t.hasAtomicTaskOfType(GitRepoTask.class);
-			});
-			
-			
-			if(findResults.size() > 0) {
-				repoPath = findResults.closest().getTask().getPath();
+			if(repoPath == null) {
+				repoPath = Path.fromRawPath("/");
 			}
-			
+
 			GitExerciseTask gitTask = new GitExerciseTask(repoPath);
+			
+			gitTask.setCompletionKeywords(parentTask.getTitle().getValue());
 
 			parentTask.addExitTask(gitTask, atomicTaskListener);
 		}
@@ -49,7 +43,9 @@ public class AtomicTask implements NtroModelValue {
 			parentTask.addExitTask(new ShortTextTask(), atomicTaskListener);
 		}
 		
-		if(parentTask.getExitTasks().size() == 0) {
+		if(parentTask.getEntryTasks().size() == 0
+				&& parentTask.getExitTasks().size() == 0
+				&& parentTask.getSubTasks().size() == 0) {
 
 			parentTask.addExitTask(new DefaultAtomicTask(), atomicTaskListener);
 		}
@@ -63,6 +59,7 @@ public class AtomicTask implements NtroModelValue {
 		result = result.replace("{dépôtGit}", "");
 		result = result.replace("{remiseGit}", "");
 		result = result.replace("{texteCourt}", "");
+		result = result.trim();
 		
 		return result;
 	}

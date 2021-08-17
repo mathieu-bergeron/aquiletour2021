@@ -5,3 +5,9 @@ function _ntro_initialize_view(viewName, viewRootHtmlElement){
 
     initializeView(viewName, viewRootElement, jSweet);
 }
+
+/*
+function _ntro_call_modal(jQueryElement, arg){
+	console.log(jQueryElement);
+	$(jQueryElement).modal(arg);
+}*/

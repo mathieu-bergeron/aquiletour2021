@@ -34,7 +34,7 @@ public class SemesterListControllerAdmin extends SemesterListController {
 	}
 
 	@Override
-	protected Class<? extends SemesterListModel> modelClass() {
+	protected Class<? extends SemesterListModel<?>> modelClass() {
 		T.call(this);
 		
 		return SemesterListModelAdmin.class;

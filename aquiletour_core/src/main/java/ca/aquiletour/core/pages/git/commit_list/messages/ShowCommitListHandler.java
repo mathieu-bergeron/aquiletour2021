@@ -3,9 +3,10 @@ package ca.aquiletour.core.pages.git.commit_list.messages;
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
 import ca.aquiletour.core.messages.git.GetCommitsForPathAndTimePeriod;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
+import ca.aquiletour.core.models.courses.student.CourseModelStudent;
 import ca.aquiletour.core.pages.git.commit_list.CommitListController;
-import ca.aquiletour.core.pages.git.commit_list.CommitListView;
+import ca.aquiletour.core.pages.git.commit_list.models.CommitListModel;
+import ca.aquiletour.core.pages.git.commit_list.views.CommitListView;
 import ca.aquiletour.core.pages.root.RootView;
 import ca.ntro.core.mvc.ControllerMessageHandler;
 import ca.ntro.core.system.trace.T;
@@ -19,20 +20,13 @@ public class ShowCommitListHandler extends ControllerMessageHandler<CommitListCo
 	protected void handle(CommitListController currentController, CommitListView currentView, ShowCommitListMessage message) {
 		T.call(this);
 		
-		GetCommitsForPath getCommitListMessage = null;
-		if (message instanceof ShowCommitListForTimePeriodMessage) {
-			
-			getCommitListMessage = new GetCommitsForPathAndTimePeriod((ShowCommitListForTimePeriodMessage) message);
+		GetCommitsForPath getCommitListMessage = new GetCommitsForPath(message);
+		getCommitListMessage.setAuthToken(Ntro.currentUser().getAuthToken());
 
-		} else {
-
-			getCommitListMessage = new GetCommitsForPath(message);
-		}
-
-		currentController.setModelUsingWebService(Constants.GIT_API_URL, getCommitListMessage); 
-		currentController.setSubModelLoader(CourseModelTeacher.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
+		currentController.setModelLoader(CommitListModel.class, Ntro.currentUser().getAuthToken(), getCommitListMessage.getDocumentPath().toString());
+		currentController.setSubModelLoader(CourseModelStudent.class, Ntro.currentUser().getAuthToken(), message.getCourseId());
 
 		RootView rootView = (RootView) currentController.getParentController().getView();
-		rootView.showGitCommitList(currentView);
+		rootView.showGitCommitList(CommitListView.class, currentView);
 	}
 }

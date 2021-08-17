@@ -20,32 +20,25 @@ package ca.ntro.jdk.services;
 import java.util.Map;
 
 import ca.ntro.core.Path;
-import ca.ntro.core.introspection.Introspector;
-import ca.ntro.core.json.JsonParser;
 import ca.ntro.core.mvc.NtroContext;
-import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.stack.StackAnalyzer;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
-import ca.ntro.jdk.regex.RegExJdk;
 import ca.ntro.jdk.web.ViewLoaderWebJdk;
-import ca.ntro.services.AppCloser;
 import ca.ntro.services.AssertService;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.CalendarService;
 import ca.ntro.services.InitializationTask;
 import ca.ntro.services.JsonService;
-import ca.ntro.services.Logger;
 import ca.ntro.services.MessageService;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
-import ca.ntro.services.CollectionsService;
 import ca.ntro.services.ConfigService;
 import ca.ntro.services.ResourceLoader;
 import ca.ntro.services.RouterService;
 import ca.ntro.services.SessionService;
+import ca.ntro.services.SystemService;
 import ca.ntro.services.ThreadService;
-import ca.ntro.services.UserService;
 import ca.ntro.services.ValueFormatter;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
@@ -80,13 +73,6 @@ public class InitializationTaskJdk extends InitializationTask {
 		__T.call(InitializationTaskJdk.class, "provideViewLoaderWeb");
 
 		return ViewLoaderWebJdk.class;
-	}
-
-	@Override
-	protected JsonParser provideJsonParser() {
-		__T.call(InitializationTaskJdk.class, "provideJsonParser");
-
-		return new JsonParserJdk();
 	}
 
 	@Override
@@ -132,12 +118,6 @@ public class InitializationTaskJdk extends InitializationTask {
 
 
 	@Override
-	protected ConfigService provideConfigService() {
-		return new ConfigService();
-	}
-
-
-	@Override
 	protected CalendarService provideCalendarService() {
 		return new CalendarServiceJdk();
 	}
@@ -163,6 +143,9 @@ public class InitializationTaskJdk extends InitializationTask {
 		};
 	}
 
-
+	@Override
+	protected SystemService provideSystemService() {
+		return new SystemServiceJdk();
+	}
 
 }

@@ -1,5 +1,6 @@
 package ca.ntro.jsweet.services;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
 import ca.ntro.core.json.JsonLoader;
 import ca.ntro.core.models.NtroModel;
@@ -10,13 +11,12 @@ import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroModelMessage;
 import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
 import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
+import ca.ntro.services.ModelIdReader;
 import ca.ntro.services.ModelStore;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ExternalUpdateListener;
 import ca.ntro.stores.ValuePath;
-
-import static def.es6.Globals.fetch;
 
 import java.util.List;
 
@@ -35,10 +35,6 @@ public class NetworkStoreJSweet extends ModelStore {
 	@Override
 	protected void installExternalUpdateListener(ExternalUpdateListener updateListener) {
 		T.call(this);
-	}
-
-	private String fullId(DocumentPath documentPath) {
-		return documentPath.getCollection() + "/" + documentPath.getDocumentId();
 	}
 
 	@Override
@@ -117,6 +113,19 @@ public class NetworkStoreJSweet extends ModelStore {
 
 	@Override
 	protected void deleteDocument(DocumentPath documentPath) {
+		// XXX: not supported
+	}
+
+	@Override
+	protected int maxHeapSize() {
+		T.call(this);
+
+		// DEV: low heap size to test ModelStore
+		return 2;
+	}
+
+	@Override
+	protected void forEachDocumentIdImpl(String collectionName, ModelIdReader reader) throws BackendError {
 		// XXX: not supported
 	}
 

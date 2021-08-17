@@ -31,7 +31,6 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.users.NtroUser;
 import ca.ntro.users.NtroSession;
-import ca.ntro.users.NtroSessionData;
 import ca.ntro.web.mvc.ViewLoaderWeb;
 
 public class Ntro {
@@ -588,9 +587,48 @@ public class Ntro {
 
 	public static void reset() {
 		messages().reset();
-		modelStore().reset();
 	}
 
 	/* </reset> */
+	
+	
+	
+	
+	
+	/* <System> */
+
+	private static SystemService systemService;
+
+	static void registerSystemService(SystemService systemService) {
+		__T.call(Ntro.class, "registerSystemService");
+
+		Ntro.systemService = systemService;
+	}
+
+	public static String lineSeparator() {
+		__T.call(Ntro.class, "lineSeparator");
+
+		return Ntro.systemService.lineSeparator();
+	}
+
+	public static boolean isJSweet() {
+		__T.call(Ntro.class, "isJSweet");
+
+		return Ntro.systemService.isJSweet();
+	}
+
+	public static boolean isJdk() {
+		__T.call(Ntro.class, "isJdk");
+
+		return Ntro.systemService.isJdk();
+	}
+
+	/* </System> */
+	
+	
+	
+	
+	
+	
 
 }

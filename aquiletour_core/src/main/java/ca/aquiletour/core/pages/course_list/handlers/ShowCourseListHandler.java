@@ -13,6 +13,8 @@ public abstract class ShowCourseListHandler extends ParentViewMessageHandler<Roo
 	protected void handle(RootView parentView, CourseListView currentView, ShowCourseListMessage message) {
 		T.call(this);
 		
-		parentView.showCourseList(currentView);
+		parentView.showCourseList(courseListViewClass(), currentView);
 	}
+	
+	protected abstract Class<? extends CourseListView> courseListViewClass();
 }

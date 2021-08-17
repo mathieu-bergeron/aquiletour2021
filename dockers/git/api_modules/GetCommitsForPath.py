@@ -38,7 +38,7 @@ def process(api_req, maria_conn, lite_conn):
             commitListModel['_C'] = 'CommitListModel'
             commitListModel['courseId'] = utils.normalize_data.normalize_session(api_req['semesterId'])
             commitListModel['semesterId'] = utils.normalize_data.normalize_courseId(api_req['courseId'])
-            commitListModel['groupId'] = utils.normalize_data.normalize_group(api_req['groupId'])
+            commitListModel['groupId'] = utils.normalize_data.normalize_groupId(api_req['groupId'])
             commitListModel['exercisePath'] = api_req['exercisePath']
             commitListModel['studentId'] = utils.normalize_data.normalize_studentId(api_req['studentId'])
 
@@ -117,7 +117,7 @@ def getCommitInfo(maria_cursor, api_req):
         WHERE repository.session_id = %s AND commit_file.exercise_path = %s AND repository.student = %s
         ORDER BY commit.commit_id''',
         (
-        utils.normalize_data.normalize_session(api_req['semesterId']),
+        utils.normalize_data.normalize_semesterId(api_req['semesterId']),
         api_req['exercisePath'],
         utils.normalize_data.normalize_studentId(api_req['studentId'])) 
         )
@@ -131,9 +131,9 @@ def getCommitInfo(maria_cursor, api_req):
         WHERE repository.session_id = %s AND repository.course_id = %s AND repository.group_id = %s AND commit_file.exercise_path = %s AND repository.student = %s
         ORDER BY commit.commit_id''',
         (
-        utils.normalize_data.normalize_session(api_req['semesterId']),
+        utils.normalize_data.normalize_semesterId(api_req['semesterId']),
         utils.normalize_data.normalize_courseId(api_req['courseId']),
-        utils.normalize_data.normalize_group(api_req['groupId']),
+        utils.normalize_data.normalize_groupId(api_req['groupId']),
         api_req['exercisePath'],
         utils.normalize_data.normalize_studentId(api_req['studentId'])
         ))

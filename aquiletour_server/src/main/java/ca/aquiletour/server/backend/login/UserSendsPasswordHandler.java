@@ -4,16 +4,17 @@ import ca.aquiletour.core.messages.user.UserSendsPasswordMessage;
 import ca.aquiletour.core.models.session.SessionData;
 import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.root.messages.ShowLoginMenuMessage;
-import ca.aquiletour.server.RegisteredSockets;
 import ca.aquiletour.server.backend.users.UserManager;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
-import ca.ntro.core.models.ModelStoreSync;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.messages.NtroMessage;
-import ca.ntro.messages.ntro_messages.NtroSetUserMessage;
+import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
+import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import ca.ntro.users.NtroSession;
 
 public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPasswordMessage> {
 
@@ -24,22 +25,14 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 		String authToken = message.getUser().getAuthToken();
 		String userId = message.getUser().getId();
 
-		User userToRegister = null;
-
-		NtroSession session = SessionManager.getStoredSession(modelStore, authToken);
-		
 		if(UserManager.isUserPasswordValid(modelStore, message.getPassword(), message.getUser())) {
 
-			userToRegister = SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, session);
+			SessionManager.createAuthenticatedUser(modelStore, authToken,  userId, message.getUser());
 
-			NtroSetUserMessage setUserNtroMessage = Ntro.messages().create(NtroSetUserMessage.class);
-			setUserNtroMessage.setUser(userToRegister);
-			RegisteredSockets.sendMessageToUser(userToRegister, setUserNtroMessage);
+			NtroUpdateSessionMessage updateSessionMessage = Ntro.messages().create(NtroUpdateSessionMessage.class);
+			updateSessionMessage.setSession(Ntro.currentSession());
+			RegisteredSocketsSockJS.sendMessageToUser(Ntro.currentUser(), updateSessionMessage);
 
-			Ntro.currentSession().setUser(userToRegister);
-			session.setUser(userToRegister);
-			modelStore.save(session);
-			
 			for(NtroMessage delayedMessage : message.getDelayedMessages()) {
 				Ntro.messages().send(delayedMessage);
 			}
@@ -48,22 +41,49 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setDelayedMessages(message.getDelayedMessages());
+			
+			Optionnal<Boolean> userHasPassword = new Optionnal<>();
 
-			SessionData sessionData = (SessionData) session.getSessionData();
-			sessionData.incrementFailedPasswordAttemps();
+			SessionManager.updateSession(modelStore, authToken, session -> {
 
-			if(sessionData.hasReachedMaxPasswordAttemps()) {
-				User user = (User) Ntro.currentSession().getUser();
-				user.setHasPassword(false);
-				showLoginMenuMessage.setMessageToUser("SVP re-valider votre courriel.");
+				SessionData sessionData = null;
+				if(session.getSessionData() instanceof SessionData) {
+					sessionData = (SessionData) session.getSessionData();
+				}
 				
-				String loginCode = UserInitiatesLoginHandler.sendLoginCode(user);
-				sessionData.setLoginCode(loginCode);
-			}else {
-				showLoginMenuMessage.setMessageToUser("Mot de passe erroné.");
-			}
+				if(sessionData != null) {
 
-			Ntro.messages().send(showLoginMenuMessage);
+					sessionData.incrementFailedPasswordAttemps();
+
+					if(sessionData.hasReachedMaxPasswordAttemps()) {
+
+						User user = (User) session.getUser();
+						user.setHasPassword(false);
+						userHasPassword.set(false);
+						
+						Ntro.sessionService().registerCurrentSession(session);
+
+						showLoginMenuMessage.setMessageToUser("SVP re-valider votre courriel.");
+						
+						String loginCode = UserInitiatesLoginHandler.sendLoginCode(user);
+						sessionData.setLoginCode(loginCode);
+
+					}else {
+
+						showLoginMenuMessage.setMessageToUser("Mot de passe erroné.");
+					}
+
+					Ntro.messages().send(showLoginMenuMessage);
+				}
+			});
+			
+			UserManager.updateUser(modelStore, userId, userModel -> {
+				try {
+
+					userModel.setHasPassword(userHasPassword.get());
+
+				} catch (EmptyOptionException e) {}
+			});
 		}
 	}
 

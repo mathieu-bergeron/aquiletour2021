@@ -1,0 +1,35 @@
+{
+  "sessionData": {
+    "failedPasswordAttemps": 0,
+    "currentTasksByCourseKey": {
+      "currentTasksByCourseKey": {
+        "alice¤H2021¤StruDon": {
+          "_C": "TaskTitleByTaskKey",
+          "taskTitleByTaskKey": {
+            "ateliers¤atelier1": "Atelier 1"
+          }
+        }
+      },
+      "_C": "CurrentTasksByCourseKey"
+    },
+    "_C": "SessionData",
+    "loginCode": "027016",
+    "activeSemesterIds": []
+  },
+  "_C": "NtroSession",
+  "lang": "",
+  "user": {
+    "firstname": "Bob",
+    "phoneNumber": "",
+    "_C": "Student",
+    "authToken": "ec9ca678937d381acb5bec53afd1978fa7ec5e05",
+    "hasPassword": false,
+    "id": "1234500",
+    "uuid": "0e84cd",
+    "email": "1234500@cmontmorency.qc.ca",
+    "passwordHash": "",
+    "programId": "420.AA",
+    "lastname": "Bérancourt"
+  },
+  "timeToLiveMiliseconds": 960000
+}

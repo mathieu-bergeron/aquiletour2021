@@ -75,9 +75,6 @@ public abstract class Introspector {
 		return result;
 	}
 
-	public abstract Object buildValueForSetter(Method setter, Object rawValue);
-
-
 	public abstract Object castPrimitiveValue(Class<?> targetClass, Object primitiveValue);
 
 	public Method findMethodByName(Class<?> _class, String methodName) {

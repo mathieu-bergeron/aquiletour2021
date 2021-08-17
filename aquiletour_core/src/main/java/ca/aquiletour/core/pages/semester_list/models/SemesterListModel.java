@@ -1,16 +1,14 @@
 package ca.aquiletour.core.pages.semester_list.models;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.models.dates.CalendarWeek;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.StoredString;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
 public abstract class SemesterListModel<SM extends SemesterModel> implements NtroModel {
 	
-	private StoredString currentSemesterId = new StoredString(Constants.DRAFTS_SEMESTER_ID);
+	private ActiveSemesterIds activeSemesterIds = new ActiveSemesterIds();
 	private ObservableSemesterList<SM> semesters = new ObservableSemesterList<SM>();
 
 	public ObservableSemesterList<SM> getSemesters() {
@@ -21,14 +19,13 @@ public abstract class SemesterListModel<SM extends SemesterModel> implements Ntr
 		this.semesters = semesters;
 	}
 	
-	public StoredString getCurrentSemesterId() {
-		return currentSemesterId;
+	public ActiveSemesterIds getActiveSemesterIds() {
+		return activeSemesterIds;
 	}
 
-	public void setCurrentSemesterId(StoredString currentSemesterId) {
-		this.currentSemesterId = currentSemesterId;
+	public void setActiveSemesterIds(ActiveSemesterIds activeSemesterIds) {
+		this.activeSemesterIds = activeSemesterIds;
 	}
-
 
 	public SM semesterById(String semesterId) {
 		T.call(this);
@@ -86,14 +83,6 @@ public abstract class SemesterListModel<SM extends SemesterModel> implements Ntr
 		}
 	}
 
-	public void selectCurrentSemester(String semesterId) {
-		T.call(this);
-
-		getCurrentSemesterId().set(semesterId);
-	}
-
-
-
 	public SemesterSchedule semesterSchedule(String semesterId) {
 		T.call(this);
 
@@ -125,6 +114,19 @@ public abstract class SemesterListModel<SM extends SemesterModel> implements Ntr
 		} else {
 			
 			Log.warning("Semester not found: " + semesterId);
+		}
+	}
+
+	public void updateActiveSemesterId(String semesterId, boolean isActive) {
+		T.call(this);
+		
+		if(getActiveSemesterIds().contains(semesterId) && !isActive) {
+
+			getActiveSemesterIds().removeItem(semesterId);
+
+		} else if(!getActiveSemesterIds().contains(semesterId) && isActive) {
+			
+			getActiveSemesterIds().addItem(semesterId);
 		}
 	}
 }

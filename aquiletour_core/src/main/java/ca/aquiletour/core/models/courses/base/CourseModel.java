@@ -1,8 +1,8 @@
 package ca.aquiletour.core.models.courses.base;
 
+import java.util.List;
 import java.util.Map;
 
-import ca.aquiletour.core.models.courses.CoursePath;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTask;
 import ca.aquiletour.core.models.courses.atomic_tasks.AtomicTaskCompletion;
 import ca.aquiletour.core.models.courses.base.lambdas.TaskForEach;
@@ -11,16 +11,19 @@ import ca.aquiletour.core.models.courses.student.StudentCompletionsByTaskId;
 import ca.aquiletour.core.models.courses.teacher.CourseIds;
 import ca.aquiletour.core.models.dates.AquiletourDate;
 import ca.aquiletour.core.models.dates.CourseDate;
+import ca.aquiletour.core.models.paths.CoursePath;
+import ca.aquiletour.core.models.paths.TaskPath;
 import ca.aquiletour.core.models.schedule.SemesterSchedule;
 import ca.aquiletour.core.models.schedule.TeacherSchedule;
 import ca.aquiletour.core.pages.course_list.models.SemesterIds;
+import ca.aquiletour.core.pages.dashboard.models.CurrentTask;
 import ca.ntro.core.Path;
 import ca.ntro.core.models.NtroModel;
 import ca.ntro.core.models.lambdas.Break;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 
-public abstract class CourseModel implements NtroModel, TaskGraph {
+public abstract class CourseModel<CT extends CurrentTask> implements NtroModel, TaskGraph {
 
 	private CoursePath coursePath = new CoursePath();
 	private SemesterIds siblingSemesters = new SemesterIds();
@@ -146,10 +149,10 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	private void addNewTask(Task nextTask) {
+	private void addNewTask(Task newTask) {
 		T.call(this);
-
-		tasks.putEntry(nextTask.id(), nextTask);
+		
+		tasks.putEntry(newTask.id(), newTask);
 	}
 
 	public void addPreviousTaskTo(Path path, Task previousTask) throws CycleDetectedError {
@@ -311,7 +314,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 	public void updateTaskInfo(Path taskPath, 
 			                   String taskTitle, 
 			                   String taskDescription, 
-			                   CourseDate endTime,
+			                   AquiletourDate endTime,
 			                   OnAtomicTaskAdded atomicTaskListener) {
 		T.call(this);
 
@@ -360,12 +363,12 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		T.call(this);
 		
 		updateSchedule(semesterSchedule);
-		updateGroupSchedules(semesterSchedule, teacherSchedule);
+		updateSchedules(semesterSchedule, teacherSchedule);
 	}
 
-	protected abstract void updateGroupSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
+	protected abstract void updateSchedules(SemesterSchedule semesterSchedule, TeacherSchedule teacherSchedule);
 	
-	private void copyTasks(CourseModel course) {
+	private void copyTasks(CourseModel<?> course) {
 		T.call(this);
 		
 		getTasks().setCourse(this);
@@ -377,7 +380,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		}
 	}
 
-	public void copyCourse(CourseModel course) {
+	public void copyCourse(CourseModel<?> course) {
 		T.call(this);
 		
 		coursePath = course.getCoursePath();
@@ -390,12 +393,10 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			                                  AtomicTaskCompletion newCompletion) {
 		T.call(this);
 
-		String taskId = Task.idFromPath(taskPath);
-		
-		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskPath.toKey());
 		if(taskCompletions == null) {
 			taskCompletions = new CompletionByAtomicTaskId();
-			studentCompletions.putEntry(taskId, taskCompletions);
+			studentCompletions.putEntry(taskPath.toKey(), taskCompletions);
 		}
 
 		taskCompletions.putEntry(atomicTaskId, newCompletion);
@@ -406,9 +407,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 			                                  String atomicTaskId) {
 		T.call(this);
 
-		String taskId = Task.idFromPath(taskPath);
-		
-		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskPath.toKey());
 		if(taskCompletions != null) {
 			taskCompletions.removeEntry(atomicTaskId);
 		}
@@ -421,9 +420,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		
 		AtomicTaskCompletion result = null;
 
-		String taskId = Task.idFromPath(taskPath);
-		
-		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskId);
+		CompletionByAtomicTaskId taskCompletions = studentCompletions.valueOf(taskPath.toKey());
 		if(taskCompletions != null) {
 			result = taskCompletions.valueOf(atomicTaskId);
 		}
@@ -443,5 +440,7 @@ public abstract class CourseModel implements NtroModel, TaskGraph {
 		
 		return atomicTask;
 	}
+
+	public abstract List<CT> currentTasks();
 
 }

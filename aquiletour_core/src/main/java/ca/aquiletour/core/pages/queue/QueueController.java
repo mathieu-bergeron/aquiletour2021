@@ -38,6 +38,12 @@ public abstract class QueueController extends NtroController<RootController> {
 	@Override
 	protected void onChangeContext(NtroContext<?,?> previousContext, NtroContext<?,?> context) {
 		T.call(this);
+
+		QueueView view = (QueueView) getView();
+		
+		if(view != null) {
+			view.onContextChange(context);
+		}
 	}
 
 	@Override

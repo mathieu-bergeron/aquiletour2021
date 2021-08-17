@@ -10,12 +10,12 @@ import ca.ntro.services.Ntro;
 
 public class MessageReceptors {
 
-	private static Map<Class<? extends NtroMessage>, Set<MessageHandler>> messageReceptors = new HashMap<>();
+	private static Map<Class<? extends NtroMessage>, Set<MessageHandler<?>>> messageReceptors = new HashMap<>();
 
-	public void addReceptor(Class<? extends NtroMessage> messageClass, MessageHandler messageReceptionTask) {
+	public void addReceptor(Class<? extends NtroMessage> messageClass, MessageHandler<?> messageReceptionTask) {
 		T.call(this);
 
-		Set<MessageHandler> receptorSet = messageReceptors.get(messageClass);
+		Set<MessageHandler<?>> receptorSet = messageReceptors.get(messageClass);
 
 		if(receptorSet == null) {
 			receptorSet = new HashSet<>();
@@ -32,7 +32,7 @@ public class MessageReceptors {
 	public void sendMessage(NtroMessage message) {
 		T.call(this);
 
-		Set<MessageHandler> receptorSet = messageReceptors.get(message.getClass());
+		Set<MessageHandler<?>> receptorSet = messageReceptors.get(message.getClass());
 
 		if(receptorSet != null) {
 
@@ -43,17 +43,15 @@ public class MessageReceptors {
 		}
 	}
 
-	private void sendMessage(NtroMessage message, Set<MessageHandler> receptorSet) {
+	private void sendMessage(NtroMessage message, Set<MessageHandler<?>> receptorSet) {
 		T.call(this);
 
-		for(MessageHandler receptor : receptorSet) {
-			/*
+		/*
+		for(MessageHandler<?> receptor : receptorSet) {
 			receptor.resetTask();
 			receptor.setMessage(message);
 			receptor.execute();
-			*/
 		}
+		*/
 	}
-
-
 }

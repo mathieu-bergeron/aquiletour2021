@@ -49,7 +49,9 @@ public class AquiletourConfig extends ConfigService {
 	private String smtpFrom = "";
 	private String smtpPassword = "";
 
+	private boolean isProd = false;
 	
+	private int maxHeapSize = 10000;
 
 	public List<String> getAdminRegistrationIds() {
 		return adminRegistrationIds;
@@ -81,5 +83,14 @@ public class AquiletourConfig extends ConfigService {
 
 	public String getPasswordSalt() {
 		return passwordSalt;
+	}
+
+	@Override
+	public boolean isProd() {
+		return isProd;
+	}
+
+	public int getMaxHeapSize() {
+		return maxHeapSize;
 	}
 }

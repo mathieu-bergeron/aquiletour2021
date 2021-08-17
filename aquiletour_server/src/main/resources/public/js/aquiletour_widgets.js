@@ -2,6 +2,22 @@ function initializeWidgets(viewRootElement){
     initializeCheckboxes(viewRootElement);
     initializeSectionToggles(viewRootElement);
     initializeDatepickers(viewRootElement);
+    initializeDataHide(viewRootElement);
+}
+
+function initializeDataHide(rootElement){
+    const dataHides = rootElement.find("[data-hide]");
+
+    dataHides.each(function(index, dataHide){
+        const dataTarget = $($(dataHide).attr('data-target'));
+        if(dataTarget !== undefined){
+            dataTarget.on('click', function(){
+                const targetElement = rootElement.find(dataTarget);
+                const targetElementJSweet = new ca.ntro.jsweet.dom.HtmlElementJSweet($(targetElement));
+                targetElementJSweet.hide();
+            });
+        }
+    });
 }
 
 function initializeDatepickers(rootElement){
@@ -30,20 +46,54 @@ function initializeDatepickers(rootElement){
 
 }
 
+function initializeDropdownMenus(rootElement){
+    const menus = rootElement.find(".dropdown-menu");
+
+    menus.on('hide.bs.dropdown', function(){
+        const thisMenu = $(this);
+        const toCollapse = thisMenu.find(".collapse");
+
+        toCollapse.each(function(index, item){
+            $(item).collapse("hide");
+        });
+    });
+}
+
+function initializeClickBlocker(rootElement){
+    const elements = rootElement.find(".block-click-events");
+
+    elements.off();
+    elements.on('click', function(){
+        return false;
+    });
+}
+
 function initializeCheckboxes(rootElement){
 
     const checkboxes = rootElement.find(".aquiletour-checkbox");
 
     checkboxes.off();
     checkboxes.on('click', function(){
+
         const thisCheckbox = $(this);
-        if(thisCheckbox.attr("checked") === undefined){
+
+        if(thisCheckbox.attr("checked") === undefined || thisCheckbox.attr("checked") === false){
             thisCheckbox.val("on");
+            thisCheckbox.attr("checked","true");
         }else{
             thisCheckbox.val("off");
+            thisCheckbox.removeAttr("checked");
         }
+
         const formId = $(this).attr("form");
         const form = rootElement.find("#" + formId);
+
+		/*
+        const dataTarget = $(this).attr("data-target");
+        const dataElement = $(rootElement.find(dataTarget));
+        dataElement.dropdown();
+        */
+
         form.submit();
     });
 }
@@ -62,6 +112,23 @@ const caretDown = `
     </svg>
 `;
 
+function initializeCollapse(rootElement){
+
+    const collapseLinks = rootElement.find(".aquiletour-collapse");
+
+    collapseLinks.each(function(index, element){
+        const collapseLink = $(element);
+        const collapseTarget = rootElement.find(collapseLink.attr('data-target'));
+
+        collapseLink.off();
+        collapseLink.on('click', function(){
+            collapseTarget.collapse("toggle");
+            return false;
+        });
+    });
+}
+
+
 function initializeSectionToggles(rootElement){
 
     const toggles = rootElement.find(".section-toggle");
@@ -74,7 +141,6 @@ function initializeSectionToggles(rootElement){
 
         toggle.off();
         toggle.on('click', function(){
-            console.log(collapseTarget.length);
             collapseTarget.collapse("toggle");
             toggleSectionToggle(toggle);
 

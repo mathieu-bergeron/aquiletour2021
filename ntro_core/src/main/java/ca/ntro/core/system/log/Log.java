@@ -23,16 +23,31 @@ import ca.ntro.services.Ntro;
 import ca.ntro.services.__Ntro;
 
 public class Log {
+	
+	public static void info(String... messages) {
+		if(!Ntro.config().isProd()) {
+			for(String message : messages) {
+				System.out.println(timestamp() + message);
+			}
+		}
+	}
+	
+
+	private static String timestamp() {
+		return "[" + Ntro.calendar().now().format("yyyy-MM-dd HH:mm:ss") + "] ";
+	}
 
 	public static void warning(String... messages) {
-		for(String message : messages) {
-			System.err.println(message);
+		if(!Ntro.config().isProd()) {
+			for(String message : messages) {
+				System.err.println(timestamp() + message);
+			}
 		}
 	}
 
 	public static void error(String... messages) {
 		for(String message : messages) {
-			System.err.println(message);
+			System.err.println(timestamp() + message);
 		}
 	}
 

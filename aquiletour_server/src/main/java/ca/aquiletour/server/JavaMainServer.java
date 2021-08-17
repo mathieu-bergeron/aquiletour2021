@@ -32,20 +32,14 @@ public class JavaMainServer {
 	public static void main(String[] args) {
 		__T.call(JavaMainServer.class, "main");
 		
-		String userHome = System.getProperty("user.home");
-		
-		Path configFilepath = Paths.get(userHome, ".aiguilleur", "config.json");
-		
-		AquiletourConfig config = AquiletourConfig.loadFromJson(configFilepath);
 
-		PasswordDigest.initialize(config.getPasswordSalt());
 		
 		RouterService routerService = new AquiletourRouterService();
 		
-		NtroWebServer.defaultInitializationTask(AquiletourBackendService.class, 
+		NtroWebServer.defaultInitializationTask(new EarlyInitializationServer(),
+												AquiletourBackendService.class, 
 				                                LocalStoreServer.class, 
 				                                MessageServiceWebserver.class, 
-				                                config, 
 				                                routerService)
 		             .setOptions(args)
 		             .addNextTask(new AquiletourMainServer())
