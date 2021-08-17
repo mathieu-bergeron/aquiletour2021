@@ -57,12 +57,12 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 					if(sessionData.hasReachedMaxPasswordAttemps()) {
 
-						User user = (User) Ntro.currentSession().getUser();
+						User user = (User) session.getUser();
 						user.setHasPassword(false);
 						userHasPassword.set(false);
 						
-						Ntro.currentSession().setUser(user);
-						
+						Ntro.sessionService().registerCurrentSession(session);
+
 						showLoginMenuMessage.setMessageToUser("SVP re-valider votre courriel.");
 						
 						String loginCode = UserInitiatesLoginHandler.sendLoginCode(user);
