@@ -158,5 +158,5 @@ public abstract class HtmlElement {
 	public abstract void installFormAutoSubmit(SubmitListener listener);
 	public abstract void removeFormAutoSubmit();
 
-	public abstract void modal(String arg);
+	public abstract void click();
 }

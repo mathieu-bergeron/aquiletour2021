@@ -6,7 +6,7 @@ import ca.ntro.users.NtroUser;
 
 public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	
-	private boolean isSocketOpenAttr = false;
+	private boolean isSocketOpen = false;
 	private String lang;
 	private NtroSessionData sessionData;
 
@@ -17,11 +17,11 @@ public class NtroContext<U extends NtroUser, S extends NtroSessionData>{
 	private NtroUser user;
 	
 	public boolean isSocketOpen() {
-		return isSocketOpenAttr;
+		return isSocketOpen;
 	}
 	
 	public void updateIsSocketOpen(boolean isSocketOpen) {
-		this.isSocketOpenAttr = isSocketOpen;
+		this.isSocketOpen = isSocketOpen;
 	}
 	
 	public String lang() {

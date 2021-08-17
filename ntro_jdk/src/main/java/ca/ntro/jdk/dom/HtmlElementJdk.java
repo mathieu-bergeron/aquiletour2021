@@ -349,7 +349,7 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public void modal(String arg) {
+	public void click() {
 		T.call(this);
 		// XXX: not supported on server-side
 	}

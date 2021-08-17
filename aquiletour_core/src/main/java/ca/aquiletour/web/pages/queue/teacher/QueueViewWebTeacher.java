@@ -14,6 +14,7 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
+import ca.ntro.web.dom.SubmitListener;
 
 public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeacher {
 
@@ -22,6 +23,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 	private HtmlElement queueMenuCoursesContainer;
 	private HtmlElement queueMenuCourseTemplate;
 	private HtmlElement queueMenuGroupTemplate;
+
+	private HtmlElement closeQueueMenuButton;
 
 	private HtmlElement openQueueForm;
 
@@ -53,6 +56,8 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 		queueMenuButton = this.getRootElement().find("#queue-menu-button").get(0);
 		queueMenuCoursesContainer = this.getRootElement().find("#queue-menu-courses-container").get(0);
 
+		closeQueueMenuButton = this.getRootElement().find("#close-queue-menu-button").get(0);
+
 		timeControlsContainer = this.getRootElement().find(".time-controls-container").get(0);
 
 		decrementAppointmentTimesForm = this.getRootElement().find("#decrement-appointment-times-form").get(0);
@@ -76,6 +81,7 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		MustNot.beNull(queueIdElement);
 		MustNot.beNull(queueMenuButton);
+		MustNot.beNull(closeQueueMenuButton);
 		MustNot.beNull(queueMenuCoursesContainer);
 		MustNot.beNull(queueMenuCourseTemplate);
 		MustNot.beNull(queueMenuGroupTemplate);
@@ -144,7 +150,15 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 			decreaseAppointmentDurationForm.installFormAutoSubmit();
 			increaseAppointmentDurationForm.installFormAutoSubmit();
 			
-			//openQueueForm.installFormAutoSubmit();
+			openQueueForm.installFormAutoSubmit(new SubmitListener() {
+				@Override
+				public void onFormSubmitted() {
+					T.call(this);
+					
+					closeQueueMenuButton.click();
+					
+				}
+			});
 
 			queueMessageForm.installFormAutoSubmit();
 

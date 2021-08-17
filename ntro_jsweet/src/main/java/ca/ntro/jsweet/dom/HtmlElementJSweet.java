@@ -526,10 +526,18 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
+	public void click() {
+		T.call(this);
+		
+		jQueryElement.click();
+	}
+
+	/*
+	@Override
 	public void modal(String arg) {
 		T.call(this);
 
 		Globals._ntro_call_modal(jQueryElement, arg);
-	}
+	}*/
 
 }
