@@ -130,12 +130,8 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 			deleteAppointmentForm.hide();
 
 		}else {
-			
-			T.values(appointment.getComment().getValue());
 
 			commentTextarea.text(appointment.getComment().getValue());
-			
-			T.values(commentTextarea.text());
 		}
 	}
 	
