@@ -95,7 +95,9 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void initializeViewWeb(NtroContext<?,?> context) {
 		T.call(this);
-
+		
+		T.here();
+		
 		logoImage = getRootElement().find("#logo-image").get(0);
 		logoLoading = getRootElement().find("#logo-loading").get(0);
 
@@ -314,7 +316,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 	private void adjustLoginMenu(User user) {
 		T.call(this);
-		
+
 		loginMenuMessage.hide();
 		loginMenuEnterId.hide();
 		loginMenuEnterPassword.hide();
@@ -619,8 +621,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	public void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages) {
 		T.call(this);
 		
-		Log.info("messageToUser: " + messageToUser);
-
+		T.here();
+		
 		loginDropdown.addClass("show");
 
 		String delayedMessagesText = delayedMessagesText(delayedMessages);

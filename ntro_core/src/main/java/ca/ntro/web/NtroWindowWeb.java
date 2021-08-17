@@ -31,13 +31,14 @@ public abstract class NtroWindowWeb extends NtroWindow {
 		
 		if(body.children("*").size() == 0) {
 
-			rootViewWeb.initializeView(context);
+			// XXX: already initialized in ViewLoader
+			// rootViewWeb.initializeView(context);
 			
 			rootViewWeb.getRootElement().setAttribute("id", Ntro.introspector().getSimpleNameForClass(rootView.getClass()));
 			
 			body.appendElement(rootViewWeb.getRootElement());
 
-			Log.info("[installRootview] adding rootView: " + rootViewWeb.getRootElement().getAttribute("id"));
+			Log.info("[installRootView] adding rootView: " + rootViewWeb.getRootElement().getAttribute("id"));
 
 		} else if(body.children("*").size() == 1) {
 			
@@ -45,6 +46,7 @@ public abstract class NtroWindowWeb extends NtroWindow {
 
 			rootViewWeb.setRootElement(rootElement);
 
+			// XXX: must re-initialize as we are now using elements already in DOM
 			rootViewWeb.initializeView(context);
 			
 			Log.info("[installRootView] using existing rootView: " + rootViewWeb);
