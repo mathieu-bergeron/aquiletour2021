@@ -17,7 +17,7 @@ public class Constants {
 	
 	public static final int MAX_PASSWORD_ATTEMPS = 3;
 
-	public static final int TIME_PASSES_PERIOD_SECONDS = 5;                               // Every 5 seconds, a TimePassesMessage is send
+	public static final int TIME_PASSES_PERIOD_SECONDS = 5;                         // Every 5 seconds, a TimePassesMessage is send
 	public static final NtroTimeOfDay NIGHTLY_TASKS_TIME = new NtroTimeOfDay(3,0);  // At 3am, we run cleanup tasks
 	public static final int FREQUENT_TASKS_PERDIOD_MINUTES = 5;
 	public static final int SESSION_MAX_IDLE_TIME_MINUTES = 30;

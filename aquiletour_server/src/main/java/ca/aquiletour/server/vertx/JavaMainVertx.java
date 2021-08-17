@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.EarlyInitializationServer;
+import ca.aquiletour.server.LocalStoreMongoDbServer;
 import ca.aquiletour.server.LocalStoreServer;
 import ca.aquiletour.server.MessageServiceWebserver;
 import ca.aquiletour.server.backend.AquiletourBackendService;
@@ -19,7 +20,8 @@ public class JavaMainVertx {
 
 		NtroWebServer.defaultInitializationTask(new EarlyInitializationServer(),
 												AquiletourBackendService.class, 
-				                                LocalStoreServer.class, 
+				                                LocalStoreServer.class,  // DEV
+												//LocalStoreMongoDbServer.class, // PROD
 				                                MessageServiceWebserver.class, 
 				                                new AquiletourRouterService())
 		             .setOptions(args)
