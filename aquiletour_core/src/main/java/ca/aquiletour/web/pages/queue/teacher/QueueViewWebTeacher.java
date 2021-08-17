@@ -144,13 +144,13 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		if(context.isSocketOpen()) {
 
-			decrementAppointmentTimesForm.installFormAutoSubmit();
-			incrementAppointmentTimesForm.installFormAutoSubmit();
+			decrementAppointmentTimesForm.installFormSubmitHandler();
+			incrementAppointmentTimesForm.installFormSubmitHandler();
 
-			decreaseAppointmentDurationForm.installFormAutoSubmit();
-			increaseAppointmentDurationForm.installFormAutoSubmit();
+			decreaseAppointmentDurationForm.installFormSubmitHandler();
+			increaseAppointmentDurationForm.installFormSubmitHandler();
 			
-			openQueueForm.installFormAutoSubmit(new SubmitListener() {
+			openQueueForm.installFormSubmitHandler(new SubmitListener() {
 				@Override
 				public void onFormSubmitted() {
 					T.call(this);
@@ -160,19 +160,19 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 				}
 			});
 
-			queueMessageForm.installFormAutoSubmit();
+			queueMessageForm.installFormSubmitHandler();
 
 		}else {
 
-			decrementAppointmentTimesForm.removeFormAutoSubmit();
-			incrementAppointmentTimesForm.removeFormAutoSubmit();
+			decrementAppointmentTimesForm.removeFormSubitHandler();
+			incrementAppointmentTimesForm.removeFormSubitHandler();
 
-			decreaseAppointmentDurationForm.removeFormAutoSubmit();
-			increaseAppointmentDurationForm.removeFormAutoSubmit();
+			decreaseAppointmentDurationForm.removeFormSubitHandler();
+			increaseAppointmentDurationForm.removeFormSubitHandler();
 
 			//openQueueForm.removeFormAutoSubmit();
 
-			queueMessageForm.removeFormAutoSubmit();
+			queueMessageForm.removeFormSubitHandler();
 		}
 	}
 	

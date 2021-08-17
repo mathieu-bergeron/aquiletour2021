@@ -16,6 +16,7 @@ import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEvent;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
+import ca.ntro.web.dom.LinkListener;
 import ca.ntro.web.dom.SubmitListener;
 import def.dom.Element;
 import def.dom.Event;
@@ -109,7 +110,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		*/
 	}
 
-	private void installLinksClickEvents(JQuery rootElement) {
+	private void installAllLinkHandlers(JQuery rootElement) {
 		T.call(this);
 
 		JQuery anchors = rootElement.find("a");
@@ -120,16 +121,26 @@ public class HtmlElementJSweet extends HtmlElement {
 				
 				HtmlElementJSweet anchor = new HtmlElementJSweet($(a));
 				
-				String href = anchor.getAttribute("href");
-
-				installHrefClickEvent(anchor, href);
+				installLinkHandler(anchor, null);
 
 				return null;
 			}
+
 		});
 	}
 
-	private void installAllFormAutoSubmits(JQuery rootElement) {
+	private void installLinkHandler(HtmlElementJSweet anchor, LinkListener listener) {
+		T.call(this);
+
+		String href = anchor.getAttribute("href");
+		
+		if(href != null) {
+
+			installLinkHandler(anchor, href, listener);
+		}
+	}
+
+	private void installAllFormSubmitHandlers(JQuery rootElement) {
 		T.call(this);
 
 		JQuery forms = rootElement.find("form");
@@ -140,7 +151,7 @@ public class HtmlElementJSweet extends HtmlElement {
 
 				JQuery form = $(formElement);
 
-				installFormAutoSubmit(form, null);
+				installFormSubmitHandler(form, null);
 
 				return null;
 			}
@@ -148,7 +159,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		});
 	}
 
-	private void installFormAutoSubmit(JQuery form, SubmitListener listener) {
+	private void installFormSubmitHandler(JQuery form, SubmitListener listener) {
 		T.call(this);
 
 		form.off();
@@ -278,7 +289,7 @@ public class HtmlElementJSweet extends HtmlElement {
 		}*/
 	}
 
-	private void installHrefClickEvent(HtmlElement anchor, String href) {
+	private void installLinkHandler(HtmlElement anchor, String href, LinkListener listener) {
 		T.call(this);
 
 		anchor.removeListeners();
@@ -299,6 +310,10 @@ public class HtmlElementJSweet extends HtmlElement {
 				history.pushState(null, jQueryElement.text(), fullHref);
 
 				Ntro.router().sendMessagesFor(Ntro.context(), fullHref);
+				
+				if(listener != null) {
+					listener.onLinkFollowed();
+				}
 			}
 		});
 	}
@@ -505,21 +520,21 @@ public class HtmlElementJSweet extends HtmlElement {
 	}
 
 	@Override
-	public void installFormAutoSubmit() {
+	public void installFormSubmitHandler() {
 		T.call(this);
 
-		installFormAutoSubmit(jQueryElement, null);
+		installFormSubmitHandler(jQueryElement, null);
 	}
 
 	@Override
-	public void installFormAutoSubmit(SubmitListener listener) {
+	public void installFormSubmitHandler(SubmitListener listener) {
 		T.call(this);
 
-		installFormAutoSubmit(jQueryElement, listener);
+		installFormSubmitHandler(jQueryElement, listener);
 	}
 
 	@Override
-	public void removeFormAutoSubmit() {
+	public void removeFormSubitHandler() {
 		T.call(this);
 
 		jQueryElement.off();
@@ -530,6 +545,27 @@ public class HtmlElementJSweet extends HtmlElement {
 		T.call(this);
 		
 		jQueryElement.click();
+	}
+
+	@Override
+	public void installLinkHandler() {
+		T.call(this);
+
+		installLinkHandler(this, null);
+	}
+
+	@Override
+	public void installLinkHandler(LinkListener listener) {
+		T.call(this);
+		
+		installLinkHandler(this, listener);
+	}
+
+	@Override
+	public void removeLinkHandler() {
+		T.call(this);
+		
+		jQueryElement.off();
 	}
 
 	/*

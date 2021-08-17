@@ -58,11 +58,11 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 
 			if(context.isSocketOpen()) {
 				
-				makeAppointmentForm.installFormAutoSubmit();
+				makeAppointmentForm.installFormSubmitHandler();
 				
 			}else {
 				
-				makeAppointmentForm.removeFormAutoSubmit();
+				makeAppointmentForm.removeFormSubitHandler();
 			}
 		}
 	}

@@ -67,11 +67,11 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 
 			if(context.isSocketOpen()) {
 
-				deleteAppointmentForm.installFormAutoSubmit();
+				deleteAppointmentForm.installFormSubmitHandler();
 				
 			}else {
 				
-				deleteAppointmentForm.removeFormAutoSubmit();
+				deleteAppointmentForm.removeFormSubitHandler();
 			}
 		}
 	}

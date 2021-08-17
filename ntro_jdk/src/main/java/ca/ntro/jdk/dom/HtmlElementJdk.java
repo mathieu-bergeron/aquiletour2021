@@ -20,6 +20,7 @@ import ca.ntro.web.dom.HtmlElement;
 import ca.ntro.web.dom.HtmlElements;
 import ca.ntro.web.dom.HtmlEventListener;
 import ca.ntro.web.dom.HtmlFileListener;
+import ca.ntro.web.dom.LinkListener;
 import ca.ntro.web.dom.SubmitListener;
 
 public class HtmlElementJdk extends HtmlElement {
@@ -331,25 +332,43 @@ public class HtmlElementJdk extends HtmlElement {
 	}
 
 	@Override
-	public void installFormAutoSubmit() {
+	public void installFormSubmitHandler() {
 		T.call(this);
 		// XXX: not supported on server-side
 	}
 
 	@Override
-	public void removeFormAutoSubmit() {
+	public void removeFormSubitHandler() {
 		T.call(this);
 		// XXX: not supported on server-side
 	}
 
 	@Override
-	public void installFormAutoSubmit(SubmitListener listener) {
+	public void installFormSubmitHandler(SubmitListener listener) {
 		T.call(this);
 		// XXX: not supported on server-side
 	}
 
 	@Override
 	public void click() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void installLinkHandler() {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void installLinkHandler(LinkListener listener) {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
+	@Override
+	public void removeLinkHandler() {
 		T.call(this);
 		// XXX: not supported on server-side
 	}

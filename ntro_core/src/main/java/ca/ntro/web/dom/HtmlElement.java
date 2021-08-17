@@ -154,9 +154,13 @@ public abstract class HtmlElement {
 	public abstract HtmlElement clone();
 	public abstract void initializeJs(String viewName);
 	
-	public abstract void installFormAutoSubmit();
-	public abstract void installFormAutoSubmit(SubmitListener listener);
-	public abstract void removeFormAutoSubmit();
+	public abstract void installFormSubmitHandler();
+	public abstract void installFormSubmitHandler(SubmitListener listener);
+	public abstract void removeFormSubitHandler();
+
+	public abstract void installLinkHandler();
+	public abstract void installLinkHandler(LinkListener listener);
+	public abstract void removeLinkHandler();
 
 	public abstract void click();
 }

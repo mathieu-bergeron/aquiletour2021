@@ -78,7 +78,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 
 			if(context.isSocketOpen()) {
 				
-				modifyCommentForm.installFormAutoSubmit(new SubmitListener() {
+				modifyCommentForm.installFormSubmitHandler(new SubmitListener() {
 					@Override
 					public void onFormSubmitted() {
 						T.call(this);
@@ -89,7 +89,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 				
 			}else {
 				
-				modifyCommentForm.removeFormAutoSubmit();
+				modifyCommentForm.removeFormSubitHandler();
 			}
 		}
 	}
