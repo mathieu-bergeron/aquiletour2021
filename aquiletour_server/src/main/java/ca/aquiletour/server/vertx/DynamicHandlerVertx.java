@@ -458,7 +458,7 @@ public class DynamicHandlerVertx {
 	private static boolean ifJsOnlySetCookies(HttpServerRequest baseRequest, HttpServerResponse response) {
 		T.call(DynamicHandlerVertx.class);
 		
-		boolean ifJSweet = false;
+		boolean ifJSweet = true;
 
 		if(baseRequest.getParam("nojsweet") != null) {
 			
