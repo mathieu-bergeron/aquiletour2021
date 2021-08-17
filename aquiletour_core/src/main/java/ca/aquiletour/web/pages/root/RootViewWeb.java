@@ -180,9 +180,12 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		alertPrimary = new BootstrapAlert(alertPrimaryElement);
 
 		if(Ntro.isJdk()) {
+			logoImage.hide();
+			logoLoading.show();
 			initializeAlerts();
 			addUserIdToValue.setAttribute("value", context.user().getId());
 		}
+		
 
 		onContextChange(context);
 	}
@@ -216,7 +219,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		T.call(this);
 		
 		if(context != null) {
-
+			
 			logoImage.display(context.isSocketOpen());
 			logoLoading.display(!context.isSocketOpen());
 		}

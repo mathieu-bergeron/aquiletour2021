@@ -4,6 +4,7 @@ import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.views.AppointmentView;
 import ca.aquiletour.web.pages.queue.AppointmentViewWeb;
+import ca.ntro.core.Path;
 import ca.ntro.core.mvc.NtroContext;
 import ca.ntro.core.system.assertions.MustNot;
 import ca.ntro.core.system.trace.T;
@@ -24,7 +25,9 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 
 	private HtmlElement closeModalButton;
 	
-	private HtmlElements addQueueIdToValue;
+	private HtmlElements setValueToQueueId;
+	private HtmlElements addAppointmentIdToId;
+	private HtmlElements addAppointmentIdToDataTarget;
 
 	private HtmlElement modifyCommentForm;
 	private HtmlElement modifyCommentModal;
@@ -53,9 +56,13 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		MustNot.beNull(modifyCommentModal);
 		MustNot.beNull(closeModalButton);
 
-		addQueueIdToValue = this.getRootElement().find(".add-queue-id-to-value");
+		setValueToQueueId = this.getRootElement().find(".set-value-to-queue-id");
+		addAppointmentIdToId = this.getRootElement().find(".add-appointment-id-to-id");
+		addAppointmentIdToDataTarget = this.getRootElement().find(".add-appointment-id-to-data-target");
 
-		Ntro.verify(that(addQueueIdToValue.size() > 0).isTrue());
+		Ntro.verify(that(setValueToQueueId.size() > 0).isTrue());
+		Ntro.verify(that(addAppointmentIdToId.size() > 0).isTrue());
+		Ntro.verify(that(addAppointmentIdToDataTarget.size() > 0).isTrue());
 		
 		//deleteAppointmentForm.hide();
 		//chatButton.hide();
@@ -106,8 +113,14 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 				                  appointmentViewId,
 				                  displayTime, 
 				                  appointment);
+
+		Path queueIdPath = new Path();
+		queueIdPath.addName(queueId);
+		String queueIdHtml = queueIdPath.toHtmlId();
 		
-		addQueueIdToValue.appendToAttribute("value", queueId);
+		setValueToQueueId.setAttribute("value", queueIdHtml);
+		addAppointmentIdToId.appendToAttribute("id", appointment.getId());
+		addAppointmentIdToDataTarget.appendToAttribute("data-target", appointment.getId());
 		
 		if(!appointment.getStudentId().equals(userId)) {
 

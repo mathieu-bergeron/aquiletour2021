@@ -14,14 +14,6 @@ function initializeRoot(viewRootElement, jSweet){
 
     const submitLinks = viewRootElement.find('.submit-link');
 
-    const logoLoading = viewRootElement.find('#logo-loading');
-    const logoImage = viewRootElement.find('#logo-image');
-
-    //if(!jSweet){
-        logoLoading.hide();
-        logoImage.show();
-    //}
-
     //loginButton.dropdown();
 
     navBarA.on('click', function(){
