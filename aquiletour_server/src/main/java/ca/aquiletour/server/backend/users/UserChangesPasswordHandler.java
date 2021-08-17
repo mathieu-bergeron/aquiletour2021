@@ -12,7 +12,8 @@ public class UserChangesPasswordHandler extends BackendMessageHandler<UserChange
 	public void handleNow(ModelStoreSync modelStore, UserChangesPasswordMessage message) throws BackendError {
 		T.call(UserChangesPasswordHandler.class);
 		
-		if(message.getCurrentPassword() != null 
+		if(message.getUser().hasPassword()
+				&& message.getCurrentPassword() != null 
 				&& !message.getCurrentPassword().isEmpty()
 				&& !UserManager.isUserPasswordValid(modelStore, message.getCurrentPassword(), message.getUser())) {
 			

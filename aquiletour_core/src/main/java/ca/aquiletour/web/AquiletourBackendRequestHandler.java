@@ -180,6 +180,7 @@ public class AquiletourBackendRequestHandler {
 			if(parameters.containsKey("currentPassword")) {
 				currentPassword = parameters.get("currentPassword")[0];
 			}
+			
 			String newPasswordA = parameters.get("newPasswordA")[0];
 			String newPasswordB = parameters.get("newPasswordB")[0];
 			

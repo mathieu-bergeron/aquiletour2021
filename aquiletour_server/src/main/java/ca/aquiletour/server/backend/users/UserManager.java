@@ -112,8 +112,11 @@ public class UserManager {
 		T.call(UserManager.class);
 
 		return modelStore.extractFromModel(User.class, "admin", user.getId(), Boolean.class, storedUser -> {
-			return !storedUser.getHasPassword()
-					|| storedUser.getPasswordHash().equals(PasswordDigest.passwordDigest(password));
+
+			return storedUser.getHasPassword()
+				&& storedUser.getPasswordHash() != null
+				&& !storedUser.getPasswordHash().isEmpty()
+				&& storedUser.getPasswordHash().equals(PasswordDigest.passwordDigest(password));
 		});
 	}
 
@@ -560,6 +563,14 @@ public class UserManager {
 
 			userToUpdate.copyPublicInfomation(storedUser);
 		});
+	}
+
+	public static void updateUser(ModelStoreSync modelStore, 
+								  String userId,
+								  ModelUpdater<User> updater) throws BackendError {
+		T.call(UserManager.class);
+		
+		modelStore.updateModel(User.class, "admin", userId, updater);
 	}
 
 	public static void updateUserName(ModelStoreSync modelStore, 

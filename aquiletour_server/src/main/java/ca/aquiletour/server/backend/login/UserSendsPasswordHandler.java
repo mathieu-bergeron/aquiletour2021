@@ -9,6 +9,8 @@ import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.core.wrappers.options.EmptyOptionException;
+import ca.ntro.core.wrappers.options.Optionnal;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroUpdateSessionMessage;
 import ca.ntro.services.ModelStoreSync;
@@ -39,8 +41,11 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 			ShowLoginMenuMessage showLoginMenuMessage = Ntro.messages().create(ShowLoginMenuMessage.class);
 			showLoginMenuMessage.setDelayedMessages(message.getDelayedMessages());
+			
+			Optionnal<Boolean> userHasPassword = new Optionnal<>();
 
 			SessionManager.updateSession(modelStore, authToken, session -> {
+
 				SessionData sessionData = null;
 				if(session.getSessionData() instanceof SessionData) {
 					sessionData = (SessionData) session.getSessionData();
@@ -52,11 +57,12 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 
 					if(sessionData.hasReachedMaxPasswordAttemps()) {
 
-						T.values(sessionData.getFailedPasswordAttemps());
-						
-						
 						User user = (User) Ntro.currentSession().getUser();
 						user.setHasPassword(false);
+						userHasPassword.set(false);
+						
+						Ntro.currentSession().setUser(user);
+						
 						showLoginMenuMessage.setMessageToUser("SVP re-valider votre courriel.");
 						
 						String loginCode = UserInitiatesLoginHandler.sendLoginCode(user);
@@ -65,11 +71,18 @@ public class UserSendsPasswordHandler extends BackendMessageHandler<UserSendsPas
 					}else {
 
 						showLoginMenuMessage.setMessageToUser("Mot de passe erroné.");
-
 					}
 
 					Ntro.messages().send(showLoginMenuMessage);
 				}
+			});
+			
+			UserManager.updateUser(modelStore, userId, userModel -> {
+				try {
+
+					userModel.setHasPassword(userHasPassword.get());
+
+				} catch (EmptyOptionException e) {}
 			});
 		}
 	}

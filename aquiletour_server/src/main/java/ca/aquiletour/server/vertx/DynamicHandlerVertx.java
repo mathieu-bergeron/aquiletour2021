@@ -451,6 +451,9 @@ public class DynamicHandlerVertx {
 		NtroSession session = Ntro.currentSession();
 		User user = (User) session.getUser();
 		session.setUser(user.toSessionUser());
+		
+		SessionData sessionData = (SessionData) session.getSessionData();
+		session.setSessionData(sessionData.toPublicData());
 
 		setCookie(response, "session", Ntro.jsonService().toString(session, false));
 	}

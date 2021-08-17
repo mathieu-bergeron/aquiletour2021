@@ -71,4 +71,15 @@ public class SessionData extends NtroSessionData {
 		
 		getCurrentTasksByCourseKey().updateCurrentTasks(coursePath, currentTasks);
 	}
+
+	public SessionData toPublicData() {
+		
+		SessionData publicData = new SessionData();
+		
+		publicData.setFailedPasswordAttemps(getFailedPasswordAttemps());
+		publicData.setCurrentCategoryId(getCurrentCategoryId());
+		publicData.setCurrentTasksByCourseKey(getCurrentTasksByCourseKey());
+
+		return publicData;
+	}
 }

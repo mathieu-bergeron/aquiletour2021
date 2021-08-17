@@ -72,6 +72,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	private HtmlElement loginMenuAddPassword;
 	private HtmlElement loginMenuNameContainer;
 	private HtmlElement currentPasswordContainer;
+	private HtmlElement currentPasswordInput;
 	private HtmlElement modifyPasswordButton;
 	private HtmlElement loginMenuUserProfile;
 	private HtmlElement userNameContainer;
@@ -116,6 +117,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		loginMenuAddPassword = getRootElement().find("#login-menu-add-password").get(0);
 		loginMenuNameContainer = getRootElement().find(".login-menu-name-container").get(0);
 		currentPasswordContainer = getRootElement().find("#current-password-container").get(0);
+		currentPasswordInput = getRootElement().find("#current-password-input").get(0);
 		modifyPasswordButton = getRootElement().find("#modify-password-button").get(0);
 
 		loginMenuUserProfile = getRootElement().find("#login-menu-user-profile").get(0);
@@ -156,6 +158,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 		MustNot.beNull(loginMenuEnterCode);
 		MustNot.beNull(loginMenuAddPassword);
 		MustNot.beNull(currentPasswordContainer);
+		MustNot.beNull(currentPasswordInput);
 		MustNot.beNull(loginMenuUserProfile);
 		MustNot.beNull(toggleStudentModeContainer);
 		MustNot.beNull(toggleStudentModeButton);
@@ -186,6 +189,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			addUserIdToValue.setAttribute("value", context.user().getId());
 		}
 		
+		currentPasswordInput.value("");
 
 		onContextChange(context);
 	}
@@ -208,7 +212,6 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 			Log.info("RootViewWeb::onContextChange");
 
 			User user = (User) context.user();
-			
 
 			adjustLoginMenu(user);
 			adjustLinks(user);
@@ -285,7 +288,7 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 
 		homeLink.show();
 
-		if(user.getHasPassword()) {
+		if(user.hasPassword()) {
 			showPasswordMenuLink.text("Modifier mon mot de passe");
 		}else {
 			showPasswordMenuLink.text("Ajouter un mot de passe");
@@ -615,6 +618,8 @@ public class RootViewWeb extends NtroViewWeb implements RootView {
 	@Override
 	public void showLoginMenu(String messageToUser, List<NtroMessage> delayedMessages) {
 		T.call(this);
+		
+		Log.info("messageToUser: " + messageToUser);
 
 		loginDropdown.addClass("show");
 
