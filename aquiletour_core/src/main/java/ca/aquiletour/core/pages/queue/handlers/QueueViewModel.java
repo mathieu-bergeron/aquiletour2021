@@ -97,7 +97,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			                                V view, 
 			                                ViewLoader subViewLoader, 
 			                                String appointmentViewId,
-			                                int index, 
+			                                int appointmentIndex, 
 			                                Appointment appointment) {
 		T.call(this);
 		
@@ -109,7 +109,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 		if(appointmentView != null) {
 
 			appointmentView.initializeView(AquiletourMain.createNtroContext());
-			appointmentView.updateAppointment(displayTime, appointment);
+			appointmentView.updateAppointment(appointmentIndex, displayTime, appointment);
 			
 		}else {
 
@@ -118,10 +118,11 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			appointmentView.displayAppointement(model.getQueueId(), 
 					                            currentUserId, 
 					                            appointmentViewId,
+					                            appointmentIndex,
 					                            displayTime,
 					                            appointment);
 
-			view.insertAppointment(index, appointmentView);
+			view.insertAppointment(appointmentIndex, appointmentView);
 		}
 	}
 }

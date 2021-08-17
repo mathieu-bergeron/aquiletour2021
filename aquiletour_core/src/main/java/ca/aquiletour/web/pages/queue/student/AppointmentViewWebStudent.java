@@ -105,12 +105,14 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	public void displayAppointement(String queueId, 
 						            String userId,
 			                        String appointmentViewId, 
+			                        int index,
 			                        boolean displayTime, 
 			                        Appointment appointment) {
 		T.call(this);
 		super.displayAppointement(queueId, 
 				                  userId, 
 				                  appointmentViewId,
+				                  index,
 				                  displayTime, 
 				                  appointment);
 

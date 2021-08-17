@@ -80,6 +80,7 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void displayAppointement(String queueId, 
 									String userId,
 			                        String appointmentViewId,
+			                        int appointmentIndex,
 			                        boolean displayTime, 
 			                        Appointment appointment) {
 		T.call(this);
@@ -88,11 +89,11 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 
 		getRootElement().setAttribute("id", appointmentViewId);
 
-		updateAppointment(displayTime, appointment);
+		updateAppointment(appointmentIndex, displayTime, appointment);
 	}
 
 	@Override
-	public void updateAppointment(boolean showTime, Appointment appointment) {
+	public void updateAppointment(int appointmentIndex, boolean showTime, Appointment appointment) {
 		T.call(this);
 
 		String userName = appointment.getStudentName();
@@ -102,9 +103,18 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 		
 		UpdateAnimator.updateText(studentName, userName);
 
-		time.display(showTime);
+		//time.display(showTime);
 		
-		String timeText = appointment.getTime().getValue().format("HH:mm");
+		String timeText;
+		if(showTime) {
+
+			timeText = appointment.getTime().getValue().format("HH:mm");
+
+		}else {
+
+			timeText = String.valueOf(appointmentIndex+1);
+		}
+
 		String courseTitle = appointment.getCourseTitle().getValue();
 		String taskTitle = appointment.getTaskTitle().getValue();
 		String comment = appointment.getComment().getValue();

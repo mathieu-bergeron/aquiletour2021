@@ -10,10 +10,11 @@ public interface AppointmentView extends NtroView {
 	void displayAppointement(String queueId, 
 							 String userId,
 			                 String appointmentViewId, 
+			                 int appointmentIndex,
 			                 boolean displayTime, 
 			                 Appointment appointment);
 
-	void updateAppointment(boolean displayTime, Appointment appointment);
+	void updateAppointment(int appointmentIndex, boolean displayTime, Appointment appointment);
 
 	void displayCourseTitle(String courseTitle);
 	void displayTaskTitle(String taskTitle);

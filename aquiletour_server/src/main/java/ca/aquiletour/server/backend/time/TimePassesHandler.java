@@ -5,6 +5,7 @@ import java.util.Set;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
+import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.server.backend.login.SessionManager;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendMessageHandler;
@@ -110,6 +111,23 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 
 		Log.info("[runFrequently]");
 		
+		deleteExpiredSessions(modelStore);
+
+		updateFirstAppointmentTimeInQueues(modelStore);
+	}
+
+	private void updateFirstAppointmentTimeInQueues(ModelStoreSync modelStore) throws BackendError {
+		T.call(this);
+
+		modelStore.forEachModelId(QueueModel.class, "admin", queueId -> {
+			modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+				
+				queueModel.updateFirstAppointmentTimeIfNeeded();
+			});
+		});
+	}
+
+	private void deleteExpiredSessions(ModelStoreSync modelStore) throws BackendError {
 		Set<String> expiredSesions = new HashSet<>();
 		
 		modelStore.forEachModelId(NtroSession.class, "admin", authToken -> {
@@ -126,8 +144,6 @@ public class TimePassesHandler extends BackendMessageHandler<TimePassesMessage> 
 		for(String authToken : expiredSesions) {
 			SessionManager.deleteSession(modelStore, authToken);
 		}
-
-		// TODO: update currentTime in queues etc.
 	}
 	
 	private void runNightly(ModelStoreSync modelStore) throws BackendError {

@@ -32,12 +32,14 @@ public class AppointmentViewWebTeacher extends AppointmentViewWeb implements App
 	public void displayAppointement(String queueId, 
 			                        String userId, 
 			                        String appointmentViewId,
+			                        int appointmentIndex,
 			                        boolean displayTime, 
 			                        Appointment appointment) {
 		T.call(this);
 		super.displayAppointement(queueId, 
 				                  userId, 
 				                  appointmentViewId,
+				                  appointmentIndex,
 				                  displayTime, 
 				                  appointment);
 	}

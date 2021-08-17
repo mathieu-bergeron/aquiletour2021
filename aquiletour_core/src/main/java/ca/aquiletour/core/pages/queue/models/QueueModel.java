@@ -473,7 +473,14 @@ public class QueueModel implements NtroModel {
 		return appointment != null;
 	}
 
-	
+	public void updateFirstAppointmentTimeIfNeeded() {
+		T.call(this);
+		
+		if(getFirstAppointmentTime().getValue().smallerThan(Ntro.calendar().now())) {
+			setNowAsFirstAppointmentTime();
+			recomputeAppointmentTimes();
+		}
+	}
 	
 
 	/* XXX: not used for now
