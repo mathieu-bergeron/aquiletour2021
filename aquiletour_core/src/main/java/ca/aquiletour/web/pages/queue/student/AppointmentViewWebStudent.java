@@ -21,6 +21,8 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	private HtmlElement deleteAppointmentForm;
 	private HtmlElement chatButton;
 	private HtmlElement commentTextarea;
+
+	private HtmlElement closeModalButton;
 	
 	private HtmlElements addQueueIdToValue;
 
@@ -38,6 +40,8 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		chatButton = this.getRootElement().find("#chat-button").get(0);
 		commentTextarea = this.getRootElement().find(".comment-textarea").get(0);
 
+		closeModalButton = this.getRootElement().find("#close-modal-button").get(0);
+
 		modifyCommentForm = getRootElement().find("#modify-comment-form").get(0);
 		modifyCommentModal = getRootElement().find(".modify-comment-modal").get(0);
 
@@ -47,6 +51,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		MustNot.beNull(commentTextarea);
 		MustNot.beNull(modifyCommentForm);
 		MustNot.beNull(modifyCommentModal);
+		MustNot.beNull(closeModalButton);
 
 		addQueueIdToValue = this.getRootElement().find(".add-queue-id-to-value");
 
@@ -73,7 +78,14 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 
 			if(context.isSocketOpen()) {
 				
-				modifyCommentForm.installFormAutoSubmit();
+				modifyCommentForm.installFormAutoSubmit(new SubmitListener() {
+					@Override
+					public void onFormSubmitted() {
+						T.call(this);
+						
+						closeModalButton.click();
+					}
+				});
 				
 			}else {
 				
