@@ -103,6 +103,6 @@ public class QueueViewWebStudent extends QueueViewWeb implements QueueViewStuden
 	public void hideQueueMessage() {
 		T.call(this);
 		
-		teacherNameElement.hide();
+		queueMessageContainer.hide();
 	}
 }

@@ -1,4 +1,4 @@
-function initializeRoot(viewRootElement, jSweet){
+function initializeRoot(viewRootElement, JSweet){
 
     const navBarA = viewRootElement.find('.navbar-nav>li>a');
 
@@ -13,6 +13,15 @@ function initializeRoot(viewRootElement, jSweet){
     const teacherLoginCollapse = viewRootElement.find('#teacher-login-collapse');
 
     const submitLinks = viewRootElement.find('.submit-link');
+
+    const logoLoading = viewRootElement.find('#logo-loading');
+    const logoImage = viewRootElement.find('#logo-image');
+
+    if(!JSweet){
+    	logoLoading.hide();
+    	logoImage.show();
+    }
+
 
     //loginButton.dropdown();
 

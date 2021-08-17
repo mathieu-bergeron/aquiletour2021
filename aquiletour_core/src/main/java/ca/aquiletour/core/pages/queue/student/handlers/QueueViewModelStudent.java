@@ -17,7 +17,47 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 		T.call(this);
 		super.handle(model, view, subViewLoader);
 		
+		
+		model.getMainSettings().getIsQueueOpen().removeObservers();
+		model.getMainSettings().getIsQueueOpen().observe(new ValueObserver<Boolean>() {
+
+			@Override
+			public void onValue(Boolean isQueueOpen) {
+				T.call(this);
+				
+				removeQueueMessageObservers(model);
+				
+				if(isQueueOpen) {
+					observeQueueMessage(model, view);
+				}
+			}
+
+			@Override
+			public void onValueChanged(Boolean oldValue, Boolean isQueueOpen) {
+				T.call(this);
+
+				removeQueueMessageObservers(model);
+
+				if(isQueueOpen) {
+					observeQueueMessage(model, view);
+				}
+			}
+
+			@Override
+			public void onDeleted(Boolean lastValue) {
+			}
+		});
+	}
+
+	private void removeQueueMessageObservers(QueueModel model) {
+		T.call(this);
+
 		model.getMainSettings().getQueueMessage().removeObservers();
+	}
+
+	private void observeQueueMessage(QueueModel model, QueueViewStudent view) {
+		T.call(this);
+
 		model.getMainSettings().getQueueMessage().observe(new ValueObserver<String>() {
 			@Override
 			public void onDeleted(String lastValue) {
@@ -37,28 +77,8 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 				displayQueueMessage(view, value);
 			}
 		});
-		
-		model.getTeacherName().removeObservers();
-		model.getTeacherName().observe(new ValueObserver<String>() {
-			@Override
-			public void onDeleted(String lastValue) {
-			}
-			
-			@Override
-			public void onValue(String value) {
-				T.call(this);
-
-				view.displayTeacherName(value);
-			}
-			
-			@Override
-			public void onValueChanged(String oldValue, String value) {
-				T.call(this);
-
-				view.displayTeacherName(value);
-			}
-		});
 	}
+
 
 	protected void observeQueueModel(QueueViewStudent view, ViewLoader subViewLoader, QueueModel queueModel) {
 		T.call(this);
@@ -66,9 +86,23 @@ public class QueueViewModelStudent extends QueueViewModel<QueueViewStudent> {
 		super.observeQueueModel(view, subViewLoader, queueModel);
 		
 		NtroUser currentUser = Ntro.currentUser();
+		
+		String teacherName = queueModel.getTeacherName().getValue();
+		
+		if(queueModel.isQueueOpen()) {
+			
+			view.displayTeacherName(teacherName);
+			
+			if(currentUser != null) {
+				
+				view.displayMakeAppointmentButton(! queueModel.ifUserAlreadyHasAppointment(currentUser.getId()));
+			}
+			
+		}else {
 
-		if(currentUser != null) {
-			view.displayMakeAppointmentButton(! queueModel.ifUserAlreadyHasAppointment(currentUser.getId()));
+			view.displayTeacherName(teacherName + " [fermé]");
+			view.displayMakeAppointmentButton(false);
+			view.hideQueueMessage();
 		}
 	}
 

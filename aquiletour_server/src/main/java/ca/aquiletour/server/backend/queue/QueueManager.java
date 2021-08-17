@@ -110,13 +110,22 @@ public class QueueManager {
 
 		T.call(QueueManager.class);
 		
+		boolean isQueueOpen = modelStore.extractFromModel(QueueModel.class, "admin", queueId, Boolean.class, queueModel -> {
+
+			return queueModel.isQueueOpen();
+		});
+				
 		boolean userAlreadyHasAppointment = modelStore.extractFromModel(QueueModel.class, "admin", queueId, Boolean.class, queueModel -> {
-			
+
 			return queueModel.ifUserAlreadyHasAppointment(user.getId());
 		});
 		
 		if(userAlreadyHasAppointment) {
 			throw new BackendError("Vous avez déjà un rendez-vous.");
+		}
+		
+		if(!isQueueOpen) {
+			throw new BackendError("La file d'attente est fermée.");
 		}
 		
 		NtroDate timestamp = Ntro.calendar().now();
