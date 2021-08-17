@@ -260,7 +260,7 @@ public class DynamicHandlerVertx {
 			Ntro.messages().sendQueuedMessages();
 		}
 
-		if(!path.startsWith(ca.ntro.core.Constants.SOCKET_URL_SEGMENT)) {
+		if(!path.toRawPath().contains(ca.ntro.core.Constants.SOCKET_URL_SEGMENT)) {
 			setSessionCookie(response);
 		}
 
