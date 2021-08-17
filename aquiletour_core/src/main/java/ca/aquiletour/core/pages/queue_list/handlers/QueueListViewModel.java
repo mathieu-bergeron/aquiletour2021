@@ -67,6 +67,9 @@ public class QueueListViewModel extends ModelViewSubViewHandler<QueueListModel, 
 
 		QueueListItemView subView = (QueueListItemView) view.findSubView(QueueListItemView.class, subViewId);
 		
+		System.out.println("subViewId: " + subViewId);
+		System.out.println("subView: " + subView);
+		
 		if(subView != null) {
 
 			subView.initializeView(AquiletourMain.createNtroContext());

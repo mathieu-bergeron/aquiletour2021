@@ -145,7 +145,9 @@ public class Path implements JsonSerializable {
 	}
 
 	public String toHtmlId() {
-		return toString(HTML_ID_SEPARATOR, false);
+		String htmlId = toString(HTML_ID_SEPARATOR, false);
+		htmlId = htmlId.replace(".", HTML_ID_SEPARATOR);
+		return htmlId;
 	}
 
 	public String toKey() {
