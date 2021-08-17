@@ -39,7 +39,7 @@ COPY --from=build /code/aquiletour_server/build/libs/aquiletour_server-all.jar .
 RUN mkdir -p src/main/resources
 COPY --from=build /code/aquiletour_server/src/main/resources src/main/resources
 RUN mkdir -p __data__
-COPY --from=build /code/aquiletour_server/__test_data__ __data__
+#COPY --from=build /code/aquiletour_server/__test_data__ __data__
 
 ##
 ## restart server if it crashes
