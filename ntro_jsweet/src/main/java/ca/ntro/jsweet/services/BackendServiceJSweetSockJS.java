@@ -39,8 +39,7 @@ public class BackendServiceJSweetSockJS extends BackendService {
 		super();
 		__T.call(this, "<init>");
 
-		//String protocol = window.location.protocol;
-		String protocol = "http:";
+		String protocol = window.location.protocol;
 
 		connectionString = protocol + "//" + window.location.host + ca.ntro.core.Constants.MESSAGES_URL_PATH_SOCKET;
 
