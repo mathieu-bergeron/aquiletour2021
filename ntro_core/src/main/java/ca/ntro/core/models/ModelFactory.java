@@ -26,12 +26,13 @@ public class ModelFactory {
 			                            String jsonString) throws BackendError {
 		T.call(ModelFactory.class);
 		
+		
 		NtroModel model = Ntro.jsonService().fromString(modelClass, jsonString);
 		
 		NtroModel registeredModel = modelStore.registerModel(documentPath, model);
 		
 		if(registeredModel == model) {
-			
+
 			initializeStoreConnections(model, modelStore, documentPath.toValuePath(), new HashSet<>());
 		}
 		

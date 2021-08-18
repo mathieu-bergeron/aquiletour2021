@@ -238,10 +238,11 @@ public class UserManager {
 
 	private static void createStoredUser(ModelStoreSync modelStore, User user) {
 		T.call(UserManager.class);
-
+		
 		DocumentPath documentPath = new DocumentPath();
 		documentPath.setCollection(Ntro.introspector().getSimpleNameForClass(User.class));
 		documentPath.setDocumentId(user.getId());
+
 		modelStore.saveJsonString(documentPath, Ntro.jsonService().toString(user));
 	}
 

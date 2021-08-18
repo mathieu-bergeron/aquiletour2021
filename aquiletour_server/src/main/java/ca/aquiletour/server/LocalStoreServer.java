@@ -8,7 +8,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.eclipse.jetty.client.ResponseNotifier;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.git.GetCommitsForPath;
@@ -27,8 +26,8 @@ import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
 
-public class LocalStoreServer extends LocalStoreFiles {
-//public class LocalStoreServer extends LocalStoreMongoDbServer {
+//public class LocalStoreServer extends LocalStoreFiles { // DEV
+public class LocalStoreServer extends LocalStoreMongoDbServer { // PROD
 
 	@Override
 	public JsonLoader getJsonLoader(Class<? extends NtroModel> targetClass, DocumentPath documentPath) {

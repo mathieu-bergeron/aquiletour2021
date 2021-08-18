@@ -23,12 +23,6 @@ import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.servlet.ServletException;
-
-import ca.aquiletour.server.http.ModelHandler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.HandlerList;
 
 import ca.aquiletour.core.AquiletourMain;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
@@ -36,10 +30,6 @@ import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.aquiletour.server.backend.users.UserManager;
-import ca.aquiletour.server.http.DynamicHandler;
-import ca.aquiletour.server.http.MessageHandler;
-import ca.aquiletour.server.http.ResourceHandler;
-import ca.aquiletour.server.http.WebSocketHandler;
 import ca.aquiletour.web.ViewLoaderRegistrationWeb;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.Constants;
@@ -49,25 +39,17 @@ import ca.ntro.core.tasks.NtroTaskAsync;
 import ca.ntro.jdk.digest.PasswordDigest;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
-import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.net.PemKeyCertOptions;
-import io.vertx.core.net.PemTrustOptions;
-import io.vertx.core.net.SelfSignedCertificate;
-import io.vertx.ext.bridge.BridgeOptions;
-import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.sockjs.SockJSBridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
-import io.vertx.ext.web.handler.sockjs.SockJSSocket;
 
 public class AquiletourMainServerVertx extends NtroTaskAsync {
 	

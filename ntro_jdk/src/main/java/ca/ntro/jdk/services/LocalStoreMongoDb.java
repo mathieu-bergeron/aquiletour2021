@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import org.bson.Document;
 
+import com.mongodb.InsertOptions;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -78,7 +79,7 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 
 			jsonString = Ntro.jsonService().toString(model);
 
-			jsonString = reinsertSpecialChars(jsonString);
+			jsonString = reInsertSpecialChars(jsonString);
 
 		}else {
 
@@ -94,7 +95,10 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 		
 		return jsonLoader;
 	}
-	private String reinsertSpecialChars(String jsonString) {
+
+	private String reInsertSpecialChars(String jsonString) {
+		T.call(this);
+
 		jsonString = jsonString.replaceAll("\uFF0E", ".");
 		jsonString = jsonString.replaceAll("\uFF04", "$");
 		return jsonString;
@@ -113,6 +117,8 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 		return document;
 	}
 	private String removeSpecialChars(String jsonString) {
+		T.call(this);
+
 		jsonString = jsonString.replaceAll("\\.", "\uFF0E");
 		jsonString = jsonString.replaceAll("\\$", "\uFF04");
 		return jsonString;
@@ -157,11 +163,15 @@ public abstract class LocalStoreMongoDb extends ModelStore {
 	public void saveDocument(DocumentPath documentPath, String jsonString) {
 		T.call(this);
 
-		MongoCollection<Document> models = db.getCollection(documentPath.getCollection());
+		MongoCollection<Document> models = getOrCreateCollection(documentPath);
 		
 		Document document = createDocument(documentPath, jsonString);
 		
-		models.replaceOne(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document, new ReplaceOptions());
+		ReplaceOptions replaceOptions = new ReplaceOptions();
+		replaceOptions.upsert(true);
+		
+		models.replaceOne(eq(ModelStore.MODEL_ID_KEY, documentPath.getDocumentId()), document, replaceOptions);
+
 	}
 
 	@Override

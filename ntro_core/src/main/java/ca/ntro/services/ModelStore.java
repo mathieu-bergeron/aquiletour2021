@@ -148,6 +148,8 @@ public abstract class ModelStore {
 	}
 	
 	public static String emptyModelString(DocumentPath documentPath) {
+		T.call(ModelStore.class);
+
 		return "{\""+Constants.JSON_CLASS_KEY+"\":\""+documentPath.getCollection()+"\"}";
 	}
 	

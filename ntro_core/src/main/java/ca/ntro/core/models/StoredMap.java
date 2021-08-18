@@ -13,6 +13,7 @@ import ca.ntro.core.models.lambdas.MapMapper;
 import ca.ntro.core.models.lambdas.MapReducer;
 import ca.ntro.core.models.listeners.EntryAddedListener;
 import ca.ntro.core.models.listeners.MapObserver;
+import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.services.Ntro;
 
@@ -47,7 +48,7 @@ public class StoredMap<V extends Object> extends StoredProperty<Map<String, V>> 
 		}
 		
 		if(ifStoredConnected()) {
-
+			
 			modelStore().updateStoreConnectionsByPath(valuePath().getDocumentPath());
 
 			List<Object> args = new ArrayList<>();

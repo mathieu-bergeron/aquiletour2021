@@ -7,12 +7,8 @@ import ca.ntro.core.models.ModelReader;
 import ca.ntro.core.models.ModelExtractor;
 import ca.ntro.core.models.ModelUpdater;
 import ca.ntro.core.models.NtroModel;
-import ca.ntro.core.models.listeners.ValueObserver;
-import ca.ntro.core.system.assertions.MustNot;
-import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.stores.DocumentPath;
-import ca.ntro.users.NtroSession;
 
 public class ModelStoreSync {
 
