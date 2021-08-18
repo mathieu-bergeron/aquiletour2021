@@ -5,7 +5,7 @@ FROM alpine:3.13 as build
 
 RUN apk update
 
-RUN apk add vi
+RUN apk add vim
 
 RUN apk add openjdk8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
@@ -34,6 +34,8 @@ RUN apk add nodejs
 
 RUN mkdir /root/.aiguilleur
 COPY config_aquiletour/config.json.gmail /root/.aiguilleur/config.json
+COPY certificate/d706a8e1929c0867.pem /root/d706a8e1929c0867.pem
+COPY certificate/aiguilleurca.key /root/aiguilleurca.key
 
 RUN mkdir /app
 WORKDIR /app
