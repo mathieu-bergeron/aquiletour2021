@@ -236,12 +236,15 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 
 		} else {
 			
+			/*
 			SelfSignedCertificate certificate = SelfSignedCertificate.create();
 			
 			serverOptions = new HttpServerOptions();
 			serverOptions.setSsl(true);
 			serverOptions.setKeyCertOptions(certificate.keyCertOptions());
-
+			*/
+			
+			// XXX: mandatory??
 			//serverOptions.setTrustOptions(certificate.trustOptions());
 			
 		}
