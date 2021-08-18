@@ -28,6 +28,8 @@ services:
     tty: true
     networks:
       - aqlt_net
+    ports: 
+      - "443:443"
     depends_on:
       - mongodb
       - mariadb
@@ -39,7 +41,7 @@ services:
       dockerfile: aquiletour2021/dockers/httprouter/Dockerfile
     ports: 
       - "80:80"
-      - "443:443"
+        #- "443:443"
     networks:
       - aqlt_net
     depends_on:
