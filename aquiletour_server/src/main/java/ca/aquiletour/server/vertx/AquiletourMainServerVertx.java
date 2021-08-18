@@ -18,6 +18,8 @@
 package ca.aquiletour.server.vertx;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -197,8 +199,6 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			});
 		}));
 
-
-
 		router.route("/*").blockingHandler(routingContext -> {
 
 			DynamicHandlerVertx.handle(routingContext);
@@ -214,12 +214,16 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		HttpServerOptions serverOptions = new HttpServerOptions();
 		
 		if(Ntro.config().isProd()) {
-			
+
+			String userHome = System.getProperty("user.home");
+			Path keyPath = Paths.get(userHome, "aiguilleurca.key");
+			Path certPath = Paths.get(userHome, "d706a8e1929c0867.pem");
+
 			serverOptions.setSsl(true);
-			
+
 			PemKeyCertOptions certOptions = new PemKeyCertOptions();
-			certOptions.setKeyPath("/root/aiguilleurca.key");
-			certOptions.setCertPath("/root/d706a8e1929c0867.pem");
+			certOptions.setKeyPath(keyPath.toAbsolutePath().toString());
+			certOptions.setCertPath(certPath.toAbsolutePath().toString());
 
 			serverOptions.setKeyCertOptions(certOptions);
 			
@@ -229,16 +233,19 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			
 			serverOptions.setTrustOptions(trustOptions);
 			*/
+
+		} else {
+			
+			SelfSignedCertificate certificate = SelfSignedCertificate.create();
+			
+			serverOptions = new HttpServerOptions();
+			serverOptions.setSsl(true);
+			serverOptions.setKeyCertOptions(certificate.keyCertOptions());
+
+			//serverOptions.setTrustOptions(certificate.trustOptions());
+			
 		}
 
-		/*
-		SelfSignedCertificate certificate = SelfSignedCertificate.create();
-		
-		serverOptions = new HttpServerOptions();
-		serverOptions.setSsl(true);
-		serverOptions.setKeyCertOptions(certificate.keyCertOptions());
-		serverOptions.setTrustOptions(certificate.trustOptions());
-		*/
 
 		HttpServer server = vertx.createHttpServer(serverOptions);
 		server.requestHandler(router);
