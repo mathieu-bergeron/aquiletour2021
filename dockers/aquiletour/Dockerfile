@@ -53,5 +53,5 @@ RUN apk del tzdata
 ##
 ## restart server if it crashes
 ##
-#CMD while true; do java -cp aqlt_srv.jar ca.aquiletour.server.vertx.JavaMainVertx 2>> aquiletour.log; date >> .crashes; done 
-CMD java -cp aqlt_srv.jar ca.aquiletour.server.vertx.JavaMainVertx
+CMD while true; do java -cp aqlt_srv.jar ca.aquiletour.server.vertx.JavaMainVertx 2>> aquiletour.log; date >> .crashes; done 
+#CMD java -cp aqlt_srv.jar ca.aquiletour.server.vertx.JavaMainVertx
