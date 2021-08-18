@@ -5,7 +5,6 @@ FROM alpine:3.13 as build
 
 RUN apk update
 
-RUN apk add vim
 
 RUN apk add openjdk8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
@@ -44,6 +43,12 @@ RUN mkdir -p src/main/resources
 COPY --from=build /code/aquiletour_server/src/main/resources src/main/resources
 RUN mkdir -p __data__
 #COPY --from=build /code/aquiletour_server/__test_data__ __data__
+
+RUN apk add vim
+RUN apk add tzdata
+RUN cp /usr/share/zoneinfo/America/Montreal /etc/localtime
+RUN echo "America/Montreal" >  /etc/timezone
+RUN apk del tzdata
 
 ##
 ## restart server if it crashes
