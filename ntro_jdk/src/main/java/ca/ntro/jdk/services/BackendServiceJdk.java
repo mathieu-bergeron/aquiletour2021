@@ -1,5 +1,6 @@
 package ca.ntro.jdk.services;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.services.BackendService;
@@ -18,6 +19,11 @@ public class BackendServiceJdk extends BackendService {
 
 	@Override
 	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
+		throw new RuntimeException("TODO");
+	}
+
+	@Override
+	public void sendMessageToBackendWithExceptions(NtroMessage message) throws BackendError {
 		throw new RuntimeException("TODO");
 	}
 

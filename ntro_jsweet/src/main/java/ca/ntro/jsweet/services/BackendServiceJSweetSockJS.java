@@ -4,6 +4,7 @@ package ca.ntro.jsweet.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
@@ -154,6 +155,12 @@ public class BackendServiceJSweetSockJS extends BackendService {
 	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
 		// Always true: all messages are sent on the socket
 		return true;
+	}
+
+	@Override
+	public void sendMessageToBackendWithExceptions(NtroMessage message) throws BackendError {
+		T.call(this);
+		// XXX: not supported in JSweet
 	}
 
 }

@@ -73,6 +73,13 @@ public abstract class BackendServiceServer extends BackendService {
 	}
 
 	@Override
+	public void sendMessageToBackendWithExceptions(NtroMessage message) throws BackendError {
+		
+		throw new RuntimeException("TODO!");
+	}
+
+
+	@Override
 	public <M extends NtroMessage> void handleMessageFromBackend(Class<M> messageClass, MessageHandler<M> handler) {
 		// TODO Auto-generated method stub
 		

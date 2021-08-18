@@ -10,6 +10,7 @@ import ca.aquiletour.core.messages.queue.UpdateIsQueueOpenMessage;
 import ca.aquiletour.core.messages.queue.UpdateQueueInfoMessage;
 import ca.aquiletour.core.messages.time.TimePassesMessage;
 import ca.aquiletour.core.messages.user.ItsNotMeMessage;
+import ca.aquiletour.core.messages.user.RenameUserMessage;
 import ca.aquiletour.core.messages.user.ToggleAdminModeMessage;
 import ca.aquiletour.core.messages.user.ToggleStudentModeMessage;
 import ca.aquiletour.core.messages.user.UpdateUserInfoMessage;
@@ -84,12 +85,15 @@ import ca.aquiletour.server.backend.semester_list.DeleteSemesterHandler;
 import ca.aquiletour.server.backend.semester_list.SetActiveSemesterHanlder;
 import ca.aquiletour.server.backend.time.TimePassesHandler;
 import ca.aquiletour.server.backend.users.AddStudentCsvHandler;
+import ca.aquiletour.server.backend.users.RenameUserHandler;
 import ca.aquiletour.server.backend.users.ToggleAdminModeHandler;
 import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
 import ca.aquiletour.server.backend.users.UserIsActiveHandler;
+import ca.ntro.backend.BackendError;
 import ca.ntro.jdk.services.BackendServiceServer;
+import ca.ntro.messages.NtroMessage;
 
 public class AquiletourBackendService extends BackendServiceServer {
 	
@@ -140,6 +144,7 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(OnExerciseCompleted.class, new OnExerciseCompletedHandler());
 		addBackendMessageHandler(UpdateQueueInfoMessage.class, new UpdateQueueInfoHandler());
 		addBackendMessageHandler(UserIsActiveMessage.class, new UserIsActiveHandler());
+		addBackendMessageHandler(RenameUserMessage.class, new RenameUserHandler());
 	}
 
 }

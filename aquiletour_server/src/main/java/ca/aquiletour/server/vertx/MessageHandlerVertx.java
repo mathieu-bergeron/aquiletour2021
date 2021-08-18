@@ -23,8 +23,10 @@ import java.util.TimerTask;
 
 import org.eclipse.jetty.server.Response;
 
+import ca.aquiletour.core.messages.user.RenameUserMessage;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsWebSocket;
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
@@ -45,40 +47,48 @@ public class MessageHandlerVertx {
 		HttpServerRequest request = routingContext.request();
 		HttpServerResponse response = routingContext.response();
 		
-        if (request.method().equals(HttpMethod.POST)) {
-
-        	if(isRequestFromLocalhost(request)) {
-
-				String messageText = routingContext.getBodyAsString();
-
-				Log.info("[handleRequest] messageText: " + messageText);
-
-				try {
-
-					NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
-					Ntro.backendService().sendMessageToBackend(message);
-
-				}catch(ClassCastException e) {
-
-					Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
-				}
-
-				response.setStatusCode(Response.SC_OK);
-				response.end();
-        		
-        	}else {
-
-				Log.error("[MessageHandlerVertx] Rejected a request from non-localhost: " + request.remoteAddress().hostAddress());
-				response.setStatusCode(Response.SC_BAD_GATEWAY);
-				response.end();
-        	}
-
-        }else {
-
-            Log.error("[MessageHandlerVertx] Invalid HTTP method " + request.method() + "!");
-            response.setStatusCode(Response.SC_METHOD_NOT_ALLOWED);
-            response.end();
+        if (!request.method().equals(HttpMethod.POST)) {
+			Log.error("[MessageHandlerVertx] Invalid HTTP method " + request.method() + "!");
+			response.setStatusCode(Response.SC_METHOD_NOT_ALLOWED);
+			response.end();
+			return;
         }
+
+        if(!isRequestFromLocalhost(request)) {
+			Log.error("[MessageHandlerVertx] Rejected a request from non-localhost: " + request.remoteAddress().hostAddress());
+			response.setStatusCode(Response.SC_BAD_GATEWAY);
+			response.end();
+			return;
+        }
+
+		String messageText = routingContext.getBodyAsString();
+
+		Log.info("[handleRequest] messageText: " + messageText);
+
+		try {
+
+			NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
+			
+			try {
+
+				Ntro.backendService().sendMessageToBackendWithExceptions(message);
+
+			}catch(BackendError e) {
+				
+			}
+
+		}catch(ClassCastException e) {
+
+			Log.error("[MessageHandlerVertx] Not a NtroMessage " + messageText);
+			response.setStatusCode(Response.SC_BAD_REQUEST);
+			response.end();
+			return;
+		}
+				
+		if(!response.ended()) {
+			response.setStatusCode(Response.SC_OK);
+			response.end();
+		}
 	}
 
 	private static boolean isRequestFromLocalhost(HttpServerRequest request) {

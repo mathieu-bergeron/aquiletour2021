@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
+import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.core.system.trace.__T;
 import ca.ntro.messages.MessageHandler;
@@ -108,6 +108,12 @@ public class BackendServiceJSweet extends BackendService {
 	public <MSG extends NtroMessage> boolean handlerExistsFor(MSG message) {
 		// Always true: all messages are sent on the socket
 		return true;
+	}
+
+	@Override
+	public void sendMessageToBackendWithExceptions(NtroMessage message) throws BackendError {
+		T.call(this);
+		// XXX: not supported in JSweet
 	}
 
 }
