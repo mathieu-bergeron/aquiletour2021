@@ -18,6 +18,8 @@
 package ca.aquiletour.server.vertx;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,7 +55,11 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.net.PemKeyCertOptions;
+import io.vertx.core.net.PemTrustOptions;
+import io.vertx.core.net.SelfSignedCertificate;
 import io.vertx.ext.bridge.BridgeOptions;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
@@ -193,8 +199,6 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			});
 		}));
 
-
-
 		router.route("/*").blockingHandler(routingContext -> {
 
 			DynamicHandlerVertx.handle(routingContext);
@@ -206,8 +210,47 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			failure.printStackTrace();
 		  }
 		});
+
+		HttpServerOptions serverOptions = new HttpServerOptions();
 		
-		HttpServer server = vertx.createHttpServer();
+		if(Ntro.config().isProd()) {
+
+			String userHome = System.getProperty("user.home");
+			Path keyPath = Paths.get(userHome, "aiguilleurca.key");
+			Path certPath = Paths.get(userHome, "d706a8e1929c0867.pem");
+
+			serverOptions.setSsl(true);
+
+			PemKeyCertOptions certOptions = new PemKeyCertOptions();
+			certOptions.setKeyPath(keyPath.toAbsolutePath().toString());
+			certOptions.setCertPath(certPath.toAbsolutePath().toString());
+
+			serverOptions.setKeyCertOptions(certOptions);
+			
+			/*
+			PemTrustOptions trustOptions = new PemTrustOptions();
+			trustOptions.addCertPath("server-ca.pem");
+			
+			serverOptions.setTrustOptions(trustOptions);
+			*/
+
+		} else {
+			
+			/*
+			SelfSignedCertificate certificate = SelfSignedCertificate.create();
+			
+			serverOptions = new HttpServerOptions();
+			serverOptions.setSsl(true);
+			serverOptions.setKeyCertOptions(certificate.keyCertOptions());
+			*/
+			
+			// XXX: mandatory??
+			//serverOptions.setTrustOptions(certificate.trustOptions());
+			
+		}
+
+
+		HttpServer server = vertx.createHttpServer(serverOptions);
 		server.requestHandler(router);
 		
 		server.listen(8080);
