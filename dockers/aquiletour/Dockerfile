@@ -5,6 +5,8 @@ FROM alpine:3.13 as build
 
 RUN apk update
 
+RUN apk add vi
+
 RUN apk add openjdk8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
 ENV PATH="$JAVA_HOME/bin:${PATH}"
