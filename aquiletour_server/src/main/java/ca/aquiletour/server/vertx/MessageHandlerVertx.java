@@ -46,23 +46,32 @@ public class MessageHandlerVertx {
 		HttpServerResponse response = routingContext.response();
 		
         if (request.method().equals(HttpMethod.POST)) {
-        	
-        	String messageText = routingContext.getBodyAsString();
 
-			Log.info("[handleRequest] messageText: " + messageText);
+        	if(isRequestFromLocalhost(request)) {
 
-			try {
+				String messageText = routingContext.getBodyAsString();
 
-				NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
-				Ntro.backendService().sendMessageToBackend(message);
+				Log.info("[handleRequest] messageText: " + messageText);
 
-			}catch(ClassCastException e) {
+				try {
 
-				Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
-			}
+					NtroMessage message = Ntro.jsonService().fromString(NtroMessage.class, messageText);
+					Ntro.backendService().sendMessageToBackend(message);
 
-			response.setStatusCode(Response.SC_OK);
-			response.end();
+				}catch(ClassCastException e) {
+
+					Log.warning("[MessageHandlerVertx] not a NtroMessage: " + messageText);
+				}
+
+				response.setStatusCode(Response.SC_OK);
+				response.end();
+        		
+        	}else {
+
+				Log.error("[MessageHandlerVertx] Rejected a request from non-localhost: " + request.remoteAddress().hostAddress());
+				response.setStatusCode(Response.SC_BAD_GATEWAY);
+				response.end();
+        	}
 
         }else {
 
@@ -70,6 +79,14 @@ public class MessageHandlerVertx {
             response.setStatusCode(Response.SC_METHOD_NOT_ALLOWED);
             response.end();
         }
+	}
+
+	private static boolean isRequestFromLocalhost(HttpServerRequest request) {
+		T.call(MessageHandlerVertx.class);
+		
+		String remoteAddress = request.remoteAddress().hostAddress();
+		
+		return remoteAddress.equals("0:0:0:0:0:0:0:1") || remoteAddress.equals("127.0.0.1");
 	}
 
 	public static void handleMessage(SockJSSocket socket, Buffer messageBuffer) {
