@@ -8,13 +8,27 @@ import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.LocalStoreMongoDb;
 import ca.ntro.services.ModelIdReader;
+import ca.ntro.services.Ntro;
 import ca.ntro.stores.ValuePath;
 
 public class LocalStoreMongoDbServer extends LocalStoreMongoDb {
 
 	@Override
 	protected String connectionString() {
-		return Constants.MONGO_DB_CONNECTION_STRING;
+		
+		String connectionString;
+		
+		if(Ntro.config().isProd()) {
+			
+			connectionString = Constants.MONGO_DB_CONNECTION_STRING;
+			
+		}else {
+			
+			connectionString = "localhost:27017";
+		}
+		
+		return connectionString;
+		
 	}
 
 	@Override
