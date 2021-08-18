@@ -74,7 +74,11 @@ public class MessageHandlerVertx {
 				Ntro.backendService().sendMessageToBackendWithExceptions(message);
 
 			}catch(BackendError e) {
-				
+
+				Log.error("[MessageHandlerVertx] BackendError\n" + e.getMessage());
+				response.setStatusCode(Response.SC_NOT_FOUND);
+				response.end();
+				return;
 			}
 
 		}catch(ClassCastException e) {
