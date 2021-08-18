@@ -90,6 +90,12 @@ public class NtroDate implements NtroModelValue {
 		
 		return this;
 	}
+	
+	public NtroDate clone() {
+		T.call(this);
+		
+		return new NtroDate(epochSeconds);
+	}
 
 
 

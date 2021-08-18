@@ -57,4 +57,22 @@ public class NtroSession implements NtroModel {
 		return Ntro.calendar().now().biggerThan(getExpiryDate());
 	}
 	
+	public NtroSession clone() {
+		T.call(this);
+		
+		NtroSession clone = Ntro.factory().newInstance(getClass());
+		
+		clone.deepCopyOf(this);
+
+		return clone;
+	}
+
+	protected void deepCopyOf(NtroSession toCopy) {
+		T.call(this);
+
+		setLang(toCopy.getLang());
+		setUser(toCopy.getUser().clone());
+		setSessionData(toCopy.getSessionData().clone());
+		setExpiryDate(toCopy.getExpiryDate().clone());
+	}
 }

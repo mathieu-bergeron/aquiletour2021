@@ -448,16 +448,15 @@ public class DynamicHandlerVertx {
 	private static void setSessionCookie(HttpServerResponse response) {
 		T.call(DynamicHandlerVertx.class);
 		
-		NtroSession session = Ntro.currentSession();
-		User user = (User) session.getUser();
-		session.setUser(user.toSessionUser());
-		
-		/*
-		SessionData sessionData = (SessionData) session.getSessionData();
-		session.setSessionData(sessionData.toPublicData());
-		*/
+		NtroSession publicSession = Ntro.currentSession().clone();
+		User user = (User) publicSession.getUser();
 
-		setCookie(response, "session", Ntro.jsonService().toString(session, false));
+		publicSession.setUser(user.toSessionUser());
+		
+		SessionData sessionData = (SessionData) publicSession.getSessionData();
+		publicSession.setSessionData(sessionData.toPublicData());
+
+		setCookie(response, "session", Ntro.jsonService().toString(publicSession, false));
 	}
 
 	private static boolean ifJsOnlySetCookies(HttpServerRequest baseRequest, HttpServerResponse response) {

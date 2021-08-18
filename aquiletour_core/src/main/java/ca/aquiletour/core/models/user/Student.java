@@ -1,6 +1,7 @@
 package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.users.NtroUser;
 
 public class Student extends User {
 
@@ -87,6 +88,21 @@ public class Student extends User {
 		T.call(this);
 
 		return true;
+	}
+
+	@Override
+	protected void deepCopyOf(NtroUser toCopy) {
+		T.call(this);
+		
+		super.deepCopyOf(toCopy);
+		
+		if(toCopy instanceof Student) {
+			
+			Student userToCopy = (Student) toCopy;
+
+			setProgramId(userToCopy.getProgramId());
+			setPhoneNumber(userToCopy.getPhoneNumber());
+		}
 	}
 	
 }

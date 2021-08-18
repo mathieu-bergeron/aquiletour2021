@@ -82,4 +82,21 @@ public class SessionData extends NtroSessionData {
 
 		return publicData;
 	}
+
+	@Override
+	protected void deepCopyOf(NtroSessionData toCopy) {
+		T.call(this);
+		
+		super.deepCopyOf(toCopy);
+		
+		if(toCopy instanceof SessionData) {
+			
+			SessionData sessionToCopy = (SessionData) toCopy;
+			
+			setFailedPasswordAttemps(sessionToCopy.getFailedPasswordAttemps());
+			setCurrentCategoryId(sessionToCopy.getCurrentCategoryId());
+			setCurrentTasksByCourseKey(getCurrentTasksByCourseKey().clone());
+			setLoginCode(getLoginCode());
+		}
+	}
 }

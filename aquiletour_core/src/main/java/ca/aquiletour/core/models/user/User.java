@@ -100,6 +100,8 @@ public class User extends NtroUser {
 	}
 
 	public User toSessionUser() {
+		T.call(this);
+
 		User sessionUser = Ntro.factory().newInstance(this.getClass());
 
 		copySessionOnlyInfo(sessionUser);
@@ -267,5 +269,26 @@ public class User extends NtroUser {
 		T.call(this);
 		
 		return getHasName();
+	}
+
+	@Override
+	protected void deepCopyOf(NtroUser toCopy) {
+		T.call(this);
+		
+		super.deepCopyOf(toCopy);
+		
+		if(toCopy instanceof User) {
+			
+			User userToCopy = (User) toCopy;
+
+			setUuid(userToCopy.getUuid());
+			setFirstname(userToCopy.getFirstname());
+			setLastname(userToCopy.getLastname());
+			setEmail(userToCopy.getEmail());
+			
+			setPasswordHash(userToCopy.getPasswordHash());
+			setHasPassword(userToCopy.getHasPassword());
+			setHasName(userToCopy.getHasName());
+		}
 	}
 }

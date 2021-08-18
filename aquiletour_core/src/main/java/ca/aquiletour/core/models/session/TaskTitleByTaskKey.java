@@ -27,4 +27,17 @@ public class TaskTitleByTaskKey implements NtroModelValue {
 			getTaskTitleByTaskKey().put(currentTask.getTaskPath().toKey(), currentTask.getTaskTitle().getValue());
 		}
 	}
+	
+	public TaskTitleByTaskKey clone() {
+		T.call(this);
+		
+		TaskTitleByTaskKey clone = new TaskTitleByTaskKey();
+		
+		for(Map.Entry<String, String> entry : getTaskTitleByTaskKey().entrySet()) {
+			
+			clone.getTaskTitleByTaskKey().put(entry.getKey(), entry.getValue());
+		}
+		
+		return clone;
+	}
 }

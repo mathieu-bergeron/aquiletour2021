@@ -34,4 +34,17 @@ public class CurrentTasksByCourseKey implements NtroModelValue {
 		
 		taskTitleByTaskKey.updateCurrentTasks(currentTasks);
 	}
+	
+	public CurrentTasksByCourseKey clone() {
+		T.call(this);
+		
+		CurrentTasksByCourseKey clone = new CurrentTasksByCourseKey();
+		
+		for(Map.Entry<String, TaskTitleByTaskKey> entry : getCurrentTasksByCourseKey().entrySet()) {
+			
+			clone.getCurrentTasksByCourseKey().put(entry.getKey(), entry.getValue().clone());
+		}
+		
+		return clone;
+	}
 }

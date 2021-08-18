@@ -1,6 +1,7 @@
 package ca.aquiletour.core.models.user;
 
 import ca.ntro.core.system.trace.T;
+import ca.ntro.users.NtroUser;
 
 public class Admin extends Teacher {
 	
@@ -50,5 +51,19 @@ public class Admin extends Teacher {
 		T.call(this);
 
 		return true;
+	}
+
+	@Override
+	protected void deepCopyOf(NtroUser toCopy) {
+		T.call(this);
+		
+		super.deepCopyOf(toCopy);
+		
+		if(toCopy instanceof Admin) {
+			
+			Admin userToCopy = (Admin) toCopy;
+
+			setAdminMode(userToCopy.getAdminMode());
+		}
 	}
 }
