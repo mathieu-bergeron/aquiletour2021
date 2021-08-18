@@ -212,6 +212,7 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		});
 
 		HttpServerOptions serverOptions = new HttpServerOptions();
+		int port = 8080;
 		
 		if(Ntro.config().isProd()) {
 
@@ -226,6 +227,8 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 			certOptions.setCertPath(certPath.toAbsolutePath().toString());
 
 			serverOptions.setKeyCertOptions(certOptions);
+			
+			port = 443;
 			
 			/*
 			PemTrustOptions trustOptions = new PemTrustOptions();
@@ -253,6 +256,6 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 		HttpServer server = vertx.createHttpServer(serverOptions);
 		server.requestHandler(router);
 		
-		server.listen(8080);
+		server.listen(port);
 	}
 }
