@@ -310,9 +310,12 @@ public class RegisteredSocketsSockJS {
 		
 		// XXX: there is a queue, so queue messages
 		if(queue != null) {
-			
-			queue.addInvokeValueMessage(message);
-			if(observerTokens != null) {
+
+			// XXX: only add message if there is some observers
+			if(observerTokens != null
+					&& !observerTokens.isEmpty()) {
+
+				queue.addInvokeValueMessage(message);
 				queue.addObservers(observerTokens);
 			}
 
