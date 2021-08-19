@@ -72,10 +72,40 @@ public abstract class BackendServiceServer extends BackendService {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void sendMessageToBackendWithExceptions(NtroMessage message) throws BackendError {
+		T.call(this);
+
+		BackendMessageHandler handler = handlers.get(message.getClass());
 		
-		throw new RuntimeException("TODO!");
+		if(handler == null) {
+
+			throw new BackendError("No handler for " + message.getClass().getSimpleName());
+
+		}else {
+
+			handler.handleNow(new ModelStoreSync(Ntro.modelStore()), message);
+
+			Ntro.threadService().executeLater(new NtroTaskSync() {
+				@Override
+				protected void runTask() {
+					T.call(this);
+					
+					try {
+
+						handler.handleLater(new ModelStoreSync(Ntro.modelStore()), message);
+
+					} catch (BackendError e) {
+						Log.error("[BackendError] " + e.getMessage());
+					}
+				}
+
+				@Override
+				protected void onFailure(Exception e) {
+				}
+			});
+		}
 	}
 
 

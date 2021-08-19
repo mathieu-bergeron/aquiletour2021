@@ -18,14 +18,10 @@
 package ca.aquiletour.server.vertx;
 
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.eclipse.jetty.server.Response;
 
-import ca.aquiletour.core.messages.user.RenameUserMessage;
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
-import ca.aquiletour.server.registered_sockets.RegisteredSocketsWebSocket;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
@@ -54,7 +50,7 @@ public class MessageHandlerVertx {
 			return;
         }
 
-        if(!isRequestFromLocalhost(request)) {
+        if(!isRequestFromLocalNetwork(request)) {
 			Log.error("[MessageHandlerVertx] Rejected a request from non-localhost: " + request.remoteAddress().hostAddress());
 			response.setStatusCode(Response.SC_BAD_GATEWAY);
 			response.end();
@@ -76,7 +72,7 @@ public class MessageHandlerVertx {
 			}catch(BackendError e) {
 
 				Log.error("[MessageHandlerVertx] BackendError\n" + e.getMessage());
-				response.setStatusCode(Response.SC_NOT_FOUND);
+				response.setStatusCode(Response.SC_BAD_REQUEST);
 				response.end();
 				return;
 			}
@@ -95,12 +91,15 @@ public class MessageHandlerVertx {
 		}
 	}
 
-	private static boolean isRequestFromLocalhost(HttpServerRequest request) {
+	private static boolean isRequestFromLocalNetwork(HttpServerRequest request) {
 		T.call(MessageHandlerVertx.class);
 		
 		String remoteAddress = request.remoteAddress().hostAddress();
 		
-		return remoteAddress.equals("0:0:0:0:0:0:0:1") || remoteAddress.equals("127.0.0.1");
+		return remoteAddress.equals("0:0:0:0:0:0:0:1") 
+				|| remoteAddress.equals("127.0.0.1")
+				|| remoteAddress.startsWith("172.18.0")
+				|| remoteAddress.startsWith("02:42:ac:12");
 	}
 
 	public static void handleMessage(SockJSSocket socket, Buffer messageBuffer) {
