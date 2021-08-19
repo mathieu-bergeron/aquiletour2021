@@ -444,6 +444,23 @@ public abstract class ModelStore {
 		}
 	}
 
+	public void callModelObservers(DocumentPath documentPath) {
+		T.call(this);
+
+		if(documentPath == null) return;
+
+		NtroModel model = Ntro.collections().getByKeyEquals(localHeapByPath, documentPath);
+
+		if(model != null) {
+			Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
+			if(observers != null) {
+				for(ModelObserver observer : observers) {
+					observer.onModelUpdate(model);
+				}
+			}
+		}
+	}
+
 	public void invokeValueMethod(ValuePath valuePath, String methodName, List<Object> args) {
 		if(valuePath == null) return;
 
@@ -484,13 +501,6 @@ public abstract class ModelStore {
 					
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					Log.fatalError("Unable to invoke " + methodName + " on valuePath " + valuePath.toString(), e);
-				}
-			}
-			
-			Set<ModelObserver> observers = Ntro.collections().getByKeyExact(modelObservers, model);
-			if(observers != null) {
-				for(ModelObserver observer : observers) {
-					observer.onModelUpdate(model);
 				}
 			}
 		}

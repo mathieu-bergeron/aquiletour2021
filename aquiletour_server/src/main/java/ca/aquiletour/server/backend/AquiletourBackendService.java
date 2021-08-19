@@ -91,9 +91,13 @@ import ca.aquiletour.server.backend.users.ToggleStudentModeHandler;
 import ca.aquiletour.server.backend.users.UpdateUserInfoHandler;
 import ca.aquiletour.server.backend.users.UserChangesPasswordHandler;
 import ca.aquiletour.server.backend.users.UserIsActiveHandler;
+import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
 import ca.ntro.backend.BackendError;
+import ca.ntro.core.system.trace.T;
 import ca.ntro.jdk.services.BackendServiceServer;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 public class AquiletourBackendService extends BackendServiceServer {
 	
@@ -147,4 +151,17 @@ public class AquiletourBackendService extends BackendServiceServer {
 		addBackendMessageHandler(RenameUserMessage.class, new RenameUserHandler());
 	}
 
+	@Override
+	protected void beforeCallingHandler(NtroUser requestingUser) {
+		T.call(this);
+
+		RegisteredSocketsSockJS.createInvokeValueMessageQueue(Ntro.threadService().currentThread().threadId(), requestingUser);
+	}
+
+	@Override
+	protected void afterCallingHandler(NtroUser requestingUser) {
+		T.call(this);
+
+		RegisteredSocketsSockJS.flushInvokeValueMessageQueue(Ntro.threadService().currentThread().threadId(), requestingUser);
+	}
 }

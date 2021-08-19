@@ -10,10 +10,12 @@ import ca.ntro.core.system.trace.T;
 import ca.ntro.core.tasks.NtroTaskSync;
 import ca.ntro.messages.MessageHandler;
 import ca.ntro.messages.NtroMessage;
+import ca.ntro.messages.NtroUserMessage;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.BackendService;
 import ca.ntro.services.ModelStoreSync;
 import ca.ntro.services.Ntro;
+import ca.ntro.users.NtroUser;
 
 public abstract class BackendServiceServer extends BackendService {
 
@@ -41,8 +43,17 @@ public abstract class BackendServiceServer extends BackendService {
 		}else {
 
 			try {
+
+				NtroUser requestingUser = null;
+				if(message instanceof NtroUserMessage) {
+					requestingUser = ((NtroUserMessage) message).getUser();
+				}
+				
+				beforeCallingHandler(requestingUser);
 				
 				handler.handleNow(new ModelStoreSync(Ntro.modelStore()), message);
+
+				afterCallingHandler(requestingUser);
 
 				Ntro.threadService().executeLater(new NtroTaskSync() {
 					@Override
@@ -51,7 +62,16 @@ public abstract class BackendServiceServer extends BackendService {
 						
 						try {
 
+							NtroUser requestingUser = null;
+							if(message instanceof NtroUserMessage) {
+								requestingUser = ((NtroUserMessage) message).getUser();
+							}
+							
+							beforeCallingHandler(requestingUser);
+
 							handler.handleLater(new ModelStoreSync(Ntro.modelStore()), message);
+							
+							afterCallingHandler(requestingUser);
 
 						} catch (BackendError e) {
 							Log.error("[BackendError] " + e.getMessage());
@@ -85,7 +105,16 @@ public abstract class BackendServiceServer extends BackendService {
 
 		}else {
 
+			NtroUser requestingUser = null;
+			if(message instanceof NtroUserMessage) {
+				requestingUser = ((NtroUserMessage) message).getUser();
+			}
+			
+			beforeCallingHandler(requestingUser);
+			
 			handler.handleNow(new ModelStoreSync(Ntro.modelStore()), message);
+
+			afterCallingHandler(requestingUser);
 
 			Ntro.threadService().executeLater(new NtroTaskSync() {
 				@Override
@@ -94,7 +123,16 @@ public abstract class BackendServiceServer extends BackendService {
 					
 					try {
 
+						NtroUser requestingUser = null;
+						if(message instanceof NtroUserMessage) {
+							requestingUser = ((NtroUserMessage) message).getUser();
+						}
+
+						beforeCallingHandler(requestingUser);
+
 						handler.handleLater(new ModelStoreSync(Ntro.modelStore()), message);
+						
+						afterCallingHandler(requestingUser);
 
 					} catch (BackendError e) {
 						Log.error("[BackendError] " + e.getMessage());
@@ -108,6 +146,10 @@ public abstract class BackendServiceServer extends BackendService {
 		}
 	}
 
+
+	protected abstract void beforeCallingHandler(NtroUser requestingUser);
+
+	protected abstract void afterCallingHandler(NtroUser requestingUser);
 
 	@Override
 	public <M extends NtroMessage> void handleMessageFromBackend(Class<M> messageClass, MessageHandler<M> handler) {

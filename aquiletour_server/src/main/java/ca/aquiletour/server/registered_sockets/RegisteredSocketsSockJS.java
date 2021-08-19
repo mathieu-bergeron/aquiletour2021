@@ -11,6 +11,7 @@ import ca.ntro.core.system.log.Log;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.NtroMessage;
 import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
+import ca.ntro.messages.ntro_messages.NtroInvokeValueMessageQueueMessage;
 import ca.ntro.services.Ntro;
 import ca.ntro.stores.DocumentPath;
 import ca.ntro.stores.ValuePath;
@@ -20,6 +21,8 @@ import io.vertx.ext.web.handler.sockjs.SockJSSocket;
 
 public class RegisteredSocketsSockJS {
 
+	private static Map<String, NtroInvokeValueMessageQueueMessage> invokeValueMethodQueues = Ntro.collections().concurrentMap(new HashMap<>());
+
 	private static Map<DocumentPath, Set<String>> tokensByObservedPath = Ntro.collections().concurrentMap(new HashMap<>());
 	private static Map<String, Set<DocumentPath>> observedPathsByToken = Ntro.collections().concurrentMap(new HashMap<>());
 
@@ -28,7 +31,7 @@ public class RegisteredSocketsSockJS {
 
 	private static Map<String, Set<SockJSSocket>> socketsByToken = Ntro.collections().concurrentMap(new HashMap<>());
 	private static Map<SockJSSocket, String> tokenBySocket = Ntro.collections().concurrentMap(new HashMap<>());
-
+	
 	public static void onUserChanges(String oldAuthToken, String authToken, NtroUser user) {
 		T.call(RegisteredSocketsSockJS.class);
 		
@@ -294,23 +297,62 @@ public class RegisteredSocketsSockJS {
 														+ " " + args.get(1) 
 														+ " " + args.get(2));
 		}
-		
+
 		Set<String> observerTokens = tokensByObservedPath.get(valuePath.getDocumentPath());
 
-		if(observerTokens != null) {
+		NtroInvokeValueMethodMessage message = Ntro.messages().create(NtroInvokeValueMethodMessage.class);
+		message.setValuePath(valuePath);
+		message.setMethodName(methodName);
+		message.setArgs(args);
+		
+		String currentThreadId = Ntro.threadService().currentThread().threadId();
+		NtroInvokeValueMessageQueueMessage queue = invokeValueMethodQueues.get(currentThreadId);
+		
+		// XXX: there is a queue, so queue messages
+		if(queue != null) {
+			
+			queue.addInvokeValueMessage(message);
+			if(observerTokens != null) {
+				queue.addObservers(observerTokens);
+			}
 
-			synchronized(observerTokens) {
-				for(String authToken : observerTokens) {
+		} else {
 
-					NtroInvokeValueMethodMessage message = Ntro.messages().create(NtroInvokeValueMethodMessage.class);
-					message.setValuePath(valuePath);
-					message.setMethodName(methodName);
-					message.setArgs(args);
+			// XXX: there is no queue, so send messages directly
+			if(observerTokens != null) {
+				synchronized(observerTokens) {
+					for(String authToken : observerTokens) {
 
-					RegisteredSocketsSockJS.sendMessageToSockets(authToken, message);
+						RegisteredSocketsSockJS.sendMessageToSockets(authToken, message);
+					}
 				}
 			}
 		}
+	}
+
+	public static void createInvokeValueMessageQueue(String threadId, NtroUser requestingUser) {
+		T.call(RegisteredSocketsSockJS.class);
+		
+		if(invokeValueMethodQueues.containsKey(threadId)) {
+			flushInvokeValueMessageQueue(threadId, requestingUser);
+		}
+		
+		invokeValueMethodQueues.put(threadId, Ntro.messages().create(NtroInvokeValueMessageQueueMessage.class));
+	}
+
+	public static void flushInvokeValueMessageQueue(String threadId, NtroUser requestingUser) {
+		T.call(RegisteredSocketsSockJS.class);
+		
+		NtroInvokeValueMessageQueueMessage queue = invokeValueMethodQueues.get(threadId);
+		
+		if(queue != null) {
+			for(String authToken : queue.observerTokens()) {
+
+				RegisteredSocketsSockJS.sendMessageToSockets(authToken, queue);
+			}
+		}
+
+		invokeValueMethodQueues.remove(threadId);
 	}
 
 	public static void removeObserversWithNoSockets() {
@@ -388,4 +430,5 @@ public class RegisteredSocketsSockJS {
 			}
 		}
 	}
+
 }

@@ -14,6 +14,7 @@ import ca.ntro.core.regex.RegEx;
 import ca.ntro.core.system.trace.T;
 import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.messages.ntro_messages.NtroGetModelMessage;
+import ca.ntro.messages.ntro_messages.NtroInvokeValueMessageQueueMessage;
 import ca.ntro.messages.ntro_messages.NtroInvokeValueMethodMessage;
 import ca.ntro.messages.ntro_messages.NtroRegisterSocketMessage;
 import ca.ntro.messages.ntro_messages.NtroSetModelMessage;
@@ -69,6 +70,7 @@ public abstract class EarlyInitialization {
 		Ntro.registerSerializableClass(NtroSetModelMessage.class);
 		Ntro.registerSerializableClass(NtroUpdateSessionMessage.class);
 		Ntro.registerSerializableClass(NtroInvokeValueMethodMessage.class);
+		Ntro.registerSerializableClass(NtroInvokeValueMessageQueueMessage.class);
 		Ntro.registerSerializableClass(NtroErrorMessage.class);
 
 		Ntro.registerSerializableClass(Path.class);
