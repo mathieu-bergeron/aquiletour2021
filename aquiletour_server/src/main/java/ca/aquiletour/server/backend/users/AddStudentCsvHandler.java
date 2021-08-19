@@ -1,27 +1,23 @@
 package ca.aquiletour.server.backend.users;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jetty.security.UserStore;
+
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
-import ca.aquiletour.core.models.courses.teacher.CourseModelTeacher;
 import ca.aquiletour.core.models.user.Student;
 import ca.aquiletour.core.models.user.User;
-import ca.aquiletour.core.pages.course_list.models.CourseListItem;
-import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
-import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
-import ca.aquiletour.server.backend.course.CourseManager;
-import ca.aquiletour.server.backend.course_list.CourseListManager;
-import ca.aquiletour.server.backend.dashboard.DashboardManager;
-import ca.aquiletour.server.backend.group_list.GroupListManager;
+import ca.aquiletour.server.backend.log.LogManagerQueue;
 import ca.aquiletour.server.backend.queue.QueueManager;
-import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;
+import ca.ntro.messages.ntro_messages.NtroErrorMessage;
 import ca.ntro.services.ModelStoreSync;
+import ca.ntro.services.Ntro;
 
 public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMessage> {
 	
@@ -34,15 +30,33 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		String csvString = message.getCsvString();
 		String csvFilename = message.getCsvFilename();
-		
+
 		groupId = groupNameFromCsvFileName(csvFilename);
+
 		studentsToAdd = parseCsv(modelStore, csvString);
+
+		UserManager.createUsers(modelStore, studentsToAdd);
+
+		NtroErrorMessage feedback = Ntro.messages().create(NtroErrorMessage.class);
 		
+		if(studentsToAdd.size() > 0) {
+
+			feedback.setMessage("" + studentsToAdd.size() + " inscriptions réussies.");
+
+		}else {
+
+			feedback.setMessage("Aucune données valides trouvée dans le .csv");
+		}
+		
+		Ntro.messages().send(feedback);
+		
+		/*
 		CourseListManager.addGroupForUser(modelStore, 
 										  CourseListModelTeacher.class,
 										  message.coursePath(),
 				                          groupId, 
 				                          message.getUser());
+		*/
 	}
 
 	private String groupNameFromCsvFileName(String csvFilename) {
@@ -94,9 +108,15 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	public void handleLater(ModelStoreSync modelStore, AddStudentCsvMessage message) throws BackendError {
 		T.call(this);
 		
-		User teacher = message.getUser();
+		for(User user : studentsToAdd) {
+			QueueManager.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
+			LogManagerQueue.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
+		}
 
-		UserManager.createUsers(modelStore, studentsToAdd);
+		/*
+		 
+
+		User teacher = message.getUser();
 
 		GroupListManager.addGroupForUser(modelStore, 
 				                         message.getSemesterId(), 
@@ -121,6 +141,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 							   groupId,
 							   studentsToAdd,
 							   teacher);
+	   */
 		
 		/*
 		QueueManager.addGroup(modelStore, 
@@ -128,6 +149,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				              groupId, 
 				              teacher);
 	    */
+		
+		/*
 
 		for(User student : studentsToAdd) {
 
@@ -145,5 +168,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		}
 		
 		DashboardManager.updateCurrentTasks(modelStore, message.coursePath());
+
+		*/
 	}
 }

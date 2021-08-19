@@ -1,8 +1,6 @@
 package ca.aquiletour.server.backend.users;
 
 import ca.aquiletour.core.messages.user.RenameUserMessage;
-import ca.aquiletour.server.backend.log.LogManagerQueue;
-import ca.aquiletour.server.backend.queue.QueueManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.backend.BackendMessageHandler;
 import ca.ntro.core.system.trace.T;

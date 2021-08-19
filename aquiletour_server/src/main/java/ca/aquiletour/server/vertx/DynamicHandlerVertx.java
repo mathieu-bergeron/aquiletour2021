@@ -90,7 +90,6 @@ public class DynamicHandlerVertx {
 
 		Set<FileUpload> uploads =  routingContext.fileUploads();
 		
-		
 		String rawPath = request.path();
 		Path path = Path.fromRawPath(rawPath);
 		
@@ -245,11 +244,7 @@ public class DynamicHandlerVertx {
 		NtroWindowServer window = newWindow(ifJSweet, path);
 		//NtroWindowServer window = newWindow(true, path);
 
-		if(!ifJSweet) {
-
-			processCsvUploadsIfAny(request, uploads);
-
-		}
+		processCsvUploadsIfAny(request, uploads);
 
 		executeFrontendOnServer(request, response, path, parameters, window);
 
@@ -284,16 +279,18 @@ public class DynamicHandlerVertx {
 	}
 
 	private static void processCsvUploadsIfAny(HttpServerRequest request, Set<FileUpload> uploads) {
-		if(Ntro.currentUser() instanceof Teacher
-				&& !uploads.isEmpty()) {
-
+		T.call(DynamicHandlerVertx.class);
+		
+		if(!uploads.isEmpty()
+				&& Ntro.currentUser() != null
+				&& Ntro.currentUser() instanceof User
+				&& ((User)Ntro.currentUser()).isTeacher()) {
+			
 			String semesterId = request.getParam("semesterId");
 			String courseId = request.getParam("courseId");
 
-			if(semesterId != null && courseId != null) {
-				for(FileUpload upload : uploads) {
-					sendCsvMessage(semesterId, courseId, upload);
-				}
+			for(FileUpload upload : uploads) {
+				sendCsvMessage(semesterId, courseId, upload);
 			}
 		}
 	}

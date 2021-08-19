@@ -194,6 +194,14 @@ public class User extends NtroUser {
 		updateEmailIfEmpty(user.getEmail());
 	}
 
+	public void updateInfo(User user) {
+		T.call(this);
+		
+		setFirstname(user.getFirstname());
+		setLastname(user.getLastname());
+		setEmail(user.getEmail());
+	}
+
 	public boolean hasPassword() {
 		T.call(this);
 		
@@ -291,4 +299,14 @@ public class User extends NtroUser {
 			setHasName(userToCopy.getHasName());
 		}
 	}
+
+	public void updateInfo(String firstName, String lastName, String email) {
+		T.call(this);
+		
+		setFirstname(firstName);
+		setLastname(lastName);
+		setEmail(email);
+
+	}
+
 }

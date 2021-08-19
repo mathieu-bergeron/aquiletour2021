@@ -13,17 +13,12 @@ import ca.aquiletour.core.models.user_list.UserList;
 import ca.aquiletour.core.models.user_uuid.UserIdByUuid;
 import ca.aquiletour.core.models.user_uuid.UuidByUserId;
 import ca.aquiletour.core.pages.course_list.student.CourseListModelStudent;
-import ca.aquiletour.core.pages.course_list.teacher.CourseListModelTeacher;
 import ca.aquiletour.core.pages.dashboard.student.models.DashboardModelStudent;
-import ca.aquiletour.core.pages.dashboard.teacher.models.DashboardModelTeacher;
-import ca.aquiletour.core.pages.semester_list.teacher.models.SemesterListModelTeacher;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
-import ca.aquiletour.server.backend.group_list.GroupListManager;
 import ca.aquiletour.server.backend.log.LogManagerQueue;
 import ca.aquiletour.server.backend.queue.QueueManager;
-import ca.aquiletour.server.backend.semester_list.SemesterListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelUpdater;
@@ -130,6 +125,7 @@ public class UserManager {
 
 	public static void createUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
+		
 
 		if(modelStore.ifModelExists(User.class, "admin", user.getId())) {
 
@@ -144,7 +140,7 @@ public class UserManager {
 
 	private static void updateExistingUser(ModelStoreSync modelStore, User user) throws BackendError {
 		T.call(UserManager.class);
-		
+
 		modelStore.updateModel(User.class, "admin", user.getId(), new ModelUpdater<User>() {
 			@Override
 			public void update(User existingUser) {
@@ -407,6 +403,7 @@ public class UserManager {
 		return student;
 	}
 
+	// FIXME: clarify, are we creating the user or updating the DB
 	public static <U extends User> U createUser(ModelStoreSync modelStore, 
 										        Class<U> modelClass,
 										        String userId,
@@ -422,7 +419,7 @@ public class UserManager {
 			
 			modelStore.updateModel(User.class, "admin", userId, storedUser -> {
 
-				storedUser.updateInfoIfEmpty(firstName, lastName, email);
+				storedUser.updateInfo(firstName, lastName, email);
 			});
 			
 			user = modelStore.extractFromModel(User.class, "admin", userId, modelClass, storedUser -> {

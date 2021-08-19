@@ -18,7 +18,6 @@
 package ca.aquiletour.server.vertx;
 
 
-
 import org.eclipse.jetty.server.Response;
 
 import ca.aquiletour.server.registered_sockets.RegisteredSocketsSockJS;
