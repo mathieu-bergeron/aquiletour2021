@@ -82,6 +82,18 @@ public class UserManager {
 		return uuid;
 	}
 
+	public static boolean isStudentId(String providedId) {
+		T.call(UserManager.class);
+		boolean isStudentId = false;
+
+		if(providedId.matches("^\\d{7}$")) {
+			isStudentId = true;
+		}
+
+		return isStudentId;
+	}
+
+
 	public static void setUserPassword(ModelStoreSync modelStore, String newPassword, User user) throws BackendError {
 		T.call(UserManager.class);
 
@@ -613,4 +625,5 @@ public class UserManager {
 
 		return userHasName;
 	}
+
 }

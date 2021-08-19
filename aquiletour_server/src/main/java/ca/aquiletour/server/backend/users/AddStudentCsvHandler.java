@@ -4,7 +4,6 @@ package ca.aquiletour.server.backend.users;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jetty.security.UserStore;
 
 import ca.aquiletour.core.Constants;
 import ca.aquiletour.core.messages.AddStudentCsvMessage;
@@ -32,6 +31,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		String csvFilename = message.getCsvFilename();
 
 		groupId = groupNameFromCsvFileName(csvFilename);
+		
+		T.values(groupId);
 
 		studentsToAdd = parseCsv(modelStore, csvString);
 
@@ -62,12 +63,31 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 	private String groupNameFromCsvFileName(String csvFilename) {
 		T.call(this);
 		
-		String afterDash = csvFilename.split("-")[1];
-		String beforeDot = afterDash.split("\\.")[0];
+		String groupName = null;
 		
-		int groupNumber = Integer.parseInt(beforeDot);
+		String[] dashSegments = csvFilename.split("-");
 		
-		String groupName = String.format("%02d", groupNumber);
+		if(dashSegments.length >= 2) {
+			
+			String afterDash = dashSegments[1];
+			
+			String[] dotSegments = afterDash.split("\\.");
+			
+			if(dotSegments.length >= 2) {
+
+				String beforeDot = dotSegments[0];
+				String groupNumberRaw = beforeDot;
+
+				if(beforeDot.contains("(")) {
+					groupNumberRaw = beforeDot.split("\\(")[0];
+				}
+
+				groupNumberRaw = groupNumberRaw.trim();
+
+				int groupNumber = Integer.parseInt(groupNumberRaw);
+				groupName = String.format("%02d", groupNumber);
+			}
+		}
 		
 		return groupName;
 	}
@@ -77,18 +97,55 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		
 		List<User> usersToAdd = new ArrayList<>();
 		
-		String[] cutByLine = csvString.split(System.lineSeparator());// cut by each line
+		String[] lines = csvString.split(System.lineSeparator());
 		
-		for (int i = 0; i < cutByLine.length; i++) {
-			String line = cutByLine[i];
-			if(i > 0){ //first line is not a student, its the class name
-				String[] cutBySeparator = line.split(Constants.CSV_SEPARATOR);
-				String lastName = cutBySeparator[0];
-				String firstName = cutBySeparator[1];
-				String registrationId = cutBySeparator[2].substring(2);
-				String programId = cutBySeparator[3];
-				String phoneNumber = cutBySeparator[5];
-				String email = registrationId + "@" + Constants.EMAIL_HOST;
+		for (int i = 0; i < lines.length; i++) {
+
+			String line = lines[i];
+
+			String[] fields = line.split(Constants.CSV_SEPARATOR);
+
+			String lastName = "";
+			String firstName = "";
+			String registrationId = "";
+			String programId = "";
+			String phoneNumber = "";
+			
+			if(fields.length > 0) {
+				lastName = fields[0];
+			}
+
+			if(fields.length > 1) {
+				firstName = fields[1];
+			}
+
+			if(fields.length > 2) {
+				String registrationIdRaw = fields[2].trim();
+
+				if(registrationIdRaw.length() == 9) {
+					registrationIdRaw = registrationIdRaw.substring(2);
+				}
+
+				if(UserManager.isStudentId(registrationIdRaw)) {
+					registrationId = registrationIdRaw.substring(2);
+				}
+			}
+
+			if(fields.length > 3) {
+				programId = fields[3];
+			}
+
+			if(fields.length > 4) {
+				phoneNumber = fields[4];
+			}
+
+			String email = registrationId + "@" + Constants.EMAIL_HOST;
+			
+			T.values(firstName, lastName, registrationId);
+			
+			if(!firstName.isEmpty()
+					&& !lastName.isEmpty()
+					&& !registrationId.isEmpty()) {
 
 				Student newUser = UserManager.createStudentUsingRegistrationId(modelStore, 
 																			   firstName, 
@@ -98,7 +155,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 																			   phoneNumber, 
 																			   email);
 				usersToAdd.add(newUser);
-			}		
+			}
 		}
 
 		return usersToAdd;
@@ -109,8 +166,8 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		T.call(this);
 		
 		for(User user : studentsToAdd) {
-			QueueManager.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
-			LogManagerQueue.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
+			//QueueManager.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
+			//LogManagerQueue.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
 		}
 
 		/*

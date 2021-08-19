@@ -83,7 +83,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		
 		User userToRegister;
 
-		if(isStudentId(userId)) {
+		if(UserManager.isStudentId(userId)) {
 			
 			userToRegister = UserManager.createGuestUser(modelStore, StudentGuest.class, userId);
 			
@@ -132,15 +132,6 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 		return loginCode.replace(" ", "");
 	}
 
-	private boolean isStudentId(String providedId) {
-		boolean isStudentId = false;
-
-		if(providedId.matches("^\\d{7}$")) {
-			isStudentId = true;
-		}
-
-		return isStudentId;
-	}
 
 	@Override
 	public void handleLater(ModelStoreSync modelStore, UserInitiatesLoginMessage message) {
