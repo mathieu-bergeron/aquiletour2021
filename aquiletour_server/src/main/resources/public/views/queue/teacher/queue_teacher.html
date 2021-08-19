@@ -74,7 +74,7 @@
             <button id="close-queue-menu-button" data-toggle="dropdown" data-target="#queue-menu-dropdown" style="display:none;"></button>
             <div id="all-courses-queue-menu" class="ms-3 me-3" style="min-width:14rem;">
                 <div class="d-flex justify-content-start">
-                    Pour tout le monde
+                	Ouvert pour tous
                     <div class="flex-fill"></div>
                     <div class="form-check form-switch d-inline">
                         <form class="open-queue-form add-all-courses-id-to-id" action="" method="post" id="open-queue-form">
@@ -115,6 +115,12 @@
                         <pre class="queue-permalink m-0 p-0"></pre>
                     </div>
                 </div>
+                <div class="d-flex justify-content-start mt-3">
+                    <div><a id="upload-csv-link" 
+                    		data-toggle="modal"
+                    		data-target="#register-students-modal"
+                    		href="">Inscrire des étudiant·es</a></div>
+                </div>
 
 
                 <div class="d-flex justify-content-start mt-3">
@@ -133,7 +139,7 @@
                 <div class="mt-3 d-flex justify-content-start align-items-baseline">
                     <div>Message aux étudiant·es</div>
                     <div class="flex-fill"></div>
-                    <div class="me-2" style="line-height:0px;" data-toggle="tooltip" data-placement="right" title="Message affiché à l'étudiant.e lors de la prise de rendez-vous. P.ex.  «SVP indiquer #eval si vous prenez rendez-vous concernant une évaluation»"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+                    <div class="me-2" style="line-height:0px;" data-toggle="tooltip" data-placement="right" title="Message affiché à l'étudiant·e lors de la prise de rendez-vous. P.ex.  «SVP indiquer #eval pour vous faire évaluer»"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
                         </svg></div>
@@ -156,6 +162,66 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="register-students-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form action="" method="post" id="add-group-form" enctype="multipart/form-data">
+        <input class="add-semester-id-to-value" name="semesterId" style="display:none;"></input>
+        <input class="add-course-id-to-value" name="courseId" style="display:none;"></input>
+    </form>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="register-students-modal-title">Inscrire des étudiant·es</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!--
+                    <ul class="nav nav-tabs mb-3" id="add-course-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#csv-file-tab" type="button" role="tab" aria-controls="home" aria-selected="true">Fichier .csv</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Groupe personnalisé</button>
+                    </li>
+                    </ul>
+                    <div class="tab-content">
+                    <div class="tab-pane fade show active" id="csv-file-tab" role="tabpanel" aria-labelledby="home-tab">
+                -->
+
+                <div class="form-group row ms-3 me-3">
+                    <label for="csvFile" class="mb-1">Fichier .csv de ColNet, p.ex. <i>4206APMO-000001.csv</i></label>
+                    <input form="add-group-form" class="form-control" type="file" name="csvFile" id="csv-file-input"/><br>
+                </div>
+                </form>
+
+                <!--
+                    <div class="form-group row mb-2 mx-2">
+                    <label for="code">Description</label>
+                    <textarea  name="courseDescription" id="course-description-input"></textarea>
+                    </div>
+                -->
+                    </div>
+                    <!--
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="form-group row mb-3 mx-2">
+                        <label for="copyCourse">Code du groupe</label>
+                        <input form="add-group-form" name="copyCourse" id="copy-course-input"></input>
+                        </div>
+                        </div>
+                        </div>
+                    -->
+                    <div class="modal-footer border-0 mt-3">         
+                        <button form="add-group-form" type="submit" class="btn btn-primary" id="add-subtask-submit-button">Ajouter</button>  
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-button">Annuler</button>          
+                    </div>  
+            </div>       
+        </div>
+    </div>
+</div>
+</div>
+
+
 
 <div class="queue-menu-course-template ms-3 me-3" style="min-width:14rem;">
     <div class="mt-3 mb-3 dropdown-divider"></div>
