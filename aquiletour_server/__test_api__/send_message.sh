@@ -1,7 +1,6 @@
 print_usage_and_exit(){
     echo "usage $0 [http,https] [aquiletour,git_api,git_hook] path/to/message.json"
     exit 1
-
 }
 
 if [ "$1" = "" -o "$2" = "" -o "$3" = "" ]; then
@@ -16,7 +15,7 @@ if [ "$1" = "http" ]; then
 
 elif [ "$1" = "https" ]; then
 
-	ssl="--ssl-reqd"
+	ssl="--insecure"
 	protocol="https"
 	port="443"
 
@@ -51,4 +50,4 @@ fi
 
 payload_path=$3
 
-curl -v --header $ssl "Content-Type: application/json; charset=utf8" --data "@$payload_path"  $protocol://localhost:$port/$path
+curl -v $ssl --header "Content-Type: application/json; charset=utf8" --data "@$payload_path"  $protocol://localhost:$port/$path
