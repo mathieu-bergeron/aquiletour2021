@@ -46,5 +46,21 @@ public class LogManagerQueue {
 			logModel.deleteAppointment(appointmentId, user);
 		});
 	}
+
+	public static void renameUser(ModelStoreSync modelStore, 
+			                      String userId, 
+			                      String firstname, 
+			                      String lastname) throws BackendError {
+
+		T.call(QueueManager.class);
+		
+		modelStore.forEachModelId(LogModelQueue.class, "admin", logId -> {
+			
+			modelStore.updateModel(LogModelQueue.class, "admin", logId, logModel -> {
+
+				logModel.renameUser(userId, firstname, lastname);
+			});
+		});
+	}
 	
 }

@@ -35,6 +35,18 @@ public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> imp
 		return getUserById().valueOf(userId);
 	}
 
+	public void renameUser(String userId, String firstname, String lastname) {
+		T.call(this);
+		
+		User user = getUserById().valueOf(userId);
+
+		if(user != null) {
+
+			user.setFirstname(firstname);
+			user.setLastname(lastname);
+		}
+	}
+
 	public void writeCsvFileContent(String separator, StringBuilder builder) {
 		T.call(this);
 
@@ -71,5 +83,4 @@ public abstract class LogModel<LI extends LogItem, LIS extends LogItems<LI>> imp
 		T.call(LogModel.class);
 		return new LogModelEmpty();
 	}
-
 }

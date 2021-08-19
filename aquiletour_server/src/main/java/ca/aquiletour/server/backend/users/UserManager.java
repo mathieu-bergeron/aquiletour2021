@@ -432,6 +432,7 @@ public class UserManager {
 			modelStore.updateModel(User.class, "admin", userId, storedUser -> {
 
 				storedUser.updateInfo(firstName, lastName, email);
+
 			});
 			
 			user = modelStore.extractFromModel(User.class, "admin", userId, modelClass, storedUser -> {
@@ -624,6 +625,23 @@ public class UserManager {
 		}
 
 		return userHasName;
+	}
+
+	public static void renameUser(ModelStoreSync modelStore, 
+			                      String userId, 
+			                      String firstname, 
+			                      String lastname) throws BackendError {
+
+		T.call(UserManager.class);
+
+		if(modelStore.ifModelExists(User.class, "admin", userId)) {
+			
+			modelStore.updateModel(User.class, "admin", userId, storedUser -> {
+				
+				storedUser.setFirstname(firstname);
+				storedUser.setLastname(lastname);
+			});
+		}
 	}
 
 }

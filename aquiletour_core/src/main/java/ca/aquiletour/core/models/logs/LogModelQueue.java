@@ -86,4 +86,5 @@ public class LogModelQueue extends LogModel<LogItemQueue, LogItemsQueue> {
 			logItem.closeAppointment(timestamp, user);
 		}
 	}
+
 }

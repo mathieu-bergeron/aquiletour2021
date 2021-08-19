@@ -32,8 +32,6 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 		groupId = groupNameFromCsvFileName(csvFilename);
 		
-		T.values(groupId);
-
 		studentsToAdd = parseCsv(modelStore, csvString);
 
 		UserManager.createUsers(modelStore, studentsToAdd);
@@ -105,18 +103,18 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 			String[] fields = line.split(Constants.CSV_SEPARATOR);
 
-			String lastName = "";
-			String firstName = "";
+			String lastname = "";
+			String firstname = "";
 			String registrationId = "";
 			String programId = "";
 			String phoneNumber = "";
 			
 			if(fields.length > 0) {
-				lastName = fields[0];
+				lastname = fields[0];
 			}
 
 			if(fields.length > 1) {
-				firstName = fields[1];
+				firstname = fields[1];
 			}
 
 			if(fields.length > 2) {
@@ -127,7 +125,7 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 				}
 
 				if(UserManager.isStudentId(registrationIdRaw)) {
-					registrationId = registrationIdRaw.substring(2);
+					registrationId = registrationIdRaw;
 				}
 			}
 
@@ -141,15 +139,13 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 
 			String email = registrationId + "@" + Constants.EMAIL_HOST;
 			
-			T.values(firstName, lastName, registrationId);
-			
-			if(!firstName.isEmpty()
-					&& !lastName.isEmpty()
+			if(!firstname.isEmpty()
+					&& !lastname.isEmpty()
 					&& !registrationId.isEmpty()) {
-
+				
 				Student newUser = UserManager.createStudentUsingRegistrationId(modelStore, 
-																			   firstName, 
-																			   lastName, 
+																			   firstname, 
+																			   lastname, 
 																			   registrationId, 
 																			   programId, 
 																			   phoneNumber, 
@@ -166,8 +162,10 @@ public class AddStudentCsvHandler extends BackendMessageHandler<AddStudentCsvMes
 		T.call(this);
 		
 		for(User user : studentsToAdd) {
-			//QueueManager.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
-			//LogManagerQueue.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
+			T.values(user.getFirstname());
+			
+			QueueManager.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
+			LogManagerQueue.renameUser(modelStore, user.getId(), user.getFirstname(), user.getLastname());
 		}
 
 		/*

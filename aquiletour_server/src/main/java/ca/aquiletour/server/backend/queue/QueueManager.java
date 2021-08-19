@@ -358,4 +358,21 @@ public class QueueManager {
 			queueModel.updateTeacherName(teacherName);
 		});
 	}
+
+	public static void renameUser(ModelStoreSync modelStore, 
+			                      String userId, 
+			                      String firstname, 
+			                      String lastname) throws BackendError {
+
+		T.call(QueueManager.class);
+		
+		modelStore.forEachModelId(QueueModel.class, "admin", queueId -> {
+			
+			modelStore.updateModel(QueueModel.class, "admin", queueId, queueModel -> {
+
+				queueModel.renameStudent(userId, firstname, lastname);
+
+			});
+		});
+	}
 }

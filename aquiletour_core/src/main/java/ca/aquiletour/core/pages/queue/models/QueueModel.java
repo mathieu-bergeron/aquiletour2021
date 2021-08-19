@@ -481,6 +481,18 @@ public class QueueModel implements NtroModel {
 			recomputeAppointmentTimes();
 		}
 	}
+
+	public void renameStudent(String studentId, String firstname, String lastname) {
+		T.call(this);
+		
+		Appointment appointment = appointmentByStudentId(studentId);
+		
+		if(appointment != null) {
+
+			appointment.setStudentName(firstname);
+			appointment.setStudentSurname(lastname);
+		}
+	}
 	
 
 	/* XXX: not used for now
