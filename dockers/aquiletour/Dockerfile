@@ -30,6 +30,7 @@ FROM alpine:3.13
 RUN apk update
 RUN apk add openjdk8-jre
 RUN apk add nodejs
+RUN apk add curl
 
 RUN mkdir /root/.aiguilleur
 COPY config_aquiletour/config.json.gmail /root/.aiguilleur/config.json
@@ -41,6 +42,7 @@ WORKDIR /app
 COPY --from=build /code/aquiletour_server/build/libs/aquiletour_server-all.jar ./aqlt_srv.jar
 RUN mkdir -p src/main/resources
 COPY --from=build /code/aquiletour_server/src/main/resources src/main/resources
+COPY --from=build /code/aquiletour_server/__test_api__ __api__
 RUN mkdir -p __data__
 #COPY --from=build /code/aquiletour_server/__test_data__ __data__
 
