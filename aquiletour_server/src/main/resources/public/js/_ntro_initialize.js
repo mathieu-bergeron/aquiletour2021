@@ -1,6 +1,5 @@
 var audioElm;
 
-
 function _ntro_initialize_view(viewName, viewRootHtmlElement){
 
     const viewRootElement = viewRootHtmlElement.jQueryElement;
@@ -20,7 +19,7 @@ function _ntro_notify(notificationMessage) {
 }
 
 function playNotificationSound() {
-    audioElm.play();
+    audioElm.trigger('play');
 }
 
 function displayNotification(notificationMessage) {
