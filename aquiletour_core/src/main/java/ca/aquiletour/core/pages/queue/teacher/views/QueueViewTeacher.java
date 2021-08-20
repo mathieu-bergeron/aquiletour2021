@@ -20,4 +20,6 @@ public interface QueueViewTeacher extends QueueView {
 	void displayQueueMessage(CoursePath coursePath, String queueMessage);
 	void showAppointmentTimes(boolean shouldShow);
 
+	void displayNotification(String notificationMessage);
+
 }

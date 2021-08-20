@@ -163,4 +163,6 @@ public abstract class HtmlElement {
 	public abstract void removeLinkHandler();
 
 	public abstract void click();
+
+	public abstract void displayNotification(String notificationMessage);
 }

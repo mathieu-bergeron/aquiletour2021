@@ -123,6 +123,11 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 					                            appointment);
 
 			view.insertAppointment(appointmentIndex, appointmentView);
+			
+			onNewAppointment(view, appointment);
+			
 		}
 	}
+
+	protected abstract void onNewAppointment(V view, Appointment appointment);
 }

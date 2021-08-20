@@ -373,4 +373,10 @@ public class HtmlElementJdk extends HtmlElement {
 		// XXX: not supported on server-side
 	}
 
+	@Override
+	public void displayNotification(String notificationMessage) {
+		T.call(this);
+		// XXX: not supported on server-side
+	}
+
 }

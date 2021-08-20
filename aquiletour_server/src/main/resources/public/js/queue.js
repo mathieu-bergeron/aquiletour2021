@@ -34,8 +34,6 @@ function initializeQueue(viewRootElement, jSweet){
 
                 if(jSweet){
 
-                    console.log("currentIndex: " + appointmentList.index(appointment))
-
                     /*
                     console.log(queueId);
                     console.log(appointmentId);

@@ -165,6 +165,10 @@ public class ResourceHandlerVertx {
 
 			isBinary = true;
 
+		}else if(filePath.endsWith("wav")) {
+
+			isBinary = true;
+
 		}
 		
 		return isBinary;
@@ -200,6 +204,10 @@ public class ResourceHandlerVertx {
 		}else if(filePath.endsWith("jpg")) {
 
 			response.putHeader("content-type", "image/jpeg");
+
+		}else if(filePath.endsWith("wav")) {
+
+			response.putHeader("content-type", "audio/wav");
 
 		}else {
 			response.putHeader("content-type", "text/plain; charset=utf-8");

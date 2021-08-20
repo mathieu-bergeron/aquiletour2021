@@ -568,6 +568,13 @@ public class HtmlElementJSweet extends HtmlElement {
 		jQueryElement.off();
 	}
 
+	@Override
+	public void displayNotification(String notificationMessage) {
+		T.call(this);
+
+		Globals._ntro_notify(notificationMessage);
+	}
+
 	/*
 	@Override
 	public void modal(String arg) {

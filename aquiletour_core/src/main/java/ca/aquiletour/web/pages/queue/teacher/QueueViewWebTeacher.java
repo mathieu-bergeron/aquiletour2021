@@ -392,4 +392,11 @@ public class QueueViewWebTeacher extends QueueViewWeb implements QueueViewTeache
 
 		return AppointmentViewTeacher.class;
 	}
+
+	@Override
+	public void displayNotification(String notificationMessage) {
+		T.call(this);
+		
+		getRootElement().displayNotification(notificationMessage);
+	}
 }

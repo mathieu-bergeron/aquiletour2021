@@ -55,6 +55,8 @@ public class Globals {
 
 	public native static void _ntro_initialize_view(String viewName, HtmlElementJSweet viewRootHtmlElement);
 
+	public native static void _ntro_notify(String notificationMessage);
+
 	//public native static void _ntro_call_modal(JQuery jQueryElement, String arg);
 
 }

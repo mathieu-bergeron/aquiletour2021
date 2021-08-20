@@ -4,6 +4,7 @@ import java.util.Map;
 
 import ca.aquiletour.core.models.paths.CoursePath;
 import ca.aquiletour.core.pages.queue.handlers.QueueViewModel;
+import ca.aquiletour.core.pages.queue.models.Appointment;
 import ca.aquiletour.core.pages.queue.models.QueueModel;
 import ca.aquiletour.core.pages.queue.models.QueueSettings;
 import ca.aquiletour.core.pages.queue.models.QueueSettingsCourse;
@@ -270,5 +271,15 @@ public class QueueViewModelTeacher extends QueueViewModel<QueueViewTeacher> {
 			isQueueOpen = isQueueOpenNow;
 			view.displayIfQueueOpen(isQueueOpen);
 		}
+	}
+
+	@Override
+	protected void onNewAppointment(QueueViewTeacher view, Appointment appointment) {
+		T.call(this);
+		
+		String notificationMessage = appointment.getStudentName() + " " + appointment.getStudentSurname();
+		
+		view.displayNotification(notificationMessage);
+		
 	}
 }
