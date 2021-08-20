@@ -132,7 +132,7 @@ public class RootController extends NtroRootController {
 				}else {
 
 					ShowLoginMessage showLoginMessage = Ntro.messages().create(ShowLoginMessage.class);
-					showLoginMessage.setMessageToUser("SVP entrer votre DA pour voir vos cours");
+					showLoginMessage.setMessageToUser("SVP entrer votre DA.");
 					Ntro.messages().send(showLoginMessage);
 
 				}
