@@ -7,7 +7,7 @@ import ca.ntro.core.system.trace.T;
 
 public class QueueSettings implements NtroModelValue {
 	
-	private StoredBoolean isQueueOpen = new StoredBoolean();
+	private StoredBoolean isQueueOpen = new StoredBoolean(true);
 	private StoredBoolean showAppointmentTimes = new StoredBoolean(true);
 	private StoredString queueMessage = new StoredString();
 

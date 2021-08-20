@@ -19,6 +19,7 @@ import ca.aquiletour.server.backend.course_list.CourseListManager;
 import ca.aquiletour.server.backend.dashboard.DashboardManager;
 import ca.aquiletour.server.backend.log.LogManagerQueue;
 import ca.aquiletour.server.backend.queue.QueueManager;
+import ca.aquiletour.server.backend.queue_list.QueueListManager;
 import ca.ntro.backend.BackendError;
 import ca.ntro.core.models.ModelInitializer;
 import ca.ntro.core.models.ModelUpdater;
@@ -218,6 +219,7 @@ public class UserManager {
 		T.call(UserManager.class);
 		
 		QueueManager.createQueueForUser(modelStore, user);
+		QueueListManager.addQueue(modelStore, user.getId(), user);
 		LogManagerQueue.createQueueLogForUser(modelStore, user);
 		
 		/*
