@@ -1,5 +1,6 @@
 package ca.aquiletour.web.pages.queue;
 
+import ca.aquiletour.core.models.user.User;
 import ca.aquiletour.core.pages.queue.models.Appointment;
 
 import ca.aquiletour.core.pages.queue.models.StoredTags;
@@ -63,7 +64,10 @@ public class AppointmentViewWeb extends NtroViewWeb implements AppointmentView {
 	public void onContextChange(NtroContext<?, ?> context) {
 		T.call(this);
 		
-		if(Ntro.isJSweet() && context != null) {
+		if(Ntro.isJSweet() 
+				&& context != null 
+				&& context.user() instanceof User
+				&& !((User) context.user()).isGuest()) {
 
 			if(context.isSocketOpen()) {
 

@@ -28,14 +28,20 @@ public abstract class ViewLoader extends NtroTaskAsync implements Cloneable {
 		this.context = context;
 	}
 
-	public NtroView createView(){
+	public NtroView createView(NtroContext<?, ?> context) {
 		T.call(this);
-		
+
 		NtroView view = createViewImpl();
 		
 		view.initializeView(context);
 		
 		return view;
+	}
+
+	public NtroView createView(){
+		T.call(this);
+		
+		return createView(context);
 	}
 
 	protected abstract NtroView createViewImpl();

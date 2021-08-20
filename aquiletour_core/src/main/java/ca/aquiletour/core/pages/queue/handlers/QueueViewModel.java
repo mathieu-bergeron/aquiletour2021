@@ -113,7 +113,7 @@ public abstract class QueueViewModel<V extends QueueView> extends ModelViewSubVi
 			
 		}else {
 
-			appointmentView = (AppointmentView) subViewLoader.createView();
+			appointmentView = (AppointmentView) subViewLoader.createView(AquiletourMain.createNtroContext());
 
 			appointmentView.displayAppointement(model.getQueueId(), 
 					                            currentUserId, 

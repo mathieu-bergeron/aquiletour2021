@@ -38,7 +38,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 		T.call(this);
 
 		deleteAppointmentButton = this.getRootElement().find("#delete-appointment-button").get(0);
-		deleteAppointmentForm = this.getRootElement().find("#delete-appointment-form").get(0);
+		deleteAppointmentForm = this.getRootElement().find(".delete-appointment-form").get(0);
 		modifyAppointmentButton = this.getRootElement().find("#modify-appointment-button").get(0);
 		chatButton = this.getRootElement().find("#chat-button").get(0);
 		commentTextarea = this.getRootElement().find(".comment-textarea").get(0);
@@ -75,7 +75,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 	@Override
 	public void onContextChange(NtroContext<?,?> context) {
 		T.call(this);
-
+		
 		super.onContextChange(context);
 
 		if(Ntro.isJSweet() 
@@ -95,7 +95,7 @@ public class AppointmentViewWebStudent extends AppointmentViewWeb implements App
 				});
 				
 			}else {
-				
+
 				modifyCommentForm.removeFormSubitHandler();
 			}
 		}
