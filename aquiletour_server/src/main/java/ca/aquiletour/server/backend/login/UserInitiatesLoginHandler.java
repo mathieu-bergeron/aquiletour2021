@@ -121,7 +121,7 @@ public class UserInitiatesLoginHandler extends BackendMessageHandler<UserInitiat
 				T.call(this);
 
 				Log.info("CODE: " + loginCode);
-				SendEmail.sendCode(loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
+				SendEmail.sendCode(Ntro.config(), loginCode, userToRegister.getFirstname(), userToRegister.getEmail());
 			}
 
 			@Override

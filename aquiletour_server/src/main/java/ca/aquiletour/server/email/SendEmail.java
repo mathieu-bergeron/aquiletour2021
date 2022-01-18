@@ -1,5 +1,7 @@
 package ca.aquiletour.server.email;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -10,10 +12,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import ca.aquiletour.core.Constants;
 import ca.aquiletour.server.AquiletourConfig;
 import ca.ntro.core.system.log.Log;
-import ca.ntro.services.Ntro;
+import ca.ntro.services.ConfigService;
 
 // from: https://www.tutorialspoint.com/java/java_sending_email.htm
 // from : https://mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
@@ -21,22 +22,28 @@ public class SendEmail {
 
 	public static void main(String[] args) {
 		if(args.length > 0) {
-			sendCode("143 567", "Mathieu", args[0]);
+			System.out.println("Sending email to " + args[0]);
+
+			String userHome = System.getProperty("user.home");
+			Path configFilepath = Paths.get(userHome, ".aiguilleur", "config.json");
+			AquiletourConfig config = AquiletourConfig.loadFromJson(configFilepath);
+
+			sendCode(config, "143 567", "Mathieu", args[0]);
 		}else {
-			System.out.println("Usage: ./gradlew testEmail adresseDestinataire");
+			System.out.println("Usage: ./gradlew testEmail -Precipient=adresseDestinataire");
 		}
 	}
 	
 
-	public static void sendCode(String loginCode, String userName, String toEmail) {
-		if(!Ntro.config().isProd()) {
-			Log.warning("[WARNING] emails are disabled");
+	public static void sendCode(ConfigService configService, String loginCode, String userName, String toEmail) {
+		if(!configService.isProd()) {
+			System.err.println("[WARNING] emails are disabled");
 			return;
 		}
 
-		AquiletourConfig config = (AquiletourConfig) Ntro.config();
+		AquiletourConfig config = (AquiletourConfig) configService;
 		if(config.getSmtpHost() == null || config.getSmtpHost().isEmpty()) {
-			Log.warning("[WARNING] emails not configured in config.json");
+			System.err.println("[WARNING] emails not configured in config.json");
 		}
 		
 		final String fromEmail = config.getSmtpFrom();
@@ -71,7 +78,7 @@ public class SendEmail {
 
 		    Transport.send(message);
 
-		    Log.info("Email sent to " + toEmail);
+		    System.out.println("[INFO] Email sent to " + toEmail);
 
 		} catch (MessagingException e) {
 		    e.printStackTrace();
