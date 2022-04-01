@@ -200,7 +200,7 @@ public class AquiletourMainServerVertx extends NtroTaskAsync {
 
 			String userHome = System.getProperty("user.home");
 			Path keyPath = Paths.get(userHome, "aiguilleurca.key");
-			Path certPath = Paths.get(userHome, "d706a8e1929c0867.pem");
+			Path certPath = Paths.get(userHome, "fbb556b375ecbfdc.pem");
 
 			serverOptions.setSsl(true);
 
