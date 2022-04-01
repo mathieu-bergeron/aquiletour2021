@@ -52,192 +52,192 @@ import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 
 public class AquiletourMainServerVertx extends NtroTaskAsync {
-	
-	private Timer timePassesTimer;
+    
+    private Timer timePassesTimer;
 
-	@Override
-	protected void runTaskAsync() {
-		T.call(this);
+    @Override
+    protected void runTaskAsync() {
+        T.call(this);
 
-		PasswordDigest.initialize(((AquiletourConfig) Ntro.config()).getPasswordSalt());
+        PasswordDigest.initialize(((AquiletourConfig) Ntro.config()).getPasswordSalt());
 
-		ViewLoaderRegistrationWeb.registerViewLoaders();
-		
-		AquiletourMain.registerSerializableClasses();
-		
-		if(Ntro.config().isProd()) {
-			Ntro.jsonService().setPrettyPrinting(false);
-		}else {
-			Ntro.jsonService().setPrettyPrinting(true);
-		}
+        ViewLoaderRegistrationWeb.registerViewLoaders();
+        
+        AquiletourMain.registerSerializableClasses();
+        
+        if(Ntro.config().isProd()) {
+            Ntro.jsonService().setPrettyPrinting(false);
+        }else {
+            Ntro.jsonService().setPrettyPrinting(true);
+        }
 
-		
-		sendTimePassesMessages();
-
-
-		try {
-			
-			
-			ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
-
-			UserManager.initialize(modelStore);
-			SemesterListManager.initialize(modelStore);
-			QueueListManager.initialize(modelStore);
-
-		} catch (BackendError e) {
-			Log.error("Could not initialize: " + e.getMessage());
-		}
-
-		try {
-			startServer();
-		} catch (Exception e) {
-			e.printStackTrace(System.err);
-			Ntro.appCloser().close();
-		}
-
-		notifyTaskFinished();
-	}
-
-	private void sendTimePassesMessages() {
-		T.call(this);
-
-		long periodSeconds = ca.aquiletour.core.Constants.TIME_PASSES_PERIOD_SECONDS;
-
-		timePassesTimer =  new Timer();
-		timePassesTimer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				T.call(this);
-				
-				TimePassesMessage timePassesMessage = Ntro.messages().create(TimePassesMessage.class);
-				timePassesMessage.setElapsedTimeSeconds(periodSeconds);
-				timePassesMessage.setCurrentTime(Ntro.calendar().now());
-				
-				Ntro.messages().send(timePassesMessage);
-			}
-		}, 0, periodSeconds * 1000);
-	}
-
-	@Override
-	protected void onFailure(Exception e) {
-		System.err.println("Ntro initialization failed");
-		e.printStackTrace(System.err);
-	}
-
-	private void startServer() throws Exception, IOException, InterruptedException {
-		T.call(this);
-
-		if(!Ntro.config().isProd()) {
-			System.setProperty("vertxweb.environment", "dev");
-		}
-		
-		VertxOptions vertxOptions = new VertxOptions();
-		if(Ntro.config().isProd()) {
-			vertxOptions.setWorkerPoolSize(1000);
-		}else {
-			vertxOptions.setWorkerPoolSize(3);
-		}
-
-		Vertx vertx = Vertx.vertx(vertxOptions);
-
-		vertx.exceptionHandler(exception -> {
-			exception.printStackTrace();
-		});
-		
-		EventBus eventBus = vertx.eventBus();
-		eventBus.registerDefaultCodec(TextMessage.class,new TextMessageCodec());
-		
-		Router router = Router.router(vertx);
-
-		router.route(HttpMethod.POST, "/*").handler(BodyHandler.create());
-
-		router.route(HttpMethod.POST, Constants.MESSAGES_URL_PATH_HTTP + "*").blockingHandler(routingContext -> {
-
-			MessageHandlerVertx.handleRequest(routingContext);
-		});
-
-		router.route(HttpMethod.POST, Constants.MODELS_URL_PREFIX + "*").blockingHandler(routingContext -> {
-
-			ModelHandlerVertx.handle(routingContext);
-
-		});
-
-		ResourceHandlerVertx resourceHandler = ResourceHandlerVertx.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public");
-		router.route(Constants.RESOURCES_URL_PREFIX + "*").blockingHandler(routingContext -> {
-			resourceHandler.handle(routingContext);
-		});
-		
-		SockJSHandlerOptions sockJSOptions = new SockJSHandlerOptions();
-
-		sockJSOptions.setLocalWriteHandler(true);
-		SockJSHandler sockJSHandler = SockJSHandler.create(vertx, sockJSOptions);
-		
-		
-		router.mountSubRouter(Constants.MESSAGES_URL_PATH_SOCKET, sockJSHandler.socketHandler(socket -> {
-			
-			socket.handler(messageBuffer -> {
-
-				MessageHandlerVertx.handleMessage(socket, messageBuffer);
-			});
-		}));
-
-		router.route("/*").blockingHandler(routingContext -> {
-
-			DynamicHandlerVertx.handle(routingContext);
-		});
-		
-		router.errorHandler(500, rc -> {
-		  Throwable failure = rc.failure();
-		  if (failure != null) {
-			failure.printStackTrace();
-		  }
-		});
-
-		HttpServerOptions serverOptions = new HttpServerOptions();
-		int port = 8080;
-		
-		if(Ntro.config().isProd()) {
-
-			String userHome = System.getProperty("user.home");
-			Path keyPath = Paths.get(userHome, "aiguilleurca.key");
-			Path certPath = Paths.get(userHome, "d706a8e1929c0867.pem");
-
-			serverOptions.setSsl(true);
-
-			PemKeyCertOptions certOptions = new PemKeyCertOptions();
-			certOptions.setKeyPath(keyPath.toAbsolutePath().toString());
-			certOptions.setCertPath(certPath.toAbsolutePath().toString());
-
-			serverOptions.setKeyCertOptions(certOptions);
-			
-			port = 443;
-			
-			/*
-			PemTrustOptions trustOptions = new PemTrustOptions();
-			trustOptions.addCertPath("server-ca.pem");
-			
-			serverOptions.setTrustOptions(trustOptions);
-			*/
-
-		} else {
-			
-			/*
-			SelfSignedCertificate certificate = SelfSignedCertificate.create();
-			
-			serverOptions = new HttpServerOptions();
-			serverOptions.setSsl(true);
-			serverOptions.setKeyCertOptions(certificate.keyCertOptions());
-			*/
-			
-			// XXX: mandatory??
-			//serverOptions.setTrustOptions(certificate.trustOptions());
-			
-		}
+        
+        sendTimePassesMessages();
 
 
-		HttpServer server = vertx.createHttpServer(serverOptions);
-		server.requestHandler(router);
-		
-		server.listen(port);
-	}
+        try {
+            
+            
+            ModelStoreSync modelStore = new ModelStoreSync(Ntro.modelStore());
+
+            UserManager.initialize(modelStore);
+            SemesterListManager.initialize(modelStore);
+            QueueListManager.initialize(modelStore);
+
+        } catch (BackendError e) {
+            Log.error("Could not initialize: " + e.getMessage());
+        }
+
+        try {
+            startServer();
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            Ntro.appCloser().close();
+        }
+
+        notifyTaskFinished();
+    }
+
+    private void sendTimePassesMessages() {
+        T.call(this);
+
+        long periodSeconds = ca.aquiletour.core.Constants.TIME_PASSES_PERIOD_SECONDS;
+
+        timePassesTimer =  new Timer();
+        timePassesTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                T.call(this);
+                
+                TimePassesMessage timePassesMessage = Ntro.messages().create(TimePassesMessage.class);
+                timePassesMessage.setElapsedTimeSeconds(periodSeconds);
+                timePassesMessage.setCurrentTime(Ntro.calendar().now());
+                
+                Ntro.messages().send(timePassesMessage);
+            }
+        }, 0, periodSeconds * 1000);
+    }
+
+    @Override
+    protected void onFailure(Exception e) {
+        System.err.println("Ntro initialization failed");
+        e.printStackTrace(System.err);
+    }
+
+    private void startServer() throws Exception, IOException, InterruptedException {
+        T.call(this);
+
+        if(!Ntro.config().isProd()) {
+            System.setProperty("vertxweb.environment", "dev");
+        }
+        
+        VertxOptions vertxOptions = new VertxOptions();
+        if(Ntro.config().isProd()) {
+            vertxOptions.setWorkerPoolSize(1000);
+        }else {
+            vertxOptions.setWorkerPoolSize(3);
+        }
+
+        Vertx vertx = Vertx.vertx(vertxOptions);
+
+        vertx.exceptionHandler(exception -> {
+            exception.printStackTrace();
+        });
+        
+        EventBus eventBus = vertx.eventBus();
+        eventBus.registerDefaultCodec(TextMessage.class,new TextMessageCodec());
+        
+        Router router = Router.router(vertx);
+
+        router.route(HttpMethod.POST, "/*").handler(BodyHandler.create());
+
+        router.route(HttpMethod.POST, Constants.MESSAGES_URL_PATH_HTTP + "*").blockingHandler(routingContext -> {
+
+            MessageHandlerVertx.handleRequest(routingContext);
+        });
+
+        router.route(HttpMethod.POST, Constants.MODELS_URL_PREFIX + "*").blockingHandler(routingContext -> {
+
+            ModelHandlerVertx.handle(routingContext);
+
+        });
+
+        ResourceHandlerVertx resourceHandler = ResourceHandlerVertx.createResourceHandler(Constants.RESOURCES_URL_PREFIX, "/public");
+        router.route(Constants.RESOURCES_URL_PREFIX + "*").blockingHandler(routingContext -> {
+            resourceHandler.handle(routingContext);
+        });
+        
+        SockJSHandlerOptions sockJSOptions = new SockJSHandlerOptions();
+
+        sockJSOptions.setLocalWriteHandler(true);
+        SockJSHandler sockJSHandler = SockJSHandler.create(vertx, sockJSOptions);
+        
+        
+        router.mountSubRouter(Constants.MESSAGES_URL_PATH_SOCKET, sockJSHandler.socketHandler(socket -> {
+            
+            socket.handler(messageBuffer -> {
+
+                MessageHandlerVertx.handleMessage(socket, messageBuffer);
+            });
+        }));
+
+        router.route("/*").blockingHandler(routingContext -> {
+
+            DynamicHandlerVertx.handle(routingContext);
+        });
+        
+        router.errorHandler(500, rc -> {
+          Throwable failure = rc.failure();
+          if (failure != null) {
+            failure.printStackTrace();
+          }
+        });
+
+        HttpServerOptions serverOptions = new HttpServerOptions();
+        int port = 8080;
+        
+        if(Ntro.config().isProd()) {
+
+            String userHome = System.getProperty("user.home");
+            Path keyPath = Paths.get(userHome, "aiguilleurca.key");
+            Path certPath = Paths.get(userHome, "fbb556b375ecbfdc.pem");
+
+            serverOptions.setSsl(true);
+
+            PemKeyCertOptions certOptions = new PemKeyCertOptions();
+            certOptions.setKeyPath(keyPath.toAbsolutePath().toString());
+            certOptions.setCertPath(certPath.toAbsolutePath().toString());
+
+            serverOptions.setKeyCertOptions(certOptions);
+            
+            port = 443;
+            
+            /*
+            PemTrustOptions trustOptions = new PemTrustOptions();
+            trustOptions.addCertPath("server-ca.pem");
+            
+            serverOptions.setTrustOptions(trustOptions);
+            */
+
+        } else {
+            
+            /*
+            SelfSignedCertificate certificate = SelfSignedCertificate.create();
+            
+            serverOptions = new HttpServerOptions();
+            serverOptions.setSsl(true);
+            serverOptions.setKeyCertOptions(certificate.keyCertOptions());
+            */
+            
+            // XXX: mandatory??
+            //serverOptions.setTrustOptions(certificate.trustOptions());
+            
+        }
+
+
+        HttpServer server = vertx.createHttpServer(serverOptions);
+        server.requestHandler(router);
+        
+        server.listen(port);
+    }
 }
