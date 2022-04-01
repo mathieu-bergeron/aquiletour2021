@@ -35,7 +35,7 @@ RUN apk add curl
 RUN mkdir /root/.aiguilleur
 #COPY config_aquiletour/config.json.gmail /root/.aiguilleur/config.json
 COPY config_aquiletour/config.json.localmail /root/.aiguilleur/config.json
-COPY certificate/fbb556b375ecbfdc.pem /root/fbb556b375ecbfdc.pem
+COPY certificate/d706a8e1929c0867.pem /root/d706a8e1929c0867.pem
 COPY certificate/aiguilleurca.key /root/aiguilleurca.key
 
 RUN mkdir /app
